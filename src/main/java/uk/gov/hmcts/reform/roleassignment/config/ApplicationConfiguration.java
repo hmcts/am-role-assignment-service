@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.configuration;
+package uk.gov.hmcts.reform.roleassignment.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.config.RequestConfig;

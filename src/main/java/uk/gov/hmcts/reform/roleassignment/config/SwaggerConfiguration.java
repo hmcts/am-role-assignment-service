@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.configuration;
+package uk.gov.hmcts.reform.roleassignment.config;
 
 import java.util.Arrays;
 

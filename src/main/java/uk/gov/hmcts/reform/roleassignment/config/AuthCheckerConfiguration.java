@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.configuration;
+package uk.gov.hmcts.reform.roleassignment.config;
 
 import com.google.common.collect.ImmutableSet;
 import lombok.extern.slf4j.Slf4j;

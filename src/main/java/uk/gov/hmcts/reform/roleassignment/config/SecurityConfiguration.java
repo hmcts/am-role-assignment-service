@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.configuration;
+package uk.gov.hmcts.reform.roleassignment.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
