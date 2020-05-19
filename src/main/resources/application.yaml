@@ -65,4 +65,4 @@ feign:
       - user-roles
       - user-id
 
-swaggerUrl: ${ROLE_ASSIGNMENT_SWAGGER_AM_URL:localhost:4455}
+swaggerUrl: ${ROLE_ASSIGNMENT_SWAGGER_AM_URL:localhost:4096}
