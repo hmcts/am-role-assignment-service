@@ -36,7 +36,7 @@ done
 # Replace spring-boot-template slug
 for i in ${files_with_slug[@]}
 do
-  perl -i -pe "s/role-assignment-service/$slug/g" ${i}
+  perl -i -pe "s/am-role-assignment-service/$slug/g" ${i}
 done
 
 # Replace demo package in all files under ./src
