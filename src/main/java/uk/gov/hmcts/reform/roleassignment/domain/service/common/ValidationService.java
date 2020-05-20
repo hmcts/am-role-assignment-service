@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.service.common;
+package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.INPUT_CASE_ID_PATTERN;
 
@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
-import uk.gov.hmcts.reform.roleassignment.model.enums.SecurityClassification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.SecurityClassification;
 
 @Named
 @Singleton

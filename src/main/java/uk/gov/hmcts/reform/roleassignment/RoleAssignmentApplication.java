@@ -17,10 +17,10 @@ import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableCircuitBreaker
 @EnableFeignClients
-public class Application {
+public class RoleAssignmentApplication {
 
     public static void main(final String[] args) {
-        SpringApplication.run(Application.class);
+        SpringApplication.run(RoleAssignmentApplication.class);
     }
 
     @Bean
