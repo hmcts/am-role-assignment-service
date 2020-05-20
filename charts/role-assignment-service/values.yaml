@@ -1,5 +1,5 @@
 java:
   image: 'docker pull hmctspublic.azurecr.io/am/role-assignment-service:aat-5b735a34'
   ingressHost: ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-  applicationPort: 4455
-  aadIdentityName: ccd
+  applicationPort: 4096
+  aadIdentityName: am
