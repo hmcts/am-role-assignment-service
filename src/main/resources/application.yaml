@@ -64,3 +64,5 @@ feign:
       - serviceauthorization
       - user-roles
       - user-id
+
+swaggerUrl: ${ROLE_ASSIGNMENT_SWAGGER_AM_URL:localhost:4096}

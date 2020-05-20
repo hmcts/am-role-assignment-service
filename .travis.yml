@@ -1,9 +1,7 @@
 language: java
-
-branches:
-  only:
-    - master
-
+jdk:
+  - openjdk8
+  -
 #services:
 #  - docker
 
@@ -20,10 +18,10 @@ before_install:
 #  - curl https://raw.githubusercontent.com/hmcts/reform-api-docs/master/bin/publish-swagger-docs.sh > publish-swagger-docs.sh
 
 script:
-  - ./gradlew test
-  - ./gradlew integration
+   - ./gradlew test
+ # - ./gradlew integration
 
 after_success:
-  - ./gradlew jacocoTestReport
-  - bash <(curl -s https://codecov.io/bash)
+#  - ./gradlew jacocoTestReport
+ # - bash <(curl -s https://codecov.io/bash)
 #  - test "$TRAVIS_BRANCH" = "master" && test "$TRAVIS_PULL_REQUEST" = "false" && sh ./publish-swagger-docs.sh

@@ -12,7 +12,7 @@ properties(
 @Library("Infrastructure")
 
 def type = "java"
-def product = ""
+def product = "am"
 def component = "role-assignment-service"
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
