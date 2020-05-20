@@ -40,7 +40,7 @@ idam:
   s2s-auth:
     # AAAAAAAAAAAAAAAA
     totp_secret: ${ROLE_ASSIGNMENT_API_IDAM_KEY:DummyKey}
-    microservice: role-assignment-service
+    microservice: am-role-assignment-service
     url: ${IDAM_S2S_URL:http://localhost:4502}
 
 auth.idam.client.baseUrl: ${IDAM_USER_URL:http://localhost:5000}
