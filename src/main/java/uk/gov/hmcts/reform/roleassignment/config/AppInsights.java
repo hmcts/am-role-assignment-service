@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.config;
 
 import com.microsoft.applicationinsights.TelemetryClient;
@@ -34,3 +35,4 @@ public class AppInsights {
         telemetry.trackDependency(dependencyName, commandName, new Duration(duration), success);
     }
 }
+*/
