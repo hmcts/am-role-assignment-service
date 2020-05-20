@@ -1,4 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createresources;
 
-public class CreateRoleAssignments {
+import org.springframework.stereotype.Service;
+
+@Service
+public class CreateRoleAssignments implements CreateResources{
 }
