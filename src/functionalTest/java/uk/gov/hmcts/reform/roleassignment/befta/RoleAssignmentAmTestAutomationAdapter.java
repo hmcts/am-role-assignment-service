@@ -13,7 +13,6 @@ public class RoleAssignmentAmTestAutomationAdapter extends DefaultTestAutomation
 
     @Override
     public void doLoadTestData() {
-        loader.addCcdRoles();
-        loader.importDefinitions();
+
     }
 }
