@@ -2,7 +2,7 @@
 
 properties([
   // H allow predefined but random minute see https://en.wikipedia.org/wiki/Cron#Non-standard_characters
-  pipelineTriggers([cron('H 05 * * *')])
+  pipelineTriggers([cron('21 01 * * *')])
 ])
 
 @Library("Infrastructure")
@@ -11,6 +11,18 @@ def type = "java"
 def product = "am"
 def component = "role-assignment-service"
 
+def vaultOverrides = [
+  'preview' : 'aat',
+  'spreview': 'saat'
+]
+
 withNightlyPipeline(type, product, component) {
   /*enableSlackNotifications('#role-assignment-service-builds')*/
+
+  env.TEST_URL = "http://am-role-assignment-service-aat.service.core-compute-aat.internal"
+  env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+
+  overrideVaultEnvironments(vaultOverrides)
+
+  enableMutationTest()
 }
