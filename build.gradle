@@ -2,11 +2,9 @@ buildscript {
   repositories {
     jcenter()
   }
-  configurations.maybeCreate("pitest")
   dependencies {
     classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.8")
     classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
-    pitest 'org.pitest:pitest-junit5-plugin:0.12'
   }
 }
 
@@ -51,7 +49,7 @@ def versions = [
   feign_jackson      : '9.7.0'
 ]
 
-mainClassName = 'uk.gov.hmcts.reform.roleassignment.Application'
+mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
 def jarName = 'am-role-assignment-service.jar'
 
 pmd {
@@ -169,21 +167,19 @@ project.tasks['sonarqube'].dependsOn jacocoTestReport
 jacoco {
   toolVersion = "0.8.2"
 }
-/*
 
 pitest {
-  pitestVersion = "1.4.9"
+  pitestVersion = "1.5.2"
   testPlugin = "junit5"
-  targetClasses = ['uk.gov.hmcts.reform.']
-  excludedClasses = ['uk.gov.hmcts.reform.','uk.gov.hmcts.reform.am.util.Swagger2SpringBoot', 'uk.gov.hmcts.reform.controller.advice.ErrorConstants', 'uk.gov.hmcts.reform.ccd.document.am.configuration.*','uk.gov.hmcts.reform.ccd.document.am.apihelper.*', 'uk.gov.hmcts.reform.ccd.document.am.model.enums.*', 'uk.gov.hmcts.reform.ccd.document.am.controller.advice.exception.*']
+  targetClasses = ['uk.gov.hmcts.reform.*']
+  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication','uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot', 'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants', 'uk.gov.hmcts.reform.roleassignment.configuration.*', 'uk.gov.hmcts.reform.roleassignment.apihelper.*', 'uk.gov.hmcts.reform.roleassignment.model.*', 'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication']
   threads = 15
   outputFormats = ['XML', 'HTML']
   timestampedReports = true
   mutationThreshold = 40
 }
-*/
 
-/*
+
 sonarqube {
   properties {
     property "sonar.projectName", "am-role-assignment-service"
@@ -191,10 +187,10 @@ sonarqube {
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/," + "src/main/java/uk/gov/hmcts/reform//util/*Swagger2SpringBoot.java," + "src/main/java/uk/gov/hmcts/reform/ccd/document/am/controller/advice/*ErrorConstants.java," + "src/main/java/uk/gov/hmcts/reform/ccd/document/am/controller/advice/exception/**," + "src/main/java/uk/gov/hmcts/reform/ccd/document/am/configuration/**," + "src/main/java/uk/gov/hmcts/reform/ccd/document/am/model/enums/**," + "src/main/java/uk/gov/hmcts/reform/ccd/document/am/apihelper/**"
+    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/roleassignment/*Application.java," + "src/main/java/uk/gov/hmcts/reform/roleassignment/util/*Swagger2SpringBoot.java," + "src/main/java/uk/gov/hmcts/reform/roleassignment/controller/advice/*ErrorConstants.java," + "src/main/java/uk/gov/hmcts/reform/roleassignment/controller/advice/exception/**," + "src/main/java/uk/gov/hmcts/reform/roleassignment/configuration/**," + "src/main/java/uk/gov/hmcts/reform/roleassignment/model/enums/**," + "src/main/java/uk/gov/hmcts/reform/roleassignment/apihelper/**"
     property "sonar.junit.reportPaths", "${project.buildDir}/test-results/junit-platform"
   }
-}*/
+}
 
 project.tasks['sonarqube'].dependsOn test, integration, jacocoTestReport
 project.tasks['sonarqube'].group = "Verification"
@@ -280,6 +276,8 @@ dependencies {
   runtime group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
 
   testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+
+  pitest 'org.pitest:pitest-junit5-plugin:0.12'
 
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit
   testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: versions.junit
