@@ -49,7 +49,7 @@ def versions = [
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
-def jarName = 'role-assignment-service.jar'
+def jarName = 'am-role-assignment-service.jar'
 
 pmd {
   toolVersion = '6.21.0'
