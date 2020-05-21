@@ -30,6 +30,7 @@ apply plugin: 'net.serenity-bdd.aggregator'
 apply plugin: 'project-report'
 apply plugin: 'idea'
 apply plugin: 'io.spring.dependency-management'
+apply from: 'liquibase.gradle'
 
 def versions = [
   junit              : '5.5.0',
@@ -274,6 +275,9 @@ dependencies {
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.2.RELEASE'
   compile('org.springframework.boot:spring-boot-starter-hateoas')
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.6.RELEASE'
+
+  compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.3'
+  runtime group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
 
   testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
 
