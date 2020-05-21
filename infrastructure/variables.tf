@@ -41,10 +41,6 @@ variable "log_level_spring_web" {
   default = "INFO"
 }
 
-variable "log_level_rd" {
-  default = "INFO"
-}
-
 variable "team_name" {
   default     = "AM"
 }
@@ -56,5 +52,7 @@ variable "managed_identity_object_id" {
 variable "enable_ase" {
   default = false
 }
+
+variable "deployment_namespace" {}
 
 
