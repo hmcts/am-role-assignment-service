@@ -28,6 +28,7 @@ apply plugin: 'net.serenity-bdd.aggregator'
 apply plugin: 'project-report'
 apply plugin: 'idea'
 apply plugin: 'io.spring.dependency-management'
+apply from: 'liquibase.gradle'
 
 def versions = [
   junit              : '5.5.0',
@@ -121,7 +122,7 @@ task functional(type: Test, description: 'Runs the functional tests.', group: 'V
   doFirst {
     generateCucumberReports.enabled = true
     javaexec {
-      main = "uk.gov.hmcts.reform.roleassignment"
+      main = "uk.gov.hmcts.reform.roleassignment.befta.RoleAssignmentAmBeftaMain"
       classpath += configurations.cucumberRuntime + sourceSets.functionalTest.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
       args = ['--plugin', "json:${projectDir}/target/cucumber.json", '--tags', 'not @Ignore', '--glue',
               'uk.gov.hmcts.befta.player', 'src/functionalTest/resources/features/']
@@ -181,8 +182,8 @@ pitest {
 
 sonarqube {
   properties {
-    property "sonar.projectName", "role-assignment-service"
-    property "sonar.projectKey", "role-assignment-service"
+    property "sonar.projectName", "am-role-assignment-service"
+    property "sonar.projectKey", "am-role-assignment-service"
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
@@ -270,6 +271,9 @@ dependencies {
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.2.RELEASE'
   compile('org.springframework.boot:spring-boot-starter-hateoas')
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.6.RELEASE'
+
+  compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.3'
+  runtime group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
 
   testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
 

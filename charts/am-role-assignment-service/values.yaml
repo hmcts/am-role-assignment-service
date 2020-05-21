@@ -1,0 +1,4 @@
+java:
+  image: 'docker pull hmctspublic.azurecr.io/am/role-assignment-service:aat-5b735a34'
+  ingressHost: am-role-assignment-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+  applicationPort: 4096

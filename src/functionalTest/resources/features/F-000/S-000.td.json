@@ -1,0 +1,23 @@
+{
+  "_guid_": "S-000",
+  "title": "must access Role Assignment API",
+  "_extends_": "F-000_Test_Data_Base",
+
+  "specs": [
+    "an active caseworker profile",
+    "is to be made on behalf of Role Assignment API"
+  ],
+
+  "request": {
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  },
+
+  "expectedResponse": {
+    "_extends_": "Common_200_Response",
+    "body": {
+      "__plainTextValue__" : "Welcome to Role Assignment Service Controller"
+    }
+  }
+}
