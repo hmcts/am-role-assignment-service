@@ -3,7 +3,7 @@ properties(
   [
     [
       $class       : 'GithubProjectProperty',
-      projectUrlStr: 'https://github.com/hmcts/role-assignment-service'
+      projectUrlStr: 'https://github.com/hmcts/am-role-assignment-service'
     ],
     pipelineTriggers([[$class: 'GitHubPushTrigger']])
   ]
@@ -37,17 +37,17 @@ env.OAUTH2_REDIRECT_URI = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect
 
 withPipeline(type, product, component) {
   onMaster {
-    enableSlackNotifications('#role-assignment-service-builds')
+    enableSlackNotifications('#am-role-assignment-service-builds')
   }
   onDemo {
-    enableSlackNotifications('#role-assignment-service-builds')
+    enableSlackNotifications('#am-role-assignment-service-builds')
   }
   onPR {
-    enableSlackNotifications('#role-assignment-service-builds')
+    enableSlackNotifications('#am-role-assignment-service-builds')
   }
 
   overrideVaultEnvironments(vaultOverrides)
-  loadVaultSecrets(secrets)
+  /*loadVaultSecrets(secrets)*/
   enableAksStagingDeployment()
   disableLegacyDeploymentOnAAT()
   installCharts()
