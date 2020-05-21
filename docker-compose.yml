@@ -8,7 +8,7 @@ services:
     container_name: role-assignment-service
     environment:
       - ROLE_ASSIGNMENT_DB_HOST=role_assignment
-      - ROLE_ASSIGNMENT_DB_PORT=5431
+      - ROLE_ASSIGNMENT_DB_PORT=5451
       - ROLE_ASSIGNMENT_DB_USERNAME=am
       - ROLE_ASSIGNMENT_DB_PASSWORD=am
       - ROLE_ASSIGNMENT_IDAM_KEY
