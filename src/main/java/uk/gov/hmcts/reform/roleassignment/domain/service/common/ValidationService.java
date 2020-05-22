@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
-import uk.gov.hmcts.reform.roleassignment.domain.model.SecurityClassification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Classification;
 
 @Named
 @Singleton
@@ -42,7 +42,7 @@ public class ValidationService {
 
     public static void isValidSecurityClassification(String securityClassification) {
         try {
-            Enum.valueOf(SecurityClassification.class, securityClassification);
+            Enum.valueOf(Classification.class, securityClassification);
         } catch (final IllegalArgumentException ex) {
             LOG.info("The security classification is not valid");
             throw new BadRequestException("The security classification " + securityClassification + " is not valid");
