@@ -1,0 +1,68 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet id="1" author="nitin.sahu@hmcts.net">
+    <sql>CREATE TYPE request_status_enum AS ENUM ('CREATED', 'REJECTED', 'APPROVED')</sql>
+    <createTable tableName="role_assignment_request_status">
+      <column name="role_assignment_request_id" type="bigserial">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="log" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status" type="request_status_enum">
+        <constraints nullable="false" />
+      </column>
+      <column name="sequence" type="integer">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="11" author="nitin.sahu@hmcts.net">
+    <sql>CREATE TYPE request_type_enum AS ENUM  ('CREATE', 'DELETE')</sql>
+    <createTable tableName="role_assignment_request">
+      <column name="role_assignment_request_id" type="bigserial">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="correlation_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="ClientID" type="bigserial">
+        <constraints nullable="false"/>
+      </column>
+      <column name="authenticated_user_id" type="bigserial">
+        <constraints nullable="false"/>
+      </column>
+      <column name="requestor_id" type="bigserial">
+        <constraints nullable="false"/>
+      </column>
+      <column name="request_type" type="request_type_enum">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status" type="request_status_enum">
+        <constraints nullable="false"/>
+      </column>
+      <column name="process" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="reference" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="replace_existing" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="role_assignment_id" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="last_updated" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+  </databaseChangeLog>
+
