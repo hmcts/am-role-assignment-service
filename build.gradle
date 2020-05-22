@@ -273,7 +273,7 @@ dependencies {
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.6.RELEASE'
 
   compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.3'
-  runtime group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
+  runtime group: 'org.postgresql', name: 'postgresql', version: '42.2.12'
 
   testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
 
