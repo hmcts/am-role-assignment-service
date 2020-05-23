@@ -1,7 +1,7 @@
 java:
   image: 'hmctspublic.azurecr.io/am/role-assignment-service:latest'
-  ingressHost: am-role-assignment-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   applicationPort: 4096
+  aadIdentityName: am
   environment:
     IDAM_S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     IDAM_USER_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
