@@ -1,11 +1,11 @@
 version: '3'
 
 services:
-  role-assignment-service:
+  am-role-assignment-service:
     build:
       context: .
-    image: hmcts/role-assignment-service
-    container_name: role-assignment-service
+    image: hmcts/am-role-assignment-service
+    container_name: am-role-assignment-service
     environment:
       - ROLE_ASSIGNMENT_DB_HOST=role_assignment
       - ROLE_ASSIGNMENT_DB_PORT=5451
@@ -18,17 +18,17 @@ services:
       - IDAM_USER_URL
       - IDAM_S2S_URL
       - AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY
-      - REFORM_SERVICE_NAME=role-assignment-service
+      - REFORM_SERVICE_NAME=am-role-assignment-service
       - REFORM_TEAM=am
       - REFORM_ENVIRONMENT=local
     ports:
       - $SERVER_PORT:$SERVER_PORT
     depends_on:
-      - role-assignment-database
+      - am-role-assignment-database
     links:
-      - role-assignment-database
+      - am-role-assignment-database
 
-  role-assignment-database:
+  am-role-assignment-database:
     build:
       context: docker/database
     healthcheck:
@@ -42,6 +42,6 @@ services:
     ports:
       - 5451:5432
     volumes:
-      - role-assignment-database-data:/var/lib/postgresql/role-assignment/data
+      - am-role-assignment-database-data:/var/lib/postgresql/am-role-assignment/data
 volumes:
-  role-assignment-database-data:
+  am-role-assignment-database-data:
