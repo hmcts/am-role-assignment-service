@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import static org.springframework.http.ResponseEntity.ok;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +25,6 @@ public class WelcomeController {
      *
      * @return Welcome message from the service.
      */
-    @GetMapping("/")
-    public ResponseEntity<String> welcome() {
-        return ok("Welcome to Role Assignment Service Controller");
-    }
 
     @GetMapping(value = "/swagger")
     public String index() {
