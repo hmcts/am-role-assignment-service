@@ -2,6 +2,8 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
 import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 import java.nio.charset.Charset;
@@ -17,6 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -45,10 +49,11 @@ public class WelcomeControllerIntegrationTest {
 
     @Test
     public void welComeAPITest() throws Exception {
-        logger.info("\n\nWelcomeControllerIntegrationTest : Inside  Welcome API Test method...{}", url);
-        /* final MvcResult result = mockMvc.perform(get(url).contentType(JSON_CONTENT_TYPE))
-            .andExpect(status().is(200))
-            .andReturn();*/
-        assertEquals("Assert for data", 200, 200);
+        logger.info(" WelcomeControllerIntegrationTest : Inside  Welcome API Test method...{}", url);
+        final MvcResult result = mockMvc.perform(get(url).contentType(JSON_CONTENT_TYPE))
+                                        .andExpect(status().is(200))
+                                        .andReturn();
+        assertEquals(
+            "Service is unavailable:", result.getResponse().getStatus(), 200);
     }
 }

@@ -2,22 +2,61 @@
   "_guid_": "S-000",
   "title": "must access Role Assignment API",
   "_extends_": "F-000_Test_Data_Base",
-
   "specs": [
     "an active caseworker profile",
     "is to be made on behalf of Role Assignment API"
   ],
-
   "request": {
     "headers": {
       "Content-Type": "application/json"
     }
   },
-
   "expectedResponse": {
-    "_extends_": "Common_200_Response",
+    "responseCode": 200,
+    "responseMessage": "OK",
+    "headers": {
+      "Content-Language": "[[ANYTHING_PRESENT]]",
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "[[ANYTHING_PRESENT]]",
+      "Date": "[[ANYTHING_PRESENT]]"
+    },
     "body": {
-      "__plainTextValue__" : "Welcome to Role Assignment Service Controller"
+      "status": "UP",
+      "components": {
+        "discoveryComposite": {
+          "description": "Discovery Client not initialized",
+          "status": "UNKNOWN",
+          "components": {
+            "discoveryClient": {
+              "description": "Discovery Client not initialized",
+              "status": "UNKNOWN"
+            }
+          }
+        },
+        "diskSpace": {
+          "status": "UP",
+          "details": {
+            "total": "[[ANYTHING_PRESENT]]",
+            "free": "[[ANYTHING_PRESENT]]",
+            "threshold": "[[ANYTHING_PRESENT]]"
+          }
+        },
+        "hystrix": {
+          "status": "UP"
+        },
+        "liveness": {
+          "status": "UP"
+        },
+        "ping": {
+          "status": "UP"
+        },
+        "refreshScope": {
+          "status": "UP"
+        },
+        "serviceAuth": {
+          "status": "UP"
+        }
+      }
     }
   }
 }

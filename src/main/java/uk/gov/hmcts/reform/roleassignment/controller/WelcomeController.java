@@ -9,22 +9,8 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 
-/**
- * Default endpoints per application.
- */
-
 @RestController
 public class WelcomeController {
-
-    /**
-     * Root GET endpoint.
-     *
-     * <p>Azure application service has a hidden feature of making requests to root endpoint when
-     * "Always On" is turned on.
-     * This is the endpoint to deal with that and therefore silence the unnecessary 404s as a response code.
-     *
-     * @return Welcome message from the service.
-     */
 
     @GetMapping(value = "/swagger")
     public String index() {
