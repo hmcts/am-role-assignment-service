@@ -31,4 +31,9 @@ public class WelcomeController {
 
         return null;
     }
+
+    @GetMapping(value = "/welcome")
+    public String welcome() {
+        return "welcome to role assignment service";
+    }
 }
