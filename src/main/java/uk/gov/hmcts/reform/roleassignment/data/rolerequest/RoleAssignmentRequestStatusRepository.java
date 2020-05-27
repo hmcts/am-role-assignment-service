@@ -1,4 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.data.rolerequest;
 
-public interface RoleAssignmentRequestStatusRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface RoleAssignmentRequestStatusRepository extends CrudRepository<RoleAssignmentRequestStatus, Long> {
 }

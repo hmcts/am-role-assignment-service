@@ -17,7 +17,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoleAssignment {
-    public String id;
+    public Long id;
     public ActorIdType actorIdType;
     public String actorId;
     public RoleType roleType;
