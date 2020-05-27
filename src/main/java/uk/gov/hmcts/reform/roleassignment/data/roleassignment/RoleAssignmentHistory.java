@@ -19,8 +19,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -81,4 +84,8 @@ public class RoleAssignmentHistory {
     @Column(name = "attributes", nullable = false)
     @Convert(converter = JSONBConverter.class)
     private Map<String, String> attributes;
+
+    @OneToMany(mappedBy = "roleAssignmentHistory")
+    @OrderColumn(name = "sequence")
+    private List<RoleAssignmentHistoryStatus> roleAssignmentHistoryStatus;
 }

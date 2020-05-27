@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 @Getter
@@ -38,4 +39,6 @@ public class RoleAssignmentRequestStatus {
     @Column(name = "sequence", nullable = false)
     private int sequence;
 
+    @ManyToOne
+    private RoleAssignmentRequest roleAssignmentRequest;
 }

@@ -14,10 +14,7 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
@@ -69,4 +66,5 @@ public class RoleAssignment {
     @Column(name = "attributes", nullable = false)
     @Convert(converter = JSONBConverter.class)
     private Map<String, String> attributes;
+
 }
