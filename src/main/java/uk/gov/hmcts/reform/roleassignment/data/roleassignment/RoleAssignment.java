@@ -64,7 +64,7 @@ public class RoleAssignment {
     private LocalDateTime created;
 
     @Column(name = "attributes", nullable = false)
-    @Convert(converter = JSONBConverter.class)
+    @Convert(converter = JsonBConverter.class)
     private Map<String, String> attributes;
 
 }

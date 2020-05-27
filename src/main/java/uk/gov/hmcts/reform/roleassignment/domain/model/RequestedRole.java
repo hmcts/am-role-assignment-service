@@ -14,7 +14,7 @@ public class RequestedRole {
 
     // Fields for the role assignment status record
     public Status status;
-    public String log = "";
+    public String log;
 
 
     public void approve(String message) {

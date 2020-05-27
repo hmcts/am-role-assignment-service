@@ -82,7 +82,7 @@ public class RoleAssignmentHistory {
     private LocalDateTime lastUpdateTime;
 
     @Column(name = "attributes", nullable = false)
-    @Convert(converter = JSONBConverter.class)
+    @Convert(converter = JsonBConverter.class)
     private Map<String, String> attributes;
 
     @OneToMany(mappedBy = "roleAssignmentHistory")
