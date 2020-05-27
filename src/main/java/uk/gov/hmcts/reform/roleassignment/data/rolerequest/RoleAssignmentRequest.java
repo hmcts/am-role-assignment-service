@@ -5,16 +5,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.JSONBConverter;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -23,7 +17,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.UUID;
 
 @Getter

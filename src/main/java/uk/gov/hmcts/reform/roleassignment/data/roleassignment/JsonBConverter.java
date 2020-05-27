@@ -9,7 +9,7 @@ import javax.persistence.Converter;
 import java.io.IOException;
 
 @Converter(autoApply = true)
-public class JSONBConverter implements AttributeConverter<JsonNode, String> {
+public class JsonBConverter implements AttributeConverter<JsonNode, String> {
     private static ObjectMapper mapper = new ObjectMapper();
 
     static {
