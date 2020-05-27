@@ -251,6 +251,13 @@ dependencies {
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   compile group: 'org.json', name: 'json', version: '20200518'
 
+  // drools engine dependency
+  compile group: 'org.drools', name: 'drools-core', version: '7.37.0.Final'
+  compile group: 'org.drools', name: 'drools-compiler', version: '7.37.0.Final'
+  compile group: 'org.drools', name: 'drools-decisiontables', version: '7.37.0.Final'
+  compile group: 'org.kie', name: 'kie-ci', version: '7.37.0.Final'
+
+
   //Added for Spring Security Implementation
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBoot
 
