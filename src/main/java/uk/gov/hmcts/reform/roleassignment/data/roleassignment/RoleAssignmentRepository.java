@@ -1,4 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
 
-public interface RoleAssignmentRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RoleAssignmentRepository extends JpaRepository<RoleAssignment, Long> {
 }
