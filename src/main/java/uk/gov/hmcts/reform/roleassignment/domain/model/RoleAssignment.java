@@ -1,33 +1,62 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+
 import java.time.LocalDateTime;
 import java.util.Map;
 
-public abstract class RoleAssignment
-{
-	public enum ActorIdType
-	{
-		IDAM_USER_ID
-	}
-
-	public enum RoleType
-	{
-		ORGANISATIONAL_ROLE, CASE_ROLE, IDAM_ROLE
-	}
-
-	public enum GrantType
-	{
-		SEARCH, STANDARD, SPECIFIC, CHALLENGED
-	}
-
-	public ActorIdType actorIdType = ActorIdType.IDAM_USER_ID;
-	public String actorId;
-	public RoleType roleType;
-	public String roleName;
-	public Classification classification;
-	public GrantType grantType;
-	public boolean readOnly;
-	public LocalDateTime begin;
-	public LocalDateTime end;
-	public Map<String, String> attributes;
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class RoleAssignment {
+    public Long id;
+    public ActorIdType actorIdType;
+    public String actorId;
+    public RoleType roleType;
+    public String roleName;
+    public Classification classification;
+    public GrantType grantType;
+    public boolean readOnly;
+    public LocalDateTime beginTime;
+    public LocalDateTime endTime;
+    public LocalDateTime created;
+    public Map<String, String> attributes;
 }
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class RoleAssignment {
+    public Long id;
+    public ActorIdType actorIdType;
+    public String actorId;
+    public RoleType roleType;
+    public String roleName;
+    public Classification classification;
+    public GrantType grantType;
+    public boolean readOnly;
+    public LocalDateTime beginTime;
+    public LocalDateTime endTime;
+    public LocalDateTime created;
+    public Map<String, String> attributes;

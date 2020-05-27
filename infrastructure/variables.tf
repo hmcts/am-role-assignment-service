@@ -53,6 +53,12 @@ variable "enable_ase" {
   default = false
 }
 
+variable "authorised-services" {
+  type    = "string"
+  default = "ccd_gw"
+}
+
+
 variable "deployment_namespace" {}
 
 
