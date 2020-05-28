@@ -17,16 +17,18 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -89,8 +91,12 @@ public class RoleAssignmentHistory {
 
     @OneToMany(mappedBy = "roleAssignmentHistory")
     @OrderColumn(name = "sequence")
-    private List<RoleAssignmentHistoryStatus> roleAssignmentHistoryStatus;
+    private Set<RoleAssignmentHistoryStatus> roleAssignmentHistoryStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id")
     private RoleAssignmentRequest roleAssignmentRequest;
+
+    @Column(name = "request_id", nullable = false)
+    private Long requestId;
 }

@@ -12,11 +12,7 @@ management:
         include: 'health'
 
 #If you use a database then uncomment below lines and update db properties accordingly
-spring:
-  application:
-    name: Role Assignment Service
-  jackson:
-    default-property-inclusion: NON_NULL
+
 security:
   anonymousPaths:
     - "/"
@@ -34,6 +30,34 @@ security:
     - "/favicon.ico"
   authorisedRoles:
   authorisedServices: ${ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES:ccd_gw}
+
+spring:
+  application:
+    name: Role Assignment Service
+  jackson:
+    default-property-inclusion: NON_NULL
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+           non_contextual_creation: true
+  liquibase:
+    enabled: ${ENABLE_DB_MIGRATE:true}
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5451}/${POSTGRES_NAME:role_assignment}${POSTGRES_CONNECTION_OPTIONS:}
+    username: ${POSTGRES_USERNAME:am}
+    password: ${POSTGRES_PASSWORD:am}
+    properties:
+      charSet: UTFh-8
+
+
+
 
 ### dependency configuration
 auth.provider.service.client.baseUrl: ${IDAM_S2S_URL:http://localhost:4502}

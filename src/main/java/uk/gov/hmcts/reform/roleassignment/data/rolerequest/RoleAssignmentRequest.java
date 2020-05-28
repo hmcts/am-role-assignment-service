@@ -21,7 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -75,9 +75,9 @@ public class RoleAssignmentRequest {
 
     @OneToMany(mappedBy = "roleAssignmentRequest")
     @OrderColumn(name = "id")
-    private List<RoleAssignmentHistory> roleAssignmentHistory;
+    private Set<RoleAssignmentHistory> roleAssignmentHistory;
 
     @OneToMany(mappedBy = "roleAssignmentRequest")
     @OrderColumn(name = "sequence")
-    private List<RoleAssignmentRequestStatus> roleAssignmentRequestStatus;
+    private Set<RoleAssignmentRequestStatus> roleAssignmentRequestStatus;
 }
