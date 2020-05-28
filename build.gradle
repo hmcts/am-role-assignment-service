@@ -180,6 +180,7 @@ pitest {
 }
 
 
+/*
 sonarqube {
   properties {
     property "sonar.projectName", "am-role-assignment-service"
@@ -194,6 +195,7 @@ sonarqube {
 
 project.tasks['sonarqube'].dependsOn test, integration, jacocoTestReport
 project.tasks['sonarqube'].group = "Verification"
+*/
 
 dependencyUpdates.resolutionStrategy {
   componentSelection { rules ->
