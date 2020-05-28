@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.data.rolerequest;
 
 import lombok.Getter;
@@ -82,3 +83,4 @@ public class RoleAssignmentRequest {
     @OrderColumn(name = "sequence")
     private List<RoleAssignmentRequestStatus> roleAssignmentRequestStatus;
 }
+*/

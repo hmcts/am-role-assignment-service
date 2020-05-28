@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
 
 import lombok.Getter;
@@ -49,3 +50,4 @@ public class RoleAssignmentHistoryStatus {
     @ManyToOne
     private RoleAssignmentRequest roleAssignmentRequest;
 }
+*/

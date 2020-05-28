@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
 
 import lombok.Getter;
@@ -89,3 +90,4 @@ public class RoleAssignmentHistory {
     @OrderColumn(name = "sequence")
     private List<RoleAssignmentHistoryStatus> roleAssignmentHistoryStatus;
 }
+*/
