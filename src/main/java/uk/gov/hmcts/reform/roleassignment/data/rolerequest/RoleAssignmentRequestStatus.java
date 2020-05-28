@@ -41,9 +41,6 @@ public class RoleAssignmentRequestStatus {
     @Column(name = "sequence", nullable = false)
     private int sequence;
 
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_id")
+    @ManyToOne
     private RoleAssignmentRequest roleAssignmentRequest;
 }

@@ -73,11 +73,9 @@ public class RoleAssignmentRequest {
     @Column(name = "last_update_time", nullable = false)
     private LocalDateTime lastUpdateTime;
 
-    @OneToMany(mappedBy = "roleAssignmentRequest")
-    @OrderColumn(name = "id")
+    @OneToMany
     private Set<RoleAssignmentHistory> roleAssignmentHistory;
 
-    @OneToMany(mappedBy = "roleAssignmentRequest")
-    @OrderColumn(name = "sequence")
+    @OneToMany
     private Set<RoleAssignmentRequestStatus> roleAssignmentRequestStatus;
 }
