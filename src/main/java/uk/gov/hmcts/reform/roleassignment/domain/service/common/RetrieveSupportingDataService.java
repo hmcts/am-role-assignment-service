@@ -14,6 +14,8 @@ public class RetrieveSupportingDataService {
 
     private Map<String, List<ExistingRole>> EXISTING_ROLES_BY_ACTOR_ID = new HashMap<>();
 
+    //Fetch all existing roles from  database
+
     public Collection<ExistingRole> getRoleAssignmentsForActor(String actorId)
     {
         List<ExistingRole> existingRolesForActor = EXISTING_ROLES_BY_ACTOR_ID.get(actorId);

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
-@Data
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
