@@ -16,8 +16,8 @@ locals {
   vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
 
   // Shared Resource Group
-  previewResourceGroup = "${var.raw_product}-shared-aat"
-  nonPreviewResourceGroup = "${var.raw_product}-shared-${var.env}"
+  previewResourceGroup = "${var.raw_product}-shared-infrastructure-aat"
+  nonPreviewResourceGroup = "${var.raw_product}-shared-infrastructure-${var.env}"
   sharedResourceGroup = "${(var.env == "preview" || var.env == "spreview") ? local.previewResourceGroup : local.nonPreviewResourceGroup}"
 
   sharedAppServicePlan = "${var.raw_product}-${var.env}"
