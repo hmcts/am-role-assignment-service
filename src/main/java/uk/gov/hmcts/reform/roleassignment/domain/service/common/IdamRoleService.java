@@ -20,6 +20,9 @@ public class IdamRoleService {
     public void getUserId(){
         securityUtils.getUserId();
     }
+    public void getUserRole(){
+        securityUtils.getUserRolesHeader();
+    }
 
 
 
