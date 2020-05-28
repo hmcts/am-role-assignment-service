@@ -46,6 +46,5 @@ public class RoleAssignmentHistoryStatus {
     @ManyToOne
     private RoleAssignmentHistory roleAssignmentHistory;
 
-    @ManyToOne
-    private RoleAssignmentRequest roleAssignmentRequest;
+
 }

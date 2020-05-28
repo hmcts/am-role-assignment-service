@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistory;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistoryStatus;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -34,8 +35,6 @@ public class RoleAssignmentRequest {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "role_assignment_id", nullable = false)
-    private Long roleAssignmentId;
 
     @Column(name = "correlation_id", nullable = false)
     private String correlationId;
@@ -75,8 +74,8 @@ public class RoleAssignmentRequest {
     private LocalDateTime lastUpdateTime;
 
     @OneToMany(mappedBy = "roleAssignmentRequest")
-    @OrderColumn(name = "sequence")
-    private List<RoleAssignmentHistoryStatus> roleAssignmentHistoryStatus;
+    @OrderColumn(name = "id")
+    private List<RoleAssignmentHistory> roleAssignmentHistory;
 
     @OneToMany(mappedBy = "roleAssignmentRequest")
     @OrderColumn(name = "sequence")

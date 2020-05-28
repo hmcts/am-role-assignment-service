@@ -10,7 +10,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestedRole {
+public class RequestedRole extends RoleAssignment{
 
     // Fields for the role assignment status record
     public Status status;
@@ -41,44 +41,3 @@ public class RequestedRole {
         log += message + "\n";
     }
 }
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class RequestedRole {
-
-    // Fields for the role assignment status record
-    public Status status;
-    public String log;
-
-
-    public void approve(String message) {
-        if (!status.equals(Status.REJECTED)) {
-            status = Status.APPROVED;
-            log(message);
-        }
-    }
-
-    public boolean isApproved() {
-        return status.equals(Status.APPROVED);
-    }
-
-    public void reject(String message) {
-        status = Status.REJECTED;
-        log(message);
-    }
-
-    public boolean isRejected() {
-        return status.equals(Status.REJECTED);
-    }
-
-    public void log(String message) {
-        log += message + "\n";
-    }

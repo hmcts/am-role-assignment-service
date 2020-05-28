@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import uk.gov.hmcts.reform.roleassignment.data.rolerequest.RoleAssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -19,6 +20,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
@@ -88,4 +90,7 @@ public class RoleAssignmentHistory {
     @OneToMany(mappedBy = "roleAssignmentHistory")
     @OrderColumn(name = "sequence")
     private List<RoleAssignmentHistoryStatus> roleAssignmentHistoryStatus;
+
+    @ManyToOne
+    private RoleAssignmentRequest roleAssignmentRequest;
 }
