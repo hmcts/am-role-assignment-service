@@ -33,13 +33,14 @@ security:
     - "/error"
     - "/favicon.ico"
   authorisedRoles:
+  authorisedServices: ${ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES:ccd_gw}
 
 ### dependency configuration
 auth.provider.service.client.baseUrl: ${IDAM_S2S_URL:http://localhost:4502}
 idam:
   s2s-auth:
     # AAAAAAAAAAAAAAAA
-    totp_secret: ${ROLE_ASSIGNMENT_API_IDAM_KEY:DummyKey}
+    totp_secret: ${AM_ROLE_ASSIGNMENT_SERVICE_SECRET:DummyKey}
     microservice: am-role-assignment-service
     url: ${IDAM_S2S_URL:http://localhost:4502}
 
