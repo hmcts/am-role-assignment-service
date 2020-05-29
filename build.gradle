@@ -182,18 +182,18 @@ pitest {
 
 sonarqube {
   properties {
-    property "sonar.projectName", "am-role-assignment-service"
-    property "sonar.projectKey", "am-role-assignment-service"
+    property "sonar.projectName", "tempered:am-role-assignment-service"
+    property "sonar.projectKey", "tempered:am-role-assignment-service"
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/roleassignment/*Application.java," + "src/main/java/uk/gov/hmcts/reform/roleassignment/util/*Swagger2SpringBoot.java," + "src/main/java/uk/gov/hmcts/reform/roleassignment/controller/advice/*ErrorConstants.java," + "src/main/java/uk/gov/hmcts/reform/roleassignment/controller/advice/exception/**," + "src/main/java/uk/gov/hmcts/reform/roleassignment/configuration/**," + "src/main/java/uk/gov/hmcts/reform/roleassignment/model/enums/**," + "src/main/java/uk/gov/hmcts/reform/roleassignment/apihelper/**"
-    property "sonar.junit.reportPaths", "${project.buildDir}/test-results/junit-platform"
+    //property "sonar.junit.reportPaths", "${project.buildDir}/test-results/junit-platform"
   }
 }
 
-project.tasks['sonarqube'].dependsOn test, integration, jacocoTestReport
-project.tasks['sonarqube'].group = "Verification"
+/*project.tasks['sonarqube'].dependsOn test, integration, jacocoTestReport
+project.tasks['sonarqube'].group = "Verification"*/
 
 dependencyUpdates.resolutionStrategy {
   componentSelection { rules ->
@@ -248,6 +248,7 @@ dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot
+
   compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: '0.0.5'
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   compile group: 'org.json', name: 'json', version: '20200518'

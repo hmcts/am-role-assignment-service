@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
 
 import lombok.Getter;
@@ -96,3 +97,4 @@ public class RoleAssignmentHistory {
 //    @Column(name = "request_id", nullable = false)
 //    private Long requestId;
 }
+*/

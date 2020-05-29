@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.data.rolerequest;
 
 import lombok.Getter;
@@ -77,3 +78,4 @@ public class RoleAssignmentRequest {
     @OneToMany
     private Set<RoleAssignmentRequestStatus> roleAssignmentRequestStatus;
 }
+*/
