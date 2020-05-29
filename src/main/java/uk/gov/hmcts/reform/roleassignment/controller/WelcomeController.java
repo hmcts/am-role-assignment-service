@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import static org.springframework.http.ResponseEntity.ok;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,26 +9,8 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 
-/**
- * Default endpoints per application.
- */
-
 @RestController
 public class WelcomeController {
-
-    /**
-     * Root GET endpoint.
-     *
-     * <p>Azure application service has a hidden feature of making requests to root endpoint when
-     * "Always On" is turned on.
-     * This is the endpoint to deal with that and therefore silence the unnecessary 404s as a response code.
-     *
-     * @return Welcome message from the service.
-     */
-    @GetMapping("/")
-    public ResponseEntity<String> welcome() {
-        return ok("Welcome to Role Assignment Service Controller");
-    }
 
     @GetMapping(value = "/swagger")
     public String index() {
@@ -50,5 +30,10 @@ public class WelcomeController {
         }
 
         return null;
+    }
+
+    @GetMapping(value = "/welcome")
+    public String welcome() {
+        return "welcome to role assignment service";
     }
 }
