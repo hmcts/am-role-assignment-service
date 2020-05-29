@@ -3,25 +3,8 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
   <changeSet id="1" author="nitin.sahu@hmcts.net">
-    <sql>CREATE TYPE request_status_enum AS ENUM ('CREATED', 'REJECTED', 'APPROVED')</sql>
-    <createTable tableName="role_assignment_request_status">
-      <column name="role_assignment_request_id" type="bigserial">
-        <constraints nullable="false" primaryKey="true"/>
-      </column>
-      <column name="log" type="varchar(255)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="status" type="request_status_enum">
-        <constraints nullable="false" />
-      </column>
-      <column name="sequence" type="integer">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
-
-  <changeSet id="2" author="nitin.sahu@hmcts.net">
     <sql>CREATE TYPE request_type_enum AS ENUM  ('CREATE', 'DELETE')</sql>
+    <createSequence sequenceName="role_assignment_request_id_sequence"></createSequence>
     <createTable tableName="role_assignment_request">
       <column name="role_assignment_request_id" type="bigserial">
         <constraints nullable="false" primaryKey="true"/>
@@ -29,13 +12,13 @@
       <column name="correlation_id" type="varchar(255)">
         <constraints nullable="false"/>
       </column>
-      <column name="ClientID" type="bigserial">
+      <column name="ClientID" type="varchar(255)">
         <constraints nullable="false"/>
       </column>
-      <column name="authenticated_user_id" type="bigserial">
+      <column name="authenticated_user_id" type="uuid">
         <constraints nullable="false"/>
       </column>
-      <column name="requestor_id" type="bigserial">
+      <column name="requestor_id" type="uuid">
         <constraints nullable="false"/>
       </column>
       <column name="request_type" type="request_type_enum">
@@ -56,22 +39,26 @@
       <column name="role_assignment_id" type="varchar(255)">
         <constraints nullable="false"/>
       </column>
-      <column name="created" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+      <column name="last_updated" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created" type="timestamp">
         <constraints nullable="false"/>
       </column>
     </createTable>
   </changeSet>
 
-  <changeSet id="3" author="conor.halpin@hmcts.net">
-  <sql>CREATE TYPE assignment_status_enum AS ENUM ('CREATED', 'REJECTED', 'APPROVED','LIVE','EXPIRED','DELETED')</sql>
-    <createTable tableName="role_assignment_history_status">
-      <column name="role_assignment_id" type="bigserial">
+  <changeSet id="2" author="nitin.sahu@hmcts.net">
+    <sql>CREATE TYPE request_status_enum AS ENUM ('CREATED', 'REJECTED', 'APPROVED')</sql>
+    <createSequence sequenceName="role_assignment_request_status_id_sequence"></createSequence>
+    <createTable tableName="role_assignment_request_status">
+      <column name="role_assignment_request_status_id" type="bigserial">
         <constraints nullable="false" primaryKey="true"/>
       </column>
       <column name="role_assignment_request_id" type="bigserial">
         <constraints nullable="false"/>
       </column>
-      <column name="status" type="assignment_status_enum">
+      <column name="status" type="request_status_enum">
         <constraints nullable="false" />
       </column>
       <column name="log" type="varchar(255)">
@@ -83,11 +70,12 @@
     </createTable>
   </changeSet>
 
-  <changeSet id="4" author="conor.halpin@hmcts.net">
+  <changeSet id="3" author="conor.halpin@hmcts.net">
     <sql>CREATE TYPE actor_id_type_enum AS ENUM ('IDAM_USER_ID', 'ELINKS_ID', 'CASE_PARTY_ID')</sql>
     <sql>CREATE TYPE role_type_id_enum AS ENUM ('CASE_ROLE', 'ORGANISATION_ROLE')</sql>
     <sql>CREATE TYPE classification_enum AS ENUM ('PUBLIC', 'PRIVATE', 'RESTRICTED')</sql>
     <sql>CREATE TYPE grant_type_enum AS ENUM ('SEARCH', 'SPECIFIC', 'STANDARD', 'CHALLENGED')</sql>
+    <createSequence sequenceName="role_assignment_id_sequence"></createSequence>
     <createTable tableName="role_assignment_history">
       <column name="role_assignment_id" type="bigserial">
         <constraints nullable="false" primaryKey="true"/>
@@ -110,13 +98,10 @@
       <column name="grant_type_id" type="grant_type_enum">
         <constraints nullable="false"/>
       </column>
-      <column name="access_mask" type="varchar(255)">
-        <constraints nullable="false"/>
-      </column>
       <column name="read_only" type="bit">
         <constraints nullable="false"/>
       </column>
-      <column name="begin_type" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+      <column name="begin_time" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
         <constraints nullable="false"/>
       </column>
       <column name="end_time" type="timestamp">
@@ -143,7 +128,7 @@
     </createTable>
   </changeSet>
 
-  <changeSet id="5" author="conor.halpin@hmcts.net">
+  <changeSet id="4" author="conor.halpin@hmcts.net">
     <createTable tableName="role_assignment">
       <column name="role_assignment_id" type="bigserial">
         <constraints nullable="false" primaryKey="true"/>
@@ -166,9 +151,6 @@
       <column name="grant_type_id" type="grant_type_enum">
         <constraints nullable="false"/>
       </column>
-      <column name="access_mask" type="varchar(255)">
-        <constraints nullable="false"/>
-      </column>
       <column name="read_only" type="bit">
         <constraints nullable="false"/>
       </column>
@@ -183,6 +165,28 @@
       </column>
       <column name="created" type="timestamp">
         <constraints nullable="true"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet id="5" author="conor.halpin@hmcts.net">
+    <sql>CREATE TYPE assignment_status_enum AS ENUM ('CREATED', 'REJECTED', 'APPROVED','LIVE','EXPIRED','DELETED')</sql>
+    <createSequence sequenceName="role_assignment_history_status_id_sequence"></createSequence>
+    <createTable tableName="role_assignment_history_status">
+      <column name="role_assignment_id" type="bigserial">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="role_assignment_request_id" type="bigserial">
+        <constraints nullable="false"/>
+      </column>
+      <column name="status" type="assignment_status_enum">
+        <constraints nullable="false" />
+      </column>
+      <column name="log" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="sequence" type="integer">
+        <constraints nullable="false"/>
       </column>
     </createTable>
   </changeSet>
