@@ -4,6 +4,7 @@
 
   <changeSet id="1" author="nitin.sahu@hmcts.net">
     <sql>CREATE TYPE request_type_enum AS ENUM  ('CREATE', 'DELETE')</sql>
+    <sql>CREATE TYPE request_status_enum AS ENUM ('CREATED', 'REJECTED', 'APPROVED')</sql>
     <createSequence sequenceName="role_assignment_request_id_sequence"></createSequence>
     <createTable tableName="role_assignment_request">
       <column name="role_assignment_request_id" type="bigserial">
@@ -49,7 +50,6 @@
   </changeSet>
 
   <changeSet id="2" author="nitin.sahu@hmcts.net">
-    <sql>CREATE TYPE request_status_enum AS ENUM ('CREATED', 'REJECTED', 'APPROVED')</sql>
     <createSequence sequenceName="role_assignment_request_status_id_sequence"></createSequence>
     <createTable tableName="role_assignment_request_status">
       <column name="role_assignment_request_status_id" type="bigserial">
@@ -75,6 +75,7 @@
     <sql>CREATE TYPE role_type_id_enum AS ENUM ('CASE_ROLE', 'ORGANISATION_ROLE')</sql>
     <sql>CREATE TYPE classification_enum AS ENUM ('PUBLIC', 'PRIVATE', 'RESTRICTED')</sql>
     <sql>CREATE TYPE grant_type_enum AS ENUM ('SEARCH', 'SPECIFIC', 'STANDARD', 'CHALLENGED')</sql>
+    <sql>CREATE TYPE assignment_status_enum AS ENUM ('CREATED', 'REJECTED', 'APPROVED','LIVE','EXPIRED','DELETED')</sql>
     <createSequence sequenceName="role_assignment_id_sequence"></createSequence>
     <createTable tableName="role_assignment_history">
       <column name="role_assignment_id" type="bigserial">
@@ -170,7 +171,6 @@
   </changeSet>
 
   <changeSet id="5" author="conor.halpin@hmcts.net">
-    <sql>CREATE TYPE assignment_status_enum AS ENUM ('CREATED', 'REJECTED', 'APPROVED','LIVE','EXPIRED','DELETED')</sql>
     <createSequence sequenceName="role_assignment_history_status_id_sequence"></createSequence>
     <createTable tableName="role_assignment_history_status">
       <column name="role_assignment_id" type="bigserial">
