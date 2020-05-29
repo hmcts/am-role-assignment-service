@@ -7,9 +7,9 @@ services:
     image: hmcts/am-role-assignment-service
     container_name: am-role-assignment-service
     environment:
-      - ROLE_ASSIGNMENT_DB_HOST=localhost
+      - ROLE_ASSIGNMENT_DB_HOST=am-role-assignment-database
       - ROLE_ASSIGNMENT_DB_NAME=role_assignment
-      - ROLE_ASSIGNMENT_DB_PORT=5451
+      - ROLE_ASSIGNMENT_DB_PORT=5432
       - ROLE_ASSIGNMENT_DB_USERNAME=am
       - ROLE_ASSIGNMENT_DB_PASSWORD=am
       - ROLE_ASSIGNMENT_IDAM_KEY
