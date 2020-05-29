@@ -44,7 +44,7 @@ security:
     - "/favicon.ico"
   authorisedRoles:
   authorisedServices: ${ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES:ccd_gw}
-
+  
 spring:
   cloud:
     discovery:
@@ -66,17 +66,12 @@ spring:
   liquibase:
     enabled: ${ENABLE_DB_MIGRATE:true}
     change-log: classpath:/db/changelog/db.changelog-master.xml
-
-
   datasource:
     url: jdbc:postgresql://localhost:5451/role_assignment
     username: ${ROLE_ASSIGNMENT_DB_USERNAME:am}
     password: ${ROLE_ASSIGNMENT_DB_PASSWORD:am}
     properties:
       charSet: UTFh-8
-
-
-
 
 ### dependency configuration
 auth.provider.service.client.baseUrl: ${IDAM_S2S_URL:http://localhost:4502}
