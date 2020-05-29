@@ -243,13 +243,21 @@ repositories {
 
 
 dependencies {
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-json'
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBoot
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot
   compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: '0.0.5'
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
-  compile group: 'org.json', name: 'json', version: '20190722'
+  compile group: 'org.json', name: 'json', version: '20200518'
+
+  // drools engine dependency
+  compile group: 'org.drools', name: 'drools-core', version: '7.37.0.Final'
+  compile group: 'org.drools', name: 'drools-compiler', version: '7.37.0.Final'
+  compile group: 'org.drools', name: 'drools-decisiontables', version: '7.37.0.Final'
+  compile group: 'org.kie', name: 'kie-ci', version: '7.37.0.Final'
+
 
   //Added for Spring Security Implementation
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBoot

@@ -2,21 +2,31 @@ server:
   port: ${PORT:4096}
 
 management:
+  health:
+    db:
+      enabled: true
+    defaults:
+      enabled: true
+    diskspace:
+      enabled: true
   endpoint:
     health:
+      enabled: true
+      cache:
+        time-to-live: 5s
       show-details: "always"
+  security:
+    enabled: false
   endpoints:
+    health:
+      sensitive: false
     web:
       base-path: /
       exposure:
         include: 'health'
 
 #If you use a database then uncomment below lines and update db properties accordingly
-spring:
-  application:
-    name: Role Assignment Service
-  jackson:
-    default-property-inclusion: NON_NULL
+
 security:
   anonymousPaths:
     - "/"
@@ -33,13 +43,47 @@ security:
     - "/error"
     - "/favicon.ico"
   authorisedRoles:
+  authorisedServices: ${ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES:ccd_gw}
+
+spring:
+  cloud:
+    discovery:
+      client:
+        composite-indicator:
+          enabled: false
+  application:
+    name: Role Assignment Service
+  jackson:
+    default-property-inclusion: NON_NULL
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+           non_contextual_creation: true
+  liquibase:
+    enabled: ${ENABLE_DB_MIGRATE:true}
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5451/role_assignment
+    username: ${ROLE_ASSIGNMENT_DB_USERNAME:am}
+    password: ${ROLE_ASSIGNMENT_DB_PASSWORD:am}
+    properties:
+      charSet: UTFh-8
+
+
+
 
 ### dependency configuration
 auth.provider.service.client.baseUrl: ${IDAM_S2S_URL:http://localhost:4502}
 idam:
   s2s-auth:
     # AAAAAAAAAAAAAAAA
-    totp_secret: ${ROLE_ASSIGNMENT_API_IDAM_KEY:DummyKey}
+    totp_secret: ${AM_ROLE_ASSIGNMENT_SERVICE_SECRET:DummyKey}
     microservice: am-role-assignment-service
     url: ${IDAM_S2S_URL:http://localhost:4502}
 
@@ -51,19 +95,6 @@ integrationTest:
   api:
     url: "/"
 
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
-  allow:
-    headers:
-      - authorization
-      - serviceauthorization
-      - user-roles
-      - user-id
 
 swaggerUrl: ${ROLE_ASSIGNMENT_SWAGGER_AM_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
