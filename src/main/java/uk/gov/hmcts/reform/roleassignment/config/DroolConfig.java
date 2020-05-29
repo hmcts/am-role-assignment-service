@@ -17,6 +17,7 @@ public class DroolConfig {
     public KieContainer kieContainer() throws IOException {
         return  kieServices.getKieClasspathContainer();
     }
+
     @Bean
     public StatelessKieSession kieSession() throws IOException {
         return kieContainer().newStatelessKieSession("role-assignment-validation-session");
