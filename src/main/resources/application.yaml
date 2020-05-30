@@ -2,10 +2,24 @@ server:
   port: ${PORT:4096}
 
 management:
+  health:
+    db:
+      enabled: true
+    defaults:
+      enabled: true
+    diskspace:
+      enabled: true
   endpoint:
     health:
+      enabled: true
+      cache:
+        time-to-live: 5s
       show-details: "always"
+  security:
+    enabled: false
   endpoints:
+    health:
+      sensitive: false
     web:
       base-path: /
       exposure:
