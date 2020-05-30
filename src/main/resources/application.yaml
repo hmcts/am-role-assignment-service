@@ -46,11 +46,6 @@ security:
   authorisedServices: ${ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES:ccd_gw}
 
 spring:
-  cloud:
-    discovery:
-      client:
-        composite-indicator:
-          enabled: false
   application:
     name: Role Assignment Service
   jackson:
@@ -69,9 +64,9 @@ spring:
 
 
   datasource:
-    url: jdbc:postgresql://localhost:5451/role_assignment
-    username: ${ROLE_ASSIGNMENT_DB_USERNAME:am}
-    password: ${ROLE_ASSIGNMENT_DB_PASSWORD:am}
+    url: jdbc:postgresql://${ROLE_ASSIGNMENT_DB_HOST:localhost}:${ROLE_ASSIGNMENT_DB_PORT:5451}/${ROLE_ASSIGNMENT_DB_NAME:role_assignment}${POSTGRES_CONNECTION_OPTIONS:}
+    username: ${POSTGRES_USERNAME:am}
+    password: ${POSTGRES_PASSWORD:am}
     properties:
       charSet: UTFh-8
 
