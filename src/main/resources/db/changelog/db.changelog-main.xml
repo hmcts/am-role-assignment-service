@@ -3,42 +3,36 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
   <changeSet id="1" author="nitin.sahu@hmcts.net">
-    <sql>CREATE TYPE request_type_enum AS ENUM  ('CREATE', 'DELETE')</sql>
-    <sql>CREATE TYPE request_status_enum AS ENUM ('CREATED', 'REJECTED', 'APPROVED')</sql>
-    <createSequence sequenceName="role_assignment_request_id_sequence"></createSequence>
     <createTable tableName="role_assignment_request">
-      <column name="role_assignment_request_id" type="bigserial">
+      <column name="id" type="uuid">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-      <column name="correlation_id" type="varchar(255)">
+      <column name="correlation_id" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="ClientID" type="varchar(255)">
+      <column name="client_id" type="text">
         <constraints nullable="false"/>
       </column>
       <column name="authenticated_user_id" type="uuid">
         <constraints nullable="false"/>
       </column>
-      <column name="requestor_id" type="uuid">
+      <column name="requester_id" type="uuid">
         <constraints nullable="false"/>
       </column>
-      <column name="request_type" type="request_type_enum">
+      <column name="request_type" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="status" type="request_status_enum">
+      <column name="status" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="process" type="varchar(255)">
-        <constraints nullable="false"/>
+      <column name="process" type="text">
+        <constraints nullable="true"/>
       </column>
-      <column name="reference" type="varchar(255)">
-        <constraints nullable="false"/>
+      <column name="reference" type="text">
+        <constraints nullable="true"/>
       </column>
-      <column name="replace_existing" type="bit">
-        <constraints nullable="false"/>
-      </column>
-      <column name="role_assignment_id" type="varchar(255)">
-        <constraints nullable="false"/>
+      <column name="replace_existing" type="boolean">
+        <constraints nullable="true"/>
       </column>
       <column name="last_updated" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
         <constraints nullable="false"/>
@@ -50,19 +44,18 @@
   </changeSet>
 
   <changeSet id="2" author="nitin.sahu@hmcts.net">
-    <createSequence sequenceName="role_assignment_request_status_id_sequence"></createSequence>
     <createTable tableName="role_assignment_request_status">
-      <column name="role_assignment_request_status_id" type="bigserial">
+      <column name="id" type="uuid">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-      <column name="role_assignment_request_id" type="bigserial">
-        <constraints nullable="false"/>
+      <column name="request_id" type="uuid">
+        <constraints nullable="false" foreignKeyName="fk_role_assignment_request_status_role_assignment_request" references="role_assignment_request(id)"/>
       </column>
-      <column name="status" type="request_status_enum">
+      <column name="status" type="text">
         <constraints nullable="false" />
       </column>
-      <column name="log" type="varchar(255)">
-        <constraints nullable="false"/>
+      <column name="log" type="text">
+        <constraints nullable="true"/>
       </column>
       <column name="sequence" type="integer">
         <constraints nullable="false"/>
@@ -71,36 +64,33 @@
   </changeSet>
 
   <changeSet id="3" author="conor.halpin@hmcts.net">
-    <sql>CREATE TYPE actor_id_type_enum AS ENUM ('IDAM_USER_ID', 'ELINKS_ID', 'CASE_PARTY_ID')</sql>
-    <sql>CREATE TYPE role_type_id_enum AS ENUM ('CASE_ROLE', 'ORGANISATION_ROLE')</sql>
-    <sql>CREATE TYPE classification_enum AS ENUM ('PUBLIC', 'PRIVATE', 'RESTRICTED')</sql>
-    <sql>CREATE TYPE grant_type_enum AS ENUM ('SEARCH', 'SPECIFIC', 'STANDARD', 'CHALLENGED')</sql>
-    <sql>CREATE TYPE assignment_status_enum AS ENUM ('CREATED', 'REJECTED', 'APPROVED','LIVE','EXPIRED','DELETED')</sql>
-    <createSequence sequenceName="role_assignment_id_sequence"></createSequence>
     <createTable tableName="role_assignment_history">
-      <column name="role_assignment_id" type="bigserial">
+      <column name="id" type="uuid">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-      <column name="actor_id_type" type="actor_id_type_enum">
+      <column name="request_id" type="uuid">
+        <constraints nullable="false" foreignKeyName="fk_role_assignment_history_role_assignment_request" references="role_assignment_request(id)"/>
+      </column>
+      <column name="actor_id_type" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="actor_id" type="bigserial">
+      <column name="actor_id" type="uuid">
         <constraints nullable="false"/>
       </column>
-      <column name="role_type_id" type="role_type_id_enum">
+      <column name="role_type" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="role_name" type="varchar(255)">
+      <column name="role_name" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="classification_id" type="classification_enum">
+      <column name="classification" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="grant_type_id" type="grant_type_enum">
+      <column name="grant_type" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="read_only" type="bit">
-        <constraints nullable="false"/>
+      <column name="read_only" type="boolean">
+        <constraints nullable="true"/>
       </column>
       <column name="begin_time" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
         <constraints nullable="false"/>
@@ -108,14 +98,14 @@
       <column name="end_time" type="timestamp">
         <constraints nullable="true"/>
       </column>
-      <column name="status" type="assignment_status_enum">
+      <column name="status" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="reference" type="varchar(255)">
-        <constraints nullable="false"/>
+      <column name="reference" type="text">
+        <constraints nullable="true"/>
       </column>
-      <column name="process" type="varchar(255)">
-        <constraints nullable="false"/>
+      <column name="process" type="text">
+        <constraints nullable="true"/>
       </column>
       <column name="attributes" type="jsonb">
         <constraints nullable="false"/>
@@ -130,29 +120,49 @@
   </changeSet>
 
   <changeSet id="4" author="conor.halpin@hmcts.net">
-    <createTable tableName="role_assignment">
-      <column name="role_assignment_id" type="bigserial">
+    <createTable tableName="role_assignment_history_status">
+      <column name="id" type="uuid">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-      <column name="actor_id_type" type="actor_id_type_enum">
+      <column name="role_assignment_id" type="uuid">
+        <constraints nullable="false" foreignKeyName="fk_role_assignment_history_status_role_assignment_history" references="role_assignment_history(id)"/>
+      </column>
+      <column name="status" type="text">
+        <constraints nullable="false" />
+      </column>
+      <column name="log" type="text">
+        <constraints nullable="true"/>
+      </column>
+      <column name="sequence" type="integer">
         <constraints nullable="false"/>
       </column>
-      <column name="actor_id" type="bigserial">
+    </createTable>
+  </changeSet>
+
+  <changeSet id="5" author="conor.halpin@hmcts.net">
+    <createTable tableName="role_assignment">
+      <column name="role_assignment_id" type="uuid">
+        <constraints nullable="false" primaryKey="true" foreignKeyName="fk_role_assignment_role_assignment_history" references="role_assignment_history(id)"/>
+      </column>
+      <column name="actor_id_type" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="role_type_id" type="role_type_id_enum">
+      <column name="actor_id" type="uuid">
         <constraints nullable="false"/>
       </column>
-      <column name="role_name" type="varchar(255)">
+      <column name="role_type" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="classification_id" type="classification_enum">
+      <column name="role_name" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="grant_type_id" type="grant_type_enum">
+      <column name="classification" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="read_only" type="bit">
+      <column name="grant_type" type="text">
+        <constraints nullable="false"/>
+      </column>
+      <column name="read_only" type="boolean">
         <constraints nullable="false"/>
       </column>
       <column name="begin_type" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
@@ -170,25 +180,5 @@
     </createTable>
   </changeSet>
 
-  <changeSet id="5" author="conor.halpin@hmcts.net">
-    <createSequence sequenceName="role_assignment_history_status_id_sequence"></createSequence>
-    <createTable tableName="role_assignment_history_status">
-      <column name="role_assignment_id" type="bigserial">
-        <constraints nullable="false" primaryKey="true"/>
-      </column>
-      <column name="role_assignment_request_id" type="bigserial">
-        <constraints nullable="false"/>
-      </column>
-      <column name="status" type="assignment_status_enum">
-        <constraints nullable="false" />
-      </column>
-      <column name="log" type="varchar(255)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="sequence" type="integer">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
 
 </databaseChangeLog>
