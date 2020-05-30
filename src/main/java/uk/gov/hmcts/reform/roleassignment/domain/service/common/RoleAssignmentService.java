@@ -19,37 +19,31 @@ public class RoleAssignmentService {
     private RetrieveSupportingDataService retrieveSupportingDataService;
 
 
-    public RoleAssignmentService(DefaultCaseDataRepository caseService, IdamRoleService idamService, RetrieveSupportingDataService retrieveSupportingDataService) {
+    public RoleAssignmentService(DefaultCaseDataRepository caseService, IdamRoleService idamService,
+                                 RetrieveSupportingDataService retrieveSupportingDataService) {
         this.caseService = caseService;
         this.idamService = idamService;
         this.retrieveSupportingDataService = retrieveSupportingDataService;
     }
 
 
-
-    public  void addExistingRoleAssignments(RoleAssignmentRequest roleAssignmentRequest, List<Object> facts) throws Exception
-    {
+    public void addExistingRoleAssignments(RoleAssignmentRequest roleAssignmentRequest, List<Object> facts) throws Exception {
         Set<String> actorIds = new HashSet<>();
         actorIds.add(roleAssignmentRequest.roleRequest.requestorId);
         actorIds.add(roleAssignmentRequest.roleRequest.authenticatedUserId);
-        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles)
-        {
+        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
             actorIds.add(requestedRole.actorId);
         }
-        for (String actorId : actorIds)
-        {
+        for (String actorId : actorIds) {
             facts.addAll(retrieveSupportingDataService.getRoleAssignmentsForActor(actorId));
             facts.addAll(idamService.getIdamRoleAssignmentsForActor(actorId));
         }
     }
 
-    public  void updateRequestStatus(RoleAssignmentRequest roleAssignmentRequest)
-    {
+    public void updateRequestStatus(RoleAssignmentRequest roleAssignmentRequest) {
         roleAssignmentRequest.roleRequest.status = Status.APPROVED;
-        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles)
-        {
-            if (!requestedRole.isApproved())
-            {
+        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
+            if (!requestedRole.isApproved()) {
                 roleAssignmentRequest.roleRequest.status = Status.REJECTED;
             }
         }

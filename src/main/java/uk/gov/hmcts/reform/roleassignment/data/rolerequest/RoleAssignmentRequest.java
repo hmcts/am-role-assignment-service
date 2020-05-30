@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.data.rolerequest;
 
 import lombok.Getter;
@@ -6,7 +7,6 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistory;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistoryStatus;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
@@ -18,10 +18,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -73,11 +72,10 @@ public class RoleAssignmentRequest {
     @Column(name = "last_update_time", nullable = false)
     private LocalDateTime lastUpdateTime;
 
-    @OneToMany(mappedBy = "roleAssignmentRequest")
-    @OrderColumn(name = "id")
-    private List<RoleAssignmentHistory> roleAssignmentHistory;
+    @OneToMany
+    private Set<RoleAssignmentHistory> roleAssignmentHistory;
 
-    @OneToMany(mappedBy = "roleAssignmentRequest")
-    @OrderColumn(name = "sequence")
-    private List<RoleAssignmentRequestStatus> roleAssignmentRequestStatus;
+    @OneToMany
+    private Set<RoleAssignmentRequestStatus> roleAssignmentRequestStatus;
 }
+*/

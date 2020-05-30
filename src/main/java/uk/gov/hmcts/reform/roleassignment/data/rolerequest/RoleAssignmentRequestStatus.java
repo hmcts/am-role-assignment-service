@@ -1,10 +1,10 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.data.rolerequest;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -42,3 +42,4 @@ public class RoleAssignmentRequestStatus {
     @ManyToOne
     private RoleAssignmentRequest roleAssignmentRequest;
 }
+*/

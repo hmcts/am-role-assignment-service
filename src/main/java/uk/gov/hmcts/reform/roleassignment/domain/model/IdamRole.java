@@ -7,8 +7,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public  class IdamRole
-{
+public  class IdamRole {
     public String userId;
     public String role;
 }

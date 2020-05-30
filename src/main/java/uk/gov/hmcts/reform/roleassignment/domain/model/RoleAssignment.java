@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
-
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
