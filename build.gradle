@@ -243,11 +243,12 @@ repositories {
 
 
 dependencies {
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-  //compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBoot
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-json'
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBoot
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot
+
   compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: '0.0.5'
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   compile group: 'org.json', name: 'json', version: '20200518'
@@ -273,8 +274,8 @@ dependencies {
   compile('org.springframework.boot:spring-boot-starter-hateoas')
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.6.RELEASE'
 
-  compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.3'
-  runtime group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
+   compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.3'
+   compile group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
 
   testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
 
