@@ -61,9 +61,8 @@ spring:
   liquibase:
     enabled: ${ENABLE_DB_MIGRATE:true}
     change-log: classpath:/db/changelog/db.changelog-master.xml
-
   datasource:
-    url: jdbc:postgresql://${ROLE_ASSIGNMENT_DB_HOST:localhost}:${ROLE_ASSIGNMENT_DB_PORT:5451}/${ROLE_ASSIGNMENT_DB_NAME:role_assignment}${POSTGRES_CONNECTION_OPTIONS:}
+    url: jdbc:postgresql://${ROLE_ASSIGNMENT_DB_HOST:localhost}:${ROLE_ASSIGNMENT_DB_PORT:5451}/${ROLE_ASSIGNMENT_DB_NAME:role_assignment}${ROLE_ASSIGNMENT_DB_OPTIONS:}
     username: ${ROLE_ASSIGNMENT_DB_USERNAME:am}
     password: ${ROLE_ASSIGNMENT_DB_PASSWORD:am}
     properties:
