@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.domain.service.common;
+package uk.gov.hmcts.reform.roleassignment.util;
 
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.INPUT_CASE_ID_PATTERN;
 
@@ -22,11 +22,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 @Named
 @Singleton
 @Slf4j
-public class ValidationService {
+public class ValidationUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ValidationService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ValidationUtil.class);
 
-    private ValidationService() {
+    private ValidationUtil() {
     }
 
     /**
