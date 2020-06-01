@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -98,3 +99,4 @@ public class RoleAssignmentHistory {
 //    @Column(name = "request_id", nullable = false)
 //    private Long requestId;
 }
+*/

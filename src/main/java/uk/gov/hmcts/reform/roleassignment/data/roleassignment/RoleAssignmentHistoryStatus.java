@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
 
 import lombok.Builder;
@@ -48,3 +49,4 @@ public class RoleAssignmentHistoryStatus {
 //    @JoinColumn(name="roleassignmentrequestid", nullable=false)
 //    private RoleAssignmentRequest roleAssignmentRequest;
 }
+*/

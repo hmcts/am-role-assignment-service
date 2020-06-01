@@ -380,4 +380,18 @@
     <packageUrl regex="true">^pkg:maven/org.apache.logging.log4j/log4j-to-slf4j@.*$</packageUrl>
     <cpe>cpe:/a:apache:log4j</cpe>
   </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: ant-1.8.4.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.ant/ant@.*$</packageUrl>
+    <cpe>cpe:/a:apache:ant</cpe>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
+   file name: ant-launcher-1.8.4.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.ant/ant\-launcher@.*$</packageUrl>
+    <cpe>cpe:/a:apache:ant</cpe>
+  </suppress>
 </suppressions>

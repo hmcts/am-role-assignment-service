@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
 
 import lombok.Getter;
@@ -68,3 +69,4 @@ public class RoleAssignment {
     private Map<String, String> attributes;
 
 }
+*/
