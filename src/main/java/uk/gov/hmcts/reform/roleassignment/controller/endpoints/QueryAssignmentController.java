@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(value = "roles")
 @RestController
-public class RoleAssignmentController  {
-
+public class QueryAssignmentController {
+//getAssignmentsbyQueryParams
 }
