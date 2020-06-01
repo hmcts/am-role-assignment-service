@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdTypeEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -30,7 +30,7 @@ public class RoleAssignment {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "actor_id_type", nullable = false)
-    private ActorIdType actorIdType;
+    private ActorIdTypeEnum actorIdTypeEnum;
 
     @Column(name = "actor_id", nullable = false)
     private UUID actorId;

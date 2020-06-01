@@ -1,37 +1,91 @@
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
-import org.kie.api.runtime.StatelessKieSession;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.RoleAssignmentService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistoryStatus;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistory;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistoryRepository;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.HashSet;
 
+@RestController
 public class SampleRoleAssignmentController {
-    private StatelessKieSession kieSession;
 
-    private RoleAssignmentService roleAssignmentService;
+    private RoleAssignmentHistoryRepository roleAssignmentRepository;
+    ObjectMapper objectMapper;
 
-    public SampleRoleAssignmentController(StatelessKieSession kieSession, RoleAssignmentService roleAssignmentService) {
-        this.kieSession = kieSession;
-        this.roleAssignmentService = roleAssignmentService;
+    public SampleRoleAssignmentController(RoleAssignmentHistoryRepository roleAssignmentRepository) {
+
+        this.roleAssignmentRepository = roleAssignmentRepository;
     }
 
 
-    @PostMapping("/requestedRole")
-    public String processRequest(@RequestBody RoleAssignmentRequest roleAssignmentRequest) throws Exception {
-        List<Object> facts = new ArrayList<>();
-        facts.add(roleAssignmentRequest.roleRequest);
-        facts.addAll(roleAssignmentRequest.requestedRoles);
-        roleAssignmentService.addExistingRoleAssignments(roleAssignmentRequest, facts);
-        // Run the rules
-        kieSession.setGlobal("services", roleAssignmentService);
-        kieSession.execute(facts);
-        roleAssignmentService.updateRequestStatus(roleAssignmentRequest);
+    @GetMapping("/insertEntity")
+    public String insertEntity() {
 
-        return "OK";
+        convertIntoObject();
 
+        return "Success";
+
+
+    }
+
+    private void convertIntoObject() {
+        try {
+            objectMapper = new ObjectMapper()
+                .registerModule(new JavaTimeModule())
+                .setDateFormat(new SimpleDateFormat());
+            RoleAssignment model;
+            try (InputStream input = SampleRoleAssignmentController.class.getClassLoader().getResourceAsStream(
+                "roleassignmenthistroy.json")) {
+
+                model = objectMapper.readValue(input, RoleAssignment.class);
+
+            }
+            RoleAssignmentHistory roleAssignmentHistory = convertIntoEntity(model);
+            roleAssignmentHistory.setRoleAssignmentHistoryStatus(new HashSet<RoleAssignmentHistoryStatus>());
+            buildRoleAssignmentHistoryStatus(roleAssignmentHistory);
+
+            roleAssignmentRepository.save(roleAssignmentHistory);
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private RoleAssignmentHistory convertIntoEntity(RoleAssignment model) {
+        return RoleAssignmentHistory.builder().actorId(model.getActorId())
+            .actorIdTypeEnum(model.getActorIdTypeEnum())
+            .attributes(convertValueJsonNode(model.getAttributes()))
+            .beginTime(model.getBeginTime())
+            .classification(model.getClassification())
+            .endTime(model.getEndTime())
+            .grantType(model.getGrantType())
+            .roleName(model.getRoleName())
+            .roleType(model.getRoleType())
+            .status(model.getStatus())
+            .readOnly(Boolean.TRUE)
+            .build();
+    }
+
+    private void buildRoleAssignmentHistoryStatus(RoleAssignmentHistory roleAssignmentHistory) {
+        RoleAssignmentHistoryStatus  roleAssignmentHistoryStatus =   RoleAssignmentHistoryStatus.builder().roleAssignmentHistory(roleAssignmentHistory)
+            .log("professional drools rule")
+            .status(Status.CREATED)
+            .sequence(102)
+            .build();
+        roleAssignmentHistory.getRoleAssignmentHistoryStatus().add(roleAssignmentHistoryStatus);
+    }
+
+    public JsonNode convertValueJsonNode(Object from) {
+        return objectMapper.convertValue(from, JsonNode.class);
     }
 }

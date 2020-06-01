@@ -38,7 +38,8 @@ spring:
     default-property-inclusion: NON_NULL
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: false
+    show-sql: true
+    log_statement: all
     properties:
       hibernate:
         jdbc:
@@ -50,7 +51,7 @@ spring:
 
 
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5451}/${POSTGRES_NAME:role_assignment}${POSTGRES_CONNECTION_OPTIONS:}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5451}/${POSTGRES_NAME:role_assignment}?stringtype=unspecified
     username: ${POSTGRES_USERNAME:am}
     password: ${POSTGRES_PASSWORD:am}
     properties:

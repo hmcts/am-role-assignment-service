@@ -1,37 +1,34 @@
 package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uk.gov.hmcts.reform.roleassignment.data.rolerequest.RoleAssignmentRequest;
+
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+@Builder(toBuilder = true)
 @Getter
 @Setter
-@Entity
-@NoArgsConstructor
-@SequenceGenerator(name = "role_assignment_history_status_id_seq", sequenceName = "role_assignment_history_status_id_seq", allocationSize = 1)
+@Entity(name = "roleassignmenthistorystatus")
+@SequenceGenerator(name = "roleassignmenthistorystatusid_sequence", sequenceName = "roleassignmenthistorystatusid_sequence", allocationSize = 1)
 public class RoleAssignmentHistoryStatus {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_assignment_history_status_id_seq")
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roleassignmenthistorystatusid_sequence")
+    @Column(name = "roleassignmenthistorystatusid", nullable = false)
     private Long id;
 
-    @Column(name = "role_assignment_id", nullable = false)
-    private Long roleAssignmentId;
-
-    @Column(name = "request_id", nullable = false)
-    private Long requestId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -43,9 +40,11 @@ public class RoleAssignmentHistoryStatus {
     @Column(name = "sequence", nullable = false)
     private int sequence;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "roleassignmentid", nullable = false)
     private RoleAssignmentHistory roleAssignmentHistory;
 
-    @ManyToOne
-    private RoleAssignmentRequest roleAssignmentRequest;
+//    @ManyToOne
+//    @JoinColumn(name="roleassignmentrequestid", nullable=false)
+//    private RoleAssignmentRequest roleAssignmentRequest;
 }

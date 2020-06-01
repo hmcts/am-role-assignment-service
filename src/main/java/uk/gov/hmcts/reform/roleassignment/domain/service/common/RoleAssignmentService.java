@@ -32,7 +32,7 @@ public class RoleAssignmentService {
         actorIds.add(roleAssignmentRequest.roleRequest.requestorId);
         actorIds.add(roleAssignmentRequest.roleRequest.authenticatedUserId);
         for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
-            actorIds.add(requestedRole.actorId);
+            actorIds.add(requestedRole.actorId.toString());
         }
         for (String actorId : actorIds) {
             facts.addAll(retrieveSupportingDataService.getRoleAssignmentsForActor(actorId));
