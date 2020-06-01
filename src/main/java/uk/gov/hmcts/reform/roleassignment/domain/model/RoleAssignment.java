@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdTypeEnum;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public  class RoleAssignment {
     public Long id;
-    public ActorIdTypeEnum actorIdTypeEnum;
+    public ActorIdType actorIdType;
     public UUID actorId;
     public RoleType roleType;
     public String roleName;

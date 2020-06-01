@@ -5,25 +5,28 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistoryStatus;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistoryStatusEntity;
+import uk.gov.hmcts.reform.roleassignment.data.rolerequest.RoleAssignmentRequestRepository;
+import uk.gov.hmcts.reform.roleassignment.data.rolerequest.RoleAssignmentRequestStatusEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistory;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistoryRepository;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistoryEntity;
+import uk.gov.hmcts.reform.roleassignment.data.rolerequest.RoleAssignmentRequestEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
+import java.util.UUID;
 
 @RestController
 public class SampleRoleAssignmentController {
 
-    private RoleAssignmentHistoryRepository roleAssignmentRepository;
+    private RoleAssignmentRequestRepository roleAssignmentRequestRepository;
     ObjectMapper objectMapper;
 
-    public SampleRoleAssignmentController(RoleAssignmentHistoryRepository roleAssignmentRepository) {
-
-        this.roleAssignmentRepository = roleAssignmentRepository;
+    public SampleRoleAssignmentController(RoleAssignmentRequestRepository roleAssignmentRequestRepository) {
+        this.roleAssignmentRequestRepository = roleAssignmentRequestRepository;
     }
 
 
@@ -49,11 +52,18 @@ public class SampleRoleAssignmentController {
                 model = objectMapper.readValue(input, RoleAssignment.class);
 
             }
-            RoleAssignmentHistory roleAssignmentHistory = convertIntoEntity(model);
-            roleAssignmentHistory.setRoleAssignmentHistoryStatus(new HashSet<RoleAssignmentHistoryStatus>());
-            buildRoleAssignmentHistoryStatus(roleAssignmentHistory);
+            RoleAssignmentHistoryEntity roleAssignmentHistoryEntity = convertIntoEntity(model);
+            roleAssignmentHistoryEntity.setRoleAssignmentHistoryStatusEntities(new HashSet<RoleAssignmentHistoryStatusEntity>());
+            buildRoleAssignmentHistoryStatus(roleAssignmentHistoryEntity);
 
-            roleAssignmentRepository.save(roleAssignmentHistory);
+            //prepare request
+            RoleAssignmentRequestEntity roleAssignmentRequestEntity = buildRoleAssignmentRequest(
+                roleAssignmentHistoryEntity);
+            roleAssignmentRequestEntity.setRoleAssignmentRequestStatusEntities(new HashSet<RoleAssignmentRequestStatusEntity>());
+            buildRoleAssignmentRequestStatusEntity(roleAssignmentRequestEntity);
+
+
+            roleAssignmentRequestRepository.save(roleAssignmentRequestEntity);
 
 
         } catch (Exception e) {
@@ -61,29 +71,63 @@ public class SampleRoleAssignmentController {
         }
     }
 
-    private RoleAssignmentHistory convertIntoEntity(RoleAssignment model) {
-        return RoleAssignmentHistory.builder().actorId(model.getActorId())
-            .actorIdTypeEnum(model.getActorIdTypeEnum())
+    private RoleAssignmentHistoryEntity convertIntoEntity(RoleAssignment model) {
+        return RoleAssignmentHistoryEntity.builder().actorId(model.getActorId())
+            .actorIdType(model.getActorIdType().toString())
             .attributes(convertValueJsonNode(model.getAttributes()))
             .beginTime(model.getBeginTime())
-            .classification(model.getClassification())
+            .classification(model.getClassification().toString())
             .endTime(model.getEndTime())
-            .grantType(model.getGrantType())
+            .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
-            .roleType(model.getRoleType())
-            .status(model.getStatus())
+            .roleType(model.getRoleType().toString())
+            .status(model.getStatus().toString())
             .readOnly(Boolean.TRUE)
             .build();
     }
 
-    private void buildRoleAssignmentHistoryStatus(RoleAssignmentHistory roleAssignmentHistory) {
-        RoleAssignmentHistoryStatus  roleAssignmentHistoryStatus =   RoleAssignmentHistoryStatus.builder().roleAssignmentHistory(roleAssignmentHistory)
+    private void buildRoleAssignmentHistoryStatus(RoleAssignmentHistoryEntity roleAssignmentHistoryEntity) {
+        RoleAssignmentHistoryStatusEntity roleAssignmentHistoryStatusEntity = RoleAssignmentHistoryStatusEntity.builder().roleAssignmentHistoryEntity(
+            roleAssignmentHistoryEntity)
             .log("professional drools rule")
-            .status(Status.CREATED)
+            .status(Status.CREATED.toString())
             .sequence(102)
             .build();
-        roleAssignmentHistory.getRoleAssignmentHistoryStatus().add(roleAssignmentHistoryStatus);
+        roleAssignmentHistoryEntity.getRoleAssignmentHistoryStatusEntities().add(roleAssignmentHistoryStatusEntity);
     }
+
+    private RoleAssignmentRequestEntity buildRoleAssignmentRequest(RoleAssignmentHistoryEntity roleAssignmentHistoryEntity) {
+        RoleAssignmentRequestEntity roleAssignmentRequestEntity = RoleAssignmentRequestEntity.builder()
+            .correlationId("request1")
+            .status(Status.CREATED.toString())
+            .process("businessProcess1")
+            .reference("abc-3434242")
+            .authenticatedUserId(UUID.randomUUID())
+            .clientId("sdsd")
+            .requesterId(UUID.randomUUID())
+            .replaceExisting(Boolean.FALSE)
+            .requestType(RequestType.CREATE.toString())
+            .build();
+        roleAssignmentRequestEntity.setRoleAssignmentHistoryEntities(new HashSet<RoleAssignmentHistoryEntity>());
+        roleAssignmentRequestEntity.getRoleAssignmentHistoryEntities().add(roleAssignmentHistoryEntity);
+        roleAssignmentHistoryEntity.setRoleAssignmentRequestEntity(roleAssignmentRequestEntity);
+        return roleAssignmentRequestEntity;
+
+
+    }
+
+    private void buildRoleAssignmentRequestStatusEntity(RoleAssignmentRequestEntity roleAssignmentRequestEntity) {
+        RoleAssignmentRequestStatusEntity roleAssignmentRequestStatusEntity = RoleAssignmentRequestStatusEntity.builder()
+            .log("rools")
+            .sequence(110)
+            .status(Status.CREATED.toString())
+            .roleAssignmentRequestEntity(roleAssignmentRequestEntity)
+            .build();
+
+        roleAssignmentRequestEntity.getRoleAssignmentRequestStatusEntities().add(roleAssignmentRequestStatusEntity);
+
+    }
+
 
     public JsonNode convertValueJsonNode(Object from) {
         return objectMapper.convertValue(from, JsonNode.class);

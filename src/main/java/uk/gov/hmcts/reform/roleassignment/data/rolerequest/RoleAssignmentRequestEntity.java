@@ -1,38 +1,35 @@
-/*
+
 package uk.gov.hmcts.reform.roleassignment.data.rolerequest;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistory;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentHistoryEntity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
+@Builder(toBuilder = true)
 @Getter
 @Setter
-@Entity
-@NoArgsConstructor
-@SequenceGenerator(name = "request_id_seq", sequenceName = "request_id_seq", allocationSize = 1)
-public class RoleAssignmentRequest {
+@Entity(name = "role_assignment_request")
+public class RoleAssignmentRequestEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "request_id_seq")
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    private UUID id;
 
 
     @Column(name = "correlation_id", nullable = false)
@@ -47,13 +44,13 @@ public class RoleAssignmentRequest {
     @Column(name = "requester_id", nullable = false)
     private UUID requesterId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "request_type", nullable = false)
-    private RequestType requestType;
 
-    @Enumerated(EnumType.STRING)
+    @Column(name = "request_type", nullable = false)
+    private String requestType;
+
+
     @Column(name = "status", nullable = false)
-    private Status status;
+    private String status;
 
     @Column(name = "process")
     private String process;
@@ -69,13 +66,20 @@ public class RoleAssignmentRequest {
     private LocalDateTime created;
 
     @UpdateTimestamp
-    @Column(name = "last_update_time", nullable = false)
+    @Column(name = "last_updated", nullable = false)
     private LocalDateTime lastUpdateTime;
 
-    @OneToMany
-    private Set<RoleAssignmentHistory> roleAssignmentHistory;
 
-    @OneToMany
-    private Set<RoleAssignmentRequestStatus> roleAssignmentRequestStatus;
+    @OneToMany(cascade = CascadeType.ALL,
+        fetch = FetchType.LAZY,
+        mappedBy = "roleAssignmentRequestEntity")
+    private Set<RoleAssignmentHistoryEntity> roleAssignmentHistoryEntities;
+
+    @OneToMany(cascade = CascadeType.ALL,
+        fetch = FetchType.LAZY,
+        mappedBy = "roleAssignmentRequestEntity")
+    private Set<RoleAssignmentRequestStatusEntity> roleAssignmentRequestStatusEntities;
+
+
 }
-*/
+
