@@ -1,4 +1,4 @@
-/*
+
 package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -37,4 +37,4 @@ public class JsonBConverter implements AttributeConverter<JsonNode, String> {
         }
     }
 }
-*/
+

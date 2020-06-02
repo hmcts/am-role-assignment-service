@@ -1,0 +1,24 @@
+package roleassignmentvalidation
+
+rule "salaried divorce judge can grant similar roles"
+	when
+
+		$request : Request ( )
+
+		$role : RequestedRole ( roleName == "judge",
+		                        roleType == RoleAssignment.RoleType.ORGANISATIONAL_ROLE,
+		                        grantType == RoleAssignment.GrantType.STANDARD,
+		                        attributes.jurisdiction == "divorce")
+
+		ExistingRole ( actorId == $request.requestorId,
+		               roleName == "judge",
+		               roleType == RoleAssignment.RoleType.ORGANISATIONAL_ROLE,
+		               grantType == RoleAssignment.GrantType.STANDARD,
+		               attributes.jurisdiction == "divorce",
+		               attributes.contractType == "SALARIED",
+		               classification >= $role.classification)
+	then
+	
+		$role.approve(drools.getRule().getName());
+
+end
