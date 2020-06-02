@@ -389,6 +389,13 @@
   </suppress>
   <suppress>
     <notes><![CDATA[
+  relates to xz-1.5.jar
+  ]]></notes>
+    <cpe>cpe:2.3:a:tukaani:xz:1.5:*:*:*:*:*:*:*</cpe>
+    <cve>CVE-2015-4035</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[
    file name: ant-launcher-1.8.4.jar
    ]]></notes>
     <packageUrl regex="true">^pkg:maven/org\.apache\.ant/ant\-launcher@.*$</packageUrl>
