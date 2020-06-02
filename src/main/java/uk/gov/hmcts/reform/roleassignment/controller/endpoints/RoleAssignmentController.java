@@ -27,7 +27,7 @@ public class RoleAssignmentController {
     }
 
     @PostMapping("/processRequest")
-    private ResponseEntity<String> processRequest(@Valid @RequestBody RoleAssignmentRequest roleAssignmentRequest) {
+    public ResponseEntity<String> processRequest(@Valid @RequestBody RoleAssignmentRequest roleAssignmentRequest) {
         if (!parseRequestService.parseRequest(roleAssignmentRequest)) {
             throw new BadRequestException(V1.Error.INVALID_REQUEST);
         }
