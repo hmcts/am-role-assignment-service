@@ -191,6 +191,7 @@ sonarqube {
     //property "sonar.junit.reportPaths", "${project.buildDir}/test-results/junit-platform"
   }
 }
+
 /*project.tasks['sonarqube'].dependsOn test, integration, jacocoTestReport
 project.tasks['sonarqube'].group = "Verification"*/
 
