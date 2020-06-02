@@ -1,32 +1,34 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import com.fasterxml.jackson.databind.JsonNode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
 
-@Data
-@Builder
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
-public class RoleAssignment {
+public  class RoleAssignment {
     public Long id;
     public ActorIdType actorIdType;
-    public String actorId;
+    public UUID actorId;
     public RoleType roleType;
     public String roleName;
     public Classification classification;
     public GrantType grantType;
+    public Status status;
     public boolean readOnly;
     public LocalDateTime beginTime;
     public LocalDateTime endTime;
     public LocalDateTime created;
-    public Map<String, String> attributes;
+    public Map<String, JsonNode> attributes;
 }

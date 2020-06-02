@@ -12,9 +12,9 @@ import uk.gov.hmcts.befta.BeftaMain;
 @CucumberOptions(plugin = "json:target/cucumber.json",
                  glue = "uk.gov.hmcts.befta.player",
                  features = {"classpath:features"})
-public class RoleAssignmentApiBeftaRunner {
+public class RoleAssignmentEntityApiBeftaRunner {
 
-    private RoleAssignmentApiBeftaRunner() {
+    private RoleAssignmentEntityApiBeftaRunner() {
     }
 
     @BeforeClass
