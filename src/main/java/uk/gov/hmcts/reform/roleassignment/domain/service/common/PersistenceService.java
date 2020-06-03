@@ -20,11 +20,10 @@ import java.util.UUID;
 
 @Service
 public class PersistenceService {
-    //1. StoreRequest,
-    //2. StoreAssignment
+    //1. StoreRequest which will insert records in request and history table with log,
+    //2. Insert new Assignment record with updated Status in historyTable
     //3. Update Request Status
-    //4. Update Assignment Status
-    //5. Make Assignment to Live
+    //4. Store live record in the roleAssignmentTable
     private HistoryRepository historyRepository;
     private RequestRepository requestRepository;
     private RoleAssignmentRepository roleAssignmentRepository;
