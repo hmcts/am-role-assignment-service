@@ -33,13 +33,11 @@ public class HistoryEntity {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private UUID id;
 
-
     @Column(name = "actor_id_type", nullable = false)
     private String actorIdType;
 
     @Column(name = "actor_id", nullable = false)
     private UUID actorId;
-
 
     @Column(name = "role_type", nullable = false)
     private String roleType;
@@ -47,10 +45,8 @@ public class HistoryEntity {
     @Column(name = "role_name", nullable = false)
     private String roleName;
 
-
     @Column(name = "classification", nullable = false)
     private String classification;
-
 
     @Column(name = "grant_type", nullable = false)
     private String grantType;

@@ -116,7 +116,7 @@
 
   <changeSet id="3" author="conor.halpin@hmcts.net">
     <createTable tableName="role_assignment">
-      <column name="role_assignment_id" type="uuid">
+      <column name="id" type="uuid">
         <constraints nullable="false" primaryKey="true"/>
       </column>
       <column name="actor_id_type" type="text">

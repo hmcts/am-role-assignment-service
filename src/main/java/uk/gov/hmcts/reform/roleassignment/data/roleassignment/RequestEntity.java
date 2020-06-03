@@ -30,7 +30,6 @@ public class RequestEntity {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private UUID id;
 
-
     @Column(name = "correlation_id", nullable = false)
     private String correlationId;
 
