@@ -6,27 +6,35 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Builder(toBuilder = true)
 @Getter
 @Setter
-@Entity(name = "role_assignment")
-public class RoleAssignmentEntity {
+@Entity(name = "role_assignment_history")
+public class HistoryEntity {
+
     @Id
-    @Column(name = "role_assignment_id", nullable = false)
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    private UUID id;
 
 
     @Column(name = "actor_id_type", nullable = false)
@@ -50,7 +58,10 @@ public class RoleAssignmentEntity {
     @Column(name = "grant_type", nullable = false)
     private String grantType;
 
-    @Column(name = "read_only", nullable = false)
+    @Column(name = "status", nullable = false)
+    private String status;
+
+    @Column(name = "read_only")
     private boolean readOnly;
 
     @Column(name = "begin_time")
@@ -63,13 +74,27 @@ public class RoleAssignmentEntity {
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 
+    @UpdateTimestamp
+    @Column(name = "last_updated", nullable = false)
+    private LocalDateTime lastUpdateTime;
+
     @Column(name = "attributes", nullable = false, columnDefinition = "jsonb")
     @Convert(converter = JsonBConverter.class)
     private JsonNode attributes;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_assignment_id", referencedColumnName = "id")
-    private HistoryEntity historyEntity;
+    @OneToMany(cascade = CascadeType.ALL,
+        fetch = FetchType.LAZY,
+        mappedBy = "historyEntity")
+    private Set<HistoryStatusEntity> roleAssignmentHistoryStatusEntities;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id")
+    private RequestEntity requestEntity;
+
+
+    @OneToOne(mappedBy = "historyEntity")
+    private RoleAssignmentEntity roleAssignmentEntity;
+
 
 }
 

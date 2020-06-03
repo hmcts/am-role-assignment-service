@@ -5,9 +5,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
 
 @Service
 public class ParseRequestService {
-
-    //This is going first service to receive and validate payload
-    //This is plcaholder can be use if required
+    //1. Validate incoming data
+    //2. Mapping to model objects
 
     public boolean parseRequest(RoleAssignmentRequest roleAssignmentRequest) {
 
