@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -25,14 +24,13 @@ public class CreateRoleAssignmentOrchestrator {
     //8. Call the persistence to copy assignment records to RoleAssignmentLive table
 
 
-    private DefaultCaseDataRepository caseService;
     private IdamRoleService idamService;
     private RetrieveDataService retrieveDataService;
 
 
-    public CreateRoleAssignmentOrchestrator(DefaultCaseDataRepository caseService, IdamRoleService idamService,
+    public CreateRoleAssignmentOrchestrator(IdamRoleService idamService,
                                             RetrieveDataService retrieveDataService) {
-        this.caseService = caseService;
+
         this.idamService = idamService;
         this.retrieveDataService = retrieveDataService;
     }
