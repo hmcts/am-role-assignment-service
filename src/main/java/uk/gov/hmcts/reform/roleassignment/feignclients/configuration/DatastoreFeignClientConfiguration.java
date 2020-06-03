@@ -18,8 +18,4 @@ public class DatastoreFeignClientConfiguration {
         return new DatastoreFeignExceptionHandler();
     }
 
-    @Bean
-    public RequestInterceptor datastoreFeignClientInterceptor() {
-        return new DatastoreFeignClientInterceptor().requestInterceptor();
-    }
 }
