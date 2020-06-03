@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
