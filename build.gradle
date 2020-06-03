@@ -301,7 +301,7 @@ dependencies {
     exclude group: 'junit', module: 'junit'
   }
   testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '2.13.0'
-  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.2.RELEASE'
+  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.3.RELEASE'
 
   compile group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
   testCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
