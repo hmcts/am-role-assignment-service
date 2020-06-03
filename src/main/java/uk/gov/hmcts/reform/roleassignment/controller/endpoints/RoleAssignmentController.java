@@ -1,8 +1,11 @@
 
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
+import javax.validation.Valid;
+
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,20 +13,22 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.StoreRequestService;
+import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
-
-import javax.validation.Valid;
 
 @Api(value = "roles")
 @RestController
 public class RoleAssignmentController {
 
-    private ParseRequestService parseRequestService;
-    private StoreRequestService storeRequestService;
+    private final ParseRequestService parseRequestService;
+    private final StoreRequestService storeRequestService;
+    private final DataStoreFeignClient dataStoreFeignClient;
 
-    public RoleAssignmentController(ParseRequestService parseRequestService, StoreRequestService storeRequestService) {
+    public RoleAssignmentController(ParseRequestService parseRequestService, StoreRequestService storeRequestService,
+                                    DataStoreFeignClient dataStoreFeignClient) {
         this.parseRequestService = parseRequestService;
         this.storeRequestService = storeRequestService;
+        this.dataStoreFeignClient = dataStoreFeignClient;
     }
 
     @PostMapping("/processRequest")
@@ -33,8 +38,11 @@ public class RoleAssignmentController {
         }
         // service call to store request and requested roles in db for audit purpose.
         storeRequestService.persistRequestAndRequestedRoles(roleAssignmentRequest);
-
         return ResponseEntity.ok("Success");
+    }
 
+    @GetMapping("/")
+    public String getCaseDetails() {
+        return dataStoreFeignClient.getServiceStatus();
     }
 }
