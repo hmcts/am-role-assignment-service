@@ -6,6 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryStatusEntity;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryStatusRepository;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestRepository;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestStatusRepository;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -21,9 +25,18 @@ public class PersistenceService {
     //3. Update Request Status
     //4. Update Assignment Status
     //5. Make Assignment to Live
-    private HistoryRepository roleAssignmentRepository;
+    private HistoryRepository historyRepository;
+    private HistoryStatusRepository historyStatusRepository;
+    private RequestRepository requestRepository;
+    private RequestStatusRepository requestStatusRepository;
+    private RoleAssignmentRepository roleAssignmentRepository;
 
-    public PersistenceService(HistoryRepository roleAssignmentRepository) {
+    public PersistenceService(HistoryRepository historyRepository, HistoryStatusRepository historyStatusRepository,
+                              RequestRepository requestRepository, RequestStatusRepository requestStatusRepository,
+                              RoleAssignmentRepository roleAssignmentRepository) {
+        this.historyRepository = historyRepository;
+        this.historyStatusRepository = historyStatusRepository;
+        this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
     }
 
@@ -36,7 +49,7 @@ public class PersistenceService {
             buildRoleAssignmentHistoryStatus(historyEntity);
             historyEntityList.add(historyEntity);
         }
-        roleAssignmentRepository.saveAll(historyEntityList);
+        historyRepository.saveAll(historyEntityList);
 
     }
 
