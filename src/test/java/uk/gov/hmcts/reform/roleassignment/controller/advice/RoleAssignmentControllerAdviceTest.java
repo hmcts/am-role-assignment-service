@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 
-public class CreateAssignmentControllerAdviceTest {
+public class RoleAssignmentControllerAdviceTest {
 
     private transient RoleAssignmentControllerAdvice csda = new RoleAssignmentControllerAdvice();
 

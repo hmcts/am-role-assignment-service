@@ -43,10 +43,8 @@ public class RequestEntity {
     @Column(name = "requester_id", nullable = false)
     private UUID requesterId;
 
-
     @Column(name = "request_type", nullable = false)
     private String requestType;
-
 
     @Column(name = "status", nullable = false)
     private String status;
@@ -60,6 +58,12 @@ public class RequestEntity {
     @Column(name = "replace_existing")
     private Boolean replaceExisting;
 
+    @Column(name = "log")
+    private String log;
+
+    @Column(name = "status_sequence", nullable = false)
+    private int sequence;
+
     @CreationTimestamp
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
@@ -68,16 +72,10 @@ public class RequestEntity {
     @Column(name = "last_updated", nullable = false)
     private LocalDateTime lastUpdateTime;
 
-
     @OneToMany(cascade = CascadeType.ALL,
         fetch = FetchType.LAZY,
         mappedBy = "requestEntity")
-    private Set<HistoryEntity> roleAssignmentHistoryEntities;
-
-    @OneToMany(cascade = CascadeType.ALL,
-        fetch = FetchType.LAZY,
-        mappedBy = "requestEntity")
-    private Set<RequestStatusEntity> roleAssignmentRequestStatusEntities;
+    private Set<HistoryEntity> historyEntities;
 
 
 }
