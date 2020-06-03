@@ -117,7 +117,7 @@
   <changeSet id="3" author="conor.halpin@hmcts.net">
     <createTable tableName="role_assignment">
       <column name="role_assignment_id" type="uuid">
-        <constraints nullable="false" primaryKey="true" foreignKeyName="fk_role_assignment_role_assignment_history" references="role_assignment_history(id)"/>
+        <constraints nullable="false" primaryKey="true"/>
       </column>
       <column name="actor_id_type" type="text">
         <constraints nullable="false"/>
