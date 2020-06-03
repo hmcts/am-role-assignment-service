@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.feignclients.configuration;
 
+import feign.RequestInterceptor;
 import okhttp3.OkHttpClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,5 +16,10 @@ public class DatastoreFeignClientConfiguration {
     @Bean
     public DatastoreFeignExceptionHandler errorDecoder() {
         return new DatastoreFeignExceptionHandler();
+    }
+
+    @Bean
+    public RequestInterceptor datastoreFeignClientInterceptor() {
+        return new DatastoreFeignClientInterceptor().requestInterceptor();
     }
 }
