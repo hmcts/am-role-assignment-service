@@ -29,8 +29,6 @@ public abstract class BaseTest {
         MediaType.APPLICATION_JSON.getSubtype(),
         Charset.forName("utf8"));
 
-    protected static final String REFERENCE = "1504259907353529";
-
 
     @SuppressWarnings("SpringJavaAutowiringInspection")
     @Inject
