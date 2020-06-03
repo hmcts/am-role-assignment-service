@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.utils;
+package uk.gov.hmcts.reform.roleassignment.util;
 
 import feign.Feign;
 import feign.jackson.JacksonDecoder;

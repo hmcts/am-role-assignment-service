@@ -1,6 +1,6 @@
 package roleassignmentvalidation
 
-global uk.gov.hmcts.reform.roleassignment.domain.service.common.createroles.CreateRoleAssignmentOrchestrator services
+global uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator services
 
 import uk.gov.hmcts.reform.roleassignment.model.*
 
