@@ -256,7 +256,7 @@ dependencies {
 
   // drools engine dependency
   compile group: 'org.drools', name: 'drools-core', version: '7.37.0.Final'
-  compile group: 'org.drools', name: 'drools-compiler', version: '7.37.0.Final'
+  compile group: 'org.drools', name: 'drools-compiler', version: '7.38.0.Final'
   compile group: 'org.drools', name: 'drools-decisiontables', version: '7.37.0.Final'
   compile group: 'org.kie', name: 'kie-ci', version: '7.38.0.Final'
 
@@ -300,7 +300,7 @@ dependencies {
   testCompile (group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '2.11.0'
+  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '2.13.0'
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.2.RELEASE'
 
   compile group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
