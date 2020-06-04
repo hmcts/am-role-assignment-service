@@ -7,6 +7,7 @@ import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestRepository;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
@@ -52,15 +53,23 @@ public class PersistenceService {
 
         //Persist the request entity
         requestRepository.save(requestEntity);
+
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void updateStatusInHistoryEntity(RoleAssignment roleAssignment) {
+    public void updateHistory(RoleAssignment roleAssignment) {
 
-        //Persist the request entity
-        historyRepository.save(convertHistoryToEntity(roleAssignment,convertRequestIntoEntity(roleAssignment.getRoleRequest())));
+        //Persist the history entity
+        historyRepository.save(convertHistoryToEntity(roleAssignment,
+                                                      convertRequestIntoEntity(roleAssignment.getRoleRequest())));
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void persistRoleAssignment(RoleAssignment roleAssignment) {
+
+        //Persist the role assignment entity
+        roleAssignmentRepository.save(convertRoleAssignmentToEntity(roleAssignment));
+    }
 
 
     private HistoryEntity convertHistoryToEntity(RoleAssignment model, RequestEntity requestEntity) {
@@ -96,5 +105,22 @@ public class PersistenceService {
             .build();
 
     }
+
+    private RoleAssignmentEntity convertRoleAssignmentToEntity(RoleAssignment model) {
+        return RoleAssignmentEntity.builder().actorId(model.getActorId())
+            .actorIdType(model.getActorIdType().toString())
+            .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
+            .beginTime(model.getBeginTime())
+            .classification(model.getClassification().toString())
+            .endTime(model.getEndTime())
+            .grantType(model.getGrantType().toString())
+            .roleName(model.getRoleName())
+            .roleType(model.getRoleType().toString())
+            .readOnly(model.readOnly)
+            .build();
+
+
+    }
+
 
 }
