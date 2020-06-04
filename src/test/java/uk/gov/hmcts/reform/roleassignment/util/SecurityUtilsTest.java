@@ -18,9 +18,9 @@ import static org.mockito.Mockito.when;
 
 class SecurityUtilsTest {
 
-    private AuthTokenGenerator authTokenGenerator = mock(AuthTokenGenerator.class);
-    private transient SecurityUtils securityUtils = new SecurityUtils(authTokenGenerator);
-    private transient String serviceAuthorization = "auth";
+    private final AuthTokenGenerator authTokenGenerator = mock(AuthTokenGenerator.class);
+    private final SecurityUtils securityUtils = new SecurityUtils(authTokenGenerator);
+    private final String serviceAuthorization = "auth";
     private static final String USER_ID =  "userId";
 
     @Test

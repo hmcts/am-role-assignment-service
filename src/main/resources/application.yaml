@@ -93,6 +93,8 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
         loggerLevel: basic
+      datastoreclient:
+        url: ${DATA_STORE_URL:http://localhost:4452}
 
 swaggerUrl: ${ROLE_ASSIGNMENT_SWAGGER_AM_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}

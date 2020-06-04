@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.feignclients.configuration;
 
-import feign.RequestInterceptor;
 import okhttp3.OkHttpClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
