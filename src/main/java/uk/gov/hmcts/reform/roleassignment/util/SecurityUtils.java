@@ -40,11 +40,8 @@ public class SecurityUtils {
         return null;
     }
 
-    public HttpHeaders serviceAuthorizationHeaders() {
-        final HttpHeaders headers = new HttpHeaders();
-        headers.add(Constants.SERVICE_AUTHORIZATION, authTokenGenerator.generate());
-        return headers;
-
+    public String getServiceAuthorizationHeader() {
+        return authTokenGenerator.generate();
     }
 
     public String getUserId() {
