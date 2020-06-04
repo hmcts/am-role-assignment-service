@@ -69,10 +69,10 @@ public class CreateAssignmentController {
 
         @Valid
         @NotNull(message = "Provide a role assignment body.")
-        @RequestBody RoleAssignmentRequest createRolesAssignmentRequest
+        @RequestBody RoleAssignmentRequest createRoleAssignmentRequest
 
     ) {
-        ResponseEntity<Object> responseEntity = createRoleAssignmentService.createRoleAssignment(createRolesAssignmentRequest);
+        ResponseEntity<Object> responseEntity = createRoleAssignmentService.createRoleAssignment(createRoleAssignmentRequest);
 
         return responseEntity; //return the newly created id
     }

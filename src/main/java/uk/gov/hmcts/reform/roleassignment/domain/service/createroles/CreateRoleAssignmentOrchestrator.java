@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
@@ -9,7 +10,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 
 import java.util.HashSet;
@@ -24,20 +24,20 @@ public class CreateRoleAssignmentOrchestrator {
     private RetrieveDataService retrieveDataService;
     private ParseRequestService parseRequestService;
     private PersistenceService persistenceService;
-    private ValidationModelService validationModelService;
+    //private ValidationModelService validationModelService;
 
 
 
 
     public CreateRoleAssignmentOrchestrator(DefaultCaseDataRepository caseService, IdamRoleService idamService,
                                             RetrieveDataService retrieveDataService, ParseRequestService parseRequestService,
-                                            PersistenceService persistenceService,ValidationModelService validationModelService) {
+                                            PersistenceService persistenceService) {
         this.caseService = caseService;
         this.idamService = idamService;
         this.retrieveDataService = retrieveDataService;
         this.parseRequestService = parseRequestService;
         this.persistenceService = persistenceService;
-        this.validationModelService = validationModelService;
+        //this.validationModelService = validationModelService;
     }
 
     public ResponseEntity<Object> createRoleAssignment(RoleAssignmentRequest roleAssignmentRequest) {
@@ -58,7 +58,7 @@ public class CreateRoleAssignmentOrchestrator {
 
 
 
-        return null;
+        return new ResponseEntity<>("1234qwer", HttpStatus.CREATED);
     }
 
 
