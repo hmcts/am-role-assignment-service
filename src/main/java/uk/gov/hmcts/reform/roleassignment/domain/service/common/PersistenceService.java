@@ -57,11 +57,13 @@ public class PersistenceService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void updateHistory(RoleAssignment roleAssignment) {
+    public void insertHistoryWithUpdatedStatus(RoleAssignment roleAssignment) {
 
         //Persist the history entity
-        historyRepository.save(convertHistoryToEntity(roleAssignment,
-                                                      convertRequestIntoEntity(roleAssignment.getRoleRequest())));
+        historyRepository.save(convertHistoryToEntity(
+            roleAssignment,
+            convertRequestIntoEntity(roleAssignment.getRoleRequest())
+        ));
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -69,6 +71,14 @@ public class PersistenceService {
 
         //Persist the role assignment entity
         roleAssignmentRepository.save(convertRoleAssignmentToEntity(roleAssignment));
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void updateRequest(RequestEntity requestEntity) {
+
+        //need to pass same request entity which we saved in first step with updated status
+        //Update the status of request entity which already saved in db
+        requestRepository.save(requestEntity);
     }
 
 
