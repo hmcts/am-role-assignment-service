@@ -4,18 +4,20 @@ import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 
 public class DatastoreFeignClientFallback implements DataStoreFeignClient {
 
+    public static final String DATA_STORE_NOT_AVAILABLE = "The data store Service is not available";
+
     @Override
     public String getServiceStatus() {
-        return "Service is not available";
+        return DATA_STORE_NOT_AVAILABLE;
     }
 
     @Override
     public String getCaseDataV1(String uid, String jurisdictionId, String caseTypeId, String caseId) {
-        return null;
+        return DATA_STORE_NOT_AVAILABLE;
     }
 
     @Override
     public String getCaseDataV2(String caseId) {
-        return null;
+        return DATA_STORE_NOT_AVAILABLE;
     }
 }
