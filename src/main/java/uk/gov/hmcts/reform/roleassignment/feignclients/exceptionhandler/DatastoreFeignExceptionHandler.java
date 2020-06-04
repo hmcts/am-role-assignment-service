@@ -15,7 +15,7 @@ public class DatastoreFeignExceptionHandler implements ErrorDecoder {
             case 404:
                 return new ResourceNotFoundException(response.toString());
             default:
-                return new Exception(response.toString());
+                return new Exception("The Data Store application is down " + response.toString());
         }
     }
 }
