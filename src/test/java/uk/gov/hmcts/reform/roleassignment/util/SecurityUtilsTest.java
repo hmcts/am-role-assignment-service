@@ -43,12 +43,6 @@ class SecurityUtilsTest {
     }
 
     @Test
-    void serviceAuthorizationHeaders() {
-        HttpHeaders httpHeaders = securityUtils.serviceAuthorizationHeaders();
-        assertEquals(1, httpHeaders.size());
-    }
-
-    @Test
     void getUserId() {
         mockSecurityContextData();
         assertEquals("userId", securityUtils.getUserId());
