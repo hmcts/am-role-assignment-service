@@ -31,4 +31,5 @@ public  class RoleAssignment {
     public LocalDateTime endTime;
     public LocalDateTime created;
     public Map<String, JsonNode> attributes;
+    public RoleRequest roleRequest;
 }

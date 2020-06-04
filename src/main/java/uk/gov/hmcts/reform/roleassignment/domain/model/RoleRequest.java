@@ -8,6 +8,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -26,4 +27,5 @@ public class RoleRequest {
     public boolean replaceExisting;
     public String roleAssignmentId;
     public LocalDateTime timestamp;
+    public String log;
 }
