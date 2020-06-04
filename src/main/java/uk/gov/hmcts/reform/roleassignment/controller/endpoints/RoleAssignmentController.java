@@ -43,7 +43,7 @@ public class RoleAssignmentController {
     }
 
     @GetMapping("/getCaseDetails")
-    public String getCaseDetails() {
+    public String getCaseDetailsV1() {
         return dataStoreFeignClient.getServiceStatus();
     }
 
@@ -51,6 +51,11 @@ public class RoleAssignmentController {
                 produces = "application/json")
     public String getCaseData(@PathVariable("uid") String uid, @PathVariable("jid") String jurisdictionId,
                               @PathVariable("ctid") String caseTypeId, @PathVariable("cid") String caseId) {
-        return dataStoreFeignClient.getCaseData(uid, jurisdictionId, caseTypeId, caseId);
+        return dataStoreFeignClient.getCaseDataV1(uid, jurisdictionId, caseTypeId, caseId);
+    }
+
+    @GetMapping(value = "/cases/{caseId}", produces = "application/json")
+    public String getCaseDataV2(@PathVariable("caseId") String caseId) {
+        return dataStoreFeignClient.getCaseDataV2(caseId);
     }
 }

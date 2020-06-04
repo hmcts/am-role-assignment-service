@@ -15,8 +15,11 @@ public interface DataStoreFeignClient {
     @GetMapping(value = "/")
     public String getServiceStatus();
 
-    @GetMapping(value = "/caseworkers/{uid}/jurisdictions/{jid}/case-types/{ctid}/cases/{cid}",
-                produces = "application/json")
-    public String getCaseData(@PathVariable("uid") String uid, @PathVariable("jid") String jurisdictionId,
-                              @PathVariable("ctid") String caseTypeId, @PathVariable("cid") String caseId);
+    @GetMapping(value = "/caseworkers/{uid}/jurisdictions/{jid}/case-types/{ctid}/cases/{cid}")
+    public String getCaseDataV1(@PathVariable("uid") String uid, @PathVariable("jid") String jurisdictionId,
+                                @PathVariable("ctid") String caseTypeId, @PathVariable("cid") String caseId);
+
+    @GetMapping(value = "/cases/{caseId}", headers = "experimental=true")
+    public String getCaseDataV2(@PathVariable("caseId") String caseId);
+
 }

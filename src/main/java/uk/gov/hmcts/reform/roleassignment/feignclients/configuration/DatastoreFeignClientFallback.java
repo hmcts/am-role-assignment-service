@@ -10,7 +10,12 @@ public class DatastoreFeignClientFallback implements DataStoreFeignClient {
     }
 
     @Override
-    public String getCaseData(String uid, String jurisdictionId, String caseTypeId, String caseId) {
-        return "Service is not available";
+    public String getCaseDataV1(String uid, String jurisdictionId, String caseTypeId, String caseId) {
+        return null;
+    }
+
+    @Override
+    public String getCaseDataV2(String caseId) {
+        return null;
     }
 }
