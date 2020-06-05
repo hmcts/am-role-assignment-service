@@ -62,10 +62,10 @@ public class CreateAssignmentController {
         @NotNull(message = "Please provide process.")
         @RequestHeader(value = "process") String process,
 
-        @ApiParam(value = "The logical business process requesting the resource creation.", required = false)
+        @ApiParam(value = "A reference to be applied to the resources created by this request.", required = false)
         @RequestHeader(value = "reference") String reference,
 
-        @ApiParam(value = "The logical business process requesting the resource creation.", required = false)
+        @ApiParam(value = "Determines whether or not to replace the existing data", required = false)
         @RequestHeader(value = "replaceExisting") Boolean replaceExisting,
 
         @Valid
