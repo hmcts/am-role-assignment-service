@@ -31,7 +31,8 @@ public class PersistenceService {
     private RoleAssignmentRepository roleAssignmentRepository;
     private PersistenceUtil persistenceUtil;
 
-    public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository, RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil) {
+    public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
+                              RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
