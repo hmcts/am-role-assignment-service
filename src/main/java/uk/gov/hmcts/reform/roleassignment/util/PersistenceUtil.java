@@ -41,7 +41,7 @@ public class PersistenceUtil {
             .status(request.getStatus().toString())
             .process(request.getProcess())
             .reference(request.getProcess())
-            .authenticatedUserId(UUID.fromString(request.getAuthenticatedUserId()))
+            .authenticatedUserId(request.getAuthenticatedUserId())
             .clientId(request.getClientId())
             .requesterId(UUID.fromString(request.getRequestorId()))
             .replaceExisting(request.replaceExisting)

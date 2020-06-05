@@ -18,7 +18,7 @@ public class Request {
     public UUID id;
     public String correlationId;
     public String clientId;
-    public String authenticatedUserId;
+    public UUID authenticatedUserId;
     public String requestorId;
     public RequestType requestType;
     public Status status;
@@ -26,6 +26,7 @@ public class Request {
     public String reference;
     public boolean replaceExisting;
     public String roleAssignmentId;
-    public LocalDateTime timestamp;
+    public LocalDateTime created;
+    public LocalDateTime lastUpdateTime;
     public String log;
 }
