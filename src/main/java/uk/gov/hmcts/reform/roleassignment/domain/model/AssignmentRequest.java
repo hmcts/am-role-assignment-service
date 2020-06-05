@@ -7,7 +7,7 @@ import java.util.Collection;
 
 @Getter
 @Setter
-public class RoleAssignmentRequest {
-    public RoleRequest roleRequest;
+public class AssignmentRequest {
+    public Request request;
     public Collection<RequestedRole> requestedRoles;
 }

@@ -9,10 +9,11 @@ import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentRepository;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleRequest;
-import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.util.Set;
 import java.util.UUID;
@@ -28,23 +29,25 @@ public class PersistenceService {
     private HistoryRepository historyRepository;
     private RequestRepository requestRepository;
     private RoleAssignmentRepository roleAssignmentRepository;
+    private PersistenceUtil persistenceUtil;
 
-    public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository, RoleAssignmentRepository roleAssignmentRepository) {
+    public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository, RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
+        this.persistenceUtil = persistenceUtil;
     }
 
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void persistRequest(RoleAssignmentRequest roleAssignmentRequest) {
+    public RequestEntity persistRequest(AssignmentRequest assignmentRequest) {
 
         //Prepare request entity
-        RequestEntity requestEntity = convertRequestIntoEntity(roleAssignmentRequest.getRoleRequest());
+        RequestEntity requestEntity = persistenceUtil.convertRequestIntoEntity(assignmentRequest.getRequest());
 
 
         //Prepare History entity
-        Set<HistoryEntity> historyEntities = roleAssignmentRequest.getRequestedRoles().stream().map(roleAssignment -> convertHistoryToEntity(
+        Set<HistoryEntity> historyEntities = assignmentRequest.getRequestedRoles().stream().map(roleAssignment -> persistenceUtil.convertHistoryToEntity(
             roleAssignment,
             requestEntity
         )).collect(Collectors.toSet());
@@ -52,17 +55,19 @@ public class PersistenceService {
         requestEntity.setHistoryEntities(historyEntities);
 
         //Persist the request entity
-        requestRepository.save(requestEntity);
+        return requestRepository.save(requestEntity);
+
 
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void insertHistoryWithUpdatedStatus(RoleAssignment roleAssignment) {
+    public void insertHistoryWithUpdatedStatus(RoleAssignment roleAssignment, Request request) {
+
 
         //Persist the history entity
-        historyRepository.save(convertHistoryToEntity(
+        historyRepository.save(persistenceUtil.convertHistoryToEntity(
             roleAssignment,
-            convertRequestIntoEntity(roleAssignment.getRoleRequest())
+            persistenceUtil.convertRequestIntoEntity(roleAssignment.getRequest())
         ));
     }
 
@@ -70,67 +75,25 @@ public class PersistenceService {
     public void persistRoleAssignment(RoleAssignment roleAssignment) {
 
         //Persist the role assignment entity
-        roleAssignmentRepository.save(convertRoleAssignmentToEntity(roleAssignment));
+        roleAssignmentRepository.save(persistenceUtil.convertRoleAssignmentToEntity(roleAssignment));
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void updateRequest(RequestEntity requestEntity) {
+    public void updateRequest(Request request) {
 
         //need to pass same request entity which we saved in first step with updated status
         //Update the status of request entity which already saved in db
-        requestRepository.save(requestEntity);
+        requestRepository.save(persistenceUtil.convertRequestIntoEntity(request));
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public Set<ExistingRole> getExistingRoleAssignment(UUID actorId) {
 
-    private HistoryEntity convertHistoryToEntity(RoleAssignment model, RequestEntity requestEntity) {
-        return HistoryEntity.builder().actorId(model.getActorId())
-            .actorIdType(model.getActorIdType().toString())
-            .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
-            .beginTime(model.getBeginTime())
-            .classification(model.getClassification().toString())
-            .endTime(model.getEndTime())
-            .grantType(model.getGrantType().toString())
-            .roleName(model.getRoleName())
-            .roleType(model.getRoleType().toString())
-            .status(model.getStatus().toString())
-            .readOnly(model.readOnly)
-            .requestEntity(requestEntity)
-            .build();
-
+        Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
+        //convert into model class
+        return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertRoleAssignmentEntityInModel(role)).collect(
+            Collectors.toSet());
 
     }
-
-    private RequestEntity convertRequestIntoEntity(RoleRequest roleRequest) {
-        return RequestEntity.builder()
-            .correlationId(roleRequest.getCorrelationId())
-            .status(roleRequest.getStatus().toString())
-            .process(roleRequest.getProcess())
-            .reference(roleRequest.getProcess())
-            .authenticatedUserId(UUID.fromString(roleRequest.getAuthenticatedUserId()))
-            .clientId(roleRequest.getClientId())
-            .requesterId(UUID.fromString(roleRequest.getRequestorId()))
-            .replaceExisting(roleRequest.replaceExisting)
-            .requestType(roleRequest.getRequestType().toString())
-            .log(roleRequest.getLog())
-            .build();
-
-    }
-
-    private RoleAssignmentEntity convertRoleAssignmentToEntity(RoleAssignment model) {
-        return RoleAssignmentEntity.builder().actorId(model.getActorId())
-            .actorIdType(model.getActorIdType().toString())
-            .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
-            .beginTime(model.getBeginTime())
-            .classification(model.getClassification().toString())
-            .endTime(model.getEndTime())
-            .grantType(model.getGrantType().toString())
-            .roleName(model.getRoleName())
-            .roleType(model.getRoleType().toString())
-            .readOnly(model.readOnly)
-            .build();
-
-
-    }
-
 
 }

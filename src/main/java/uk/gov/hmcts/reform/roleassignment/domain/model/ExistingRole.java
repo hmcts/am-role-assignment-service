@@ -1,9 +1,9 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 public class ExistingRole extends RoleAssignment {
 }

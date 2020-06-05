@@ -8,13 +8,14 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleRequest {
-    public String id;
+public class Request {
+    public UUID id;
     public String correlationId;
     public String clientId;
     public String authenticatedUserId;

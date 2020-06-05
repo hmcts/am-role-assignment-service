@@ -1,9 +1,9 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Builder
+@Data
 @NoArgsConstructor
 public  class RoleAssignment {
-    public Long id;
+    public UUID id;
     public ActorIdType actorIdType;
     public UUID actorId;
     public RoleType roleType;
@@ -31,5 +31,5 @@ public  class RoleAssignment {
     public LocalDateTime endTime;
     public LocalDateTime created;
     public Map<String, JsonNode> attributes;
-    public RoleRequest roleRequest;
+    public Request request;
 }
