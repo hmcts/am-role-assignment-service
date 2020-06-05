@@ -35,14 +35,14 @@ public class CreateAssignmentController {
     @PostMapping(
         path = "/role-assignment",
         produces = {"application/json"},
-        consumes = {"object"}
+        consumes = {"application/json"} //TODO check this is correct
     )
     @ApiOperation("creates a role/multiple role assignments")
     @ApiResponses({
         @ApiResponse(
             code = 201,
             message = "Created",
-            response = String.class //maybe not the correct thing
+            response = String.class //TODO maybe not the correct thing. check
         ),
         @ApiResponse(
             code = 404,
@@ -73,8 +73,9 @@ public class CreateAssignmentController {
         @RequestBody RoleAssignmentRequest createRoleAssignmentRequest
 
     ) {
+        //TODO
         ResponseEntity<Object> responseEntity = createRoleAssignmentService.createRoleAssignment(createRoleAssignmentRequest);
 
-        return responseEntity; //return the newly created id
+        return responseEntity;
     }
 }
