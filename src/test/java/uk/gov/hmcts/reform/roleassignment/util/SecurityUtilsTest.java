@@ -54,8 +54,21 @@ class SecurityUtilsTest {
     }
 
     @Test
+    void getUserToken() {
+        mockSecurityContextData();
+        assertEquals("auth", securityUtils.getUserToken());
+    }
+
+    @Test
     void getUserRolesHeader() {
         mockSecurityContextData();
         assertEquals("string", securityUtils.getUserRolesHeader());
     }
+
+    @Test
+    void getServiceId() {
+        mockSecurityContextData();
+        assertEquals("servicename", securityUtils.getServiceId());
+    }
+
 }
