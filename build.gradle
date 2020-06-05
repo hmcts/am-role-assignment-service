@@ -254,6 +254,8 @@ dependencies {
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   compile group: 'org.json', name: 'json', version: '20200518'
 
+  implementation 'com.squareup.okhttp3:okhttp:4.7.2'
+
   // drools engine dependency
   compile group: 'org.drools', name: 'drools-core', version: '7.38.0.Final'
   compile group: 'org.drools', name: 'drools-compiler', version: '7.38.0.Final'
@@ -283,10 +285,10 @@ dependencies {
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.6.RELEASE'
 
    compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.3'
-   compile group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
-   testCompile ('com.opentable.components:otj-pg-embedded:0.12.0')
+   compile group: 'org.postgresql', name: 'postgresql', version: '42.2.13'
+   testCompile ('com.opentable.components:otj-pg-embedded:0.13.3')
    testCompile ('com.github.tomakehurst:wiremock-jre8:2.25.1')
-   testCompile ('org.springframework.cloud:spring-cloud-contract-wiremock:2.2.1.RELEASE')
+   testCompile ('org.springframework.cloud:spring-cloud-contract-wiremock:2.2.3.RELEASE')
 
   testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
 
