@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -25,9 +24,6 @@ public class CreateRoleAssignmentOrchestrator {
     private ParseRequestService parseRequestService;
     private PersistenceService persistenceService;
     //private ValidationModelService validationModelService;
-
-
-
 
     public CreateRoleAssignmentOrchestrator(DefaultCaseDataRepository caseService, IdamRoleService idamService,
                                             RetrieveDataService retrieveDataService, ParseRequestService parseRequestService,

@@ -5,12 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryStatusEntity;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestRepository;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestStatusEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
@@ -53,15 +51,9 @@ public class SampleRoleAssignmentController {
 
             }
             HistoryEntity historyEntity = convertIntoEntity(model);
-            historyEntity.setRoleAssignmentHistoryStatusEntities(new HashSet<HistoryStatusEntity>());
-            buildRoleAssignmentHistoryStatus(historyEntity);
-
             //prepare request
             RequestEntity requestEntity = buildRoleAssignmentRequest(
                 historyEntity);
-            requestEntity.setRoleAssignmentRequestStatusEntities(new HashSet<RequestStatusEntity>());
-            buildRoleAssignmentRequestStatusEntity(requestEntity);
-
 
             requestRepository.save(requestEntity);
 
@@ -81,19 +73,12 @@ public class SampleRoleAssignmentController {
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
-            .status(model.getStatus().toString())
+            .status(Status.CREATED.toString())
             .readOnly(Boolean.TRUE)
-            .build();
-    }
-
-    private void buildRoleAssignmentHistoryStatus(HistoryEntity historyEntity) {
-        HistoryStatusEntity historyStatusEntity = HistoryStatusEntity.builder().historyEntity(
-            historyEntity)
             .log("professional drools rule")
             .status(Status.CREATED.toString())
             .sequence(102)
             .build();
-        historyEntity.getRoleAssignmentHistoryStatusEntities().add(historyStatusEntity);
     }
 
     private RequestEntity buildRoleAssignmentRequest(HistoryEntity historyEntity) {
@@ -107,26 +92,17 @@ public class SampleRoleAssignmentController {
             .requesterId(UUID.randomUUID())
             .replaceExisting(Boolean.FALSE)
             .requestType(RequestType.CREATE.toString())
+            .log("professional drools rule")
+            .sequence(102)
             .build();
-        requestEntity.setRoleAssignmentHistoryEntities(new HashSet<HistoryEntity>());
-        requestEntity.getRoleAssignmentHistoryEntities().add(historyEntity);
+        requestEntity.setHistoryEntities(new HashSet<HistoryEntity>());
+        requestEntity.getHistoryEntities().add(historyEntity);
         historyEntity.setRequestEntity(requestEntity);
         return requestEntity;
 
 
     }
 
-    private void buildRoleAssignmentRequestStatusEntity(RequestEntity requestEntity) {
-        RequestStatusEntity requestStatusEntity = RequestStatusEntity.builder()
-            .log("rools")
-            .sequence(110)
-            .status(Status.CREATED.toString())
-            .requestEntity(requestEntity)
-            .build();
-
-        requestEntity.getRoleAssignmentRequestStatusEntities().add(requestStatusEntity);
-
-    }
 
 
     public JsonNode convertValueJsonNode(Object from) {
