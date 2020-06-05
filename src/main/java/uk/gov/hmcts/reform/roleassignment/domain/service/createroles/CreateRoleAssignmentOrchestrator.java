@@ -44,9 +44,9 @@ public class CreateRoleAssignmentOrchestrator {
         //1. call parse request service
         parseRequestService.parseRequest(roleAssignmentRequest);
         //2. Call persistence service to store the created records
-        persistenceService.persistRequestAndRequestedRoles(roleAssignmentRequest);
+        //persistenceService.persistRequestAndRequestedRoles(roleAssignmentRequest);
         //3. Call retrieve Data service to fetch all required objects
-        retrieveDataService.getRoleAssignmentsForActor("actorId");
+        //retrieveDataService.getRoleAssignmentsForActor("actorId");
         //4. Call Validation model service to create aggregation objects and apply drools validation rule
         //validationModelService needs to be written.
 
@@ -55,7 +55,6 @@ public class CreateRoleAssignmentOrchestrator {
         //6. once all the assignment records are approved call persistence to update request status
         //7. Call persistence to move assignment records to Live status
         //8. Call the persistence to copy assignment records to RoleAssignmentLive table
-
 
 
         return new ResponseEntity<>("1234qwer", HttpStatus.CREATED);

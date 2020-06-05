@@ -23,6 +23,7 @@ import javax.validation.constraints.NotNull;
 @RestController
 public class CreateAssignmentController {
 
+    @Autowired
     private CreateRoleAssignmentOrchestrator createRoleAssignmentService;
 
     @Autowired
