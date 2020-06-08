@@ -3,11 +3,15 @@ package uk.gov.hmcts.reform.roleassignment.domain.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class RequestedRole extends RoleAssignment {
 
     // Fields for the role assignment status record

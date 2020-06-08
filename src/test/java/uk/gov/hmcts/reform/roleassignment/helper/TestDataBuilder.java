@@ -1,18 +1,14 @@
 package uk.gov.hmcts.reform.roleassignment.helper;
 
 import lombok.Setter;
-import org.bouncycastle.cert.ocsp.Req;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @Setter
 public class TestDataBuilder {
