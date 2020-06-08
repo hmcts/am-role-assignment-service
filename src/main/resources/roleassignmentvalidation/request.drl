@@ -1,15 +1,20 @@
 package roleassignmentvalidation
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 
 rule "request validation"
+
 when
-$request  : Request(id!= null,requestType == "CREAT",status == "CREAT",process == "SPECIFIC", )
+$request  : Request(id!= null,requestType == RequestType.CREATE,status == Status.CREATED,replaceExisting == Boolean.TRUE, process == "SPECIFIC",
+            created !=null,lastUpdateTime !=null)
 
-	then
+then
+$request.setStatus(Status.APPROVED);
+
+end;
 
 
-
-end
 
 
 //******* create role reuest validation rule *****
