@@ -5,11 +5,19 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryRepository;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestRepository;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentRepository;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class PersistenceService {
@@ -17,38 +25,76 @@ public class PersistenceService {
     //2. Insert new Assignment record with updated Status in historyTable
     //3. Update Request Status
     //4. Store live record in the roleAssignmentTable
-    private HistoryRepository roleAssignmentRepository;
 
-    public PersistenceService(HistoryRepository roleAssignmentRepository) {
+    private HistoryRepository historyRepository;
+    private RequestRepository requestRepository;
+    private RoleAssignmentRepository roleAssignmentRepository;
+    private PersistenceUtil persistenceUtil;
+
+    public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
+                              RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil) {
+        this.historyRepository = historyRepository;
+        this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
+        this.persistenceUtil = persistenceUtil;
     }
 
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void persistRequestAndRequestedRoles(RoleAssignmentRequest roleAssignmentRequest) {
-        ArrayList<HistoryEntity> historyEntityList = new ArrayList<>();
-        for (RequestedRole roleAssignment : roleAssignmentRequest.requestedRoles) {
-            HistoryEntity historyEntity = convertModelToEntity(roleAssignment);
-            historyEntityList.add(historyEntity);
-        }
-        roleAssignmentRepository.saveAll(historyEntityList);
+    public RequestEntity persistRequest(AssignmentRequest assignmentRequest) {
+
+        //Prepare request entity
+        RequestEntity requestEntity = persistenceUtil.convertRequestIntoEntity(assignmentRequest.getRequest());
+
+
+        //Prepare History entity
+        Set<HistoryEntity> historyEntities = assignmentRequest.getRequestedRoles().stream().map(roleAssignment -> persistenceUtil.convertHistoryToEntity(
+            roleAssignment,
+            requestEntity
+        )).collect(Collectors.toSet());
+
+        requestEntity.setHistoryEntities(historyEntities);
+
+        //Persist the request entity
+        return requestRepository.save(requestEntity);
+
 
     }
 
-    private HistoryEntity convertModelToEntity(RequestedRole model) {
-        HistoryEntity historyEntity = HistoryEntity.builder().actorId(model.getActorId())
-            .actorIdType(model.getActorIdType().toString())
-            .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
-            .beginTime(model.getBeginTime())
-            .classification(model.getClassification().toString())
-            .endTime(model.getEndTime())
-            .grantType(model.getGrantType().toString())
-            .roleName(model.getRoleName())
-            .roleType(model.getRoleType().toString())
-            .status(model.getStatus().toString())
-            .readOnly(Boolean.TRUE)
-            .build();
-        return historyEntity;
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void insertHistoryWithUpdatedStatus(RoleAssignment roleAssignment, Request request) {
+
+
+        //Persist the history entity
+        historyRepository.save(persistenceUtil.convertHistoryToEntity(
+            roleAssignment,
+            persistenceUtil.convertRequestIntoEntity(roleAssignment.getRequest())
+        ));
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void persistRoleAssignment(RoleAssignment roleAssignment) {
+
+        //Persist the role assignment entity
+        roleAssignmentRepository.save(persistenceUtil.convertRoleAssignmentToEntity(roleAssignment));
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void updateRequest(Request request) {
+
+        //need to pass same request entity which we saved in first step with updated status
+        //Update the status of request entity which already saved in db
+        requestRepository.save(persistenceUtil.convertRequestIntoEntity(request));
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public Set<ExistingRole> getExistingRoleAssignment(UUID actorId) {
+
+        Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
+        //convert into model class
+        return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertRoleAssignmentEntityInModel(role)).collect(
+            Collectors.toSet());
+
     }
 
 }

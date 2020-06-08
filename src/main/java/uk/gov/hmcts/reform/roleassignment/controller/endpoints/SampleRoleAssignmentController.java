@@ -55,13 +55,21 @@ public class SampleRoleAssignmentController {
             RequestEntity requestEntity = buildRoleAssignmentRequest(
                 historyEntity);
 
-            requestRepository.save(requestEntity);
+            RequestEntity request = requestRepository.save(requestEntity);
+
+            updateStatusOfRequest(request);
 
 
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
+    private void updateStatusOfRequest(RequestEntity requestEntity) {
+        requestEntity.setStatus(Status.APPROVED.toString());
+        requestRepository.save(requestEntity);
+    }
+
 
     private HistoryEntity convertIntoEntity(RoleAssignment model) {
         return HistoryEntity.builder().actorId(model.getActorId())
@@ -102,7 +110,6 @@ public class SampleRoleAssignmentController {
 
 
     }
-
 
 
     public JsonNode convertValueJsonNode(Object from) {

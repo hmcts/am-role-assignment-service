@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
@@ -36,11 +36,11 @@ public class CreateRoleAssignmentOrchestrator {
     }
 
 
-    public void addExistingRoleAssignments(RoleAssignmentRequest roleAssignmentRequest, List<Object> facts) throws Exception {
+    public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) throws Exception {
         Set<String> actorIds = new HashSet<>();
-        actorIds.add(roleAssignmentRequest.roleRequest.requestorId);
-        actorIds.add(roleAssignmentRequest.roleRequest.authenticatedUserId);
-        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
+        actorIds.add(assignmentRequest.request.requestorId);
+        actorIds.add(assignmentRequest.request.authenticatedUserId);
+        for (RequestedRole requestedRole : assignmentRequest.requestedRoles) {
             actorIds.add(requestedRole.actorId.toString());
         }
         for (String actorId : actorIds) {
@@ -49,11 +49,11 @@ public class CreateRoleAssignmentOrchestrator {
         }
     }
 
-    public void updateRequestStatus(RoleAssignmentRequest roleAssignmentRequest) {
-        roleAssignmentRequest.roleRequest.status = Status.APPROVED;
-        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
+    public void updateRequestStatus(AssignmentRequest assignmentRequest) {
+        assignmentRequest.request.status = Status.APPROVED;
+        for (RequestedRole requestedRole : assignmentRequest.requestedRoles) {
             if (!requestedRole.isApproved()) {
-                roleAssignmentRequest.roleRequest.status = Status.REJECTED;
+                assignmentRequest.request.status = Status.REJECTED;
             }
         }
     }
