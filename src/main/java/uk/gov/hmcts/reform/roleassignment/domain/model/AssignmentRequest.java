@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -9,18 +10,17 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleAssignmentRequest {
-    public RoleRequest roleRequest = new RoleRequest();
-    public List<RequestedRole> requestedRoles = new ArrayList<>();
+public class AssignmentRequest {
+    public Request request;
+    public Collection<RequestedRole> requestedRoles;
 
     @JsonCreator
-    public RoleAssignmentRequest(@JsonProperty("correlationId") String correlationId,
+    public AssignmentRequest(@JsonProperty("correlationId") String correlationId,
                                  @JsonProperty(value = "clientId") String clientId,
                                  @JsonProperty(value = "authenticatedUserId") String authenticatedUserId,
                                  @JsonProperty(value = "requestorId") String requestorId,
@@ -31,18 +31,18 @@ public class RoleAssignmentRequest {
                                  @JsonProperty(value = "replaceExisting") boolean replaceExisting,
                                  @JsonProperty(value = "roleAssignmentId") String roleAssignmentId,
                                  @JsonProperty(value = "timestamp") LocalDateTime timestamp,
-                                 @JsonProperty(value = "requestedRoles") List<RequestedRole> requestedRolesCollection) {
-        roleRequest.setCorrelationId(correlationId);
-        roleRequest.setClientId(clientId);
-        roleRequest.setAuthenticatedUserId(authenticatedUserId);
-        roleRequest.setRequestorId(requestorId);
-        roleRequest.setRequestType(requestType);
-        roleRequest.setStatus(status);
-        roleRequest.setProcess(process);
-        roleRequest.setReference(reference);
-        roleRequest.setReplaceExisting(replaceExisting);
-        roleRequest.setRoleAssignmentId(roleAssignmentId);
-        roleRequest.setTimestamp(timestamp);
+                                 @JsonProperty(value = "requestedRoles") Collection<RequestedRole> requestedRolesCollection) {
+        request.setCorrelationId(correlationId);
+        request.setClientId(clientId);
+        request.setAuthenticatedUserId(authenticatedUserId);
+        request.setRequestorId(requestorId);
+        request.setRequestType(requestType);
+        request.setStatus(status);
+        request.setProcess(process);
+        request.setReference(reference);
+        request.setReplaceExisting(replaceExisting);
+        request.setRoleAssignmentId(roleAssignmentId);
+        request.setTimestamp(timestamp);
         this.requestedRoles.addAll(requestedRolesCollection); //maybe not correct, need more info on format
 
     }

@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleRequest {
+public class Request {
     public UUID id;
     public String correlationId;
     public String clientId;
@@ -27,4 +27,5 @@ public class RoleRequest {
     public boolean replaceExisting;
     public String roleAssignmentId;
     public LocalDateTime timestamp;
+    public String log;
 }
