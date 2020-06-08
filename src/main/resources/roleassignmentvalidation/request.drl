@@ -2,17 +2,29 @@ package roleassignmentvalidation
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 
-rule "request validation"
+rule "request validation for creation" salience 100
 
 when
-$request  : Request(id!= null,requestType == RequestType.CREATE,status == Status.CREATED,replaceExisting == Boolean.TRUE, process == "SPECIFIC",
-            created !=null,lastUpdateTime !=null)
-
+$request  : Request(id!= null,requestType == RequestType.CREATE,status == Status.CREATED)
+            Request( created !=null,process in (GrantType.SPECIFIC.toString(),GrantType.STANDARD.toString(),GrantType.CHALLENGED.toString()), clientId == "am_role_assignment_service")
+            Request(replaceExisting == Boolean.TRUE, process !=null, reference != null) or Request(replaceExisting == Boolean.FALSE)
 then
 $request.setStatus(Status.APPROVED);
-
 end;
+
+
+//**** rules for delete ****
+rule "request validation for delete"
+
+when
+$request  : Request(id!= null,requestType == RequestType.DELETE)
+then
+$request.setStatus(Status.REJECTED);
+end;
+
+
 
 
 
@@ -23,12 +35,14 @@ end;
 // status must be create
 //process == SPECIFIC
 // if replaceExisting is true then process & reference must not be null
-//if requestType == create, then roleassifgnmentId should be null/empty.rule
-//if requestType == delete and delete endpoint is based on assignment id, then roleassifgnmentId must not be null.
+//if requestType == create, then roleassignmentId should be null/empty.rule
+//if requestType == delete and delete endpoint is based on assignment id, then roleassignmentId must not be null.
 // created and lastupdatedtime should be not null.
 // request Id should not be null.
 
-// ********* Role Assignment validation ***** create role assignmenment validation rule
+
+
+// ********* Role Assignment validation ***** create role assignmenment validation rule *********
 
 // role assignment Id should not be null.
 // if clint id in request == xui then role type in assignment must be == CASE

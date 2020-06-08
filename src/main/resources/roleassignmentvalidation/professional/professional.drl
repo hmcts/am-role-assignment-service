@@ -1,32 +1,32 @@
-package roleassignmentvalidation
-
-rule "case access admin can assign case roles within the organisation"
-	when
-
-		$request : Request ( process == "professionalAccess" )
-
-		$role : RequestedRole ( roleName == "solicitor",
-		                        roleType == RoleAssignment.RoleType.CASE_ROLE,
-		                        grantType == RoleAssignment.GrantType.SPECIFIC,
-		                        $organisationId : attributes["organisationId"] )
-
-		Case ( id == $role.attributes.caseId,
-		       organisationId == $organisationId)
-
-		ExistingRole ( actorId == $request.requestorId,
-		               roleName == "case-access-admin",
-		               roleType == RoleAssignment.RoleType.ORGANISATIONAL_ROLE,
-		               attributes.organisationId == $organisationId )
-
-		ExistingRole ( actorId == $role.actorId,
-		               roleName == "solicitor",
-		               roleType == RoleAssignment.RoleType.IDAM_ROLE )
-
-	then
-
-		$role.approve(drools.getRule().getName());
-
-end
+//package roleassignmentvalidation
+//
+//rule "case access admin can assign case roles within the organisation"
+//	when
+//
+//		$request : Request ( process == "professionalAccess" )
+//
+//		$role : RequestedRole ( roleName == "solicitor",
+//		                        roleType == RoleAssignment.RoleType.CASE_ROLE,
+//		                        grantType == RoleAssignment.GrantType.SPECIFIC,
+//		                        $organisationId : attributes["organisationId"] )
+//
+//		Case ( id == $role.attributes.caseId,
+//		       organisationId == $organisationId)
+//
+//		ExistingRole ( actorId == $request.requestorId,
+//		               roleName == "case-access-admin",
+//		               roleType == RoleAssignment.RoleType.ORGANISATIONAL_ROLE,
+//		               attributes.organisationId == $organisationId )
+//
+//		ExistingRole ( actorId == $role.actorId,
+//		               roleName == "solicitor",
+//		               roleType == RoleAssignment.RoleType.IDAM_ROLE )
+//
+//	then
+//
+//		$role.approve(drools.getRule().getName());
+//
+//end;
 
 //******* create role reuest validation rule *****
 // clientId(service id from s2s token ) must be am_role_assignment_service

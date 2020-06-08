@@ -35,7 +35,7 @@ public class ValidationModelService {
 
         // Force the status and timestamp on all new request
         assignmentRequest.request.status = Status.CREATED;
-        assignmentRequest.request.created = LocalDateTime.now();
+        assignmentRequest.getRequest().setCreated(LocalDateTime.now());
         runRulesOnAllRequestedAssignments(assignmentRequest);
 
     }
@@ -49,6 +49,10 @@ public class ValidationModelService {
 
         // Run the rules
         kieSession.execute(facts);
+
+        //Update status
+        updateStatus(assignmentRequest);
+
     }
 
     public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) throws Exception {
@@ -60,9 +64,14 @@ public class ValidationModelService {
 
         }
         for (String actorId : userIds) {
-            facts.addAll(persistenceService.getExistingRoleAssignment(UUID.fromString(actorId)));
+            //facts.addAll(persistenceService.getExistingRoleAssignment(UUID.fromString(actorId)));
             facts.addAll(idamRoleService.getIdamRoleAssignmentsForActor(actorId));
             //facts.addAll(SERVICES.idamRoleService.getIdamRoleAssignmentsForActor(actorId));
         }
+    }
+
+    public void updateStatus(AssignmentRequest assignmentRequest){
+
+        assignmentRequest.getRequest().setLastUpdateTime(LocalDateTime.now());
     }
 }
