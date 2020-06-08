@@ -9,8 +9,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.*;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -41,8 +41,8 @@ class CreateRoleAssignmentControllerTest {
     void createRoleAssignment() { //TODO improve this
         //ResponseEntity<Object> expectedResponse = new ResponseEntity<>("1234qwer", HttpStatus.CREATED);
 
-        RoleAssignmentRequest request = TestDataBuilder.buildRoleAssignmentRequest();
-        RoleAssignmentRequest expectedResponse = buildExpectedResponse();
+        AssignmentRequest request = TestDataBuilder.buildRoleAssignmentRequest();
+        AssignmentRequest expectedResponse = buildExpectedResponse();
 
         when(createRoleAssignmentServiceMock.createRoleAssignment(any())).thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.CREATED));
 
@@ -51,15 +51,11 @@ class CreateRoleAssignmentControllerTest {
         assertNotNull(response);
     }
 
-    private RoleAssignmentRequest buildExpectedResponse() {
-        RoleAssignmentRequest expectedResponse = new RoleAssignmentRequest();
-        LocalDateTime timeStamp = LocalDateTime.now();
+    private AssignmentRequest buildExpectedResponse() {
+        AssignmentRequest expectedResponse = new AssignmentRequest();
 
-        RoleRequest request = RoleRequest.builder().id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).correlationId(
-            "correlationId").clientId("clientId").authenticatedUserId("userId").requestorId("requestorId").requestType(
-            RequestType.CREATE).status(Status.APPROVED).process("process").reference("reference").replaceExisting(true).roleAssignmentId(
-            "roleAssignmentId").timestamp(timeStamp).build();
-        expectedResponse.setRoleRequest(request);
+        Request request = TestDataBuilder.buildRequest();
+        expectedResponse.setRequest(request);
         return expectedResponse;
     }
 }

@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 
 import java.util.*;
 
@@ -22,7 +22,7 @@ public class PrepareResponseService {
     private PrepareResponseService() {
     }
 
-    public static ResponseEntity<Object> prepareCreateRoleResponse(RoleAssignmentRequest roleAssignmentRequest) {
+    public static ResponseEntity<Object> prepareCreateRoleResponse(AssignmentRequest roleAssignmentRequest) {
         LOG.info(" ----- prepareCreateRoleResponse : {}", roleAssignmentRequest);
 
         updateRoleRequestResponse(roleAssignmentRequest);
@@ -30,20 +30,20 @@ public class PrepareResponseService {
         return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentRequestResource(roleAssignmentRequest));
     }
 
-    private static void updateRoleRequestResponse(RoleAssignmentRequest roleAssignmentRequest) {
+    private static void updateRoleRequestResponse(AssignmentRequest roleAssignmentRequest) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        RoleRequest roleRequest = roleAssignmentRequest.getRoleRequest();
+        Request roleRequest = roleAssignmentRequest.getRequest();
         Map<String, Object> requestMetaData = mapper.convertValue(
             roleRequest,
             new TypeReference<Map<String, Object>>() {
             }
         );
         requestMetaData.remove("clientId");
-        roleAssignmentRequest.setRoleRequest(mapper.convertValue(requestMetaData, RoleRequest.class));
+        roleAssignmentRequest.setRequest(mapper.convertValue(requestMetaData, Request.class));
     }
 
-    private static void updateRequestedRolesResponse(RoleAssignmentRequest roleAssignmentRequest) {
+    private static void updateRequestedRolesResponse(AssignmentRequest roleAssignmentRequest) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         List<RequestedRole> requestedRoles = new ArrayList<>();
@@ -61,7 +61,7 @@ public class PrepareResponseService {
         roleAssignmentRequest.setRequestedRoles(requestedRoles);
     }
 
-    private static ResponseEntity<Object> prepareResponse(RoleAssignmentRequest roleAssignmentRequest) {
+    private static ResponseEntity<Object> prepareResponse(AssignmentRequest roleAssignmentRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(roleAssignmentRequest);
     }
 

@@ -17,10 +17,10 @@ import java.util.UUID;
 public class RoleAssignmentRequestResource extends RepresentationModel<RoleAssignmentRequestResource> {
 
     @JsonProperty("roleAssignmentResponse")
-    private RoleAssignmentRequest roleAssignmentRequest;
+    private AssignmentRequest roleAssignmentRequest;
 
 
-    public RoleAssignmentRequestResource(RoleAssignmentRequest roleAssignmentRequest) {
+    public RoleAssignmentRequestResource(AssignmentRequest roleAssignmentRequest) {
         this.roleAssignmentRequest = roleAssignmentRequest;
         //add(linkTo(methodOn(CreateAssignmentController.class).getRoleAssignmentByActorId("")).withRel("binary"))
     }

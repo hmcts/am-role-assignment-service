@@ -3,23 +3,21 @@ package uk.gov.hmcts.reform.roleassignment.domain.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-<<<<<<< HEAD
-import lombok.*;
-=======
+
+import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
->>>>>>> master
+
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-
-import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.UUID;
 
 
 @Builder
@@ -68,5 +66,6 @@ public  class RoleAssignment {
         this.attributes = attributes;
 
     }
+
     public Request request;
 }

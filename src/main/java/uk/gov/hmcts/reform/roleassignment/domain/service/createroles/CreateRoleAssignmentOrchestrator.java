@@ -38,7 +38,7 @@ public class CreateRoleAssignmentOrchestrator {
         //this.validationModelService = validationModelService;
     }
 
-    public ResponseEntity<Object> createRoleAssignment(RoleAssignmentRequest roleAssignmentRequest) {
+    public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) {
         //1. call parse request service
         //parseRequestService.parseRequest(roleAssignmentRequest);
         //2. Call persistence service to store the created records
@@ -66,8 +66,8 @@ public class CreateRoleAssignmentOrchestrator {
         return response;
     }
 
-    private void setRoleAssignmentIDs(RoleAssignmentRequest roleAssignmentRequest) {
-        roleAssignmentRequest.getRoleRequest().setId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"));
+    private void setRoleAssignmentIDs(AssignmentRequest roleAssignmentRequest) {
+        roleAssignmentRequest.getRequest().setId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"));
         roleAssignmentRequest.getRequestedRoles().forEach(roles -> roles.setId(UUID.fromString(
             "21334a2b-79ce-44eb-9168-2d49a744be9a")));
     }

@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 
 import javax.validation.Valid;
@@ -51,7 +51,7 @@ public class CreateAssignmentController {
 
         @Valid
         @NotNull(message = "Provide a role assignment body.")
-        @RequestBody RoleAssignmentRequest createRoleAssignmentRequest
+        @RequestBody AssignmentRequest createRoleAssignmentRequest
 
     ) {
         LOG.info("CreateAssignmentController : {}", createRoleAssignmentService);
