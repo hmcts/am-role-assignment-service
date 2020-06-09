@@ -15,9 +15,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.*;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
