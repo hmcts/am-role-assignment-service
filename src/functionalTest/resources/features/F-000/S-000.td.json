@@ -23,6 +23,14 @@
     "body": {
       "status": "UP",
       "components": {
+        "db": {
+          "status": "UP",
+          "details": {
+            "database": "PostgreSQL",
+            "result": 1,
+            "validationQuery": "SELECT 1"
+          }
+        },
         "discoveryComposite": {
           "description": "Discovery Client not initialized",
           "status": "UNKNOWN",
