@@ -22,11 +22,6 @@ locals {
 
   sharedAppServicePlan = "${var.raw_product}-${var.env}"
   sharedASPResourceGroup = "${var.raw_product}-shared-${var.env}"
-
-  // S2S
-  s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
-  idam_url = "https://idam-api.${local.local_env}.platform.hmcts.net"
-
   definition_store_host = "http://ccd-definition-store-api-${local.env_ase_url}"
   }
 
