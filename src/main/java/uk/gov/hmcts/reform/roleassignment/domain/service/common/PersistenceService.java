@@ -90,7 +90,7 @@ public class PersistenceService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Set<ExistingRole> getExistingRoleAssignment(UUID actorId) {
 
-        Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
+       Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
         //convert into model class
         return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertRoleAssignmentEntityInModel(role)).collect(
             Collectors.toSet());

@@ -19,7 +19,7 @@ public class Request {
     public String correlationId;
     public String clientId;
     public UUID authenticatedUserId;
-    public String requestorId;
+    public UUID requestorId;
     public RequestType requestType;
     public Status status;
     public String process;

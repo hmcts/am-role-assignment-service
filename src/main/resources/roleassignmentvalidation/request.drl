@@ -16,7 +16,7 @@ end;
 
 
 //**** rules for delete ****
-rule "request validation for delete"
+rule "request validation for delete" salience 50
 
 when
 $request  : Request(id!= null,requestType == RequestType.DELETE)
@@ -42,13 +42,4 @@ end;
 
 
 
-// ********* Role Assignment validation ***** create role assignmenment validation rule *********
 
-// role assignment Id should not be null.
-// if clint id in request == xui then role type in assignment must be == CASE
-// if client id in request == organization_mapping service then role type in assignment must be == ORGANIZATION
-// roleName should belong to  existing  Role model object
-// The Requester.Classification shold be >= roleassignment.clasiffication
-// request.process dhould be == roleassgnment.grantType
-// status must be create
-// beginTime >= currentTime , endTime >= currentTime & endTime > beginTime

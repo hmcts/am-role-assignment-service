@@ -4,6 +4,9 @@ import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 
@@ -43,6 +46,13 @@ public class ValidationModelService {
     private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) throws Exception {
         // Package up the request and the assignments
         List<Object> facts = new ArrayList<>();
+        //Pre defined role configuration
+        Role role = Role.builder().id("223")
+            .name("judge")
+            .roleType(RoleType.ORGANISATION)
+            .classification(Classification.PUBLIC)
+            .build();
+        facts.add(role);
         facts.add(assignmentRequest.getRequest());
         facts.addAll(assignmentRequest.getRequestedRoles());
         addExistingRoleAssignments(assignmentRequest, facts);
@@ -57,20 +67,24 @@ public class ValidationModelService {
 
     public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) throws Exception {
         Set<String> userIds = new HashSet<>();
-        userIds.add(assignmentRequest.request.requestorId);
+        userIds.add(String.valueOf(assignmentRequest.request.requestorId));
         userIds.add(String.valueOf(assignmentRequest.getRequest().getAuthenticatedUserId()));
         for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
+            requestedRole.status = Status.CREATED;
+            requestedRole.created = LocalDateTime.now();
+            requestedRole.beginTime = LocalDateTime.now();
+            requestedRole.endTime = LocalDateTime.now();
             userIds.add(String.valueOf(requestedRole.getActorId()));
 
         }
         for (String actorId : userIds) {
-            //facts.addAll(persistenceService.getExistingRoleAssignment(UUID.fromString(actorId)));
+            facts.addAll(persistenceService.getExistingRoleAssignment(UUID.fromString(actorId)));
             facts.addAll(idamRoleService.getIdamRoleAssignmentsForActor(actorId));
-            //facts.addAll(SERVICES.idamRoleService.getIdamRoleAssignmentsForActor(actorId));
+
         }
     }
 
-    public void updateStatus(AssignmentRequest assignmentRequest){
+    public void updateStatus(AssignmentRequest assignmentRequest) {
 
         assignmentRequest.getRequest().setLastUpdateTime(LocalDateTime.now());
     }
