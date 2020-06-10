@@ -14,6 +14,9 @@ class ParseRequestServiceTest {
     void parseRequest() {
         AssignmentRequest assignmentRequest =  TestDataBuilder.buildAssignmentRequest();
         sut.parseRequest(assignmentRequest);
+    }
 
+    @Test
+    void testParseRequest() {
     }
 }
