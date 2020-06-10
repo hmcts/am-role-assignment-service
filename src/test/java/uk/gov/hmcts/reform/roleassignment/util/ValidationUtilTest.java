@@ -3,7 +3,8 @@ package uk.gov.hmcts.reform.roleassignment.util;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
-import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
+
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.*;
 
 import java.util.ArrayList;
 
@@ -13,8 +14,8 @@ public class ValidationUtilTest {
 
     @Test
     void shouldValidate() {
-        assertEquals(true, ValidationUtil.validate("1212121212121212"));
-        assertEquals(false, ValidationUtil.validate("2323232323232"));
+        assertEquals(true, ValidationUtil.validate("1212121212121212", NUMBER_PATTERN));
+        assertEquals(false, ValidationUtil.validate("2323232323232", NUMBER_PATTERN));
     }
 
     @Test

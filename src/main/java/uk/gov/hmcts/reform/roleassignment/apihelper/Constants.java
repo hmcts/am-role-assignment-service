@@ -16,6 +16,8 @@ public class Constants {
     public static final String SERVICE_AUTHORIZATION2 = "ServiceAuthorization";
     public static final String BEARER = "Bearer ";
 
-    public static final String INPUT_CASE_ID_PATTERN = "^[0-9]*$";
+    public static final String NUMBER_PATTERN = "^[0-9]*$";
+    public static final String NUMBER_TEXT_PATTERN = "^[a-zA-Z0-9]+$";
+    public static final String TEXT_PATTERN = "^[a-zA-Z]*$";
 
 }

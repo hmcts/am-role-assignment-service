@@ -9,7 +9,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
 
 @Setter
@@ -19,14 +19,9 @@ public class TestDataBuilder {
         //not meant to be instantiated.
     }
 
-    public static AssignmentRequest buildRoleAssignmentRequest() {
+    public static AssignmentRequest buildAssignmentRequest() {
         LocalDateTime timeStamp = LocalDateTime.now();
-        List<RequestedRole> requestedRoles = new ArrayList<>();
-        requestedRoles.add(buildRequestedRole());
-        return new AssignmentRequest("correlationId", "clientId", "userId",
-                                     "requestorId", RequestType.CREATE, Status.APPROVED,
-                                     "process", "reference", true,
-                                     "roleAssignmentId", timeStamp, requestedRoles);
+        return new AssignmentRequest(buildRequest(),buildRequestedRoleCollection());
     }
 
     public static Request buildRequest() {
@@ -37,9 +32,17 @@ public class TestDataBuilder {
             "roleAssignmentId").timestamp(timeStamp).build();
     }
 
-    public static RequestedRole buildRequestedRole() {
+    //TODO update this
+    private static RequestedRole buildRequestedRole() {
         return new RequestedRole(Status.APPROVED, "log"); //minimum
     }
+
+    public static Collection<RequestedRole> buildRequestedRoleCollection() {
+        Collection<RequestedRole> requestedRoles = new ArrayList<>();
+        requestedRoles.add(buildRequestedRole());
+        return requestedRoles;
+    }
+
 
 
 }

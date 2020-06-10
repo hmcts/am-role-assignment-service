@@ -33,7 +33,8 @@ public class CreateAssignmentController {
     //**************** Create Role Assignment  API ***************
     @PostMapping(
         path = "/role-assignment",
-        produces = {"application/json"}
+        produces = {"application/json"},
+        consumes = {"application/json"}
     )
     @ApiOperation("creates a role/multiple role assignments")
     @ApiResponses({
@@ -51,11 +52,11 @@ public class CreateAssignmentController {
 
         @Valid
         @NotNull(message = "Provide a role assignment body.")
-        @RequestBody AssignmentRequest createRoleAssignmentRequest
+        @RequestBody AssignmentRequest assignmentRequest
 
     ) {
         LOG.info("CreateAssignmentController : {}", createRoleAssignmentService);
-        ResponseEntity<Object> responseEntity = createRoleAssignmentService.createRoleAssignment(createRoleAssignmentRequest);
+        ResponseEntity<Object> responseEntity = createRoleAssignmentService.createRoleAssignment(assignmentRequest);
 
         return responseEntity;
     }

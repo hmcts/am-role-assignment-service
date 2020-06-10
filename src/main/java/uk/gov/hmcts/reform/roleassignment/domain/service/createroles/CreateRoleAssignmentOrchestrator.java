@@ -10,6 +10,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 
 import java.util.HashSet;
@@ -25,7 +26,7 @@ public class CreateRoleAssignmentOrchestrator {
     private RetrieveDataService retrieveDataService;
     private ParseRequestService parseRequestService;
     private PersistenceService persistenceService;
-    //private ValidationModelService validationModelService;
+    private ValidationModelService validationModelService;
 
     public CreateRoleAssignmentOrchestrator(DefaultCaseDataRepository caseService, IdamRoleService idamService,
                                             RetrieveDataService retrieveDataService, ParseRequestService parseRequestService,
@@ -35,12 +36,12 @@ public class CreateRoleAssignmentOrchestrator {
         this.retrieveDataService = retrieveDataService;
         this.parseRequestService = parseRequestService;
         this.persistenceService = persistenceService;
-        //this.validationModelService = validationModelService;
+        this.validationModelService = validationModelService;
     }
 
     public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) {
         //1. call parse request service
-        //parseRequestService.parseRequest(roleAssignmentRequest);
+        parseRequestService.parseRequest(roleAssignmentRequest);
         //2. Call persistence service to store the created records
         //persistenceService.persistRequestAndRequestedRoles(roleAssignmentRequest);
         //3. Call retrieve Data service to fetch all required objects
