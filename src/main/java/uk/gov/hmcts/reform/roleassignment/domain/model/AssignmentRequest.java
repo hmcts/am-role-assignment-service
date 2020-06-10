@@ -7,13 +7,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Getter
 @Setter
 public class AssignmentRequest {
-    public Request request = new Request();
+    public Request request;
     public Collection<RequestedRole> requestedRoles = new ArrayList<>();
 
     @JsonCreator
