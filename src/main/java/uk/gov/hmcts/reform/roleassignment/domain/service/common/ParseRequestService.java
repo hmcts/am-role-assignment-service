@@ -15,6 +15,7 @@ public class ParseRequestService {
         ValidationUtil.validateNumberTextField(assignmentRequest.request.clientId);
         ValidationUtil.validateNumberTextField(assignmentRequest.request.authenticatedUserId);
         ValidationUtil.validateNumberTextField(assignmentRequest.request.requestorId);
+        ValidationUtil.validateTextField(assignmentRequest.request.requestType.toString());
 
         ValidationUtil.validateLists(assignmentRequest.requestedRoles);
 
@@ -26,7 +27,7 @@ public class ParseRequestService {
             ValidationUtil.validateNumberTextField(requestedRole.getRoleType().toString());
             ValidationUtil.validateNumberTextField(requestedRole.getRoleName());
             ValidationUtil.validateNumberTextField(requestedRole.getClassification().toString());
-            ValidationUtil.validateNumberTextField(requestedRole.getStatus().toString());
+            ValidationUtil.validateNumberTextField(requestedRole.getGrantType().toString());
 
             //ValidationUtil.validateNumberTextField(requestedRole.getAttributes().get("jurisdiction").toString());
             //ValidationUtil.validateNumberTextField(requestedRole.getAttributes().get("region").toString());
