@@ -12,12 +12,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Data
-@Builder
-@AllArgsConstructor
+@Builder(toBuilder = true)
 @NoArgsConstructor
 public class AssignmentRequest {
     public Request request;
-    public Collection<RequestedRole> requestedRoles = new ArrayList<>();
+    public Collection<RequestedRole> requestedRoles;
 
     @JsonCreator
     public AssignmentRequest(@JsonProperty(value = "roleRequest") Request request,

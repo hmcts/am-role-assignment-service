@@ -54,7 +54,7 @@ public class Request {
         this.reference = reference;
         this.replaceExisting = replaceExisting;
         this.roleAssignmentId = roleAssignmentId;
-        this.timestamp = created;
+        this.created = created;
     }
 
 
