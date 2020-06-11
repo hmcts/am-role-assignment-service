@@ -8,8 +8,6 @@ import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 @Service
 public class ParseRequestService {
 
-    public static final String ATTRIBUTES = "attributes";
-
     public boolean parseRequest(AssignmentRequest assignmentRequest) {
         ValidationUtil.validateNumberTextField(assignmentRequest.request.correlationId);
         ValidationUtil.validateNumberTextField(assignmentRequest.request.clientId);
