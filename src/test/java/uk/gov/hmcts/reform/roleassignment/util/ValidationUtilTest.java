@@ -14,8 +14,8 @@ public class ValidationUtilTest {
 
     @Test
     void shouldValidate() {
-        assertEquals(true, ValidationUtil.validate("1212121212121212", NUMBER_PATTERN));
-        assertEquals(false, ValidationUtil.validate("2323232323232", NUMBER_PATTERN));
+        assertEquals(true, ValidationUtil.validate("1212121212121212"));
+        assertEquals(false, ValidationUtil.validate("2323232323232"));
     }
 
     @Test

@@ -1,52 +1,38 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
-
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.*;
 
 @Service
 public class ParseRequestService {
-    //1. Validate incoming data
-    //2. Mapping to model objects
+
+    public static final String ATTRIBUTES = "attributes";
 
     public boolean parseRequest(AssignmentRequest assignmentRequest) {
+        ValidationUtil.validateNumberTextField(assignmentRequest.request.correlationId);
+        ValidationUtil.validateNumberTextField(assignmentRequest.request.clientId);
+        ValidationUtil.validateNumberTextField(assignmentRequest.request.authenticatedUserId);
+        ValidationUtil.validateNumberTextField(assignmentRequest.request.requestorId);
+        ValidationUtil.validateTextField(assignmentRequest.request.requestType.toString());
 
-        //patterns tbd
-        parseCorrelationId(assignmentRequest.request.correlationId);
-        //ValidationUtil.validate(assignmentRequest.request.correlationId, NUMBER_TEXT_PATTERN);
-        //ValidationUtil.validate(assignmentRequest.request.clientId, NUMBER_TEXT_PATTERN);
-        //ValidationUtil.validate(assignmentRequest.request.authenticatedUserId, NUMBER_TEXT_PATTERN);
-        //ValidationUtil.validate(assignmentRequest.request.requestorId, NUMBER_TEXT_PATTERN);
+        ValidationUtil.validateLists(assignmentRequest.requestedRoles);
 
-        //ValidationUtil.validate(assignmentRequest.request.process, NUMBER_TEXT_PATTERN);
-        //ValidationUtil.validate(assignmentRequest.request.reference, NUMBER_TEXT_PATTERN);
-        //ValidationUtil.validate(assignmentRequest.request.roleAssignmentId, NUMBER_PATTERN);
+        for (RequestedRole requestedRole: assignmentRequest.requestedRoles) {
+            ValidationUtil.validateUuidField(requestedRole.getId());
+            ValidationUtil.validateUuidField(requestedRole.getActorId());
 
-        //ValidationUtil.validateLists(assignmentRequest.requestedRoles);
+            ValidationUtil.validateTextField(requestedRole.getActorIdType().toString());
+            ValidationUtil.validateTextField(requestedRole.getRoleType().toString());
+            ValidationUtil.validateTextField(requestedRole.getRoleName());
+            ValidationUtil.validateTextField(requestedRole.getClassification().toString());
+            ValidationUtil.validateTextField(requestedRole.getGrantType().toString());
 
-        //Collection<RequestedRole> requestedRoles =  assignmentRequest.getRequestedRoles();
-        //requestedRoles.stream().forEach();
-
+            ValidationUtil.validateTextField(requestedRole.getAttributes().get(ATTRIBUTES).get("jurisdiction").asText());
+            ValidationUtil.validateTextHyphenField(requestedRole.getAttributes().get(ATTRIBUTES).get("region").asText());
+            ValidationUtil.validateTextField(requestedRole.getAttributes().get(ATTRIBUTES).get("contractType").asText());
+        }
         return Boolean.TRUE;
-    }
-
-    private void parseCorrelationId(String field) {
-        if (isEmptyValue(field) || field == null) {
-            throw new InvalidRequest("Invalid Correlation ID value: " + field);
-        } else {
-            ValidationUtil.validate(field, NUMBER_TEXT_PATTERN);
-        }
-    }
-
-    public boolean isEmptyValue(String value) {
-
-        boolean isEmpty = false;
-        if (value != null && value.trim().isEmpty()) {
-            isEmpty = true;
-        }
-        return isEmpty;
     }
 }

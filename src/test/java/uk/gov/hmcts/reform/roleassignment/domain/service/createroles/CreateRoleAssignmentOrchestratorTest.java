@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -13,10 +14,13 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelS
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.io.IOException;
 
 
 class CreateRoleAssignmentOrchestratorTest {
@@ -42,11 +46,12 @@ class CreateRoleAssignmentOrchestratorTest {
                                                                                         persistenceService);
 
     @Test
-    void createRoleAssignment() {
+    void createRoleAssignment() throws IOException {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest();
         when(parseRequestService.parseRequest(any())).thenReturn(true);
         ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
         assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
