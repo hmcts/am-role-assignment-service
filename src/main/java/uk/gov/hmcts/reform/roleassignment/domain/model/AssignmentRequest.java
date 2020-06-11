@@ -12,8 +12,8 @@ import java.util.Collection;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 public class AssignmentRequest {
-    public Request request;
-    public Collection<RequestedRole> requestedRoles;
+    private Request request;
+    private Collection<RequestedRole> requestedRoles;
 
     @JsonCreator
     public AssignmentRequest(@JsonProperty(value = "roleRequest") Request request,

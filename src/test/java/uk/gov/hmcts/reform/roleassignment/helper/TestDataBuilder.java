@@ -4,10 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -31,10 +34,10 @@ public class TestDataBuilder {
     }
 
     public static AssignmentRequest buildAssignmentRequest() throws IOException {
-        return new AssignmentRequest(buildRequest(),buildRequestedRoleCollection());
+        return new AssignmentRequest(buildRequest(), buildRequestedRoleCollection());
     }
 
-    public static Request buildRequest() {
+    private static Request buildRequest() {
         LocalDateTime timeStamp = LocalDateTime.now();
         return Request.builder().id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).correlationId(
             "correlationId").clientId("clientId").authenticatedUserId(
@@ -45,7 +48,7 @@ public class TestDataBuilder {
                                 "roleAssignmentId").created(timeStamp).build();
     }
 
-    public static Collection<RequestedRole> buildRequestedRoleCollection() throws IOException {
+    private static Collection<RequestedRole> buildRequestedRoleCollection() throws IOException {
         Collection<RequestedRole> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRequestedRole());
         requestedRoles.add(buildRequestedRole());
@@ -88,6 +91,10 @@ public class TestDataBuilder {
         assert inputStream != null;
         return new ObjectMapper().readValue(inputStream, new TypeReference<HashMap<String, JsonNode>>() {
         });
+    }
+
+    public static ResponseEntity buildResponseEntity(AssignmentRequest roleAssignmentRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentRequestResource(roleAssignmentRequest));
     }
 
 

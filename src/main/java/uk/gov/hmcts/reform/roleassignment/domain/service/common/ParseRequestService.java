@@ -9,8 +9,8 @@ public class ParseRequestService {
 
     public boolean parseRequest(AssignmentRequest assignmentRequest) {
 
-        ValidationUtil.validateRoleRequest(assignmentRequest.request);
-        ValidationUtil.validateRequestedRoles(assignmentRequest.requestedRoles);
+        ValidationUtil.validateRoleRequest(assignmentRequest.getRequest());
+        ValidationUtil.validateRequestedRoles(assignmentRequest.getRequestedRoles());
         return Boolean.TRUE;
     }
 }

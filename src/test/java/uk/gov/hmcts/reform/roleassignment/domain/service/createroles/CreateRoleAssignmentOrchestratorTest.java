@@ -3,8 +3,10 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
@@ -12,6 +14,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelS
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -44,11 +47,10 @@ class CreateRoleAssignmentOrchestratorTest {
     @Test
     void createRoleAssignment() throws IOException {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest();
+        ResponseEntity expectedResponseEntity = TestDataBuilder.buildResponseEntity(assignmentRequest);
         when(parseRequestService.parseRequest(any())).thenReturn(true);
-        when(parseRequestService.parseRequest(any())).thenReturn(true);
-        //ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
-        //assertNotNull(response);
-        //assertEquals(HttpStatus.OK, response.getStatusCode());
+        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
+        assertEquals(expectedResponseEntity.getStatusCode(), response.getStatusCode());
     }
 
     @Test

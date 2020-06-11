@@ -47,7 +47,7 @@ public class PrepareResponseService {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         List<RequestedRole> requestedRoles = new ArrayList<>();
-        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
+        for (RequestedRole requestedRole : roleAssignmentRequest.getRequestedRoles()) {
             Map<String, Object> requestedRoleMetaData = mapper.convertValue(
                 requestedRole,
                 new TypeReference<Map<String, Object>>() {
