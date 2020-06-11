@@ -12,8 +12,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
-import java.util.UUID;
-
 @Service
 public class PersistenceUtil {
 
@@ -41,9 +39,9 @@ public class PersistenceUtil {
             .status(request.getStatus().toString())
             .process(request.getProcess())
             .reference(request.getProcess())
-            .authenticatedUserId(UUID.fromString(request.getAuthenticatedUserId()))
+            .authenticatedUserId(request.getAuthenticatedUserId())
             .clientId(request.getClientId())
-            .requesterId(UUID.fromString(request.getRequestorId()))
+            .requesterId(request.getRequestorId())
             .replaceExisting(request.replaceExisting)
             .requestType(request.getRequestType().toString())
             .log(request.getLog())

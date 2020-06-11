@@ -18,14 +18,15 @@ public class Request {
     public UUID id;
     public String correlationId;
     public String clientId;
-    public String authenticatedUserId;
-    public String requestorId;
+    public UUID authenticatedUserId;
+    public UUID requestorId;
     public RequestType requestType;
     public Status status;
     public String process;
     public String reference;
     public boolean replaceExisting;
     public String roleAssignmentId;
-    public LocalDateTime timestamp;
+    public LocalDateTime created;
+    public LocalDateTime lastUpdateTime;
     public String log;
 }
