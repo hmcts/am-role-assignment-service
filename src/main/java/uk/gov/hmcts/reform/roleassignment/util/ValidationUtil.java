@@ -16,6 +16,8 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
@@ -111,5 +113,32 @@ public class ValidationUtil {
             return true;
         }
         return false;
+    }
+
+    public static boolean validateRoleRequest(Request roleRequest) {
+
+        validateNumberTextField(roleRequest.correlationId);
+        validateNumberTextField(roleRequest.clientId);
+        validateUuidField(roleRequest.authenticatedUserId);
+        validateUuidField(roleRequest.requestorId);
+        validateTextField(roleRequest.requestType.toString());
+        return true;
+    }
+
+    public static boolean validateRequestedRoles(Collection<RequestedRole> requestedRoles) {
+        for (RequestedRole requestedRole : requestedRoles) {
+            validateUuidField(requestedRole.getActorId());
+
+            validateTextField(requestedRole.getActorIdType().toString());
+            validateTextField(requestedRole.getRoleType().toString());
+            validateTextField(requestedRole.getRoleName());
+            validateTextField(requestedRole.getClassification().toString());
+            validateTextField(requestedRole.getGrantType().toString());
+
+            validateTextField(requestedRole.getAttributes().get("jurisdiction").asText());
+            validateTextHyphenField(requestedRole.getAttributes().get("region").asText());
+            validateTextField(requestedRole.getAttributes().get("contractType").asText());
+        }
+        return true;
     }
 }

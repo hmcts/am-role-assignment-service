@@ -19,7 +19,7 @@ public class AssignmentRequest {
     public AssignmentRequest(@JsonProperty(value = "roleRequest") Request request,
                              @JsonProperty(value = "requestedRoles") Collection<RequestedRole> requestedRolesCollection) {
         this.request = request;
-        this.requestedRoles.addAll(requestedRolesCollection);
+        this.requestedRoles = requestedRolesCollection;
 
     }
 }
