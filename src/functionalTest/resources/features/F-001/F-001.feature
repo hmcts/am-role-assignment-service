@@ -46,6 +46,39 @@ Feature: Create Role Assignments
     Then a positive response is received,
     And the response has all other details as expected.
 
+  @S-013
+  Scenario: must successfully create single Role Assignment when ReplaceExisting is True with Process and Reference
+    Given a user with [an active caseworker profile with full permissions],
+    And a successful call [to create a token for role creation] as in [Befta_Jurisdiction2_Default_Token_Creation_Data_For_Role_Assignment]
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment],
+    And the request [contains ReplaceExisting is true and have process and Reference values],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    Then a positive response is received,
+    And the response has all other details as expected.
+
+  @S-018
+  Scenario: must successfully create multiple Role Assignments when ReplaceExisting is True with Process and Reference
+    Given a user with [an active caseworker profile with full permissions],
+    And a successful call [to create a token for role creation] as in [Befta_Jurisdiction2_Default_Token_Creation_Data_For_Role_Assignment]
+    When a request is prepared with appropriate values,
+    And the request [contains multiple Role Assignments],
+    And the request [contains ReplaceExisting is true and have process and Reference values],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    Then a positive response is received,
+    And the response has all other details as expected.
+
+  @S-019  #Created this scenario from design review. Need to check with Nitin/Aashish
+  Scenario: must receive an error response when creation of any Role Assignment is not successful where ReplaceExisting is True
+    Given a user with [an active caseworker profile with full permissions],
+    And a successful call [to create a token for role creation] as in [Befta_Jurisdiction2_Default_Token_Creation_Data_For_Role_Assignment]
+    When a request is prepared with appropriate values,
+    And the request [contains ReplaceExisting is true and have process and Reference values],
+    And the request [contains multiple Role Assignments where one of the role has invalid data],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    Then a negative response is received,
+    And the response has all other details as expected.
+
   @S-004
   Scenario: must receive an error response when creation of any Role Assignment not successful
     Given a user with [an active caseworker profile with full permissions],
@@ -85,17 +118,6 @@ Feature: Create Role Assignments
     When a request is prepared with appropriate values,
     And the request [contains a single Role Assignment],
     And the request [contains ReplaceExisting is true and  either process or Reference value is missed],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
-    Then a negative response is received,
-    And the response has all other details as expected.
-
-  @S-013
-  Scenario: must receive an error response when ReplaceExisting is True with Process and Reference
-    Given a user with [an active caseworker profile with full permissions],
-    And a successful call [to create a token for role creation] as in [Befta_Jurisdiction2_Default_Token_Creation_Data_For_Role_Assignment]
-    When a request is prepared with appropriate values,
-    And the request [contains a single Role Assignment],
-    And the request [contains ReplaceExisting is true and  have process and Reference values],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
     Then a negative response is received,
     And the response has all other details as expected.
@@ -144,3 +166,4 @@ Feature: Create Role Assignments
     Then a positive response is received,
     And the response has all other details as expected.
     And a call [to retrieve just expired RoleAssignments by Get RoleAssignments] will get the expected response as in [XXXX_Get_RoleAssignemnt_Data_Base].
+
