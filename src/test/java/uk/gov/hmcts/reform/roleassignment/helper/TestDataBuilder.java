@@ -37,9 +37,12 @@ public class TestDataBuilder {
     public static Request buildRequest() {
         LocalDateTime timeStamp = LocalDateTime.now();
         return Request.builder().id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).correlationId(
-            "correlationId").clientId("clientId").authenticatedUserId("userId").requestorId("requestorId").requestType(
-            RequestType.CREATE).status(Status.APPROVED).process("process").reference("reference").replaceExisting(true).roleAssignmentId(
-            "roleAssignmentId").timestamp(timeStamp).build();
+            "correlationId").clientId("clientId").authenticatedUserId(
+                UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestorId(
+                    UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestType(
+                        RequestType.CREATE).status(Status.APPROVED).process("process").reference(
+                            "reference").replaceExisting(true).roleAssignmentId(
+                                "roleAssignmentId").timestamp(timeStamp).build();
     }
 
     public static Collection<RequestedRole> buildRequestedRoleCollection() throws IOException {
@@ -54,7 +57,7 @@ public class TestDataBuilder {
 
         LocalDateTime timeStamp = LocalDateTime.now();
 
-        HashMap<String, JsonNode> attributes = buildAttributesFromFile("attributes.json");
+        HashMap<String, JsonNode> attributes = buildAttributesFromFile();
 
         RoleAssignment roleAssignment = RoleAssignment.builder().actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).actorIdType(
             ActorIdType.IDAM).id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9a")).roleType(RoleType.CASE).roleName(
@@ -79,9 +82,10 @@ public class TestDataBuilder {
         return requestedRole;
     }
 
-    static HashMap<String, JsonNode> buildAttributesFromFile(String fileName) throws IOException {
+    private static HashMap<String, JsonNode> buildAttributesFromFile() throws IOException {
         InputStream inputStream =
-            TestDataBuilder.class.getClassLoader().getResourceAsStream(fileName);
+            TestDataBuilder.class.getClassLoader().getResourceAsStream("attributes.json");
+        assert inputStream != null;
         return new ObjectMapper().readValue(inputStream, new TypeReference<HashMap<String, JsonNode>>() {
         });
     }

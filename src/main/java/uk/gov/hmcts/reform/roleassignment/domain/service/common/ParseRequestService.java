@@ -13,14 +13,13 @@ public class ParseRequestService {
     public boolean parseRequest(AssignmentRequest assignmentRequest) {
         ValidationUtil.validateNumberTextField(assignmentRequest.request.correlationId);
         ValidationUtil.validateNumberTextField(assignmentRequest.request.clientId);
-        //ValidationUtil.validateNumberTextField(assignmentRequest.request.authenticatedUserId);
-        //ValidationUtil.validateNumberTextField(assignmentRequest.request.requestorId);
+        ValidationUtil.validateUuidField(assignmentRequest.request.authenticatedUserId);
+        ValidationUtil.validateUuidField(assignmentRequest.request.requestorId);
         ValidationUtil.validateTextField(assignmentRequest.request.requestType.toString());
 
         ValidationUtil.validateLists(assignmentRequest.requestedRoles);
 
         for (RequestedRole requestedRole: assignmentRequest.requestedRoles) {
-            //ValidationUtil.validateUuidField(requestedRole.getId());
             ValidationUtil.validateUuidField(requestedRole.getActorId());
 
             ValidationUtil.validateTextField(requestedRole.getActorIdType().toString());
@@ -29,9 +28,9 @@ public class ParseRequestService {
             ValidationUtil.validateTextField(requestedRole.getClassification().toString());
             ValidationUtil.validateTextField(requestedRole.getGrantType().toString());
 
-            //ValidationUtil.validateTextField(requestedRole.getAttributes().get("jurisdiction").asText());
-            //ValidationUtil.validateTextHyphenField(requestedRole.getAttributes().get("region").asText());
-            //ValidationUtil.validateTextField(requestedRole.getAttributes().get("contractType").asText());
+            ValidationUtil.validateTextField(requestedRole.getAttributes().get("jurisdiction").asText());
+            ValidationUtil.validateTextHyphenField(requestedRole.getAttributes().get("region").asText());
+            ValidationUtil.validateTextField(requestedRole.getAttributes().get("contractType").asText());
         }
         return Boolean.TRUE;
     }

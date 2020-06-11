@@ -18,7 +18,4 @@ class ParseRequestServiceTest {
         sut.parseRequest(assignmentRequest);
     }
 
-    @Test
-    void testParseRequest() {
-    }
 }

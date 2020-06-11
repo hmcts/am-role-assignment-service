@@ -20,8 +20,8 @@ public class Request {
     public UUID id;
     public String correlationId;
     public String clientId;
-    public String authenticatedUserId;
-    public String requestorId;
+    public UUID authenticatedUserId;
+    public UUID requestorId;
     public RequestType requestType;
     public Status status;
     public String process;
@@ -34,8 +34,8 @@ public class Request {
     @JsonCreator
     public Request(@JsonProperty(value = "correlationId") String correlationId,
                    @JsonProperty(value = "clientId") String clientId,
-                   @JsonProperty(value = "authenticatedUserId") String authenticatedUserId,
-                   @JsonProperty(value = "requestorId") String requestorId,
+                   @JsonProperty(value = "authenticatedUserId") UUID authenticatedUserId,
+                   @JsonProperty(value = "requestorId") UUID requestorId,
                    @JsonProperty(value = "requestType") RequestType requestType,
                    @JsonProperty(value = "status") Status status,
                    @JsonProperty(value = "process") String process,
