@@ -15,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity(name = "role_assignment_request")
-public class RequestEntity {
+public class RequestEntity implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid2")

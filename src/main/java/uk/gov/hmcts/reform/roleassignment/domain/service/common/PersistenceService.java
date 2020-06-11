@@ -53,6 +53,9 @@ public class PersistenceService {
             requestEntity
         )).collect(Collectors.toSet());
 
+        for (HistoryEntity entity : historyEntities) {
+            entity.getRoleAssignmentIdentity().setId(UUID.fromString(generateUniqueId()));
+        }
         requestEntity.setHistoryEntities(historyEntities);
 
         //Persist the request entity
@@ -61,22 +64,37 @@ public class PersistenceService {
 
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void insertHistoryWithUpdatedStatus(RoleAssignment roleAssignment, Request request) {
+    public synchronized String generateUniqueId() {
+        return  UUID.randomUUID().toString();
 
-
-        //Persist the history entity
-        historyRepository.save(persistenceUtil.convertHistoryToEntity(
-            roleAssignment,
-            persistenceUtil.convertRequestIntoEntity(roleAssignment.getRequest())
-        ));
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void persistRoleAssignment(RoleAssignment roleAssignment) {
+    public void insertHistoryWithUpdatedStatus(RoleAssignment roleAssignment, Request request) {
+        UUID roleAssignmentId = roleAssignment.getId();
+        UUID requestId  = request.getId();
 
+        RequestEntity requestEntity  = persistenceUtil.convertRequestIntoEntity(request);
+        if (requestId != null) {
+            requestEntity.setId(requestId);
+        }
+
+        HistoryEntity entity = persistenceUtil.convertHistoryToEntity(roleAssignment, requestEntity
+        );
+
+        if (roleAssignmentId != null) {
+            entity.getRoleAssignmentIdentity().setId(roleAssignmentId);
+        }
+        //Persist the history entity
+        historyRepository.save(entity);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void persistRoleAssignment(RoleAssignment roleAssignment, HistoryEntity historyEntity) {
         //Persist the role assignment entity
-        roleAssignmentRepository.save(persistenceUtil.convertRoleAssignmentToEntity(roleAssignment));
+        RoleAssignmentEntity entity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment, historyEntity);
+        entity.setId(historyEntity.getRoleAssignmentIdentity().getId());
+        roleAssignmentRepository.save(entity);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
