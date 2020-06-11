@@ -42,7 +42,7 @@ public class TestDataBuilder {
                     UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestType(
                         RequestType.CREATE).status(Status.APPROVED).process("process").reference(
                             "reference").replaceExisting(true).roleAssignmentId(
-                                "roleAssignmentId").timestamp(timeStamp).build();
+                                "roleAssignmentId").created(timeStamp).build();
     }
 
     public static Collection<RequestedRole> buildRequestedRoleCollection() throws IOException {
