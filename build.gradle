@@ -285,7 +285,7 @@ dependencies {
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.6.RELEASE'
 
    compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.3'
-   compile group: 'org.postgresql', name: 'postgresql', version: '42.2.13'
+   compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
    testCompile ('com.opentable.components:otj-pg-embedded:0.13.3')
    testCompile ('com.github.tomakehurst:wiremock-jre8:2.25.1')
    testCompile ('org.springframework.cloud:spring-cloud-contract-wiremock:2.2.3.RELEASE')
