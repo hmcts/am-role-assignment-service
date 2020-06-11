@@ -93,7 +93,7 @@ public class TestDataBuilder {
         });
     }
 
-    public static ResponseEntity buildResponseEntity(AssignmentRequest roleAssignmentRequest) {
+    public static ResponseEntity<Object> buildResponseEntity(AssignmentRequest roleAssignmentRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentRequestResource(roleAssignmentRequest));
     }
 

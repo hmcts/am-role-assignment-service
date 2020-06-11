@@ -27,7 +27,7 @@ public class PrepareResponseService {
 
         updateRoleRequestResponse(roleAssignmentRequest);
         updateRequestedRolesResponse(roleAssignmentRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentRequestResource(roleAssignmentRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(roleAssignmentRequest));
     }
 
     private static void updateRoleRequestResponse(AssignmentRequest roleAssignmentRequest) {
