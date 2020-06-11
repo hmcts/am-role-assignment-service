@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_HYPHEN_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
@@ -56,6 +57,11 @@ public class ValidationUtil {
 
     public static boolean validateNumberTextField(String field) {
         validateInputParams(NUMBER_TEXT_PATTERN, field);
+        return (field != null);
+    }
+
+    public static boolean validateTextHyphenField(String field) {
+        validateInputParams(TEXT_HYPHEN_PATTERN, field);
         return (field != null);
     }
 

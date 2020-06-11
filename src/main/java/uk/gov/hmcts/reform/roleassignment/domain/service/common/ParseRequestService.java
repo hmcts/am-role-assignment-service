@@ -8,6 +8,8 @@ import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 @Service
 public class ParseRequestService {
 
+    public static final String ATTRIBUTES = "attributes";
+
     public boolean parseRequest(AssignmentRequest assignmentRequest) {
         ValidationUtil.validateNumberTextField(assignmentRequest.request.correlationId);
         ValidationUtil.validateNumberTextField(assignmentRequest.request.clientId);
@@ -21,15 +23,15 @@ public class ParseRequestService {
             ValidationUtil.validateUuidField(requestedRole.getId());
             ValidationUtil.validateUuidField(requestedRole.getActorId());
 
-            ValidationUtil.validateNumberTextField(requestedRole.getActorIdType().toString());
-            ValidationUtil.validateNumberTextField(requestedRole.getRoleType().toString());
-            ValidationUtil.validateNumberTextField(requestedRole.getRoleName());
-            ValidationUtil.validateNumberTextField(requestedRole.getClassification().toString());
-            ValidationUtil.validateNumberTextField(requestedRole.getGrantType().toString());
+            ValidationUtil.validateTextField(requestedRole.getActorIdType().toString());
+            ValidationUtil.validateTextField(requestedRole.getRoleType().toString());
+            ValidationUtil.validateTextField(requestedRole.getRoleName());
+            ValidationUtil.validateTextField(requestedRole.getClassification().toString());
+            ValidationUtil.validateTextField(requestedRole.getGrantType().toString());
 
-            ValidationUtil.validateNumberTextField(requestedRole.getAttributes().get("attributes").get("jurisdiction").asText());
-            ValidationUtil.validateNumberTextField(requestedRole.getAttributes().get("attributes").get("region").asText());
-            ValidationUtil.validateNumberTextField(requestedRole.getAttributes().get("attributes").get("contractType").asText());
+            ValidationUtil.validateTextField(requestedRole.getAttributes().get(ATTRIBUTES).get("jurisdiction").asText());
+            ValidationUtil.validateTextHyphenField(requestedRole.getAttributes().get(ATTRIBUTES).get("region").asText());
+            ValidationUtil.validateTextField(requestedRole.getAttributes().get(ATTRIBUTES).get("contractType").asText());
         }
         return Boolean.TRUE;
     }
