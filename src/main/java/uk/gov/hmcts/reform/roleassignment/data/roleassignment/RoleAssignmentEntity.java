@@ -52,7 +52,7 @@ public class RoleAssignmentEntity implements Serializable {
     @Column(name = "read_only", nullable = false)
     private boolean readOnly;
 
-    @Column(name = "begin_type")
+    @Column(name = "begin_time")
     private LocalDateTime beginTime;
 
     @Column(name = "end_time")
