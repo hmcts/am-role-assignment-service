@@ -37,7 +37,7 @@ public class TestDataBuilder {
         return new AssignmentRequest(buildRequest(), buildRequestedRoleCollection());
     }
 
-    private static Request buildRequest() {
+    public static Request buildRequest() {
         LocalDateTime timeStamp = LocalDateTime.now();
         return Request.builder().id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).correlationId(
             "correlationId").clientId("clientId").authenticatedUserId(
@@ -48,7 +48,7 @@ public class TestDataBuilder {
                                 "roleAssignmentId").created(timeStamp).build();
     }
 
-    private static Collection<RequestedRole> buildRequestedRoleCollection() throws IOException {
+    public static Collection<RequestedRole> buildRequestedRoleCollection() throws IOException {
         Collection<RequestedRole> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRequestedRole());
         requestedRoles.add(buildRequestedRole());
