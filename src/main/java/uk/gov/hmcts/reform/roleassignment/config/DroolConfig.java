@@ -22,4 +22,6 @@ public class DroolConfig {
     public StatelessKieSession kieSession() throws IOException {
         return kieContainer().newStatelessKieSession("role-assignment-validation-session");
     }
+
+
 }

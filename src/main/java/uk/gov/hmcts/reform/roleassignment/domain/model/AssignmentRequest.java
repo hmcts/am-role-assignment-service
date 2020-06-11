@@ -1,7 +1,9 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,8 +11,10 @@ import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Getter
-@Setter
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AssignmentRequest {
     public Request request;
     public Collection<RequestedRole> requestedRoles = new ArrayList<>();

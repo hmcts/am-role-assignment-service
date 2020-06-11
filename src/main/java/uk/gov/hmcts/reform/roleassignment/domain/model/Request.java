@@ -28,7 +28,8 @@ public class Request {
     public String reference;
     public boolean replaceExisting;
     public String roleAssignmentId;
-    public LocalDateTime timestamp;
+    public LocalDateTime created;
+    public LocalDateTime lastUpdateTime;
     public String log;
 
     @JsonCreator

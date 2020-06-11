@@ -4,14 +4,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentIdentity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -24,8 +28,11 @@ public class SampleRoleAssignmentController {
     private RequestRepository requestRepository;
     ObjectMapper objectMapper;
 
-    public SampleRoleAssignmentController(RequestRepository requestRepository) {
+    private ValidationModelService validationModelService;
+
+    public SampleRoleAssignmentController(RequestRepository requestRepository, ValidationModelService validationModelService) {
         this.requestRepository = requestRepository;
+        this.validationModelService = validationModelService;
     }
 
 
@@ -38,6 +45,15 @@ public class SampleRoleAssignmentController {
 
 
     }
+
+    @PostMapping("/fireRoleExecution")
+    public AssignmentRequest testRue(@RequestBody AssignmentRequest assignmentRequest) throws Exception {
+
+        validationModelService.validateRequest(assignmentRequest);
+
+        return assignmentRequest;
+    }
+
 
     private void convertIntoObject() {
         try {
