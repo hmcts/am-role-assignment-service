@@ -1,5 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.helper;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Setter;
@@ -9,13 +12,19 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Setter
@@ -25,8 +34,7 @@ public class TestDataBuilder {
         //not meant to be instantiated.
     }
 
-    public static AssignmentRequest buildAssignmentRequest() {
-        LocalDateTime timeStamp = LocalDateTime.now();
+    public static AssignmentRequest buildAssignmentRequest() throws IOException {
         return new AssignmentRequest(buildRequest(),buildRequestedRoleCollection());
     }
 
@@ -38,7 +46,7 @@ public class TestDataBuilder {
             "roleAssignmentId").timestamp(timeStamp).build();
     }
 
-    public static Collection<RequestedRole> buildRequestedRoleCollection() {
+    public static Collection<RequestedRole> buildRequestedRoleCollection() throws IOException {
         Collection<RequestedRole> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRequestedRole());
         requestedRoles.add(buildRequestedRole());
@@ -46,19 +54,26 @@ public class TestDataBuilder {
     }
 
     //TODO update this
-    private static RequestedRole buildRequestedRole() {
+    private static RequestedRole buildRequestedRole() throws IOException {
         LocalDateTime timeStamp = LocalDateTime.now();
 
-        ObjectNode node = JsonNodeFactory.instance.objectNode();
+        //ObjectNode node = JsonNodeFactory.instance.objectNode();
 
-        //Map<String, JsonNode> attributes = new LinkedHashMap<>();
+        //node.put("jurisdiction", "divorce");
+
+        //HashMap<String, JsonNode> attributes = new HashMap<String, JsonNode>();
+        //attributes.put("attributes", node);
+        //attributes.put("attributes", node);
         //attributes.put("jurisdiction", "divorce");
         //attributes.put("region", "north-east");
         //attributes.put("contractType", "SALARIED");
 
+        HashMap<String, JsonNode> attributes = buildAttributesFromFile("attributes.json");
+
+
         RoleAssignment roleAssignment = RoleAssignment.builder().actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).actorIdType(
             ActorIdType.IDAM).id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9a")).roleType(RoleType.CASE).roleName(
-                "judge").classification(Classification.PUBLIC).status(Status.APPROVED).readOnly(false).beginTime(
+                "judge").classification(Classification.PUBLIC).grantType(GrantType.STANDARD).status(Status.APPROVED).readOnly(false).beginTime(
                     timeStamp.plusDays(1)).endTime(timeStamp.plusMonths(1)).created(timeStamp).build();
 
         RequestedRole requestedRole = new RequestedRole();
@@ -68,14 +83,22 @@ public class TestDataBuilder {
         requestedRole.setRoleType(roleAssignment.roleType);
         requestedRole.setRoleName(roleAssignment.roleName);
         requestedRole.setClassification(roleAssignment.classification);
+        requestedRole.setGrantType(roleAssignment.grantType);
         requestedRole.setStatus(roleAssignment.status);
         requestedRole.setReadOnly(roleAssignment.readOnly);
         requestedRole.setBeginTime(roleAssignment.beginTime);
         requestedRole.setCreated(roleAssignment.created);
         requestedRole.setEndTime(roleAssignment.endTime);
-        //requestedRole.setAttributes(attributes);
+        requestedRole.setAttributes(attributes);
 
         return requestedRole;
+    }
+
+    static HashMap<String, JsonNode> buildAttributesFromFile(String fileName) throws IOException {
+        InputStream inputStream =
+            TestDataBuilder.class.getClassLoader().getResourceAsStream(fileName);
+        return new ObjectMapper().readValue(inputStream, new TypeReference<HashMap<String, JsonNode>>() {
+        });
     }
 
 

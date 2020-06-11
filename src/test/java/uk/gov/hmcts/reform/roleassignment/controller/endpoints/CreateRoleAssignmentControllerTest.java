@@ -18,6 +18,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+
 @RunWith(MockitoJUnitRunner.class)
 class CreateRoleAssignmentControllerTest {
 
@@ -33,7 +35,7 @@ class CreateRoleAssignmentControllerTest {
     }
 
     @Test
-    void createRoleAssignment() { //TODO improve this
+    void createRoleAssignment() throws IOException { //TODO improve this
         AssignmentRequest request = TestDataBuilder.buildAssignmentRequest();
         AssignmentRequest expectedResponse = buildExpectedResponse();
         when(createRoleAssignmentServiceMock.createRoleAssignment(any())).thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.CREATED));
@@ -42,7 +44,7 @@ class CreateRoleAssignmentControllerTest {
     }
 
     //TODO update this when we decide on expected response
-    private AssignmentRequest buildExpectedResponse() {
+    private AssignmentRequest buildExpectedResponse() throws IOException {
         AssignmentRequest expectedResponse = new AssignmentRequest(TestDataBuilder.buildRequest(), TestDataBuilder.buildRequestedRoleCollection());
         return expectedResponse;
     }

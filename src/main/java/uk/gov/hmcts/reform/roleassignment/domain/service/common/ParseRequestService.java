@@ -7,8 +7,6 @@ import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
 @Service
 public class ParseRequestService {
-    //1. Validate incoming data
-    //2. Mapping to model objects
 
     public boolean parseRequest(AssignmentRequest assignmentRequest) {
         ValidationUtil.validateNumberTextField(assignmentRequest.request.correlationId);
@@ -29,20 +27,10 @@ public class ParseRequestService {
             ValidationUtil.validateNumberTextField(requestedRole.getClassification().toString());
             ValidationUtil.validateNumberTextField(requestedRole.getGrantType().toString());
 
-            //ValidationUtil.validateNumberTextField(requestedRole.getAttributes().get("jurisdiction").toString());
-            //ValidationUtil.validateNumberTextField(requestedRole.getAttributes().get("region").toString());
-            //ValidationUtil.validateNumberTextField(requestedRole.getAttributes().get("contractType").toString());
+            ValidationUtil.validateNumberTextField(requestedRole.getAttributes().get("attributes").get("jurisdiction").asText());
+            ValidationUtil.validateNumberTextField(requestedRole.getAttributes().get("attributes").get("region").asText());
+            ValidationUtil.validateNumberTextField(requestedRole.getAttributes().get("attributes").get("contractType").asText());
         }
-
         return Boolean.TRUE;
-    }
-
-    public boolean isEmptyValue(String value) {
-
-        boolean isEmpty = false;
-        if (value != null && value.trim().isEmpty()) {
-            isEmpty = true;
-        }
-        return isEmpty;
     }
 }

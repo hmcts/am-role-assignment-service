@@ -18,6 +18,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+
 
 class CreateRoleAssignmentOrchestratorTest {
 
@@ -42,7 +44,7 @@ class CreateRoleAssignmentOrchestratorTest {
                                                                                         persistenceService);
 
     @Test
-    void createRoleAssignment() {
+    void createRoleAssignment() throws IOException {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest();
         when(parseRequestService.parseRequest(any())).thenReturn(true);
         ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
