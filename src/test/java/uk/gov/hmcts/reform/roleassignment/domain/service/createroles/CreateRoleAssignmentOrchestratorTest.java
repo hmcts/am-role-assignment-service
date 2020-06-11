@@ -1,8 +1,9 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
-import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
-
+@RunWith(MockitoJUnitRunner.class)
 class CreateRoleAssignmentOrchestratorTest {
 
     @Mock
@@ -50,13 +51,5 @@ class CreateRoleAssignmentOrchestratorTest {
         when(parseRequestService.parseRequest(any())).thenReturn(true);
         ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
         assertEquals(expectedResponseEntity.getStatusCode(), response.getStatusCode());
-    }
-
-    @Test
-    void addExistingRoleAssignments() {
-    }
-
-    @Test
-    void updateRequestStatus() {
     }
 }

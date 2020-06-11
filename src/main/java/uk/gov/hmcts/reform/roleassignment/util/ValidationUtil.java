@@ -95,6 +95,7 @@ public class ValidationUtil {
         }
     }
 
+    //is this correct? Cannot seem to create positive scenario
     public static boolean validateTTL(String strDate) {
         if (strDate.length() < 24) {
             return false;
