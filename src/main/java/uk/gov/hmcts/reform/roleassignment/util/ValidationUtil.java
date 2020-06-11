@@ -1,12 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.INPUT_CASE_ID_PATTERN;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -18,6 +17,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_HYPHEN_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
 
 @Named
 @Singleton
@@ -36,8 +41,28 @@ public class ValidationUtil {
      * @return
      */
     public static boolean validate(String numberString) {
-        validateInputParams(INPUT_CASE_ID_PATTERN, numberString);
+        validateInputParams(NUMBER_PATTERN, numberString);
         return (numberString != null && numberString.length() == 16);
+    }
+
+    public static boolean validateTextField(String field) {
+        validateInputParams(TEXT_PATTERN, field);
+        return (field != null);
+    }
+
+    public static boolean validateUuidField(UUID field) {
+        validateInputParams(UUID_PATTERN, field.toString());
+        return (field != null);
+    }
+
+    public static boolean validateNumberTextField(String field) {
+        validateInputParams(NUMBER_TEXT_PATTERN, field);
+        return (field != null);
+    }
+
+    public static boolean validateTextHyphenField(String field) {
+        validateInputParams(TEXT_HYPHEN_PATTERN, field);
+        return (field != null);
     }
 
     public static void isValidSecurityClassification(String securityClassification) {
@@ -49,10 +74,10 @@ public class ValidationUtil {
         }
     }
 
-    public static void validateInputParams(String pattern, String... inputString) {
+    private static void validateInputParams(String pattern, String... inputString) {
         for (String input : inputString) {
             if (StringUtils.isEmpty(input)) {
-                throw new BadRequestException("The input parameter is Null/Empty");
+                throw new BadRequestException("An input parameter is Null/Empty");
             } else if (!Pattern.matches(pattern, input)) {
                 throw new BadRequestException("The input parameter: \"" + input + "\", does not comply with the "
                                               + "required pattern");
@@ -60,10 +85,10 @@ public class ValidationUtil {
         }
     }
 
-    public static void validateLists(List<?>... inputList) {
-        for (List<?> list : inputList) {
-            if (CollectionUtils.isEmpty(list)) {
-                throw new BadRequestException("The List is empty");
+    public static void validateLists(Collection<?>... inputList) {
+        for (Collection<?> collection : inputList) {
+            if (CollectionUtils.isEmpty(collection)) {
+                throw new BadRequestException("The Collection is empty");
             }
         }
     }

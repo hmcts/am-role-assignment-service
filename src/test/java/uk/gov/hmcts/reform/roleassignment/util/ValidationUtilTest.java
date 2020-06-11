@@ -3,7 +3,8 @@ package uk.gov.hmcts.reform.roleassignment.util;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
-import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
+
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.*;
 
 import java.util.ArrayList;
 

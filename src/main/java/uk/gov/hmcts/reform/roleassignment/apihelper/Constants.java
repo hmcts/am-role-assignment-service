@@ -16,6 +16,12 @@ public class Constants {
     public static final String SERVICE_AUTHORIZATION2 = "ServiceAuthorization";
     public static final String BEARER = "Bearer ";
 
-    public static final String INPUT_CASE_ID_PATTERN = "^[0-9]*$";
+    public static final String NUMBER_PATTERN = "^[0-9]*$";
+    public static final String NUMBER_TEXT_PATTERN = "^[a-zA-Z0-9]+$";
+    public static final String TEXT_HYPHEN_PATTERN = "(\\w+)-(\\w+)";
+    public static final String TEXT_PATTERN = "^[a-zA-Z]*$";
+
+    public static final String UUID_PATTERN = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$";
+
 
 }

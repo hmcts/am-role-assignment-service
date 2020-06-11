@@ -140,7 +140,7 @@
       <column name="read_only" type="boolean">
         <constraints nullable="false"/>
       </column>
-      <column name="begin_type" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+      <column name="begin_time" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
         <constraints nullable="false"/>
       </column>
       <column name="end_time" type="timestamp">
