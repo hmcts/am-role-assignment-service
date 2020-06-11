@@ -3,6 +3,9 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -42,37 +45,60 @@ public class CreateRoleAssignmentOrchestrator {
     public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) {
         //1. call parse request service
         parseRequestService.parseRequest(roleAssignmentRequest);
+
         //2. Call persistence service to store the created records
-        //persistenceService.persistRequestAndRequestedRoles(roleAssignmentRequest);
+        RequestEntity requestEntity = persistInitialRequestAndRoleAssignments(roleAssignmentRequest);
+
         //3. Call retrieve Data service to fetch all required objects
         //retrieveDataService.getRoleAssignmentsForActor("actorId");
+
         //4. Call Validation model service to create aggregation objects and apply drools validation rule
         //validationModelService needs to be written.
 
         //5. For Each: If success then call persistence service to update assignment record status
+        Request request = roleAssignmentRequest.getRequest();
+        request.setId(requestEntity.getId());
+        String historyId = requestEntity.getHistoryEntities().iterator().next().getRoleAssignmentIdentity().getId().toString();
+        insertHistoryWithUpdatedStatus(roleAssignmentRequest, request, Status.APPROVED, UUID.fromString(historyId));
+
+        //5.5 Update Request table with Approved/Rejected status along with role_assignment_id
 
         //6. once all the assignment records are approved call persistence to update request status
+        insertHistoryWithUpdatedStatus(roleAssignmentRequest, request, Status.LIVE, UUID.fromString(historyId));
+
         //7. Call persistence to move assignment records to Live status
+        moveHistoryRecordsToLiveTable(roleAssignmentRequest, requestEntity);
+
         //8. Call the persistence to copy assignment records to RoleAssignmentLive table
-
-        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
-            requestedRole.setStatus(Status.APPROVED);
-        }
-
-        //temporary
-        setRoleAssignmentIDs(roleAssignmentRequest);
-
-        updateRequestStatus(roleAssignmentRequest);
         ResponseEntity<Object> response =  PrepareResponseService.prepareCreateRoleResponse(roleAssignmentRequest);
         return response;
     }
 
-    private void setRoleAssignmentIDs(AssignmentRequest roleAssignmentRequest) {
-        roleAssignmentRequest.getRequest().setId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"));
-        roleAssignmentRequest.getRequestedRoles().forEach(roles -> roles.setId(UUID.fromString(
-            "21334a2b-79ce-44eb-9168-2d49a744be9a")));
+    private void moveHistoryRecordsToLiveTable(AssignmentRequest roleAssignmentRequest, RequestEntity requestEntity) {
+        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
+            HistoryEntity historyEntity = requestEntity.getHistoryEntities().iterator().next();
+            requestedRole.setStatus(Status.LIVE);
+            persistenceService.persistRoleAssignment(requestedRole, historyEntity);
+
+        }
     }
 
+    private void insertHistoryWithUpdatedStatus(AssignmentRequest roleAssignmentRequest, Request request, Status status, UUID historyId) {
+
+        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
+            requestedRole.setStatus(status);
+            requestedRole.setId(historyId);
+            persistenceService.insertHistoryWithUpdatedStatus(requestedRole, request);
+        }
+    }
+
+    private RequestEntity persistInitialRequestAndRoleAssignments(AssignmentRequest roleAssignmentRequest) {
+        roleAssignmentRequest.getRequest().setStatus(Status.CREATED);
+        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
+            requestedRole.setStatus(Status.CREATED);
+        }
+        return persistenceService.persistRequest(roleAssignmentRequest);
+    }
 
     public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) throws Exception {
         Set<String> actorIds = new HashSet<>();
