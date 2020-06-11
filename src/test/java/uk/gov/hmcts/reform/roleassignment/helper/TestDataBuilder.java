@@ -53,23 +53,12 @@ public class TestDataBuilder {
         return requestedRoles;
     }
 
-    //TODO update this
+    //TODO update these, will build all from JSON files instead
     private static RequestedRole buildRequestedRole() throws IOException {
+
         LocalDateTime timeStamp = LocalDateTime.now();
 
-        //ObjectNode node = JsonNodeFactory.instance.objectNode();
-
-        //node.put("jurisdiction", "divorce");
-
-        //HashMap<String, JsonNode> attributes = new HashMap<String, JsonNode>();
-        //attributes.put("attributes", node);
-        //attributes.put("attributes", node);
-        //attributes.put("jurisdiction", "divorce");
-        //attributes.put("region", "north-east");
-        //attributes.put("contractType", "SALARIED");
-
         HashMap<String, JsonNode> attributes = buildAttributesFromFile("attributes.json");
-
 
         RoleAssignment roleAssignment = RoleAssignment.builder().actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).actorIdType(
             ActorIdType.IDAM).id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9a")).roleType(RoleType.CASE).roleName(
