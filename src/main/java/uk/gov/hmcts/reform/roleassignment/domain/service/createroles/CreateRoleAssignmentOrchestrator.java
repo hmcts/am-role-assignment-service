@@ -71,12 +71,11 @@ public class CreateRoleAssignmentOrchestrator {
         moveHistoryRecordsToLiveTable(roleAssignmentRequest, requestEntity);
 
         //8. Call the persistence to copy assignment records to RoleAssignmentLive table
-        ResponseEntity<Object> response =  PrepareResponseService.prepareCreateRoleResponse(roleAssignmentRequest);
-        return response;
+        return  PrepareResponseService.prepareCreateRoleResponse(roleAssignmentRequest);
     }
 
     private void moveHistoryRecordsToLiveTable(AssignmentRequest roleAssignmentRequest, RequestEntity requestEntity) {
-        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
+        for (RequestedRole requestedRole : roleAssignmentRequest.getRequestedRoles()) {
             HistoryEntity historyEntity = requestEntity.getHistoryEntities().iterator().next();
             requestedRole.setStatus(Status.LIVE);
             persistenceService.persistRoleAssignment(requestedRole, historyEntity);
@@ -86,7 +85,7 @@ public class CreateRoleAssignmentOrchestrator {
 
     private void insertHistoryWithUpdatedStatus(AssignmentRequest roleAssignmentRequest, Request request, Status status, UUID historyId) {
 
-        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
+        for (RequestedRole requestedRole : roleAssignmentRequest.getRequestedRoles()) {
             requestedRole.setStatus(status);
             requestedRole.setId(historyId);
             persistenceService.insertHistoryWithUpdatedStatus(requestedRole, request);
@@ -95,7 +94,7 @@ public class CreateRoleAssignmentOrchestrator {
 
     private RequestEntity persistInitialRequestAndRoleAssignments(AssignmentRequest roleAssignmentRequest) {
         roleAssignmentRequest.getRequest().setStatus(Status.CREATED);
-        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
+        for (RequestedRole requestedRole : roleAssignmentRequest.getRequestedRoles()) {
             requestedRole.setStatus(Status.CREATED);
         }
         return persistenceService.persistRequest(roleAssignmentRequest);
@@ -103,9 +102,9 @@ public class CreateRoleAssignmentOrchestrator {
 
     public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) throws Exception {
         Set<UUID> actorIds = new HashSet<>();
-        actorIds.add(assignmentRequest.request.requestorId);
-        actorIds.add(assignmentRequest.request.authenticatedUserId);
-        for (RequestedRole requestedRole : assignmentRequest.requestedRoles) {
+        actorIds.add(assignmentRequest.getRequest().requestorId);
+        actorIds.add(assignmentRequest.getRequest().authenticatedUserId);
+        for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
             actorIds.add(requestedRole.actorId);
         }
         for (UUID actorId : actorIds) {
@@ -115,10 +114,10 @@ public class CreateRoleAssignmentOrchestrator {
     }
 
     public void updateRequestStatus(AssignmentRequest assignmentRequest) {
-        assignmentRequest.request.status = Status.APPROVED;
-        for (RequestedRole requestedRole : assignmentRequest.requestedRoles) {
+        assignmentRequest.getRequest().status = Status.APPROVED;
+        for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
             if (!requestedRole.isApproved()) {
-                assignmentRequest.request.status = Status.REJECTED;
+                assignmentRequest.getRequest().status = Status.REJECTED;
             }
         }
     }

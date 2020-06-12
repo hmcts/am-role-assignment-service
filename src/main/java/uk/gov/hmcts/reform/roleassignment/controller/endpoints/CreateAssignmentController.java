@@ -56,8 +56,6 @@ public class CreateAssignmentController {
 
     ) {
         LOG.info("CreateAssignmentController : {}", createRoleAssignmentService);
-        ResponseEntity<Object> responseEntity = createRoleAssignmentService.createRoleAssignment(assignmentRequest);
-
-        return responseEntity;
+        return createRoleAssignmentService.createRoleAssignment(assignmentRequest);
     }
 }

@@ -4,10 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -31,7 +34,7 @@ public class TestDataBuilder {
     }
 
     public static AssignmentRequest buildAssignmentRequest() throws IOException {
-        return new AssignmentRequest(buildRequest(),buildRequestedRoleCollection());
+        return new AssignmentRequest(buildRequest(), buildRequestedRoleCollection());
     }
 
     public static Request buildRequest() {
@@ -90,6 +93,23 @@ public class TestDataBuilder {
         });
     }
 
+    //this maybe not 100% accurate
+    public static ResponseEntity<Object> buildResponseEntity(AssignmentRequest roleAssignmentRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentRequestResource(roleAssignmentRequest));
+    }
+
+    public static InputStream buildRequestBodyFromFile() throws IOException {
+        InputStream inputStream =
+            TestDataBuilder.class.getClassLoader().getResourceAsStream("assignmentRequest.json");
+        return inputStream;
+    }
+
+    public static AssignmentRequest buildAssignmentRequestFromFile() throws IOException {
+        InputStream inputStream =
+            TestDataBuilder.class.getClassLoader().getResourceAsStream("assignmentRequest.json");
+        assert inputStream != null;
+        return new ObjectMapper().readValue(inputStream, AssignmentRequest.class);
+    }
 
 
 }

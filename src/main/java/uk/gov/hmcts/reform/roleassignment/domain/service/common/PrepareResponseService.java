@@ -27,7 +27,7 @@ public class PrepareResponseService {
 
         updateRoleRequestResponse(roleAssignmentRequest);
         updateRequestedRolesResponse(roleAssignmentRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentRequestResource(roleAssignmentRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(roleAssignmentRequest));
     }
 
     private static void updateRoleRequestResponse(AssignmentRequest roleAssignmentRequest) {
@@ -47,7 +47,7 @@ public class PrepareResponseService {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         List<RequestedRole> requestedRoles = new ArrayList<>();
-        for (RequestedRole requestedRole : roleAssignmentRequest.requestedRoles) {
+        for (RequestedRole requestedRole : roleAssignmentRequest.getRequestedRoles()) {
             Map<String, Object> requestedRoleMetaData = mapper.convertValue(
                 requestedRole,
                 new TypeReference<Map<String, Object>>() {
