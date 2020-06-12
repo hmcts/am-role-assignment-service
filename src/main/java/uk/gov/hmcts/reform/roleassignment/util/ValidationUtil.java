@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
@@ -114,6 +115,12 @@ public class ValidationUtil {
             return true;
         }
         return false;
+    }
+
+    public static boolean validateAssignmentRequest(AssignmentRequest assignmentRequest) {
+        validateRoleRequest(assignmentRequest.getRequest());
+        validateRequestedRoles(assignmentRequest.getRequestedRoles());
+        return true;
     }
 
     public static boolean validateRoleRequest(Request roleRequest) {

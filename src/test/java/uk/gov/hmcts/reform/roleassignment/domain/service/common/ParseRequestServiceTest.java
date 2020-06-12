@@ -20,6 +20,7 @@ class ParseRequestServiceTest {
     @Test
     void parseRequest() throws IOException {
         AssignmentRequest assignmentRequest =  TestDataBuilder.buildAssignmentRequest();
+        //AssignmentRequest builtIT = TestDataBuilder.buildAssignmentRequestFromFile();
         Boolean result = sut.parseRequest(assignmentRequest);
         assertEquals(true, result);
     }

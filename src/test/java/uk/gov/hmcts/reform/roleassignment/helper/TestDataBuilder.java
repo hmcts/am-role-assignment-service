@@ -93,7 +93,23 @@ public class TestDataBuilder {
         });
     }
 
+    //this maybe not 100% accurate
     public static ResponseEntity<Object> buildResponseEntity(AssignmentRequest roleAssignmentRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentRequestResource(roleAssignmentRequest));
     }
+
+    public static InputStream buildRequestBodyFromFile() throws IOException {
+        InputStream inputStream =
+            TestDataBuilder.class.getClassLoader().getResourceAsStream("assignmentRequest.json");
+        return inputStream;
+    }
+
+    public static AssignmentRequest buildAssignmentRequestFromFile() throws IOException {
+        InputStream inputStream =
+            TestDataBuilder.class.getClassLoader().getResourceAsStream("assignmentRequest.json");
+        assert inputStream != null;
+        return new ObjectMapper().readValue(inputStream, AssignmentRequest.class);
+    }
+
+
 }

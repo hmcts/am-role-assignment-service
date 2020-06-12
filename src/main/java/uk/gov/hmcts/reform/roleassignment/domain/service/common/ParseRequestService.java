@@ -11,6 +11,6 @@ public class ParseRequestService {
 
         ValidationUtil.validateRoleRequest(assignmentRequest.getRequest());
         ValidationUtil.validateRequestedRoles(assignmentRequest.getRequestedRoles());
-        return true;
+        return Boolean.TRUE;
     }
 }

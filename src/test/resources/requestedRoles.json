@@ -1,0 +1,39 @@
+[
+  {
+    "actorIdType": "IDAM",
+    "actorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+    "roleType": "CASE",
+    "roleName": "judge",
+    "classification": "PUBLIC",
+    "grantType": "STANDARD",
+    "readOnly": false,
+    "beginTime": "2020-01-01T00:00",
+    "endTime": "2050-01-01T00:00",
+    "created": "2020-01-01T00:00",
+    "attributes":
+    {
+      "jurisdiction": "divorce",
+      "region": "north-east",
+      "contractType": "SALARIED"
+    }
+  },
+  {
+    "actorIdType": "IDAM",
+    "actorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+    "roleType": "CASE",
+    "roleName": "judge",
+    "classification": "PUBLIC",
+    "grantType": "STANDARD",
+    "readOnly": false,
+    "beginTime": "2020-01-01T00:00",
+    "endTime": "2050-01-01T00:00",
+    "created": "2020-01-01T00:00",
+    "attributes":
+    {
+      "jurisdiction": "divorce",
+      "region": "north-east",
+      "contractType": "SALARIED"
+    }
+  }
+]
+
