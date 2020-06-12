@@ -1,0 +1,81 @@
+[
+  {
+    "name": "judge",
+    "label": "Judge",
+    "description": "Judicial office holder able to do judicial case work",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+        "data":
+        {
+          "RoleType": {
+            "mandatory": true,
+            "values": ["ORGANISATION"]
+          },
+          "Classification": {
+            "mandatory": true,
+            "values": ["PUBLIC", "PRIVATE"]
+          },
+          "GrantType": {
+            "mandatory": true,
+            "values": ["STANDARD"]
+          },
+          "Attributes": {
+            "Region": {
+              "mandatory": true
+            },
+            "Location": {
+              "mandatory": false
+            }
+          }
+        }
+
+      },
+      {
+        "data":
+        {
+          "RoleType": {
+            "mandatory": true,
+            "values": ["CASE"]
+          },
+          "Classification": {
+            "mandatory": true,
+            "values": ["PUBLIC", "PRIVATE"]
+          },
+          "GrantType": {
+            "mandatory": true,
+            "values": ["SPECIFIC", "CHALLENGED"]
+          },
+          "Begin": {
+            "mandatory": true
+          },
+          "Attributes": {
+            "CaseId": {
+              "mandatory": true
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "judicial_management",
+    "label": "Judicial Management",
+    "description": "This role is required to manage other judicial roles.",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+       "data":
+       {
+         "RoleType":
+         {
+           "mandatory": true,
+           "values": [
+             "ORGANISATION","CASE"
+           ]
+         }
+       }
+      }
+    ]
+  }
+]

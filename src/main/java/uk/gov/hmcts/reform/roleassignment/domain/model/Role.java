@@ -4,8 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -13,8 +14,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 @NoArgsConstructor
 public class Role {
     String name;
-    String id;
+    String label;
     String description;
-    RoleType roleType;
-    Classification classification;
+    RoleCategory category;
+    public List<Pattern> patterns;
+
 }
