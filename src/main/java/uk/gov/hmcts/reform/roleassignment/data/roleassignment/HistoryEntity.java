@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
@@ -24,6 +26,8 @@ import java.util.UUID;
 @Builder(toBuilder = true)
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "role_assignment_history")
 public class HistoryEntity implements Serializable {
 
