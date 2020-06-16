@@ -1,0 +1,88 @@
+{
+  "title": "must succesfully create single Role Assignment with Role Type ID is case-role",
+  "_guid_": "S-001",
+  "_extends_": "F-001_Test_Data_Base",
+  "specs": [
+    "contains a single Role Assignment",
+    "contains Role Type Id is case-role"
+  ],
+  "request": {
+    "body": {
+      "roleRequest": {
+        "correlationId": "request1",
+        "clientId": "client1",
+        "authenticatedUserId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+        "requestorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+        "requestType": "CREATE",
+        "process": "businessProcess1",
+        "reference": "abc-3434242",
+        "replaceExisting": false,
+        "created": "2020-01-01T00:00"
+      },
+      "requestedRoles": [
+        {
+          "actorIdType": "IDAM",
+          "actorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+          "roleType": "CASE",
+          "roleName": "judge",
+          "classification": "PUBLIC",
+          "grantType": "STANDARD",
+          "readOnly": true,
+          "beginTime": "2020-01-01T00:00",
+          "endTime": "2050-01-01T00:00",
+          "created": "2020-01-01T00:00",
+          "attributes": {
+            "jurisdiction": "divorce",
+            "region": "north-east",
+            "contractType": "SALARIED"
+          }
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "correlationId": "request1",
+          "authenticatedUserId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+          "requestorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+          "requestType": "CREATE",
+          "status": "CREATED",
+          "process": "businessProcess1",
+          "reference": "abc-3434242",
+          "replaceExisting": false,
+          "created": "2020-01-01T00:00:00",
+          "id": "5eaec66c-8f5b-4d72-89aa-17f20217365c"
+        },
+        "requestedRoles": [
+          {
+            "id": "75745115-513e-4195-b8c8-bf6ee486885a",
+            "actorIdType": "IDAM",
+            "actorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+            "roleType": "CASE",
+            "roleName": "judge",
+            "classification": "PUBLIC",
+            "status": "LIVE",
+            "readOnly": true,
+            "beginTime": "2020-01-01T00:00:00",
+            "endTime": "2050-01-01T00:00:00",
+            "created": "2020-01-01T00:00:00",
+            "attributes": {
+              "jurisdiction": "divorce",
+              "region": "north-east",
+              "contractType": "SALARIED"
+            },
+            "approved": false,
+            "rejected": false
+          }
+        ]
+      }
+    }
+  }
+}
