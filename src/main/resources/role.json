@@ -8,10 +8,8 @@
       {
         "data": {
           "RoleType": {
-            "values": [
+            "values":
               "ORGANISATION",
-              "CASE"
-            ],
             "mandatory": true
           },
           "Classification": {
@@ -47,9 +45,9 @@
         "data": {
           "RoleType": {
             "mandatory": true,
-            "values": [
+            "values":
               "CASE"
-            ]
+
           },
           "Classification": {
             "mandatory": true,
@@ -70,6 +68,7 @@
           "Attributes": {
             "CaseId": {
               "mandatory": true
+
             }
           }
         }
