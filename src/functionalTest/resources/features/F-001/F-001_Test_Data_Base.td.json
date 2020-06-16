@@ -1,0 +1,15 @@
+{
+  "_guid_": "F-001_Test_Data_Base",
+  "_extends_": "F-001-Base-Root",
+  "productName": "Role Assignments API",
+  "operationName": "Create Role Assignments",
+  "apiClientId": "ccd_gw",
+  "specs": [
+    "an active caseworker profile with full permissions"
+  ],
+  "method": "POST",
+  "uri": "/role-assignment",
+  "request": {
+
+  }
+}
