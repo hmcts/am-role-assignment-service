@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentIdentity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -16,6 +17,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 public class PersistenceUtil {
 
     public HistoryEntity convertHistoryToEntity(RoleAssignment model, RequestEntity requestEntity) {
+        RoleAssignmentIdentity roleAssignmentId = RoleAssignmentIdentity.builder().status(model.getStatus().toString()).build();
         return HistoryEntity.builder().actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
@@ -25,8 +27,8 @@ public class PersistenceUtil {
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
-            .status(model.getStatus().toString())
             .readOnly(model.readOnly)
+            .roleAssignmentIdentity(roleAssignmentId)
             .requestEntity(requestEntity)
             .build();
 
@@ -49,7 +51,7 @@ public class PersistenceUtil {
 
     }
 
-    public RoleAssignmentEntity convertRoleAssignmentToEntity(RoleAssignment model) {
+    public RoleAssignmentEntity convertRoleAssignmentToEntity(RoleAssignment model, HistoryEntity historyEntity) {
         return RoleAssignmentEntity.builder().actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))

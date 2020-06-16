@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
+import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 @Api(value = "roles")
@@ -35,7 +36,7 @@ public class GetAssignmentController {
 
     @PostMapping("/processRequest")
     public ResponseEntity<String> processRequest(@Valid @RequestBody AssignmentRequest assignmentRequest) {
-        if (!parseRequestService.parseRequest(assignmentRequest)) {
+        if (!ValidationUtil.validateAssignmentRequest(assignmentRequest)) {
             throw new BadRequestException(V1.Error.INVALID_REQUEST);
         }
         // service call to store request and requested roles in db for audit purpose.

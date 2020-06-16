@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestRepository;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentIdentity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
@@ -88,6 +89,7 @@ public class SampleRoleAssignmentController {
 
 
     private HistoryEntity convertIntoEntity(RoleAssignment model) {
+        RoleAssignmentIdentity roleAssignmentId = RoleAssignmentIdentity.builder().status(model.getStatus().toString()).build();
         return HistoryEntity.builder().actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(convertValueJsonNode(model.getAttributes()))
@@ -97,10 +99,9 @@ public class SampleRoleAssignmentController {
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
-            .status(Status.CREATED.toString())
+            .roleAssignmentIdentity(roleAssignmentId)
             .readOnly(Boolean.TRUE)
             .log("professional drools rule")
-            .status(Status.CREATED.toString())
             .sequence(102)
             .build();
     }
