@@ -114,11 +114,10 @@ public class SampleRoleAssignmentController {
             .reference("abc-3434242")
             .authenticatedUserId(UUID.randomUUID())
             .clientId("sdsd")
-            .requesterId(UUID.randomUUID())
+            .assignerId(UUID.randomUUID())
             .replaceExisting(Boolean.FALSE)
             .requestType(RequestType.CREATE.toString())
             .log("professional drools rule")
-            .sequence(102)
             .build();
         requestEntity.setHistoryEntities(new HashSet<HistoryEntity>());
         requestEntity.getHistoryEntities().add(historyEntity);

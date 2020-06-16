@@ -2,11 +2,11 @@
 package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
@@ -14,7 +14,6 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -48,6 +47,9 @@ public class RoleAssignmentEntity implements Serializable {
 
     @Column(name = "grant_type", nullable = false)
     private String grantType;
+
+    @Column(name = "role_category")
+    private String roleCategory;
 
     @Column(name = "read_only", nullable = false)
     private boolean readOnly;

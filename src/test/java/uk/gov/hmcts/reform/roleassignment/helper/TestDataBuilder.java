@@ -41,7 +41,7 @@ public class TestDataBuilder {
         LocalDateTime timeStamp = LocalDateTime.now();
         return Request.builder().id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).correlationId(
             "correlationId").clientId("clientId").authenticatedUserId(
-                UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestorId(
+                UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).assignerId(
                     UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestType(
                         RequestType.CREATE).status(Status.APPROVED).process("process").reference(
                             "reference").replaceExisting(true).roleAssignmentId(

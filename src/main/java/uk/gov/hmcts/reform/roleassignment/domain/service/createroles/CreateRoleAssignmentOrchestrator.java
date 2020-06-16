@@ -102,7 +102,7 @@ public class CreateRoleAssignmentOrchestrator {
 
     public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) throws Exception {
         Set<UUID> actorIds = new HashSet<>();
-        actorIds.add(assignmentRequest.getRequest().requestorId);
+        actorIds.add(assignmentRequest.getRequest().assignerId);
         actorIds.add(assignmentRequest.getRequest().authenticatedUserId);
         for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
             actorIds.add(requestedRole.actorId);
