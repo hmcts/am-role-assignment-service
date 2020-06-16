@@ -6,11 +6,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
 import uk.gov.hmcts.reform.roleassignment.domain.model.Pattern;
-import java.util.Map.Entry;
-import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role
-import java.util.Iterator;
+
 
 rule "role  validation" salience 30
 
