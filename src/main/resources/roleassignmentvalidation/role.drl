@@ -35,7 +35,6 @@ $requestedRole  : RequestedRole(roleName == $role.getName())
 
 
 then
-System.out.println("Object  valued "  +$attributeObj);
 $requestedRole.setStatus(Status.APPROVED);
 
 end;
