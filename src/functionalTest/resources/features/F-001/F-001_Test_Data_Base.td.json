@@ -8,8 +8,5 @@
     "an active caseworker profile with full permissions"
   ],
   "method": "POST",
-  "uri": "/role-assignment",
-  "request": {
-
-  }
+  "uri": "/role-assignment"
 }
