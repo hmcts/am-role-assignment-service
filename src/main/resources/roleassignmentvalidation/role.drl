@@ -1,4 +1,44 @@
+package roleassignmentvalidation
+import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.Pattern;
+import java.util.Map.Entry;
+import java.util.Map;
+import com.fasterxml.jackson.databind.JsonNode;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Role
+import java.util.Iterator;
+
+rule "role  validation" salience 30
+
+when
+$role           : Role()
+$requestedRole  : RequestedRole(roleName == $role.getName())
+                  Role($patterns : patterns)
+                  Pattern($data : data) from $patterns
+                  $classificationEntry : JsonNode() from $data["Classification"]
+                  $classificationObj : JsonNode() from $classificationEntry
+                  RequestedRole($requestedRole.getClassification().toString() == $classificationObj.asText() )
+                  $grantTypeEntry : JsonNode() from $data["GrantType"]
+                  $grantTypeObj : JsonNode() from $grantTypeEntry
+                  RequestedRole($requestedRole.getGrantType().toString() == $grantTypeObj.asText() )
+                  $roleTypeEntry : JsonNode() from $data["RoleType"]
+                  $roleTypeObj : JsonNode() from $roleTypeEntry
+                  RequestedRole($requestedRole.getRoleType().toString() == $roleTypeObj.asText() )
+                  $attributesEntry : JsonNode() from $data["Attributes"]
+                  $attributeObj : JsonNode() from $attributesEntry
+                  $Obj1 : JsonNode() from $attributeObj
+                  RequestedRole(attributes["region"] == $Obj1)
+
+
+then
+System.out.println("Object  valued "  +$attributeObj);
+$requestedRole.setStatus(Status.APPROVED);
+
+end;
 
 
 
-//

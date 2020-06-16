@@ -6,45 +6,63 @@
     "category": "JUDICIAL",
     "patterns": [
       {
-        "data":
-        {
+        "data": {
           "RoleType": {
-            "mandatory": true,
-            "values": ["ORGANISATION"]
+            "values": [
+              "ORGANISATION",
+              "CASE"
+            ],
+            "mandatory": true
           },
           "Classification": {
             "mandatory": true,
-            "values": ["PUBLIC", "PRIVATE"]
+            "values": [
+              "PUBLIC",
+              "PRIVATE"
+            ]
           },
           "GrantType": {
             "mandatory": true,
-            "values": ["STANDARD"]
+            "values": [
+              "STANDARD"
+            ]
           },
           "Attributes": {
             "Region": {
-              "mandatory": true
+              "mandatory": true,
+              "values": [
+                "north-east","south-east"
+              ]
             },
-            "Location": {
-              "mandatory": false
+            "Jurisdiction": {
+              "mandatory": true,
+              "values": [
+                "divorce","child-abused"
+              ]
             }
           }
         }
-
       },
       {
-        "data":
-        {
+        "data": {
           "RoleType": {
             "mandatory": true,
-            "values": ["CASE"]
+            "values": [
+              "CASE"
+            ]
           },
           "Classification": {
             "mandatory": true,
-            "values": ["PUBLIC", "PRIVATE"]
+            "values": [
+              "PUBLIC"
+            ]
           },
           "GrantType": {
             "mandatory": true,
-            "values": ["SPECIFIC", "CHALLENGED"]
+            "values": [
+              "SPECIFIC",
+              "CHALLENGED"
+            ]
           },
           "Begin": {
             "mandatory": true
@@ -65,16 +83,15 @@
     "category": "JUDICIAL",
     "patterns": [
       {
-       "data":
-       {
-         "RoleType":
-         {
-           "mandatory": true,
-           "values": [
-             "ORGANISATION","CASE"
-           ]
-         }
-       }
+        "data": {
+          "RoleType": {
+            "mandatory": true,
+            "values": [
+              "ORGANISATION",
+              "CASE"
+            ]
+          }
+        }
       }
     ]
   }
