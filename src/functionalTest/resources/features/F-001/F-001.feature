@@ -7,8 +7,6 @@ Feature: Create Role Assignments
   @S-001
   Scenario: must successfully create single Role Assignment with only mandatory fields
     Given a user with [an active caseworker profile with full permissions],
-#    And   another successful call [to create a token for case creation] as in [Befta_Jurisdiction2_Default_Token_Creation_Data_For_Case_Creation]
-    And a successful call [to create a token for role assignment] as in [Befta_Jurisdiction2_Default_Token_Creation_Data_For_Role_Assignments]
     When a request is prepared with appropriate values,
     And the request [contains a single Role Assignment with only mandatory fields],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
