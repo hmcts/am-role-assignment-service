@@ -43,12 +43,12 @@ public class CreateRoleAssignmentOrchestrator {
         this.validationModelService = validationModelService;
     }
 
-    public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) {
+    public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) throws Exception {
         //1. call parse request service
-        parseRequestService.parseRequest(roleAssignmentRequest);
+        AssignmentRequest parsedAssignmentRequest = parseRequestService.parseRequest(roleAssignmentRequest);
 
         //2. Call persistence service to store the created records
-        RequestEntity requestEntity = persistInitialRequestAndRoleAssignments(roleAssignmentRequest);
+        RequestEntity requestEntity = persistInitialRequestAndRoleAssignments(parsedAssignmentRequest);
 
         //3. Call retrieve Data service to fetch all required objects
         //retrieveDataService.getRoleAssignmentsForActor("actorId");
@@ -57,21 +57,21 @@ public class CreateRoleAssignmentOrchestrator {
         //validationModelService needs to be written.
 
         //5. For Each: If success then call persistence service to update assignment record status
-        Request request = roleAssignmentRequest.getRequest();
+        Request request = parsedAssignmentRequest.getRequest();
         request.setId(requestEntity.getId());
         String historyId = requestEntity.getHistoryEntities().iterator().next().getRoleAssignmentIdentity().getId().toString();
-        insertHistoryWithUpdatedStatus(roleAssignmentRequest, request, Status.APPROVED, UUID.fromString(historyId));
+        insertHistoryWithUpdatedStatus(parsedAssignmentRequest, request, Status.APPROVED, UUID.fromString(historyId));
 
         //5.5 Update Request table with Approved/Rejected status along with role_assignment_id
 
         //6. once all the assignment records are approved call persistence to update request status
-        insertHistoryWithUpdatedStatus(roleAssignmentRequest, request, Status.LIVE, UUID.fromString(historyId));
+        insertHistoryWithUpdatedStatus(parsedAssignmentRequest, request, Status.LIVE, UUID.fromString(historyId));
 
         //7. Call persistence to move assignment records to Live status
-        moveHistoryRecordsToLiveTable(roleAssignmentRequest, requestEntity);
+        moveHistoryRecordsToLiveTable(parsedAssignmentRequest, requestEntity);
 
         //8. Call the persistence to copy assignment records to RoleAssignmentLive table
-        return  PrepareResponseService.prepareCreateRoleResponse(roleAssignmentRequest);
+        return  PrepareResponseService.prepareCreateRoleResponse(parsedAssignmentRequest);
     }
 
     private void moveHistoryRecordsToLiveTable(AssignmentRequest roleAssignmentRequest, RequestEntity requestEntity) {

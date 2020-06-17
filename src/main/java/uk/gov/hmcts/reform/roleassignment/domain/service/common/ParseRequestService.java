@@ -2,13 +2,19 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.CORRELATION_ID_HEADER_NAME;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class ParseRequestService {
@@ -16,10 +22,13 @@ public class ParseRequestService {
     @Autowired
     private SecurityUtils securityUtils;
 
+    @Autowired
+    private CorrelationInterceptorUtil correlationInterceptorUtil;
+
     private String serviceId;
     private String userId;
 
-    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest) {
+    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest) throws Exception {
         //1. validate request and assignment record
         ValidationUtil.validateRoleRequest(assignmentRequest.getRequest());
         ValidationUtil.validateRequestedRoles(assignmentRequest.getRequestedRoles());
@@ -33,7 +42,7 @@ public class ParseRequestService {
         assignmentRequest.getRequest().setStatus(Status.CREATED);
         assignmentRequest.getRequest().setCreated(LocalDateTime.now());
         //d. correlationId if it is empty then generate a new value and set.
-        //TODO
+        setCorrelationId(assignmentRequest);
         //3. RoleAssignment Parsing
         //a. Copy process and reference from the request to RoleAssignment
         assignmentRequest.getRequestedRoles().forEach(ra -> ra.setReference(assignmentRequest.getRequest().getReference()));
@@ -45,5 +54,12 @@ public class ParseRequestService {
         assignmentRequest.getRequestedRoles().forEach(ra -> ra.setCreated(LocalDateTime.now()));
 
         return assignmentRequest;
+    }
+
+    private void setCorrelationId(AssignmentRequest assignmentRequest) throws Exception {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+            .getRequest();
+        assignmentRequest.getRequest().setCorrelationId(correlationInterceptorUtil.preHandle(request));
+        correlationInterceptorUtil.afterCompletion();
     }
 }
