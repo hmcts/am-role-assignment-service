@@ -84,7 +84,9 @@ public class CreateRoleAssignmentOrchestrator {
         moveHistoryRecordsToLiveTable(parsedAssignmentRequest, requestEntity);
 
         //8. Call the persistence to copy assignment records to RoleAssignmentLive table
-        return  PrepareResponseService.prepareCreateRoleResponse(parsedAssignmentRequest);
+        ResponseEntity<Object> result = PrepareResponseService.prepareCreateRoleResponse(parsedAssignmentRequest);
+        parseRequestService.removeCorrelationLog();
+        return result;
     }
 
     private void moveHistoryRecordsToLiveTable(AssignmentRequest roleAssignmentRequest, RequestEntity requestEntity) {

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import javax.validation.Valid;
@@ -26,9 +25,6 @@ public class CreateAssignmentController {
 
     private static final Logger LOG = LoggerFactory.getLogger(CreateAssignmentController.class);
     private CreateRoleAssignmentOrchestrator createRoleAssignmentService;
-
-    @Autowired
-    private CorrelationInterceptorUtil correlationInterceptorUtil;
 
     @Autowired
     public CreateAssignmentController(CreateRoleAssignmentOrchestrator createRoleAssignmentService) {
@@ -66,7 +62,6 @@ public class CreateAssignmentController {
     ) throws Exception {
         LOG.info("CreateAssignmentController : {}", createRoleAssignmentService);
         ResponseEntity<Object> result = createRoleAssignmentService.createRoleAssignment(assignmentRequest);
-        correlationInterceptorUtil.afterCompletion();
         return result;
     }
 }

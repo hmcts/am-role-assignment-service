@@ -59,4 +59,8 @@ public class ParseRequestService {
             .getRequest();
         assignmentRequest.getRequest().setCorrelationId(correlationInterceptorUtil.preHandle(request));
     }
+
+    public void removeCorrelationLog() throws Exception {
+        correlationInterceptorUtil.afterCompletion();
+    }
 }
