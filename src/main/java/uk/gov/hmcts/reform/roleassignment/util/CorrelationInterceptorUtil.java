@@ -1,14 +1,13 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.CORRELATION_ID_HEADER_NAME;
-
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
+
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.CORRELATION_ID_HEADER_NAME;
 
 @Component
 public class CorrelationInterceptorUtil  {
@@ -23,13 +22,15 @@ public class CorrelationInterceptorUtil  {
     public void afterCompletion() throws Exception {
         MDC.remove(CORRELATION_ID_LOG_VAR_NAME);
     }
-    private String getCorrelationIdFromHeader(final HttpServletRequest request) throws Exception{
+
+    private String getCorrelationIdFromHeader(final HttpServletRequest request) throws Exception {
         String correlationId = request.getHeader(CORRELATION_ID_HEADER_NAME);
         if (StringUtils.isBlank(correlationId)) {
             correlationId = generateUniqueCorrelationId();
         }
         return correlationId;
     }
+
     private String generateUniqueCorrelationId() {
         return UUID.randomUUID().toString();
     }

@@ -10,8 +10,6 @@ import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.CORRELATION_ID_HEADER_NAME;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;

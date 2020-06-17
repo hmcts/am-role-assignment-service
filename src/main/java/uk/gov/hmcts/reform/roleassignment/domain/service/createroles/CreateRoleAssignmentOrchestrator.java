@@ -47,14 +47,27 @@ public class CreateRoleAssignmentOrchestrator {
         //1. call parse request service
         AssignmentRequest parsedAssignmentRequest = parseRequestService.parseRequest(roleAssignmentRequest);
 
-        //2. Call persistence service to store the created records
-        RequestEntity requestEntity = persistInitialRequestAndRoleAssignments(parsedAssignmentRequest);
+        RequestEntity requestEntity;
+        //2. Call persistence service to store only the request
+        requestEntity = persistInitialRequestAndRoleAssignments(parsedAssignmentRequest);
+        //3. If replaceExisting boolean is true then fetch all existing assignments based on Process+reference and call delete else
+        if (parsedAssignmentRequest.getRequest().isReplaceExisting()) {
 
-        //3. Call retrieve Data service to fetch all required objects
-        //retrieveDataService.getRoleAssignmentsForActor("actorId");
+            //b. Call persistence service to fetch existing assignments
+            //c. Call the validation model for each assignment
+            //d.
+        } else {
+            //2. Call persistence for newly created records and update relation with request
+            //requestEntity = persistInitialRoleAssignments(roleAssignmentRequest);
+        }
+
+        //3. Call retrieve Data service to fetch all required IDAM details for Assignee, Assigner & AuthenticatedUserId
+        //retrieveDataService.getRoleDetailsForAssignee("UUID");
+        //retrieveDataService.getRoleDetailsForAssigner("UUID");
+        //retrieveDataService.getRoleDetailsForUser("UUID");
 
         //4. Call Validation model service to create aggregation objects and apply drools validation rule
-        //validationModelService needs to be written.
+        //validationModelService needs to be called here.
 
         //5. For Each: If success then call persistence service to update assignment record status
         Request request = parsedAssignmentRequest.getRequest();

@@ -59,7 +59,7 @@ public class CreateAssignmentController {
         @NotNull(message = "Provide role assignment body.")
         @RequestBody AssignmentRequest assignmentRequest
 
-    ) {
+    ) throws Exception {
         LOG.info("CreateAssignmentController : {}", createRoleAssignmentService);
         return createRoleAssignmentService.createRoleAssignment(assignmentRequest);
     }
