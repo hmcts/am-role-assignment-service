@@ -284,7 +284,7 @@ dependencies {
   compile('org.springframework.boot:spring-boot-starter-hateoas')
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.7.RELEASE'
 
-   compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.3'
+   compile group: 'org.liquibase', name: 'liquibase-core', version: '3.10.0'
    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
    testCompile ('com.opentable.components:otj-pg-embedded:0.13.3')
    testCompile ('com.github.tomakehurst:wiremock-jre8:2.25.1')
@@ -305,7 +305,7 @@ dependencies {
   testCompile (group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '2.15.0'
+  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '2.19.1-RDM-8667.1'
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.3.RELEASE'
 
   compile group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber

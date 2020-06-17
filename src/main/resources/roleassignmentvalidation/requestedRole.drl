@@ -7,7 +7,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 
-rule "role assignment validation" salience 10
+rule "role assignment validation" salience 50
 
 when
 $requestedRole  : RequestedRole(id!= null)
@@ -19,7 +19,8 @@ $role           : Role()
                   RequestedRole(status==Status.CREATED)
                   RequestedRole(beginTime >= created,endTime >= created,endTime > beginTime)
 then
-$requestedRole.setStatus(Status.APPROVED);
+//$requestedRole.setStatus(Status.APPROVED);
+System.out.println("Technical Rule Validation for RequestedRole has done Successfully");
 end;
 
 

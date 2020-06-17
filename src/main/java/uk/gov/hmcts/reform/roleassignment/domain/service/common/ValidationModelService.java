@@ -1,15 +1,16 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,12 +48,8 @@ public class ValidationModelService {
         // Package up the request and the assignments
         List<Object> facts = new ArrayList<>();
         //Pre defined role configuration
-        Role role = Role.builder().id("223")
-            .name("judge")
-            .roleType(RoleType.ORGANISATION)
-            .classification(Classification.PUBLIC)
-            .build();
-        facts.add(role);
+        List<Role> role = buildRole("role.json");
+        facts.addAll(role);
         facts.add(assignmentRequest.getRequest());
         facts.addAll(assignmentRequest.getRequestedRoles());
         addExistingRoleAssignments(assignmentRequest, facts);
@@ -91,5 +88,20 @@ public class ValidationModelService {
                 assignmentRequest.getRequest().status = Status.REJECTED;
             }
         }
+    }
+
+    private List<Role> buildRole(String filename) {
+
+        try (InputStream input = ValidationModelService.class.getClassLoader().getResourceAsStream(filename)) {
+            CollectionType listType = new ObjectMapper().getTypeFactory().constructCollectionType(
+                ArrayList.class,
+                Role.class
+            );
+            List<Role> allRoles = new ObjectMapper().readValue(input, listType);
+            return allRoles;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
