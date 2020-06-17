@@ -4,15 +4,16 @@ Feature: Create Role Assignments
   Background:
     Given an appropriate test context as detailed in the test data source
 
-#  @S-001
-#  Scenario: must successfully create single Role Assignment with only mandatory fields
-#    Given a user with [an active caseworker profile with full permissions],
-#    And a successful call [to create a token for role creation] as in [Befta_Jurisdiction2_Default_Token_Creation_Data_For_Role_Assignment]
-#    When a request is prepared with appropriate values,
-#    And the request [contains a single Role Assignment with only mandatory fields],
-#    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
-#    Then a positive response is received,
-#    And the response has all other details as expected.
+  @S-001
+  Scenario: must successfully create single Role Assignment with only mandatory fields
+    Given a user with [an active caseworker profile with full permissions],
+#    And   another successful call [to create a token for case creation] as in [Befta_Jurisdiction2_Default_Token_Creation_Data_For_Case_Creation]
+    And a successful call [to create a token for role assignment] as in [Befta_Jurisdiction2_Default_Token_Creation_Data_For_Role_Assignments]
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment with only mandatory fields],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    Then a positive response is received,
+    And the response has all other details as expected.
 
 #  @S-002
 #  Scenario: must successfully create multiple Role Assignments
@@ -35,16 +36,16 @@ Feature: Create Role Assignments
 #    Then a positive response is received,
 #    And the response has all other details as expected.
 #
-  @S-012
-  Scenario: must successfully create single Role Assignment with Role Type ID is organisational-role
-    Given a user with [an active caseworker profile with full permissions],
-    And a successful call [to create a token for role creation] as in [Befta_Jurisdiction2_Default_Token_Creation_Data_For_Role_Assignment]
-    When a request is prepared with appropriate values,
-    And the request [contains a single Role Assignment],
-    And the request [contains Role Type Id is organisational-role],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
-    Then a positive response is received,
-    And the response has all other details as expected.
+#  @S-012
+#  Scenario: must successfully create single Role Assignment with Role Type ID is organisational-role
+#    Given a user with [an active caseworker profile with full permissions],
+#    And a successful call [to create a token for role creation] as in [Befta_Jurisdiction2_Default_Token_Creation_Data_For_Role_Assignment]
+#    When a request is prepared with appropriate values,
+#    And the request [contains a single Role Assignment],
+#    And the request [contains Role Type Id is organisational-role],
+#    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+#    Then a positive response is received,
+#    And the response has all other details as expected.
 #
 #  @S-013
 #  Scenario: must successfully create single Role Assignment when ReplaceExisting is True with Process and Reference
