@@ -58,6 +58,5 @@ public class ParseRequestService {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
             .getRequest();
         assignmentRequest.getRequest().setCorrelationId(correlationInterceptorUtil.preHandle(request));
-        correlationInterceptorUtil.afterCompletion();
     }
 }
