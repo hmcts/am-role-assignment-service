@@ -16,7 +16,7 @@ end;
 
 
 //**** rules for delete ****
-rule "request validation for delete" salience 50
+rule "request validation for delete" salience 10
 
 when
 $request  : Request(id!= null,requestType == RequestType.DELETE)

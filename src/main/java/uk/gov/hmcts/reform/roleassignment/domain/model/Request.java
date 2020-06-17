@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,31 +29,4 @@ public class Request {
     public LocalDateTime created;
     public LocalDateTime lastUpdateTime;
     public String log;
-
-    @JsonCreator
-    public Request(@JsonProperty(value = "correlationId") String correlationId,
-                   @JsonProperty(value = "clientId") String clientId,
-                   @JsonProperty(value = "authenticatedUserId") UUID authenticatedUserId,
-                   @JsonProperty(value = "requestorId") UUID requestorId,
-                   @JsonProperty(value = "requestType") RequestType requestType,
-                   @JsonProperty(value = "status") Status status,
-                   @JsonProperty(value = "process") String process,
-                   @JsonProperty(value = "reference") String reference,
-                   @JsonProperty(value = "replaceExisting") boolean replaceExisting,
-                   @JsonProperty(value = "roleAssignmentId") String roleAssignmentId,
-                   @JsonProperty(value = "created") LocalDateTime created) {
-        this.correlationId = correlationId;
-        this.clientId = clientId;
-        this.authenticatedUserId = authenticatedUserId;
-        this.requestorId = requestorId;
-        this.requestType = requestType;
-        this.status = status;
-        this.process = process;
-        this.reference = reference;
-        this.replaceExisting = replaceExisting;
-        this.roleAssignmentId = roleAssignmentId;
-        this.created = created;
-    }
-
-
 }
