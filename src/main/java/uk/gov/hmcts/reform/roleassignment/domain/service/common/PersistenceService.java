@@ -53,9 +53,8 @@ public class PersistenceService {
             requestEntity
         )).collect(Collectors.toSet());
 
-        for (HistoryEntity entity : historyEntities) {
-            entity.getRoleAssignmentIdentity().setId(UUID.fromString(generateUniqueId()));
-        }
+        historyEntities.stream().forEach(entity->entity.getRoleAssignmentIdentity().setId(UUID.fromString(generateUniqueId())));
+
         requestEntity.setHistoryEntities(historyEntities);
 
         //Persist the request entity

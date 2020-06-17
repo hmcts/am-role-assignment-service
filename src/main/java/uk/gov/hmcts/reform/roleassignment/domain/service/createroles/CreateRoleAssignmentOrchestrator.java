@@ -100,25 +100,7 @@ public class CreateRoleAssignmentOrchestrator {
         return persistenceService.persistRequest(roleAssignmentRequest);
     }
 
-    public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) throws Exception {
-        Set<UUID> actorIds = new HashSet<>();
-        actorIds.add(assignmentRequest.getRequest().assignerId);
-        actorIds.add(assignmentRequest.getRequest().authenticatedUserId);
-        for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
-            actorIds.add(requestedRole.actorId);
-        }
-        for (UUID actorId : actorIds) {
-            facts.addAll(retrieveDataService.getRoleAssignmentsForActor(actorId.toString()));
-            facts.addAll(idamService.getIdamRoleAssignmentsForActor(actorId.toString()));
-        }
-    }
 
-    public void updateRequestStatus(AssignmentRequest assignmentRequest) {
-        assignmentRequest.getRequest().status = Status.APPROVED;
-        for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
-            if (!requestedRole.isApproved()) {
-                assignmentRequest.getRequest().status = Status.REJECTED;
-            }
-        }
-    }
+
+
 }

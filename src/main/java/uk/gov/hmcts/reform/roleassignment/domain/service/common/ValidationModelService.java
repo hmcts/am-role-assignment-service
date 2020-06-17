@@ -61,7 +61,7 @@ public class ValidationModelService {
         kieSession.execute(facts);
 
         //Update status
-        updateStatus(assignmentRequest);
+        updateRequestStatus(assignmentRequest);
 
     }
 
@@ -84,7 +84,12 @@ public class ValidationModelService {
         }
     }
 
-    public void updateStatus(AssignmentRequest assignmentRequest) {
-        //Only need to update the status here
+    public void updateRequestStatus(AssignmentRequest assignmentRequest) {
+        assignmentRequest.getRequest().status = Status.APPROVED;
+        for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
+            if (!requestedRole.isApproved()) {
+                assignmentRequest.getRequest().status = Status.REJECTED;
+            }
+        }
     }
 }
