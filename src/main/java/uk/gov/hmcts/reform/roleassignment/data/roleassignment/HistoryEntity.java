@@ -2,23 +2,21 @@
 package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.EmbeddedId;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -52,7 +50,10 @@ public class HistoryEntity implements Serializable {
     @Column(name = "grant_type", nullable = false)
     private String grantType;
 
-    @Column(name = "read_only")
+    @Column(name = "role_category")
+    private String roleCategory;
+
+    @Column(name = "read_only", nullable = false)
     private boolean readOnly;
 
     @Column(name = "begin_time")
@@ -60,6 +61,12 @@ public class HistoryEntity implements Serializable {
 
     @Column(name = "end_time")
     private LocalDateTime endTime;
+
+    @Column(name = "process")
+    private String process;
+
+    @Column(name = "reference")
+    private String reference;
 
     @Column(name = "log")
     private String log;
@@ -71,13 +78,13 @@ public class HistoryEntity implements Serializable {
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 
-    @UpdateTimestamp
-    @Column(name = "last_updated", nullable = false)
-    private LocalDateTime lastUpdateTime;
-
     @Column(name = "attributes", nullable = false, columnDefinition = "jsonb")
     @Convert(converter = JsonBConverter.class)
     private JsonNode attributes;
+
+    @Column(name = "notes", nullable = false, columnDefinition = "jsonb")
+    @Convert(converter = JsonBConverter.class)
+    private JsonNode notes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id")

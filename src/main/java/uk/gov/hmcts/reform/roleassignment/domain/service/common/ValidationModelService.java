@@ -64,7 +64,7 @@ public class ValidationModelService {
 
     public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) throws Exception {
         Set<String> userIds = new HashSet<>();
-        userIds.add(String.valueOf(assignmentRequest.getRequest().requestorId));
+        userIds.add(String.valueOf(assignmentRequest.getRequest().assignerId));
         userIds.add(String.valueOf(assignmentRequest.getRequest().getAuthenticatedUserId()));
         for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
             requestedRole.status = Status.CREATED;
@@ -82,8 +82,7 @@ public class ValidationModelService {
     }
 
     public void updateStatus(AssignmentRequest assignmentRequest) {
-
-        assignmentRequest.getRequest().setLastUpdateTime(LocalDateTime.now());
+        //Only need to update the status here
     }
 
     private List<Role> buildRole(String filename) {

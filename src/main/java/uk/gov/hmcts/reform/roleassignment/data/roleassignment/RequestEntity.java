@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,8 +39,8 @@ public class RequestEntity implements Serializable {
     @Column(name = "authenticated_user_id", nullable = false)
     private UUID authenticatedUserId;
 
-    @Column(name = "requester_id", nullable = false)
-    private UUID requesterId;
+    @Column(name = "assigner_id", nullable = false)
+    private UUID assignerId;
 
     @Column(name = "request_type", nullable = false)
     private String requestType;
@@ -58,19 +57,15 @@ public class RequestEntity implements Serializable {
     @Column(name = "replace_existing")
     private Boolean replaceExisting;
 
+    @Column(name = "role_assignment_id", nullable = true)
+    private UUID roleAssignmentId;
+
     @Column(name = "log")
     private String log;
-
-    @Column(name = "status_sequence", nullable = false)
-    private int sequence;
 
     @CreationTimestamp
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
-
-    @UpdateTimestamp
-    @Column(name = "last_updated", nullable = false)
-    private LocalDateTime lastUpdateTime;
 
     @OneToMany(cascade = CascadeType.ALL,
         fetch = FetchType.LAZY,
