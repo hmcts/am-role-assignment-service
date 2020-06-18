@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -44,22 +44,21 @@ public class CreateRoleAssignmentOrchestrator {
     }
 
     public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) throws Exception {
+
         //1. call parse request service
         AssignmentRequest parsedAssignmentRequest = parseRequestService.parseRequest(roleAssignmentRequest);
-
         RequestEntity requestEntity;
         //2. Call persistence service to store only the request
         requestEntity = persistInitialRequestAndRoleAssignments(parsedAssignmentRequest);
         //3. If replaceExisting boolean is true then fetch all existing assignments based on Process+reference and call delete else
-        if (parsedAssignmentRequest.getRequest().isReplaceExisting()) {
+        //if (parsedAssignmentRequest.getRequest().isReplaceExisting()) {
 
-            //b. Call persistence service to fetch existing assignments
-            //c. Call the validation model for each assignment
-            //d.
-        } else {
-            //2. Call persistence for newly created records and update relation with request
-            //requestEntity = persistInitialRoleAssignments(roleAssignmentRequest);
-        }
+        //b. Call persistence service to fetch existing assignments
+        //c. Call the validation model for each assignment
+        //} else {
+        //2. Call persistence for newly created records and update relation with request
+        //requestEntity = persistInitialRoleAssignments(roleAssignmentRequest);
+        //}
 
         //3. Call retrieve Data service to fetch all required IDAM details for Assignee, Assigner & AuthenticatedUserId
         //retrieveDataService.getRoleDetailsForAssignee("UUID");

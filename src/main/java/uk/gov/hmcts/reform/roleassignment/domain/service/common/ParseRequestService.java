@@ -5,14 +5,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.UUID;
 
 @Service
 public class ParseRequestService {
@@ -27,37 +30,41 @@ public class ParseRequestService {
     private String userId;
 
     public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest) throws Exception {
+        Request request = assignmentRequest.getRequest();
+        Collection<RequestedRole> requestedRoles = assignmentRequest.getRequestedRoles();
         //1. validate request and assignment record
-        ValidationUtil.validateRoleRequest(assignmentRequest.getRequest());
-        ValidationUtil.validateRequestedRoles(assignmentRequest.getRequestedRoles());
+        ValidationUtil.validateRoleRequest(request);
+        ValidationUtil.validateRequestedRoles(requestedRoles);
 
         //2. Request Parsing
         //a. Extract client Id and place in the request
-        assignmentRequest.getRequest().setClientId(securityUtils.getServiceId());
+        request.setClientId(securityUtils.getServiceId());
         //b. Extract AuthenticatedUser Id from the User token and place in the request.
-        assignmentRequest.getRequest().setAuthenticatedUserId(UUID.fromString(securityUtils.getUserId()));
+        request.setAuthenticatedUserId(UUID.fromString(securityUtils.getUserId()));
         //c. Set Status=Created and created Time = now
-        assignmentRequest.getRequest().setStatus(Status.CREATED);
-        assignmentRequest.getRequest().setCreated(LocalDateTime.now());
+        request.setStatus(Status.CREATED);
+        request.setCreated(LocalDateTime.now());
         //d. correlationId if it is empty then generate a new value and set.
-        setCorrelationId(assignmentRequest);
+        setCorrelationId(request);
         //3. RoleAssignment Parsing
         //a. Copy process and reference from the request to RoleAssignment
-        assignmentRequest.getRequestedRoles().forEach(ra -> ra.setReference(assignmentRequest.getRequest().getReference()));
-        assignmentRequest.getRequestedRoles().forEach(ra -> ra.setProcess(assignmentRequest.getRequest().getProcess()));
         //b. Set Status=Created and statusSequenceNumber from Status Enum
-        assignmentRequest.getRequestedRoles().forEach(ra -> ra.setStatus(Status.CREATED));
-        assignmentRequest.getRequestedRoles().forEach(ra -> ra.setStatusSequence(Status.CREATED.sequence));
         //c. created Time = now
-        assignmentRequest.getRequestedRoles().forEach(ra -> ra.setCreated(LocalDateTime.now()));
+        requestedRoles.stream().forEach(requestedRole -> {
+            requestedRole.setProcess(request.getProcess());
+            requestedRole.setReference(request.getReference());
+            requestedRole.setStatus(Status.CREATED);
+            requestedRole.setStatusSequence(Status.CREATED.sequence);
+            requestedRole.setCreated(LocalDateTime.now());
 
+        });
         return assignmentRequest;
     }
 
-    private void setCorrelationId(AssignmentRequest assignmentRequest) throws Exception {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+    private void setCorrelationId(Request request) throws Exception {
+        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
             .getRequest();
-        assignmentRequest.getRequest().setCorrelationId(correlationInterceptorUtil.preHandle(request));
+        request.setCorrelationId(correlationInterceptorUtil.preHandle(httpServletRequest));
     }
 
     public void removeCorrelationLog() throws Exception {
