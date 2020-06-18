@@ -75,8 +75,10 @@ public class CreateRoleAssignmentOrchestrator {
             roleAssignmentRequest.setRequestedRoles(requestedRoles);
         }
 
-        //3. Call retrieve Data service to fetch all required objects
-        //retrieveDataService.getRoleAssignmentsForActor("actorId");
+        //3. Call retrieve Data service to fetch all required IDAM details for Assignee, Assigner & AuthenticatedUserId
+        //retrieveDataService.getRoleDetailsForAssignee("UUID");
+        //retrieveDataService.getRoleDetailsForAssigner("UUID");
+        //retrieveDataService.getRoleDetailsForUser("UUID");
 
         //4. Call Validation model service to create aggregation objects and apply drools validation rule
         //validationModelService needs to be written.
@@ -106,6 +108,9 @@ public class CreateRoleAssignmentOrchestrator {
 
         //8. Call the persistence to copy assignment records to RoleAssignmentLive table
         return PrepareResponseService.prepareCreateRoleResponse(roleAssignmentRequest);
+        ResponseEntity<Object> result = PrepareResponseService.prepareCreateRoleResponse(parsedAssignmentRequest);
+        parseRequestService.removeCorrelationLog();
+        return result;
     }
 
     private void moveHistoryRecordsToLiveTable(AssignmentRequest roleAssignmentRequest, RequestEntity requestEntity) {
