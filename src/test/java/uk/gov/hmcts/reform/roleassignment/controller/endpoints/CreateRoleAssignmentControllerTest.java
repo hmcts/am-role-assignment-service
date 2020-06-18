@@ -12,8 +12,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
@@ -34,7 +32,7 @@ class CreateRoleAssignmentControllerTest {
     }
 
     @Test
-    void createRoleAssignment() throws IOException { //TODO improve this
+    void createRoleAssignment() throws Exception { //TODO improve this
         AssignmentRequest request = TestDataBuilder.buildAssignmentRequest();
         ResponseEntity<Object> expectedResponse = TestDataBuilder.buildResponseEntity(request);
         when(createRoleAssignmentServiceMock.createRoleAssignment(request)).thenReturn(expectedResponse);
