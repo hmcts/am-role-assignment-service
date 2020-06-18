@@ -16,7 +16,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,10 +40,9 @@ public class TestDataBuilder {
         LocalDateTime timeStamp = LocalDateTime.now();
         return Request.builder().id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).correlationId(
             "correlationId").clientId("clientId").authenticatedUserId(
-                UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestorId(
+                UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).assignerId(
                     UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestType(
-                        RequestType.CREATE).status(Status.APPROVED).process("process").reference(
-                            "reference").replaceExisting(true).roleAssignmentId(
+                        RequestType.CREATE).reference("reference").process(("process")).replaceExisting(true).roleAssignmentId(
                                 "roleAssignmentId").created(timeStamp).build();
     }
 
@@ -64,7 +62,7 @@ public class TestDataBuilder {
 
         RoleAssignment roleAssignment = RoleAssignment.builder().actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).actorIdType(
             ActorIdType.IDAM).id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9a")).roleType(RoleType.CASE).roleName(
-                "judge").classification(Classification.PUBLIC).grantType(GrantType.STANDARD).status(Status.APPROVED).readOnly(false).beginTime(
+                "judge").classification(Classification.PUBLIC).grantType(GrantType.STANDARD).readOnly(false).beginTime(
                     timeStamp.plusDays(1)).endTime(timeStamp.plusMonths(1)).created(timeStamp).build();
 
         RequestedRole requestedRole = new RequestedRole();
@@ -75,7 +73,6 @@ public class TestDataBuilder {
         requestedRole.setRoleName(roleAssignment.roleName);
         requestedRole.setClassification(roleAssignment.classification);
         requestedRole.setGrantType(roleAssignment.grantType);
-        requestedRole.setStatus(roleAssignment.status);
         requestedRole.setReadOnly(roleAssignment.readOnly);
         requestedRole.setBeginTime(roleAssignment.beginTime);
         requestedRole.setCreated(roleAssignment.created);
