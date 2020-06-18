@@ -10,7 +10,12 @@
     "headers": {
       "Authorization": "[[DEFAULT_AUTO_VALUE]]",
       "ServiceAuthorization": "[[DEFAULT_AUTO_VALUE]]",
-      "Content-Type": "application/json"
+      "X-Correlation-ID": "",
+      "AssignerID": "",
+      "Content-Type": "application/json",
+      "Process": "",
+      "Reference": "",
+      "ReplaceExisting": false
     },
     "body": {
       "roleRequest": {
@@ -21,7 +26,7 @@
         "requestType": "CREATE",
         "process": "businessProcess1",
         "reference": "abc-3434242",
-        "replaceExisting": false,
+
         "created": "2020-01-01T00:00"
       },
       "requestedRoles": [

@@ -5,40 +5,7 @@
   "specs": [
     "contains a single Role Assignment with only mandatory fields"
   ],
-  "request": {
-    "body": {
-      "roleRequest": {
-        "correlationId": "request1",
-        "clientId": "client1",
-        "authenticatedUserId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-        "requestorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-        "requestType": "CREATE",
-        "process": "businessProcess1",
-        "reference": "abc-3434242",
-        "replaceExisting": false,
-        "created": "2020-01-01T00:00"
-      },
-      "requestedRoles": [
-        {
-          "actorIdType": "IDAM",
-          "actorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-          "roleType": "CASE",
-          "roleName": "judge",
-          "classification": "PUBLIC",
-          "grantType": "STANDARD",
-          "readOnly": true,
-          "beginTime": "2020-01-01T00:00",
-          "endTime": "2050-01-01T00:00",
-          "created": "2020-01-01T00:00",
-          "attributes": {
-            "jurisdiction": "divorce",
-            "region": "north-east",
-            "contractType": "SALARIED"
-          }
-        }
-      ]
-    }
-  },
+
   "expectedResponse": {
     "_extends_": "Common_201_Response",
     "headers": {
