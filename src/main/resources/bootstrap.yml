@@ -6,5 +6,5 @@ spring:
       aliases:
         s2s-secret: idam.s2s-auth.totp_secret
         AppInsightsInstrumentationKey: azure.application-insights.instrumentation-key
-        am-role-assignment-service-s2s-secret : AM_ROLE_ASSIGNMENT_SERVICE_SECRET
+        am-role-assignment-service-s2s-secret: AM_ROLE_ASSIGNMENT_SERVICE_SECRET
         role-assignment-service-POSTGRES-PASS: ROLE_ASSIGNMENT_DB_PASSWORD
