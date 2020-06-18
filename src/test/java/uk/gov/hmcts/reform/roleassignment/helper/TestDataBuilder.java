@@ -16,7 +16,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.io.IOException;
 import java.io.InputStream;

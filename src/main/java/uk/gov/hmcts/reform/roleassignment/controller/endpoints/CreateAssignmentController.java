@@ -37,7 +37,7 @@ public class CreateAssignmentController {
         produces = V1.MediaType.CREATE_ASSIGNMENT,
         consumes = {"application/json"}
     )
-    @ApiOperation("creates one or more role assignments")
+    @ApiOperation("creates multiple role assignments")
     @ApiResponses({
         @ApiResponse(
             code = 201,
@@ -54,12 +54,10 @@ public class CreateAssignmentController {
         )
     })
     public ResponseEntity<Object> createRoleAssignment(
-
         @Valid
         @NotNull(message = "Provide role assignment body.")
-        @RequestBody AssignmentRequest assignmentRequest
+        @RequestBody AssignmentRequest assignmentRequest) throws Exception {
 
-    ) {
         LOG.info("CreateAssignmentController : {}", createRoleAssignmentService);
         return createRoleAssignmentService.createRoleAssignment(assignmentRequest);
     }
