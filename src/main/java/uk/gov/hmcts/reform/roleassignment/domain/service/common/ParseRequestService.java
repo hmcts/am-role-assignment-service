@@ -58,12 +58,6 @@ public class ParseRequestService {
             requestedRole.setCreated(LocalDateTime.now());
 
         });
-        /*
-        requestedRoles.forEach(ra -> ra.setProcess(request.getProcess()));
-        requestedRoles.forEach(ra -> ra.setStatus(Status.CREATED));
-        requestedRoles.forEach(ra -> ra.setStatusSequence(Status.CREATED.sequence));
-        requestedRoles.forEach(ra -> ra.setCreated(LocalDateTime.now()));
-        */
         return assignmentRequest;
     }
 

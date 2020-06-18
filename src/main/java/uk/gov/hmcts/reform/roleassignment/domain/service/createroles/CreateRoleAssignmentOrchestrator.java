@@ -51,15 +51,15 @@ public class CreateRoleAssignmentOrchestrator {
         //2. Call persistence service to store only the request
         requestEntity = persistInitialRequestAndRoleAssignments(parsedAssignmentRequest);
         //3. If replaceExisting boolean is true then fetch all existing assignments based on Process+reference and call delete else
-        if (parsedAssignmentRequest.getRequest().isReplaceExisting()) {
+        //if (parsedAssignmentRequest.getRequest().isReplaceExisting()) {
 
             //b. Call persistence service to fetch existing assignments
             //c. Call the validation model for each assignment
             //d.
-        } else {
+        //} else {
             //2. Call persistence for newly created records and update relation with request
             //requestEntity = persistInitialRoleAssignments(roleAssignmentRequest);
-        }
+        //}
 
         //3. Call retrieve Data service to fetch all required IDAM details for Assignee, Assigner & AuthenticatedUserId
         //retrieveDataService.getRoleDetailsForAssignee("UUID");
