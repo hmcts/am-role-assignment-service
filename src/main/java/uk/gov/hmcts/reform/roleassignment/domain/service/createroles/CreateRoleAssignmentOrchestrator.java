@@ -44,6 +44,7 @@ public class CreateRoleAssignmentOrchestrator {
     }
 
     public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) throws Exception {
+
         //1. call parse request service
         AssignmentRequest parsedAssignmentRequest = parseRequestService.parseRequest(roleAssignmentRequest);
         RequestEntity requestEntity;
