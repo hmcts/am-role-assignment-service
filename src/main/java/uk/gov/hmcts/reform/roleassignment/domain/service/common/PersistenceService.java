@@ -9,10 +9,11 @@ import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentRepository;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.util.Set;
@@ -40,7 +41,6 @@ public class PersistenceService {
     }
 
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public RequestEntity persistRequest(AssignmentRequest assignmentRequest) {
 
         //Prepare request entity
@@ -53,7 +53,7 @@ public class PersistenceService {
             requestEntity
         )).collect(Collectors.toSet());
 
-        historyEntities.stream().forEach(entity->entity.getRoleAssignmentIdentity().setId(UUID.fromString(generateUniqueId())));
+        historyEntities.stream().forEach(entity -> entity.setId(UUID.fromString(generateUniqueId())));
 
         requestEntity.setHistoryEntities(historyEntities);
 
@@ -64,16 +64,16 @@ public class PersistenceService {
     }
 
     public synchronized String generateUniqueId() {
-        return  UUID.randomUUID().toString();
+        return UUID.randomUUID().toString();
 
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void insertHistoryWithUpdatedStatus(RoleAssignment roleAssignment, Request request) {
-        UUID roleAssignmentId = roleAssignment.getId();
-        UUID requestId  = request.getId();
 
-        RequestEntity requestEntity  = persistenceUtil.convertRequestIntoEntity(request);
+    public void persistHistory(RoleAssignment roleAssignment, Request request) {
+        UUID roleAssignmentId = roleAssignment.getId();
+        UUID requestId = request.getId();
+
+        RequestEntity requestEntity = persistenceUtil.convertRequestIntoEntity(request);
         if (requestId != null) {
             requestEntity.setId(requestId);
         }
@@ -82,7 +82,7 @@ public class PersistenceService {
         );
 
         if (roleAssignmentId != null) {
-            entity.getRoleAssignmentIdentity().setId(roleAssignmentId);
+            entity.setId(roleAssignmentId);
         }
         //Persist the history entity
         historyRepository.save(entity);
@@ -91,8 +91,8 @@ public class PersistenceService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void persistRoleAssignment(RoleAssignment roleAssignment, HistoryEntity historyEntity) {
         //Persist the role assignment entity
-        RoleAssignmentEntity entity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment, historyEntity);
-        entity.setId(historyEntity.getRoleAssignmentIdentity().getId());
+        RoleAssignmentEntity entity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment);
+        entity.setId(historyEntity.getId());
         roleAssignmentRepository.save(entity);
     }
 
@@ -113,5 +113,13 @@ public class PersistenceService {
             Collectors.toSet());
 
     }
+
+    public Set<RequestedRole> getExistingRoleByProcessAndReference(String process, String reference, String status) {
+        Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
+        //convert into model class
+        return historyEntities.stream().map(role -> persistenceUtil.convertHistoryEntityInModel(role)).collect(
+            Collectors.toSet());
+    }
+
 
 }

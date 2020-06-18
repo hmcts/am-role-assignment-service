@@ -15,6 +15,8 @@ import javax.persistence.Convert;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
@@ -27,10 +29,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "role_assignment_history")
+@IdClass(RoleAssignmentIdentity.class)
 public class HistoryEntity implements Serializable {
 
-    @EmbeddedId
-    private RoleAssignmentIdentity roleAssignmentIdentity;
+    @Id
+    private UUID id;
+    @Id
+    private String status;
 
     @Column(name = "actor_id_type", nullable = false)
     private String actorIdType;

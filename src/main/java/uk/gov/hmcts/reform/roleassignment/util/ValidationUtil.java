@@ -126,9 +126,9 @@ public class ValidationUtil {
     public static boolean validateRoleRequest(Request roleRequest) {
 
         validateNumberTextField(roleRequest.correlationId);
-        validateNumberTextField(roleRequest.clientId);
+        //validateNumberTextField(roleRequest.clientId);
         validateUuidField(roleRequest.authenticatedUserId);
-        validateUuidField(roleRequest.assignerId);
+        validateUuidField(roleRequest.requestorId);
         validateTextField(roleRequest.requestType.toString());
         return true;
     }

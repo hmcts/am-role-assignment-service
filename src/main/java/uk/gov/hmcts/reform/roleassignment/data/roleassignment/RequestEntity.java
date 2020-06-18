@@ -1,8 +1,10 @@
 
 package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -23,6 +25,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity(name = "role_assignment_request")
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestEntity implements Serializable {
 
     @Id
@@ -67,7 +71,7 @@ public class RequestEntity implements Serializable {
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 
-    @OneToMany(cascade = CascadeType.ALL,
+    @OneToMany(
         fetch = FetchType.LAZY,
         mappedBy = "requestEntity")
     private Set<HistoryEntity> historyEntities;
