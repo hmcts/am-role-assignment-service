@@ -12,17 +12,14 @@
       "ServiceAuthorization": "[[DEFAULT_AUTO_VALUE]]",
       "X-Correlation-ID": "",
       "AssignerID": "",
-      "Content-Type": "application/json",
-      "Process": "",
-      "Reference": "",
-      "ReplaceExisting": false
+      "Content-Type": "application/json"
     },
     "body": {
       "roleRequest": {
         "correlationId": "request1",
         "clientId": "client1",
         "authenticatedUserId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-        "requestorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+        "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
         "requestType": "CREATE",
         "process": "businessProcess1",
         "reference": "abc-3434242",

@@ -9,21 +9,22 @@
   "expectedResponse": {
     "_extends_": "Common_201_Response",
     "headers": {
-      "Content-Length": "[[ANYTHING_PRESENT]]",
+        "Content-Length": "[[ANYTHING_PRESENT]]",
       "Content-Type": "application/json"
     },
     "body": {
+      "links" : [ ],
       "roleAssignmentResponse": {
         "roleRequest": {
-          "correlationId": "request1",
-          "authenticatedUserId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-          "requestorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+          "correlationId": "[[ANYTHING_PRESENT]]",
+          "authenticatedUserId": "[[ANYTHING_PRESENT]]",
+          "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
           "requestType": "CREATE",
           "status": "CREATED",
           "process": "businessProcess1",
           "reference": "abc-3434242",
           "replaceExisting": false,
-          "created": "2020-01-01T00:00:00",
+          "created": "[[ANYTHING_PRESENT]]",
           "id": "[[ANYTHING_PRESENT]]"
         },
         "requestedRoles": [
@@ -38,12 +39,15 @@
             "readOnly": true,
             "beginTime": "2020-01-01T00:00:00",
             "endTime": "2050-01-01T00:00:00",
-            "created": "2020-01-01T00:00:00",
+            "created": "[[ANYTHING_PRESENT]]",
             "attributes": {
               "jurisdiction": "divorce",
               "region": "north-east",
               "contractType": "SALARIED"
             },
+            "process" : "businessProcess1",
+            "reference" : "abc-3434242",
+            "statusSequence" : 10,
             "approved": false,
             "rejected": false
           }
