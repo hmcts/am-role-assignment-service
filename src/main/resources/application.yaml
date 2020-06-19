@@ -30,8 +30,7 @@ management:
 security:
   anonymousPaths:
     - "/"
-    - "/health"
-    - "/health/liveness"
+    - "/health/**"
     - "/actuator/**"
     - "/loggers/**"
     - "/swagger-ui.html"
