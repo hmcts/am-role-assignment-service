@@ -128,7 +128,7 @@ public class ValidationUtil {
         validateNumberTextField(roleRequest.correlationId);
         //validateNumberTextField(roleRequest.clientId);
         validateUuidField(roleRequest.authenticatedUserId);
-        validateUuidField(roleRequest.requestorId);
+        validateUuidField(roleRequest.assignerId);
         validateTextField(roleRequest.requestType.toString());
         return true;
     }

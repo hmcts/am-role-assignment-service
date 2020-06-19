@@ -38,7 +38,7 @@ public class ValidationModelService {
     public void validateRequest(AssignmentRequest assignmentRequest) throws Exception {
 
         // Force the status and timestamp on all new request
-        assignmentRequest.getRequest().status = Status.CREATED;
+        //assignmentRequest.getRequest().status = Status.CREATED;
         assignmentRequest.getRequest().setCreated(LocalDateTime.now());
         runRulesOnAllRequestedAssignments(assignmentRequest);
 
@@ -64,10 +64,10 @@ public class ValidationModelService {
 
     public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) throws Exception {
         Set<String> userIds = new HashSet<>();
-        userIds.add(String.valueOf(assignmentRequest.getRequest().requestorId));
+        userIds.add(String.valueOf(assignmentRequest.getRequest().assignerId));
         userIds.add(String.valueOf(assignmentRequest.getRequest().getAuthenticatedUserId()));
         for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
-            requestedRole.status = Status.CREATED;
+            //requestedRole.status = Status.CREATED;
             requestedRole.created = LocalDateTime.now();
             requestedRole.beginTime = LocalDateTime.now();
             requestedRole.endTime = LocalDateTime.now();
@@ -82,7 +82,7 @@ public class ValidationModelService {
     }
 
     public void updateRequestStatus(AssignmentRequest assignmentRequest) {
-        assignmentRequest.getRequest().status = Status.APPROVED;
+        //assignmentRequest.getRequest().status = Status.APPROVED;
         for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
             if (!requestedRole.isApproved()) {
                 assignmentRequest.getRequest().status = Status.REJECTED;

@@ -40,7 +40,7 @@ public class GetAssignmentController {
             throw new BadRequestException(V1.Error.INVALID_REQUEST);
         }
         // service call to store request and requested roles in db for audit purpose.
-        persistenceService.persistRequest(assignmentRequest);
+        persistenceService.persistRequest(assignmentRequest.getRequest());
 
         return ResponseEntity.ok("Success");
 

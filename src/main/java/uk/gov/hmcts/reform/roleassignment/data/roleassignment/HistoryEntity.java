@@ -12,7 +12,6 @@ import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;

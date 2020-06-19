@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentIdentity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
@@ -33,6 +32,7 @@ public class PersistenceUtil {
             .requestEntity(requestEntity)
             .process(model.getProcess())
             .reference(model.getReference())
+            .created(model.getCreated())
             .build();
 
 
@@ -46,7 +46,7 @@ public class PersistenceUtil {
             .reference(request.getProcess())
             .authenticatedUserId(request.getAuthenticatedUserId())
             .clientId(request.getClientId())
-            .assignerId(request.getRequestorId())
+            .assignerId(request.getAssignerId())
             .replaceExisting(request.replaceExisting)
             .requestType(request.getRequestType().toString())
             .log(request.getLog())
@@ -55,7 +55,9 @@ public class PersistenceUtil {
     }
 
     public RoleAssignmentEntity convertRoleAssignmentToEntity(RoleAssignment model) {
-        return RoleAssignmentEntity.builder().actorId(model.getActorId())
+        return RoleAssignmentEntity.builder()
+            .id(model.getId())
+            .actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
             .beginTime(model.getBeginTime())
@@ -106,9 +108,28 @@ public class PersistenceUtil {
         requestedrole.setStatus(Status.valueOf(historyEntity.getStatus()));
         return requestedrole;
 
+    }
 
+    public RoleAssignment convertHistoryEntitiesInRoleAssignment(HistoryEntity historyEntity) {
+
+        return RoleAssignment.builder()
+            .id(historyEntity.getId())
+            .actorIdType(ActorIdType.valueOf(historyEntity.getActorIdType()))
+            .actorId(historyEntity.getActorId())
+            .attributes(JacksonUtils.convertValue(historyEntity.getAttributes()))
+            .beginTime(historyEntity.getBeginTime())
+            .endTime(historyEntity.getEndTime())
+            .created(historyEntity.getCreated())
+            .classification(Classification.valueOf(historyEntity.getClassification()))
+            .grantType(GrantType.valueOf(historyEntity.getGrantType()))
+            .readOnly(historyEntity.isReadOnly())
+            .roleName(historyEntity.getRoleName())
+            .roleType(RoleType.valueOf(historyEntity.getRoleType()))
+            .status(Status.valueOf(historyEntity.getStatus()))
+            .build();
 
 
     }
+
 
 }
