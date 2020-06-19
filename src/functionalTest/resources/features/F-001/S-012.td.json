@@ -8,17 +8,6 @@
   ],
   "request": {
     "body": {
-      "roleRequest": {
-        "correlationId": "request1",
-        "clientId": "client1",
-        "authenticatedUserId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-        "requestorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-        "requestType": "CREATE",
-        "process": "businessProcess1",
-        "reference": "abc-3434242",
-        "replaceExisting": false,
-        "created": "2020-01-01T00:00"
-      },
       "requestedRoles": [
         {
           "actorIdType": "IDAM",
@@ -30,7 +19,6 @@
           "readOnly": true,
           "beginTime": "2020-01-01T00:00",
           "endTime": "2050-01-01T00:00",
-          "created": "2020-01-01T00:00",
           "attributes": {
             "jurisdiction": "divorce",
             "region": "north-east",
@@ -40,6 +28,7 @@
       ]
     }
   },
+
   "expectedResponse": {
     "_extends_": "Common_201_Response",
     "headers": {
@@ -47,22 +36,23 @@
       "Content-Type": "application/json"
     },
     "body": {
+      "links": [],
       "roleAssignmentResponse": {
         "roleRequest": {
-          "correlationId": "request1",
-          "authenticatedUserId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-          "requestorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+          "correlationId": "[[ANYTHING_PRESENT]]",
+          "authenticatedUserId": "[[ANYTHING_PRESENT]]",
+          "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
           "requestType": "CREATE",
           "status": "CREATED",
           "process": "businessProcess1",
           "reference": "abc-3434242",
           "replaceExisting": false,
-          "created": "2020-01-01T00:00:00",
-          "id": "5eaec66c-8f5b-4d72-89aa-17f20217365c"
+          "created": "[[ANYTHING_PRESENT]]",
+          "id": "[[ANYTHING_PRESENT]]"
         },
         "requestedRoles": [
           {
-            "id": "75745115-513e-4195-b8c8-bf6ee486885a",
+            "id": "[[ANYTHING_PRESENT]]",
             "actorIdType": "IDAM",
             "actorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
             "roleType": "ORGANISATION",
@@ -72,12 +62,15 @@
             "readOnly": true,
             "beginTime": "2020-01-01T00:00:00",
             "endTime": "2050-01-01T00:00:00",
-            "created": "2020-01-01T00:00:00",
+            "created": "[[ANYTHING_PRESENT]]",
             "attributes": {
               "jurisdiction": "divorce",
               "region": "north-east",
               "contractType": "SALARIED"
             },
+            "process": "businessProcess1",
+            "reference": "abc-3434242",
+            "statusSequence": 10,
             "approved": false,
             "rejected": false
           }

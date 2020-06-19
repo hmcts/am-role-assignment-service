@@ -6,6 +6,29 @@
     "contains a single Role Assignment with only mandatory fields"
   ],
 
+  "request": {
+    "body": {
+      "requestedRoles": [
+        {
+          "actorIdType": "IDAM",
+          "actorId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+          "roleType": "CASE",
+          "roleName": "judge",
+          "classification": "PUBLIC",
+          "grantType": "STANDARD",
+          "readOnly": true,
+          "beginTime": "2020-01-01T00:00",
+          "endTime": "2050-01-01T00:00",
+          "attributes": {
+            "jurisdiction": "divorce",
+            "region": "north-east",
+            "contractType": "SALARIED"
+          }
+        }
+      ]
+    }
+  },
+
   "expectedResponse": {
     "_extends_": "Common_201_Response",
     "headers": {
