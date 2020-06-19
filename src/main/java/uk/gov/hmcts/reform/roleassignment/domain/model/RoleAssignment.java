@@ -13,6 +13,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
@@ -35,7 +36,7 @@ public  class RoleAssignment {
     public LocalDateTime beginTime;
     public LocalDateTime endTime;
     public Map<String, JsonNode> attributes;
-    public Map<String, JsonNode> notes;
+    public Collection<JsonNode> notes;
 
     public String process; //need to map from request
     public String reference; //need to map from request
