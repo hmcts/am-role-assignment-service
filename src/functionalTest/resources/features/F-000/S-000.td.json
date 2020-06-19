@@ -28,7 +28,7 @@
           "details": {
             "database": "PostgreSQL",
             "result": 1,
-            "validationQuery": "SELECT 1"
+            "validationQuery": "[[ANYTHING_PRESENT]]"
           }
         },
         "discoveryComposite": {

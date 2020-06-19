@@ -22,9 +22,7 @@
         "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
         "requestType": "CREATE",
         "process": "businessProcess1",
-        "reference": "abc-3434242",
-
-        "created": "2020-01-01T00:00"
+        "reference": "abc-3434242"
       },
       "requestedRoles": [
         {
@@ -37,7 +35,6 @@
           "readOnly": true,
           "beginTime": "2020-01-01T00:00",
           "endTime": "2050-01-01T00:00",
-          "created": "2020-01-01T00:00",
           "attributes": {
             "jurisdiction": "divorce",
             "region": "north-east",
