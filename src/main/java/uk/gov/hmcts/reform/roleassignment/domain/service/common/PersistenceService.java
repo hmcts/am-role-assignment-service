@@ -46,7 +46,6 @@ public class PersistenceService {
         //Prepare request entity
         RequestEntity requestEntity = persistenceUtil.convertRequestIntoEntity(assignmentRequest.getRequest());
 
-
         //Prepare History entity
         Set<HistoryEntity> historyEntities = assignmentRequest.getRequestedRoles().stream().map(roleAssignment -> persistenceUtil.convertHistoryToEntity(
             roleAssignment,

@@ -22,6 +22,7 @@ public class PersistenceUtil {
             .actorIdType(model.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
             .beginTime(model.getBeginTime())
+            .created(model.getCreated())
             .classification(model.getClassification().toString())
             .endTime(model.getEndTime())
             .grantType(model.getGrantType().toString())
@@ -30,6 +31,7 @@ public class PersistenceUtil {
             .readOnly(model.readOnly)
             .roleAssignmentIdentity(roleAssignmentId)
             .requestEntity(requestEntity)
+            .notes(model.getNotes())
             .build();
 
 
@@ -46,6 +48,7 @@ public class PersistenceUtil {
             .assignerId(request.getAssignerId())
             .replaceExisting(request.replaceExisting)
             .requestType(request.getRequestType().toString())
+            .created(request.getCreated())
             .log(request.getLog())
             .build();
 
@@ -58,6 +61,7 @@ public class PersistenceUtil {
             .beginTime(model.getBeginTime())
             .classification(model.getClassification().toString())
             .endTime(model.getEndTime())
+            .created(model.getCreated())
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
