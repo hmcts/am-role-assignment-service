@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
@@ -36,9 +37,13 @@ public class CreateRoleAssignmentOrchestrator {
     Request request;
     RequestEntity requestEntity;
 
-    public CreateRoleAssignmentOrchestrator(DefaultCaseDataRepository caseService, IdamRoleService idamService,
-                        RetrieveDataService retrieveDataService, ParseRequestService parseRequestService,
-                       PersistenceService persistenceService, ValidationModelService validationModelService, PersistenceUtil persistenceUtil) {
+    public CreateRoleAssignmentOrchestrator(DefaultCaseDataRepository caseService,
+                                            IdamRoleService idamService,
+                                            RetrieveDataService retrieveDataService,
+                                            ParseRequestService parseRequestService,
+                                            PersistenceService persistenceService,
+                                            ValidationModelService validationModelService,
+                                            PersistenceUtil persistenceUtil) {
         this.caseService = caseService;
         this.idamService = idamService;
         this.retrieveDataService = retrieveDataService;
@@ -64,31 +69,14 @@ public class CreateRoleAssignmentOrchestrator {
         //Check replace existing true/false
         if (request.isReplaceExisting()) {
 
-            List<RequestedRole> existingRoles = persistenceService.getExistingRoleByProcessAndReference(
-                request.process,
-                request.reference,
-                Status.LIVE.toString()
-            );
+            //retrieve existing assignments ans prepared temp request
+            existingAssignmentRequest = retrieveExistingAssignments(parsedAssignmentRequest);
 
-            //create a new existing assignment request for delete records
-            existingAssignmentRequest = new AssignmentRequest();
-            existingAssignmentRequest.setRequest(parsedAssignmentRequest.getRequest());
-            existingAssignmentRequest.setRequestedRoles(existingRoles);
-
-            //calling drools rules for validation
-            validationModelService.validateRequest(existingAssignmentRequest);
-
-            // we are mocking delete rejected status
-            checkRejectedOrApproved(existingAssignmentRequest);
-
-            // decision block
-            List<RequestedRole> deleteApprovedRoles = existingAssignmentRequest.getRequestedRoles().stream().filter(role -> role.getStatus().equals(
-                Status.DELETE_APPROVED)).collect(
-                Collectors.toList());
+            //validation
+            evaluateDeleteAssignments(existingAssignmentRequest, parsedAssignmentRequest);
 
             //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
-            checkDeleteApprovedStatus(existingAssignmentRequest, parsedAssignmentRequest, deleteApprovedRoles);
-
+            checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
 
         } else {
 
@@ -96,12 +84,7 @@ public class CreateRoleAssignmentOrchestrator {
             //Save requested role in history table with CREATED and Approved Status
             createNewAssignmentRecords(parsedAssignmentRequest);
 
-            // decision block
-            List<RequestedRole> createApprovedRoles = parsedAssignmentRequest.getRequestedRoles().stream().filter(role -> role.getStatus().equals(
-                Status.APPROVED)).collect(
-                Collectors.toList());
-
-            checkAllApproved(parsedAssignmentRequest, createApprovedRoles);
+            checkAllApproved(parsedAssignmentRequest);
 
 
         }
@@ -113,36 +96,80 @@ public class CreateRoleAssignmentOrchestrator {
         return result;
     }
 
-    private void checkAllApproved(AssignmentRequest parsedAssignmentRequest, List<RequestedRole> createApprovedRoles) {
+    @NotNull
+    private AssignmentRequest retrieveExistingAssignments(AssignmentRequest parsedAssignmentRequest) {
+        AssignmentRequest existingAssignmentRequest;
+        List<RequestedRole> existingRoles = persistenceService.getExistingRoleByProcessAndReference(
+            request.process,
+            request.reference,
+            Status.LIVE.toString()
+        );
+
+        //create a new existing assignment request for delete records
+        existingAssignmentRequest = new AssignmentRequest();
+        existingAssignmentRequest.setRequest(parsedAssignmentRequest.getRequest());
+        existingAssignmentRequest.setRequestedRoles(existingRoles);
+        return existingAssignmentRequest;
+    }
+
+    private void evaluateDeleteAssignments(AssignmentRequest existingAssignmentRequest, AssignmentRequest parsedAssignmentRequest) throws Exception {
+        //calling drools rules for validation
+        validationModelService.validateRequest(existingAssignmentRequest);
+
+        // we are mocking delete rejected status
+        checkDeleteApproved(existingAssignmentRequest);
+
+
+    }
+
+    private void checkAllApproved(AssignmentRequest parsedAssignmentRequest) {
+
+        // decision block
+        List<RequestedRole> createApprovedRoles = parsedAssignmentRequest.getRequestedRoles().stream().filter(role -> role.getStatus().equals(
+            Status.APPROVED)).collect(
+            Collectors.toList());
+
         if (createApprovedRoles.size() == parsedAssignmentRequest.getRequestedRoles().size()) {
+            executeCreateRequest(parsedAssignmentRequest);
 
-
-            // Insert parsedAssignmentRequest.getRequestedRoles() records into live table
-            moveHistoryRecordsToLiveTable(requestEntity);
-
-            // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status LIVE
-            insertRequestedRole(parsedAssignmentRequest, Status.LIVE);
-
-            // Update request status to approved
-            request.setStatus(Status.APPROVED);
-            requestEntity.setStatus(Status.APPROVED.toString());
-            persistenceService.persistRequestToHistory(requestEntity);
 
         } else {
+            rejectCreateRequest(parsedAssignmentRequest);
 
 
-            // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status REJECTED
-            insertRequestedRole(parsedAssignmentRequest, Status.REJECTED);
-
-            // Update request status to REJECTED
-            request.setStatus(Status.REJECTED);
-            requestEntity.setStatus(Status.REJECTED.toString());
-            persistenceService.persistRequestToHistory(requestEntity);
         }
     }
 
-    private void checkDeleteApprovedStatus(AssignmentRequest existingAssignmentRequest, AssignmentRequest parsedAssignmentRequest,
-                                           List<RequestedRole> deleteApprovedRoles) throws Exception {
+    private void rejectCreateRequest(AssignmentRequest parsedAssignmentRequest) {
+        // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status REJECTED
+        insertRequestedRole(parsedAssignmentRequest, Status.REJECTED);
+
+        // Update request status to REJECTED
+        request.setStatus(Status.REJECTED);
+        requestEntity.setStatus(Status.REJECTED.toString());
+        persistenceService.persistRequestToHistory(requestEntity);
+    }
+
+    private void executeCreateRequest(AssignmentRequest parsedAssignmentRequest) {
+        // Insert parsedAssignmentRequest.getRequestedRoles() records into live table
+        moveHistoryRecordsToLiveTable(requestEntity);
+
+        // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status LIVE
+        insertRequestedRole(parsedAssignmentRequest, Status.LIVE);
+
+        // Update request status to approved
+        request.setStatus(Status.APPROVED);
+        requestEntity.setStatus(Status.APPROVED.toString());
+        persistenceService.persistRequestToHistory(requestEntity);
+    }
+
+    private void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest, AssignmentRequest parsedAssignmentRequest
+    ) throws Exception {
+        // decision block
+        List<RequestedRole> deleteApprovedRoles = existingAssignmentRequest.getRequestedRoles().stream().filter(role -> role.getStatus().equals(
+            Status.DELETE_APPROVED)).collect(
+            Collectors.toList());
+
         if (deleteApprovedRoles.size() == existingAssignmentRequest.getRequestedRoles().size()) {
 
             //Create New Assignment records
@@ -156,47 +183,65 @@ public class CreateRoleAssignmentOrchestrator {
 
             if (createApprovedRoles.size() == parsedAssignmentRequest.getRequestedRoles().size()) {
 
-                //delete existingAssignmentRequest.getRequestedRoles() records from live table--Hard delete
-                deleteExistingLiveRecords(existingAssignmentRequest);
-
-                //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-soft delete
-                insertRequestedRole(existingAssignmentRequest, Status.DELETED);
-
-
-                // Insert parsedAssignmentRequest.getRequestedRoles() records into live table
-                moveHistoryRecordsToLiveTable(requestEntity);
-
-                // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status LIVE
-                insertRequestedRole(parsedAssignmentRequest, Status.LIVE);
-
-                // Update request status to approved
-                request.setStatus(Status.APPROVED);
-                requestEntity.setStatus(Status.APPROVED.toString());
-                persistenceService.persistRequestToHistory(requestEntity);
+                executeReplaceRequest(existingAssignmentRequest, parsedAssignmentRequest);
 
 
             } else {
+                rejectReplaceRequest(existingAssignmentRequest, parsedAssignmentRequest);
 
-                //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
-                insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED);
-
-                // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status REJECTED
-                insertRequestedRole(parsedAssignmentRequest, Status.REJECTED);
-
-                // Update request status to REJECTED
-                request.setStatus(Status.REJECTED);
-                requestEntity.setStatus(Status.REJECTED.toString());
-                persistenceService.persistRequestToHistory(requestEntity);
             }
 
         } else {
-            //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
-            insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED);
+
+
+            rejectDeleteRequest(existingAssignmentRequest);
 
         }
     }
 
-    private void checkRejectedOrApproved(AssignmentRequest existingAssignmentRequest) {
+    private void rejectDeleteRequest(AssignmentRequest existingAssignmentRequest) {
+        //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
+        insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED);
+        // Update request status to REJECTED
+        request.setStatus(Status.REJECTED);
+        requestEntity.setStatus(Status.REJECTED.toString());
+        persistenceService.persistRequestToHistory(requestEntity);
+    }
+
+    private void rejectReplaceRequest(AssignmentRequest existingAssignmentRequest, AssignmentRequest parsedAssignmentRequest) {
+        //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
+        insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED);
+
+        // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status REJECTED
+        insertRequestedRole(parsedAssignmentRequest, Status.REJECTED);
+
+        // Update request status to REJECTED
+        request.setStatus(Status.REJECTED);
+        requestEntity.setStatus(Status.REJECTED.toString());
+        persistenceService.persistRequestToHistory(requestEntity);
+    }
+
+    private void executeReplaceRequest(AssignmentRequest existingAssignmentRequest, AssignmentRequest parsedAssignmentRequest) {
+        //delete existingAssignmentRequest.getRequestedRoles() records from live table--Hard delete
+        deleteExistingLiveRecords(existingAssignmentRequest);
+
+        //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-soft delete
+        insertRequestedRole(existingAssignmentRequest, Status.DELETED);
+
+
+        // Insert parsedAssignmentRequest.getRequestedRoles() records into live table
+        moveHistoryRecordsToLiveTable(requestEntity);
+
+        // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status LIVE
+        insertRequestedRole(parsedAssignmentRequest, Status.LIVE);
+
+        // Update request status to approved
+        request.setStatus(Status.APPROVED);
+        requestEntity.setStatus(Status.APPROVED.toString());
+        persistenceService.persistRequestToHistory(requestEntity);
+    }
+
+    private void checkDeleteApproved(AssignmentRequest existingAssignmentRequest) {
         for (RequestedRole requestedRole : existingAssignmentRequest.getRequestedRoles()) {
             requestedRole.setRequest(existingAssignmentRequest.getRequest());
             if (!requestedRole.isApproved()) {
