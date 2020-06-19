@@ -49,6 +49,7 @@ public class PersistenceUtil {
             .assignerId(request.getAssignerId())
             .replaceExisting(request.replaceExisting)
             .requestType(request.getRequestType().toString())
+            .created(request.getCreated())
             .log(request.getLog())
             .build();
 
@@ -63,6 +64,7 @@ public class PersistenceUtil {
             .beginTime(model.getBeginTime())
             .classification(model.getClassification().toString())
             .endTime(model.getEndTime())
+            .created(model.getCreated())
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())

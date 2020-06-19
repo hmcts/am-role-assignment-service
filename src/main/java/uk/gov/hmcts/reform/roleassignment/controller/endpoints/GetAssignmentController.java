@@ -1,10 +1,9 @@
 
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
-import javax.validation.Valid;
-
 import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +34,7 @@ public class GetAssignmentController {
     }
 
     @PostMapping("/processRequest")
-    public ResponseEntity<String> processRequest(@Valid @RequestBody AssignmentRequest assignmentRequest) {
+    public ResponseEntity<String> processRequest(@Validated @RequestBody AssignmentRequest assignmentRequest) {
         if (!ValidationUtil.validateAssignmentRequest(assignmentRequest)) {
             throw new BadRequestException(V1.Error.INVALID_REQUEST);
         }
