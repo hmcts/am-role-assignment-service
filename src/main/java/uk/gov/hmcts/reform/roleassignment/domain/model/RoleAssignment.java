@@ -36,7 +36,7 @@ public  class RoleAssignment {
     public LocalDateTime beginTime;
     public LocalDateTime endTime;
     public Map<String, JsonNode> attributes;
-    public Collection<JsonNode> notes;
+    public JsonNode notes;
 
     public String process; //need to map from request
     public String reference; //need to map from request

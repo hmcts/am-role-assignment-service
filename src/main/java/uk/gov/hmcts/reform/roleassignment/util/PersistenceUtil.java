@@ -31,6 +31,7 @@ public class PersistenceUtil {
             .readOnly(model.readOnly)
             .roleAssignmentIdentity(roleAssignmentId)
             .requestEntity(requestEntity)
+            .notes(model.getNotes())
             .build();
 
 
