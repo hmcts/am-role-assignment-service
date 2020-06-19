@@ -9,15 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 @Api(value = "roles")
 @RestController
@@ -54,9 +52,8 @@ public class CreateAssignmentController {
         )
     })
     public ResponseEntity<Object> createRoleAssignment(
-        @Valid
-        @NotNull(message = "Provide role assignment body.")
-        @RequestBody AssignmentRequest assignmentRequest) throws Exception {
+        @Validated
+        @RequestBody(required = true) AssignmentRequest assignmentRequest) throws Exception {
 
         LOG.info("CreateAssignmentController : {}", createRoleAssignmentService);
         return createRoleAssignmentService.createRoleAssignment(assignmentRequest);
