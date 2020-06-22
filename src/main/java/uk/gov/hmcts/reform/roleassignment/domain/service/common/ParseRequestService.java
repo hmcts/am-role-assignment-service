@@ -30,7 +30,7 @@ public class ParseRequestService {
     private String serviceId;
     private String userId;
 
-    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest) throws Exception {
+    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType) throws Exception {
         Request request = assignmentRequest.getRequest();
         //1. validates request and assignment record
         ValidationUtil.validateAssignmentRequest(assignmentRequest);
@@ -60,9 +60,11 @@ public class ParseRequestService {
             requestedRole.setStatusSequence(Status.CREATED.sequence);
             requestedRole.setCreated(LocalDateTime.now());
         });
+        ValidationUtil.validateParsedAssignmentRequest(requestedRoles);
         AssignmentRequest parsedRequest = new AssignmentRequest();
         parsedRequest.setRequest(request);
         parsedRequest.setRequestedRoles(requestedRoles);
+
         return parsedRequest;
     }
 

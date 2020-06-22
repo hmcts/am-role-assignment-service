@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_HYPHEN_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
@@ -73,26 +74,26 @@ public class ValidationUtil {
         if (strDate.length() < 16) {
             return false;
         }
-        SimpleDateFormat sdfrmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        SimpleDateFormat sdfrmt = new SimpleDateFormat(DATE_PATTERN);
         sdfrmt.setLenient(false);
         try {
             Date javaDate = sdfrmt.parse(strDate);
-            LOG.info("TTL {}", javaDate);
         } catch (ParseException e) {
             return false;
         }
         return true;
     }
 
-    public static boolean validateDateOrder(String beginTime, String endTime) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    public static boolean validateDateOrder(String beginTime, String endTime, String createTime) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
         Date beginTimeP = sdf.parse(beginTime);
         Date endTimeP = sdf.parse(endTime);
+        Date createTimeP = sdf.parse(createTime);
         boolean result = false;
-        if (endTimeP.after(beginTimeP)) {
+        if (endTimeP.after(beginTimeP) && beginTimeP.after(createTimeP)) {
             result = true;
         } else {
-            throw new BadRequestException("The begin time is after the end time.");
+            throw new BadRequestException("The created time, begin time and end time are not in sequence or not valid");
         }
         return result;
     }
@@ -148,6 +149,7 @@ public class ValidationUtil {
 
     public static boolean validateAssignmentRequest(AssignmentRequest assignmentRequest) throws ParseException {
         validateRoleRequest(assignmentRequest.getRequest());
+        validateLists(assignmentRequest.getRequestedRoles());
         validateRequestedRoles(assignmentRequest.getRequestedRoles());
         return true;
     }
@@ -162,29 +164,19 @@ public class ValidationUtil {
     public static boolean validateRequestedRoles(Collection<RequestedRole> requestedRoles) throws ParseException {
         for (RequestedRole requestedRole : requestedRoles) {
             validateUuidField(requestedRole.getActorId());
-            //We don't need to verify all these enum fields. If there is any issue with these field it would fail while creating object.
-            //validateTextField(requestedRole.getActorIdType().toString());
-            //validateTextField(requestedRole.getRoleType().toString());
-            // This validation of role name will be taken care by the drools while applying pattern rules/
-            //validateTextField(requestedRole.getRoleName());
-            //validateTextField(requestedRole.getClassification().toString());
-            //validateTextField(requestedRole.getGrantType().toString());
-
-            if (requestedRole.getBeginTime() != null) {
-                validateDateTime(requestedRole.getBeginTime().toString());
-            }
-
-            if (requestedRole.getEndTime() != null) {
-                validateDateTime(requestedRole.getEndTime().toString());
-            }
-
             if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
-                validateDateOrder(requestedRole.getBeginTime().toString(), requestedRole.getEndTime().toString());
+                validateDateTime(requestedRole.getBeginTime().toString());
+                validateDateTime(requestedRole.getEndTime().toString());
+            } else {
+                throw new BadRequestException("Begin time and end time are both required.");
             }
-            //attribute validation will also be taken care by the drools rules.
-            //validateTextField(requestedRole.getAttributes().get("jurisdiction").asText());
-            //validateTextHyphenField(requestedRole.getAttributes().get("region").asText());
-            //validateTextField(requestedRole.getAttributes().get("contractType").asText());
+        }
+        return true;
+    }
+
+    public static boolean validateParsedAssignmentRequest(Collection<RequestedRole> requestedRoles) throws ParseException {
+        for (RequestedRole requestedRole : requestedRoles) {
+            validateDateOrder(requestedRole.getBeginTime().toString(), requestedRole.getEndTime().toString(), requestedRole.getCreated().toString());
         }
         return true;
     }
