@@ -38,7 +38,7 @@ public class ValidationModelService {
     public void validateRequest(AssignmentRequest assignmentRequest) throws Exception {
 
         // Force the status and timestamp on all new request
-        assignmentRequest.getRequest().status = Status.CREATED;
+        //assignmentRequest.getRequest().status = Status.CREATED;
         assignmentRequest.getRequest().setCreated(LocalDateTime.now());
         runRulesOnAllRequestedAssignments(assignmentRequest);
 
@@ -58,7 +58,7 @@ public class ValidationModelService {
         kieSession.execute(facts);
 
         //Update status
-        updateStatus(assignmentRequest);
+        updateRequestStatus(assignmentRequest);
 
     }
 
@@ -67,7 +67,7 @@ public class ValidationModelService {
         userIds.add(String.valueOf(assignmentRequest.getRequest().assignerId));
         userIds.add(String.valueOf(assignmentRequest.getRequest().getAuthenticatedUserId()));
         for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
-            requestedRole.status = Status.CREATED;
+            //requestedRole.status = Status.CREATED;
             requestedRole.created = LocalDateTime.now();
             requestedRole.beginTime = LocalDateTime.now();
             requestedRole.endTime = LocalDateTime.now();
@@ -81,8 +81,13 @@ public class ValidationModelService {
         }
     }
 
-    public void updateStatus(AssignmentRequest assignmentRequest) {
-        //Only need to update the status here
+    public void updateRequestStatus(AssignmentRequest assignmentRequest) {
+        //assignmentRequest.getRequest().status = Status.APPROVED;
+        for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
+            if (!requestedRole.isApproved()) {
+                assignmentRequest.getRequest().status = Status.REJECTED;
+            }
+        }
     }
 
     private List<Role> buildRole(String filename) {
