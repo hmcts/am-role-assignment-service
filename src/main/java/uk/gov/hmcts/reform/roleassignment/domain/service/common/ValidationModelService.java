@@ -39,7 +39,7 @@ public class ValidationModelService {
 
         // Force the status and timestamp on all new request
         //assignmentRequest.getRequest().status = Status.CREATED;
-        assignmentRequest.getRequest().setCreated(LocalDateTime.now());
+        //assignmentRequest.getRequest().setCreated(LocalDateTime.now());
         runRulesOnAllRequestedAssignments(assignmentRequest);
 
     }
@@ -58,7 +58,7 @@ public class ValidationModelService {
         kieSession.execute(facts);
 
         //Update status
-        updateRequestStatus(assignmentRequest);
+        //updateRequestStatus(assignmentRequest);
 
     }
 
@@ -68,9 +68,9 @@ public class ValidationModelService {
         userIds.add(String.valueOf(assignmentRequest.getRequest().getAuthenticatedUserId()));
         for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
             //requestedRole.status = Status.CREATED;
-            requestedRole.created = LocalDateTime.now();
-            requestedRole.beginTime = LocalDateTime.now();
-            requestedRole.endTime = LocalDateTime.now();
+            //requestedRole.created = LocalDateTime.now();
+            //requestedRole.beginTime = LocalDateTime.now();
+            //requestedRole.endTime = LocalDateTime.now();
             userIds.add(String.valueOf(requestedRole.getActorId()));
 
         }
@@ -81,14 +81,14 @@ public class ValidationModelService {
         }
     }
 
-    public void updateRequestStatus(AssignmentRequest assignmentRequest) {
+    /*public void updateRequestStatus(AssignmentRequest assignmentRequest) {
         //assignmentRequest.getRequest().status = Status.APPROVED;
         for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
             if (!requestedRole.isApproved()) {
                 assignmentRequest.getRequest().status = Status.REJECTED;
             }
         }
-    }
+    }*/
 
     private List<Role> buildRole(String filename) {
 

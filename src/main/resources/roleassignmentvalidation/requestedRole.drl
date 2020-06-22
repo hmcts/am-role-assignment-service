@@ -12,15 +12,16 @@ rule "role assignment validation" salience 50
 when
 $requestedRole  : RequestedRole(id!= null)
 $role           : Role()
-                  Request(clientId != "xui") or (Request(clientId == "xui") and RequestedRole(roleType==RoleType.CASE))
+$request        : Request(clientId != "xui") or (Request(clientId == "xui") and RequestedRole(roleType==RoleType.CASE))
                   Request(clientId != "organization_mapping") or (Request(clientId == "organization_mapping") and RequestedRole(roleType==RoleType.ORGANISATION))
                   RequestedRole(roleName == $role.getName())
                   Request(process in (GrantType.CHALLENGED.toString(),GrantType.STANDARD.toString(),GrantType.SPECIFIC.toString()) )
                   RequestedRole(status==Status.CREATED)
                   RequestedRole(beginTime >= created,endTime >= created,endTime > beginTime)
+                  $ruleName : String("role assignment validation");
 then
-//$requestedRole.setStatus(Status.APPROVED);
-System.out.println("Technical Rule Validation for RequestedRole has done Successfully");
+$requestedRole.setStatus(Status.VALIDATED);
+$requestedRole.setLog(String.format("Requested Role has been validated by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
 end;
 
 

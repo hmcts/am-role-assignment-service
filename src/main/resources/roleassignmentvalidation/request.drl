@@ -10,8 +10,10 @@ when
 $request  : Request(id!= null,requestType == RequestType.CREATE,status == Status.CREATED)
             Request( created !=null,process in (GrantType.SPECIFIC.toString(),GrantType.STANDARD.toString(),GrantType.CHALLENGED.toString()), clientId == "am_role_assignment_service")
             Request(replaceExisting == Boolean.TRUE, process !=null, reference != null) or Request(replaceExisting == Boolean.FALSE)
+            $ruleName : String("request validation for creation");
 then
-$request.setStatus(Status.APPROVED);
+$request.setLog(String.format("request has been validated by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
+$request.setStatus(Status.VALIDATED);
 end;
 
 
@@ -19,9 +21,12 @@ end;
 rule "request validation for delete" salience 10
 
 when
-$request  : Request(id!= null,requestType == RequestType.DELETE)
+$request  : Request(id!= null,requestType == RequestType.DELETE,status == Status.CREATED)
+            Request( created !=null,process in (GrantType.SPECIFIC.toString(),GrantType.STANDARD.toString(),GrantType.CHALLENGED.toString()), clientId == "am_role_assignment_service")
+            $ruleName : String("request validation for delete");
 then
-$request.setStatus(Status.REJECTED);
+$request.setLog(String.format("request has been validated by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
+$request.setStatus(Status.VALIDATED);
 end;
 
 
