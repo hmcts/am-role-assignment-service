@@ -16,13 +16,30 @@
     },
     "body": {
       "roleRequest": {
-        "correlationId": "request1",
-        "clientId": "client1",
-        "authenticatedUserId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
         "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-        "requestType": "CREATE",
         "process": "businessProcess1",
-        "reference": "abc-3434242"
+        "reference": "abc-3434242",
+        "replaceExisting": false
+      }
+    }
+  },
+
+  "expectedResponse": {
+    "body": {
+      "links" : [ ],
+      "roleAssignmentResponse" : {
+        "roleRequest": {
+          "id": "[[ANYTHING_PRESENT]]",
+          "authenticatedUserId": "ffdc128b-a691-4a05-9c60-b9e6832ae425",
+          "correlationId": "[[ANYTHING_PRESENT]]",
+          "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+          "requestType": "CREATE",
+          "process": "businessProcess1",
+          "reference": "abc-3434242",
+          "replaceExisting": false,
+          "status": "CREATED",
+          "created": "[[ANYTHING_PRESENT]]"
+        }
       }
     }
   }
