@@ -42,8 +42,7 @@ public class ParseRequestService {
         request.setAuthenticatedUserId(UUID.fromString(securityUtils.getUserId()));
         //c. Set Status=Created and created Time = now
         request.setStatus(Status.CREATED);
-        //This needs to be done on the basis of the triggered endpoint
-        request.setRequestType(RequestType.CREATE);
+        request.setRequestType(requestType);
         request.setCreated(LocalDateTime.now());
         //d. correlationId if it is empty then generate a new value and set.
         setCorrelationId(request);
