@@ -13,6 +13,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import static org.mockito.Mockito.mock;
 
@@ -34,12 +35,17 @@ class CreateRoleAssignmentOrchestratorTest {
     @Mock
     private ValidationModelService validationModelService = mock(ValidationModelService.class);
 
+    @Mock
+    private PersistenceUtil persistenceUtil = mock(PersistenceUtil.class);
+
     @InjectMocks
     private CreateRoleAssignmentOrchestrator sut = new CreateRoleAssignmentOrchestrator(caseService,
                                                                                         idamService,
                                                                                         retrieveDataService,
                                                                                         parseRequestService,
-                                                                                        persistenceService);
+                                                                                        persistenceService, validationModelService,
+                                                                                        persistenceUtil
+    );
 
     //@Test improve when orchestration layer is solidified
     void createRoleAssignment() throws IOException {
