@@ -99,7 +99,7 @@ public class SampleRoleAssignmentController {
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
-            .roleAssignmentIdentity(roleAssignmentId)
+            .status(model.getStatus().toString())
             .readOnly(Boolean.TRUE)
             .log("professional drools rule")
             .sequence(102)
