@@ -8,6 +8,7 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -68,7 +69,7 @@ public class ValidationUtilTest {
     }
 
     @Test
-    void validateRequestedRoles() throws IOException {
+    void validateRequestedRoles() throws IOException, ParseException {
         assertTrue(ValidationUtil.validateRequestedRoles(TestDataBuilder.buildAssignmentRequest().getRequestedRoles()));
     }
 

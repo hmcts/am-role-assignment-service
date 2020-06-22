@@ -68,6 +68,35 @@ public class ValidationUtil {
         return (field != null);
     }
 
+    public static boolean validateDateTime(String strDate) {
+
+        if (strDate.length() < 16) {
+            return false;
+        }
+        SimpleDateFormat sdfrmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        sdfrmt.setLenient(false);
+        try {
+            Date javaDate = sdfrmt.parse(strDate);
+            LOG.info("TTL {}", javaDate);
+        } catch (ParseException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean validateDateOrder(String beginTime, String endTime) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        Date beginTimeP = sdf.parse(beginTime);
+        Date endTimeP = sdf.parse(endTime);
+        boolean result = false;
+        if (endTimeP.after(beginTimeP)) {
+            result = true;
+        } else {
+            throw new BadRequestException("The begin time is after the end time.");
+        }
+        return result;
+    }
+
     public static void isValidSecurityClassification(String securityClassification) {
         try {
             Enum.valueOf(Classification.class, securityClassification);
@@ -117,7 +146,7 @@ public class ValidationUtil {
         return false;
     }
 
-    public static boolean validateAssignmentRequest(AssignmentRequest assignmentRequest) {
+    public static boolean validateAssignmentRequest(AssignmentRequest assignmentRequest) throws ParseException {
         validateRoleRequest(assignmentRequest.getRequest());
         validateRequestedRoles(assignmentRequest.getRequestedRoles());
         return true;
@@ -130,7 +159,7 @@ public class ValidationUtil {
         return true;
     }
 
-    public static boolean validateRequestedRoles(Collection<RequestedRole> requestedRoles) {
+    public static boolean validateRequestedRoles(Collection<RequestedRole> requestedRoles) throws ParseException {
         for (RequestedRole requestedRole : requestedRoles) {
             validateUuidField(requestedRole.getActorId());
 
@@ -139,6 +168,18 @@ public class ValidationUtil {
             validateTextField(requestedRole.getRoleName());
             validateTextField(requestedRole.getClassification().toString());
             validateTextField(requestedRole.getGrantType().toString());
+
+            if (requestedRole.getBeginTime() != null) {
+                validateDateTime(requestedRole.getBeginTime().toString());
+            }
+
+            if (requestedRole.getEndTime() != null) {
+                validateDateTime(requestedRole.getEndTime().toString());
+            }
+
+            if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
+                validateDateOrder(requestedRole.getBeginTime().toString(), requestedRole.getEndTime().toString());
+            }
 
             validateTextField(requestedRole.getAttributes().get("jurisdiction").asText());
             validateTextHyphenField(requestedRole.getAttributes().get("region").asText());

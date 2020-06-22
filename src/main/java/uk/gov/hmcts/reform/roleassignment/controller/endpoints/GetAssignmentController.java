@@ -17,6 +17,8 @@ import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
+import java.text.ParseException;
+
 @Api(value = "roles")
 @RestController
 public class GetAssignmentController {
@@ -34,7 +36,7 @@ public class GetAssignmentController {
     }
 
     @PostMapping("/processRequest")
-    public ResponseEntity<String> processRequest(@Validated @RequestBody AssignmentRequest assignmentRequest) {
+    public ResponseEntity<String> processRequest(@Validated @RequestBody AssignmentRequest assignmentRequest) throws ParseException {
         if (!ValidationUtil.validateAssignmentRequest(assignmentRequest)) {
             throw new BadRequestException(V1.Error.INVALID_REQUEST);
         }
