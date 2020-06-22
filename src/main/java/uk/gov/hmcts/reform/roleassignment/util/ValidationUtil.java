@@ -43,7 +43,7 @@ public class ValidationUtil {
      * @param numberString =null
      * @return
      */
-    public static boolean validate(String numberString) {
+    public static boolean validateCaseNumber(String numberString) {
         validateInputParams(NUMBER_PATTERN, numberString);
         return (numberString != null && numberString.length() == 16);
     }
@@ -162,12 +162,13 @@ public class ValidationUtil {
     public static boolean validateRequestedRoles(Collection<RequestedRole> requestedRoles) throws ParseException {
         for (RequestedRole requestedRole : requestedRoles) {
             validateUuidField(requestedRole.getActorId());
-
-            validateTextField(requestedRole.getActorIdType().toString());
-            validateTextField(requestedRole.getRoleType().toString());
-            validateTextField(requestedRole.getRoleName());
-            validateTextField(requestedRole.getClassification().toString());
-            validateTextField(requestedRole.getGrantType().toString());
+            //We don't need to verify all these enum fields. If there is any issue with these field it would fail while creating object.
+            //validateTextField(requestedRole.getActorIdType().toString());
+            //validateTextField(requestedRole.getRoleType().toString());
+            // This validation of role name will be taken care by the drools while applying pattern rules/
+            //validateTextField(requestedRole.getRoleName());
+            //validateTextField(requestedRole.getClassification().toString());
+            //validateTextField(requestedRole.getGrantType().toString());
 
             if (requestedRole.getBeginTime() != null) {
                 validateDateTime(requestedRole.getBeginTime().toString());
@@ -180,10 +181,10 @@ public class ValidationUtil {
             if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
                 validateDateOrder(requestedRole.getBeginTime().toString(), requestedRole.getEndTime().toString());
             }
-
-            validateTextField(requestedRole.getAttributes().get("jurisdiction").asText());
-            validateTextHyphenField(requestedRole.getAttributes().get("region").asText());
-            validateTextField(requestedRole.getAttributes().get("contractType").asText());
+            //attribute validation will also be taken care by the drools rules.
+            //validateTextField(requestedRole.getAttributes().get("jurisdiction").asText());
+            //validateTextHyphenField(requestedRole.getAttributes().get("region").asText());
+            //validateTextField(requestedRole.getAttributes().get("contractType").asText());
         }
         return true;
     }

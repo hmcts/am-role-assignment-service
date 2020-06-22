@@ -18,8 +18,8 @@ public class ValidationUtilTest {
 
     @Test
     void shouldValidate() {
-        assertEquals(true, ValidationUtil.validate("1212121212121212"));
-        assertEquals(false, ValidationUtil.validate("2323232323232"));
+        assertEquals(true, ValidationUtil.validateCaseNumber("1212121212121212"));
+        assertEquals(false, ValidationUtil.validateCaseNumber("2323232323232"));
     }
 
     @Test
