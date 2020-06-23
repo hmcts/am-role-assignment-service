@@ -30,9 +30,9 @@ public class ParseRequestService {
     private String serviceId;
     private String userId;
 
-    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest) throws Exception {
+    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType) throws Exception {
         Request request = assignmentRequest.getRequest();
-        //1. validate request and assignment record
+        //1. validates request and assignment record
         ValidationUtil.validateAssignmentRequest(assignmentRequest);
 
         //2. Request Parsing
@@ -42,7 +42,7 @@ public class ParseRequestService {
         request.setAuthenticatedUserId(UUID.fromString(securityUtils.getUserId()));
         //c. Set Status=Created and created Time = now
         request.setStatus(Status.CREATED);
-        request.setRequestType(RequestType.CREATE);
+        request.setRequestType(requestType);
         request.setCreated(LocalDateTime.now());
         //d. correlationId if it is empty then generate a new value and set.
         setCorrelationId(request);
@@ -58,11 +58,12 @@ public class ParseRequestService {
             requestedRole.setStatus(Status.CREATED);
             requestedRole.setStatusSequence(Status.CREATED.sequence);
             requestedRole.setCreated(LocalDateTime.now());
-
         });
+        ValidationUtil.validateParsedAssignmentRequest(requestedRoles);
         AssignmentRequest parsedRequest = new AssignmentRequest();
         parsedRequest.setRequest(request);
         parsedRequest.setRequestedRoles(requestedRoles);
+
         return parsedRequest;
     }
 

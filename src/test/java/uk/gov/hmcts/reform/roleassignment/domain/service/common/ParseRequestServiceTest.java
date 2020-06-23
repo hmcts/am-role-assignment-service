@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
@@ -35,7 +36,7 @@ class ParseRequestServiceTest {
         when(securityUtilsMock.getServiceId()).thenReturn("copied client id");
         when(securityUtilsMock.getUserId()).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9c");
 
-        AssignmentRequest result = sut.parseRequest(assignmentRequest);
+        AssignmentRequest result = sut.parseRequest(assignmentRequest, RequestType.CREATE);
         assertNotNull(result);
     }
 

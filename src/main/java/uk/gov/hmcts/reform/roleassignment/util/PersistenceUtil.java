@@ -33,6 +33,7 @@ public class PersistenceUtil {
             .process(model.getProcess())
             .reference(model.getReference())
             .created(model.getCreated())
+            .notes(model.getNotes())
             .build();
 
 
