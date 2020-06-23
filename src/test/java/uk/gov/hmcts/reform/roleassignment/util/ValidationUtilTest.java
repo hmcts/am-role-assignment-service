@@ -8,6 +8,7 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -17,8 +18,8 @@ public class ValidationUtilTest {
 
     @Test
     void shouldValidate() {
-        assertEquals(true, ValidationUtil.validate("1212121212121212"));
-        assertEquals(false, ValidationUtil.validate("2323232323232"));
+        assertEquals(true, ValidationUtil.validateCaseNumber("1212121212121212"));
+        assertEquals(false, ValidationUtil.validateCaseNumber("2323232323232"));
     }
 
     @Test
@@ -68,7 +69,7 @@ public class ValidationUtilTest {
     }
 
     @Test
-    void validateRequestedRoles() throws IOException {
+    void validateRequestedRoles() throws IOException, ParseException {
         assertTrue(ValidationUtil.validateRequestedRoles(TestDataBuilder.buildAssignmentRequest().getRequestedRoles()));
     }
 

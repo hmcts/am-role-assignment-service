@@ -10,6 +10,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -58,7 +59,7 @@ public class CreateRoleAssignmentOrchestrator {
         AssignmentRequest existingAssignmentRequest;
 
         //1. call parse request service
-        AssignmentRequest parsedAssignmentRequest = parseRequestService.parseRequest(roleAssignmentRequest);
+        AssignmentRequest parsedAssignmentRequest = parseRequestService.parseRequest(roleAssignmentRequest, RequestType.CREATE);
 
         //2. Call persistence service to store only the request
         requestEntity = persistInitialRequest(parsedAssignmentRequest.getRequest());

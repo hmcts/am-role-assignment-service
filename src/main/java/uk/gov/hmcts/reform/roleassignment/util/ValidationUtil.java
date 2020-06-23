@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_HYPHEN_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
@@ -43,7 +44,7 @@ public class ValidationUtil {
      * @param numberString =null
      * @return
      */
-    public static boolean validate(String numberString) {
+    public static boolean validateCaseNumber(String numberString) {
         validateInputParams(NUMBER_PATTERN, numberString);
         return (numberString != null && numberString.length() == 16);
     }
@@ -66,6 +67,35 @@ public class ValidationUtil {
     public static boolean validateTextHyphenField(String field) {
         validateInputParams(TEXT_HYPHEN_PATTERN, field);
         return (field != null);
+    }
+
+    public static boolean validateDateTime(String strDate) {
+
+        if (strDate.length() < 16) {
+            return false;
+        }
+        SimpleDateFormat sdfrmt = new SimpleDateFormat(DATE_PATTERN);
+        sdfrmt.setLenient(false);
+        try {
+            Date javaDate = sdfrmt.parse(strDate);
+        } catch (ParseException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean validateDateOrder(String beginTime, String endTime, String createTime) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
+        Date beginTimeP = sdf.parse(beginTime);
+        Date endTimeP = sdf.parse(endTime);
+        Date createTimeP = sdf.parse(createTime);
+        boolean result = false;
+        if (endTimeP.after(beginTimeP) && beginTimeP.after(createTimeP)) {
+            result = true;
+        } else {
+            throw new BadRequestException("The created time, begin time and end time are not in sequence or not valid");
+        }
+        return result;
     }
 
     public static void isValidSecurityClassification(String securityClassification) {
@@ -117,8 +147,9 @@ public class ValidationUtil {
         return false;
     }
 
-    public static boolean validateAssignmentRequest(AssignmentRequest assignmentRequest) {
+    public static boolean validateAssignmentRequest(AssignmentRequest assignmentRequest) throws ParseException {
         validateRoleRequest(assignmentRequest.getRequest());
+        validateLists(assignmentRequest.getRequestedRoles());
         validateRequestedRoles(assignmentRequest.getRequestedRoles());
         return true;
     }
@@ -130,19 +161,22 @@ public class ValidationUtil {
         return true;
     }
 
-    public static boolean validateRequestedRoles(Collection<RequestedRole> requestedRoles) {
+    public static boolean validateRequestedRoles(Collection<RequestedRole> requestedRoles) throws ParseException {
         for (RequestedRole requestedRole : requestedRoles) {
             validateUuidField(requestedRole.getActorId());
+            if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
+                validateDateTime(requestedRole.getBeginTime().toString());
+                validateDateTime(requestedRole.getEndTime().toString());
+            } else {
+                throw new BadRequestException("Begin time and end time are both required.");
+            }
+        }
+        return true;
+    }
 
-            validateTextField(requestedRole.getActorIdType().toString());
-            validateTextField(requestedRole.getRoleType().toString());
-            validateTextField(requestedRole.getRoleName());
-            validateTextField(requestedRole.getClassification().toString());
-            validateTextField(requestedRole.getGrantType().toString());
-
-            validateTextField(requestedRole.getAttributes().get("jurisdiction").asText());
-            validateTextHyphenField(requestedRole.getAttributes().get("region").asText());
-            validateTextField(requestedRole.getAttributes().get("contractType").asText());
+    public static boolean validateParsedAssignmentRequest(Collection<RequestedRole> requestedRoles) throws ParseException {
+        for (RequestedRole requestedRole : requestedRoles) {
+            validateDateOrder(requestedRole.getBeginTime().toString(), requestedRole.getEndTime().toString(), requestedRole.getCreated().toString());
         }
         return true;
     }
