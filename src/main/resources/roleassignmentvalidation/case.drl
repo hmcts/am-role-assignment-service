@@ -1,0 +1,20 @@
+//package roleassignmentvalidation
+//
+//global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService retrieveDataService;
+//
+//import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+//import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+//import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+//
+//rule "load cases for case roles" salience 90
+//	when
+//	  $request : Request()
+//	  $ruleName : String("load cases for case roles");
+//	  RequestedRole(attributes["caseId"]!=null,$caseId : attributes["caseId"])
+//    not Case ( id == $caseId )
+//
+//	then
+//		insert (retrieveDataService.getCaseDataV2($caseId) );
+//		$request.setLog(String.format(" Case has been inserted by rule   %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
+//
+//end

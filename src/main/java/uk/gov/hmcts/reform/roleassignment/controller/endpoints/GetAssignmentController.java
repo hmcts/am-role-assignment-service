@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
@@ -58,7 +59,7 @@ public class GetAssignmentController {
     }
 
     @GetMapping(value = "/cases/{caseId}", produces = "application/json")
-    public String getCaseDataV2(@PathVariable("caseId") String caseId) {
+    public Case getCaseDataV2(@PathVariable("caseId") String caseId) {
         return dataStoreFeignClient.getCaseDataV2(caseId);
     }
 }

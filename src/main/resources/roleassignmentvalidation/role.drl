@@ -1,95 +1,80 @@
-package roleassignmentvalidation
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
-import uk.gov.hmcts.reform.roleassignment.domain.model.Pattern;
-import com.fasterxml.jackson.databind.JsonNode;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role
-
-
-rule "role  validation for Judge  P1" salience 30
-
-when
-$role           : Role()
-$requestedRole  : RequestedRole(roleName == $role.getName())
-                  Role($patterns : patterns)
-                  Pattern($data : data) from $patterns
-                  $classificationEntry : JsonNode() from $data["Classification"]
-                  $classificationObj : JsonNode() from $classificationEntry
-                  RequestedRole($requestedRole.getClassification().toString() == $classificationObj.asText() )
-                  $grantTypeEntry : JsonNode() from $data["GrantType"]
-                  $grantTypeObj : JsonNode() from $grantTypeEntry
-                  RequestedRole($requestedRole.getGrantType().toString() == $grantTypeObj.asText() )
-                  $roleTypeObj : JsonNode() from $data["RoleType"]
-                  RequestedRole($requestedRole.getRoleType().toString() == $roleTypeObj.asText() )
-                  $attributesEntry : JsonNode() from $data["Attributes"]
-                  $attributeObj : JsonNode() from $attributesEntry
-                  $Obj1 : JsonNode() from $attributeObj
-                  RequestedRole(attributes["region"] == $Obj1)
-
-
-
-then
-$requestedRole.setStatus(Status.APPROVED);
-end;
-
-
-rule "role  validation for Judge P2 without existing case id" salience 25
-when
-$role           : Role()
-$requestedRole  : RequestedRole(roleName == $role.getName())
-                  Role($patterns : patterns)
-                  Pattern($data : data) from $patterns
-                  $classificationEntry : JsonNode() from $data["Classification"]
-                  $classificationObj : JsonNode() from $classificationEntry
-                  RequestedRole($requestedRole.getClassification().toString() == $classificationObj.asText() )
-                  $grantTypeEntry : JsonNode() from $data["GrantType"]
-                  $grantTypeObj : JsonNode() from $grantTypeEntry
-                  RequestedRole($requestedRole.getGrantType().toString() == $grantTypeObj.asText() )
-                  $roleTypeObj : JsonNode() from $data["RoleType"]
-                  RequestedRole($requestedRole.getRoleType().toString() == $roleTypeObj.asText() )
-                  $attributesEntry : JsonNode() from $data["Attributes"]
-                  $attributeObj : JsonNode() from $attributesEntry
-                  $Obj1 : JsonNode() from $attributeObj
-                  RequestedRole(attributes["caseId"]!=null,$caseId : attributes["caseId"])
-                  not Case ( id == $caseId )
-
-
-
-then
-insert ( services.caseService.getCaseById($caseId) )
-$requestedRole.setStatus(Status.APPROVED);
-
-end;
-
-
-rule "role  validation for Judge P2 with existing case id" salience 22
-when
-$role           : Role()
-$requestedRole  : RequestedRole(roleName == $role.getName())
-                  Role($patterns : patterns)
-                  Pattern($data : data) from $patterns
-                  $classificationEntry : JsonNode() from $data["Classification"]
-                  $classificationObj : JsonNode() from $classificationEntry
-                  RequestedRole($requestedRole.getClassification().toString() == $classificationObj.asText() )
-                  $grantTypeEntry : JsonNode() from $data["GrantType"]
-                  $grantTypeObj : JsonNode() from $grantTypeEntry
-                  RequestedRole($requestedRole.getGrantType().toString() == $grantTypeObj.asText() )
-                  $roleTypeObj : JsonNode() from $data["RoleType"]
-                  RequestedRole($requestedRole.getRoleType().toString() == $roleTypeObj.asText() )
-                  $attributesEntry : JsonNode() from $data["Attributes"]
-                  $attributeObj : JsonNode() from $attributesEntry
-                  $Obj1 : JsonNode() from $attributeObj
-                  RequestedRole(attributes["caseId"]!=null,$caseId : attributes["caseId"])
-                  Case ( id == $caseId )
-
-then
-$requestedRole.setStatus(Status.APPROVED);
-
-end;
-
-
-
+//package roleassignmentvalidation
+//global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService retrieveDataService;
+//import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+//import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+//import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+//import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+//import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+//import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+//import uk.gov.hmcts.reform.roleassignment.domain.model.Pattern;
+//import com.fasterxml.jackson.databind.JsonNode;
+//import uk.gov.hmcts.reform.roleassignment.domain.model.Role
+//
+//
+//rule "role  validation for Judge  P1" salience 30
+//
+//when
+//$role           : Role()
+//$request        : Request()
+//$requestedRole  : RequestedRole(roleName == $role.getName())
+//                  Role($patterns : patterns)
+//                  Pattern($data : data) from $patterns
+//                  $classificationEntry : JsonNode() from $data["Classification"]
+//                  $classificationObj : JsonNode() from $classificationEntry
+//                  RequestedRole($requestedRole.getClassification().toString() == $classificationObj.asText() )
+//                  $grantTypeEntry : JsonNode() from $data["GrantType"]
+//                  $grantTypeObj : JsonNode() from $grantTypeEntry
+//                  RequestedRole($requestedRole.getGrantType().toString() == $grantTypeObj.asText() )
+//                  $roleTypeObj : JsonNode() from $data["RoleType"]
+//                  RequestedRole($requestedRole.getRoleType().toString() == $roleTypeObj.asText() )
+//                  $attributesEntry : JsonNode() from $data["Attributes"]
+//                  $attributeObj : JsonNode() from $attributesEntry
+//                  $Obj1 : JsonNode() from $attributeObj
+//                  $ruleName : String("role  validation for Judge  P1");
+//                  RequestedRole(attributes["region"] == $Obj1)
+//
+//
+//
+//
+//then
+//$requestedRole.setLog(String.format("Requested Role has been approved by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
+//$requestedRole.setStatus(Status.APPROVED);
+//
+//end;
+//
+//
+//
+//
+//
+//rule "role  validation for Judge P2 with existing case id" salience 22
+//when
+//$role           : Role()
+//$request        : Request()
+//$requestedRole  : RequestedRole(roleName == $role.getName())
+//                  Role($patterns : patterns)
+//                  Pattern($data : data) from $patterns
+//                  $classificationEntry : JsonNode() from $data["Classification"]
+//                  $classificationObj : JsonNode() from $classificationEntry
+//                  RequestedRole($requestedRole.getClassification().toString() == $classificationObj.asText() )
+//                  $grantTypeEntry : JsonNode() from $data["GrantType"]
+//                  $grantTypeObj : JsonNode() from $grantTypeEntry
+//                  RequestedRole($requestedRole.getGrantType().toString() == $grantTypeObj.asText() )
+//                  $roleTypeObj : JsonNode() from $data["RoleType"]
+//                  RequestedRole($requestedRole.getRoleType().toString() == $roleTypeObj.asText() )
+//                  $attributesEntry : JsonNode() from $data["Attributes"]
+//                  $attributeObj : JsonNode() from $attributesEntry
+//                  $Obj1 : JsonNode() from $attributeObj
+//                  $ruleName : String("role  validation for Judge P2 with existing case id");
+////                  RequestedRole(attributes["caseId"]!=null,$caseId : attributes["caseId"])
+////                  Case ( id == $caseId )
+//
+//then
+//System.out.println("Case Id : " + $Obj1);
+//$requestedRole.setStatus(Status.APPROVED);
+//$requestedRole.setLog(String.format("Requested Role has been approved by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
+//
+//
+//end;
+//
+//
+//

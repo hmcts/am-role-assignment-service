@@ -1,50 +1,50 @@
-package roleassignmentvalidation
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
-
-rule "request validation for creation" salience 100
-
-when
-$request  : Request(id!= null,requestType == RequestType.CREATE,status == Status.CREATED)
-            Request( created !=null,process in (GrantType.SPECIFIC.toString(),GrantType.STANDARD.toString(),GrantType.CHALLENGED.toString()), clientId == "am_role_assignment_service")
-            Request(replaceExisting == Boolean.TRUE, process !=null, reference != null) or Request(replaceExisting == Boolean.FALSE)
-            $ruleName : String("request validation for creation");
-then
-$request.setLog(String.format("request has been validated by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
-$request.setStatus(Status.VALIDATED);
-end;
-
-
-//**** rules for delete ****
-rule "request validation for delete" salience 10
-
-when
-$request  : Request(id!= null,requestType == RequestType.DELETE,status == Status.CREATED)
-            Request( created !=null,process in (GrantType.SPECIFIC.toString(),GrantType.STANDARD.toString(),GrantType.CHALLENGED.toString()), clientId == "am_role_assignment_service")
-            $ruleName : String("request validation for delete");
-then
-$request.setLog(String.format("request has been validated by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
-$request.setStatus(Status.VALIDATED);
-end;
-
-
-
-
-
-
-//******* create role reuest validation rule *****
-// clientId(service id from s2s token ) must be am_role_assignment_service
-// requesttype must be create
-// status must be create
-//process == SPECIFIC
-// if replaceExisting is true then process & reference must not be null
-//if requestType == create, then roleassignmentId should be null/empty.rule
-//if requestType == delete and delete endpoint is based on assignment id, then roleassignmentId must not be null.
-// created and lastupdatedtime should be not null.
-// request Id should not be null.
-
-
-
-
+//package roleassignmentvalidation
+//import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+//import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+//import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+//import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+//
+//rule "request validation for creation" salience 100
+//
+//when
+//$request  : Request(id!= null,requestType == RequestType.CREATE,status == Status.CREATED)
+//            Request( created !=null,process in (GrantType.SPECIFIC.toString(),GrantType.STANDARD.toString(),GrantType.CHALLENGED.toString()), clientId == "am_role_assignment_service")
+//            Request(replaceExisting == Boolean.TRUE, process !=null, reference != null) or Request(replaceExisting == Boolean.FALSE)
+//            $ruleName : String("request validation for creation");
+//then
+//$request.setLog(String.format("request has been validated by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
+//$request.setStatus(Status.VALIDATED);
+//end;
+//
+//
+////**** rules for delete ****
+//rule "request validation for delete" salience 10
+//
+//when
+//$request  : Request(id!= null,requestType == RequestType.DELETE,status == Status.CREATED)
+//            Request( created !=null,process in (GrantType.SPECIFIC.toString(),GrantType.STANDARD.toString(),GrantType.CHALLENGED.toString()), clientId == "am_role_assignment_service")
+//            $ruleName : String("request validation for delete");
+//then
+//$request.setLog(String.format("request has been validated by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
+//$request.setStatus(Status.VALIDATED);
+//end;
+//
+//
+//
+//
+//
+//
+////******* create role reuest validation rule *****
+//// clientId(service id from s2s token ) must be am_role_assignment_service
+//// requesttype must be create
+//// status must be create
+////process == SPECIFIC
+//// if replaceExisting is true then process & reference must not be null
+////if requestType == create, then roleassignmentId should be null/empty.rule
+////if requestType == delete and delete endpoint is based on assignment id, then roleassignmentId must not be null.
+//// created and lastupdatedtime should be not null.
+//// request Id should not be null.
+//
+//
+//
+//

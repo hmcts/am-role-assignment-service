@@ -73,8 +73,8 @@ auth.provider.service.client.baseUrl: ${IDAM_S2S_URL:http://localhost:4502}
 idam:
   s2s-auth:
     # AAAAAAAAAAAAAAAA
-    totp_secret: ${AM_ROLE_ASSIGNMENT_SERVICE_SECRET:AAAAAAAAAAAAAAAA}
-    microservice: am_role_assignment_service
+    totp_secret: ${AM_ROLE_ASSIGNMENT_SERVICE_SECRET:AAAAAAAAAAAAAAAC}
+    microservice: ccd_gw
     url: ${IDAM_S2S_URL:http://localhost:4502}
 
 auth.idam.client.baseUrl: ${IDAM_USER_URL:http://localhost:5000}
