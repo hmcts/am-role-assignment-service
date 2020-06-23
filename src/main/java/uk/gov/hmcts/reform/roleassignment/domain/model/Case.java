@@ -47,26 +47,26 @@ public class Case implements Cloneable {
     private Map<String, JsonNode> dataClassification;
 
     /**
-     * Attribute passed to UI layer, does not need persistence
+     * Attribute passed to UI layer, does not need persistence.
      */
     @JsonProperty("callback_response_status_code")
     private Integer callbackResponseStatusCode;
 
     /**
-     * Attribute passed to UI layer, does not need persistence
+     * Attribute passed to UI layer, does not need persistence.
      */
     @JsonProperty("callback_response_status")
     private String callbackResponseStatus;
 
     /**
-     * Attribute passed to UI layer, does not need persistence
+     * Attribute passed to UI layer, does not need persistence.
      */
     @JsonProperty("delete_draft_response_status_code")
     private Integer deleteDraftResponseStatusCode;
 
 
     /**
-     * Attribute passed to UI layer, does not need persistence
+     * Attribute passed to UI layer, does not need persistence.
      */
     @JsonProperty("delete_draft_response_status")
     private String deleteDraftResponseStatus;

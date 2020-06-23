@@ -28,7 +28,10 @@ public class ValidationModelService {
     private IdamRoleService idamRoleService;
     private RetrieveDataService retrieveDataService;
 
-    public ValidationModelService(StatelessKieSession kieSession, PersistenceService persistenceService, IdamRoleService idamRoleService, RetrieveDataService retrieveDataService) {
+    public ValidationModelService(StatelessKieSession kieSession,
+                                  PersistenceService persistenceService,
+                                  IdamRoleService idamRoleService,
+                                  RetrieveDataService retrieveDataService) {
         this.kieSession = kieSession;
         this.persistenceService = persistenceService;
         this.idamRoleService = idamRoleService;

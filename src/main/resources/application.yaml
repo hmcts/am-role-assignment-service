@@ -59,7 +59,7 @@ spring:
           lob:
             non_contextual_creation: true
   liquibase:
-    enabled: ${ENABLE_DB_MIGRATE:true}
+    enabled: true
     change-log: classpath:/db/changelog/db.changelog-master.xml
   datasource:
     url: jdbc:postgresql://${ROLE_ASSIGNMENT_DB_HOST:localhost}:${ROLE_ASSIGNMENT_DB_PORT:5451}/${ROLE_ASSIGNMENT_DB_NAME:role_assignment}${ROLE_ASSIGNMENT_DB_OPTIONS:?stringtype=unspecified}
@@ -73,8 +73,8 @@ auth.provider.service.client.baseUrl: ${IDAM_S2S_URL:http://localhost:4502}
 idam:
   s2s-auth:
     # AAAAAAAAAAAAAAAA
-    totp_secret: ${AM_ROLE_ASSIGNMENT_SERVICE_SECRET:AAAAAAAAAAAAAAAC}
-    microservice: ccd_gw
+    totp_secret: ${AM_ROLE_ASSIGNMENT_SERVICE_SECRET:AAAAAAAAAAAAAAAA}
+    microservice: am_role_assignment_service
     url: ${IDAM_S2S_URL:http://localhost:4502}
 
 auth.idam.client.baseUrl: ${IDAM_USER_URL:http://localhost:5000}
