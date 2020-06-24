@@ -13,25 +13,25 @@ Feature: Create Role Assignments
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-002
-  Scenario: must successfully create multiple Role Assignments
-    Given a user with [an active caseworker profile with full permissions],
-    When a request is prepared with appropriate values,
-    And the request [contains multiple Role Assignments],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
-    Then a positive response is received,
-    And the response has all other details as expected.
-
-  @S-003
-  Scenario: must successfully create single Role Assignment with Role Type ID is case-role
-    Given a user with [an active caseworker profile with full permissions],
-    When a request is prepared with appropriate values,
-    And the request [contains a single Role Assignment],
-    And the request [contains Role Type Id is case-role],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
-    Then a positive response is received,
-    And the response has all other details as expected.
-
+#  @S-002
+#  Scenario: must successfully create multiple Role Assignments
+#    Given a user with [an active caseworker profile with full permissions],
+#    When a request is prepared with appropriate values,
+#    And the request [contains multiple Role Assignments],
+#    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+#    Then a positive response is received,
+#    And the response has all other details as expected.
+#
+#  @S-003
+#  Scenario: must successfully create single Role Assignment with Role Type ID is case-role
+#    Given a user with [an active caseworker profile with full permissions],
+#    When a request is prepared with appropriate values,
+#    And the request [contains a single Role Assignment],
+#    And the request [contains Role Type Id is case-role],
+#    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+#    Then a positive response is received,
+#    And the response has all other details as expected.
+#
   @S-012
   Scenario: must successfully create single Role Assignment with Role Type ID is organisational-role
     Given a user with [an active caseworker profile with full permissions],
@@ -118,35 +118,35 @@ Feature: Create Role Assignments
 #    Then a negative response is received,
 #    And the response has all other details as expected.
 
-  @S-008
-  Scenario: must receive an error response when BeginTime is less than current time
-    Given a user with [an active caseworker profile with full permissions],
-    When a request is prepared with appropriate values,
-    And the request [contains a single Role Assignment],
-    And the request [contains BeginTime is less than current time],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
-    Then a negative response is received,
-    And the response has all other details as expected.
-
-  @S-009
-  Scenario: must receive an error response when EndTime is less than current time
-    Given a user with [an active caseworker profile with full permissions],
-    When a request is prepared with appropriate values,
-    And the request [contains a single Role Assignment],
-    And  the request [contains EndTime is less than current time],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
-    Then a negative response is received,
-    And the response has all other details as expected.
-
-  @S-010
-  Scenario: must receive an error response when EndTime is less than BeginTime
-    Given a user with [an active caseworker profile with full permissions],
-    When a request is prepared with appropriate values,
-    And the request [contains a single Role Assignment],
-    And the request [contains EndTime is less than BeginTime],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
-    Then a negative response is received,
-    And the response has all other details as expected.
+#  @S-008
+#  Scenario: must receive an error response when BeginTime is less than current time
+#    Given a user with [an active caseworker profile with full permissions],
+#    When a request is prepared with appropriate values,
+#    And the request [contains a single Role Assignment],
+#    And the request [contains BeginTime is less than current time],
+#    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+#    Then a negative response is received,
+#    And the response has all other details as expected.
+#
+#  @S-009
+#  Scenario: must receive an error response when EndTime is less than current time
+#    Given a user with [an active caseworker profile with full permissions],
+#    When a request is prepared with appropriate values,
+#    And the request [contains a single Role Assignment],
+#    And  the request [contains EndTime is less than current time],
+#    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+#    Then a negative response is received,
+#    And the response has all other details as expected.
+#
+#  @S-010
+#  Scenario: must receive an error response when EndTime is less than BeginTime
+#    Given a user with [an active caseworker profile with full permissions],
+#    When a request is prepared with appropriate values,
+#    And the request [contains a single Role Assignment],
+#    And the request [contains EndTime is less than BeginTime],
+#    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+#    Then a negative response is received,
+#    And the response has all other details as expected.
 
 #  @S-011
 #  Scenario: must successfully removed expired records from LIVE Table
