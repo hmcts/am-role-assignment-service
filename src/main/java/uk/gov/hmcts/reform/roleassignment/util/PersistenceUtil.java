@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
@@ -8,6 +9,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -113,8 +115,16 @@ public class PersistenceUtil {
 
     }
 
-    public RoleAssignment convertHistoryEntitiesInRoleAssignment(HistoryEntity historyEntity) {
+    public ActorCacheEntity convertActorCacheToEntity(ActorCache actorCache) {
+        return ActorCacheEntity.builder()
+            .actorId(actorCache.getActorId())
+            .etag(actorCache.getEtag())
+            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(actorCache.roleAssignments))
+            .build();
 
+    }
+
+    public RoleAssignment convertHistoryEntitiesInRoleAssignment(HistoryEntity historyEntity) {
         return RoleAssignment.builder()
             .id(historyEntity.getId())
             .actorIdType(ActorIdType.valueOf(historyEntity.getActorIdType()))
