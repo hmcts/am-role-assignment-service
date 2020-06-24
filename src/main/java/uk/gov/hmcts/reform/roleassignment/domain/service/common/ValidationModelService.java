@@ -7,11 +7,9 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 
 import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,18 +26,21 @@ public class ValidationModelService {
     private StatelessKieSession kieSession;
     private PersistenceService persistenceService;
     private IdamRoleService idamRoleService;
+    private RetrieveDataService retrieveDataService;
 
-    public ValidationModelService(StatelessKieSession kieSession, PersistenceService persistenceService, IdamRoleService idamRoleService) {
+    public ValidationModelService(StatelessKieSession kieSession,
+                                  PersistenceService persistenceService,
+                                  IdamRoleService idamRoleService,
+                                  RetrieveDataService retrieveDataService) {
         this.kieSession = kieSession;
         this.persistenceService = persistenceService;
         this.idamRoleService = idamRoleService;
+        this.retrieveDataService = retrieveDataService;
     }
 
     public void validateRequest(AssignmentRequest assignmentRequest) throws Exception {
 
         // Force the status and timestamp on all new request
-        //assignmentRequest.getRequest().status = Status.CREATED;
-        assignmentRequest.getRequest().setCreated(LocalDateTime.now());
         runRulesOnAllRequestedAssignments(assignmentRequest);
 
     }
@@ -53,12 +54,11 @@ public class ValidationModelService {
         facts.add(assignmentRequest.getRequest());
         facts.addAll(assignmentRequest.getRequestedRoles());
         addExistingRoleAssignments(assignmentRequest, facts);
+        kieSession.setGlobal("retrieveDataService", retrieveDataService);
 
         // Run the rules
         kieSession.execute(facts);
 
-        //Update status
-        updateRequestStatus(assignmentRequest);
 
     }
 
@@ -67,10 +67,6 @@ public class ValidationModelService {
         userIds.add(String.valueOf(assignmentRequest.getRequest().assignerId));
         userIds.add(String.valueOf(assignmentRequest.getRequest().getAuthenticatedUserId()));
         for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
-            //requestedRole.status = Status.CREATED;
-            requestedRole.created = LocalDateTime.now();
-            requestedRole.beginTime = LocalDateTime.now();
-            requestedRole.endTime = LocalDateTime.now();
             userIds.add(String.valueOf(requestedRole.getActorId()));
 
         }
@@ -81,14 +77,6 @@ public class ValidationModelService {
         }
     }
 
-    public void updateRequestStatus(AssignmentRequest assignmentRequest) {
-        //assignmentRequest.getRequest().status = Status.APPROVED;
-        for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
-            if (!requestedRole.isApproved()) {
-                assignmentRequest.getRequest().status = Status.REJECTED;
-            }
-        }
-    }
 
     private List<Role> buildRole(String filename) {
 

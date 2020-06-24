@@ -86,7 +86,7 @@ public class HistoryEntity implements Serializable {
     @Convert(converter = JsonBConverter.class)
     private JsonNode attributes;
 
-    @Column(name = "notes", nullable = false, columnDefinition = "jsonb")
+    @Column(name = "notes", nullable = true, columnDefinition = "jsonb")
     @Convert(converter = JsonBConverter.class)
     private JsonNode notes;
 

@@ -56,6 +56,7 @@ public class PrepareResponseService {
             requestedRoleMetaData.remove("grantType");
             requestedRoleMetaData.remove("approved");
             requestedRoleMetaData.remove("rejected");
+            requestedRoleMetaData.remove("request");
             requestedRoles.add(mapper.convertValue(requestedRoleMetaData, RequestedRole.class));
         }
         roleAssignmentRequest.setRequestedRoles(requestedRoles);
