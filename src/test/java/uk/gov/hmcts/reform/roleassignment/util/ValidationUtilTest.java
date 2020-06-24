@@ -94,4 +94,16 @@ public class ValidationUtilTest {
         assertEquals(false, ValidationUtil.validateTTL("2021-12-31T10:10:10+9999"));
         assertEquals(false, ValidationUtil.validateTTL("2021-12-31T10:10:10+999Z"));
     }
+
+    @Test
+    void validateDateTime() {
+
+    }
+
+    @Test
+    void validateDateOrder_Exception() throws ParseException {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateDateOrder("2023-01-01T00:00", "2022-01-01T00:00", "2020-01-01T00:00");
+        });
+    }
 }
