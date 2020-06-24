@@ -1,8 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.hmcts.reform.roleassignment.data.cache.CacheControlEntity;
+import uk.gov.hmcts.reform.roleassignment.data.cache.CacheControlRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
@@ -13,6 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.CacheControl;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.util.List;
@@ -31,13 +35,16 @@ public class PersistenceService {
     private RequestRepository requestRepository;
     private RoleAssignmentRepository roleAssignmentRepository;
     private PersistenceUtil persistenceUtil;
+    private CacheControlRepository cacheControlRepository;
 
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
-                              RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil) {
+                              RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
+                              CacheControlRepository cacheControlRepository) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
         this.persistenceUtil = persistenceUtil;
+        this.cacheControlRepository = cacheControlRepository;
     }
 
 
@@ -96,6 +103,26 @@ public class PersistenceService {
         roleAssignmentRepository.save(entity);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public CacheControlEntity persistCacheControlData(RoleAssignment roleAssignment) {
+
+        CacheControlEntity entity = persistenceUtil.convertCacheControlModelToEntity(prepareCacheControlModel(roleAssignment));
+        CacheControlEntity existingEtag = cacheControlRepository.findByActorId(roleAssignment.actorId);
+
+        if (existingEtag != null) {
+            entity.setEtag(existingEtag.getEtag());
+        }
+        return cacheControlRepository.save(entity);
+    }
+
+    @NotNull
+    private CacheControl prepareCacheControlModel(RoleAssignment roleAssignment) {
+        CacheControl cacheControl = new CacheControl();
+        cacheControl.setActorId(roleAssignment.actorId);
+        Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(roleAssignment.actorId);
+        cacheControl.setRoleAssignments(roleAssignmentEntities);
+        return cacheControl;
+    }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<ExistingRole> getExistingRoleAssignment(UUID actorId) {
@@ -105,6 +132,12 @@ public class PersistenceService {
         return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertRoleAssignmentEntityInModel(role)).collect(
             Collectors.toList());
 
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public CacheControlEntity getCacheControlData(UUID actorId) {
+
+        return cacheControlRepository.findByActorId(actorId);
     }
 
     public List<RequestedRole> getExistingRoleByProcessAndReference(String process, String reference, String status) {

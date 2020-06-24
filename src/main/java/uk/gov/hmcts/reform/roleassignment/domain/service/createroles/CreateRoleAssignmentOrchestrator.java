@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.roleassignment.data.cache.CacheControlEntity;
 import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
@@ -10,6 +11,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
@@ -22,6 +24,7 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -279,6 +282,17 @@ public class CreateRoleAssignmentOrchestrator {
         persistenceService.persistRequestToHistory(requestEntity);
     }
 
+    public ResponseEntity<Object> retrieveRoleAssignmentByActorId(UUID actorId) throws Exception {
+        List<ExistingRole> roles = persistenceService.getExistingRoleAssignment(actorId);
+        ResponseEntity<Object> result = PrepareResponseService.prepareRetrieveRoleResponse(roles);
+        return result;
+    }
+
+    public long retrieveETag(UUID actorId) throws Exception {
+        CacheControlEntity entity = persistenceService.getCacheControlData(actorId);
+        return entity.getEtag();
+    }
+
     private void moveHistoryRecordsToLiveTable(RequestEntity requestEntity) {
         List<HistoryEntity> historyEntities = requestEntity.getHistoryEntities().stream().filter(entity -> entity.getStatus().equals(
             Status.APPROVED.toString())).collect(
@@ -291,6 +305,7 @@ public class CreateRoleAssignmentOrchestrator {
 
             requestedRole.setStatus(Status.LIVE);
             persistenceService.persistRoleAssignment(requestedRole);
+            persistenceService.persistCacheControlData(requestedRole);
 
         }
     }
