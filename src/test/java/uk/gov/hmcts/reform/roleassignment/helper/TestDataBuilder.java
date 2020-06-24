@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -16,6 +18,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,48 +40,43 @@ public class TestDataBuilder {
         return new AssignmentRequest(buildRequest(), buildRequestedRoleCollection());
     }
 
-    public static Request buildRequest() {
+    private static Request buildRequest() {
         LocalDateTime timeStamp = LocalDateTime.now();
         return Request.builder().id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).correlationId(
             "correlationId").clientId("clientId").authenticatedUserId(
                 UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).assignerId(
                     UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestType(
-                        RequestType.CREATE).reference("reference").process(("process")).replaceExisting(true).roleAssignmentId(
-                                "roleAssignmentId").created(timeStamp).build();
+                        RequestType.CREATE).reference("reference").process(("process")).replaceExisting(false).roleAssignmentId(
+                                "roleAssignmentId").created(timeStamp).status(Status.CREATED).build();
     }
 
-    public static Collection<RequestedRole> buildRequestedRoleCollection() throws IOException {
+    private static Collection<RequestedRole> buildRequestedRoleCollection() throws IOException {
         Collection<RequestedRole> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRequestedRole());
         requestedRoles.add(buildRequestedRole());
         return requestedRoles;
     }
 
-    //TODO update these, will build all from JSON files instead
     private static RequestedRole buildRequestedRole() throws IOException {
 
         LocalDateTime timeStamp = LocalDateTime.now();
 
         HashMap<String, JsonNode> attributes = buildAttributesFromFile();
 
-        RoleAssignment roleAssignment = RoleAssignment.builder().actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).actorIdType(
-            ActorIdType.IDAM).id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9a")).roleType(RoleType.CASE).roleName(
-                "judge").classification(Classification.PUBLIC).grantType(GrantType.STANDARD).readOnly(false).beginTime(
-                    timeStamp.plusDays(1)).endTime(timeStamp.plusMonths(1)).created(timeStamp).build();
-
         RequestedRole requestedRole = new RequestedRole();
-        requestedRole.setActorId(roleAssignment.actorId);
-        requestedRole.setId(roleAssignment.id);
-        requestedRole.setActorIdType(roleAssignment.actorIdType);
-        requestedRole.setRoleType(roleAssignment.roleType);
-        requestedRole.setRoleName(roleAssignment.roleName);
-        requestedRole.setClassification(roleAssignment.classification);
-        requestedRole.setGrantType(roleAssignment.grantType);
-        requestedRole.setReadOnly(roleAssignment.readOnly);
-        requestedRole.setBeginTime(roleAssignment.beginTime);
-        requestedRole.setCreated(roleAssignment.created);
-        requestedRole.setEndTime(roleAssignment.endTime);
+        requestedRole.setActorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"));
+        requestedRole.setId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9a"));
+        requestedRole.setActorIdType(ActorIdType.IDAM);
+        requestedRole.setRoleType(RoleType.CASE);
+        requestedRole.setRoleName("RoleName");
+        requestedRole.setClassification(Classification.PUBLIC);
+        requestedRole.setGrantType(GrantType.STANDARD);
+        requestedRole.setReadOnly(false);
+        requestedRole.setBeginTime(timeStamp.plusDays(1));
+        requestedRole.setCreated(timeStamp);
+        requestedRole.setEndTime(timeStamp.plusMonths(1));
         requestedRole.setAttributes(attributes);
+        requestedRole.setStatus(Status.CREATED);
 
         return requestedRole;
     }
@@ -89,6 +88,43 @@ public class TestDataBuilder {
         return new ObjectMapper().readValue(inputStream, new TypeReference<HashMap<String, JsonNode>>() {
         });
     }
+
+    public static RequestEntity buildRequestEntity(Request request) {
+        return RequestEntity.builder()
+            .correlationId(request.getCorrelationId())
+            .status(request.getStatus().toString())
+            .process(request.getProcess())
+            .reference(request.getProcess())
+            .authenticatedUserId(request.getAuthenticatedUserId())
+            .clientId(request.getClientId())
+            .assignerId(request.getAssignerId())
+            .replaceExisting(request.replaceExisting)
+            .requestType(request.getRequestType().toString())
+            .created(request.getCreated())
+            .log(request.getLog())
+            .build();
+    }
+
+    public static HistoryEntity buildHistoryIntoEntity(RoleAssignment model, RequestEntity requestEntity) {
+        return HistoryEntity.builder().actorId(model.getActorId())
+            .actorIdType(model.getActorIdType().toString())
+            .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
+            .beginTime(model.getBeginTime())
+            .classification(model.getClassification().toString())
+            .endTime(model.getEndTime())
+            .grantType(model.getGrantType().toString())
+            .roleName(model.getRoleName())
+            .roleType(model.getRoleType().toString())
+            .readOnly(model.readOnly)
+            .status(model.getStatus().toString())
+            .requestEntity(requestEntity)
+            .process(model.getProcess())
+            .reference(model.getReference())
+            .created(model.getCreated())
+            .notes(model.getNotes())
+            .build();
+    }
+
 
     //this maybe not 100% accurate
     public static ResponseEntity<Object> buildResponseEntity(AssignmentRequest roleAssignmentRequest) {
