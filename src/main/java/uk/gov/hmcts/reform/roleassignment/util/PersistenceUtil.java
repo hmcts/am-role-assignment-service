@@ -115,7 +115,7 @@ public class PersistenceUtil {
 
     }
 
-    public ActorCacheEntity convertCacheControlModelToEntity(ActorCache actorCache) {
+    public ActorCacheEntity convertActorCacheToEntity(ActorCache actorCache) {
         return ActorCacheEntity.builder()
             .actorId(actorCache.getActorId())
             .etag(actorCache.getEtag())

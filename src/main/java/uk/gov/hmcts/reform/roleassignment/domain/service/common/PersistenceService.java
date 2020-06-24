@@ -104,9 +104,9 @@ public class PersistenceService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ActorCacheEntity persistCacheControlData(RoleAssignment roleAssignment) {
+    public ActorCacheEntity persistActorCache(RoleAssignment roleAssignment) {
 
-        ActorCacheEntity entity = persistenceUtil.convertCacheControlModelToEntity(prepareCacheControlModel(roleAssignment));
+        ActorCacheEntity entity = persistenceUtil.convertActorCacheToEntity(prepareActorCache(roleAssignment));
         ActorCacheEntity existingEtag = actorCacheRepository.findByActorId(roleAssignment.actorId);
 
         if (existingEtag != null) {
@@ -116,7 +116,7 @@ public class PersistenceService {
     }
 
     @NotNull
-    private ActorCache prepareCacheControlModel(RoleAssignment roleAssignment) {
+    private ActorCache prepareActorCache(RoleAssignment roleAssignment) {
         ActorCache actorCache = new ActorCache();
         actorCache.setActorId(roleAssignment.actorId);
         Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(roleAssignment.actorId);
@@ -135,7 +135,7 @@ public class PersistenceService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ActorCacheEntity getCacheControlData(UUID actorId) {
+    public ActorCacheEntity getActorCacheEntity(UUID actorId) {
 
         return actorCacheRepository.findByActorId(actorId);
     }

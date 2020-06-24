@@ -277,7 +277,7 @@ public class CreateRoleAssignmentOrchestrator {
     }
 
     public long retrieveETag(UUID actorId) throws Exception {
-        ActorCacheEntity entity = persistenceService.getCacheControlData(actorId);
+        ActorCacheEntity entity = persistenceService.getActorCacheEntity(actorId);
         return entity.getEtag();
     }
 
@@ -293,7 +293,7 @@ public class CreateRoleAssignmentOrchestrator {
 
             requestedRole.setStatus(Status.LIVE);
             persistenceService.persistRoleAssignment(requestedRole);
-            persistenceService.persistCacheControlData(requestedRole);
+            persistenceService.persistActorCache(requestedRole);
 
         }
     }
