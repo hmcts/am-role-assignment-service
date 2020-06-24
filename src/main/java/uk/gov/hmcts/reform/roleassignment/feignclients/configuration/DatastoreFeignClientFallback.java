@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.feignclients.configuration;
 
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 
 public class DatastoreFeignClientFallback implements DataStoreFeignClient {
@@ -17,7 +18,7 @@ public class DatastoreFeignClientFallback implements DataStoreFeignClient {
     }
 
     @Override
-    public String getCaseDataV2(String caseId) {
-        return DATA_STORE_NOT_AVAILABLE;
+    public Case getCaseDataV2(String caseId) {
+        return new Case();
     }
 }
