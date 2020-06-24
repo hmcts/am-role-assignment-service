@@ -3,8 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.data.cache.CacheControlEntity;
-import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
+import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -17,9 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.util.HashSet;
@@ -31,9 +28,6 @@ import java.util.stream.Collectors;
 @Service
 public class CreateRoleAssignmentOrchestrator {
 
-    private DefaultCaseDataRepository caseService;
-    private IdamRoleService idamService;
-    private RetrieveDataService retrieveDataService;
     private ParseRequestService parseRequestService;
     private PersistenceService persistenceService;
     private ValidationModelService validationModelService;
@@ -41,16 +35,10 @@ public class CreateRoleAssignmentOrchestrator {
     Request request;
     RequestEntity requestEntity;
 
-    public CreateRoleAssignmentOrchestrator(DefaultCaseDataRepository caseService,
-                                            IdamRoleService idamService,
-                                            RetrieveDataService retrieveDataService,
-                                            ParseRequestService parseRequestService,
+    public CreateRoleAssignmentOrchestrator(ParseRequestService parseRequestService,
                                             PersistenceService persistenceService,
                                             ValidationModelService validationModelService,
                                             PersistenceUtil persistenceUtil) {
-        this.caseService = caseService;
-        this.idamService = idamService;
-        this.retrieveDataService = retrieveDataService;
         this.parseRequestService = parseRequestService;
         this.persistenceService = persistenceService;
         this.validationModelService = validationModelService;
@@ -289,7 +277,7 @@ public class CreateRoleAssignmentOrchestrator {
     }
 
     public long retrieveETag(UUID actorId) throws Exception {
-        CacheControlEntity entity = persistenceService.getCacheControlData(actorId);
+        ActorCacheEntity entity = persistenceService.getCacheControlData(actorId);
         return entity.getEtag();
     }
 

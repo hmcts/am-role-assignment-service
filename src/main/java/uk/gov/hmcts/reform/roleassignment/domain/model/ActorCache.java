@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public  class CacheControl {
+public  class ActorCache {
 
     public UUID actorId;
     public long etag;

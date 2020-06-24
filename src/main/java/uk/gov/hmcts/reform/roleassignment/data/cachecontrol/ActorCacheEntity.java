@@ -1,5 +1,5 @@
 
-package uk.gov.hmcts.reform.roleassignment.data.cache;
+package uk.gov.hmcts.reform.roleassignment.data.cachecontrol;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Builder;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "actor_cache_control")
-public class CacheControlEntity implements Serializable {
+public class ActorCacheEntity implements Serializable {
 
     @Id
     @Column(name = "actor_id", nullable = false)

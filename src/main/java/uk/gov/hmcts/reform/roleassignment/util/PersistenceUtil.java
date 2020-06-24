@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.data.cache.CacheControlEntity;
+import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
@@ -9,7 +9,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.CacheControl;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -115,11 +115,11 @@ public class PersistenceUtil {
 
     }
 
-    public CacheControlEntity convertCacheControlModelToEntity(CacheControl cacheControl) {
-        return CacheControlEntity.builder()
-            .actorId(cacheControl.getActorId())
-            .etag(cacheControl.getEtag())
-            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(cacheControl.roleAssignments))
+    public ActorCacheEntity convertCacheControlModelToEntity(ActorCache actorCache) {
+        return ActorCacheEntity.builder()
+            .actorId(actorCache.getActorId())
+            .etag(actorCache.getEtag())
+            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(actorCache.roleAssignments))
             .build();
 
     }
