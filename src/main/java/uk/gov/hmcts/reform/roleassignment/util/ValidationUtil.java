@@ -167,8 +167,6 @@ public class ValidationUtil {
             if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
                 validateDateTime(requestedRole.getBeginTime().toString());
                 validateDateTime(requestedRole.getEndTime().toString());
-            } else {
-                throw new BadRequestException("Begin time and end time are both required.");
             }
         }
         return true;

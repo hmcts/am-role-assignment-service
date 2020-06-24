@@ -245,7 +245,7 @@ public class CreateRoleAssignmentOrchestrator {
     private void checkDeleteApproved(AssignmentRequest existingAssignmentRequest) {
         for (RequestedRole requestedRole : existingAssignmentRequest.getRequestedRoles()) {
             requestedRole.setRequest(existingAssignmentRequest.getRequest());
-            if (!requestedRole.isApproved()) {
+            if (!requestedRole.getStatus().equals(Status.APPROVED)) {
                 requestedRole.status = Status.DELETE_REJECTED;
                 requestedRole.statusSequence = Status.DELETE_REJECTED.sequence;
             } else {
