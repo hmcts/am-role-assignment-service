@@ -4,31 +4,27 @@ services:
   am-role-assignment-service:
     build:
       context: .
-    image: hmcts/am-role-assignment-service1
-    container_name: am-role-assignment-service1
+    image: hmcts/am-role-assignment-service
+    container_name: am-role-assignment-service
     environment:
-       ROLE_ASSIGNMENT_DB_HOST: am-role-assignment-database
-       ROLE_ASSIGNMENT_DB_NAME: role_assignment
-       ROLE_ASSIGNMENT_DB_PORT: 5432
-       ROLE_ASSIGNMENT_DB_USERNAME: am
-       ROLE_ASSIGNMENT_DB_PASSWORD: am
-       ROLE_ASSIGNMENT_DB_OPTIONS:
-       AM_ROLE_ASSIGNMENT_SERVICE_SECRET:
-       ROLE_ASSIGNMENT_IDAM_KEY:
-       ROLE_ASSIGNMENT_TOKEN_SECRET:
-       ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service
-       IDAM_USER_URL: http://idam-api:5000
-       IDAM_S2S_URL: http://service-auth-provider-api:8080
-       AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY:
-       REFORM_SERVICE_NAME: am-role-assignment-service
-       REFORM_TEAM: am
-       REFORM_ENVIRONMENT: local
-       JAVA_TOOL_OPTIONS: -XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+      - ROLE_ASSIGNMENT_DB_HOST=am-role-assignment-database
+      - ROLE_ASSIGNMENT_DB_NAME=role_assignment
+      - ROLE_ASSIGNMENT_DB_PORT=5432
+      - ROLE_ASSIGNMENT_DB_USERNAME=am
+      - ROLE_ASSIGNMENT_DB_PASSWORD=am
+      - ROLE_ASSIGNMENT_DB_OPTIONS
+      - AM_ROLE_ASSIGNMENT_SERVICE_SECRET
+      - ROLE_ASSIGNMENT_IDAM_KEY
+      - ROLE_ASSIGNMENT_TOKEN_SECRET
+      - ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES=ccd_gw,am_role_assignment_service
+      - IDAM_USER_URL
+      - IDAM_S2S_URL
+      - AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY
+      - REFORM_SERVICE_NAME=am-role-assignment-service
+      - REFORM_TEAM=am
+      - REFORM_ENVIRONMENT=local
     ports:
-      - 4096:4096
-      - 5005:5005
-    networks:
-      - am-network
+      - $SERVER_PORT:$SERVER_PORT
     depends_on:
       - am-role-assignment-database
     links:
@@ -47,14 +43,7 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - 5451:5432
-    networks:
-      - am-network
     volumes:
       - am-role-assignment-database-data:/var/lib/postgresql/am-role-assignment/data
 volumes:
   am-role-assignment-database-data:
-
-networks:
-  am-network:
-    external: true
-
