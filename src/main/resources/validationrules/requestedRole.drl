@@ -1,39 +1,39 @@
-//package roleassignmentvalidation
-//import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
-//import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-//import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-//import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-//import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
-//import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
-//import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
-//
-//rule "role assignment validation" salience 50
-//
-//when
-//$requestedRole  : RequestedRole(id!= null)
-//$role           : Role()
-//$request        : Request(clientId != "xui") or (Request(clientId == "xui") and RequestedRole(roleType==RoleType.CASE))
-//                  Request(clientId != "organization_mapping") or (Request(clientId == "organization_mapping") and RequestedRole(roleType==RoleType.ORGANISATION))
-//                  RequestedRole(roleName == $role.getName())
-//                  Request(process in (GrantType.CHALLENGED.toString(),GrantType.STANDARD.toString(),GrantType.SPECIFIC.toString()) )
-//                  RequestedRole(status==Status.CREATED)
-//                  RequestedRole(beginTime >= created,endTime >= created,endTime > beginTime)
-//                 // $ruleName : String("role assignment validation");
-//then
-//$requestedRole.setStatus(Status.VALIDATED);
-////$requestedRole.setLog(String.format("Requested Role has been validated by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
-//end;
-//
-//
-//
-//// ********* Role Assignment validation ***** create role assignmenment validation rule *********
-//
-//// role assignment Id should not be null.
-//// if clint id in request == xui then role type in assignment must be == CASE
-//// if client id in request == organization_mapping service then role type in assignment must be == ORGANIZATION
-//// roleName should belong to  existing  Role model object
-//// The Requester.Classification shold be >= roleassignment.clasiffication
-//// request.process should be == roleassgnment.grantType
-//// status must be create
-//// beginTime >= currentTime , endTime >= currentTime & endTime > beginTime
-//
+package roleassignmentvalidation
+import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
+
+rule "role assignment validation" salience 50
+
+when
+$requestedRole  : RequestedRole(id!= null)
+$role           : Role()
+$request        : Request(clientId != "xui") or (Request(clientId == "xui") and RequestedRole(roleType==RoleType.CASE))
+                  Request(clientId != "organization_mapping") or (Request(clientId == "organization_mapping") and RequestedRole(roleType==RoleType.ORGANISATION))
+                  RequestedRole(roleName == $role.getName())
+                  Request(process in (GrantType.CHALLENGED.toString(),GrantType.STANDARD.toString(),GrantType.SPECIFIC.toString()) )
+                  RequestedRole(status==Status.CREATED)
+                  RequestedRole(beginTime >= created,endTime >= created,endTime > beginTime)
+                 // $ruleName : String("role assignment validation");
+then
+$requestedRole.setStatus(Status.VALIDATED);
+//$requestedRole.setLog(String.format("Requested Role has been validated by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
+end;
+
+
+
+// ********* Role Assignment validation ***** create role assignmenment validation rule *********
+
+// role assignment Id should not be null.
+// if clint id in request == xui then role type in assignment must be == CASE
+// if client id in request == organization_mapping service then role type in assignment must be == ORGANIZATION
+// roleName should belong to  existing  Role model object
+// The Requester.Classification shold be >= roleassignment.clasiffication
+// request.process should be == roleassgnment.grantType
+// status must be create
+// beginTime >= currentTime , endTime >= currentTime & endTime > beginTime
+
