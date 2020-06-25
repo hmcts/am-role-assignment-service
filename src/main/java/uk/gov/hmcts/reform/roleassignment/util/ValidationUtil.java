@@ -180,6 +180,7 @@ public class ValidationUtil {
                 validateDateTime(requestedRole.getBeginTime().toString());
                 validateDateTime(requestedRole.getEndTime().toString());
             }
+            validateCaseNumber(requestedRole.getAttributes().get("caseId").textValue());
         }
         return true;
     }
