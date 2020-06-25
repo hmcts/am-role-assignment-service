@@ -74,14 +74,14 @@ public class ValidationUtilTest {
     }
 
     @Test
-    void shouldThrowBadRequestException_isValidSecurityClassification() {
+    void shouldThrowInvalidException_isValidSecurityClassification() {
         Assertions.assertThrows(BadRequestException.class, () -> {
             ValidationUtil.isValidSecurityClassification("   PROTECTED");
         });
     }
 
     @Test
-    void shouldThrowBadRequestException_ValidateLists() {
+    void shouldThrowInvalidRequestException_ValidateLists() {
         Assertions.assertThrows(BadRequestException.class, () -> {
             ValidationUtil.validateLists(new ArrayList());
         });

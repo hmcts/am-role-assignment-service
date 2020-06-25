@@ -21,6 +21,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 
@@ -43,6 +44,17 @@ public class RoleAssignmentControllerAdvice {
             INVALID_REQUEST.getErrorCode(),
             INVALID_REQUEST.getErrorMessage()
                                          );
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Object> customValidationBadRequestError(
+        BadRequestException ex) {
+        return errorDetailsResponseEntity(
+            ex,
+            BAD_REQUEST,
+            BAD_REQUEST.value(),
+            "Bad Request"
+        );
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

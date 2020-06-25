@@ -86,14 +86,26 @@ public class ValidationUtil {
 
     public static boolean validateDateOrder(String beginTime, String endTime, String createTime) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
-        Date beginTimeP = sdf.parse(beginTime);
-        Date endTimeP = sdf.parse(endTime);
-        Date createTimeP = sdf.parse(createTime);
-        boolean result = false;
-        if (endTimeP.after(beginTimeP) && beginTimeP.after(createTimeP)) {
-            result = true;
-        } else {
-            throw new BadRequestException("The created time, begin time and end time are not in sequence or not valid");
+        boolean result;
+        try {
+            Date beginTimeP = sdf.parse(beginTime);
+            Date endTimeP = sdf.parse(endTime);
+            Date createTimeP = sdf.parse(createTime);
+
+            if (beginTimeP.before(createTimeP)) {
+                throw new BadRequestException(
+                    String.format("The begin time: %s takes place before the current time: %s", beginTime, createTime));
+            } else if (endTimeP.before(createTimeP)) {
+                throw new BadRequestException(
+                    String.format("The end time: %s takes place before the current time: %s", endTime, createTime));
+            } else if (endTimeP.before(beginTimeP)) {
+                throw new BadRequestException(
+                    String.format("The end time: %s takes place before the begin time: %s", endTime, beginTime));
+            } else {
+                result = true;
+            }
+        } catch (ParseException e) {
+            result = false;
         }
         return result;
     }
