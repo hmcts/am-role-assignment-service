@@ -4,20 +4,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.nio.charset.Charset;
-
 import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 public class RoleAssignmentIntegrationTest extends BaseTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(WelcomeControllerIntegrationTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentIntegrationTest.class);
     private static final String COUNT_RECORDS_QUERY = "SELECT count(1) as n FROM role_assignment_request";
     private static final String COUNT_HISTORY_RECORDS_QUERY = "SELECT count(1) as n FROM role_assignment_history";
     private static final String GET_ASSIGNMENT_STATUS_QUERY = "SELECT actor_id FROM role_assignment where id = ?";
@@ -25,18 +20,8 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
 
     private JdbcTemplate template;
 
-    private static final MediaType JSON_CONTENT_TYPE = new MediaType(
-        MediaType.APPLICATION_JSON.getType(),
-        MediaType.APPLICATION_JSON.getSubtype(),
-        Charset.forName("utf8")
-    );
-
-    @Autowired
-    private transient WelcomeController welcomeController;
-
     @Before
     public void setUp() {
-        this.mockMvc = standaloneSetup(this.welcomeController).build();
         template = new JdbcTemplate(db);
     }
 
@@ -70,6 +55,6 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         String actorId = template.queryForObject(GET_ASSIGNMENT_STATUS_QUERY, parameters, String.class);
         logger.info(" Role assignment actor id is...{}", actorId);
         assertEquals(
-            "Role assignment r", "123e4567-e89b-42d3-a456-556642445613", actorId);
+            "Role assignment actor Id", "123e4567-e89b-42d3-a456-556642445613", actorId);
     }
 }
