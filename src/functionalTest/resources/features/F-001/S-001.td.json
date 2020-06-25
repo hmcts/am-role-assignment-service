@@ -11,7 +11,8 @@
       "requestedRoles": [
         {
           "_extends_": "CommonRequestedRole",
-          "roleType": "CASE"
+          "roleType": "CASE",
+          "grantType": "SPECIFIC"
         }
       ]
     }
