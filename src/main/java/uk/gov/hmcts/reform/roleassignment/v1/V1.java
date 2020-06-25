@@ -6,10 +6,12 @@ public final class V1 {
     }
 
     public final class MediaType {
-        private MediaType() {}
+        private MediaType() {
+        }
 
         // External API
-        public static final String CREATE_ASSIGNMENT = "application/vnd.uk.gov.hmcts.role-assignment-service.create-role+json;charset=UTF-8;version=1.0";
+        public static final String CREATE_ASSIGNMENT = "application/vnd.uk.gov.hmcts.role-assignment-service"
+                                                       + ".create-role+json;charset=UTF-8;version=1.0";
     }
 
     public static final class Error {
