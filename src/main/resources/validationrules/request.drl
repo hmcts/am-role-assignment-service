@@ -1,31 +1,31 @@
-package roleassignmentvalidation
+package validationrules
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 
-rule "request validation for creation" salience 100
+rule "request validation for creation" salience 90
 
 when
 $request  : Request(id!= null,requestType == RequestType.CREATE,status == Status.CREATED)
             Request( created !=null,process in (GrantType.SPECIFIC.toString(),GrantType.STANDARD.toString(),GrantType.CHALLENGED.toString()), clientId == "am_role_assignment_service")
             Request(replaceExisting == Boolean.TRUE, process !=null, reference != null) or Request(replaceExisting == Boolean.FALSE)
-            //$ruleName : String("request validation for creation");
+
 then
-//$request.setLog(String.format("request has been validated by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
+$request.setLog(String.format("request has been validated by the rule  %s with correlation Id %s","request validation for creation",$request.getCorrelationId()));
 $request.setStatus(Status.VALIDATED);
 end;
 
 
 //**** rules for delete ****
-rule "request validation for delete" salience 10
+rule "request validation for delete" salience 80
 
 when
 $request  : Request(id!= null,requestType == RequestType.DELETE,status == Status.CREATED)
             Request( created !=null,process in (GrantType.SPECIFIC.toString(),GrantType.STANDARD.toString(),GrantType.CHALLENGED.toString()), clientId == "am_role_assignment_service")
-            //$ruleName : String("request validation for delete");
+
 then
-//$request.setLog(String.format("request has been validated by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
+$request.setLog(String.format("request has been validated by the  %s rule with correlation Id %s","request validation for delete",$request.getCorrelationId()));
 $request.setStatus(Status.VALIDATED);
 end;
 
