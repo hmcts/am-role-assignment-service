@@ -4,17 +4,18 @@
   "actorId": "123e4567-e89b-42d3-a456-556642445674",
   "roleType": "ORGANISATION",
   "roleName": "judge",
+  "roleCategory": "JUDICIAL",
   "classification": "PUBLIC",
   "grantType": "STANDARD",
-  "status":"CREATED",
+  "readOnly": false,
   "beginTime" : "2021-01-01T00:00",
   "endTime" : "2023-01-01T00:00",
-  "readOnly": true,
   "attributes":
   {
     "jurisdiction": "divorce",
     "region": "south-east",
-    "contractType": "SALARIED"
+    "contractType": "SALARIED",
+    "caseId": "12234567890123456"
   },
   "notes":
   [
@@ -29,5 +30,4 @@
       "comment": "Access granted for 6 months"
     }
   ]
-
 }

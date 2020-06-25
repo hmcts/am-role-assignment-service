@@ -4,14 +4,14 @@ Feature: Create Role Assignments
   Background:
     Given an appropriate test context as detailed in the test data source
 
-  @S-001
-  Scenario: must successfully create single Role Assignment with only mandatory fields
-    Given a user with [an active caseworker profile with full permissions],
-    When a request is prepared with appropriate values,
-    And the request [contains a single Role Assignment with only mandatory fields],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
-    Then a positive response is received,
-    And the response has all other details as expected.
+#  @S-001
+#  Scenario: must successfully create single Role Assignment with only mandatory fields
+#    Given a user with [an active caseworker profile with full permissions],
+#    When a request is prepared with appropriate values,
+#    And the request [contains a single Role Assignment with only mandatory fields],
+#    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+#    Then a positive response is received,
+#    And the response has all other details as expected.
 
 #  @S-002
 #  Scenario: must successfully create multiple Role Assignments

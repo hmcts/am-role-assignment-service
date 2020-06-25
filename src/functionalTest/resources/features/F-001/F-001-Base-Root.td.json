@@ -2,7 +2,7 @@
   "_guid_": "F-001-Base-Root",
   "users": {
     "invokingUser": {
-      "username": "befta.caseworker.2.solicitor.2@gmail.com",
+      "username": "ccd.docker.default@hmcts.net",
       "password": "[[$CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD]]"
     }
   },
@@ -11,7 +11,6 @@
       "Authorization": "[[DEFAULT_AUTO_VALUE]]",
       "ServiceAuthorization": "[[DEFAULT_AUTO_VALUE]]",
       "X-Correlation-ID": "",
-      "AssignerID": "",
       "Content-Type": "application/json"
     },
     "body": {
@@ -31,11 +30,10 @@
         "roleRequest": {
           "id": "[[ANYTHING_PRESENT]]",
           "correlationId": "[[ANYTHING_PRESENT]]",
-          "clientId":"xui_gw",
-          "authenticatedUserId": "ffdc128b-a691-4a05-9c60-b9e6832ae425",
+          "authenticatedUserId": "[[ANYTHING_PRESENT]]",
           "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
           "requestType": "CREATE",
-          "status": "CREATED",
+          "status": "APPROVED",
           "process": "businessProcess1",
           "reference": "abc-3434242",
           "replaceExisting": false,
