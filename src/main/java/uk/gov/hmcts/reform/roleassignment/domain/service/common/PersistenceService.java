@@ -119,7 +119,8 @@ public class PersistenceService {
     private ActorCache prepareActorCache(RoleAssignment roleAssignment) {
         ActorCache actorCache = new ActorCache();
         actorCache.setActorId(roleAssignment.actorId);
-        Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(roleAssignment.actorId);
+        Set<RoleAssignmentEntity> roleAssignmentEntities =
+            roleAssignmentRepository.findByActorId(roleAssignment.actorId);
         actorCache.setRoleAssignments(roleAssignmentEntities);
         return actorCache;
     }
@@ -129,8 +130,8 @@ public class PersistenceService {
 
         Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
         //convert into model class
-        return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertRoleAssignmentEntityInModel(role)).collect(
-            Collectors.toList());
+        return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertRoleAssignmentEntityInModel(role))
+                                     .collect(Collectors.toList());
 
     }
 

@@ -9,9 +9,13 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Version;
 
 @Builder(toBuilder = true)
 @Getter

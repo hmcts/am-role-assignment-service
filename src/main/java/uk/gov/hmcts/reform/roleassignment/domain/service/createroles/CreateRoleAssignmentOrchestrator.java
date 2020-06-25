@@ -1,5 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -7,10 +12,10 @@ import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
@@ -18,11 +23,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceServi
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -50,7 +50,8 @@ public class CreateRoleAssignmentOrchestrator {
         AssignmentRequest existingAssignmentRequest;
 
         //1. call parse request service
-        AssignmentRequest parsedAssignmentRequest = parseRequestService.parseRequest(roleAssignmentRequest, RequestType.CREATE);
+        AssignmentRequest parsedAssignmentRequest = parseRequestService
+            .parseRequest(roleAssignmentRequest, RequestType.CREATE);
 
         //2. Call persistence service to store only the request
         requestEntity = persistInitialRequest(parsedAssignmentRequest.getRequest());
@@ -95,7 +96,7 @@ public class CreateRoleAssignmentOrchestrator {
             request.process,
             request.reference,
             Status.LIVE.toString()
-        );
+                                                                                                   );
 
         //create a new existing assignment request for delete records
         existingAssignmentRequest = new AssignmentRequest();
@@ -104,7 +105,8 @@ public class CreateRoleAssignmentOrchestrator {
         return existingAssignmentRequest;
     }
 
-    private void evaluateDeleteAssignments(AssignmentRequest existingAssignmentRequest, AssignmentRequest parsedAssignmentRequest) throws Exception {
+    private void evaluateDeleteAssignments(AssignmentRequest existingAssignmentRequest,
+                                           AssignmentRequest parsedAssignmentRequest) throws Exception {
         //calling drools rules for validation
         validationModelService.validateRequest(existingAssignmentRequest);
 
@@ -117,9 +119,10 @@ public class CreateRoleAssignmentOrchestrator {
     private void checkAllApproved(AssignmentRequest parsedAssignmentRequest) {
 
         // decision block
-        List<RequestedRole> createApprovedRoles = parsedAssignmentRequest.getRequestedRoles().stream().filter(role -> role.getStatus().equals(
-            Status.APPROVED)).collect(
-            Collectors.toList());
+        List<RequestedRole> createApprovedRoles = parsedAssignmentRequest.getRequestedRoles().stream()
+                                                                         .filter(role -> role.getStatus().equals(
+                                                                             Status.APPROVED)).collect(
+                Collectors.toList());
 
         if (createApprovedRoles.size() == parsedAssignmentRequest.getRequestedRoles().size()) {
             executeCreateRequest(parsedAssignmentRequest);
@@ -155,12 +158,13 @@ public class CreateRoleAssignmentOrchestrator {
         persistenceService.persistRequestToHistory(requestEntity);
     }
 
-    private void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest, AssignmentRequest parsedAssignmentRequest
-    ) throws Exception {
+    private void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
+                                        AssignmentRequest parsedAssignmentRequest) throws Exception {
         // decision block
-        List<RequestedRole> deleteApprovedRoles = existingAssignmentRequest.getRequestedRoles().stream().filter(role -> role.getStatus().equals(
-            Status.DELETE_APPROVED)).collect(
-            Collectors.toList());
+        List<RequestedRole> deleteApprovedRoles = existingAssignmentRequest.getRequestedRoles().stream()
+                                                                           .filter(role -> role.getStatus().equals(
+                                                                               Status.DELETE_APPROVED)).collect(
+                Collectors.toList());
 
         if (deleteApprovedRoles.size() == existingAssignmentRequest.getRequestedRoles().size()) {
 
@@ -200,7 +204,8 @@ public class CreateRoleAssignmentOrchestrator {
         persistenceService.persistRequestToHistory(requestEntity);
     }
 
-    private void rejectReplaceRequest(AssignmentRequest existingAssignmentRequest, AssignmentRequest parsedAssignmentRequest) {
+    private void rejectReplaceRequest(AssignmentRequest existingAssignmentRequest,
+                                      AssignmentRequest parsedAssignmentRequest) {
         //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
         insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED);
 
@@ -213,11 +218,13 @@ public class CreateRoleAssignmentOrchestrator {
         persistenceService.persistRequestToHistory(requestEntity);
     }
 
-    private void executeReplaceRequest(AssignmentRequest existingAssignmentRequest, AssignmentRequest parsedAssignmentRequest) {
+    private void executeReplaceRequest(AssignmentRequest existingAssignmentRequest,
+                                       AssignmentRequest parsedAssignmentRequest) {
         //delete existingAssignmentRequest.getRequestedRoles() records from live table--Hard delete
         deleteExistingLiveRecords(existingAssignmentRequest);
 
-        //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-soft delete
+        //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-soft
+        // delete
         insertRequestedRole(existingAssignmentRequest, Status.DELETED);
 
 
@@ -282,12 +289,14 @@ public class CreateRoleAssignmentOrchestrator {
     }
 
     private void moveHistoryRecordsToLiveTable(RequestEntity requestEntity) {
-        List<HistoryEntity> historyEntities = requestEntity.getHistoryEntities().stream().filter(entity -> entity.getStatus().equals(
-            Status.APPROVED.toString())).collect(
-            Collectors.toList());
+        List<HistoryEntity> historyEntities = requestEntity.getHistoryEntities().stream()
+                                                           .filter(entity -> entity.getStatus().equals(
+                                                               Status.APPROVED.toString())).collect(
+                Collectors.toList());
 
-        List<RoleAssignment> roleAssignments = historyEntities.stream().map(entity -> persistenceUtil.convertHistoryEntitiesInRoleAssignment(
-            entity)).collect(
+        List<RoleAssignment> roleAssignments = historyEntities.stream().map(entity -> persistenceUtil
+            .convertHistoryEntitiesInRoleAssignment(
+                entity)).collect(
             Collectors.toList());
         for (RoleAssignment requestedRole : roleAssignments) {
 
