@@ -15,7 +15,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
@@ -86,14 +86,26 @@ public class ValidationUtil {
 
     public static boolean validateDateOrder(String beginTime, String endTime, String createTime) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
-        Date beginTimeP = sdf.parse(beginTime);
-        Date endTimeP = sdf.parse(endTime);
-        Date createTimeP = sdf.parse(createTime);
-        boolean result = false;
-        if (endTimeP.after(beginTimeP) && beginTimeP.after(createTimeP)) {
-            result = true;
-        } else {
-            throw new BadRequestException("The created time, begin time and end time are not in sequence or not valid");
+        boolean result;
+        try {
+            Date beginTimeP = sdf.parse(beginTime);
+            Date endTimeP = sdf.parse(endTime);
+            Date createTimeP = sdf.parse(createTime);
+
+            if (beginTimeP.before(createTimeP)) {
+                throw new InvalidRequest(
+                    String.format("The begin time: %s takes place before the current time: %s", beginTime, createTime));
+            } else if (endTimeP.before(createTimeP)) {
+                throw new InvalidRequest(
+                    String.format("The end time: %s takes place before the current time: %s", endTime, createTime));
+            } else if (endTimeP.before(beginTimeP)) {
+                throw new InvalidRequest(
+                    String.format("The end time: %s takes place before the begin time: %s", endTime, beginTime));
+            } else {
+                result = true;
+            }
+        } catch (ParseException e) {
+            result = false;
         }
         return result;
     }
@@ -103,16 +115,16 @@ public class ValidationUtil {
             Enum.valueOf(Classification.class, securityClassification);
         } catch (final IllegalArgumentException ex) {
             LOG.info("The security classification is not valid");
-            throw new BadRequestException("The security classification " + securityClassification + " is not valid");
+            throw new InvalidRequest("The security classification " + securityClassification + " is not valid");
         }
     }
 
     private static void validateInputParams(String pattern, String... inputString) {
         for (String input : inputString) {
             if (StringUtils.isEmpty(input)) {
-                throw new BadRequestException("An input parameter is Null/Empty");
+                throw new InvalidRequest("An input parameter is Null/Empty");
             } else if (!Pattern.matches(pattern, input)) {
-                throw new BadRequestException("The input parameter: \"" + input + "\", does not comply with the "
+                throw new InvalidRequest("The input parameter: \"" + input + "\", does not comply with the "
                                               + "required pattern");
             }
         }
@@ -121,7 +133,7 @@ public class ValidationUtil {
     public static void validateLists(Collection<?>... inputList) {
         for (Collection<?> collection : inputList) {
             if (CollectionUtils.isEmpty(collection)) {
-                throw new BadRequestException("The Collection is empty");
+                throw new InvalidRequest("The Collection is empty");
             }
         }
     }
