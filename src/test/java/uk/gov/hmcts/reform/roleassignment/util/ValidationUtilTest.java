@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,7 +29,7 @@ public class ValidationUtilTest {
 
     @Test
     void throw_validateTextField() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
+        Assertions.assertThrows(InvalidRequest.class, () -> {
             ValidationUtil.validateTextField("1234");
         });
     }
@@ -46,7 +46,7 @@ public class ValidationUtilTest {
 
     @Test
     void throw_validateNumberTextField() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
+        Assertions.assertThrows(InvalidRequest.class, () -> {
             ValidationUtil.validateNumberTextField("requ-est1");
         });
     }
@@ -58,7 +58,7 @@ public class ValidationUtilTest {
 
     @Test
     void should_ValidateHyphenTextField() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
+        Assertions.assertThrows(InvalidRequest.class, () -> {
             ValidationUtil.validateTextHyphenField("north-west1");
         });
     }
@@ -74,15 +74,15 @@ public class ValidationUtilTest {
     }
 
     @Test
-    void shouldThrowBadRequestException_isValidSecurityClassification() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
+    void shouldThrowInvalidException_isValidSecurityClassification() {
+        Assertions.assertThrows(InvalidRequest.class, () -> {
             ValidationUtil.isValidSecurityClassification("   PROTECTED");
         });
     }
 
     @Test
-    void shouldThrowBadRequestException_ValidateLists() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
+    void shouldThrowInvalidRequestException_ValidateLists() {
+        Assertions.assertThrows(InvalidRequest.class, () -> {
             ValidationUtil.validateLists(new ArrayList());
         });
     }
