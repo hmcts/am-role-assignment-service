@@ -125,8 +125,7 @@ public class TestDataBuilder {
             .build();
     }
 
-
-    //this maybe not 100% accurate
+    //update this
     public static ResponseEntity<Object> buildResponseEntity(AssignmentRequest roleAssignmentRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentRequestResource(roleAssignmentRequest));
     }

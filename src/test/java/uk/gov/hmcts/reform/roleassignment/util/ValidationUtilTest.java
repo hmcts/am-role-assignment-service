@@ -97,12 +97,31 @@ public class ValidationUtilTest {
 
     @Test
     void validateDateTime() {
-
+        ValidationUtil.validateDateTime("2021-01-01T00:00");
     }
 
     @Test
-    void validateDateOrder_Exception() throws ParseException {
-        Assertions.assertThrows(BadRequestException.class, () -> {
+    void validateDateOrder() throws ParseException {
+        ValidationUtil.validateDateOrder("2021-01-01T00:00", "2022-01-01T00:00", "2020-01-01T00:00");
+    }
+
+    @Test
+    void validateDateOrder_Begin_Exception() throws ParseException {
+        Assertions.assertThrows(InvalidRequest.class, () -> {
+            ValidationUtil.validateDateOrder("2021-01-01T00:00", "2019-01-01T00:00", "2020-01-01T00:00");
+        });
+    }
+
+    @Test
+    void validateDateOrder_End_Exception() throws ParseException {
+        Assertions.assertThrows(InvalidRequest.class, () -> {
+            ValidationUtil.validateDateOrder("2021-02-01T00:00", "2021-01-01T00:00", "2020-01-01T00:00");
+        });
+    }
+
+    @Test
+    void validateDateOrder_End2_Exception() throws ParseException {
+        Assertions.assertThrows(InvalidRequest.class, () -> {
             ValidationUtil.validateDateOrder("2023-01-01T00:00", "2022-01-01T00:00", "2020-01-01T00:00");
         });
     }
