@@ -1,12 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_HYPHEN_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -22,11 +15,18 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_HYPHEN_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
 
 @Named
 @Singleton
@@ -93,13 +93,13 @@ public class ValidationUtil {
             Date createTimeP = sdf.parse(createTime);
 
             if (beginTimeP.before(createTimeP)) {
-                throw new InvalidRequest(
+                throw new BadRequestException(
                     String.format("The begin time: %s takes place before the current time: %s", beginTime, createTime));
             } else if (endTimeP.before(createTimeP)) {
-                throw new InvalidRequest(
+                throw new BadRequestException(
                     String.format("The end time: %s takes place before the current time: %s", endTime, createTime));
             } else if (endTimeP.before(beginTimeP)) {
-                throw new InvalidRequest(
+                throw new BadRequestException(
                     String.format("The end time: %s takes place before the begin time: %s", endTime, beginTime));
             } else {
                 result = true;
@@ -115,17 +115,17 @@ public class ValidationUtil {
             Enum.valueOf(Classification.class, securityClassification);
         } catch (final IllegalArgumentException ex) {
             LOG.info("The security classification is not valid");
-            throw new InvalidRequest("The security classification " + securityClassification + " is not valid");
+            throw new BadRequestException("The security classification " + securityClassification + " is not valid");
         }
     }
 
     private static void validateInputParams(String pattern, String... inputString) {
         for (String input : inputString) {
             if (StringUtils.isEmpty(input)) {
-                throw new InvalidRequest("An input parameter is Null/Empty");
+                throw new BadRequestException("An input parameter is Null/Empty");
             } else if (!Pattern.matches(pattern, input)) {
-                throw new InvalidRequest("The input parameter: \"" + input + "\", does not comply with the "
-                                         + "required pattern");
+                throw new BadRequestException("The input parameter: \"" + input + "\", does not comply with the "
+                                              + "required pattern");
             }
         }
     }
@@ -133,7 +133,7 @@ public class ValidationUtil {
     public static void validateLists(Collection<?>... inputList) {
         for (Collection<?> collection : inputList) {
             if (CollectionUtils.isEmpty(collection)) {
-                throw new InvalidRequest("The Collection is empty");
+                throw new BadRequestException("The Collection is empty");
             }
         }
     }
@@ -184,13 +184,9 @@ public class ValidationUtil {
         return true;
     }
 
-    public static boolean validateParsedAssignmentRequest(Collection<RequestedRole> requestedRoles)
-        throws ParseException {
+    public static boolean validateParsedAssignmentRequest(Collection<RequestedRole> requestedRoles) throws ParseException {
         for (RequestedRole requestedRole : requestedRoles) {
-            validateDateOrder(
-                requestedRole.getBeginTime().toString(),
-                requestedRole.getEndTime().toString(),
-                requestedRole.getCreated().toString());
+            validateDateOrder(requestedRole.getBeginTime().toString(), requestedRole.getEndTime().toString(), requestedRole.getCreated().toString());
         }
         return true;
     }
