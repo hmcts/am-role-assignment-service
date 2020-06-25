@@ -8,7 +8,8 @@ import java.util.Set;
 
 public interface HistoryRepository extends CrudRepository<HistoryEntity, RoleAssignmentIdentity> {
 
-    @Query("select p from role_assignment_history p where p.status= 'LIVE' and  p.process= process and  p.reference = reference ")
+    @Query("select p from role_assignment_history p where p.status= 'LIVE'"
+           + " and  p.process= process and  p.reference = reference ")
     Set<HistoryEntity> findByReference(String process, String reference, String status);
 }
 
