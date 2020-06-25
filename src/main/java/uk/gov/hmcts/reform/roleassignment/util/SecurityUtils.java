@@ -30,9 +30,8 @@ public class SecurityUtils {
 
     public String getUserAuthorizationHeaders() {
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            final ServiceAndUserDetails serviceAndUser = (ServiceAndUserDetails) SecurityContextHolder.getContext()
-                                                                                                      .getAuthentication()
-                                                                                                      .getPrincipal();
+            final ServiceAndUserDetails serviceAndUser =
+                (ServiceAndUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (serviceAndUser.getPassword() != null) {
                 return serviceAndUser.getPassword();
             }

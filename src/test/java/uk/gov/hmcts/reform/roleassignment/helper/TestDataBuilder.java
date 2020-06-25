@@ -1,22 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.helper;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Setter;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -24,6 +7,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 @Setter
 public class TestDataBuilder {
@@ -40,10 +40,10 @@ public class TestDataBuilder {
         LocalDateTime timeStamp = LocalDateTime.now();
         return Request.builder().id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).correlationId(
             "correlationId").clientId("clientId").authenticatedUserId(
-                UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).assignerId(
-                    UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestType(
-                        RequestType.CREATE).reference("reference").process(("process")).replaceExisting(true).roleAssignmentId(
-                                "roleAssignmentId").created(timeStamp).build();
+            UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).assignerId(
+            UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestType(
+            RequestType.CREATE).reference("reference").process(("process"))
+                      .replaceExisting(true).roleAssignmentId("roleAssignmentId").created(timeStamp).build();
     }
 
     public static Collection<RequestedRole> buildRequestedRoleCollection() throws IOException {
@@ -60,10 +60,12 @@ public class TestDataBuilder {
 
         HashMap<String, JsonNode> attributes = buildAttributesFromFile();
 
-        RoleAssignment roleAssignment = RoleAssignment.builder().actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).actorIdType(
-            ActorIdType.IDAM).id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9a")).roleType(RoleType.CASE).roleName(
+        RoleAssignment roleAssignment =
+            RoleAssignment.builder().actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+                          .actorIdType(ActorIdType.IDAM).id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9a"))
+                          .roleType(RoleType.CASE).roleName(
                 "judge").classification(Classification.PUBLIC).grantType(GrantType.STANDARD).readOnly(false).beginTime(
-                    timeStamp.plusDays(1)).endTime(timeStamp.plusMonths(1)).created(timeStamp).build();
+                timeStamp.plusDays(1)).endTime(timeStamp.plusMonths(1)).created(timeStamp).build();
 
         RequestedRole requestedRole = new RequestedRole();
         requestedRole.setActorId(roleAssignment.actorId);
