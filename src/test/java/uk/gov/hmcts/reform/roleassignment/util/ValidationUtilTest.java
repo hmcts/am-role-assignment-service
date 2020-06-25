@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +31,7 @@ public class ValidationUtilTest {
 
     @Test
     void throw_validateTextField() {
-        Assertions.assertThrows(InvalidRequest.class, () -> {
+        Assertions.assertThrows(BadRequestException.class, () -> {
             ValidationUtil.validateTextField("1234");
         });
     }
@@ -48,7 +48,7 @@ public class ValidationUtilTest {
 
     @Test
     void throw_validateNumberTextField() {
-        Assertions.assertThrows(InvalidRequest.class, () -> {
+        Assertions.assertThrows(BadRequestException.class, () -> {
             ValidationUtil.validateNumberTextField("requ-est1");
         });
     }
@@ -60,7 +60,7 @@ public class ValidationUtilTest {
 
     @Test
     void should_ValidateHyphenTextField() {
-        Assertions.assertThrows(InvalidRequest.class, () -> {
+        Assertions.assertThrows(BadRequestException.class, () -> {
             ValidationUtil.validateTextHyphenField("north-west1");
         });
     }
@@ -77,14 +77,14 @@ public class ValidationUtilTest {
 
     @Test
     void shouldThrowInvalidException_isValidSecurityClassification() {
-        Assertions.assertThrows(InvalidRequest.class, () -> {
+        Assertions.assertThrows(BadRequestException.class, () -> {
             ValidationUtil.isValidSecurityClassification("   PROTECTED");
         });
     }
 
     @Test
     void shouldThrowInvalidRequestException_ValidateLists() {
-        Assertions.assertThrows(InvalidRequest.class, () -> {
+        Assertions.assertThrows(BadRequestException.class, () -> {
             ValidationUtil.validateLists(new ArrayList());
         });
     }

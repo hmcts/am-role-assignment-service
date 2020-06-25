@@ -64,7 +64,6 @@ public class PrepareResponseService {
                 new TypeReference<Map<String, Object>>() {
                 }
             );
-            requestedRoleMetaData.remove("grantType");
             requestedRoleMetaData.remove("approved");
             requestedRoleMetaData.remove("rejected");
             requestedRoleMetaData.remove("request");
