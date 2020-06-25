@@ -172,7 +172,7 @@ pitest {
   pitestVersion = "1.5.2"
   testPlugin = "junit5"
   targetClasses = ['uk.gov.hmcts.reform.*']
-  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication','uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot', 'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants', 'uk.gov.hmcts.reform.roleassignment.configuration.*', 'uk.gov.hmcts.reform.roleassignment.apihelper.*', 'uk.gov.hmcts.reform.roleassignment.model.*', 'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication']
+  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication', 'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot', 'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants', 'uk.gov.hmcts.reform.roleassignment.configuration.*', 'uk.gov.hmcts.reform.roleassignment.apihelper.*', 'uk.gov.hmcts.reform.roleassignment.model.*', 'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication']
   threads = 15
   outputFormats = ['XML', 'HTML']
   timestampedReports = true
@@ -251,6 +251,9 @@ dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot
   compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0'
 
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+  implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   compile group: 'org.json', name: 'json', version: '20200518'
 
@@ -284,10 +287,13 @@ dependencies {
   compile('org.springframework.boot:spring-boot-starter-hateoas')
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.7.RELEASE'
 
-   compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
-   testCompile ('com.opentable.components:otj-pg-embedded:0.13.3')
-   testCompile ('com.github.tomakehurst:wiremock-jre8:2.25.1')
-   testCompile ('org.springframework.cloud:spring-cloud-contract-wiremock:2.2.3.RELEASE')
+  compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
+  testCompile('com.opentable.components:otj-pg-embedded:0.13.3')
+  testCompile('com.github.tomakehurst:wiremock-jre8:2.25.1')
+  testCompile('org.springframework.cloud:spring-cloud-contract-wiremock:2.2.3.RELEASE')
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.security:spring-security-test'
 
   testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
 
@@ -301,7 +307,7 @@ dependencies {
   testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.7'
   testCompile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
 
-  testCompile (group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
+  testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
   testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '2.19.1-RDM-8667.1'

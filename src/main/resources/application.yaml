@@ -67,6 +67,16 @@ spring:
     password: ${ROLE_ASSIGNMENT_DB_PASSWORD:am}
     properties:
       charSet: UTFh-8
+  security:
+    oauth2:
+      client:
+        provider:
+          oidc:
+            issuer-uri: ${OPEN_ID_API_BASE_URI:https://idam-web-public.aat.platform.hmcts.net/o}
+        registration:
+          oidc:
+            client-id: microservicekey-am-role-assignment-service
+            client-secret: ${AM_ROLE_ASSIGNMENT_SERVICE_SECRET:AAAAAAAAAAAAAAAA}
 
 ### dependency configuration
 auth.provider.service.client.baseUrl: ${IDAM_S2S_URL:http://localhost:4502}
