@@ -1,5 +1,12 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_HYPHEN_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -20,13 +27,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
-
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_HYPHEN_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
 
 @Named
 @Singleton
@@ -184,9 +184,13 @@ public class ValidationUtil {
         return true;
     }
 
-    public static boolean validateParsedAssignmentRequest(Collection<RequestedRole> requestedRoles) throws ParseException {
+    public static boolean validateParsedAssignmentRequest(Collection<RequestedRole> requestedRoles)
+        throws ParseException {
         for (RequestedRole requestedRole : requestedRoles) {
-            validateDateOrder(requestedRole.getBeginTime().toString(), requestedRole.getEndTime().toString(), requestedRole.getCreated().toString());
+            validateDateOrder(
+                requestedRole.getBeginTime().toString(),
+                requestedRole.getEndTime().toString(),
+                requestedRole.getCreated().toString());
         }
         return true;
     }
