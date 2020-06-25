@@ -1,4 +1,5 @@
 package roleassignmentvalidation
+global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService retrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -8,12 +9,14 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
 import uk.gov.hmcts.reform.roleassignment.domain.model.Pattern;
 import com.fasterxml.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 
 
 rule "role  validation for Judge  P1" salience 30
 
 when
 $role           : Role()
+$request        : Request()
 $requestedRole  : RequestedRole(roleName == $role.getName())
                   Role($patterns : patterns)
                   Pattern($data : data) from $patterns
@@ -32,14 +35,20 @@ $requestedRole  : RequestedRole(roleName == $role.getName())
 
 
 
+
 then
 $requestedRole.setStatus(Status.APPROVED);
+
 end;
 
 
-rule "role  validation for Judge P2" salience 25
+
+
+
+rule "role  validation for Judge P2 with existing case id" salience 22
 when
 $role           : Role()
+$request        : Request()
 $requestedRole  : RequestedRole(roleName == $role.getName())
                   Role($patterns : patterns)
                   Pattern($data : data) from $patterns
@@ -54,11 +63,15 @@ $requestedRole  : RequestedRole(roleName == $role.getName())
                   $attributesEntry : JsonNode() from $data["Attributes"]
                   $attributeObj : JsonNode() from $attributesEntry
                   $Obj1 : JsonNode() from $attributeObj
-                  RequestedRole(attributes["caseId"]!=null)
-
+                  //$ruleName : String("role  validation for Judge P2 with existing case id");
+                  RequestedRole(attributes["caseId"]!=null,$caseId : attributes["caseId"])
+                  Case ( id == $caseId )
 
 then
+
 $requestedRole.setStatus(Status.APPROVED);
+//$requestedRole.setLog(String.format("Requested Role has been approved by the rule  %s with correlation Id %s",$ruleName,$request.getCorrelationId()));
+
 
 end;
 

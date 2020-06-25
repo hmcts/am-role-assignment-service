@@ -3,34 +3,31 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
+import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
 @Service
 public class CreateRoleAssignmentOrchestrator {
 
-    private DefaultCaseDataRepository caseService;
-    private IdamRoleService idamService;
-    private RetrieveDataService retrieveDataService;
     private ParseRequestService parseRequestService;
     private PersistenceService persistenceService;
     private ValidationModelService validationModelService;
@@ -38,16 +35,10 @@ public class CreateRoleAssignmentOrchestrator {
     Request request;
     RequestEntity requestEntity;
 
-    public CreateRoleAssignmentOrchestrator(DefaultCaseDataRepository caseService,
-                                            IdamRoleService idamService,
-                                            RetrieveDataService retrieveDataService,
-                                            ParseRequestService parseRequestService,
+    public CreateRoleAssignmentOrchestrator(ParseRequestService parseRequestService,
                                             PersistenceService persistenceService,
                                             ValidationModelService validationModelService,
                                             PersistenceUtil persistenceUtil) {
-        this.caseService = caseService;
-        this.idamService = idamService;
-        this.retrieveDataService = retrieveDataService;
         this.parseRequestService = parseRequestService;
         this.persistenceService = persistenceService;
         this.validationModelService = validationModelService;
@@ -241,7 +232,7 @@ public class CreateRoleAssignmentOrchestrator {
     private void checkDeleteApproved(AssignmentRequest existingAssignmentRequest) {
         for (RequestedRole requestedRole : existingAssignmentRequest.getRequestedRoles()) {
             requestedRole.setRequest(existingAssignmentRequest.getRequest());
-            if (!requestedRole.isApproved()) {
+            if (!requestedRole.getStatus().equals(Status.APPROVED)) {
                 requestedRole.status = Status.DELETE_REJECTED;
                 requestedRole.statusSequence = Status.DELETE_REJECTED.sequence;
             } else {
@@ -275,6 +266,17 @@ public class CreateRoleAssignmentOrchestrator {
         persistenceService.persistRequestToHistory(requestEntity);
     }
 
+    public ResponseEntity<Object> retrieveRoleAssignmentByActorId(UUID actorId) throws Exception {
+        List<ExistingRole> roles = persistenceService.getExistingRoleAssignment(actorId);
+        ResponseEntity<Object> result = PrepareResponseService.prepareRetrieveRoleResponse(roles);
+        return result;
+    }
+
+    public long retrieveETag(UUID actorId) throws Exception {
+        ActorCacheEntity entity = persistenceService.getActorCacheEntity(actorId);
+        return entity.getEtag();
+    }
+
     private void moveHistoryRecordsToLiveTable(RequestEntity requestEntity) {
         List<HistoryEntity> historyEntities = requestEntity.getHistoryEntities().stream().filter(entity -> entity.getStatus().equals(
             Status.APPROVED.toString())).collect(
@@ -287,6 +289,7 @@ public class CreateRoleAssignmentOrchestrator {
 
             requestedRole.setStatus(Status.LIVE);
             persistenceService.persistRoleAssignment(requestedRole);
+            persistenceService.persistActorCache(requestedRole);
 
         }
     }

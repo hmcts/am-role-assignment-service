@@ -11,6 +11,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 
 import java.util.*;
 
@@ -43,6 +45,11 @@ public class PrepareResponseService {
         roleAssignmentRequest.setRequest(mapper.convertValue(requestMetaData, Request.class));
     }
 
+    public static ResponseEntity<Object> prepareRetrieveRoleResponse(List<ExistingRole> roleAssignmentResponse) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(roleAssignmentResponse));
+    }
+
     private static void updateRequestedRolesResponse(AssignmentRequest roleAssignmentRequest) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -56,6 +63,7 @@ public class PrepareResponseService {
             requestedRoleMetaData.remove("grantType");
             requestedRoleMetaData.remove("approved");
             requestedRoleMetaData.remove("rejected");
+            requestedRoleMetaData.remove("request");
             requestedRoles.add(mapper.convertValue(requestedRoleMetaData, RequestedRole.class));
         }
         roleAssignmentRequest.setRequestedRoles(requestedRoles);

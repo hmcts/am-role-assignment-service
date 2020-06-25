@@ -9,7 +9,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.data.casedata.DefaultCaseDataRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -18,9 +17,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
@@ -35,12 +32,6 @@ import static org.mockito.Mockito.when;
 class CreateRoleAssignmentOrchestratorTest {
 
     @Mock
-    private DefaultCaseDataRepository caseService = mock(DefaultCaseDataRepository.class);
-    @Mock
-    private IdamRoleService idamService = mock(IdamRoleService.class);
-    @Mock
-    private RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
-    @Mock
     private ParseRequestService parseRequestService = mock(ParseRequestService.class);
     @Mock
     private PersistenceService persistenceService = mock(PersistenceService.class);
@@ -51,11 +42,9 @@ class CreateRoleAssignmentOrchestratorTest {
     private PersistenceUtil persistenceUtil = mock(PersistenceUtil.class);
 
     @InjectMocks
-    private CreateRoleAssignmentOrchestrator sut = new CreateRoleAssignmentOrchestrator(caseService,
-                                                                                        idamService,
-                                                                                        retrieveDataService,
-                                                                                        parseRequestService,
-                                                                                        persistenceService, validationModelService,
+    private CreateRoleAssignmentOrchestrator sut = new CreateRoleAssignmentOrchestrator(parseRequestService,
+                                                                                        persistenceService,
+                                                                                        validationModelService,
                                                                                         persistenceUtil
     );
 
