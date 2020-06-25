@@ -1,6 +1,7 @@
 
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
@@ -12,6 +13,7 @@ public class RetrieveDataService {
     //3. getting required ticket details(Authorization table in JRD)
     //4. getting some location reference data
 
+
     private final DataStoreFeignClient dataStoreFeignClient;
 
 
@@ -20,7 +22,10 @@ public class RetrieveDataService {
     }
 
 
-    public Case getCaseDataV2(String caseId) {
-        return dataStoreFeignClient.getCaseDataV2(caseId);
+    public Case getCaseById(JsonNode caseId) {
+
+        return dataStoreFeignClient.getCaseDataV2(caseId.asText());
+
+
     }
 }
