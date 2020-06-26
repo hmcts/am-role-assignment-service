@@ -6,6 +6,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.UUID;
 
