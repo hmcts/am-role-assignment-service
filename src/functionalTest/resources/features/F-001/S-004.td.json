@@ -1,9 +1,9 @@
 {
   "title": "must successfully create multiple Role Assignments",
-  "_guid_": "S-002",
+  "_guid_": "S-004",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
-    "contains multiple Role Assignments"
+    "contains multiple Role Assignments where one of the role has invalid data"
   ],
   "request": {
     "body": {
@@ -15,7 +15,7 @@
         {
           "_extends_": "CommonRequestedRole",
           "roleType": "ORGANISATION",
-          "grantType": "STANDARD"
+          "grantType": "SPECIFIC"
         }
       ]
     }
@@ -29,15 +29,21 @@
     },
     "body": {
       "roleAssignmentResponse": {
+        "roleRequest": {
+          "status" : "REJECTED"
+        },
         "requestedRoles": [
           {
-            "_extends_": "CommonResponseRequestedRole"
+            "_extends_": "CommonResponseRequestedRole",
+            "status" : "REJECTED"
           },
           {
             "_extends_": "CommonResponseRequestedRole",
             "roleType": "ORGANISATION",
-            "grantType": "STANDARD"
+            "grantType": "STANDARD",
+            "status" : "SPECIFIC"
           }
+
         ]
       }
     }
