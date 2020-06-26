@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.fail;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_HYPHEN_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_PATTERN;
 
 class ValidationUtilTest {
 
@@ -19,7 +23,7 @@ class ValidationUtilTest {
     @Test
     void shouldValidate() {
         try {
-            ValidationUtil.validateCaseId("1212121212121213");
+            ValidationUtil.validateInputParams(NUMBER_PATTERN, "1212121212121213");
         } catch (Exception e) {
             fail("failed");
         }
@@ -28,14 +32,14 @@ class ValidationUtilTest {
     @Test
     void shouldThrow() {
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateCaseId("2323232323232");
+            ValidationUtil.validateInputParams(NUMBER_PATTERN, "2323232323232");
         });
     }
 
     @Test
     void validateTextField() {
         try {
-            ValidationUtil.validateTextField("CREATE");
+            ValidationUtil.validateInputParams(TEXT_PATTERN, "CREATE");
         } catch (Exception e) {
             fail("failed");
         }
@@ -44,7 +48,7 @@ class ValidationUtilTest {
     @Test
     void throw_validateTextField() {
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateTextField("1234");
+            ValidationUtil.validateInputParams(NUMBER_PATTERN,"1234");
         });
     }
 
@@ -52,7 +56,7 @@ class ValidationUtilTest {
     @Test
     void validateNumberTextField() {
         try {
-            ValidationUtil.validateNumberTextField("request1");
+            ValidationUtil.validateInputParams(NUMBER_TEXT_PATTERN,"request1");
         } catch (Exception e) {
             fail("failed");
         }
@@ -61,14 +65,14 @@ class ValidationUtilTest {
     @Test
     void throw_validateNumberTextField() {
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateNumberTextField("requ-est1");
+            ValidationUtil.validateInputParams(NUMBER_TEXT_PATTERN,"requ-est1");
         });
     }
 
     @Test
     void shouldValidateHyphenTextField() {
         try {
-            ValidationUtil.validateTextHyphenField("north-west");
+            ValidationUtil.validateInputParams(TEXT_HYPHEN_PATTERN,"north-west");
         } catch (Exception e) {
             fail("failed");
         }
@@ -77,7 +81,7 @@ class ValidationUtilTest {
     @Test
     void should_ValidateHyphenTextField() {
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateTextHyphenField("north-west1");
+            ValidationUtil.validateInputParams(TEXT_HYPHEN_PATTERN,"north-west1");
         });
     }
 
@@ -97,13 +101,6 @@ class ValidationUtilTest {
         } catch (Exception e) {
             fail("failed");
         }
-    }
-
-    @Test
-    void shouldThrowInvalidException_isValidSecurityClassification() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.isValidSecurityClassification("   PROTECTED");
-        });
     }
 
     @Test

@@ -2,16 +2,12 @@ package uk.gov.hmcts.reform.roleassignment.util;
 
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_HYPHEN_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
-import java.util.UUID;
 import java.util.regex.Pattern;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -25,7 +21,6 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 
 @Named
 @Singleton
@@ -35,26 +30,6 @@ public class ValidationUtil {
     private static final Logger LOG = LoggerFactory.getLogger(ValidationUtil.class);
 
     private ValidationUtil() {
-    }
-
-    public static void validateCaseId(String field) {
-        validateInputParams(NUMBER_PATTERN, field);
-    }
-
-    public static void validateUuid(UUID field) {
-        validateInputParams(UUID_PATTERN, field.toString());
-    }
-
-    public static void validateTextField(String field) {
-        validateInputParams(TEXT_PATTERN, field);
-    }
-
-    public static void validateNumberTextField(String field) {
-        validateInputParams(NUMBER_TEXT_PATTERN, field);
-    }
-
-    public static void validateTextHyphenField(String field) {
-        validateInputParams(TEXT_HYPHEN_PATTERN, field);
     }
 
     public static void validateDateTime(String strDate) {
@@ -76,21 +51,9 @@ public class ValidationUtil {
 
     public static void validateDateOrder(String beginTime, String endTime) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
-        Date beginTimeP;
-        Date endTimeP;
+        Date beginTimeP = sdf.parse(beginTime);
+        Date endTimeP = sdf.parse(endTime);
         Date createTimeP = new Date();
-        try {
-            beginTimeP = sdf.parse(beginTime);
-        } catch (ParseException e) {
-            throw new BadRequestException(String.format(
-                "Incorrect date format: %s", beginTime));
-        }
-        try {
-            endTimeP = sdf.parse(endTime);
-        } catch (ParseException e) {
-            throw new BadRequestException(String.format(
-                "Incorrect date format: %s", endTime));
-        }
 
         if (beginTimeP.before(createTimeP)) {
             throw new BadRequestException(
@@ -105,16 +68,7 @@ public class ValidationUtil {
         }
     }
 
-    public static void isValidSecurityClassification(String securityClassification) {
-        try {
-            Enum.valueOf(Classification.class, securityClassification);
-        } catch (final IllegalArgumentException ex) {
-            LOG.info("The security classification is not valid");
-            throw new BadRequestException("The security classification " + securityClassification + " is not valid");
-        }
-    }
-
-    private static void validateInputParams(String pattern, String... inputString) {
+    public static void validateInputParams(String pattern, String... inputString) {
         for (String input : inputString) {
             if (StringUtils.isEmpty(input)) {
                 throw new BadRequestException("An input parameter is Null/Empty");

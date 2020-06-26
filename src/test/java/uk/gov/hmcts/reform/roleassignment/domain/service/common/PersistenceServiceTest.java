@@ -31,6 +31,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -87,7 +88,7 @@ class PersistenceServiceTest {
     void generateUniqueId() {
         UUID uuid = sut.generateUniqueId();
         assertNotNull(uuid);
-        ValidationUtil.validateUuid(uuid);
+        ValidationUtil.validateInputParams(UUID_PATTERN, uuid.toString());
     }
 
     @Test
