@@ -22,9 +22,9 @@ public class RetrieveDataService {
     }
 
 
-    public Case getCaseById(JsonNode caseId) {
+    public Case getCaseById(String caseId) {
 
-        return dataStoreFeignClient.getCaseDataV2(caseId.asText());
+        return dataStoreFeignClient.getCaseDataV2(caseId);
 
 
     }

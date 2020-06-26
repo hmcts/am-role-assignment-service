@@ -10,10 +10,10 @@ rule "retrieve case detail" salience 100
 	when
 	  $request : Request()
 	  $role : RequestedRole(attributes["caseId"]!=null, $caseId : attributes["caseId"])
-	   not Case (id == $caseId )
+	   not Case (id == $caseId.asText() )
 
 	then
-   	insert (retrieveDataService.getCaseById($caseId));
+   	insert (retrieveDataService.getCaseById($caseId.asText()));
 		$request.setLog(String.format(" Case has been inserted by the  %s with correlation Id %s","retrieve case detail rule",$request.getCorrelationId()));
 
 end
