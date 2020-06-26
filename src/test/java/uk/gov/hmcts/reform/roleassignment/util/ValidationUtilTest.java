@@ -20,7 +20,13 @@ public class ValidationUtilTest {
     @Test
     void shouldValidate() {
         assertEquals(true, ValidationUtil.validateCaseNumber("1212121212121212"));
-        assertEquals(false, ValidationUtil.validateCaseNumber("2323232323232"));
+    }
+
+    @Test
+    void shouldThrow() {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateCaseNumber("2323232323232");
+        });
     }
 
     @Test
