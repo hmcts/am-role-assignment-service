@@ -72,8 +72,8 @@ public class SwaggerConfiguration {
     private Parameter headerCorrelationId() {
         return new ParameterBuilder()
             .name("correlationId")
-            .description("Standard correlation header.  If not provided, a unique value is created for each request. " +
-                             "and used in logs.")
+            .description("Standard correlation header.  If not provided, a unique value is created for "
+                             + "each request and used in logs.")
             .modelRef(new ModelRef("string"))
             .parameterType("header")
             .required(false)
