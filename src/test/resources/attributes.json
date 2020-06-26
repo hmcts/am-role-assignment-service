@@ -1,6 +1,6 @@
 {
   "jurisdiction": "divorce",
   "region": "north-east",
-  "contractType": "FEEPAY",
-  "caseId": "1234567890123457"
+  "contractType": "SALARIED",
+  "caseId": "1234567890123456"
 }

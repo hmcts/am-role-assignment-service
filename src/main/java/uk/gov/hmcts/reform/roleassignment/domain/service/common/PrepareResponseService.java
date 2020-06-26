@@ -1,5 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -13,8 +19,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestReso
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
-
-import java.util.*;
 
 
 public class PrepareResponseService {
@@ -40,7 +44,7 @@ public class PrepareResponseService {
             roleRequest,
             new TypeReference<Map<String, Object>>() {
             }
-        );
+                                                                 );
         requestMetaData.remove("clientId");
         roleAssignmentRequest.setRequest(mapper.convertValue(requestMetaData, Request.class));
     }
@@ -60,7 +64,6 @@ public class PrepareResponseService {
                 new TypeReference<Map<String, Object>>() {
                 }
             );
-            requestedRoleMetaData.remove("grantType");
             requestedRoleMetaData.remove("approved");
             requestedRoleMetaData.remove("rejected");
             requestedRoleMetaData.remove("request");

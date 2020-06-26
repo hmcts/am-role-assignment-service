@@ -1,16 +1,25 @@
 package uk.gov.hmcts.reform.roleassignment.helper;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.UUID;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
@@ -20,14 +29,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.UUID;
 
 @Setter
 public class TestDataBuilder {
@@ -44,10 +45,10 @@ public class TestDataBuilder {
         LocalDateTime timeStamp = LocalDateTime.now();
         return Request.builder().id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).correlationId(
             "correlationId").clientId("clientId").authenticatedUserId(
-                UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).assignerId(
-                    UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestType(
-                        RequestType.CREATE).reference("reference").process(("process")).replaceExisting(false).roleAssignmentId(
-                                "roleAssignmentId").created(timeStamp).status(Status.CREATED).build();
+            UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).assignerId(
+            UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestType(
+            RequestType.CREATE).reference("reference").process(("process")).status(Status.CREATED)
+                      .replaceExisting(true).roleAssignmentId("roleAssignmentId").created(timeStamp).build();
     }
 
     private static Collection<RequestedRole> buildRequestedRoleCollection() throws IOException {

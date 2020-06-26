@@ -71,8 +71,10 @@ public class ValidationModelService {
 
         }
         for (String actorId : userIds) {
-            facts.addAll(persistenceService.getExistingRoleAssignment(UUID.fromString(actorId)));
-            facts.addAll(idamRoleService.getIdamRoleAssignmentsForActor(actorId));
+            if (actorId != null) {
+                facts.addAll(persistenceService.getExistingRoleAssignment(UUID.fromString(actorId)));
+                facts.addAll(idamRoleService.getIdamRoleAssignmentsForActor(actorId));
+            }
 
         }
     }

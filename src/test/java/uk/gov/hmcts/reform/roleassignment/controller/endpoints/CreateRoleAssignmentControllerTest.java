@@ -21,7 +21,8 @@ import static org.mockito.Mockito.when;
 class CreateRoleAssignmentControllerTest {
 
     @Mock
-    private CreateRoleAssignmentOrchestrator createRoleAssignmentServiceMock = mock(CreateRoleAssignmentOrchestrator.class);
+    private CreateRoleAssignmentOrchestrator createRoleAssignmentServiceMock =
+        mock(CreateRoleAssignmentOrchestrator.class);
 
     @InjectMocks
     private CreateAssignmentController sut;

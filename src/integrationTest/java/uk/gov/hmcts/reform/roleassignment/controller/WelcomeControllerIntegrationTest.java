@@ -1,5 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+
+import java.nio.charset.Charset;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -11,12 +17,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.nio.charset.Charset;
-
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 
 public class WelcomeControllerIntegrationTest extends BaseTest {
@@ -60,7 +60,8 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     }
 
     @Test
-    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment_request.sql"})
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+         scripts = {"classpath:sql/insert_role_assignment_request.sql"})
     public void shoudGetRecordCountFromRequestTable() throws Exception {
         final int count = template.queryForObject(COUNT_RECORDS, Integer.class);
         logger.info(" Total number of records fetched from role assignment request table...{}", count);
@@ -69,9 +70,10 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     }
 
     @Test
-    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment_request.sql"})
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+         scripts = {"classpath:sql/insert_role_assignment_request.sql"})
     public void shoudGetRequestStatusFromRequestTable() throws Exception {
-        final Object[] parameters = new Object[]{
+        final Object[] parameters = new Object[] {
             REQUEST_ID
         };
         String status = template.queryForObject(GET_STATUS, parameters, String.class);

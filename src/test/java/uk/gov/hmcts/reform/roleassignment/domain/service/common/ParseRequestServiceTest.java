@@ -53,7 +53,8 @@ class ParseRequestServiceTest {
         UUID userId = UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c");
         when(securityUtilsMock.getServiceId()).thenReturn(clientId);
         when(securityUtilsMock.getUserId()).thenReturn(userId.toString());
-        when(correlationInterceptorUtilMock.preHandle(any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
+        when(correlationInterceptorUtilMock.preHandle(
+            any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
         RequestType requestType = RequestType.CREATE;
         AssignmentRequest assignmentRequest =  TestDataBuilder.buildAssignmentRequest();
         AssignmentRequest result = sut.parseRequest(assignmentRequest, requestType);
