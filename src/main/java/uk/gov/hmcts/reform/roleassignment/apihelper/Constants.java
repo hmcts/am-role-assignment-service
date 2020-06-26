@@ -16,7 +16,7 @@ public class Constants {
     public static final String SERVICE_AUTHORIZATION2 = "ServiceAuthorization";
     public static final String BEARER = "Bearer ";
 
-    public static final String NUMBER_PATTERN = "^[0-9]*$";
+    public static final String NUMBER_PATTERN = "^[0-9]{16}$";
     public static final String NUMBER_TEXT_PATTERN = "^[a-zA-Z0-9]+$";
     public static final String TEXT_HYPHEN_PATTERN = "^[-a-zA-Z]*$";
     public static final String TEXT_PATTERN = "^[a-zA-Z]*$";

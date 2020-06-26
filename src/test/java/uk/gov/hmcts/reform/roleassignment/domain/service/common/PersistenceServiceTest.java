@@ -87,7 +87,7 @@ class PersistenceServiceTest {
     void generateUniqueId() {
         UUID uuid = sut.generateUniqueId();
         assertNotNull(uuid);
-        ValidationUtil.validateUuidField(uuid);
+        ValidationUtil.validateUuid(uuid);
     }
 
     @Test
