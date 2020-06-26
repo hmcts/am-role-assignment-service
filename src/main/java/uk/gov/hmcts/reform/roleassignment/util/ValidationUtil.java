@@ -36,20 +36,20 @@ public class ValidationUtil {
     private ValidationUtil() {
     }
 
+    public static void validateCaseId(String field) {
+        validateInputParams(NUMBER_PATTERN, field);
+    }
 
-    public static boolean validateTextField(String field) {
+    public static void validateTextField(String field) {
         validateInputParams(TEXT_PATTERN, field);
-        return (field != null);
     }
 
-    public static boolean validateNumberTextField(String field) {
+    public static void validateNumberTextField(String field) {
         validateInputParams(NUMBER_TEXT_PATTERN, field);
-        return (field != null);
     }
 
-    public static boolean validateTextHyphenField(String field) {
+    public static void validateTextHyphenField(String field) {
         validateInputParams(TEXT_HYPHEN_PATTERN, field);
-        return (field != null);
     }
 
     public static void validateDateTime(String strDate) {
@@ -69,34 +69,23 @@ public class ValidationUtil {
         }
     }
 
-    public static boolean validateDateOrder(String beginTime, String endTime) throws ParseException {
+    public static void validateDateOrder(String beginTime, String endTime) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
-        boolean result;
-        try {
-            Date beginTimeP = sdf.parse(beginTime);
-            Date endTimeP = sdf.parse(endTime);
-            // we don't need to pass the current time as it can be generated here.
-            // this will allow us to call this validate order directly inside
-            Date createTimeP = new Date();
-            //Date createTimeP = sdf.parse(createTime);
+        Date beginTimeP = sdf.parse(beginTime);
+        Date endTimeP = sdf.parse(endTime);
+        Date createTimeP = new Date();
 
-            if (beginTimeP.before(createTimeP)) {
-                throw new BadRequestException(
-                    String.format("The begin time: %s takes place before the current time: %s",
-                                  beginTime, createTimeP));
-            } else if (endTimeP.before(createTimeP)) {
-                throw new BadRequestException(
-                    String.format("The end time: %s takes place before the current time: %s", endTime, createTimeP));
-            } else if (endTimeP.before(beginTimeP)) {
-                throw new BadRequestException(
-                    String.format("The end time: %s takes place before the begin time: %s", endTime, beginTime));
-            } else {
-                result = true;
-            }
-        } catch (ParseException e) {
-            result = false;
+        if (beginTimeP.before(createTimeP)) {
+            throw new BadRequestException(
+                String.format("The begin time: %s takes place before the current time: %s",
+                              beginTime, createTimeP));
+        } else if (endTimeP.before(createTimeP)) {
+            throw new BadRequestException(
+                String.format("The end time: %s takes place before the current time: %s", endTime, createTimeP));
+        } else if (endTimeP.before(beginTimeP)) {
+            throw new BadRequestException(
+                String.format("The end time: %s takes place before the begin time: %s", endTime, beginTime));
         }
-        return result;
     }
 
     public static void isValidSecurityClassification(String securityClassification) {
