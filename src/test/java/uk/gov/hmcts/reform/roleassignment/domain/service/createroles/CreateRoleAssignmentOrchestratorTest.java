@@ -87,54 +87,7 @@ class CreateRoleAssignmentOrchestratorTest {
 
         ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        //TODO assert RejectedRoles assertEquals(response.getBody());
-        //parsedAssignmentRequest.getRequestedRoles().stream().filter(role -> role.getStatus().equals(
-        //            Status.APPROVED)).collect(
-        //            Collectors.toList());
 
-        //ObjectMapper objectMapper = new ObjectMapper();
-        //AssignmentRequest assRequest = objectMapper.readValue(response.getBody().toString(), AssignmentRequest.class);
-
-        verify(parseRequestService, times(1)).parseRequest(any(AssignmentRequest.class), any(RequestType.class));
-        verify(persistenceService, times(1)).persistRequest(any(Request.class));
-        verify(persistenceService, times(6)).persistHistory(any(RequestedRole.class), any(Request.class));
-    }
-
-    //@Test
-    void createRoleAssignment_ReplaceTrue_ApproveRoleRequests() throws Exception {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest();
-        assignmentRequest.getRequest().setReplaceExisting(true);
-        RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
-        HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
-            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
-        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
-            assignmentRequest);
-        when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
-        when(persistenceService.persistHistory(any(RequestedRole.class), any(Request.class))).thenReturn(historyEntity);
-
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        verify(parseRequestService, times(1)).parseRequest(any(AssignmentRequest.class), any(RequestType.class));
-        verify(persistenceService, times(1)).persistRequest(any(Request.class));
-        verify(persistenceService, times(6)).persistHistory(any(RequestedRole.class), any(Request.class));
-    }
-
-    //@Test
-    void createRoleAssignment_ReplaceFalse_ApproveRoleRequests() throws Exception {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest();
-        RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
-        HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
-            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
-
-        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
-            assignmentRequest);
-        when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
-        when(persistenceService.persistHistory(any(RequestedRole.class), any(Request.class))).thenReturn(historyEntity);
-
-        //doCallRealMethod().when(validationModelService).validateRequest(any(AssignmentRequest.class));
-
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(parseRequestService, times(1)).parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1)).persistRequest(any(Request.class));
         verify(persistenceService, times(6)).persistHistory(any(RequestedRole.class), any(Request.class));
