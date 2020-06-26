@@ -173,16 +173,15 @@ public class ValidationUtil {
         return true;
     }
 
-    public static boolean validateRequestedRoles(Collection<RequestedRole> requestedRoles) throws ParseException {
+    public static void validateRequestedRoles(Collection<RequestedRole> requestedRoles) throws ParseException {
         for (RequestedRole requestedRole : requestedRoles) {
             validateUuidField(requestedRole.getActorId());
             if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
                 validateDateTime(requestedRole.getBeginTime().toString());
                 validateDateTime(requestedRole.getEndTime().toString());
             }
-            validateCaseNumber(requestedRole.getAttributes().get("caseId").textValue());
+            validateInputParams(NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
         }
-        return true;
     }
 
     public static boolean validateParsedAssignmentRequest(Collection<RequestedRole> requestedRoles)
