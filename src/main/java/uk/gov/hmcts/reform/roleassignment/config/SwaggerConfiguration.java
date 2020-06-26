@@ -44,7 +44,7 @@ public class SwaggerConfiguration {
     private ApiInfo apiV2Info() {
         return new ApiInfoBuilder()
             .title("Role Assignment Service")
-            .description("Create roles")
+            .description("Manage role assignments")
             .version("2-beta")
             .build();
     }
@@ -72,7 +72,8 @@ public class SwaggerConfiguration {
     private Parameter headerCorrelationId() {
         return new ParameterBuilder()
             .name("correlationId")
-            .description("CorrelationId is optional")
+            .description("Standard correlation header.  If not provided, a unique value is created for each request. " +
+                             "and used in logs.")
             .modelRef(new ModelRef("string"))
             .parameterType("header")
             .required(false)
