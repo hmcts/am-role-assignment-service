@@ -1,6 +1,9 @@
 
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
+import java.text.ParseException;
+import java.util.UUID;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -24,9 +27,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleA
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
-
-import java.text.ParseException;
-import java.util.UUID;
 
 @Api(value = "roles")
 @RestController
@@ -53,20 +53,20 @@ public class GetAssignmentController {
         })
     @ApiOperation("Retrieve JSON representation of a Role Assignment records.")
     @ApiResponses({
-        @ApiResponse(
-            code = 200,
-            message = "Success",
-            response = RoleAssignmentRequestResource.class
-        ),
-        @ApiResponse(
-            code = 400,
-            message = V1.Error.INVALID_REQUEST
-        ),
-        @ApiResponse(
-            code = 404,
-            message = V1.Error.INVALID_REQUEST
-        )
-    })
+                      @ApiResponse(
+                          code = 200,
+                          message = "Success",
+                          response = RoleAssignmentRequestResource.class
+                      ),
+                      @ApiResponse(
+                          code = 400,
+                          message = V1.Error.INVALID_REQUEST
+                      ),
+                      @ApiResponse(
+                          code = 404,
+                          message = V1.Error.INVALID_REQUEST
+                      )
+                  })
     public ResponseEntity<Object> retrieveRoleAssignmentByActorId(
         @PathVariable("actorId") UUID actorId) throws Exception {
         ResponseEntity<?> responseEntity = createRoleAssignmentService.retrieveRoleAssignmentByActorId(actorId);
@@ -74,8 +74,7 @@ public class GetAssignmentController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(
             "ETag",
-            String.valueOf(etag)
-        );
+            String.valueOf(etag));
 
         return ResponseEntity
             .status(HttpStatus.OK)
@@ -84,7 +83,8 @@ public class GetAssignmentController {
     }
 
     @PostMapping("/processRequest")
-    public ResponseEntity<String> processRequest(@Validated @RequestBody AssignmentRequest assignmentRequest) throws ParseException {
+    public ResponseEntity<String> processRequest(@Validated @RequestBody AssignmentRequest assignmentRequest)
+        throws ParseException {
         if (!ValidationUtil.validateAssignmentRequest(assignmentRequest)) {
             throw new BadRequestException(V1.Error.INVALID_REQUEST);
         }
