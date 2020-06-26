@@ -16,7 +16,7 @@ import java.util.UUID;
 @Validated
 public class RoleAssignmentRequestResource extends RepresentationModel<RoleAssignmentRequestResource> {
 
-    @JsonProperty("roleAssignmentRequestResource")
+    @JsonProperty("roleAssignmentResponse")
     private AssignmentRequest roleAssignmentRequest;
 
 
