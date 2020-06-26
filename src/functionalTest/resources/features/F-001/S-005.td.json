@@ -1,17 +1,20 @@
 {
-  "title": "must succesfully create single Role Assignment with Role Type ID is case-role",
-  "_guid_": "S-003",
+  "title": "must receive a Reject response when rule validation failed",
+  "_guid_": "S-005",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
     "contains a single Role Assignment",
-    "contains Role Type Id is case-role"
+    "contains data which is not as per rule validations"
   ],
+
 
   "request": {
     "body": {
       "requestedRoles": [
         {
-          "_extends_": "CommonRequestedRole"
+          "_extends_": "CommonRequestedRole",
+          "roleType": "CASE",
+          "grantType": "STANDARD"
         }
       ]
     }
@@ -25,9 +28,15 @@
     },
     "body": {
       "roleAssignmentResponse": {
+        "roleRequest": {
+          "status" : "REJECTED"
+        },
         "requestedRoles": [
           {
-            "_extends_": "CommonResponseRequestedRole"
+            "_extends_": "CommonResponseRequestedRole",
+            "roleType": "CASE",
+            "grantType": "STANDARD",
+            "status": "REJECTED"
           }
         ]
       }

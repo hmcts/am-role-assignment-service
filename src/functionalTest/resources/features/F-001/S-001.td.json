@@ -10,9 +10,7 @@
     "body": {
       "requestedRoles": [
         {
-          "_extends_": "CommonRequestedRole",
-          "roleType": "CASE",
-          "grantType": "SPECIFIC"
+          "_extends_": "CommonRequestedRole"
         }
       ]
     }
@@ -28,16 +26,7 @@
       "roleAssignmentResponse": {
         "requestedRoles": [
           {
-            "_extends_": "CommonResponseRequestedRole",
-
-
-            "process" : "businessProcess1",
-            "reference" : "abc-3434242",
-            "statusSequence" : 10,
-            "status" : "REJECTED",
-            "created" : "[[ANYTHING_PRESENT]]",
-            "approved": false,
-            "rejected": true
+            "_extends_": "CommonResponseRequestedRole"
           }
         ]
       }

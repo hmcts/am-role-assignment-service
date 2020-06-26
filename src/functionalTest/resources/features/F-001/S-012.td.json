@@ -12,7 +12,9 @@
     "body": {
       "requestedRoles": [
         {
-          "_extends_": "CommonRequestedRole"
+          "_extends_": "CommonRequestedRole",
+          "roleType": "ORGANISATION",
+          "grantType": "STANDARD"
         }
       ]
     }
@@ -28,7 +30,9 @@
       "roleAssignmentResponse": {
         "requestedRoles": [
           {
-            "_extends_": "CommonResponseRequestedRole"
+            "_extends_": "CommonResponseRequestedRole",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD"
           }
         ]
       }

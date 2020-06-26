@@ -1,14 +1,19 @@
 {
-  "title": "must succesfully create single Role Assignment with Role Type ID is case-role",
-  "_guid_": "S-003",
+  "title": "must successfully create single Role Assignment when ReplaceExisting is True with Process and Reference",
+  "_guid_": "S-013",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
     "contains a single Role Assignment",
-    "contains Role Type Id is case-role"
+    "contains ReplaceExisting is true and have process and Reference values"
   ],
 
   "request": {
     "body": {
+      "roleRequest": {
+        "process": "ReplaceProcess",
+        "reference": "replace-true",
+        "replaceExisting": true
+      },
       "requestedRoles": [
         {
           "_extends_": "CommonRequestedRole"
@@ -25,6 +30,11 @@
     },
     "body": {
       "roleAssignmentResponse": {
+        "roleRequest": {
+          "process": "ReplaceProcess",
+          "reference": "replace-true",
+          "replaceExisting": true
+        },
         "requestedRoles": [
           {
             "_extends_": "CommonResponseRequestedRole"
