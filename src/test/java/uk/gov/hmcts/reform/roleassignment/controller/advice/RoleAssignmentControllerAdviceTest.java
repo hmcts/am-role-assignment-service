@@ -36,25 +36,38 @@ class RoleAssignmentControllerAdviceTest {
     }
 
     @Test
+    void customValidationBadRequestError() {
+        BadRequestException badRequestException = mock(BadRequestException.class);
+        ResponseEntity<Object> responseEntity = csda.customValidationBadRequestError(badRequestException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+    }
+
+    @Test
     void handleMethodArgumentNotValidException() {
         MethodArgumentNotValidException methodArgumentNotValidException = mock(MethodArgumentNotValidException.class);
-        ResponseEntity<Object> responseEntity = csda.handleMethodArgumentNotValidException(servletRequestMock, methodArgumentNotValidException);
+        ResponseEntity<Object> responseEntity =
+            csda.handleMethodArgumentNotValidException(servletRequestMock, methodArgumentNotValidException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
     }
 
     @Test
     void handleResourceNotFoundException() {
-        ResourceNotFoundException resourceNotFoundException = mock(ResourceNotFoundException.class);
-        ResponseEntity<Object> responseEntity = csda.handleResourceNotFoundException(servletRequestMock,resourceNotFoundException);
+        ResourceNotFoundException resourceNotFoundException =
+            mock(ResourceNotFoundException.class);
+        ResponseEntity<Object> responseEntity =
+            csda.handleResourceNotFoundException(servletRequestMock,resourceNotFoundException);
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         assertEquals(HttpStatus.NOT_FOUND.value(), responseEntity.getStatusCodeValue());
     }
 
     @Test
     void handleHttpMessageConversionException() {
-        HttpMessageConversionException httpMessageConversionException = mock(HttpMessageConversionException.class);
-        ResponseEntity<Object> responseEntity = csda.handleHttpMessageConversionException(servletRequestMock, httpMessageConversionException);
+        HttpMessageConversionException httpMessageConversionException =
+            mock(HttpMessageConversionException.class);
+        ResponseEntity<Object> responseEntity =
+            csda.handleHttpMessageConversionException(servletRequestMock, httpMessageConversionException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
     }

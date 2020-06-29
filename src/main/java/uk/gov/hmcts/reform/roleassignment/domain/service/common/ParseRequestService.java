@@ -1,5 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -13,11 +18,6 @@ import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.UUID;
-
 @Service
 public class ParseRequestService {
 
@@ -30,7 +30,8 @@ public class ParseRequestService {
     private String serviceId;
     private String userId;
 
-    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType) throws Exception {
+    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType)
+        throws Exception {
         Request request = assignmentRequest.getRequest();
         //1. validates request and assignment record
         ValidationUtil.validateAssignmentRequest(assignmentRequest);
@@ -59,7 +60,6 @@ public class ParseRequestService {
             requestedRole.setStatusSequence(Status.CREATED.sequence);
             requestedRole.setCreated(LocalDateTime.now());
         });
-        ValidationUtil.validateParsedAssignmentRequest(requestedRoles);
         AssignmentRequest parsedRequest = new AssignmentRequest();
         parsedRequest.setRequest(request);
         parsedRequest.setRequestedRoles(requestedRoles);
@@ -68,7 +68,8 @@ public class ParseRequestService {
     }
 
     private void setCorrelationId(Request request) throws Exception {
-        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
+            .currentRequestAttributes())
             .getRequest();
         request.setCorrelationId(correlationInterceptorUtil.preHandle(httpServletRequest));
     }

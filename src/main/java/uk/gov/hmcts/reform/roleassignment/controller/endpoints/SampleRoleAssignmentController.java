@@ -30,7 +30,8 @@ public class SampleRoleAssignmentController {
 
     private ValidationModelService validationModelService;
 
-    public SampleRoleAssignmentController(RequestRepository requestRepository, ValidationModelService validationModelService) {
+    public SampleRoleAssignmentController(RequestRepository requestRepository,
+                                          ValidationModelService validationModelService) {
         this.requestRepository = requestRepository;
         this.validationModelService = validationModelService;
     }
@@ -89,7 +90,8 @@ public class SampleRoleAssignmentController {
 
 
     private HistoryEntity convertIntoEntity(RoleAssignment model) {
-        RoleAssignmentIdentity roleAssignmentId = RoleAssignmentIdentity.builder().status(model.getStatus().toString()).build();
+        RoleAssignmentIdentity roleAssignmentId = RoleAssignmentIdentity.builder().status(model.getStatus().toString())
+                                                                        .build();
         return HistoryEntity.builder().actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(convertValueJsonNode(model.getAttributes()))

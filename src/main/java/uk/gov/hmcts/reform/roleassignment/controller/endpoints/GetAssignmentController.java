@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
@@ -53,20 +52,20 @@ public class GetAssignmentController {
         })
     @ApiOperation("Retrieve JSON representation of a Role Assignment records.")
     @ApiResponses({
-        @ApiResponse(
-            code = 200,
-            message = "Success",
-            response = RoleAssignmentRequestResource.class
-        ),
-        @ApiResponse(
-            code = 400,
-            message = V1.Error.INVALID_REQUEST
-        ),
-        @ApiResponse(
-            code = 404,
-            message = V1.Error.INVALID_REQUEST
-        )
-    })
+                      @ApiResponse(
+                          code = 200,
+                          message = "Success",
+                          response = RoleAssignmentRequestResource.class
+                      ),
+                      @ApiResponse(
+                          code = 400,
+                          message = V1.Error.INVALID_REQUEST
+                      ),
+                      @ApiResponse(
+                          code = 404,
+                          message = V1.Error.INVALID_REQUEST
+                      )
+                  })
     public ResponseEntity<Object> retrieveRoleAssignmentByActorId(
         @PathVariable("actorId") UUID actorId) throws Exception {
         ResponseEntity<?> responseEntity = createRoleAssignmentService.retrieveRoleAssignmentByActorId(actorId);
@@ -74,8 +73,7 @@ public class GetAssignmentController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set(
             "ETag",
-            String.valueOf(etag)
-        );
+            String.valueOf(etag));
 
         return ResponseEntity
             .status(HttpStatus.OK)
@@ -84,10 +82,9 @@ public class GetAssignmentController {
     }
 
     @PostMapping("/processRequest")
-    public ResponseEntity<String> processRequest(@Validated @RequestBody AssignmentRequest assignmentRequest) throws ParseException {
-        if (!ValidationUtil.validateAssignmentRequest(assignmentRequest)) {
-            throw new BadRequestException(V1.Error.INVALID_REQUEST);
-        }
+    public ResponseEntity<String> processRequest(@Validated @RequestBody AssignmentRequest assignmentRequest)
+        throws ParseException {
+        ValidationUtil.validateAssignmentRequest(assignmentRequest);
         // service call to store request and requested roles in db for audit purpose.
         persistenceService.persistRequest(assignmentRequest.getRequest());
 
