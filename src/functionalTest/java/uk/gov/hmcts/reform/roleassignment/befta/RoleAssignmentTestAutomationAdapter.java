@@ -13,8 +13,5 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
 
     @Override
     public void doLoadTestData() {
-        super.registerApiClientWithEnvVariable("API_CLIENT_BOOKING_SERVICE");
-        super.registerApiClientWithEnvVariable("API_CLIENT_ORG_MAPPING_SERVICE");
-        super.registerApiClientWithEnvVariable("API_CLIENT_DATA_STORE");
     }
 }
