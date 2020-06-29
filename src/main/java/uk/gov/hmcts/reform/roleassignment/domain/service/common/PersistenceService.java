@@ -1,8 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
+import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
@@ -13,6 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.util.List;
@@ -31,13 +35,16 @@ public class PersistenceService {
     private RequestRepository requestRepository;
     private RoleAssignmentRepository roleAssignmentRepository;
     private PersistenceUtil persistenceUtil;
+    private ActorCacheRepository actorCacheRepository;
 
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
-                              RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil) {
+                              RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
+                              ActorCacheRepository actorCacheRepository) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
         this.persistenceUtil = persistenceUtil;
+        this.actorCacheRepository = actorCacheRepository;
     }
 
 
@@ -96,15 +103,42 @@ public class PersistenceService {
         roleAssignmentRepository.save(entity);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public ActorCacheEntity persistActorCache(RoleAssignment roleAssignment) {
+
+        ActorCacheEntity entity = persistenceUtil.convertActorCacheToEntity(prepareActorCache(roleAssignment));
+        ActorCacheEntity existingEtag = actorCacheRepository.findByActorId(roleAssignment.actorId);
+
+        if (existingEtag != null) {
+            entity.setEtag(existingEtag.getEtag());
+        }
+        return actorCacheRepository.save(entity);
+    }
+
+    @NotNull
+    private ActorCache prepareActorCache(RoleAssignment roleAssignment) {
+        ActorCache actorCache = new ActorCache();
+        actorCache.setActorId(roleAssignment.actorId);
+        Set<RoleAssignmentEntity> roleAssignmentEntities =
+            roleAssignmentRepository.findByActorId(roleAssignment.actorId);
+        actorCache.setRoleAssignments(roleAssignmentEntities);
+        return actorCache;
+    }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<ExistingRole> getExistingRoleAssignment(UUID actorId) {
 
         Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
         //convert into model class
-        return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertRoleAssignmentEntityInModel(role)).collect(
-            Collectors.toList());
+        return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertRoleAssignmentEntityInModel(role))
+                                     .collect(Collectors.toList());
 
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public ActorCacheEntity getActorCacheEntity(UUID actorId) {
+
+        return actorCacheRepository.findByActorId(actorId);
     }
 
     public List<RequestedRole> getExistingRoleByProcessAndReference(String process, String reference, String status) {

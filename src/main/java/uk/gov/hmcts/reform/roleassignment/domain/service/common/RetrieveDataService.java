@@ -12,6 +12,7 @@ public class RetrieveDataService {
     //3. getting required ticket details(Authorization table in JRD)
     //4. getting some location reference data
 
+
     private final DataStoreFeignClient dataStoreFeignClient;
 
 
@@ -20,7 +21,10 @@ public class RetrieveDataService {
     }
 
 
-    public Case getCaseDataV2(String caseId) {
+    public Case getCaseById(String caseId) {
+
         return dataStoreFeignClient.getCaseDataV2(caseId);
+
+
     }
 }

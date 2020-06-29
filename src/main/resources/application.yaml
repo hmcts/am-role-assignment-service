@@ -15,6 +15,9 @@ management:
       cache:
         time-to-live: 5s
       show-details: "always"
+    env:
+      cache:
+        time-to-live:
   security:
     enabled: false
   endpoints:
@@ -58,6 +61,7 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+        generate_statistics: true
   liquibase:
     enabled: ${ENABLE_DB_MIGRATE:true}
     change-log: classpath:/db/changelog/db.changelog-master.xml
@@ -104,6 +108,8 @@ feign:
         loggerLevel: basic
       datastoreclient:
         url: ${CCD_DATA_STORE_URL:http://localhost:4452}
+  hystrix:
+    enabled: true
 
 swaggerUrl: ${ROLE_ASSIGNMENT_SWAGGER_AM_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}

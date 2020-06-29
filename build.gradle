@@ -3,14 +3,14 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.9")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.10")
     classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
   }
 }
 
 plugins {
   id 'application'
-  id 'checkstyle'
+  id 'uk.gov.hmcts.java' version '0.9.0'
   id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.0.9.RELEASE'
@@ -143,16 +143,6 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
   finalizedBy aggregate
 }
 
-checkstyle {
-  maxWarnings = 0
-  toolVersion = '8.18'
-  // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
-  configDir = new File(rootDir, 'config/checkstyle')
-
-  checkstyleMain.shouldRunAfter(compileJava)
-  test.shouldRunAfter(checkstyleTest)
-}
-
 jacocoTestReport {
   executionData(test)
   reports {
@@ -213,10 +203,7 @@ dependencyUpdates.resolutionStrategy {
 
 //https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
-  // Specifies if the build should be failed if a CVSS score above a specified level is identified.
-  // range of 0-10 fails the build, anything greater and it doesn't fail the build
-  failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
-  suppressionFiles = ['config/owasp/suppressions.xml']
+  suppressionFile = 'config/owasp/suppressions.xml'
 }
 
 dependencyUpdates.resolutionStrategy = {
@@ -251,9 +238,6 @@ dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot
   compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0'
 
-  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-  implementation 'org.springframework.boot:spring-boot-starter-security'
-  implementation 'org.springframework.boot:spring-boot-starter-web'
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   compile group: 'org.json', name: 'json', version: '20200518'
 
@@ -274,12 +258,11 @@ dependencies {
   compile(group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: '2.1.4') {
     // TODO remove when auth-checker-lib upgrades its dependency to spring boot 2.0.x
     exclude group: 'uk.gov.hmcts.reform', module: 'java-logging-spring'
-
   }
   compile group: 'javax.inject', name: 'javax.inject', version: '1'
-  compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.swagger2Version
-  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.swagger2Version
-  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: versions.swagger2Version
+  compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.10.5'
+  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.10.5'
+  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: '2.10.5'
 
   compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
@@ -291,9 +274,6 @@ dependencies {
   testCompile('com.opentable.components:otj-pg-embedded:0.13.3')
   testCompile('com.github.tomakehurst:wiremock-jre8:2.25.1')
   testCompile('org.springframework.cloud:spring-cloud-contract-wiremock:2.2.3.RELEASE')
-
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'org.springframework.security:spring-security-test'
 
   testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
 

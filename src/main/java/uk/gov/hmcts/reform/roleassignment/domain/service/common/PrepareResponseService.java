@@ -1,5 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -11,8 +17,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-
-import java.util.*;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 
 
 public class PrepareResponseService {
@@ -38,9 +44,14 @@ public class PrepareResponseService {
             roleRequest,
             new TypeReference<Map<String, Object>>() {
             }
-        );
+                                                                 );
         requestMetaData.remove("clientId");
         roleAssignmentRequest.setRequest(mapper.convertValue(requestMetaData, Request.class));
+    }
+
+    public static ResponseEntity<Object> prepareRetrieveRoleResponse(List<ExistingRole> roleAssignmentResponse) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(roleAssignmentResponse));
     }
 
     private static void updateRequestedRolesResponse(AssignmentRequest roleAssignmentRequest) {
@@ -53,7 +64,6 @@ public class PrepareResponseService {
                 new TypeReference<Map<String, Object>>() {
                 }
             );
-            requestedRoleMetaData.remove("grantType");
             requestedRoleMetaData.remove("approved");
             requestedRoleMetaData.remove("rejected");
             requestedRoleMetaData.remove("request");
