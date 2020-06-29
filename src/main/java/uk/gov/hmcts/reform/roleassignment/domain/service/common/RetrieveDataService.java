@@ -1,7 +1,6 @@
 
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
@@ -22,9 +21,9 @@ public class RetrieveDataService {
     }
 
 
-    public Case getCaseById(JsonNode caseId) {
+    public Case getCaseById(String caseId) {
 
-        return dataStoreFeignClient.getCaseDataV2(caseId.asText());
+        return dataStoreFeignClient.getCaseDataV2(caseId);
 
 
     }
