@@ -17,8 +17,8 @@
       "classification": "PUBLIC",
       "grantType": "SPECIFIC",
       "readOnly": false,
-      "beginTime": "2020-01-01T00:00",
-      "endTime": "2020-12-01T00:00",
+      "beginTime": "2021-01-01T00:00",
+      "endTime": "2022-12-01T00:00",
       "attributes":
       {
         "jurisdiction": "divorce",
@@ -49,7 +49,8 @@
       "classification": "PUBLIC",
       "grantType": "CHALLENGED",
       "readOnly": true,
-      "endTime": "2050-01-01T00:00",
+      "beginTime": "2021-09-01T00:00",
+      "endTime": "2025-09-02T00:00",
       "attributes":
       {
         "jurisdiction": "divorce",

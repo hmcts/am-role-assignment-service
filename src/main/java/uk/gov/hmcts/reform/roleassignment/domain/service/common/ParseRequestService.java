@@ -60,7 +60,6 @@ public class ParseRequestService {
             requestedRole.setStatusSequence(Status.CREATED.sequence);
             requestedRole.setCreated(LocalDateTime.now());
         });
-        ValidationUtil.validateParsedAssignmentRequest(requestedRoles);
         AssignmentRequest parsedRequest = new AssignmentRequest();
         parsedRequest.setRequest(request);
         parsedRequest.setRequestedRoles(requestedRoles);
