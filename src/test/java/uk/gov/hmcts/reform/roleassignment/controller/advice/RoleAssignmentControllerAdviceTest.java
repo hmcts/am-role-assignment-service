@@ -36,6 +36,14 @@ class RoleAssignmentControllerAdviceTest {
     }
 
     @Test
+    void customValidationBadRequestError() {
+        BadRequestException badRequestException = mock(BadRequestException.class);
+        ResponseEntity<Object> responseEntity = csda.customValidationBadRequestError(badRequestException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+    }
+
+    @Test
     void handleMethodArgumentNotValidException() {
         MethodArgumentNotValidException methodArgumentNotValidException = mock(MethodArgumentNotValidException.class);
         ResponseEntity<Object> responseEntity =

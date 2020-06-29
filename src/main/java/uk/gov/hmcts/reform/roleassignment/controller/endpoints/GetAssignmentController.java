@@ -1,9 +1,6 @@
 
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
-import java.text.ParseException;
-import java.util.UUID;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
@@ -27,6 +23,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleA
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
+
+import java.text.ParseException;
+import java.util.UUID;
 
 @Api(value = "roles")
 @RestController
@@ -85,9 +84,7 @@ public class GetAssignmentController {
     @PostMapping("/processRequest")
     public ResponseEntity<String> processRequest(@Validated @RequestBody AssignmentRequest assignmentRequest)
         throws ParseException {
-        if (!ValidationUtil.validateAssignmentRequest(assignmentRequest)) {
-            throw new BadRequestException(V1.Error.INVALID_REQUEST);
-        }
+        ValidationUtil.validateAssignmentRequest(assignmentRequest);
         // service call to store request and requested roles in db for audit purpose.
         persistenceService.persistRequest(assignmentRequest.getRequest());
 
