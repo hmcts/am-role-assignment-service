@@ -144,7 +144,7 @@ public class GetAssignmentController {
         List<Role> allRoles;
         if (!contentType.equals(APPLICATION_JSON)) {
             throw new HttpMediaTypeNotAcceptableException(
-                "Request header must be of type: " + APPLICATION_JSON);
+                "Content type request header must be of type: " + APPLICATION_JSON);
         }
         try (InputStream input = GetAssignmentController.class.getClassLoader().getResourceAsStream(ROLES_JSON)) {
             CollectionType listType = new ObjectMapper().getTypeFactory().constructCollectionType(
