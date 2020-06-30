@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.controller.advice;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.INVALID_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.RESOURCE_NOT_FOUND;
@@ -60,10 +61,10 @@ public class RoleAssignmentControllerAdvice {
 
     @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
     public ResponseEntity<Object> customRequestHeaderError(
-        BadRequestException ex) {
+        HttpMediaTypeNotAcceptableException ex) {
         return errorDetailsResponseEntity(
             ex,
-            BAD_REQUEST,
+            UNSUPPORTED_MEDIA_TYPE,
             415,
             "Invalid header argument"
         );
