@@ -10,7 +10,6 @@
       "requestedRoles": [
         {
           "_extends_": "CommonRequestedRole"
-
         },
         {
           "_extends_": "CommonRequestedRole",
@@ -40,8 +39,8 @@
           {
             "_extends_": "CommonResponseRequestedRole",
             "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
-            "status" : "SPECIFIC"
+            "grantType": "SPECIFIC",
+            "status" : "REJECTED"
           }
 
         ]
