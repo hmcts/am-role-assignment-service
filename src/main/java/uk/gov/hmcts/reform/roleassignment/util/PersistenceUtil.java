@@ -111,6 +111,8 @@ public class PersistenceUtil {
         requestedrole.setRoleName(historyEntity.getRoleName());
         requestedrole.setRoleType(RoleType.valueOf(historyEntity.getRoleType()));
         requestedrole.setStatus(Status.valueOf(historyEntity.getStatus()));
+        requestedrole.setProcess(historyEntity.getProcess());
+        requestedrole.setReference(historyEntity.getReference());
         return requestedrole;
 
     }
