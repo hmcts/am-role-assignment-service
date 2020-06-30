@@ -2,14 +2,23 @@
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
 
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiParam;
+
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
@@ -107,7 +116,7 @@ public class GetAssignmentController {
     }
 
     @GetMapping(value = "/caseworkers/{uid}/jurisdictions/{jid}/case-types/{ctid}/cases/{cid}",
-                produces = "application/json")
+        produces = "application/json")
     public String getCaseData(@PathVariable("uid") String uid, @PathVariable("jid") String jurisdictionId,
                               @PathVariable("ctid") String caseTypeId, @PathVariable("cid") String caseId) {
         return dataStoreFeignClient.getCaseDataV1(uid, jurisdictionId, caseTypeId, caseId);
