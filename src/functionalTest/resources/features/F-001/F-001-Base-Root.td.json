@@ -2,8 +2,8 @@
   "_guid_": "F-001-Base-Root",
   "users": {
     "invokingUser": {
-      "username": "ccd.docker.default@hmcts.net",
-      "password": "[[$CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD]]"
+      "username": "auto.test.cnp@gmail.com",
+      "password": "Pa55word11"
     }
   },
   "request": {
