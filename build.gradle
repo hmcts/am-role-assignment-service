@@ -37,7 +37,7 @@ def versions = [
   pitest             : '1.4.2',
   reformHealthStarter: '0.0.5',
   reformLogging      : '5.1.1',
-  reformS2sClient    : '3.0.0',
+  reformS2sClient    : '3.1.1',
   serenity           : '2.1.0',
   sonarPitest        : '0.5',
   springBoot         : '2.3.1.RELEASE',
@@ -271,6 +271,15 @@ dependencies {
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.7.RELEASE'
 
   compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+  compile "org.springframework.security:spring-security-web"
+  compile "org.springframework.security:spring-security-config"
+  compile "org.springframework.boot:spring-boot-starter-oauth2-client"
+  compile "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+  implementation 'uk.gov.hmcts.reform:idam-client:1.5.4'
+  compile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '7.9'
+  compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
   testCompile('com.opentable.components:otj-pg-embedded:0.13.3')
   testCompile('com.github.tomakehurst:wiremock-jre8:2.25.1')
   testCompile('org.springframework.cloud:spring-cloud-contract-wiremock:2.2.3.RELEASE')
@@ -286,6 +295,8 @@ dependencies {
   testCompile group: 'org.pitest', name: 'pitest', version: versions.pitest
   testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.7'
   testCompile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.security:spring-security-test'
 
   testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
