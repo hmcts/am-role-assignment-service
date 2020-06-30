@@ -30,6 +30,11 @@ def vaultOverrides = [
 ]
 
 def secrets = [
+  'ccd-${env}': [
+    secret('ccd-caseworker-autotest-email', 'CCD_CASEWORKER_AUTOTEST_EMAIL'),
+    secret('ccd-caseworker-autotest-password', 'CCD_CASEWORKER_AUTOTEST_PASSWORD'),
+    secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
+  ],
     's2s-${env}': [
         secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
         secret('microservicekey-am-role-assignment-service', 'AM_ROLE_ASSIGNMENT_SERVICE_SECRET')
