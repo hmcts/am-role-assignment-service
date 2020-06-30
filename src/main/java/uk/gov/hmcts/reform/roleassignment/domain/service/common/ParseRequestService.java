@@ -1,10 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -17,6 +12,12 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.UUID;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
 
 @Service
 public class ParseRequestService {
@@ -72,6 +73,17 @@ public class ParseRequestService {
             .currentRequestAttributes())
             .getRequest();
         request.setCorrelationId(correlationInterceptorUtil.preHandle(httpServletRequest));
+    }
+
+    public String getCorrelationId() throws Exception {
+        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
+            .currentRequestAttributes())
+            .getRequest();
+        return correlationInterceptorUtil.preHandle(httpServletRequest);
+    }
+
+    public void parseActorId(String actorId) throws Exception {
+        ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
     }
 
     public void removeCorrelationLog() throws Exception {

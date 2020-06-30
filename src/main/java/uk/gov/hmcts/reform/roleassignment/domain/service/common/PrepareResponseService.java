@@ -1,11 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -19,6 +13,13 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestReso
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
 
 
 public class PrepareResponseService {
@@ -49,9 +50,9 @@ public class PrepareResponseService {
         roleAssignmentRequest.setRequest(mapper.convertValue(requestMetaData, Request.class));
     }
 
-    public static ResponseEntity<Object> prepareRetrieveRoleResponse(List<ExistingRole> roleAssignmentResponse) {
-
-        return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(roleAssignmentResponse));
+    public static ResponseEntity<Object> prepareRetrieveRoleResponse(List<ExistingRole> roleAssignmentResponse,
+                                                                     UUID actorId) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(roleAssignmentResponse, actorId));
     }
 
     private static void updateRequestedRolesResponse(AssignmentRequest roleAssignmentRequest) {

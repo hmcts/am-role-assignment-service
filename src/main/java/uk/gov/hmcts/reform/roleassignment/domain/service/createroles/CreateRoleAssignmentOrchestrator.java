@@ -1,18 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -23,6 +16,10 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceServi
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -275,17 +272,6 @@ public class CreateRoleAssignmentOrchestrator {
 
         //Persist request to update relationship with history entities
         persistenceService.persistRequestToHistory(requestEntity);
-    }
-
-    public ResponseEntity<Object> retrieveRoleAssignmentByActorId(UUID actorId) throws Exception {
-        List<ExistingRole> roles = persistenceService.getExistingRoleAssignment(actorId);
-        ResponseEntity<Object> result = PrepareResponseService.prepareRetrieveRoleResponse(roles);
-        return result;
-    }
-
-    public long retrieveETag(UUID actorId) throws Exception {
-        ActorCacheEntity entity = persistenceService.getActorCacheEntity(actorId);
-        return entity.getEtag();
     }
 
     private void moveHistoryRecordsToLiveTable(RequestEntity requestEntity) {

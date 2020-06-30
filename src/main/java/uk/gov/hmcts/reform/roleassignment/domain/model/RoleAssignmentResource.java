@@ -6,9 +6,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.validation.annotation.Validated;
+import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentController;
 
 import java.util.List;
 import java.util.UUID;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -20,13 +24,10 @@ public class RoleAssignmentResource extends RepresentationModel<RoleAssignmentRe
     private List<ExistingRole> roleAssignmentResponse;
 
 
-    public RoleAssignmentResource(List<ExistingRole> roleAssignmentResponse) {
+    public RoleAssignmentResource(List<ExistingRole> roleAssignmentResponse, UUID actorId) throws Exception {
         this.roleAssignmentResponse = roleAssignmentResponse;
-        //add(linkTo(methodOn(CreateAssignmentController.class).getRoleAssignmentByActorId("")).withRel("binary"))
+        add(linkTo(methodOn(GetAssignmentController.class).retrieveRoleAssignmentsByActorId(
+            actorId.toString()
+        )).withRel("binary"));
     }
-
-    public void addLinks(UUID documentId) {
-        //add(linkTo(methodOn(CreateAssignmentController.class).getRoleAssignmentByActorId("")).withRel("binary"));
-    }
-
 }
