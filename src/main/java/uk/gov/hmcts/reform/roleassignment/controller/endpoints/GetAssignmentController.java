@@ -124,7 +124,7 @@ public class GetAssignmentController {
     //**************** Get Roles  API ***************
 
     @GetMapping(
-        path = "/role-assignment/roles",
+        path = "/role-assignments/roles",
         produces = "application/json"
     )
     @ResponseStatus(code = HttpStatus.OK)
