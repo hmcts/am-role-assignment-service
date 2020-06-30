@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,6 +55,17 @@ public class RoleAssignmentControllerAdvice {
             BAD_REQUEST,
             BAD_REQUEST.value(),
             "Bad Request"
+        );
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
+    public ResponseEntity<Object> customRequestHeaderError(
+        BadRequestException ex) {
+        return errorDetailsResponseEntity(
+            ex,
+            BAD_REQUEST,
+            415,
+            "Invalid header argument"
         );
     }
 
