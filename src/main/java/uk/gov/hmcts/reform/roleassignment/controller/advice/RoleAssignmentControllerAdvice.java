@@ -65,8 +65,8 @@ public class RoleAssignmentControllerAdvice {
         return errorDetailsResponseEntity(
             ex,
             UNSUPPORTED_MEDIA_TYPE,
-            415,
-            "Invalid header argument"
+            UNSUPPORTED_MEDIA_TYPE.value(),
+            UNSUPPORTED_MEDIA_TYPE.getReasonPhrase()
         );
     }
 
