@@ -62,7 +62,7 @@ public class CreateRoleAssignmentOrchestrator {
         //Check replace existing true/false
         if (request.isReplaceExisting()) {
 
-            //retrieve existing assignments ans prepared temp request
+            //retrieve existing assignments and prepared temp request
             existingAssignmentRequest = retrieveExistingAssignments(parsedAssignmentRequest);
 
             //validation

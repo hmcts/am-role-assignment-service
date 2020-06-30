@@ -1,10 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -17,6 +13,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.UUID;
 
 @Service
 public class ParseRequestService {
@@ -76,5 +77,34 @@ public class ParseRequestService {
 
     public void removeCorrelationLog() throws Exception {
         correlationInterceptorUtil.afterCompletion();
+    }
+
+    public Request prepareRequestObject(String process, String reference) throws Exception {
+        Request request = Request.builder()
+            .clientId(securityUtils.getServiceId())
+            .authenticatedUserId(UUID.fromString(securityUtils.getUserId()))
+            .status(Status.CREATED)
+            .requestType(RequestType.DELETE)
+            .created(LocalDateTime.now())
+            .process(process)
+            .reference(reference)
+            .build();
+        setCorrelationId(request);
+        setAssignerId(request);
+        return request;
+
+    }
+
+    private void setAssignerId(Request request) {
+        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
+            .currentRequestAttributes())
+            .getRequest();
+        String assignerId = httpServletRequest.getHeader("assignerId");
+
+        if (StringUtils.isBlank(assignerId)) {
+            request.setAssignerId(request.getAuthenticatedUserId());
+        } else {
+            request.setAssignerId(UUID.fromString(assignerId));
+        }
     }
 }

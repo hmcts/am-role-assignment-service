@@ -144,5 +144,23 @@ public class PersistenceUtil {
 
     }
 
+    public RequestedRole roleAssignmentEntityToRequestedRole(RoleAssignmentEntity roleAssignmentEntity) {
+
+        RequestedRole requestedRole = new RequestedRole();
+        requestedRole.setId(roleAssignmentEntity.getId());
+        requestedRole.setActorId(roleAssignmentEntity.getActorId());
+        requestedRole.setActorIdType(ActorIdType.valueOf(roleAssignmentEntity.getActorIdType()));
+        requestedRole.setAttributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()));
+        requestedRole.setBeginTime(roleAssignmentEntity.getBeginTime());
+        requestedRole.setEndTime(roleAssignmentEntity.getEndTime());
+        requestedRole.setCreated(roleAssignmentEntity.getCreated());
+        requestedRole.setClassification(Classification.valueOf(roleAssignmentEntity.getClassification()));
+        requestedRole.setGrantType(GrantType.valueOf(roleAssignmentEntity.getGrantType()));
+        requestedRole.setReadOnly(roleAssignmentEntity.isReadOnly());
+        requestedRole.setRoleName(roleAssignmentEntity.getRoleName());
+        requestedRole.setRoleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()));
+        return requestedRole;
+    }
+
 
 }

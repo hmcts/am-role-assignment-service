@@ -107,10 +107,10 @@ public class PersistenceService {
     public ActorCacheEntity persistActorCache(RoleAssignment roleAssignment) {
 
         ActorCacheEntity entity = persistenceUtil.convertActorCacheToEntity(prepareActorCache(roleAssignment));
-        ActorCacheEntity existingEtag = actorCacheRepository.findByActorId(roleAssignment.actorId);
+        ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.actorId);
 
-        if (existingEtag != null) {
-            entity.setEtag(existingEtag.getEtag());
+        if (existingActorCache != null) {
+            entity.setEtag(existingActorCache.getEtag());
         }
         return actorCacheRepository.save(entity);
     }
@@ -156,5 +156,20 @@ public class PersistenceService {
         roleAssignmentRepository.delete(entity);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void deleteRoleAssignmentByActorId(UUID actorId) {
+
+        roleAssignmentRepository.deleteByActorId(actorId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public List<RequestedRole> getRoleAssignment(UUID actorId) {
+
+        Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
+        //convert into model class
+        return roleAssignmentEntities.stream().map(role -> persistenceUtil.roleAssignmentEntityToRequestedRole(role))
+            .collect(Collectors.toList());
+
+    }
 
 }
