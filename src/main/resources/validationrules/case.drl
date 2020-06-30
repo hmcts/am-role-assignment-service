@@ -1,0 +1,19 @@
+package validationrules
+
+global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService retrieveDataService
+
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+
+rule "retrieve case detail" salience 100
+	when
+	  $request : Request()
+	  $role : RequestedRole(attributes["caseId"]!=null, $caseId : attributes["caseId"])
+	   not Case (id == $caseId.asText() )
+
+	then
+   	insert (retrieveDataService.getCaseById($caseId.asText()));
+		$request.setLog(String.format(" Case has been inserted by the  %s with correlation Id %s","retrieve case detail rule",$request.getCorrelationId()));
+
+end

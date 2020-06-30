@@ -2,7 +2,13 @@
 
 properties([
   // H allow predefined but random minute see https://en.wikipedia.org/wiki/Cron#Non-standard_characters
-  pipelineTriggers([cron('21 01 * * *')])
+  pipelineTriggers([cron('21 01 * * *')]),
+  parameters([
+    string(name: 'URL_TO_TEST', defaultValue: 'http://am-role-assignment-service-aat.service.core-compute-aat.internal', description: 'The URL you want to run these tests against'),
+    string(name: 'SecurityRules',
+      defaultValue: 'http://raw.githubusercontent.com/hmcts/security-test-rules/master/conf/security-rules.conf',
+      description: 'The URL you want to run these tests against'),
+  ])
 ])
 
 @Library("Infrastructure")
@@ -10,6 +16,21 @@ properties([
 def type = "java"
 def product = "am"
 def component = "role-assignment-service"
+
+def secrets = [
+  's2s-${env}': [
+    secret('microservicekey-am-role-assignment-service', 'S2S_SECRET')
+  ]
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+  [$class     : 'AzureKeyVaultSecret',
+   secretType : 'Secret',
+   name       : secretName,
+   version    : '',
+   envVariable: envVar
+  ]
+}
 
 def vaultOverrides = [
   'preview' : 'aat',
@@ -20,9 +41,13 @@ withNightlyPipeline(type, product, component) {
   /*enableSlackNotifications('#am-role-assignment-service-builds')*/
 
   env.TEST_URL = "http://am-role-assignment-service-aat.service.core-compute-aat.internal"
+  env.IDAM_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+  env.Rules = params.SecurityRules
+
 
   overrideVaultEnvironments(vaultOverrides)
 
   enableMutationTest()
+  enableSecurityScan()
 }

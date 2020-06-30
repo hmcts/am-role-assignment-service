@@ -3,18 +3,18 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.9")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.10")
     classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
   }
 }
 
 plugins {
   id 'application'
-  id 'checkstyle'
+  id 'uk.gov.hmcts.java' version '0.9.0'
   id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-  id 'org.springframework.boot' version '2.2.7.RELEASE'
+  id 'org.springframework.boot' version '2.3.1.RELEASE'
   id 'info.solidsoft.pitest' version '1.5.0'
   id 'org.owasp.dependencycheck' version '5.3.2.1'
   id 'com.github.ben-manes.versions' version '0.28.0'
@@ -40,7 +40,7 @@ def versions = [
   reformS2sClient    : '3.0.0',
   serenity           : '2.1.0',
   sonarPitest        : '0.5',
-  springBoot         : '2.1.4.RELEASE',
+  springBoot         : '2.3.1.RELEASE',
   springHystrix      : '2.1.1.RELEASE',
   swagger2Version    : '3.0.0-SNAPSHOT',
   pact_version       : '3.5.24',
@@ -61,8 +61,8 @@ group = 'uk.gov.hmcts.reform.roleassignment'
 version = '0.0.1'
 
 allprojects {
-  sourceCompatibility = '1.8'
-  targetCompatibility = '1.8'
+  sourceCompatibility = '11'
+  targetCompatibility = '11'
 }
 
 jacocoTestCoverageVerification {
@@ -143,16 +143,6 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
   finalizedBy aggregate
 }
 
-checkstyle {
-  maxWarnings = 0
-  toolVersion = '8.18'
-  // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
-  configDir = new File(rootDir, 'config/checkstyle')
-
-  checkstyleMain.shouldRunAfter(compileJava)
-  test.shouldRunAfter(checkstyleTest)
-}
-
 jacocoTestReport {
   executionData(test)
   reports {
@@ -165,14 +155,14 @@ jacocoTestReport {
 project.tasks['sonarqube'].dependsOn jacocoTestReport
 
 jacoco {
-  toolVersion = "0.8.2"
+  toolVersion = "0.8.5"
 }
 
 pitest {
   pitestVersion = "1.5.2"
   testPlugin = "junit5"
   targetClasses = ['uk.gov.hmcts.reform.*']
-  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication','uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot', 'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants', 'uk.gov.hmcts.reform.roleassignment.configuration.*', 'uk.gov.hmcts.reform.roleassignment.apihelper.*', 'uk.gov.hmcts.reform.roleassignment.model.*', 'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication']
+  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication', 'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot', 'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants', 'uk.gov.hmcts.reform.roleassignment.configuration.*', 'uk.gov.hmcts.reform.roleassignment.apihelper.*', 'uk.gov.hmcts.reform.roleassignment.model.*', 'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication']
   threads = 15
   outputFormats = ['XML', 'HTML']
   timestampedReports = true
@@ -213,10 +203,7 @@ dependencyUpdates.resolutionStrategy {
 
 //https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
-  // Specifies if the build should be failed if a CVSS score above a specified level is identified.
-  // range of 0-10 fails the build, anything greater and it doesn't fail the build
-  failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
-  suppressionFiles = ['config/owasp/suppressions.xml']
+  suppressionFile = 'config/owasp/suppressions.xml'
 }
 
 dependencyUpdates.resolutionStrategy = {
@@ -249,17 +236,19 @@ dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot
+  compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0'
 
-  compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: '0.0.5'
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   compile group: 'org.json', name: 'json', version: '20200518'
+
+  implementation 'com.squareup.okhttp3:okhttp:4.7.2'
 
   // drools engine dependency
   compile group: 'org.drools', name: 'drools-core', version: '7.38.0.Final'
   compile group: 'org.drools', name: 'drools-compiler', version: '7.38.0.Final'
   compile group: 'org.drools', name: 'drools-decisiontables', version: '7.38.0.Final'
   compile group: 'org.kie', name: 'kie-ci', version: '7.38.0.Final'
-
+  compile group: 'org.liquibase', name: 'liquibase-core', version: '3.10.0'
 
   //Added for Spring Security Implementation
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBoot
@@ -269,24 +258,22 @@ dependencies {
   compile(group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: '2.1.4') {
     // TODO remove when auth-checker-lib upgrades its dependency to spring boot 2.0.x
     exclude group: 'uk.gov.hmcts.reform', module: 'java-logging-spring'
-
   }
   compile group: 'javax.inject', name: 'javax.inject', version: '1'
-  compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.swagger2Version
-  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.swagger2Version
-  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: versions.swagger2Version
+  compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.10.5'
+  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.10.5'
+  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: '2.10.5'
 
   compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.3.RELEASE'
   compile('org.springframework.boot:spring-boot-starter-hateoas')
-  compile group: 'org.springframework', name: 'spring-tx', version: '5.2.6.RELEASE'
+  compile group: 'org.springframework', name: 'spring-tx', version: '5.2.7.RELEASE'
 
-   compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.3'
-   compile group: 'org.postgresql', name: 'postgresql', version: '42.2.8'
-   testCompile ('com.opentable.components:otj-pg-embedded:0.12.0')
-   testCompile ('com.github.tomakehurst:wiremock-jre8:2.25.1')
-   testCompile ('org.springframework.cloud:spring-cloud-contract-wiremock:2.2.1.RELEASE')
+  compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
+  testCompile('com.opentable.components:otj-pg-embedded:0.13.3')
+  testCompile('com.github.tomakehurst:wiremock-jre8:2.25.1')
+  testCompile('org.springframework.cloud:spring-cloud-contract-wiremock:2.2.3.RELEASE')
 
   testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
 
@@ -300,10 +287,10 @@ dependencies {
   testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.7'
   testCompile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
 
-  testCompile (group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
+  testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '2.13.0'
+  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '2.19.1-RDM-8667.1'
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.3.RELEASE'
 
   compile group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber

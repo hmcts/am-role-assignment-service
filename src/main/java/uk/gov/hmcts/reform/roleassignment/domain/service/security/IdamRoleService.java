@@ -16,11 +16,11 @@ public class IdamRoleService {
     private Map<String, List<ExistingRole>> existingRoleByActorId = new HashMap<>();
     SecurityUtils securityUtils;
 
-    public void getUserId() {
+    public void getRequestedUserId() {
         securityUtils.getUserId();
     }
 
-    public void getUserRole() {
+    public void getRequestUserRole() {
         securityUtils.getUserRolesHeader();
     }
 

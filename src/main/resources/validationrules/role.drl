@@ -1,0 +1,72 @@
+package validationrules
+global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService retrieveDataService;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.Pattern;
+import com.fasterxml.jackson.databind.JsonNode;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Role
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+
+
+rule "role  validation for Judge  P1" salience 60
+
+when
+$role           : Role()
+$request        : Request()
+$requestedRole  : RequestedRole(roleName == $role.getName())
+                  Role($patterns : patterns)
+                  Pattern($data : data) from $patterns
+                  $classificationEntry : JsonNode() from $data["Classification"]
+                  $classificationObj : JsonNode() from $classificationEntry
+                  RequestedRole($requestedRole.getClassification().toString() == $classificationObj.asText() )
+                  $grantTypeEntry : JsonNode() from $data["GrantType"]
+                  $grantTypeObj : JsonNode() from $grantTypeEntry
+                  RequestedRole($requestedRole.getGrantType().toString() == $grantTypeObj.asText() )
+                  $roleTypeObj : JsonNode() from $data["RoleType"]
+                  RequestedRole($requestedRole.getRoleType().toString() == $roleTypeObj.asText() )
+                  $attributesEntry : JsonNode() from $data["Attributes"]
+                  $attributeObj : JsonNode() from $attributesEntry
+                  $Obj1 : JsonNode() from $attributeObj
+                  RequestedRole(attributes["region"] == $Obj1)
+
+
+then
+$requestedRole.setStatus(Status.APPROVED);
+$requestedRole.setLog(String.format("Requested Role has been approved by the   %s rule for organization type with correlation Id %s","role  validation for Judge  P1",$request.getCorrelationId()));
+
+
+end;
+
+
+
+rule "role  validation for Judge P2 with existing case id" salience 55
+when
+$role           : Role()
+$request        : Request()
+$requestedRole  : RequestedRole(roleName == $role.getName())
+                  Role($patterns : patterns)
+                  Pattern($data : data) from $patterns
+                  $classificationEntry : JsonNode() from $data["Classification"]
+                  $classificationObj : JsonNode() from $classificationEntry
+                  RequestedRole($requestedRole.getClassification().toString() == $classificationObj.asText() )
+                  $grantTypeEntry : JsonNode() from $data["GrantType"]
+                  $grantTypeObj : JsonNode() from $grantTypeEntry
+                  RequestedRole($requestedRole.getGrantType().toString() == $grantTypeObj.asText() )
+                  $roleTypeObj : JsonNode() from $data["RoleType"]
+                  RequestedRole($requestedRole.getRoleType().toString() == $roleTypeObj.asText() )
+                  RequestedRole(attributes["caseId"]!=null,$caseId : attributes["caseId"])
+                  Case ( id == $caseId.asText() )
+
+then
+$requestedRole.setStatus(Status.APPROVED);
+$requestedRole.setLog(String.format("Requested Role has been approved by the   %s rule with correlation Id %s","role  validation for Judge P2 with existing case id",$request.getCorrelationId()));
+
+
+end;
+
+
+

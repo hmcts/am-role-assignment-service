@@ -1,0 +1,31 @@
+package validationrules
+import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
+
+rule "role assignment validation" salience 70
+
+when
+$requestedRole  : RequestedRole(id!= null)
+$role           : Role()
+$request        : Request(clientId != "xui") or (Request(clientId == "xui") and RequestedRole(roleType==RoleType.CASE))
+                  Request(clientId != "organization_mapping") or (Request(clientId == "organization_mapping") and RequestedRole(roleType==RoleType.ORGANISATION))
+                  RequestedRole(roleName == $role.getName())
+                  Request(process in (GrantType.CHALLENGED.toString(),GrantType.STANDARD.toString(),GrantType.SPECIFIC.toString()) )
+                  RequestedRole(status==Status.CREATED)
+                  RequestedRole(beginTime >= created,endTime >= created,endTime > beginTime)
+
+then
+$requestedRole.setLog(String.format("Requested Role has been validated by the  role assignment validation rule with correlation Id "));
+$requestedRole.setStatus(Status.VALIDATED);
+
+end;
+
+
+
+
+
