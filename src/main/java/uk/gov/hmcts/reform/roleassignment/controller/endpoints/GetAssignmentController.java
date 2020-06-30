@@ -59,8 +59,9 @@ public class GetAssignmentController {
 
     @GetMapping(
         path = "/am/role-assignments/actors/{actorId}",
-        produces = {APPLICATION_JSON
-        })
+        produces = APPLICATION_JSON,
+        consumes = APPLICATION_JSON
+    )
     @ApiOperation("Retrieve JSON representation of a Role Assignment records.")
     @ApiResponses({
         @ApiResponse(
