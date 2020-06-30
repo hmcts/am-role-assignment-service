@@ -46,7 +46,8 @@ class RoleAssignmentControllerAdviceTest {
 
     @Test
     void customRequestHeaderError() {
-        HttpMediaTypeNotAcceptableException customContentTypeException = mock(HttpMediaTypeNotAcceptableException.class);
+        HttpMediaTypeNotAcceptableException customContentTypeException = mock(
+            HttpMediaTypeNotAcceptableException.class);
         ResponseEntity<Object> responseEntity = csda.customRequestHeaderError(customContentTypeException);
         assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE, responseEntity.getStatusCode());
         assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), responseEntity.getStatusCodeValue());
