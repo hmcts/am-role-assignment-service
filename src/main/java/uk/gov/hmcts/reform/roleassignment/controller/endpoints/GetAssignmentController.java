@@ -33,6 +33,8 @@ import uk.gov.hmcts.reform.roleassignment.v1.V1;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.ROLES_JSON;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.APPLICATION_JSON;
 
+import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
+
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -137,7 +139,7 @@ public class GetAssignmentController {
         ),
         @ApiResponse(
             code = 415,
-            message = V1.Error.INVALID_REQUEST
+            message = "Unsupported Media Type"
         )
     })
     public ResponseEntity<Object> getListOfRoles(@RequestHeader("Content-Type") String contentType) throws Exception {
