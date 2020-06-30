@@ -187,7 +187,7 @@ class PersistenceServiceTest {
             "process", "reference", "status")).thenReturn(historyEntities);
         when(persistenceUtil.convertHistoryEntityInModel(historyEntity)).thenReturn(requestedRole);
 
-        sut.getExistingRoleByProcessAndReference("process", "reference", "status");
+        sut.getAssignmentsByProcess("process", "reference", "status");
 
         verify(historyRepository, times(1)).findByReference(
             "process", "reference", "status");

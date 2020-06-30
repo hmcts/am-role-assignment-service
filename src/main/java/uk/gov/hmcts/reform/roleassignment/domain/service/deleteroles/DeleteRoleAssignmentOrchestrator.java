@@ -3,6 +3,8 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -18,6 +20,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NOT_FOUND_BY_ACTOR;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NOT_FOUND_BY_PROCESS;
+
 @Service
 public class DeleteRoleAssignmentOrchestrator {
 
@@ -27,6 +33,7 @@ public class DeleteRoleAssignmentOrchestrator {
     private ValidationModelService validationModelService;
     RequestEntity requestEntity;
     AssignmentRequest assignmentRequest;
+    Request request;
 
     public DeleteRoleAssignmentOrchestrator(PersistenceService persistenceService,
                                             ParseRequestService parseRequestService,
@@ -42,8 +49,12 @@ public class DeleteRoleAssignmentOrchestrator {
         List<RequestedRole> requestedRoles = null;
 
         //1. create the request Object
-        Request request = parseRequestService.prepareRequestObject(process, reference);
-        assignmentRequest = new AssignmentRequest();
+        if (actorId != null || (process != null && reference != null)) {
+            request = parseRequestService.prepareDeleteRequest(process, reference, actorId);
+            assignmentRequest = new AssignmentRequest();
+        } else {
+            throw new BadRequestException(BAD_REQUEST_MISSING_PARAMETERS);
+        }
 
         //2. Call persistence service to store only the request
         requestEntity = persistenceService.persistRequest(request);
@@ -52,15 +63,20 @@ public class DeleteRoleAssignmentOrchestrator {
 
         //3. retrieve all assignment records based on actorId/process+reference
         if (actorId != null) {
-            requestedRoles = persistenceService.getRoleAssignment(UUID.fromString(actorId));
+            requestedRoles = persistenceService.getAssignmentsByActor(UUID.fromString(actorId));
+            if (requestedRoles.isEmpty()) {
+                throw new ResourceNotFoundException(String.format(NOT_FOUND_BY_ACTOR, actorId));
+            }
 
         } else if (process != null && reference != null) {
-            requestedRoles = persistenceService.getExistingRoleByProcessAndReference(
+            requestedRoles = persistenceService.getAssignmentsByProcess(
                 process,
                 reference,
                 Status.LIVE.toString()
             );
-
+            if (requestedRoles.isEmpty()) {
+                throw new ResourceNotFoundException(String.format(NOT_FOUND_BY_PROCESS, process, reference));
+            }
         }
 
         //4. call validation rule
@@ -72,7 +88,7 @@ public class DeleteRoleAssignmentOrchestrator {
         updateStatusAndPersist(request);
 
         //6. check status updated by drools and take decision
-        checkAllDeleteApproved(assignmentRequest);
+        checkAllDeleteApproved(assignmentRequest, actorId);
 
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -108,42 +124,50 @@ public class DeleteRoleAssignmentOrchestrator {
         persistenceService.persistRequestToHistory(requestEntity);
     }
 
-    private void checkAllDeleteApproved(AssignmentRequest parsedAssignmentRequest) {
+    private void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
         // decision block
-        List<RequestedRole> deleteApprovedRoles = parsedAssignmentRequest.getRequestedRoles().stream()
+        List<RequestedRole> deleteApprovedRoles = validatedAssignmentRequest.getRequestedRoles().stream()
             .filter(role -> role.getStatus().equals(
                 Status.DELETE_APPROVED)).collect(
                 Collectors.toList());
 
-        if (deleteApprovedRoles.size() == parsedAssignmentRequest.getRequestedRoles().size()) {
+        if (deleteApprovedRoles.size() == validatedAssignmentRequest.getRequestedRoles().size()) {
 
             //Delete existing Assignment records
-            deleteLiveRecords(parsedAssignmentRequest);
+            deleteLiveRecords(validatedAssignmentRequest, actorId);
 
             //insert status deleted in history table
-            insertRequestedRole(parsedAssignmentRequest, Status.DELETED);
+            insertRequestedRole(validatedAssignmentRequest, Status.DELETED);
 
             // Update request status to approved
-            updateRequestStatus(parsedAssignmentRequest, Status.APPROVED);
+            updateRequestStatus(validatedAssignmentRequest, Status.APPROVED);
 
 
         } else {
 
 
             //Insert requested roles  into history table with status deleted-Rejected
-            insertRequestedRole(parsedAssignmentRequest, Status.DELETE_REJECTED);
+            insertRequestedRole(validatedAssignmentRequest, Status.DELETE_REJECTED);
 
             // Update request status to REJECTED
-            updateRequestStatus(parsedAssignmentRequest, Status.REJECTED);
+            updateRequestStatus(validatedAssignmentRequest, Status.REJECTED);
 
         }
     }
 
-    private void deleteLiveRecords(AssignmentRequest assignmentRequest) {
-        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            persistenceService.deleteRoleAssignmentByActorId(requestedRole.getActorId());
-            persistenceService.persistActorCache(requestedRole);
+    private void deleteLiveRecords(AssignmentRequest validatedAssignmentRequest, String actorId) {
+        if (actorId != null) {
+            for (RoleAssignment requestedRole : validatedAssignmentRequest.getRequestedRoles()) {
+                persistenceService.deleteRoleAssignmentByActorId(requestedRole.getActorId());
+                persistenceService.persistActorCache(requestedRole);
 
+            }
+        } else {
+            for (RoleAssignment requestedRole : validatedAssignmentRequest.getRequestedRoles()) {
+                persistenceService.deleteRoleAssignment(requestedRole);
+                persistenceService.persistActorCache(requestedRole);
+
+            }
         }
     }
 

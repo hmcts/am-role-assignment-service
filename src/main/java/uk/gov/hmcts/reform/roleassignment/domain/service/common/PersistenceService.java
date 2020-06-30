@@ -141,7 +141,7 @@ public class PersistenceService {
         return actorCacheRepository.findByActorId(actorId);
     }
 
-    public List<RequestedRole> getExistingRoleByProcessAndReference(String process, String reference, String status) {
+    public List<RequestedRole> getAssignmentsByProcess(String process, String reference, String status) {
         Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
         //convert into model class
         return historyEntities.stream().map(role -> persistenceUtil.convertHistoryEntityInModel(role)).collect(
@@ -163,7 +163,7 @@ public class PersistenceService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public List<RequestedRole> getRoleAssignment(UUID actorId) {
+    public List<RequestedRole> getAssignmentsByActor(UUID actorId) {
 
         Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
         //convert into model class

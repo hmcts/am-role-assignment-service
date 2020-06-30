@@ -36,11 +36,19 @@ public class DeleteAssignmentController {
         ),
         @ApiResponse(
             code = 400,
-            message = V1.Error.INVALID_ROLE_NAME
+            message = V1.Error.BAD_REQUEST_INVALID_PARAMETER
+        ),
+        @ApiResponse(
+            code = 400,
+            message = V1.Error.BAD_REQUEST_MISSING_PARAMETERS
         ),
         @ApiResponse(
             code = 404,
-            message = V1.Error.ROLE_NOT_FOUND
+            message = V1.Error.NOT_FOUND_BY_ACTOR
+        ),
+        @ApiResponse(
+            code = 404,
+            message = V1.Error.NOT_FOUND_BY_PROCESS
         )
     })
     public ResponseEntity<Object> deleteRoleAssignment(@RequestParam(value = "actorId", required = false)

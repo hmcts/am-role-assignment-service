@@ -92,7 +92,7 @@ public class CreateRoleAssignmentOrchestrator {
     @NotNull
     private AssignmentRequest retrieveExistingAssignments(AssignmentRequest parsedAssignmentRequest) {
         AssignmentRequest existingAssignmentRequest;
-        List<RequestedRole> existingRoles = persistenceService.getExistingRoleByProcessAndReference(
+        List<RequestedRole> existingRoles = persistenceService.getAssignmentsByProcess(
             request.process,
             request.reference,
             Status.LIVE.toString()

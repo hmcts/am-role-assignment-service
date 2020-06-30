@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.UUID;
 
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
+
 @Service
 public class ParseRequestService {
 
@@ -79,7 +81,10 @@ public class ParseRequestService {
         correlationInterceptorUtil.afterCompletion();
     }
 
-    public Request prepareRequestObject(String process, String reference) throws Exception {
+    public Request prepareDeleteRequest(String process, String reference, String actorId) throws Exception {
+        if (actorId != null) {
+            ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
+        }
         Request request = Request.builder()
             .clientId(securityUtils.getServiceId())
             .authenticatedUserId(UUID.fromString(securityUtils.getUserId()))
