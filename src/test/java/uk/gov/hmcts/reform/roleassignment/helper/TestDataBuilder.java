@@ -52,12 +52,19 @@ public class TestDataBuilder {
 
     private static Request buildRequest() {
         LocalDateTime timeStamp = LocalDateTime.now();
-        return Request.builder().id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).correlationId(
-            "correlationId").clientId("clientId").authenticatedUserId(
-            UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).assignerId(
-            UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestType(
-            RequestType.CREATE).reference("reference").process(("process")).status(Status.CREATED)
-                      .replaceExisting(true).roleAssignmentId("roleAssignmentId").created(timeStamp).build();
+        return Request.builder()
+            .id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .correlationId("correlationId")
+            .clientId("clientId")
+            .authenticatedUserId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .assignerId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .requestType(RequestType.CREATE)
+            .reference("reference")
+            .process(("process"))
+            .status(Status.CREATED)
+            .replaceExisting(true)
+            .roleAssignmentId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .created(timeStamp).build();
     }
 
     private static Collection<RoleAssignment> buildRequestedRoleCollection() throws IOException {

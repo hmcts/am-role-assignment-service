@@ -23,23 +23,24 @@ public class PersistenceUtil {
         return HistoryEntity.builder()
             .actorId(roleAssignment.getActorId())
             .actorIdType(roleAssignment.getActorIdType().toString())
-            .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
-            .beginTime(roleAssignment.getBeginTime())
             .classification(roleAssignment.getClassification().toString())
-            .endTime(roleAssignment.getEndTime())
             .grantType(roleAssignment.getGrantType().toString())
             .roleName(roleAssignment.getRoleName())
             .roleType(roleAssignment.getRoleType().toString())
-            .readOnly(roleAssignment.readOnly)
+            .roleCategory(roleAssignment.getRoleCategory().toString())
+            .readOnly(roleAssignment.isReadOnly())
             .status(roleAssignment.getStatus().toString())
             .requestEntity(requestEntity)
             .process(roleAssignment.getProcess())
             .reference(roleAssignment.getReference())
             .created(roleAssignment.getCreated())
+            .beginTime(roleAssignment.getBeginTime())
+            .endTime(roleAssignment.getEndTime())
+            .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
             .notes(roleAssignment.getNotes())
+            .sequence(roleAssignment.getStatusSequence())
+            .log(roleAssignment.getLog())
             .build();
-
-
     }
 
     public RequestEntity convertRequestToEntity(Request request) {
@@ -55,27 +56,27 @@ public class PersistenceUtil {
             .requestType(request.getRequestType().toString())
             .created(request.getCreated())
             .log(request.getLog())
+            .roleAssignmentId(request.getRoleAssignmentId())
             .build();
 
     }
 
-    public RoleAssignmentEntity convertRoleAssignmentToEntity(RoleAssignment model) {
+    public RoleAssignmentEntity convertRoleAssignmentToEntity(RoleAssignment roleAssignment) {
         return RoleAssignmentEntity.builder()
-            .id(model.getId())
-            .actorId(model.getActorId())
-            .actorIdType(model.getActorIdType().toString())
-            .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
-            .beginTime(model.getBeginTime())
-            .classification(model.getClassification().toString())
-            .endTime(model.getEndTime())
-            .created(model.getCreated())
-            .grantType(model.getGrantType().toString())
-            .roleName(model.getRoleName())
-            .roleType(model.getRoleType().toString())
-            .readOnly(model.readOnly)
+            .id(roleAssignment.getId())
+            .actorId(roleAssignment.getActorId())
+            .actorIdType(roleAssignment.getActorIdType().toString())
+            .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
+            .beginTime(roleAssignment.getBeginTime())
+            .classification(roleAssignment.getClassification().toString())
+            .endTime(roleAssignment.getEndTime())
+            .created(roleAssignment.getCreated())
+            .grantType(roleAssignment.getGrantType().toString())
+            .roleName(roleAssignment.getRoleName())
+            .roleType(roleAssignment.getRoleType().toString())
+            .readOnly(roleAssignment.isReadOnly())
+            .roleCategory(roleAssignment.getRoleCategory().toString())
             .build();
-
-
     }
 
     public ActorCacheEntity convertActorCacheToEntity(ActorCache actorCache) {
@@ -113,20 +114,21 @@ public class PersistenceUtil {
 
     public RoleAssignment convertEntityToRoleAssignment(RoleAssignmentEntity roleAssignmentEntity) {
 
-        RoleAssignment requestedRole = new RoleAssignment();
-        requestedRole.setId(roleAssignmentEntity.getId());
-        requestedRole.setActorId(roleAssignmentEntity.getActorId());
-        requestedRole.setActorIdType(ActorIdType.valueOf(roleAssignmentEntity.getActorIdType()));
-        requestedRole.setAttributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()));
-        requestedRole.setBeginTime(roleAssignmentEntity.getBeginTime());
-        requestedRole.setEndTime(roleAssignmentEntity.getEndTime());
-        requestedRole.setCreated(roleAssignmentEntity.getCreated());
-        requestedRole.setClassification(Classification.valueOf(roleAssignmentEntity.getClassification()));
-        requestedRole.setGrantType(GrantType.valueOf(roleAssignmentEntity.getGrantType()));
-        requestedRole.setReadOnly(roleAssignmentEntity.isReadOnly());
-        requestedRole.setRoleName(roleAssignmentEntity.getRoleName());
-        requestedRole.setRoleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()));
-        return requestedRole;
+        return RoleAssignment.builder()
+            .id(roleAssignmentEntity.getId())
+            .actorIdType(ActorIdType.valueOf(roleAssignmentEntity.getActorIdType()))
+            .actorId(roleAssignmentEntity.getActorId())
+            .classification(Classification.valueOf(roleAssignmentEntity.getClassification()))
+            .grantType(GrantType.valueOf(roleAssignmentEntity.getGrantType()))
+            .readOnly(roleAssignmentEntity.isReadOnly())
+            .roleName(roleAssignmentEntity.getRoleName())
+            .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
+            .roleCategory(RoleCategory.valueOf(roleAssignmentEntity.getRoleCategory()))
+            .beginTime(roleAssignmentEntity.getBeginTime())
+            .endTime(roleAssignmentEntity.getEndTime())
+            .created(roleAssignmentEntity.getCreated())
+            .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
+            .build();
     }
 
 
