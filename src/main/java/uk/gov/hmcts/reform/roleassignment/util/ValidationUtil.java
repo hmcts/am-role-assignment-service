@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -95,6 +95,7 @@ public class ValidationUtil {
         validateRoleRequest(assignmentRequest.getRequest());
         validateLists(assignmentRequest.getRequestedRoles());
         validateRequestedRoles(assignmentRequest.getRequestedRoles());
+
     }
 
     public static void validateRoleRequest(Request roleRequest) {
@@ -111,8 +112,8 @@ public class ValidationUtil {
         validateInputParams(UUID_PATTERN, roleRequest.assignerId.toString());
     }
 
-    public static void validateRequestedRoles(Collection<RequestedRole> requestedRoles) throws ParseException {
-        for (RequestedRole requestedRole : requestedRoles) {
+    public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
+        for (RoleAssignment requestedRole : requestedRoles) {
             validateInputParams(UUID_PATTERN, requestedRole.getActorId().toString());
             if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
                 validateDateTime(requestedRole.getBeginTime().toString());

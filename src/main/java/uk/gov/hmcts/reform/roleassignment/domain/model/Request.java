@@ -25,7 +25,7 @@ public class Request {
     public String process;
     public String reference;
     public boolean replaceExisting;
-    public String roleAssignmentId;
+    public UUID roleAssignmentId;
     public Status status; //this will be set by app default = created
     public LocalDateTime created; //this will be set by app
     public String log; //this will be set app based on drool validation rule name on individual assignments.

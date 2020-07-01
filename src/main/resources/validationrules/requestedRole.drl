@@ -1,5 +1,5 @@
 package validationrules
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
@@ -10,18 +10,18 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 rule "role assignment validation" salience 70
 
 when
-$requestedRole  : RequestedRole(id!= null)
+$roleAssignment  : RoleAssignment(id!= null)
 $role           : Role()
-$request        : Request(clientId != "xui") or (Request(clientId == "xui") and RequestedRole(roleType==RoleType.CASE))
-                  Request(clientId != "organization_mapping") or (Request(clientId == "organization_mapping") and RequestedRole(roleType==RoleType.ORGANISATION))
-                  RequestedRole(roleName == $role.getName())
+$request        : Request(clientId != "xui") or (Request(clientId == "xui") and RoleAssignment(roleType==RoleType.CASE))
+                  Request(clientId != "organization_mapping") or (Request(clientId == "organization_mapping") and RoleAssignment(roleType==RoleType.ORGANISATION))
+                  RoleAssignment(roleName == $role.getName())
                   Request(process in (GrantType.CHALLENGED.toString(),GrantType.STANDARD.toString(),GrantType.SPECIFIC.toString()) )
-                  RequestedRole(status==Status.CREATED)
-                  RequestedRole(beginTime >= created,endTime >= created,endTime > beginTime)
+                  RoleAssignment(status==Status.CREATED)
+                  RoleAssignment(beginTime >= created,endTime >= created,endTime > beginTime)
 
 then
-$requestedRole.setLog(String.format("Requested Role has been validated by the  role assignment validation rule with correlation Id "));
-$requestedRole.setStatus(Status.VALIDATED);
+$roleAssignment.setLog(String.format("Requested Role has been validated by the  role assignment validation rule with correlation Id "));
+$roleAssignment.setStatus(Status.VALIDATED);
 
 end;
 
@@ -30,10 +30,10 @@ rule "Invalid role name validation " salience 65
 when
 $role           : Role()
 $request        : Request()
-$requestedRole  : RequestedRole(roleName != $role.getName())
+$roleAssignment  : RoleAssignment(roleName != $role.getName())
 
 then
-$requestedRole.setLog(String.format("Requested Role has been rejected by the %s rule with correlation Id %s","Invalid role  validation",$request.getCorrelationId()));
+$roleAssignment.setLog(String.format("Requested Role has been rejected by the %s rule with correlation Id %s","Invalid role  validation",$request.getCorrelationId()));
 
 end;
 
