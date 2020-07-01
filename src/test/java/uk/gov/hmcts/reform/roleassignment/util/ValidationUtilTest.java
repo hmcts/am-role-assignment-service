@@ -3,13 +3,17 @@ package uk.gov.hmcts.reform.roleassignment.util;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
@@ -108,5 +112,12 @@ class ValidationUtilTest {
         Assertions.assertThrows(BadRequestException.class, () -> {
             ValidationUtil.validateLists(new ArrayList());
         });
+    }
+
+    @Test
+    void testBuildRole() throws IOException {
+        List<Role> roles = TestDataBuilder.buildRolesFromFile();
+        assertNotNull(roles);
+        assertTrue(roles.size() > 1);
     }
 }

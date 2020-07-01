@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.controller.advice;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.INVALID_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.RESOURCE_NOT_FOUND;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,6 +56,17 @@ public class RoleAssignmentControllerAdvice {
             BAD_REQUEST,
             BAD_REQUEST.value(),
             "Bad Request"
+        );
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
+    public ResponseEntity<Object> customRequestHeaderError(
+        HttpMediaTypeNotAcceptableException ex) {
+        return errorDetailsResponseEntity(
+            ex,
+            UNSUPPORTED_MEDIA_TYPE,
+            UNSUPPORTED_MEDIA_TYPE.value(),
+            UNSUPPORTED_MEDIA_TYPE.getReasonPhrase()
         );
     }
 
