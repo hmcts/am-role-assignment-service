@@ -7,7 +7,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
@@ -54,18 +54,18 @@ public class ParseRequestService {
         //a. Copy process and reference from the request to RoleAssignment
         //b. Set Status=Created and statusSequenceNumber from Status Enum
         //c. created Time = now
-        Collection<RequestedRole> requestedRoles = assignmentRequest.getRequestedRoles();
+        Collection<RoleAssignment> requestedAssignments = assignmentRequest.getRequestedRoles();
 
-        requestedRoles.forEach(requestedRole -> {
-            requestedRole.setProcess(request.getProcess());
-            requestedRole.setReference(request.getReference());
-            requestedRole.setStatus(Status.CREATED);
-            requestedRole.setStatusSequence(Status.CREATED.sequence);
-            requestedRole.setCreated(LocalDateTime.now());
+        requestedAssignments.forEach(requestedAssignment -> {
+            requestedAssignment.setProcess(request.getProcess());
+            requestedAssignment.setReference(request.getReference());
+            requestedAssignment.setStatus(Status.CREATED);
+            requestedAssignment.setStatusSequence(Status.CREATED.sequence);
+            requestedAssignment.setCreated(LocalDateTime.now());
         });
         AssignmentRequest parsedRequest = new AssignmentRequest();
         parsedRequest.setRequest(request);
-        parsedRequest.setRequestedRoles(requestedRoles);
+        parsedRequest.setRequestedRoles(requestedAssignments);
 
         return parsedRequest;
     }
@@ -82,10 +82,6 @@ public class ParseRequestService {
             .currentRequestAttributes())
             .getRequest();
         return correlationInterceptorUtil.preHandle(httpServletRequest);
-    }
-
-    public void parseActorId(String actorId) throws Exception {
-        ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
     }
 
     public void removeCorrelationLog() throws Exception {

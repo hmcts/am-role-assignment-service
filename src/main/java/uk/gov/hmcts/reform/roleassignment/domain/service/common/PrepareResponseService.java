@@ -7,11 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 
-
+@Service
 public class PrepareResponseService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PrepareResponseService.class);
@@ -29,7 +29,7 @@ public class PrepareResponseService {
     private PrepareResponseService() {
     }
 
-    public static ResponseEntity<Object> prepareCreateRoleResponse(AssignmentRequest roleAssignmentRequest) {
+    public ResponseEntity<Object> prepareCreateRoleResponse(AssignmentRequest roleAssignmentRequest) {
         LOG.info(" ----- prepareCreateRoleResponse : {}", roleAssignmentRequest);
 
         updateRoleRequestResponse(roleAssignmentRequest);
@@ -37,7 +37,7 @@ public class PrepareResponseService {
         return ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(roleAssignmentRequest));
     }
 
-    private static void updateRoleRequestResponse(AssignmentRequest roleAssignmentRequest) {
+    private void updateRoleRequestResponse(AssignmentRequest roleAssignmentRequest) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         Request roleRequest = roleAssignmentRequest.getRequest();
@@ -50,16 +50,16 @@ public class PrepareResponseService {
         roleAssignmentRequest.setRequest(mapper.convertValue(requestMetaData, Request.class));
     }
 
-    public static ResponseEntity<Object> prepareRetrieveRoleResponse(List<ExistingRole> roleAssignmentResponse,
+    public ResponseEntity<Object> prepareRetrieveRoleResponse(List<RoleAssignment> roleAssignmentResponse,
                                                                      UUID actorId) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(roleAssignmentResponse, actorId));
     }
 
-    private static void updateRequestedRolesResponse(AssignmentRequest roleAssignmentRequest) {
+    private void updateRequestedRolesResponse(AssignmentRequest roleAssignmentRequest) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        List<RequestedRole> requestedRoles = new ArrayList<>();
-        for (RequestedRole requestedRole : roleAssignmentRequest.getRequestedRoles()) {
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        for (RoleAssignment requestedRole : roleAssignmentRequest.getRequestedRoles()) {
             Map<String, Object> requestedRoleMetaData = mapper.convertValue(
                 requestedRole,
                 new TypeReference<Map<String, Object>>() {
@@ -68,17 +68,17 @@ public class PrepareResponseService {
             requestedRoleMetaData.remove("approved");
             requestedRoleMetaData.remove("rejected");
             requestedRoleMetaData.remove("request");
-            requestedRoles.add(mapper.convertValue(requestedRoleMetaData, RequestedRole.class));
+            requestedRoles.add(mapper.convertValue(requestedRoleMetaData, RoleAssignment.class));
         }
         roleAssignmentRequest.setRequestedRoles(requestedRoles);
     }
 
-    private static ResponseEntity<Object> prepareResponse(AssignmentRequest roleAssignmentRequest) {
+    private ResponseEntity<Object> prepareResponse(AssignmentRequest roleAssignmentRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(roleAssignmentRequest);
     }
 
 
-    public static void addHateoasLinks(Optional<?> payload, UUID roleAssignmentRequestId) {
+    public void addHateoasLinks(Optional<?> payload, UUID roleAssignmentRequestId) {
         if (payload.isPresent()) {
             Object obj = payload.get();
             if (obj instanceof RoleAssignmentRequestResource) {

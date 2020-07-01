@@ -21,10 +21,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class RoleAssignmentResource extends RepresentationModel<RoleAssignmentResource> {
 
     @JsonProperty("roleAssignmentResponse")
-    private List<ExistingRole> roleAssignmentResponse;
+    private List<RoleAssignment> roleAssignmentResponse;
 
 
-    public RoleAssignmentResource(List<ExistingRole> roleAssignmentResponse, UUID actorId) throws Exception {
+    public RoleAssignmentResource(List<RoleAssignment> roleAssignmentResponse, UUID actorId) throws Exception {
         this.roleAssignmentResponse = roleAssignmentResponse;
         add(linkTo(methodOn(GetAssignmentController.class).retrieveRoleAssignmentsByActorId(
             actorId.toString()

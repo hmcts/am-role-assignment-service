@@ -3,7 +3,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 rule "request validation for creation" salience 90
 
 when
@@ -22,7 +22,7 @@ rule "request validation for delete" salience 80
 
 when
 $request  : Request(id!= null,requestType == RequestType.DELETE,status == Status.CREATED)
-$requestedRole  : RequestedRole(id!= null)
+$requestedRole  : RoleAssignment(id!= null)
 then
 $request.setLog(String.format("request has been validated by the  %s rule with correlation Id %s","request validation for delete",$request.getCorrelationId()));
 $request.setLog(String.format("Requested Role has been deleted by the  %s rule with correlation Id %s","request validation for delete",$request.getCorrelationId()));

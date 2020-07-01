@@ -1,17 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.regex.Pattern;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -20,7 +8,19 @@ import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
+import java.util.regex.Pattern;
+
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
 
 @Named
 @Singleton
@@ -97,8 +97,8 @@ public class ValidationUtil {
         validateInputParams(UUID_PATTERN, roleRequest.assignerId.toString());
     }
 
-    public static void validateRequestedRoles(Collection<RequestedRole> requestedRoles) throws ParseException {
-        for (RequestedRole requestedRole : requestedRoles) {
+    public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
+        for (RoleAssignment requestedRole : requestedRoles) {
             validateInputParams(UUID_PATTERN, requestedRole.getActorId().toString());
             if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
                 validateDateTime(requestedRole.getBeginTime().toString());

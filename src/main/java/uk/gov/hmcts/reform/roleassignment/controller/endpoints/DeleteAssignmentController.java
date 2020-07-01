@@ -44,11 +44,11 @@ public class DeleteAssignmentController {
         ),
         @ApiResponse(
             code = 404,
-            message = V1.Error.NOT_FOUND_BY_ACTOR
+            message = V1.Error.NO_RECORDS_FOUND_BY_ACTOR
         ),
         @ApiResponse(
             code = 404,
-            message = V1.Error.NOT_FOUND_BY_PROCESS
+            message = V1.Error.NO_RECORDS_FOUND_BY_PROCESS
         )
     })
     public ResponseEntity<Object> deleteRoleAssignment(@RequestParam(value = "actorId", required = false)

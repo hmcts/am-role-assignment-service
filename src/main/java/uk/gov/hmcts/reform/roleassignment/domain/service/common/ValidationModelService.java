@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 
 import java.io.InputStream;
@@ -66,13 +66,13 @@ public class ValidationModelService {
         Set<String> userIds = new HashSet<>();
         userIds.add(String.valueOf(assignmentRequest.getRequest().assignerId));
         userIds.add(String.valueOf(assignmentRequest.getRequest().getAuthenticatedUserId()));
-        for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
+        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
             userIds.add(String.valueOf(requestedRole.getActorId()));
 
         }
         for (String actorId : userIds) {
             if (actorId != null) {
-                facts.addAll(persistenceService.getExistingRoleAssignment(UUID.fromString(actorId)));
+                facts.addAll(persistenceService.getAssignmentsByActor(UUID.fromString(actorId)));
                 facts.addAll(idamRoleService.getIdamRoleAssignmentsForActor(actorId));
             }
 

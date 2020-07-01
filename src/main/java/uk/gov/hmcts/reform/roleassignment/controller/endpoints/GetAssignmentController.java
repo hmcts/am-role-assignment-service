@@ -62,7 +62,7 @@ public class GetAssignmentController {
         produces = APPLICATION_JSON,
         consumes = APPLICATION_JSON
     )
-    @ApiOperation("Retrieve JSON representation of a Role Assignment records.")
+    @ApiOperation("Retrieve JSON representation of multiple Role Assignment records.")
     @ApiResponses({
         @ApiResponse(
             code = 200,
@@ -75,7 +75,7 @@ public class GetAssignmentController {
         ),
         @ApiResponse(
             code = 404,
-            message = V1.Error.NO_RECORDS_FOUND
+            message = V1.Error.NO_RECORDS_FOUND_BY_ACTOR
         )
     })
     public ResponseEntity<Object> retrieveRoleAssignmentsByActorId(
@@ -84,7 +84,7 @@ public class GetAssignmentController {
         @PathVariable("actorId") String actorId) throws Exception {
 
         LOG.info("actorId :::: {}", actorId);
-        ResponseEntity<?> responseEntity = retrieveRoleAssignmentService.retrieveRoleAssignmentByActorId(
+        ResponseEntity<?> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
             actorId
         );
         long etag = retrieveRoleAssignmentService.retrieveETag(UUID.fromString(actorId));

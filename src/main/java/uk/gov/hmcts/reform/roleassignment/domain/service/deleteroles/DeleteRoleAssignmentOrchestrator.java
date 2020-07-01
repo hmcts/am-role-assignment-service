@@ -8,7 +8,6 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNo
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
@@ -21,8 +20,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NOT_FOUND_BY_ACTOR;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NOT_FOUND_BY_PROCESS;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_PROCESS;
 
 @Service
 public class DeleteRoleAssignmentOrchestrator {
@@ -46,7 +45,7 @@ public class DeleteRoleAssignmentOrchestrator {
     public ResponseEntity<Object> deleteRoleAssignment(String actorId,
                                                        String process,
                                                        String reference) throws Exception {
-        List<RequestedRole> requestedRoles = null;
+        List<RoleAssignment> requestedRoles = null;
 
         //1. create the request Object
         if (actorId != null || (process != null && reference != null)) {
@@ -65,7 +64,7 @@ public class DeleteRoleAssignmentOrchestrator {
         if (actorId != null) {
             requestedRoles = persistenceService.getAssignmentsByActor(UUID.fromString(actorId));
             if (requestedRoles.isEmpty()) {
-                throw new ResourceNotFoundException(String.format(NOT_FOUND_BY_ACTOR, actorId));
+                throw new ResourceNotFoundException(String.format(NO_RECORDS_FOUND_BY_ACTOR, actorId));
             }
 
         } else if (process != null && reference != null) {
@@ -75,7 +74,7 @@ public class DeleteRoleAssignmentOrchestrator {
                 Status.LIVE.toString()
             );
             if (requestedRoles.isEmpty()) {
-                throw new ResourceNotFoundException(String.format(NOT_FOUND_BY_PROCESS, process, reference));
+                throw new ResourceNotFoundException(String.format(NO_RECORDS_FOUND_BY_PROCESS, process, reference));
             }
         }
 
@@ -95,7 +94,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
     }
 
-    private void validationByDrool(Request request, List<RequestedRole> requestedRoles) throws Exception {
+    private void validationByDrool(Request request, List<RoleAssignment> requestedRoles) throws Exception {
         assignmentRequest.setRequest(request);
         assignmentRequest.setRequestedRoles(requestedRoles);
 
@@ -106,7 +105,7 @@ public class DeleteRoleAssignmentOrchestrator {
     }
 
     private void updateStatusAndPersist(Request request) {
-        for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
+        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
             requestedRole.setRequest(request);
             if (!requestedRole.getStatus().equals(Status.APPROVED)) {
                 requestedRole.status = Status.DELETE_REJECTED;
@@ -126,7 +125,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
     private void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
         // decision block
-        List<RequestedRole> deleteApprovedRoles = validatedAssignmentRequest.getRequestedRoles().stream()
+        List<RoleAssignment> deleteApprovedRoles = validatedAssignmentRequest.getRequestedRoles().stream()
             .filter(role -> role.getStatus().equals(
                 Status.DELETE_APPROVED)).collect(
                 Collectors.toList());
@@ -173,7 +172,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
 
     private void insertRequestedRole(AssignmentRequest parsedAssignmentRequest, Status status) {
-        for (RequestedRole requestedRole : parsedAssignmentRequest.getRequestedRoles()) {
+        for (RoleAssignment requestedRole : parsedAssignmentRequest.getRequestedRoles()) {
             requestedRole.setRequest(parsedAssignmentRequest.getRequest());
             requestedRole.status = status;
             // persist history in db
