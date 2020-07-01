@@ -24,7 +24,6 @@ when
 $request  : Request(id!= null,requestType == RequestType.DELETE,status == Status.CREATED)
 $requestedRole  : RoleAssignment(id!= null)
 then
-$request.setLog(String.format("request has been validated by the  %s rule with correlation Id %s","request validation for delete",$request.getCorrelationId()));
 $request.setLog(String.format("Requested Role has been deleted by the  %s rule with correlation Id %s","request validation for delete",$request.getCorrelationId()));
 $requestedRole.setStatus(Status.APPROVED);
 end;
