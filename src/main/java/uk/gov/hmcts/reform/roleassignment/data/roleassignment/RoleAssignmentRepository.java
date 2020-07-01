@@ -12,6 +12,8 @@ public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEn
 
     Set<RoleAssignmentEntity> findByActorId(UUID actorId);
 
+    void deleteByActorId(UUID actorId);
+
 
 }
 
