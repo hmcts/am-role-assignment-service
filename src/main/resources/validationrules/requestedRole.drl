@@ -26,6 +26,18 @@ $requestedRole.setStatus(Status.VALIDATED);
 end;
 
 
+rule "Invalid role name validation " salience 65
+when
+$role           : Role()
+$request        : Request()
+$requestedRole  : RequestedRole(roleName != $role.getName())
+
+then
+$requestedRole.setLog(String.format("Requested Role has been rejected by the %s rule with correlation Id %s","Invalid role  validation",$request.getCorrelationId()));
+
+end;
+
+
 
 
 
