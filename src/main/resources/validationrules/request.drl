@@ -22,10 +22,10 @@ rule "request validation for delete" salience 80
 
 when
 $request  : Request(id!= null,requestType == RequestType.DELETE,status == Status.CREATED)
-$requestedRole  : RoleAssignment(id!= null)
+roleAssignment  : RoleAssignment(id!= null)
 then
 $request.setLog(String.format("Requested Role has been deleted by the  %s rule with correlation Id %s","request validation for delete",$request.getCorrelationId()));
-$requestedRole.setStatus(Status.APPROVED);
+roleAssignment.setStatus(Status.APPROVED);
 end;
 
 

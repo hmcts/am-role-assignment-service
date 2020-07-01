@@ -26,9 +26,6 @@ public class PrepareResponseService {
 
     private static final Logger LOG = LoggerFactory.getLogger(PrepareResponseService.class);
 
-    private PrepareResponseService() {
-    }
-
     public ResponseEntity<Object> prepareCreateRoleResponse(AssignmentRequest roleAssignmentRequest) {
         LOG.info(" ----- prepareCreateRoleResponse : {}", roleAssignmentRequest);
 
