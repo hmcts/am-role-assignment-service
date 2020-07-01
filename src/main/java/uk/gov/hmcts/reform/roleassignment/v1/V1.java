@@ -14,6 +14,8 @@ public final class V1 {
                                                        + ".create-role+json;charset=UTF-8;version=1.0";
         public static final String DELETE_ASSIGNMENT = "application/vnd.uk.gov.hmcts.role-assignment-service"
             + ".delete-role+json;charset=UTF-8;version=1.0";
+        public static final String GET_ASSIGNMENT = "application/vnd.uk.gov.hmcts.role-assignment-service"
+            + ".get-role+json;charset=UTF-8;version=1.0";
     }
 
     public static final class Error {
