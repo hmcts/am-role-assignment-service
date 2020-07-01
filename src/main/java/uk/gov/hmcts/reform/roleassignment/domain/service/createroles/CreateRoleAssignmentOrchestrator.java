@@ -62,7 +62,7 @@ public class CreateRoleAssignmentOrchestrator {
         //Check replace existing true/false
         if (request.isReplaceExisting()) {
 
-            //retrieve existing assignments ans prepared temp request
+            //retrieve existing assignments and prepared temp request
             existingAssignmentRequest = retrieveExistingAssignments(parsedAssignmentRequest);
 
             //validation
@@ -92,7 +92,7 @@ public class CreateRoleAssignmentOrchestrator {
     @NotNull
     private AssignmentRequest retrieveExistingAssignments(AssignmentRequest parsedAssignmentRequest) {
         AssignmentRequest existingAssignmentRequest;
-        List<RequestedRole> existingRoles = persistenceService.getExistingRoleByProcessAndReference(
+        List<RequestedRole> existingRoles = persistenceService.getAssignmentsByProcess(
             request.process,
             request.reference,
             Status.LIVE.toString()
