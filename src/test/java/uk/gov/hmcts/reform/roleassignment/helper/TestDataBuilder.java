@@ -1,8 +1,20 @@
 package uk.gov.hmcts.reform.roleassignment.helper;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -14,6 +26,8 @@ import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEnti
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
@@ -24,15 +38,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.ROLES_JSON;
 
 @Setter
 public class TestDataBuilder {
@@ -92,6 +98,20 @@ public class TestDataBuilder {
         assert inputStream != null;
         return new ObjectMapper().readValue(inputStream, new TypeReference<HashMap<String, JsonNode>>() {
         });
+    }
+
+    public static List<Role> buildRolesFromFile() throws IOException {
+        try (InputStream input = TestDataBuilder.class.getClassLoader().getResourceAsStream(ROLES_JSON)) {
+            CollectionType listType = new ObjectMapper().getTypeFactory().constructCollectionType(
+                ArrayList.class,
+                Role.class
+            );
+            assert input != null;
+            List<Role> allRoles = new ObjectMapper().readValue(input, listType);
+            return allRoles;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static RequestEntity buildRequestEntity(Request request) {
