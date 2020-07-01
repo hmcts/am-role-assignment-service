@@ -18,7 +18,9 @@
       "Content-Language": "[[ANYTHING_PRESENT]]",
       "Content-Length": "[[ANYTHING_PRESENT]]",
       "Content-Type": "[[ANYTHING_PRESENT]]",
-      "Date": "[[ANYTHING_PRESENT]]"
+      "Date": "[[ANYTHING_PRESENT]]",
+      "ETag" : "[[ANYTHING_PRESENT]]",
+      "Keep-Alive" : "[[ANYTHING_PRESENT]]"
     },
     "body" : {
       "status" : "UP",

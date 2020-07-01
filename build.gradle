@@ -122,7 +122,7 @@ task functional(type: Test, description: 'Runs the functional tests.', group: 'V
   doFirst {
     generateCucumberReports.enabled = true
     javaexec {
-      main = "uk.gov.hmcts.reform.roleassignment.befta.RoleAssignmentAmBeftaMain"
+      main = "uk.gov.hmcts.reform.roleassignment.befta.RoleAssignmentBeftaMain"
       classpath += configurations.cucumberRuntime + sourceSets.functionalTest.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
       args = ['--plugin', "json:${projectDir}/target/cucumber.json", '--tags', 'not @Ignore', '--glue',
               'uk.gov.hmcts.befta.player', 'src/functionalTest/resources/features/']
@@ -244,10 +244,10 @@ dependencies {
   implementation 'com.squareup.okhttp3:okhttp:4.7.2'
 
   // drools engine dependency
-  compile group: 'org.drools', name: 'drools-core', version: '7.38.0.Final'
-  compile group: 'org.drools', name: 'drools-compiler', version: '7.38.0.Final'
-  compile group: 'org.drools', name: 'drools-decisiontables', version: '7.38.0.Final'
-  compile group: 'org.kie', name: 'kie-ci', version: '7.38.0.Final'
+  compile group: 'org.drools', name: 'drools-core', version: '7.39.0.Final'
+  compile group: 'org.drools', name: 'drools-compiler', version: '7.39.0.Final'
+  compile group: 'org.drools', name: 'drools-decisiontables', version: '7.39.0.Final'
+  compile group: 'org.kie', name: 'kie-ci', version: '7.39.0.Final'
   compile group: 'org.liquibase', name: 'liquibase-core', version: '3.10.0'
 
   //Added for Spring Security Implementation
