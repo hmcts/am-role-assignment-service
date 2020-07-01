@@ -21,18 +21,6 @@ import java.util.regex.Pattern;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.regex.Pattern;
-
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
 
 @Named
