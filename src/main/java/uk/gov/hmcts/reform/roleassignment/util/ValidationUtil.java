@@ -91,6 +91,7 @@ public class ValidationUtil {
         validateRoleRequest(assignmentRequest.getRequest());
         validateLists(assignmentRequest.getRequestedRoles());
         validateRequestedRoles(assignmentRequest.getRequestedRoles());
+
     }
 
     public static void validateRoleRequest(Request roleRequest) {
