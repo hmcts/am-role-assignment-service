@@ -22,11 +22,6 @@ locals {
 
   sharedAppServicePlan = "${var.raw_product}-${var.env}"
   sharedASPResourceGroup = "${var.raw_product}-shared-${var.env}"
-
-  // S2S
-  s2s_url = "http://rpe-service-auth-provider-${local.env_ase_url}"
-  idam_url = "https://idam-api.${local.local_env}.platform.hmcts.net"
-
   definition_store_host = "http://ccd-definition-store-api-${local.env_ase_url}"
   }
 
@@ -49,4 +44,51 @@ resource "azurerm_key_vault_secret" "am_role_assignment_service_s2s_secret" {
   name = "am-role-assignment-service-s2s-secret"
   value = data.azurerm_key_vault_secret.s2s_secret.value
   key_vault_id = data.azurerm_key_vault.am_key_vault.id
+}
+
+
+module "role-assignment-db" {
+  source = "git@github.com:hmcts/cnp-module-postgres?ref=master"
+  product = "${local.app_full_name}-postgres-db"
+  location = "${var.location}"
+  env = "${var.env}"
+  subscription = "${var.subscription}"
+  postgresql_user = "${var.postgresql_user}"
+  database_name = "${var.database_name}"
+  storage_mb = "${var.database_storage_mb}"
+  common_tags  = "${var.common_tags}"
+}
+
+////////////////////////////////
+// Populate Vault with DB info
+////////////////////////////////
+
+resource "azurerm_key_vault_secret" "POSTGRES-USER" {
+  name = "${var.component}-POSTGRES-USER"
+  value = "${module.role-assignment-db.user_name}"
+  key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
+}
+
+resource "azurerm_key_vault_secret" "POSTGRES-PASS" {
+  name = "${var.component}-POSTGRES-PASS"
+  value = "${module.role-assignment-db.postgresql_password}"
+  key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
+}
+
+resource "azurerm_key_vault_secret" "POSTGRES_HOST" {
+  name = "${var.component}-POSTGRES-HOST"
+  value = "${module.role-assignment-db.host_name}"
+  key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
+}
+
+resource "azurerm_key_vault_secret" "POSTGRES_PORT" {
+  name = "${var.component}-POSTGRES-PORT"
+  value = "${module.role-assignment-db.postgresql_listen_port}"
+  key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
+}
+
+resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
+  name = "${var.component}-POSTGRES-DATABASE"
+  value = "${module.role-assignment-db.postgresql_database}"
+  key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
 }

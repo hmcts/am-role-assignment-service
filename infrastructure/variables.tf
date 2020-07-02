@@ -61,4 +61,31 @@ variable "authorised-services" {
 
 variable "deployment_namespace" {}
 
+////////////////////////////////
+// Database
+////////////////////////////////
+
+variable "postgresql_user" {
+  default = "am"
+}
+
+variable "database_name" {
+  default = "role_assignment"
+}
+
+variable "data_store_max_pool_size" {
+  default = "16"
+}
+
+variable "database_sku_name" {
+  default = "GP_Gen5_2"
+}
+
+variable "database_sku_capacity" {
+  default = "2"
+}
+
+variable "database_storage_mb" {
+  default = "51200"
+}
 

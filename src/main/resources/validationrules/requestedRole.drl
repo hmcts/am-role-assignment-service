@@ -1,0 +1,43 @@
+package validationrules
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
+
+rule "role assignment validation" salience 70
+
+when
+$roleAssignment  : RoleAssignment(id!= null)
+$role           : Role()
+$request        : Request(clientId != "xui") or (Request(clientId == "xui") and RoleAssignment(roleType==RoleType.CASE))
+                  Request(clientId != "organization_mapping") or (Request(clientId == "organization_mapping") and RoleAssignment(roleType==RoleType.ORGANISATION))
+                  RoleAssignment(roleName == $role.getName())
+                  Request(process in (GrantType.CHALLENGED.toString(),GrantType.STANDARD.toString(),GrantType.SPECIFIC.toString()) )
+                  RoleAssignment(status==Status.CREATED)
+                  RoleAssignment(beginTime >= created,endTime >= created,endTime > beginTime)
+
+then
+$roleAssignment.setLog(String.format("Requested Role has been validated by the  role assignment validation rule with correlation Id "));
+$roleAssignment.setStatus(Status.VALIDATED);
+
+end;
+
+
+rule "Invalid role name validation " salience 65
+when
+$role           : Role()
+$request        : Request()
+$roleAssignment  : RoleAssignment(roleName != $role.getName())
+
+then
+$roleAssignment.setLog(String.format("Requested Role has been rejected by the %s rule with correlation Id %s","Invalid role  validation",$request.getCorrelationId()));
+
+end;
+
+
+
+
+
