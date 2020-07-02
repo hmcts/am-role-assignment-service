@@ -56,6 +56,8 @@ module "role-assignment-db" {
   postgresql_user = "${var.postgresql_user}"
   database_name = "${var.database_name}"
   storage_mb = "${var.database_storage_mb}"
+  sku_name = "${var.database_sku_name}"
+  sku_capacity = "${var.database_sku_capacity}"
   common_tags  = "${var.common_tags}"
 }
 
