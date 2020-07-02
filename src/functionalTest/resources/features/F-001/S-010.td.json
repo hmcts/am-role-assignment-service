@@ -6,25 +6,19 @@
     "contains a single Role Assignment",
     "contains EndTime is less than BeginTime"
   ],
-
   "request": {
     "body": {
       "requestedRoles": [
         {
           "_extends_": "CommonRequestedRole",
-          "beginTime" : "2022-01-01T00:00",
-          "endTime" : "2021-01-01T00:00"
+          "beginTime": "2022-01-01T00:00",
+          "endTime": "2021-01-01T00:00"
         }
       ]
     }
   },
-
   "expectedResponse": {
     "_extends_": "Common_400_Response",
-    "headers": {
-      "Content-Length": "[[ANYTHING_PRESENT]]",
-      "Content-Type": "application/json"
-    },
     "body": {
       "_extends_": "CommonBadRequestResponse"
     }

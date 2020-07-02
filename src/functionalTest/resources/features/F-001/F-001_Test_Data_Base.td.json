@@ -4,8 +4,8 @@
   "productName": "Role Assignments API",
   "operationName": "Create Role Assignments",
   "specs": [
-    "an active caseworker profile with full permissions"
+    "an active IDAM profile with full permissions"
   ],
   "method": "POST",
-  "uri": "/role-assignment"
+  "uri": "am/role-assignments"
 }

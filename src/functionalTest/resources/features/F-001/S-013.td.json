@@ -6,7 +6,6 @@
     "contains a single Role Assignment",
     "contains ReplaceExisting is true and have process and Reference values"
   ],
-
   "request": {
     "body": {
       "roleRequest": {
@@ -21,13 +20,8 @@
       ]
     }
   },
-
   "expectedResponse": {
     "_extends_": "Common_201_Response",
-    "headers": {
-      "Content-Length": "[[ANYTHING_PRESENT]]",
-      "Content-Type": "application/json"
-    },
     "body": {
       "roleAssignmentResponse": {
         "roleRequest": {

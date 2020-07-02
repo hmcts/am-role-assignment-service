@@ -34,7 +34,7 @@ public class CreateAssignmentController {
     //**************** Create Role Assignment  API ***************
 
     @PostMapping(
-        path = "/role-assignment",
+        path = "am/role-assignments",
         produces = V1.MediaType.CREATE_ASSIGNMENT,
         consumes = {"application/json"}
     )

@@ -6,8 +6,6 @@
     "contains a single Role Assignment",
     "contains data which is not as per rule validations"
   ],
-
-
   "request": {
     "body": {
       "requestedRoles": [
@@ -19,17 +17,12 @@
       ]
     }
   },
-
   "expectedResponse": {
     "_extends_": "Common_201_Response",
-    "headers": {
-      "Content-Length": "[[ANYTHING_PRESENT]]",
-      "Content-Type": "application/json"
-    },
     "body": {
       "roleAssignmentResponse": {
         "roleRequest": {
-          "status" : "REJECTED"
+          "status": "REJECTED"
         },
         "requestedRoles": [
           {

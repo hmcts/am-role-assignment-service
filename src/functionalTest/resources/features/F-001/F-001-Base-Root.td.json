@@ -22,23 +22,26 @@
       }
     }
   },
-
   "expectedResponse": {
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
     "body": {
-      "links" : [ ],
-      "roleAssignmentResponse" : {
+      "links": [],
+      "roleAssignmentResponse": {
         "roleRequest": {
           "id": "[[ANYTHING_PRESENT]]",
-          "correlationId": "[[ANYTHING_PRESENT]]",
+          "correlationId": "${[scenarioContext][testData][request][headers][X-Correlation-ID]}",
           "authenticatedUserId": "[[ANYTHING_PRESENT]]",
-          "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+          "assignerId": "${[scenarioContext][testData][request][body][roleRequest][assignerId]}",
           "requestType": "CREATE",
           "status": "APPROVED",
-          "process": "businessProcess1",
-          "reference": "abc-3434242",
+          "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "replaceExisting": false,
           "created": "[[ANYTHING_PRESENT]]",
-          "log":"[[ANYTHING_PRESENT]]"
+          "log": "[[ANYTHING_PRESENT]]"
         }
       }
     }

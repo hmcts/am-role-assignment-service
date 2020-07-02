@@ -1,5 +1,5 @@
 {
-  "title": "must successfully create multiple Role Assignments",
+  "title": "must receive a Reject response when creation of any Role Assignment not successful",
   "_guid_": "S-004",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
@@ -19,30 +19,24 @@
       ]
     }
   },
-
   "expectedResponse": {
     "_extends_": "Common_201_Response",
-    "headers": {
-      "Content-Length": "[[ANYTHING_PRESENT]]",
-      "Content-Type": "application/json"
-    },
     "body": {
       "roleAssignmentResponse": {
         "roleRequest": {
-          "status" : "REJECTED"
+          "status": "REJECTED"
         },
         "requestedRoles": [
           {
             "_extends_": "CommonResponseRequestedRole",
-            "status" : "REJECTED"
+            "status": "REJECTED"
           },
           {
             "_extends_": "CommonResponseRequestedRole",
             "roleType": "ORGANISATION",
             "grantType": "SPECIFIC",
-            "status" : "REJECTED"
+            "status": "REJECTED"
           }
-
         ]
       }
     }

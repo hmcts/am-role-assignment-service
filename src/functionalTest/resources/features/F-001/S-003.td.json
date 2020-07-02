@@ -1,12 +1,11 @@
 {
-  "title": "must succesfully create single Role Assignment with Role Type ID is case-role",
+  "title": "must successfully create single Role Assignment with RoleTypeId as case",
   "_guid_": "S-003",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
     "contains a single Role Assignment",
-    "contains Role Type Id is case-role"
+    "contains RoleTypeId as 'CASE'"
   ],
-
   "request": {
     "body": {
       "requestedRoles": [
@@ -16,13 +15,8 @@
       ]
     }
   },
-
   "expectedResponse": {
     "_extends_": "Common_201_Response",
-    "headers": {
-      "Content-Length": "[[ANYTHING_PRESENT]]",
-      "Content-Type": "application/json"
-    },
     "body": {
       "roleAssignmentResponse": {
         "requestedRoles": [

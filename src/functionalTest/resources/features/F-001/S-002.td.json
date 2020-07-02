@@ -10,7 +10,6 @@
       "requestedRoles": [
         {
           "_extends_": "CommonRequestedRole"
-
         },
         {
           "_extends_": "CommonRequestedRole",
@@ -20,13 +19,8 @@
       ]
     }
   },
-
   "expectedResponse": {
     "_extends_": "Common_201_Response",
-    "headers": {
-      "Content-Length": "[[ANYTHING_PRESENT]]",
-      "Content-Type": "application/json"
-    },
     "body": {
       "roleAssignmentResponse": {
         "requestedRoles": [

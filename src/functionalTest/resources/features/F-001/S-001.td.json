@@ -5,7 +5,6 @@
   "specs": [
     "contains a single Role Assignment with only mandatory fields"
   ],
-
   "request": {
     "body": {
       "requestedRoles": [
@@ -15,13 +14,8 @@
       ]
     }
   },
-
   "expectedResponse": {
     "_extends_": "Common_201_Response",
-    "headers": {
-        "Content-Length": "[[ANYTHING_PRESENT]]",
-      "Content-Type": "application/json"
-    },
     "body": {
       "roleAssignmentResponse": {
         "requestedRoles": [
