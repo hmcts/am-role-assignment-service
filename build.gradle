@@ -231,54 +231,53 @@ repositories {
 
 
 dependencies {
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBoot
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot
-  compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBoot
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot
+  implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0'
 
-  compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
-  compile group: 'org.json', name: 'json', version: '20200518'
+  implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+  implementation group: 'org.json', name: 'json', version: '20200518'
 
   implementation 'com.squareup.okhttp3:okhttp:4.7.2'
 
   // drools engine dependency
-  compile group: 'org.drools', name: 'drools-core', version: '7.39.0.Final'
-  compile group: 'org.drools', name: 'drools-compiler', version: '7.39.0.Final'
-  compile group: 'org.drools', name: 'drools-decisiontables', version: '7.39.0.Final'
-  compile group: 'org.kie', name: 'kie-ci', version: '7.39.0.Final'
-  compile group: 'org.liquibase', name: 'liquibase-core', version: '3.10.0'
+  implementation group: 'org.drools', name: 'drools-core', version: '7.39.0.Final'
+  implementation group: 'org.drools', name: 'drools-compiler', version: '7.39.0.Final'
+  implementation group: 'org.drools', name: 'drools-decisiontables', version: '7.39.0.Final'
+  implementation group: 'org.kie', name: 'kie-ci', version: '7.39.0.Final'
+  implementation group: 'org.liquibase', name: 'liquibase-core', version: '3.10.0'
 
   //Added for Spring Security Implementation
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBoot
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBoot
 
   //Added for S2S and User Authentication
-  compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.reformS2sClient
-  compile(group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: '2.1.4') {
+  implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.reformS2sClient
+  implementation(group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: '2.1.4') {
     // TODO remove when auth-checker-lib upgrades its dependency to spring boot 2.0.x
     exclude group: 'uk.gov.hmcts.reform', module: 'java-logging-spring'
   }
-  compile group: 'javax.inject', name: 'javax.inject', version: '1'
-  compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.10.5'
-  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.10.5'
-  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: '2.10.5'
+  implementation group: 'javax.inject', name: 'javax.inject', version: '1'
+  implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.10.5'
+  implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.10.5'
+  implementation group: 'io.springfox', name: 'springfox-spring-webmvc', version: '2.10.5'
 
-  compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
-  compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
-  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.3.RELEASE'
-  compile('org.springframework.boot:spring-boot-starter-hateoas')
-  compile group: 'org.springframework', name: 'spring-tx', version: '5.2.7.RELEASE'
+  implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
+  implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
+  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.3.RELEASE'
+  implementation('org.springframework.boot:spring-boot-starter-hateoas')
+  implementation group: 'org.springframework', name: 'spring-tx', version: '5.2.7.RELEASE'
 
-  compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-  compile "org.springframework.security:spring-security-web"
-  compile "org.springframework.security:spring-security-config"
-  compile "org.springframework.boot:spring-boot-starter-oauth2-client"
-  compile "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+  implementation "org.springframework.security:spring-security-web"
+  implementation "org.springframework.security:spring-security-config"
+  implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
   implementation 'uk.gov.hmcts.reform:idam-client:1.5.4'
-  compile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '7.9'
-  compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '7.9'
+  implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
   testCompile('com.opentable.components:otj-pg-embedded:0.13.3')
   testCompile('com.github.tomakehurst:wiremock-jre8:2.25.1')
