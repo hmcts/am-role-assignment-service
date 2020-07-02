@@ -16,6 +16,6 @@ public class AssignmentRequest {
     @JsonProperty(value = "roleRequest")
     private Request request;
     @JsonProperty(value = "requestedRoles")
-    private Collection<RequestedRole> requestedRoles;
+    private Collection<RoleAssignment> requestedRoles;
 
 }

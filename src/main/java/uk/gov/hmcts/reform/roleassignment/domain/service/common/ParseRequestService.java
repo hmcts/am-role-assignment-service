@@ -1,22 +1,25 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.UUID;
+
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
 
 @Service
 public class ParseRequestService {
@@ -51,18 +54,18 @@ public class ParseRequestService {
         //a. Copy process and reference from the request to RoleAssignment
         //b. Set Status=Created and statusSequenceNumber from Status Enum
         //c. created Time = now
-        Collection<RequestedRole> requestedRoles = assignmentRequest.getRequestedRoles();
+        Collection<RoleAssignment> requestedAssignments = assignmentRequest.getRequestedRoles();
 
-        requestedRoles.forEach(requestedRole -> {
-            requestedRole.setProcess(request.getProcess());
-            requestedRole.setReference(request.getReference());
-            requestedRole.setStatus(Status.CREATED);
-            requestedRole.setStatusSequence(Status.CREATED.sequence);
-            requestedRole.setCreated(LocalDateTime.now());
+        requestedAssignments.forEach(requestedAssignment -> {
+            requestedAssignment.setProcess(request.getProcess());
+            requestedAssignment.setReference(request.getReference());
+            requestedAssignment.setStatus(Status.CREATED);
+            requestedAssignment.setStatusSequence(Status.CREATED.sequence);
+            requestedAssignment.setCreated(LocalDateTime.now());
         });
         AssignmentRequest parsedRequest = new AssignmentRequest();
         parsedRequest.setRequest(request);
-        parsedRequest.setRequestedRoles(requestedRoles);
+        parsedRequest.setRequestedRoles(requestedAssignments);
 
         return parsedRequest;
     }
@@ -74,7 +77,46 @@ public class ParseRequestService {
         request.setCorrelationId(correlationInterceptorUtil.preHandle(httpServletRequest));
     }
 
+    public String getCorrelationId() throws Exception {
+        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
+            .currentRequestAttributes())
+            .getRequest();
+        return correlationInterceptorUtil.preHandle(httpServletRequest);
+    }
+
     public void removeCorrelationLog() throws Exception {
         correlationInterceptorUtil.afterCompletion();
+    }
+
+    public Request prepareDeleteRequest(String process, String reference, String actorId) throws Exception {
+        if (actorId != null) {
+            ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
+        }
+        Request request = Request.builder()
+            .clientId(securityUtils.getServiceId())
+            .authenticatedUserId(UUID.fromString(securityUtils.getUserId()))
+            .status(Status.CREATED)
+            .requestType(RequestType.DELETE)
+            .created(LocalDateTime.now())
+            .process(process)
+            .reference(reference)
+            .build();
+        setCorrelationId(request);
+        setAssignerId(request);
+        return request;
+
+    }
+
+    private void setAssignerId(Request request) {
+        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
+            .currentRequestAttributes())
+            .getRequest();
+        String assignerId = httpServletRequest.getHeader("assignerId");
+
+        if (StringUtils.isBlank(assignerId)) {
+            request.setAssignerId(request.getAuthenticatedUserId());
+        } else {
+            request.setAssignerId(UUID.fromString(assignerId));
+        }
     }
 }

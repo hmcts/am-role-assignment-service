@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.security;
 
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.Map;
 @Service
 public class IdamRoleService {
 
-    private Map<String, List<ExistingRole>> existingRoleByActorId = new HashMap<>();
+    private Map<String, List<RoleAssignment>> existingRoleByActorId = new HashMap<>();
     SecurityUtils securityUtils;
 
     public void getRequestedUserId() {
@@ -25,8 +25,8 @@ public class IdamRoleService {
     }
 
 
-    public Collection<ExistingRole> getIdamRoleAssignmentsForActor(String actorId) throws Exception {
-        List<ExistingRole> existingRolesForActor = existingRoleByActorId.get(actorId);
+    public Collection<RoleAssignment> getIdamRoleAssignmentsForActor(String actorId) throws Exception {
+        List<RoleAssignment> existingRolesForActor = existingRoleByActorId.get(actorId);
         return existingRolesForActor == null ? new ArrayList<>() : existingRolesForActor;
     }
 }

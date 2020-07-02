@@ -1,15 +1,13 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
 import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +47,7 @@ public class ValidationModelService {
         // Package up the request and the assignments
         List<Object> facts = new ArrayList<>();
         //Pre defined role configuration
-        List<Role> role = buildRole("role.json");
+        List<Role> role = JacksonUtils.buildRole("role.json");
         facts.addAll(role);
         facts.add(assignmentRequest.getRequest());
         facts.addAll(assignmentRequest.getRequestedRoles());
@@ -66,13 +64,13 @@ public class ValidationModelService {
         Set<String> userIds = new HashSet<>();
         userIds.add(String.valueOf(assignmentRequest.getRequest().assignerId));
         userIds.add(String.valueOf(assignmentRequest.getRequest().getAuthenticatedUserId()));
-        for (RequestedRole requestedRole : assignmentRequest.getRequestedRoles()) {
+        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
             userIds.add(String.valueOf(requestedRole.getActorId()));
 
         }
         for (String actorId : userIds) {
             if (actorId != null) {
-                facts.addAll(persistenceService.getExistingRoleAssignment(UUID.fromString(actorId)));
+                facts.addAll(persistenceService.getAssignmentsByActor(UUID.fromString(actorId)));
                 facts.addAll(idamRoleService.getIdamRoleAssignmentsForActor(actorId));
             }
 
@@ -80,18 +78,4 @@ public class ValidationModelService {
     }
 
 
-    private List<Role> buildRole(String filename) {
-
-        try (InputStream input = ValidationModelService.class.getClassLoader().getResourceAsStream(filename)) {
-            CollectionType listType = new ObjectMapper().getTypeFactory().constructCollectionType(
-                ArrayList.class,
-                Role.class
-            );
-            List<Role> allRoles = new ObjectMapper().readValue(input, listType);
-            return allRoles;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
 }

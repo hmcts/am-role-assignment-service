@@ -25,4 +25,7 @@ public class Constants {
     public static final String DATE_PATTERN = "yyyy-MM-dd'T'HH:mm";
 
     public static final String CORRELATION_ID_HEADER_NAME = "X-Correlation-Id";
+
+    public static final String ROLES_JSON = "role.json";
+    public static final String ROLE_JSON_PATTERNS_FIELD = "patterns";
 }

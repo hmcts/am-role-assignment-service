@@ -6,7 +6,7 @@ public class TestDataLoaderMain {
     }
 
     public static void main(String[] args) {
-        new RoleAssignmentAmTestAutomationAdapter().doLoadTestData();
+        new RoleAssignmentTestAutomationAdapter().doLoadTestData();
     }
 
 }

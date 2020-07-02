@@ -1,32 +1,21 @@
 package uk.gov.hmcts.reform.roleassignment.helper;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
@@ -36,6 +25,19 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.ROLES_JSON;
 
 @Setter
 public class TestDataBuilder {
@@ -50,28 +52,35 @@ public class TestDataBuilder {
 
     private static Request buildRequest() {
         LocalDateTime timeStamp = LocalDateTime.now();
-        return Request.builder().id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).correlationId(
-            "correlationId").clientId("clientId").authenticatedUserId(
-            UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).assignerId(
-            UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")).requestType(
-            RequestType.CREATE).reference("reference").process(("process")).status(Status.CREATED)
-                      .replaceExisting(true).roleAssignmentId("roleAssignmentId").created(timeStamp).build();
+        return Request.builder()
+            .id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .correlationId("correlationId")
+            .clientId("clientId")
+            .authenticatedUserId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .assignerId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .requestType(RequestType.CREATE)
+            .reference("reference")
+            .process(("process"))
+            .status(Status.CREATED)
+            .replaceExisting(true)
+            .roleAssignmentId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .created(timeStamp).build();
     }
 
-    private static Collection<RequestedRole> buildRequestedRoleCollection() throws IOException {
-        Collection<RequestedRole> requestedRoles = new ArrayList<>();
+    private static Collection<RoleAssignment> buildRequestedRoleCollection() throws IOException {
+        Collection<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRequestedRole());
         requestedRoles.add(buildRequestedRole());
         return requestedRoles;
     }
 
-    private static RequestedRole buildRequestedRole() throws IOException {
+    private static RoleAssignment buildRequestedRole() throws IOException {
 
         LocalDateTime timeStamp = LocalDateTime.now();
 
         HashMap<String, JsonNode> attributes = buildAttributesFromFile();
 
-        RequestedRole requestedRole = new RequestedRole();
+        RoleAssignment requestedRole = new RoleAssignment();
         requestedRole.setActorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"));
         requestedRole.setId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9a"));
         requestedRole.setActorIdType(ActorIdType.IDAM);
@@ -95,6 +104,20 @@ public class TestDataBuilder {
         assert inputStream != null;
         return new ObjectMapper().readValue(inputStream, new TypeReference<HashMap<String, JsonNode>>() {
         });
+    }
+
+    public static List<Role> buildRolesFromFile() throws IOException {
+        try (InputStream input = TestDataBuilder.class.getClassLoader().getResourceAsStream(ROLES_JSON)) {
+            CollectionType listType = new ObjectMapper().getTypeFactory().constructCollectionType(
+                ArrayList.class,
+                Role.class
+            );
+            assert input != null;
+            List<Role> allRoles = new ObjectMapper().readValue(input, listType);
+            return allRoles;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static RequestEntity buildRequestEntity(Request request) {
@@ -150,9 +173,9 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static ExistingRole convertRoleAssignmentEntityInModel(RoleAssignmentEntity roleAssignmentEntity) {
+    public static RoleAssignment convertRoleAssignmentEntityInModel(RoleAssignmentEntity roleAssignmentEntity) {
 
-        ExistingRole existingRole = new ExistingRole();
+        RoleAssignment existingRole = new RoleAssignment();
         existingRole.setId(roleAssignmentEntity.getId());
         existingRole.setActorId(roleAssignmentEntity.getActorId());
         existingRole.setActorIdType(ActorIdType.valueOf(roleAssignmentEntity.getActorIdType()));
@@ -168,9 +191,9 @@ public class TestDataBuilder {
         return existingRole;
     }
 
-    public static RequestedRole convertHistoryEntityInModel(HistoryEntity historyEntity) {
+    public static RoleAssignment convertHistoryEntityInModel(HistoryEntity historyEntity) {
 
-        RequestedRole requestedrole = new RequestedRole();
+        RoleAssignment requestedrole = new RoleAssignment();
         requestedrole.setId(historyEntity.getId());
         requestedrole.setActorId(historyEntity.getActorId());
         requestedrole.setActorIdType(ActorIdType.valueOf(historyEntity.getActorIdType()));

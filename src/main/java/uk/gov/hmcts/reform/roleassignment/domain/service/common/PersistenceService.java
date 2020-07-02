@@ -12,11 +12,9 @@ import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentRepository;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRole;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RequestedRole;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.util.List;
@@ -51,7 +49,7 @@ public class PersistenceService {
     public RequestEntity persistRequest(Request request) {
 
         //Prepare request entity
-        RequestEntity requestEntity = persistenceUtil.convertRequestIntoEntity(request);
+        RequestEntity requestEntity = persistenceUtil.convertRequestToEntity(request);
 
 
         //Persist the request entity
@@ -67,31 +65,25 @@ public class PersistenceService {
 
     }
 
-    public synchronized UUID generateUniqueId() {
-        return UUID.randomUUID();
-
-    }
-
 
     public HistoryEntity persistHistory(RoleAssignment roleAssignment, Request request) {
         UUID roleAssignmentId = roleAssignment.getId();
         UUID requestId = request.getId();
 
-        RequestEntity requestEntity = persistenceUtil.convertRequestIntoEntity(request);
+        RequestEntity requestEntity = persistenceUtil.convertRequestToEntity(request);
         if (requestId != null) {
             requestEntity.setId(requestId);
         }
 
-        HistoryEntity entity = persistenceUtil.convertHistoryToEntity(roleAssignment, requestEntity
-        );
-
+        HistoryEntity historyEntity = persistenceUtil.convertRoleAssignmentToHistoryEntity(roleAssignment,
+                                                                                           requestEntity);
         if (roleAssignmentId != null) {
-            entity.setId(roleAssignmentId);
+            historyEntity.setId(roleAssignmentId);
         } else {
-            entity.setId(generateUniqueId());
+            historyEntity.setId(UUID.randomUUID());
         }
         //Persist the history entity
-        return historyRepository.save(entity);
+        return historyRepository.save(historyEntity);
 
 
     }
@@ -107,10 +99,10 @@ public class PersistenceService {
     public ActorCacheEntity persistActorCache(RoleAssignment roleAssignment) {
 
         ActorCacheEntity entity = persistenceUtil.convertActorCacheToEntity(prepareActorCache(roleAssignment));
-        ActorCacheEntity existingEtag = actorCacheRepository.findByActorId(roleAssignment.actorId);
+        ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.actorId);
 
-        if (existingEtag != null) {
-            entity.setEtag(existingEtag.getEtag());
+        if (existingActorCache != null) {
+            entity.setEtag(existingActorCache.getEtag());
         }
         return actorCacheRepository.save(entity);
     }
@@ -125,15 +117,6 @@ public class PersistenceService {
         return actorCache;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public List<ExistingRole> getExistingRoleAssignment(UUID actorId) {
-
-        Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
-        //convert into model class
-        return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertRoleAssignmentEntityInModel(role))
-                                     .collect(Collectors.toList());
-
-    }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ActorCacheEntity getActorCacheEntity(UUID actorId) {
@@ -141,10 +124,11 @@ public class PersistenceService {
         return actorCacheRepository.findByActorId(actorId);
     }
 
-    public List<RequestedRole> getExistingRoleByProcessAndReference(String process, String reference, String status) {
+    public List<RoleAssignment> getAssignmentsByProcess(String process, String reference, String status) {
         Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
         //convert into model class
-        return historyEntities.stream().map(role -> persistenceUtil.convertHistoryEntityInModel(role)).collect(
+        return historyEntities.stream().map(historyEntity -> persistenceUtil
+            .convertHistoryEntityToRoleAssignment(historyEntity)).collect(
             Collectors.toList());
 
     }
@@ -156,5 +140,20 @@ public class PersistenceService {
         roleAssignmentRepository.delete(entity);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void deleteRoleAssignmentByActorId(UUID actorId) {
+
+        roleAssignmentRepository.deleteByActorId(actorId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public List<RoleAssignment> getAssignmentsByActor(UUID actorId) {
+
+        Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
+        //convert into model class
+        return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+            .collect(Collectors.toList());
+
+    }
 
 }
