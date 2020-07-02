@@ -65,8 +65,7 @@ public class GetAssignmentController {
 
     @GetMapping(
         path = "/am/role-assignments/actors/{actorId}",
-        produces = V1.MediaType.GET_ASSIGNMENT,
-        consumes = APPLICATION_JSON
+        produces = V1.MediaType.GET_ASSIGNMENT
     )
     @ApiOperation("Retrieve JSON representation of multiple Role Assignment records.")
     @ApiResponses({

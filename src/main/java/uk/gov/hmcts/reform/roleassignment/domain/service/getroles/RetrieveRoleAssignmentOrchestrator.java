@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
 
 @Service
 public class RetrieveRoleAssignmentOrchestrator {
@@ -37,7 +38,7 @@ public class RetrieveRoleAssignmentOrchestrator {
         ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
         List<RoleAssignment> assignments = persistenceService.getAssignmentsByActor(UUID.fromString(actorId));
         if (CollectionUtils.isEmpty(assignments)) {
-            throw new ResourceNotFoundException(actorId.toString());
+            throw new ResourceNotFoundException(String.format(NO_RECORDS_FOUND_BY_ACTOR + "%s", actorId.toString()));
         }
         return prepareResponseService.prepareRetrieveRoleResponse(
             assignments,
