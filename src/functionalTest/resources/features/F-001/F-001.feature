@@ -101,6 +101,7 @@ Feature: Create Role Assignments
     Then a positive response is received,
     And the response has all other details as expected.
 
+
 #  @S-013
 #  Scenario: must successfully create single Role Assignment when ReplaceExisting is True with Process and Reference
 #    Given a user with [an active IDAM profile with full permissions],
