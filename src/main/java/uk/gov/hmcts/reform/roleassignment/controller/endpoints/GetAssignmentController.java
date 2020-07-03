@@ -65,8 +65,7 @@ public class GetAssignmentController {
 
     @GetMapping(
         path = "/am/role-assignments/actors/{actorId}",
-        produces = V1.MediaType.GET_ASSIGNMENT,
-        consumes = APPLICATION_JSON
+        produces = V1.MediaType.GET_ASSIGNMENT
     )
     @ApiOperation("Retrieve JSON representation of multiple Role Assignment records.")
     @ApiResponses({
@@ -86,9 +85,12 @@ public class GetAssignmentController {
     })
     public ResponseEntity<Object> retrieveRoleAssignmentsByActorId(
 
+        @RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch,
+
         @ApiParam(value = "Actor Id ", required = true)
         @PathVariable("actorId") String actorId) throws Exception {
 
+        log.info("ifNoneMatch :::: {}", ifNoneMatch);
         log.info("actorId :::: {}", actorId);
         ResponseEntity<?> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
             actorId
