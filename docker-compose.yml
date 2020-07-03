@@ -23,12 +23,8 @@ services:
        REFORM_SERVICE_NAME: am-role-assignment-service
        REFORM_TEAM: am
        REFORM_ENVIRONMENT: local
-       JAVA_TOOL_OPTIONS: -XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
     ports:
       - $SERVER_PORT:$SERVER_PORT
-      - 5005:5005
-    networks:
-      - am-network
     depends_on:
       - am-role-assignment-database
     links:
@@ -47,14 +43,7 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
       - 5451:5432
-    networks:
-      - am-network
     volumes:
       - am-role-assignment-database-data:/var/lib/postgresql/am-role-assignment/data
 volumes:
   am-role-assignment-database-data:
-
-networks:
-  am-network:
-    external: true
-
