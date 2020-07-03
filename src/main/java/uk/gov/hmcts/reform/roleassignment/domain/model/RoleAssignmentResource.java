@@ -27,6 +27,7 @@ public class RoleAssignmentResource extends RepresentationModel<RoleAssignmentRe
     public RoleAssignmentResource(List<RoleAssignment> roleAssignmentResponse, UUID actorId) throws Exception {
         this.roleAssignmentResponse = roleAssignmentResponse;
         add(linkTo(methodOn(GetAssignmentController.class).retrieveRoleAssignmentsByActorId(
+            "",
             actorId.toString()
         )).withRel("binary"));
     }
