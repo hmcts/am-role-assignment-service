@@ -37,7 +37,8 @@ public class SwaggerConfiguration {
             .globalOperationParameters(Arrays.asList(
                 headerServiceAuthorization(),
                 headerAuthorization(),
-                headerCorrelationId()
+                headerCorrelationId(),
+                headerAssignerId()
             ));
     }
 
@@ -74,6 +75,16 @@ public class SwaggerConfiguration {
             .name("correlationId")
             .description("Standard correlation header.  If not provided, a unique value is created for "
                              + "each request and used in logs.")
+            .modelRef(new ModelRef("string"))
+            .parameterType("header")
+            .required(false)
+            .build();
+    }
+
+    private Parameter headerAssignerId() {
+        return new ParameterBuilder()
+            .name("assignerId")
+            .description("Standard assignerId header.  if not provided, authenticatedUserId will be assign to assignerId ")
             .modelRef(new ModelRef("string"))
             .parameterType("header")
             .required(false)
