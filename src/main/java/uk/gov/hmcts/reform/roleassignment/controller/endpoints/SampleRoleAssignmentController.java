@@ -63,7 +63,7 @@ public class SampleRoleAssignmentController {
                 .setDateFormat(new SimpleDateFormat());
             RoleAssignment model;
             try (InputStream input = SampleRoleAssignmentController.class.getClassLoader().getResourceAsStream(
-                "roleassignmenthistory.json")) {
+                "roleassignmenthistroy.json")) {
 
                 model = objectMapper.readValue(input, RoleAssignment.class);
 
