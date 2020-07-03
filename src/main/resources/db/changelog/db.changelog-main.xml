@@ -52,7 +52,7 @@
         <constraints nullable="false" primaryKey="true" primaryKeyName="pk_role_assignment_history"/>
       </column>
       <column name="request_id" type="uuid">
-        <constraints nullable="false" foreignKeyName="fk_role_assignment_history_role_assignment_request" references="role_assignment_request(id)"/>
+        <constraints nullable="false" foreignKeyName="fk_role_assignment_history_role_assignment_request" references="role_assignment_request(id)" primaryKey="true" primaryKeyName="pk_role_assignment_history"/>
       </column>
       <column name="actor_id_type" type="text">
         <constraints nullable="false"/>
