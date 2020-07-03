@@ -52,7 +52,6 @@ env.OAUTH2_CLIENT_ID = "ccd_gateway"
 env.OAUTH2_REDIRECT_URI = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect"
 env.BEFTA_RESPONSE_HEADER_CHECK_POLICY = "JUST_WARN"
 env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-env.TEST_URL = "http://am-role-assignment-service-aat.service.core-compute-aat.internal"
 
 withPipeline(type, product, component) {
   onMaster {
