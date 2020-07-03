@@ -84,13 +84,13 @@ public class SwaggerConfiguration {
     private Parameter headerAssignerId() {
         return new ParameterBuilder()
             .name("assignerId")
-            .description("Standard assignerId header.  if not provided, authenticatedUserId will be assign to assignerId ")
+            .description(
+                "Standard assignerId header.  if not provided, authenticatedUserId will be assign to assignerId ")
             .modelRef(new ModelRef("string"))
             .parameterType("header")
             .required(false)
             .build();
     }
-
 
 
 }
