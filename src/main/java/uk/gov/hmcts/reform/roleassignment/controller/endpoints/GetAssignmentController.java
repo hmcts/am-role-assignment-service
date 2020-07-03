@@ -149,7 +149,7 @@ public class GetAssignmentController {
             response = Object.class
         )
     })
-    public ResponseEntity<Object> getListOfRoles(@RequestHeader("Content-Type") String contentType) throws Exception {
+    public ResponseEntity<Object> getListOfRoles() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode;
         try (InputStream input = GetAssignmentController.class.getClassLoader().getResourceAsStream(ROLES_JSON)) {
