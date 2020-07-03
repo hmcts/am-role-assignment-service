@@ -48,7 +48,7 @@ public class PersistenceUtil {
             .correlationId(request.getCorrelationId())
             .status(request.getStatus().toString())
             .process(request.getProcess())
-            .reference(request.getProcess())
+            .reference(request.getReference())
             .authenticatedUserId(request.getAuthenticatedUserId())
             .clientId(request.getClientId())
             .assignerId(request.getAssignerId())

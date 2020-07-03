@@ -64,7 +64,7 @@ public class DeleteRoleAssignmentOrchestrator {
         if (actorId != null) {
             requestedRoles = persistenceService.getAssignmentsByActor(UUID.fromString(actorId));
             if (requestedRoles.isEmpty()) {
-                throw new ResourceNotFoundException(String.format(NO_RECORDS_FOUND_BY_ACTOR, actorId));
+                throw new ResourceNotFoundException(String.format(NO_RECORDS_FOUND_BY_ACTOR + "%s", actorId));
             }
 
         } else if (process != null && reference != null) {
