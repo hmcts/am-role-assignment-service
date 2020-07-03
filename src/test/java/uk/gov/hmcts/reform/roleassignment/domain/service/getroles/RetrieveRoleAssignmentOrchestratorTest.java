@@ -104,7 +104,6 @@ class RetrieveRoleAssignmentOrchestratorTest {
         ActorCacheEntity actorCacheEntity = TestDataBuilder.buildActorCacheEntity();
         when(persistenceService.getActorCacheEntity(UUID.fromString(actorId))).thenReturn(actorCacheEntity);
         long etag = sut.retrieveETag(UUID.fromString(actorId));
-        assertNotNull(etag);
         assertEquals(1, etag);
     }
 }
