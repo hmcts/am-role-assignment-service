@@ -3,32 +3,39 @@ package uk.gov.hmcts.reform.roleassignment.controller.advice;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.INVALID_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.RESOURCE_NOT_FOUND;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.UNKNOWN_EXCEPTION;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
+import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
 @Slf4j
-@ControllerAdvice(basePackages = "uk.gov.hmcts.reform.roleassignment")
+@RestControllerAdvice(basePackages = "uk.gov.hmcts.reform.roleassignment")
 @RequestMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 public class RoleAssignmentControllerAdvice {
 
@@ -57,6 +64,34 @@ public class RoleAssignmentControllerAdvice {
             BAD_REQUEST.value(),
             "Bad Request"
         );
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> notReadableException(final HttpMessageNotReadableException e) {
+        return error(e, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ErrorResponse> nullException(final NullPointerException e) {
+        return error(e, HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseEntity<ErrorResponse> error(final Exception exception, final HttpStatus httpStatus) {
+        String input = exception.getMessage();
+        String info = StringUtils.substringBefore(input, ";");
+        String info2 = StringUtils.substringAfter(info, "\"");
+        String info3 = StringUtils.substringBefore(info2, "\"");
+
+        try {
+            ValidationUtil.validateInputParams(UUID_PATTERN, info3);
+        } catch (Exception e) {
+            return new ResponseEntity<>(ErrorResponse.builder().errorCode(400).errorDescription(e.getMessage())
+                .errorMessage("Bad Request").build(), httpStatus);
+        }
+
+        return new ResponseEntity<>(
+            ErrorResponse.builder().errorCode(400).errorDescription(exception.getMessage())
+                .errorMessage("Bad Request").build(), httpStatus);
     }
 
     @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)

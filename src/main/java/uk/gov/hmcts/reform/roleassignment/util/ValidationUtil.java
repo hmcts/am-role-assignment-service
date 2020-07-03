@@ -9,6 +9,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -77,8 +78,18 @@ public class ValidationUtil {
             if (StringUtils.isEmpty(input)) {
                 throw new BadRequestException("An input parameter is Null/Empty");
             } else if (!Pattern.matches(pattern, input)) {
-                throw new BadRequestException("The input parameter: \"" + input + "\", does not comply with the "
-                                                  + "required pattern");
+                throw new BadRequestException(
+                    String.format("The input parameter: %s does not comply with the required pattern", input));
+            }
+        }
+    }
+
+    public static void validateEnumRoleType(String roleType) {
+        for (RoleType realRole : RoleType.values()) {
+            if (realRole.name().equalsIgnoreCase(roleType)) {
+                break;
+            } else {
+                throw new BadRequestException(String.format("The Role Type parameter %s is not valid", roleType));
             }
         }
     }
