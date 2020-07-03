@@ -12,14 +12,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
-import uk.gov.hmcts.reform.idam.client.IdamApi;
 
 @SpringBootApplication
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableCircuitBreaker
-@EnableFeignClients(basePackages = {
-    "uk.gov.hmcts.reform.roleassignment" }, basePackageClasses = {IdamApi.class, ServiceAuthorisationApi.class })
-
+@EnableFeignClients
 public class RoleAssignmentApplication {
 
     public static void main(final String[] args) {

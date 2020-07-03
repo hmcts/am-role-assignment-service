@@ -28,10 +28,4 @@
    ]]></notes>
     <cve>CVE-2020-1945</cve>
   </suppress>
-  <suppress>
-    <notes><![CDATA[
-   relates to Guava jar
-   ]]></notes>
-    <cve>CVE-2018-10237</cve>
-  </suppress>
 </suppressions>
