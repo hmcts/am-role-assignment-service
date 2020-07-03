@@ -31,7 +31,7 @@ public class DeleteAssignmentController {
 
     @DeleteMapping(
         path = "am/role-assignments",
-        produces = V1.MediaType.DELETE_ASSIGNMENT
+        produces = V1.MediaType.DELETE_ASSIGNMENTS
     )
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @ApiOperation("Deletes multiple role assignments  based on query parameters.")

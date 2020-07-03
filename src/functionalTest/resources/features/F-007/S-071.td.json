@@ -1,0 +1,21 @@
+{
+  "title": "must successfully receive static list of roles",
+  "_guid_": "S-071",
+  "_extends_": "F-007_Test_Data_Base",
+  "expectedResponse": {
+    "_extends_": "Common_200_Response",
+    "body": {
+      "arrayInMap" : [ {
+        "name" : "judge",
+        "label" : "Judge",
+        "description" : "Judicial office holder able to do judicial case work",
+        "category" : "JUDICIAL"
+      }, {
+        "name" : "judicial_management",
+        "label" : "Judicial Management",
+        "description" : "This role is required to manage other judicial roles.",
+        "category" : "JUDICIAL"
+      } ]
+    }
+  }
+}
