@@ -101,17 +101,16 @@ Feature: Create Role Assignments
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-013
-  Scenario: must successfully create single Role Assignment when ReplaceExisting is True with Process and Reference
-    Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create a role assignment] as in
-  [Befta_Jurisdiction2_Default_Token_Creation_Data_For_Role_Assignment]
-    When a request is prepared with appropriate values,
-    And the request [contains a single Role Assignment],
-    And the request [contains ReplaceExisting is true and have process and Reference values],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
-    Then a positive response is received,
-    And the response has all other details as expected.
+#  @S-013
+#  Scenario: must successfully create single Role Assignment when ReplaceExisting is True with Process and Reference
+#    Given a user with [an active IDAM profile with full permissions],
+#    And a successful call [to create a role assignment] as in [Befta_Jurisdiction2_Default_Token_Creation_Data_For_Role_Assignment]
+#    When a request is prepared with appropriate values,
+#    And the request [contains a single Role Assignment],
+#    And the request [contains ReplaceExisting is true and have process and Reference values],
+#    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+#    Then a positive response is received,
+#    And the response has all other details as expected.
 
 #  @S-018
 #  Scenario: must successfully create multiple Role Assignments when ReplaceExisting is True with Process and Reference
