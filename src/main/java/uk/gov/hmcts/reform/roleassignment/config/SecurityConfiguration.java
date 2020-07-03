@@ -78,8 +78,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .logout().disable()
             .authorizeRequests()
             .antMatchers("/error").permitAll()
-            //.antMatchers(HttpMethod.POST, "/refdata/external/v1/organisations").permitAll()
-            //.antMatchers(HttpMethod.POST, "/refdata/internal/v1/organisations").permitAll()
             .anyRequest()
             .authenticated()
             .and()
