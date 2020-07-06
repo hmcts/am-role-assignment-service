@@ -1,0 +1,21 @@
+{
+  "_guid_": "ResponseRoleAssignment",
+  "id": "[[ANYTHING_PRESENT]]",
+  "actorIdType": "IDAM",
+  "actorId": "123e4567-e89b-42d3-a456-556642445052",
+  "roleType": "CASE",
+  "roleName": "judge",
+  "classification": "PUBLIC",
+  "grantType": "[[ANYTHING_PRESENT]]",
+  "roleCategory": "JUDICIAL",
+  "readOnly": false,
+  "beginTime": "[[ANYTHING_PRESENT]]",
+  "endTime": "[[ANYTHING_PRESENT]]",
+  "created": "[[ANYTHING_PRESENT]]",
+  "attributes": {
+    "contractType": "SALARIED",
+    "caseId": "1234567890123456",
+    "jurisdiction": "divorce",
+    "region": "south-east"
+  }
+}
