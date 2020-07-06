@@ -1,18 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.controller.advice;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.INVALID_REQUEST;
-import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.RESOURCE_NOT_FOUND;
-import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.UNKNOWN_EXCEPTION;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import javax.servlet.http.HttpServletRequest;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -32,6 +19,18 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidReq
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.BAD_REQUEST;
+import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.INVALID_REQUEST;
+import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.RESOURCE_NOT_FOUND;
+import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.UNKNOWN_EXCEPTION;
+
 @Slf4j
 @RestControllerAdvice(basePackages = "uk.gov.hmcts.reform.roleassignment")
 @RequestMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
@@ -47,10 +46,10 @@ public class RoleAssignmentControllerAdvice {
         InvalidRequest ex) {
         return errorDetailsResponseEntity(
             ex,
-            BAD_REQUEST,
+            HttpStatus.BAD_REQUEST,
             INVALID_REQUEST.getErrorCode(),
             INVALID_REQUEST.getErrorMessage()
-                                         );
+        );
     }
 
     @ExceptionHandler(BadRequestException.class)
@@ -58,9 +57,9 @@ public class RoleAssignmentControllerAdvice {
         BadRequestException ex) {
         return errorDetailsResponseEntity(
             ex,
-            BAD_REQUEST,
-            BAD_REQUEST.value(),
-            Constants.BAD_REQUEST
+            HttpStatus.BAD_REQUEST,
+            BAD_REQUEST.getErrorCode(),
+            BAD_REQUEST.getErrorMessage()
         );
     }
 
@@ -124,10 +123,10 @@ public class RoleAssignmentControllerAdvice {
         MethodArgumentNotValidException exeception) {
         return errorDetailsResponseEntity(
             exeception,
-            BAD_REQUEST,
+            HttpStatus.BAD_REQUEST,
             INVALID_REQUEST.getErrorCode(),
             INVALID_REQUEST.getErrorMessage()
-                                         );
+        );
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -139,7 +138,7 @@ public class RoleAssignmentControllerAdvice {
             HttpStatus.NOT_FOUND,
             RESOURCE_NOT_FOUND.getErrorCode(),
             RESOURCE_NOT_FOUND.getErrorMessage()
-                                         );
+        );
     }
 
     @ExceptionHandler(HttpMessageConversionException.class)
@@ -148,10 +147,10 @@ public class RoleAssignmentControllerAdvice {
         HttpMessageConversionException exeception) {
         return errorDetailsResponseEntity(
             exeception,
-            BAD_REQUEST,
+            HttpStatus.BAD_REQUEST,
             INVALID_REQUEST.getErrorCode(),
             INVALID_REQUEST.getErrorMessage()
-                                         );
+        );
     }
 
     @ExceptionHandler(Exception.class)
@@ -162,7 +161,8 @@ public class RoleAssignmentControllerAdvice {
             exeception,
             HttpStatus.INTERNAL_SERVER_ERROR,
             UNKNOWN_EXCEPTION.getErrorCode(),
-            UNKNOWN_EXCEPTION.getErrorMessage());
+            UNKNOWN_EXCEPTION.getErrorMessage()
+        );
     }
 
     public String getTimeStamp() {
@@ -182,11 +182,11 @@ public class RoleAssignmentControllerAdvice {
 
         logger.error(LOG_STRING, ex);
         ErrorResponse errorDetails = ErrorResponse.builder()
-                                                  .errorCode(errorCode)
-                                                  .errorMessage(errorMsg)
-                                                  .errorDescription(getRootException(ex).getLocalizedMessage())
-                                                  .timeStamp(getTimeStamp())
-                                                  .build();
+            .errorCode(errorCode)
+            .errorMessage(errorMsg)
+            .errorDescription(getRootException(ex).getLocalizedMessage())
+            .timeStamp(getTimeStamp())
+            .build();
         return new ResponseEntity<>(
             errorDetails, httpStatus);
     }
