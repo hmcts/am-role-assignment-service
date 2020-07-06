@@ -7,11 +7,5 @@
     "an active IDAM profile with full permissions"
   ],
   "method": "GET",
-  "uri": "/am/role-assignments/actors/{actorId}",
-
-  "request": {
-    "pathVariables": {
-      "actorId": "123e4567-e89b-42d3-a456-556642445674"
-    }
-  }
+  "uri": "/am/role-assignments/actors/{actorId}"
 }
