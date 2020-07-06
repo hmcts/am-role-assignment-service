@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Map;
 import java.util.UUID;
 
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
@@ -33,7 +34,7 @@ public class ParseRequestService {
     private String serviceId;
     private String userId;
 
-    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType)
+    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType, Map<String, String> headers)
         throws Exception {
         Request request = assignmentRequest.getRequest();
         //1. validates request and assignment record
@@ -41,7 +42,7 @@ public class ParseRequestService {
 
         //2. Request Parsing
         //a. Extract client Id and place in the request
-        request.setClientId(securityUtils.getServiceId());
+        request.setClientId(securityUtils.getServiceName(headers));
         //b. Extract AuthenticatedUser Id from the User token and place in the request.
         request.setAuthenticatedUserId(UUID.fromString(securityUtils.getUserId()));
         //c. Set Status=Created and created Time = now
@@ -88,12 +89,12 @@ public class ParseRequestService {
         correlationInterceptorUtil.afterCompletion();
     }
 
-    public Request prepareDeleteRequest(String process, String reference, String actorId) throws Exception {
+    public Request prepareDeleteRequest(String process, String reference, String actorId, Map<String, String> headerMap) throws Exception {
         if (actorId != null) {
             ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
         }
         Request request = Request.builder()
-            .clientId(securityUtils.getServiceId())
+            .clientId(securityUtils.getServiceName(headerMap))
             .authenticatedUserId(UUID.fromString(securityUtils.getUserId()))
             .status(Status.CREATED)
             .requestType(RequestType.DELETE)

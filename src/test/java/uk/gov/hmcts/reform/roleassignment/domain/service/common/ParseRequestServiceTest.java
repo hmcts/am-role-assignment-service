@@ -24,6 +24,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,6 +46,10 @@ class ParseRequestServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    private final Map<String, String> headers = new HashMap<>() {{
+        put("serviceauthorisation", "Bearer dummyToken");
+    }};
+
     @Test
     void parseRequest_CreateEndpoint_HappyPath() throws Exception {
 
@@ -57,7 +63,7 @@ class ParseRequestServiceTest {
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
         RequestType requestType = RequestType.CREATE;
         AssignmentRequest assignmentRequest =  TestDataBuilder.buildAssignmentRequest();
-        AssignmentRequest result = sut.parseRequest(assignmentRequest, requestType);
+        AssignmentRequest result = sut.parseRequest(assignmentRequest, requestType, headers);
 
         assertNotNull(result);
         assertNotNull(result.getRequest());

@@ -1,6 +1,8 @@
 
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
+import java.util.Map;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -65,9 +67,9 @@ public class DeleteAssignmentController {
                                                        @RequestParam(value = "process", required = false)
                                                            String process,
                                                        @RequestParam(value = "reference", required = false)
-                                                           String reference) throws Exception {
+                                                           String reference, @RequestHeader Map<String, String> headerMap) throws Exception {
         LOG.info("Request raised by assigner : {}", assignerId);
-        return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(actorId, process, reference);
+        return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(actorId, process, reference, headerMap);
 
     }
 

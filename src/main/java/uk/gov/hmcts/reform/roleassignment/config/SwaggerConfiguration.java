@@ -38,7 +38,6 @@ public class SwaggerConfiguration {
                 headerServiceAuthorization(),
                 headerAuthorization(),
                 headerCorrelationId()
-
             ));
     }
 
@@ -80,6 +79,7 @@ public class SwaggerConfiguration {
             .required(false)
             .build();
     }
+
 
 
 }

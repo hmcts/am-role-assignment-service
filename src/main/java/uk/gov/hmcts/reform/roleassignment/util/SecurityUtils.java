@@ -1,5 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION;
+
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,17 +11,25 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
+import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.roleassignment.apihelper.Constants;
+import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
 
 @Service
 public class SecurityUtils {
 
     private final AuthTokenGenerator authTokenGenerator;
+    private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter;
+    private final ServiceAuthorisationApi serviceAuthorisationApi;
 
     @Autowired
-    public SecurityUtils(final AuthTokenGenerator authTokenGenerator) {
+    public SecurityUtils(final AuthTokenGenerator authTokenGenerator,
+                         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter,
+                         ServiceAuthorisationApi serviceAuthorisationApi) {
         this.authTokenGenerator = authTokenGenerator;
+        this.jwtGrantedAuthoritiesConverter = jwtGrantedAuthoritiesConverter;
+        this.serviceAuthorisationApi = serviceAuthorisationApi;
     }
 
     public HttpHeaders authorizationHeaders() {
@@ -44,10 +55,11 @@ public class SecurityUtils {
     }
 
     public String getUserId() {
-        final ServiceAndUserDetails serviceAndUser = (ServiceAndUserDetails) SecurityContextHolder.getContext()
-                                                                                                  .getAuthentication()
+       /* final ServiceAndUserDetails serviceAndUser = (ServiceAndUserDetails) SecurityContextHolder.getContext()
+                                                                                                 .getAuthentication()
                                                                                                   .getPrincipal();
-        return serviceAndUser.getUsername();
+        return serviceAndUser.getUsername();*/
+        return jwtGrantedAuthoritiesConverter.getUserInfo().getUid();
     }
 
     public String getUserToken() {
@@ -74,5 +86,7 @@ public class SecurityUtils {
                              .collect(Collectors.joining(","));
     }
 
-
+    public String getServiceName(Map<String, String> headers) {
+        return serviceAuthorisationApi.getServiceName(headers.get(SERVICE_AUTHORIZATION));
+    }
 }

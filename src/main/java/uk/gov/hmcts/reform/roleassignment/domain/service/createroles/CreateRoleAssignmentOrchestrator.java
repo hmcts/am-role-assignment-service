@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -45,13 +46,13 @@ public class CreateRoleAssignmentOrchestrator {
         this.prepareResponseService = prepareResponseService;
     }
 
-    public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) throws Exception {
+    public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest, Map<String, String> headers) throws Exception {
 
         AssignmentRequest existingAssignmentRequest;
 
         //1. call parse request service
         AssignmentRequest parsedAssignmentRequest = parseRequestService
-            .parseRequest(roleAssignmentRequest, RequestType.CREATE);
+            .parseRequest(roleAssignmentRequest, RequestType.CREATE, headers);
 
         //2. Call persistence service to store only the request
         requestEntity = persistInitialRequest(parsedAssignmentRequest.getRequest());

@@ -16,6 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelS
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -44,12 +45,12 @@ public class DeleteRoleAssignmentOrchestrator {
 
     public ResponseEntity<Object> deleteRoleAssignment(String actorId,
                                                        String process,
-                                                       String reference) throws Exception {
+                                                       String reference, Map<String, String> headerMap) throws Exception {
         List<RoleAssignment> requestedRoles = null;
 
         //1. create the request Object
         if (actorId != null || (process != null && reference != null)) {
-            request = parseRequestService.prepareDeleteRequest(process, reference, actorId);
+            request = parseRequestService.prepareDeleteRequest(process, reference, actorId, headerMap);
             assignmentRequest = new AssignmentRequest();
         } else {
             throw new BadRequestException(BAD_REQUEST_MISSING_PARAMETERS);
