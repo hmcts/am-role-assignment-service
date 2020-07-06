@@ -49,7 +49,7 @@ class DeleteAssignmentControllerTest {
         when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(ACTOR_ID, null, null)).
             thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
 
-        ResponseEntity response = sut.deleteRoleAssignment(ACTOR_ID, null, null);
+        ResponseEntity response = sut.deleteRoleAssignment(null,ACTOR_ID, null, null);
 
         assertAll(
             () -> assertNotNull(response),
@@ -64,7 +64,7 @@ class DeleteAssignmentControllerTest {
         when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, REFERENCE)).
             thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
 
-        ResponseEntity response = sut.deleteRoleAssignment(null, PROCESS, REFERENCE);
+        ResponseEntity response = sut.deleteRoleAssignment(null,null, PROCESS, REFERENCE);
 
         assertAll(
             () -> assertNotNull(response),
@@ -79,7 +79,7 @@ class DeleteAssignmentControllerTest {
         when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, REFERENCE)).
             thenThrow(new BadRequestException(BAD_REQUEST_MISSING_PARAMETERS));
         Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.deleteRoleAssignment(null, PROCESS, REFERENCE);
+            sut.deleteRoleAssignment(null,null, PROCESS, REFERENCE);
         });
     }
 
@@ -90,7 +90,7 @@ class DeleteAssignmentControllerTest {
         when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(ACTOR_ID, PROCESS, null)).
             thenThrow(new ResourceNotFoundException(BAD_REQUEST_MISSING_PARAMETERS));
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            sut.deleteRoleAssignment(ACTOR_ID, PROCESS, null);
+            sut.deleteRoleAssignment(null,ACTOR_ID, PROCESS, null);
         });
     }
 

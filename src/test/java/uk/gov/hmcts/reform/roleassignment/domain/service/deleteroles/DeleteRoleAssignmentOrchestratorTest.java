@@ -80,8 +80,10 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentsByActor(UUID.fromString(ACTOR_ID))).thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
         doNothing().when(validationModelService).validateRequest(assignmentRequest);
 
-        when(persistenceService.persistHistory(roleAssignment, assignmentRequest.getRequest())).thenReturn(historyEntity);
-
+        when(persistenceService.persistHistory(
+            roleAssignment,
+            assignmentRequest.getRequest()
+        )).thenReturn(historyEntity);
 
 
         ResponseEntity response = sut.deleteRoleAssignment(ACTOR_ID, null, null);
