@@ -13,6 +13,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,16 @@ public class PrepareResponseService {
 
         updateRoleRequestResponse(roleAssignmentRequest);
         updateRequestedRolesResponse(roleAssignmentRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(roleAssignmentRequest));
+
+
+        if (roleAssignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                roleAssignmentRequest);
+        } else {
+            return ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(
+                roleAssignmentRequest));
+        }
+
     }
 
     private void updateRoleRequestResponse(AssignmentRequest roleAssignmentRequest) {
@@ -42,13 +52,13 @@ public class PrepareResponseService {
             roleRequest,
             new TypeReference<Map<String, Object>>() {
             }
-                                                                 );
+        );
         requestMetaData.remove("clientId");
         roleAssignmentRequest.setRequest(mapper.convertValue(requestMetaData, Request.class));
     }
 
     public ResponseEntity<Object> prepareRetrieveRoleResponse(List<RoleAssignment> roleAssignmentResponse,
-                                                                     UUID actorId) throws Exception {
+                                                              UUID actorId) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(roleAssignmentResponse, actorId));
     }
 
