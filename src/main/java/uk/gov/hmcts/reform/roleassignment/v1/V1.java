@@ -10,12 +10,14 @@ public final class V1 {
         }
 
         // External API
-        public static final String CREATE_ASSIGNMENT = "application/vnd.uk.gov.hmcts.role-assignment-service"
-                                                       + ".create-role+json;charset=UTF-8;version=1.0";
-        public static final String DELETE_ASSIGNMENT = "application/vnd.uk.gov.hmcts.role-assignment-service"
-                                                       + ".delete-role+json;charset=UTF-8;version=1.0";
-        public static final String GET_ASSIGNMENT = "application/vnd.uk.gov.hmcts.role-assignment-service"
-            + ".get-role+json;charset=UTF-8;version=1.0";
+        public static final String CREATE_ASSIGNMENTS = "application/vnd.uk.gov.hmcts.role-assignment-service"
+                                                       + ".create-assignments+json;charset=UTF-8;version=1.0";
+        public static final String DELETE_ASSIGNMENTS = "application/vnd.uk.gov.hmcts.role-assignment-service"
+                                                       + ".delete-assignments+json;charset=UTF-8;version=1.0";
+        public static final String GET_ASSIGNMENTS = "application/vnd.uk.gov.hmcts.role-assignment-service"
+            + ".get-assignments+json;charset=UTF-8;version=1.0";
+        public static final String GET_ROLES = "application/vnd.uk.gov.hmcts.role-assignment-service"
+            + ".get-roles+json;charset=UTF-8;version=1.0";
     }
 
     public static final class Error {
