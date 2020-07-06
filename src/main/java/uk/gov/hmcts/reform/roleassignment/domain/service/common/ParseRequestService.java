@@ -112,6 +112,7 @@ public class ParseRequestService {
             .currentRequestAttributes())
             .getRequest();
         String assignerId = httpServletRequest.getHeader("assignerId");
+        ValidationUtil.validateInputParams(UUID_PATTERN, assignerId);
 
         if (StringUtils.isBlank(assignerId)) {
             request.setAssignerId(request.getAuthenticatedUserId());

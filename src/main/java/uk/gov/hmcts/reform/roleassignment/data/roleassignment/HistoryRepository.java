@@ -9,7 +9,7 @@ import java.util.Set;
 public interface HistoryRepository extends CrudRepository<HistoryEntity, RoleAssignmentIdentity> {
 
     @Query("select p from role_assignment_history as p "
-        + " where p.process= ?1 and  p.reference = ?2"
+        + " where upper(p.process) = upper(?1) and  upper(p.reference) = upper(?2)"
         + "  and p.status= ?3 "
         + "and p.id IN (select id from role_assignment)")
     Set<HistoryEntity> findByReference(String process, String reference, String status);
