@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +9,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
@@ -20,8 +18,6 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import static org.mockito.Mockito.doReturn;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.APPLICATION_JSON;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -57,16 +53,9 @@ class GetAssignmentControllerTest {
 
     @Test
     void getListOfRoles() throws Exception {
-        ResponseEntity<Object> response = sut.getListOfRoles(APPLICATION_JSON);
+        ResponseEntity<Object> response = sut.getListOfRoles();
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
-
-    @Test
-    void getListOfRoles_ContentType_Exception() throws Exception {
-        Assertions.assertThrows(HttpMediaTypeNotAcceptableException.class, () -> {
-            ResponseEntity<Object> response = sut.getListOfRoles("application/pdf");
-        });
     }
 
     @Test
