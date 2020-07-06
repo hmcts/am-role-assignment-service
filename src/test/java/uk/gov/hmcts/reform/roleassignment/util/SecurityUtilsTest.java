@@ -5,9 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -24,8 +22,14 @@ class SecurityUtilsTest {
 
     private final AuthTokenGenerator authTokenGenerator = mock(AuthTokenGenerator.class);
     private final ServiceAuthorisationApi serviceAuthorisationApi = mock(ServiceAuthorisationApi.class);
-    private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = mock(JwtGrantedAuthoritiesConverter.class);
-    private final SecurityUtils securityUtils = new SecurityUtils(authTokenGenerator, jwtGrantedAuthoritiesConverter, serviceAuthorisationApi);
+    private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
+        mock(JwtGrantedAuthoritiesConverter.class);
+
+    private final SecurityUtils securityUtils = new SecurityUtils(
+        authTokenGenerator,
+        jwtGrantedAuthoritiesConverter,
+        serviceAuthorisationApi);
+
     private final String serviceAuthorization = "auth";
     private static final String USER_ID = "userId";
 
@@ -54,21 +58,9 @@ class SecurityUtilsTest {
     }
 
     @Test
-    void getUserId() {
-        mockSecurityContextData();
-        assertEquals("userId", securityUtils.getUserId());
-    }
-
-    @Test
     void getUserToken() {
         mockSecurityContextData();
         assertEquals("auth", securityUtils.getUserToken());
-    }
-
-    @Test
-    void getUserRolesHeader() {
-        mockSecurityContextData();
-        assertEquals("string", securityUtils.getUserRolesHeader());
     }
 
     @Test

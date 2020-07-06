@@ -34,7 +34,8 @@ public class ParseRequestService {
     private String serviceId;
     private String userId;
 
-    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType, Map<String, String> headers)
+    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType,
+                                          Map<String, String> headers)
         throws Exception {
         Request request = assignmentRequest.getRequest();
         //1. validates request and assignment record
@@ -89,7 +90,8 @@ public class ParseRequestService {
         correlationInterceptorUtil.afterCompletion();
     }
 
-    public Request prepareDeleteRequest(String process, String reference, String actorId, Map<String, String> headerMap) throws Exception {
+    public Request prepareDeleteRequest(String process, String reference, String actorId,
+                                        Map<String, String> headerMap) throws Exception {
         if (actorId != null) {
             ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
         }

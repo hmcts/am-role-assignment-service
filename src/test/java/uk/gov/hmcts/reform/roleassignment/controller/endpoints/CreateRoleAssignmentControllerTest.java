@@ -1,5 +1,13 @@
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -12,20 +20,14 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.HashMap;
-import java.util.Map;
-
 @RunWith(MockitoJUnitRunner.class)
 class CreateRoleAssignmentControllerTest {
 
-    private final Map<String, String> headers = new HashMap<>() {{
-        put("serviceauthorisation", "Bearer dummyToken");
-    }};
+    private final Map<String, String> headers = new HashMap<>() {
+        {
+            put("serviceauthorisation", "Bearer dummyToken");
+        }
+    };
 
     @Mock
     private CreateRoleAssignmentOrchestrator createRoleAssignmentServiceMock =

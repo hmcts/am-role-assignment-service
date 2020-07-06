@@ -67,7 +67,8 @@ public class DeleteAssignmentController {
                                                        @RequestParam(value = "process", required = false)
                                                            String process,
                                                        @RequestParam(value = "reference", required = false)
-                                                           String reference, @RequestHeader Map<String, String> headerMap) throws Exception {
+                                                               String reference,
+                                                       @RequestHeader Map<String, String> headerMap) throws Exception {
         LOG.info("Request raised by assigner : {}", assignerId);
         return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(actorId, process, reference, headerMap);
 

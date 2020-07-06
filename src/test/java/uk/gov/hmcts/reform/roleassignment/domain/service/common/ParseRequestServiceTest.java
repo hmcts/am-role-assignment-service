@@ -46,9 +46,11 @@ class ParseRequestServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    private final Map<String, String> headers = new HashMap<>() {{
-        put("serviceauthorisation", "Bearer dummyToken");
-    }};
+    private final Map<String, String> headers = new HashMap<>() {
+        {
+            put("serviceauthorisation", "Bearer dummyToken");
+        }
+    };
 
     @Test
     void parseRequest_CreateEndpoint_HappyPath() throws Exception {
@@ -58,6 +60,7 @@ class ParseRequestServiceTest {
         String clientId = "copied client id";
         UUID userId = UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c");
         when(securityUtilsMock.getServiceId()).thenReturn(clientId);
+        when(securityUtilsMock.getServiceName(headers)).thenReturn(clientId);
         when(securityUtilsMock.getUserId()).thenReturn(userId.toString());
         when(correlationInterceptorUtilMock.preHandle(
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
@@ -79,7 +82,7 @@ class ParseRequestServiceTest {
             assertNotNull(requestedRole.getStatus());
             assertNotNull(requestedRole.getStatusSequence());
         });
-        verify(securityUtilsMock, times(1)).getServiceId();
+        verify(securityUtilsMock, times(1)).getServiceName(headers);
         verify(securityUtilsMock, times(1)).getUserId();
         verify(correlationInterceptorUtilMock, times(1)).preHandle(any(HttpServletRequest.class));
     }

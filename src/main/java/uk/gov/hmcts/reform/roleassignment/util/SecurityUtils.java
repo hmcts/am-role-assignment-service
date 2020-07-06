@@ -55,10 +55,6 @@ public class SecurityUtils {
     }
 
     public String getUserId() {
-       /* final ServiceAndUserDetails serviceAndUser = (ServiceAndUserDetails) SecurityContextHolder.getContext()
-                                                                                                 .getAuthentication()
-                                                                                                  .getPrincipal();
-        return serviceAndUser.getUsername();*/
         return jwtGrantedAuthoritiesConverter.getUserInfo().getUid();
     }
 

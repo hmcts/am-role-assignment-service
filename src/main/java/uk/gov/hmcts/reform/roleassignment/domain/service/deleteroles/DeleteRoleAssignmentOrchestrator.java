@@ -45,7 +45,8 @@ public class DeleteRoleAssignmentOrchestrator {
 
     public ResponseEntity<Object> deleteRoleAssignment(String actorId,
                                                        String process,
-                                                       String reference, Map<String, String> headerMap) throws Exception {
+                                                       String reference,
+                                                       Map<String, String> headerMap) throws Exception {
         List<RoleAssignment> requestedRoles = null;
 
         //1. create the request Object

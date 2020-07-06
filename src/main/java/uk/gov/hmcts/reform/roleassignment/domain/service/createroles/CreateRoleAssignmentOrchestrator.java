@@ -46,7 +46,8 @@ public class CreateRoleAssignmentOrchestrator {
         this.prepareResponseService = prepareResponseService;
     }
 
-    public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest, Map<String, String> headers) throws Exception {
+    public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest,
+                                                       Map<String, String> headers) throws Exception {
 
         AssignmentRequest existingAssignmentRequest;
 
