@@ -65,30 +65,30 @@ module "role-assignment-database" {
 
 resource "azurerm_key_vault_secret" "POSTGRES-USER" {
   name = "${var.component}-POSTGRES-USER"
-  value = "${module.role-assignment-db.user_name}"
+  value = "${module.role-assignment-database.user_name}"
   key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES-PASS" {
   name = "${var.component}-POSTGRES-PASS"
-  value = "${module.role-assignment-db.postgresql_password}"
+  value = "${module.role-assignment-database.postgresql_password}"
   key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_HOST" {
   name = "${var.component}-POSTGRES-HOST"
-  value = "${module.role-assignment-db.host_name}"
+  value = "${module.role-assignment-database.host_name}"
   key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_PORT" {
   name = "${var.component}-POSTGRES-PORT"
-  value = "${module.role-assignment-db.postgresql_listen_port}"
+  value = "${module.role-assignment-database.postgresql_listen_port}"
   key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
   name = "${var.component}-POSTGRES-DATABASE"
-  value = "${module.role-assignment-db.postgresql_database}"
+  value = "${module.role-assignment-database.postgresql_database}"
   key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
 }
