@@ -5,17 +5,20 @@
   "expectedResponse": {
     "_extends_": "Common_200_Response",
     "body": {
-      "arrayInMap" : [ {
-        "name" : "judge",
-        "label" : "Judge",
-        "description" : "Judicial office holder able to do judicial case work",
-        "category" : "JUDICIAL"
-      }, {
-        "name" : "judicial_management",
-        "label" : "Judicial Management",
-        "description" : "This role is required to manage other judicial roles.",
-        "category" : "JUDICIAL"
-      } ]
+      "arrayInMap": [
+        {
+          "name": "judge",
+          "label": "Judge",
+          "description": "Judicial office holder able to do judicial case work",
+          "category": "JUDICIAL"
+        },
+        {
+          "name": "judicial_management",
+          "label": "Judicial Management",
+          "description": "This role is required to manage other judicial roles.",
+          "category": "JUDICIAL"
+        }
+      ]
     }
   }
 }
