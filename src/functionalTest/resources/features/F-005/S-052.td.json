@@ -16,7 +16,7 @@
       "links": [
         {
           "rel": "binary",
-          "href": "http://localhost:4096/am/role-assignments/actors/${[scenarioContext][testData][request][pathVariables][actorId]}"
+          "href": "{{TEST_URL}}/am/role-assignments/actors/${[scenarioContext][testData][request][pathVariables][actorId]}"
         }
       ],
       "roleAssignmentResponse": [

@@ -1,13 +1,17 @@
 {
-  "title": "must successfully receive single Role Assignment by Actor Id",
-  "_guid_": "S-051",
+  "title": "must successfully receive Role Assignments without X-Correlation-ID Header",
+  "_guid_": "S-054",
   "_extends_": "F-005_Test_Data_Base",
   "specs": [
+    "does not have X-Correlation-ID header",
     "contains an Actor Id having only single Role Assignment"
   ],
   "request": {
+    "headers": {
+      "X-Correlation-ID": ""
+    },
     "pathVariables": {
-      "actorId": "123e4567-e89b-42d3-a456-556642445051"
+      "actorId": "123e4567-e89b-42d3-a456-556642445054"
     }
   },
   "expectedResponse": {

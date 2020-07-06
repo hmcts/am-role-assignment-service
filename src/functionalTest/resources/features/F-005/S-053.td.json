@@ -11,8 +11,8 @@
     }
   },
   "expectedResponse": {
+    "_extends_": "ResourceNotFoundResponse",
     "body": {
-      "_extends_": "ResourceNotFoundResponse",
       "errorDescription" : "Role Assignment not found for Actor ${[scenarioContext][testData][request][pathVariables][actorId]}"
     }
   }
