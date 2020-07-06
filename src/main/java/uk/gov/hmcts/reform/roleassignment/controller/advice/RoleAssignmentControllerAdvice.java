@@ -26,6 +26,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import uk.gov.hmcts.reform.roleassignment.apihelper.Constants;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
@@ -59,36 +60,51 @@ public class RoleAssignmentControllerAdvice {
             ex,
             BAD_REQUEST,
             BAD_REQUEST.value(),
-            "Bad Request"
+            Constants.BAD_REQUEST
         );
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> notReadableException(final HttpMessageNotReadableException e) {
-        return error(e, HttpStatus.BAD_REQUEST);
+        return deserializeError(e, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ErrorResponse> nullException(final NullPointerException e) {
-        return error(e, HttpStatus.BAD_REQUEST);
+        return nullError(HttpStatus.BAD_REQUEST);
     }
 
-    private ResponseEntity<ErrorResponse> error(final Exception exception, final HttpStatus httpStatus) {
-        String input = exception.getMessage();
-        String info = StringUtils.substringBefore(input, ";");
-        String info2 = StringUtils.substringAfter(info, "\"");
-        String info3 = StringUtils.substringBefore(info2, "\"");
-
-        try {
-            ValidationUtil.validateInputParams(UUID_PATTERN, info3);
-        } catch (Exception e) {
-            return new ResponseEntity<>(ErrorResponse.builder().errorCode(400).errorDescription(e.getMessage())
-                .errorMessage("Bad Request").build(), httpStatus);
+    private ResponseEntity<ErrorResponse> deserializeError(final Exception exception, final HttpStatus httpStatus) {
+        String cause = exception.getMessage();
+        if (cause.contains("RoleType")) {
+            return new ResponseEntity<>(
+                ErrorResponse.builder()
+                    .errorCode(400)
+                    .errorDescription("The Role Type parameter is not valid")
+                    .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
+        } else if (cause.contains("UUID")) {
+            String inputStart = StringUtils.substringAfter(cause, "\"");
+            String inputEnd = StringUtils.substringBefore(inputStart, "\"");
+            try {
+                ValidationUtil.validateInputParams(UUID_PATTERN, inputEnd);
+            } catch (Exception e) {
+                return new ResponseEntity<>(
+                    ErrorResponse.builder()
+                        .errorCode(400).errorDescription(e.getMessage() + ": UUID")
+                        .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
+            }
         }
+        return new ResponseEntity<>(ErrorResponse.builder().errorCode(400).errorDescription(exception.getMessage())
+                                        .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
+    }
 
+    private ResponseEntity<ErrorResponse> nullError(final HttpStatus httpStatus) {
         return new ResponseEntity<>(
-            ErrorResponse.builder().errorCode(400).errorDescription(exception.getMessage())
-                .errorMessage("Bad Request").build(), httpStatus);
+            ErrorResponse
+                .builder()
+                .errorCode(400)
+                .errorDescription("One of the required parameters is null. Please check the payload")
+                .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
     }
 
     @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)

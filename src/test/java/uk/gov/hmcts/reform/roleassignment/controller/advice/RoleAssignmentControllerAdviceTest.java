@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import uk.gov.hmcts.reform.roleassignment.controller.WelcomeController;
@@ -13,11 +14,13 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidReq
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 
 class RoleAssignmentControllerAdviceTest {
@@ -125,4 +128,30 @@ class RoleAssignmentControllerAdviceTest {
         });
     }
 
+    @Test
+    void notReadableException_RoleType() {
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException("Role Type");
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains("Role Type"));
+    }
+
+    @Test
+    void notReadableException_UUID() {
+        HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException("UUID");
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains("UUID"));
+    }
+
+    @Test
+    void nullException() {
+        NullPointerException nullPointerException = mock(NullPointerException.class);
+        ResponseEntity<ErrorResponse> responseEntity = csda.nullException(nullPointerException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+    }
 }
