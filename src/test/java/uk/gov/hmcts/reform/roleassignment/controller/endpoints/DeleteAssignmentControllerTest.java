@@ -46,10 +46,10 @@ class DeleteAssignmentControllerTest {
     @DisplayName("should get 204 when role assignment records delete  successful")
     public void shouldDeleteRoleAssignmentByActorId() throws Exception {
 
-        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(ACTOR_ID, null, null)).
-            thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
+        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(ACTOR_ID, null, null))
+            .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
 
-        ResponseEntity response = sut.deleteRoleAssignment(null,ACTOR_ID, null, null);
+        ResponseEntity response = sut.deleteRoleAssignment(null, ACTOR_ID, null, null);
 
         assertAll(
             () -> assertNotNull(response),
@@ -61,10 +61,10 @@ class DeleteAssignmentControllerTest {
     @DisplayName("should get 204 when role assignment records delete  successful")
     public void shouldDeleteRoleAssignmentByProcessAndReference() throws Exception {
 
-        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, REFERENCE)).
-            thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
+        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, REFERENCE))
+            .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
 
-        ResponseEntity response = sut.deleteRoleAssignment(null,null, PROCESS, REFERENCE);
+        ResponseEntity response = sut.deleteRoleAssignment(null, null, PROCESS, REFERENCE);
 
         assertAll(
             () -> assertNotNull(response),
@@ -76,10 +76,10 @@ class DeleteAssignmentControllerTest {
     @DisplayName("should throw 400 Bad Request when actor Id is null")
     public void shouldThrowBadRequestWhenActorIdNull() throws Exception {
 
-        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, REFERENCE)).
-            thenThrow(new BadRequestException(BAD_REQUEST_MISSING_PARAMETERS));
+        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, REFERENCE))
+            .thenThrow(new BadRequestException(BAD_REQUEST_MISSING_PARAMETERS));
         Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.deleteRoleAssignment(null,null, PROCESS, REFERENCE);
+            sut.deleteRoleAssignment(null, null, PROCESS, REFERENCE);
         });
     }
 
@@ -87,10 +87,10 @@ class DeleteAssignmentControllerTest {
     @DisplayName("should throw 404 Resource Not Found  when reference is null")
     public void shouldThrowResourceNotFoundWhenReferenceNull() throws Exception {
 
-        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(ACTOR_ID, PROCESS, null)).
-            thenThrow(new ResourceNotFoundException(BAD_REQUEST_MISSING_PARAMETERS));
+        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(ACTOR_ID, PROCESS, null))
+            .thenThrow(new ResourceNotFoundException(BAD_REQUEST_MISSING_PARAMETERS));
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            sut.deleteRoleAssignment(null,ACTOR_ID, PROCESS, null);
+            sut.deleteRoleAssignment(null, ACTOR_ID, PROCESS, null);
         });
     }
 
