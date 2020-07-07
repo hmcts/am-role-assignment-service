@@ -18,6 +18,7 @@ when
 $role           : Role()
 $request        : Request()
 $requestedRole  : RoleAssignment(roleName == $role.getName())
+                  Request(requestType!= RequestType.DELETE)
                   Role($patterns : patterns)
                   Pattern($data : data) from $patterns
                   $classificationEntry : JsonNode() from $data["Classification"]
@@ -47,6 +48,7 @@ rule "role  validation for Judge P2 with existing case id" salience 55
 when
 $role           : Role()
 $request        : Request()
+                 Request(requestType!= RequestType.DELETE)
 $roleAssignment  : RoleAssignment(roleName == $role.getName())
                   Role($patterns : patterns)
                   Pattern($data : data) from $patterns
