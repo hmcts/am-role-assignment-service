@@ -177,7 +177,7 @@ sonarqube {
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     //property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/roleassignment/*," + "src/main/java/uk/gov/hmcts/reform/roleassignment/util/*Swagger2SpringBoot.java," + "src/main/java/uk/gov/hmcts/reform/roleassignment/controller/advice/*ErrorConstants.java," + "src/main/java/uk/gov/hmcts/reform/roleassignment/controller/advice/exception/**," + "src/main/java/uk/gov/hmcts/reform/roleassignment/configuration/**," + "src/main/java/uk/gov/hmcts/reform/roleassignment/model/enums/**," + "src/main/java/uk/gov/hmcts/reform/roleassignment/apihelper/**"
-    //property "sonar.junit.reportPaths", "${project.buildDir}/test-results/junit-platform"
+    property "sonar.junit.reportPaths", "${project.buildDir}/test-results/junit-platform"
   }
 }
 
