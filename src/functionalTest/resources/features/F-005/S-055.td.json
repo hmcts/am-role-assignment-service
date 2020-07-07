@@ -13,7 +13,7 @@
   "expectedResponse": {
     "_extends_": "BadRequestResponse",
     "body": {
-      "errorDescription" : "The input parameter: \"${[scenarioContext][testData][request][pathVariables][actorId]}\", does not comply with the required pattern"
+      "errorDescription": "The input parameter: \"${[scenarioContext][testData][request][pathVariables][actorId]}\", does not comply with the required pattern"
     }
   }
 }

@@ -16,7 +16,7 @@
   "expectedResponse": {
     "_extends_": "ResourceNotFoundResponse",
     "body": {
-      "errorDescription" : "Role Assignment not found for process : ${[scenarioContext][testData][request][pathVariables][process]} & reference : ${[scenarioContext][testData][request][pathVariables][reference]}"
+      "errorDescription": "Role Assignment not found for process : ${[scenarioContext][testData][request][pathVariables][process]} & reference : ${[scenarioContext][testData][request][pathVariables][reference]}"
     }
   }
 }
