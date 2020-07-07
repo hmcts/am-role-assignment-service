@@ -13,7 +13,7 @@
   "expectedResponse": {
     "_extends_": "ResourceNotFoundResponse",
     "body": {
-      "errorDescription" : "Role Assignment not found for Actor ${[scenarioContext][testData][request][pathVariables][actorId]}"
+      "errorDescription": "Role Assignment not found for Actor ${[scenarioContext][testData][request][pathVariables][actorId]}"
     }
   }
 }

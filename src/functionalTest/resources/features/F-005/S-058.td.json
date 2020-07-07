@@ -15,7 +15,7 @@
     }
   },
   "expectedResponse": {
-    "responseCode" : 304,
-    "responseMessage" : "Not Modified"
+    "responseCode": 304,
+    "responseMessage": "Not Modified"
   }
 }
