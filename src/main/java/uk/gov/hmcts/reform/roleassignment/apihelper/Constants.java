@@ -28,4 +28,19 @@ public class Constants {
 
     public static final String ROLES_JSON = "role.json";
     public static final String ROLE_JSON_PATTERNS_FIELD = "patterns";
+
+    public static final String ROLETYPE = "RoleType";
+    public static final String CLASSIFICATION = "Classification";
+    public static final String UUID = "UUID";
+    public static final String ACTORIDTYPE = "ActorIdType";
+    public static final String GRANTTYPE = "GrantType";
+    public static final String ROLECATEGORY = "RoleCategory";
+    public static final String BOOLEAN = "Boolean";
+    public static final String LOCALDATETIME = "LocalDateTime";
+    public static final String STATUS = "Status";
+    public static final String INTEGER = "Integer";
+
+    public static final String[] DESERIALIZEITEMTYPES = {ROLETYPE, CLASSIFICATION, UUID, ACTORIDTYPE, GRANTTYPE,
+        ROLECATEGORY, BOOLEAN,
+        LOCALDATETIME, STATUS, INTEGER};
 }
