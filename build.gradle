@@ -29,6 +29,7 @@ apply plugin: 'project-report'
 apply plugin: 'idea'
 apply plugin: 'io.spring.dependency-management'
 apply from: 'liquibase.gradle'
+apply plugin: 'org.sonarqube'
 
 def versions = [
   junit              : '5.5.0',
@@ -182,19 +183,16 @@ pitest {
   }
 }*/
 
+project.tasks['sonarqube'].dependsOn test, jacocoTestReport
+
 sonarqube {
   properties {
     property "sonar.projectName", "am-role-assignment-service"
     property "sonar.projectKey", "am-role-assignment-service"
     property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
-    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/roleassignment/controller/advice/exception/**," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/configuration/**," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/model/enums/**," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/apihelper/**"
+    property "sonar.exclusions",  "src/main/java/uk/gov/hmcts/reform/roleassignment/apihelper/**"
   }
 }
-
-project.tasks['sonarqube'].dependsOn jacocoTestReport
 
 dependencyUpdates.resolutionStrategy {
   componentSelection { rules ->
