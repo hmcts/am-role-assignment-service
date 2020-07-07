@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller.advice;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,6 @@ import uk.gov.hmcts.reform.roleassignment.apihelper.Constants;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
-import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -26,7 +24,7 @@ import java.util.Locale;
 
 import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DESERIALIZEITEMTYPES;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.BAD_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.INVALID_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.RESOURCE_NOT_FOUND;
@@ -75,27 +73,35 @@ public class RoleAssignmentControllerAdvice {
     }
 
     private ResponseEntity<ErrorResponse> deserializeError(final Exception exception, final HttpStatus httpStatus) {
+        ResponseEntity<ErrorResponse> result;
         String cause = exception.getMessage();
-        if (cause.contains("RoleType")) {
-            return new ResponseEntity<>(
-                ErrorResponse.builder()
-                    .errorCode(400)
-                    .errorDescription("The Role Type parameter is not valid")
-                    .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
-        } else if (cause.contains("UUID")) {
-            String inputStart = StringUtils.substringAfter(cause, "\"");
-            String inputEnd = StringUtils.substringBefore(inputStart, "\"");
-            try {
-                ValidationUtil.validateInputParams(UUID_PATTERN, inputEnd);
-            } catch (Exception e) {
+        result = stringContainsItemFromList(cause, httpStatus);
+        if (result == null) {
+            result = new ResponseEntity<>(ErrorResponse
+                                              .builder()
+                                              .errorCode(400)
+                                              .errorDescription(exception.getMessage())
+                                              .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
+        }
+        return result;
+    }
+
+    private static ResponseEntity<ErrorResponse> stringContainsItemFromList(String inputStr,
+                                                                            final HttpStatus httpStatus) {
+        for (String listItem : DESERIALIZEITEMTYPES) {
+            if (inputStr.toUpperCase().contains(listItem.toUpperCase())) {
                 return new ResponseEntity<>(
                     ErrorResponse.builder()
-                        .errorCode(400).errorDescription(e.getMessage() + ": UUID")
+                        .errorCode(400)
+                        .errorDescription(String.format("Input for %s parameter is not valid", listItem))
                         .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
             }
         }
-        return new ResponseEntity<>(ErrorResponse.builder().errorCode(400).errorDescription(exception.getMessage())
-                                        .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
+        return new ResponseEntity<>(
+            ErrorResponse.builder()
+                .errorCode(400)
+                .errorDescription("Unknown deserialization error")
+                .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
     }
 
     private ResponseEntity<ErrorResponse> nullError(final HttpStatus httpStatus) {
