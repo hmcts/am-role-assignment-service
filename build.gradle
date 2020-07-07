@@ -169,9 +169,9 @@ pitest {
   mutationThreshold = 40
 }
 
-sonarqube {
+/*sonarqube {
   properties {
-    property "sonar.projectName", "Reform :: :am-role-assignment-service"
+    property "sonar.projectName", "am-role-assignment-service"
     property "sonar.projectKey", "am-role-assignment-service"
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     property "sonar.pitest.mode", "reuseReport"
@@ -182,9 +182,20 @@ sonarqube {
       "src/main/java/uk/gov/hmcts/reform/roleassignment/apihelper/**"
     property "sonar.junit.reportPaths", "${project.buildDir}/test-results/junit-platform"
   }
+}*/
+
+sonarqube {
+  properties {
+    property "sonar.projectName", "am-role-assignment-service"
+    property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
+    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/roleassignment/controller/advice/exception/**," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/configuration/**," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/model/enums/**," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/apihelper/**"
+  }
 }
 
-project.tasks['sonarqube'].dependsOn test, jacocoTestReport
+project.tasks['sonarqube'].dependsOn jacocoTestReport
 project.tasks['sonarqube'].group = "Verification"
 
 dependencyUpdates.resolutionStrategy {
