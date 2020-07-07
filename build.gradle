@@ -152,8 +152,6 @@ jacocoTestReport {
   }
 }
 
-project.tasks['sonarqube'].dependsOn jacocoTestReport
-
 jacoco {
   toolVersion = "0.8.5"
 }
@@ -186,7 +184,7 @@ pitest {
 
 sonarqube {
   properties {
-    property "sonar.projectName", "role-assignment-service"
+    property "sonar.projectName", "am-role-assignment-service"
     property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
     property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/roleassignment/controller/advice/exception/**," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/configuration/**," +
@@ -196,7 +194,6 @@ sonarqube {
 }
 
 project.tasks['sonarqube'].dependsOn jacocoTestReport
-project.tasks['sonarqube'].group = "Verification"
 
 dependencyUpdates.resolutionStrategy {
   componentSelection { rules ->
