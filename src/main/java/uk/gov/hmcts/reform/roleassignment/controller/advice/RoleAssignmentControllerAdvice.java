@@ -1,17 +1,18 @@
 package uk.gov.hmcts.reform.roleassignment.controller.advice;
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import uk.gov.hmcts.reform.roleassignment.apihelper.Constants;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
@@ -23,13 +24,14 @@ import java.util.Locale;
 
 import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DESERIALIZEITEMTYPES;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.BAD_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.INVALID_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.RESOURCE_NOT_FOUND;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.UNKNOWN_EXCEPTION;
 
 @Slf4j
-@ControllerAdvice(basePackages = "uk.gov.hmcts.reform.roleassignment")
+@RestControllerAdvice(basePackages = "uk.gov.hmcts.reform.roleassignment")
 @RequestMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 public class RoleAssignmentControllerAdvice {
 
@@ -58,6 +60,47 @@ public class RoleAssignmentControllerAdvice {
             BAD_REQUEST.getErrorCode(),
             BAD_REQUEST.getErrorMessage()
         );
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> notReadableException(final HttpMessageNotReadableException e) {
+        return deserializeError(e);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ErrorResponse> nullException(final NullPointerException e) {
+        return new ResponseEntity<>(
+            ErrorResponse
+                .builder()
+                .errorCode(400)
+                .errorDescription("One of the required parameters is null. Please check the payload")
+                .errorMessage(Constants.BAD_REQUEST).build(), HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseEntity<ErrorResponse> deserializeError(final Exception exception) {
+        ResponseEntity<ErrorResponse> result;
+        result = stringContainsItemFromList(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        return result;
+    }
+
+    private static ResponseEntity<ErrorResponse> stringContainsItemFromList(final String cause,
+                                                                            final HttpStatus httpStatus) {
+        if (!cause.isEmpty()) {
+            for (String listItem : DESERIALIZEITEMTYPES) {
+                if (cause.toUpperCase().contains(listItem.toUpperCase())) {
+                    return new ResponseEntity<>(
+                        ErrorResponse.builder()
+                            .errorCode(400)
+                            .errorDescription(String.format("Input for %s parameter is not valid", listItem))
+                            .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
+                }
+            }
+        }
+        return new ResponseEntity<>(
+            ErrorResponse.builder()
+                .errorCode(400)
+                .errorDescription(cause)
+                .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
     }
 
     @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
