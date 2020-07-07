@@ -153,6 +153,8 @@ jacocoTestReport {
   }
 }
 
+project.tasks['sonarqube'].dependsOn jacocoTestReport
+
 jacoco {
   toolVersion = "0.8.5"
 }
@@ -168,7 +170,9 @@ pitest {
   mutationThreshold = 40
 }
 
-/*sonarqube {
+project.tasks['pitest'].group="verification"
+
+sonarqube {
   properties {
     property "sonar.projectName", "am-role-assignment-service"
     property "sonar.projectKey", "am-role-assignment-service"
@@ -181,16 +185,16 @@ pitest {
       "src/main/java/uk/gov/hmcts/reform/roleassignment/apihelper/**"
     property "sonar.junit.reportPaths", "${project.buildDir}/test-results/junit-platform"
   }
-}*/
+}
 
-sonarqube {
+/*sonarqube {
   properties {
     property "sonar.projectName", "am-role-assignment-service"
     property "sonar.projectKey", "am-role-assignment-service"
     property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
     property "sonar.exclusions",  "src/main/java/uk/gov/hmcts/reform/roleassignment/apihelper/**"
   }
-}
+}*/
 
 project.tasks['sonarqube'].dependsOn test, jacocoTestReport
 project.tasks['sonarqube'].group = "Verification"
