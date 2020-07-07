@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -67,14 +68,14 @@ public class TestDataBuilder {
             .created(timeStamp).build();
     }
 
-    private static Collection<RoleAssignment> buildRequestedRoleCollection() throws IOException {
+    public static Collection<RoleAssignment> buildRequestedRoleCollection() throws IOException {
         Collection<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRequestedRole());
         requestedRoles.add(buildRequestedRole());
         return requestedRoles;
     }
 
-    private static RoleAssignment buildRequestedRole() throws IOException {
+    public static RoleAssignment buildRequestedRole() throws IOException {
 
         LocalDateTime timeStamp = LocalDateTime.now();
 
@@ -211,6 +212,24 @@ public class TestDataBuilder {
 
     }
 
+    public static ActorCacheEntity buildActorCacheEntity() throws IOException {
+        HashMap<String, JsonNode> attributes = buildAttributesFromFile();
+        return ActorCacheEntity.builder()
+            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .etag(1)
+            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(attributes))
+            .build();
+
+    }
+
+    public static ResponseEntity<Object> buildRoleAssignmentResponse() throws Exception {
+        List<RoleAssignment> roleAssignments = (List<RoleAssignment>) buildRequestedRoleCollection();
+        return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(
+            roleAssignments,
+            UUID.randomUUID()
+        ));
+    }
+
     public ActorCacheEntity convertActorCacheToEntity(ActorCache actorCache) {
         return ActorCacheEntity.builder()
             .actorId(actorCache.getActorId())
@@ -247,6 +266,4 @@ public class TestDataBuilder {
         assert inputStream != null;
         return new ObjectMapper().readValue(inputStream, AssignmentRequest.class);
     }
-
-
 }
