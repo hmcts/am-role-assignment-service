@@ -1,0 +1,35 @@
+{
+  "_guid_": "S-021_CreationDataForRoleAssignment",
+  "_extends_": "CreationDataForRoleAssignment",
+  "request": {
+    "body": {
+      "roleRequest": {
+        "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][actorId]}",
+        "replaceExisting": true
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][parentContext][testData][request][pathVariables][actorId]}"
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "body": {
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][actorId]}",
+          "replaceExisting": true
+        },
+        "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][parentContext][testData][request][pathVariables][actorId]}",
+            "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][actorId]}"
+          }
+        ]
+      }
+    }
+  }
+}
