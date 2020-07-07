@@ -64,52 +64,42 @@ public class RoleAssignmentControllerAdvice {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> notReadableException(final HttpMessageNotReadableException e) {
-        return deserializeError(e, HttpStatus.BAD_REQUEST);
+        return deserializeError(e);
     }
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ErrorResponse> nullException(final NullPointerException e) {
-        return nullError(HttpStatus.BAD_REQUEST);
-    }
-
-    private ResponseEntity<ErrorResponse> deserializeError(final Exception exception, final HttpStatus httpStatus) {
-        ResponseEntity<ErrorResponse> result;
-        String cause = exception.getMessage();
-        result = stringContainsItemFromList(cause, httpStatus);
-        if (result == null) {
-            result = new ResponseEntity<>(ErrorResponse
-                                              .builder()
-                                              .errorCode(400)
-                                              .errorDescription(exception.getMessage())
-                                              .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
-        }
-        return result;
-    }
-
-    private static ResponseEntity<ErrorResponse> stringContainsItemFromList(String inputStr,
-                                                                            final HttpStatus httpStatus) {
-        for (String listItem : DESERIALIZEITEMTYPES) {
-            if (inputStr.toUpperCase().contains(listItem.toUpperCase())) {
-                return new ResponseEntity<>(
-                    ErrorResponse.builder()
-                        .errorCode(400)
-                        .errorDescription(String.format("Input for %s parameter is not valid", listItem))
-                        .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
-            }
-        }
-        return new ResponseEntity<>(
-            ErrorResponse.builder()
-                .errorCode(400)
-                .errorDescription("Unknown deserialization error")
-                .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
-    }
-
-    private ResponseEntity<ErrorResponse> nullError(final HttpStatus httpStatus) {
         return new ResponseEntity<>(
             ErrorResponse
                 .builder()
                 .errorCode(400)
                 .errorDescription("One of the required parameters is null. Please check the payload")
+                .errorMessage(Constants.BAD_REQUEST).build(), HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseEntity<ErrorResponse> deserializeError(final Exception exception) {
+        ResponseEntity<ErrorResponse> result;
+        result = stringContainsItemFromList(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        return result;
+    }
+
+    private static ResponseEntity<ErrorResponse> stringContainsItemFromList(final String cause,
+                                                                            final HttpStatus httpStatus) {
+        if (!cause.isEmpty()) {
+            for (String listItem : DESERIALIZEITEMTYPES) {
+                if (cause.toUpperCase().contains(listItem.toUpperCase())) {
+                    return new ResponseEntity<>(
+                        ErrorResponse.builder()
+                            .errorCode(400)
+                            .errorDescription(String.format("Input for %s parameter is not valid", listItem))
+                            .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
+                }
+            }
+        }
+        return new ResponseEntity<>(
+            ErrorResponse.builder()
+                .errorCode(400)
+                .errorDescription(cause)
                 .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
     }
 
