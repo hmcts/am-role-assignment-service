@@ -94,9 +94,6 @@ public class ParseRequestService {
         if (actorId != null) {
             ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
         }
-        if (assignmentId != null) {
-            ValidationUtil.validateInputParams(UUID_PATTERN, assignmentId);
-        }
 
         Request request = Request.builder()
                                  .clientId(securityUtils.getServiceId())
@@ -106,12 +103,15 @@ public class ParseRequestService {
                                  .created(LocalDateTime.now())
                                  .process(process)
                                  .reference(reference)
-                                 .roleAssignmentId(UUID.fromString(assignmentId))
                                  .build();
         setCorrelationId(request);
         setAssignerId(request);
-        return request;
 
+        if (assignmentId != null) {
+            ValidationUtil.validateInputParams(UUID_PATTERN, assignmentId);
+            request.setRoleAssignmentId(UUID.fromString(assignmentId));
+        }
+        return request;
     }
 
     private void setAssignerId(Request request) {

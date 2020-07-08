@@ -2,8 +2,8 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORD_FOUND_BY_ASSIGNMENT_ID;
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_PROCESS;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORD_FOUND_BY_ASSIGNMENT_ID;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -28,10 +28,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelS
 @Service
 public class DeleteRoleAssignmentOrchestrator {
 
-
-    private PersistenceService persistenceService;
-    private ParseRequestService parseRequestService;
-    private ValidationModelService validationModelService;
+    private final PersistenceService persistenceService;
+    private final ParseRequestService parseRequestService;
+    private final ValidationModelService validationModelService;
     RequestEntity requestEntity;
     AssignmentRequest assignmentRequest;
     Request request;
