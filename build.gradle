@@ -341,6 +341,7 @@ dependencies {
 
 
 test {
+  finalizedBy jacocoTestReport
   generateCucumberReports.enabled = false
   useJUnitPlatform()
   failFast = true
