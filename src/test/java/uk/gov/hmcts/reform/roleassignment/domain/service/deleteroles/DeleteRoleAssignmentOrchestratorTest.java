@@ -196,7 +196,7 @@ class DeleteRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    @DisplayName("should throw 400 when  reference doesn't exist")
+    @DisplayName("should throw 400 when reference doesn't exist")
     void shouldThrowBadRequestWhenReferenceNotExist() throws Exception {
         mockRequest();
         Assertions.assertThrows(BadRequestException.class, () -> {
