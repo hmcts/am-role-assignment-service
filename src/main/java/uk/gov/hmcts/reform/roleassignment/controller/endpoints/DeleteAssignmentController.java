@@ -94,7 +94,7 @@ public class DeleteAssignmentController {
                       ),
                       @ApiResponse(
                           code = 404,
-                          message = V1.Error.NO_RECORDS_FOUND_BY_ASSIGNMENT_ID
+                          message = V1.Error.NO_RECORD_FOUND_BY_ASSIGNMENT_ID
                       )
                   })
     public ResponseEntity<Object> deleteRoleAssignmentById(

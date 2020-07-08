@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ASSIGNMENT_ID;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORD_FOUND_BY_ASSIGNMENT_ID;
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_PROCESS;
 
 import java.util.Collections;
@@ -81,7 +81,7 @@ public class DeleteRoleAssignmentOrchestrator {
         } else {
             requestedRoles = persistenceService.getAssignmentById(UUID.fromString(assignmentId));
             if (requestedRoles.isEmpty()) {
-                throw new ResourceNotFoundException(String.format(NO_RECORDS_FOUND_BY_ASSIGNMENT_ID, assignmentId));
+                throw new ResourceNotFoundException(String.format(NO_RECORD_FOUND_BY_ASSIGNMENT_ID, assignmentId));
             }
         }
 

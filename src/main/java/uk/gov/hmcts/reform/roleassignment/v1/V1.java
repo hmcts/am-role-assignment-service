@@ -30,7 +30,7 @@ public final class V1 {
         public static final String NO_RECORDS_FOUND_BY_ACTOR = "Role Assignment not found for Actor ";
         public static final String NO_RECORDS_FOUND_BY_PROCESS = "Role Assignment not found for process "
             + ": %s & reference : %s";
-        public static final String NO_RECORDS_FOUND_BY_ASSIGNMENT_ID = "Role Assignment not found for id : %s";
+        public static final String NO_RECORD_FOUND_BY_ASSIGNMENT_ID = "Role Assignment not found for id : %s";
         public static final String BAD_REQUEST_MISSING_PARAMETERS = "Mandatory Parameters are missing";
 
     }
