@@ -29,6 +29,7 @@ apply plugin: 'project-report'
 apply plugin: 'idea'
 apply plugin: 'io.spring.dependency-management'
 apply from: 'liquibase.gradle'
+apply plugin: 'org.sonarqube'
 
 def versions = [
   junit              : '5.5.0',
@@ -169,6 +170,7 @@ pitest {
   mutationThreshold = 40
 }
 
+project.tasks['pitest'].group="verification"
 
 sonarqube {
   properties {
@@ -177,7 +179,10 @@ sonarqube {
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/**"
+    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/roleassignment/controller/advice/exception/**," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/configuration/**," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/model/enums/**," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/apihelper/**"
     property "sonar.junit.reportPaths", "${project.buildDir}/test-results/junit-platform"
   }
 }
@@ -326,6 +331,7 @@ dependencies {
 
 
 test {
+  finalizedBy jacocoTestReport
   generateCucumberReports.enabled = false
   useJUnitPlatform()
   failFast = true
