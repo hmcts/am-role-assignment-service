@@ -28,9 +28,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelS
 @Service
 public class DeleteRoleAssignmentOrchestrator {
 
-    private final PersistenceService persistenceService;
-    private final ParseRequestService parseRequestService;
-    private final ValidationModelService validationModelService;
+    private PersistenceService persistenceService;
+    private ParseRequestService parseRequestService;
+    private ValidationModelService validationModelService;
     RequestEntity requestEntity;
     AssignmentRequest assignmentRequest;
     Request request;
