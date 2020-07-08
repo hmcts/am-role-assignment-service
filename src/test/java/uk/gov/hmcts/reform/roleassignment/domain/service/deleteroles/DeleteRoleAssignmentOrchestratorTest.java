@@ -193,9 +193,9 @@ class DeleteRoleAssignmentOrchestratorTest {
     }
 
     private void mockRequest(String process, String reference, String actorId, String assignmentId) throws Exception {
-        when(parseRequestService.prepareDeleteRequest(process, reference, actorId, assignmentId)).thenReturn(
+        when(parseRequestService.prepareDeleteRequest(any(), any(), any(), any())).thenReturn(
             assignmentRequest.getRequest());
-        when(persistenceService.persistRequest(assignmentRequest.getRequest())).thenReturn(requestEntity);
+        when(persistenceService.persistRequest(any())).thenReturn(requestEntity);
     }
 
     private void setApprovedStatusByDrool() {
