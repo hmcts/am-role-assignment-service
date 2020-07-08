@@ -175,7 +175,7 @@ project.tasks['pitest'].group="verification"
 sonarqube {
   properties {
     property "sonar.projectName", "role-assignment-service"
-    property "sonar.projectKey", "am-role-assignment-service"
+    property "sonar.projectKey", "m-role-assignment-service"
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
