@@ -37,6 +37,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
 
 @RunWith(MockitoJUnitRunner.class)
 class DeleteRoleAssignmentOrchestratorTest {
@@ -134,18 +135,18 @@ class DeleteRoleAssignmentOrchestratorTest {
     }
 
 
-    /*@Test
+    @Test
     @DisplayName("should get 409 Conflict when request is rejected by drool rules")
     public void shouldReturn409WhenDroolValidationRejectRequest() throws Exception {
         historyEntity.setStatus(DELETE_REJECTED.toString());
-        mockRequest(null, null, ACTOR_ID);
+        mockRequest(null, null, ACTOR_ID,null);
         when(persistenceService.getAssignmentsByActor(UUID.fromString(ACTOR_ID)))
             .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
         mockHistoryEntity();
         ResponseEntity response = sut.deleteRoleAssignment(ACTOR_ID, null, null, null);
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         assertion();
-    }*/
+    }
 
     @Test
     @DisplayName("should delete records from role_assignment table for a valid Assignment Id")
