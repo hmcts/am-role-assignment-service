@@ -19,6 +19,7 @@ $role           : Role()
 $request        : Request()
 $requestedRole  : RoleAssignment(roleName == $role.getName())
                   Request(requestType!= RequestType.DELETE)
+                  RoleAssignment(roleType=RoleType.ORGANISATION)
                   Role($patterns : patterns)
                   Pattern($data : data) from $patterns
                   $classificationEntry : JsonNode() from $data["Classification"]
@@ -50,6 +51,7 @@ $role           : Role()
 $request        : Request()
                  Request(requestType!= RequestType.DELETE)
 $roleAssignment  : RoleAssignment(roleName == $role.getName())
+                    RoleAssignment(roleType=RoleType.CASE)
                   Role($patterns : patterns)
                   Pattern($data : data) from $patterns
                   $classificationEntry : JsonNode() from $data["Classification"]
