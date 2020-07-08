@@ -1,0 +1,57 @@
+{
+  "title": "must receive a Reject response when creation of any Role Assignment not successful",
+  "_guid_": "S-004",
+  "_extends_": "F-001_Test_Data_Base",
+  "specs": [
+    "contains multiple Role Assignments where one of the role has invalid data"
+  ],
+  "request": {
+    "body": {
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole"
+        },
+        {
+          "_extends_": "RequestedRole",
+          "roleType": "ORGANISATION",
+          "grantType": "SPECIFIC"
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "responseCode": 409,
+    "responseMessage": "Conflict",
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "roleRequest": {
+        "id": "[[ANYTHING_PRESENT]]",
+        "correlationId": "${[scenarioContext][testData][request][headers][X-Correlation-ID]}",
+        "authenticatedUserId": "[[ANYTHING_PRESENT]]",
+        "assignerId": "${[scenarioContext][testData][request][body][roleRequest][assignerId]}",
+        "requestType": "CREATE",
+        "status": "REJECTED",
+        "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+        "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+        "replaceExisting": false,
+        "created": "[[ANYTHING_PRESENT]]",
+        "log": "[[ANYTHING_PRESENT]]"
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "ResponseRequestedRole",
+          "status":"REJECTED"
+        },
+        {
+          "_extends_": "ResponseRequestedRole",
+          "roleType": "ORGANISATION",
+          "grantType": "SPECIFIC",
+          "status":"REJECTED"
+        }
+      ]
+    }
+  }
+}

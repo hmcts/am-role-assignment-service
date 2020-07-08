@@ -1,13 +1,16 @@
 {
-  "title": "must successfully create single Role Assignment with only mandatory fields",
-  "_guid_": "S-001",
+  "title": "must successfully create multiple Role Assignments",
+  "_guid_": "S-002",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
-    "contains a single Role Assignment with only mandatory fields"
+    "contains multiple Role Assignments"
   ],
   "request": {
     "body": {
       "requestedRoles": [
+        {
+          "_extends_": "RequestedRole"
+        },
         {
           "_extends_": "RequestedRole",
           "roleType": "ORGANISATION",
@@ -26,6 +29,9 @@
       "links": [],
       "roleAssignmentResponse": {
         "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRole"
+          },
           {
             "_extends_": "ResponseRequestedRole",
             "roleType": "ORGANISATION",
