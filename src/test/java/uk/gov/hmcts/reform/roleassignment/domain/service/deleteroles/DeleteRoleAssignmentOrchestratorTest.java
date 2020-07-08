@@ -150,6 +150,36 @@ class DeleteRoleAssignmentOrchestratorTest {
     }
 
     @Test
+    @DisplayName("should delete records from role_assignment table for a valid Assignment Id")
+    public void shouldDeleteRecordsFromRoleAssignment() throws Exception {
+    }
+
+    @Test
+    @DisplayName("should throw 400 exception for a syntactically bad Assignment id")
+    public void shouldThrowBadRequestForMalformedAssignmentId() throws Exception {
+    }
+
+    @Test
+    @DisplayName("should throw 404 exception for a non existing Assignment id")
+    public void shouldThrowNotFoundForAssignmentId() throws Exception {
+    }
+
+    @Test
+    @DisplayName("should not delete any records if delete approved records are zero")
+    public void shouldNotDeleteRecordsForZeroApprovedItems() throws Exception {
+    }
+
+    @Test
+    @DisplayName("should not delete any records if delete approved records don't match requested items")
+    public void shouldNotDeleteRecordsForNonMatchingRequestItems() throws Exception {
+    }
+
+    @Test
+    @DisplayName("should throw Conflict 409 if any record is rejected for deletion")
+    public void shouldThrowConflictIfRecordIsRejected() throws Exception {
+    }
+
+    @Test
     @DisplayName("should throw 400 when  reference doesn't exist")
     public void shouldThrowBadRequestWhenReferenceNotExist() throws Exception {
         mockRequest(PROCESS, REFERENCE, null);
