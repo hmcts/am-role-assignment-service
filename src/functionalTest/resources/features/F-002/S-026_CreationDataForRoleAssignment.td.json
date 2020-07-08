@@ -1,0 +1,49 @@
+{
+  "_guid_": "S-026_CreationDataForRoleAssignment",
+  "_extends_": "CreationDataForRoleAssignment",
+  "specs": [
+    "to create multiple role assignment for an actor"
+  ],
+  "request": {
+    "body": {
+      "roleRequest": {
+        "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}",
+        "replaceExisting": true
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}"
+        },
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}",
+          "grantType": "CHALLENGED"
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "body": {
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}",
+          "replaceExisting": true
+        },
+        "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}",
+            "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}"
+          },
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}",
+            "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}",
+            "grantType": "CHALLENGED"
+          }
+        ]
+      }
+    }
+  }
+}

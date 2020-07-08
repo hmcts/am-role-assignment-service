@@ -1,5 +1,12 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -16,11 +23,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
-
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class PersistenceService {
@@ -154,6 +156,16 @@ public class PersistenceService {
         return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
             .collect(Collectors.toList());
 
+    }
+
+    public List<RoleAssignment> getAssignmentById(UUID assignmentId) {
+        Optional<RoleAssignmentEntity> roleAssignmentEntityOptional = roleAssignmentRepository.findById(assignmentId);
+        if (roleAssignmentEntityOptional.isPresent()) {
+            return roleAssignmentEntityOptional.stream()
+                                               .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+                                               .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 
 }

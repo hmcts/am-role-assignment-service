@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelS
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -85,6 +86,7 @@ public class CreateRoleAssignmentOrchestrator {
 
         //8. Call the persistence to copy assignment records to RoleAssignmentLive table
         ResponseEntity<Object> result = prepareResponseService.prepareCreateRoleResponse(parsedAssignmentRequest);
+
         parseRequestService.removeCorrelationLog();
         return result;
     }
@@ -99,7 +101,7 @@ public class CreateRoleAssignmentOrchestrator {
                                                                                                    );
 
         //create a new existing assignment request for delete records
-        existingAssignmentRequest = new AssignmentRequest();
+        existingAssignmentRequest = new AssignmentRequest(new Request(), Collections.emptyList());
         existingAssignmentRequest.setRequest(parsedAssignmentRequest.getRequest());
         existingAssignmentRequest.setRequestedRoles(existingAssignments);
         return existingAssignmentRequest;
