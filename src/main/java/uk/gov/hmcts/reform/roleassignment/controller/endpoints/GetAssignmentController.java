@@ -14,7 +14,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +36,6 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.util.UUID;
 
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.APPLICATION_JSON;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.ROLES_JSON;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.ROLE_JSON_PATTERNS_FIELD;
 
@@ -65,8 +63,7 @@ public class GetAssignmentController {
 
     @GetMapping(
         path = "/am/role-assignments/actors/{actorId}",
-        produces = V1.MediaType.GET_ASSIGNMENT,
-        consumes = APPLICATION_JSON
+        produces = V1.MediaType.GET_ASSIGNMENTS
     )
     @ApiOperation("Retrieve JSON representation of multiple Role Assignment records.")
     @ApiResponses({
@@ -86,9 +83,12 @@ public class GetAssignmentController {
     })
     public ResponseEntity<Object> retrieveRoleAssignmentsByActorId(
 
+        @RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch,
+
         @ApiParam(value = "Actor Id ", required = true)
         @PathVariable("actorId") String actorId) throws Exception {
 
+        log.info("ifNoneMatch :::: {}", ifNoneMatch);
         log.info("actorId :::: {}", actorId);
         ResponseEntity<?> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
             actorId
@@ -137,8 +137,8 @@ public class GetAssignmentController {
     //**************** Get Roles  API ***************
 
     @GetMapping(
-        path = "/role-assignments/roles",
-        produces = "application/json"
+        path = "/am/role-assignments/roles",
+        produces = V1.MediaType.GET_ROLES
     )
     @ResponseStatus(code = HttpStatus.OK)
     @ApiOperation("retrieves a list of roles available in role assignment service")
@@ -147,19 +147,11 @@ public class GetAssignmentController {
             code = 200,
             message = "Ok",
             response = Object.class
-        ),
-        @ApiResponse(
-            code = 415,
-            message = "Unsupported Media Type"
         )
     })
-    public ResponseEntity<Object> getListOfRoles(@RequestHeader("Content-Type") String contentType) throws Exception {
+    public ResponseEntity<Object> getListOfRoles() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode;
-        if (!contentType.equals(APPLICATION_JSON)) {
-            throw new HttpMediaTypeNotAcceptableException(
-                "Content type request header must be of type: " + APPLICATION_JSON);
-        }
         try (InputStream input = GetAssignmentController.class.getClassLoader().getResourceAsStream(ROLES_JSON)) {
             assert input != null;
             rootNode = mapper.readTree(input);

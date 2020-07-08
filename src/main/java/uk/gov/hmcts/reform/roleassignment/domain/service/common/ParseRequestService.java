@@ -117,6 +117,9 @@ public class ParseRequestService {
             request.setAssignerId(request.getAuthenticatedUserId());
         } else {
             request.setAssignerId(UUID.fromString(assignerId));
+            ValidationUtil.validateInputParams(UUID_PATTERN, request.getAssignerId().toString());
         }
+
+
     }
 }

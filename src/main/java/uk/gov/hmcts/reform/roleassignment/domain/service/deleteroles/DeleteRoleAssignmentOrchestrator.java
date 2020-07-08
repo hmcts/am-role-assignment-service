@@ -64,7 +64,7 @@ public class DeleteRoleAssignmentOrchestrator {
         if (actorId != null) {
             requestedRoles = persistenceService.getAssignmentsByActor(UUID.fromString(actorId));
             if (requestedRoles.isEmpty()) {
-                throw new ResourceNotFoundException(String.format(NO_RECORDS_FOUND_BY_ACTOR, actorId));
+                throw new ResourceNotFoundException(String.format(NO_RECORDS_FOUND_BY_ACTOR + "%s", actorId));
             }
 
         } else if (process != null && reference != null) {
@@ -89,8 +89,12 @@ public class DeleteRoleAssignmentOrchestrator {
         //6. check status updated by drools and take decision
         checkAllDeleteApproved(assignmentRequest, actorId);
 
+        if (assignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(assignmentRequest.getRequest());
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 
@@ -150,6 +154,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
             // Update request status to REJECTED
             updateRequestStatus(validatedAssignmentRequest, Status.REJECTED);
+
 
         }
     }

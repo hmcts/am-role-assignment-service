@@ -34,8 +34,8 @@ public class CreateAssignmentController {
     //**************** Create Role Assignment  API ***************
 
     @PostMapping(
-        path = "/role-assignment",
-        produces = V1.MediaType.CREATE_ASSIGNMENT,
+        path = "/am/role-assignments",
+        produces = V1.MediaType.CREATE_ASSIGNMENTS,
         consumes = {"application/json"}
     )
     @ResponseStatus(code = HttpStatus.CREATED)

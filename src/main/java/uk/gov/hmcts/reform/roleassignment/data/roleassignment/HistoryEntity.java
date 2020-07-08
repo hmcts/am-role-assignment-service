@@ -90,6 +90,7 @@ public class HistoryEntity implements Serializable {
     @Convert(converter = JsonBConverter.class)
     private JsonNode notes;
 
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id")
     private RequestEntity requestEntity;
