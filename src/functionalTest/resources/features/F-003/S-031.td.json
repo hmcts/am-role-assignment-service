@@ -1,0 +1,11 @@
+{
+  "title": "must successfully delete single Role Assignment by Role Assignment Id",
+  "_guid_": "S-031",
+  "_extends_": "F-003_Test_Data_Base",
+  "specs": [
+    "contains a Role Assignment Id"
+  ],
+  "expectedResponse": {
+    "_extends_": "Common_204_Response"
+  }
+}
