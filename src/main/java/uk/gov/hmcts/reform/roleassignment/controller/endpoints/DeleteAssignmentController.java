@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -67,9 +69,37 @@ public class DeleteAssignmentController {
                                                        @RequestParam(value = "reference", required = false)
                                                            String reference) throws Exception {
         LOG.info("Request raised by assigner : {}", assignerId);
-        return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(actorId, process, reference);
+        return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(actorId, process, reference, null);
 
     }
 
-
+    @DeleteMapping(
+        path = "am/role-assignments/{assignmentId}",
+        produces = V1.MediaType.DELETE_ASSIGNMENTS
+    )
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    @ApiOperation("Deletes the role assignment by assignment id.")
+    @ApiResponses({
+                      @ApiResponse(
+                          code = 204,
+                          message = "No Content"
+                      ),
+                      @ApiResponse(
+                          code = 400,
+                          message = V1.Error.BAD_REQUEST_INVALID_PARAMETER
+                      ),
+                      @ApiResponse(
+                          code = 400,
+                          message = V1.Error.BAD_REQUEST_MISSING_PARAMETERS
+                      ),
+                      @ApiResponse(
+                          code = 404,
+                          message = V1.Error.NO_RECORDS_FOUND_BY_ASSIGNMENT_ID
+                      )
+                  })
+    public ResponseEntity<Object> deleteRoleAssignmentById(
+        @ApiParam(value = "assignmentId", required = true)
+        @PathVariable String assignmentId) throws Exception {
+        return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, null, null, assignmentId);
+    }
 }
