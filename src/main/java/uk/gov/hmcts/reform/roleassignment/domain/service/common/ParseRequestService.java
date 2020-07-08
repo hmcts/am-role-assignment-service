@@ -123,10 +123,8 @@ public class ParseRequestService {
         if (StringUtils.isBlank(assignerId)) {
             request.setAssignerId(request.getAuthenticatedUserId());
         } else {
+            ValidationUtil.validateInputParams(UUID_PATTERN, assignerId);
             request.setAssignerId(UUID.fromString(assignerId));
-            ValidationUtil.validateInputParams(UUID_PATTERN, request.getAssignerId().toString());
         }
-
-
     }
 }
