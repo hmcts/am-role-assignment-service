@@ -125,8 +125,6 @@ public class DeleteRoleAssignmentOrchestrator {
                 requestedRole.status = Status.DELETE_APPROVED;
                 requestedRole.statusSequence = Status.DELETE_APPROVED.sequence;
             }
-            requestedRole.status = Status.DELETE_APPROVED;
-            requestedRole.statusSequence = Status.DELETE_APPROVED.sequence;
             // persist history in db
             requestEntity.getHistoryEntities().add(persistenceService.persistHistory(requestedRole, request));
 
