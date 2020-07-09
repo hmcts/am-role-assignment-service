@@ -1,0 +1,69 @@
+{
+  "title": "must receive an error response when creation of any Role Assignment is not successful where ReplaceExisting is True",
+  "_guid_": "S-019",
+  "_extends_": "F-001_Test_Data_Base",
+  "specs": [
+    "contains ReplaceExisting is true and have process and Reference values",
+    "contains multiple Role Assignments where one of the role has invalid data"
+  ],
+  "request": {
+    "body": {
+      "roleRequest": {
+        "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+        "process": "S-019",
+        "reference": "S-019",
+        "replaceExisting": true
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole"
+        },
+        {
+          "_extends_": "RequestedRole",
+          "roleType": "ORGANISATION",
+          "grantType": "CHALLENGED"
+        }
+      ]
+    }
+  },
+
+  "expectedResponse": {
+    "responseCode": 409,
+    "responseMessage": "Conflict",
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "roleRequest": {
+        "id": "[[ANYTHING_PRESENT]]",
+        "correlationId": "${[scenarioContext][testData][request][headers][X-Correlation-ID]}",
+        "authenticatedUserId": "[[ANYTHING_PRESENT]]",
+        "assignerId": "${[scenarioContext][testData][request][body][roleRequest][assignerId]}",
+        "requestType": "CREATE",
+        "status": "REJECTED",
+        "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+        "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+        "replaceExisting": false,
+        "created": "[[ANYTHING_PRESENT]]",
+        "log": "[[ANYTHING_PRESENT]]"
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "ResponseRequestedRole",
+          "status":"REJECTED",
+          "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+        },
+        {
+          "_extends_": "ResponseRequestedRole",
+          "roleType": "ORGANISATION",
+          "grantType": "CHALLENGED",
+          "status":"REJECTED",
+          "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+        }
+      ]
+    }
+  }
+}

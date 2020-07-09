@@ -1,17 +1,18 @@
 {
-  "title": "must receive a Reject response when RoleName not matched",
-  "_guid_": "S-006",
+  "title": "must receive an error response when BeginTime is less than current time",
+  "_guid_": "S-008",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
     "contains a single Role Assignment",
-    "contains an invalid RoleName"
+    "contains BeginTime is less than current time"
   ],
   "request": {
     "body": {
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "roleName": "SupremeCourtJudge"
+          "beginTime" : "2020-01-01T00:00",
+          "endTime" : "2023-01-01T00:00"
         }
       ]
     }
