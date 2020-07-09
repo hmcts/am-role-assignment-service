@@ -133,7 +133,7 @@ public class DeleteRoleAssignmentOrchestrator {
         persistenceService.persistRequestToHistory(requestEntity);
     }
 
-    private void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
+    public void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
         // decision block
         List<RoleAssignment> deleteApprovedRoles = validatedAssignmentRequest.getRequestedRoles().stream()
             .filter(role -> role.getStatus()
@@ -151,9 +151,7 @@ public class DeleteRoleAssignmentOrchestrator {
             // Update request status to approved
             updateRequestStatus(validatedAssignmentRequest, Status.APPROVED);
 
-
         } else {
-
 
             //Insert requested roles  into history table with status deleted-Rejected
             insertRequestedRole(validatedAssignmentRequest, Status.DELETE_REJECTED);
@@ -161,11 +159,10 @@ public class DeleteRoleAssignmentOrchestrator {
             // Update request status to REJECTED
             updateRequestStatus(validatedAssignmentRequest, Status.REJECTED);
 
-
         }
     }
 
-    private void deleteLiveRecords(AssignmentRequest validatedAssignmentRequest, String actorId) {
+     public void deleteLiveRecords(AssignmentRequest validatedAssignmentRequest, String actorId) {
         if (actorId != null) {
             for (RoleAssignment requestedRole : validatedAssignmentRequest.getRequestedRoles()) {
                 persistenceService.deleteRoleAssignmentByActorId(requestedRole.getActorId());
