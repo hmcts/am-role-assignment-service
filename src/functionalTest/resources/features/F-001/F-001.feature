@@ -39,7 +39,7 @@ Feature: F-001 : Create Role Assignments
     And the request [contains multiple Role Assignments where one of the role has invalid data],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
     Then a negative response is received,
-#    And the response has all other details as expected.
+    And the response has all other details as expected.
 
   @S-005
   Scenario: must receive a Reject response when rule validation failed
@@ -49,7 +49,7 @@ Feature: F-001 : Create Role Assignments
     And the request [contains data which is not as per rule validations],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
     Then a negative response is received,
-#    And the response has all other details as expected.
+    And the response has all other details as expected.
 
   @S-006
   Scenario: must receive an error response when RoleName not matched
@@ -69,7 +69,7 @@ Feature: F-001 : Create Role Assignments
     And the request [contains ReplaceExisting is true and either process or Reference value is missed],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
     Then a negative response is received,
-#    And the response has all other details as expected.
+    And the response has all other details as expected.
 
   @S-008
   Scenario: must receive an error response when BeginTime is less than current time
@@ -79,7 +79,7 @@ Feature: F-001 : Create Role Assignments
     And the request [contains BeginTime is less than current time],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
     Then a negative response is received,
-#    And the response has all other details as expected.
+    And the response has all other details as expected.
 
   @S-009
   Scenario: must receive an error response when EndTime is less than current time
@@ -89,7 +89,7 @@ Feature: F-001 : Create Role Assignments
     And  the request [contains EndTime is less than current time],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
     Then a negative response is received,
-#    And the response has all other details as expected.
+    And the response has all other details as expected.
 
   @S-010
   Scenario: must receive an error response when EndTime is less than BeginTime
@@ -99,7 +99,7 @@ Feature: F-001 : Create Role Assignments
     And the request [contains EndTime is less than BeginTime],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
     Then a negative response is received,
-#    And the response has all other details as expected.
+    And the response has all other details as expected.
 
   @S-012
   Scenario: must successfully create single Role Assignment with RoleTypeId as organisational
@@ -120,7 +120,6 @@ Feature: F-001 : Create Role Assignments
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
     Then a positive response is received,
     And the response has all other details as expected.
-
 
   @S-018
   Scenario: must successfully create multiple Role Assignments when ReplaceExisting is True with Process and Reference

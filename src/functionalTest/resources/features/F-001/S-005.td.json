@@ -26,17 +26,8 @@
     },
     "body": {
       "roleRequest": {
-        "id": "[[ANYTHING_PRESENT]]",
-        "correlationId": "${[scenarioContext][testData][request][headers][X-Correlation-ID]}",
-        "authenticatedUserId": "[[ANYTHING_PRESENT]]",
-        "assignerId": "${[scenarioContext][testData][request][body][roleRequest][assignerId]}",
-        "requestType": "CREATE",
-        "status": "REJECTED",
-        "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
-        "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-        "replaceExisting": false,
-        "created": "[[ANYTHING_PRESENT]]",
-        "log": "[[ANYTHING_PRESENT]]"
+        "_extends_": "ResponseRoleRequest",
+        "status": "REJECTED"
       },
       "requestedRoles": [
         {

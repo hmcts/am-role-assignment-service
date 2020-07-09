@@ -25,6 +25,9 @@
     "body": {
       "links": [],
       "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest"
+        },
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",

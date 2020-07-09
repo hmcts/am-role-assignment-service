@@ -18,9 +18,9 @@
     }
   },
   "expectedResponse": {
-    "_extends_": "Common_400_Response",
-    "body": {
-      "_extends_": "BadRequestResponse"
+    "_extends_": "BadRequestResponse",
+    "body" : {
+      "errorDescription" :  "[[ANYTHING_PRESENT]]"
     }
   }
 }

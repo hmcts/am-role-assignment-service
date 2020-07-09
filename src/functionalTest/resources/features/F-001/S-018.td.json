@@ -36,23 +36,24 @@
       "links": [],
       "roleAssignmentResponse": {
         "roleRequest": {
+          "_extends_": "ResponseRoleRequest",
           "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-          "process": "S-018",
-          "reference": "S-018",
+          "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "replaceExisting": true
         },
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "process": "S-018",
-            "reference": "S-018"
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
           },
           {
             "_extends_": "ResponseRequestedRole",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
-            "process": "S-018",
-            "reference": "S-018"
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
           }
         ]
       }
