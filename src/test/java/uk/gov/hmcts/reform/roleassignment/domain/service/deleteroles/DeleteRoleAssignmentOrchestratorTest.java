@@ -187,7 +187,7 @@ class DeleteRoleAssignmentOrchestratorTest {
     @Test
     @DisplayName("should not delete any records if delete approved records are zero")
     void shouldNotDeleteRecordsForZeroApprovedItems() throws Exception {
-    mockRequest();
+        mockRequest();
         when(persistenceService.persistHistory(any(), any())).thenReturn(historyEntity);
         sut.requestEntity = new RequestEntity();
         sut.checkAllDeleteApproved(new AssignmentRequest(new Request(), Collections.emptyList()), "actorId");
@@ -205,12 +205,14 @@ class DeleteRoleAssignmentOrchestratorTest {
         sut.requestEntity = requestEntity;
         sut.checkAllDeleteApproved(new AssignmentRequest(
             new Request(),
-            new ArrayList<>() {{
-                add(RoleAssignment.builder().status(DELETE_APPROVED).build());
-                add(RoleAssignment.builder().status(DELETE_REJECTED).build());
-                add(RoleAssignment.builder().status(DELETED).build());
+            new ArrayList<>() {
+                {
+                    add(RoleAssignment.builder().status(DELETE_APPROVED).build());
+                    add(RoleAssignment.builder().status(DELETE_REJECTED).build());
+                    add(RoleAssignment.builder().status(DELETED).build());
 
-            }}
+                }
+            }
         ), "actorId");
         verify(persistenceService, times(0)).deleteRoleAssignmentByActorId(any());
         verify(persistenceService, times(0)).persistActorCache(any());
@@ -224,13 +226,16 @@ class DeleteRoleAssignmentOrchestratorTest {
         setApprovedStatusByDrool();
         mockRequest();
         when(persistenceService.getAssignmentsByActor(UUID.fromString(ACTOR_ID)))
-            .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
+            .thenReturn(new ArrayList<>() {
+                {
+                    add(RoleAssignment.builder().status(DELETE_APPROVED).build());
+                    add(RoleAssignment.builder().status(DELETE_REJECTED).build());
+                    add(RoleAssignment.builder().status(DELETED).build());
+                }
+            });
         mockHistoryEntity();
         ResponseEntity response = sut.deleteRoleAssignment(ACTOR_ID, null, null, null);
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        verify(persistenceService, times(2)).deleteRoleAssignmentByActorId(UUID.fromString(ACTOR_ID));
-        verify(persistenceService, times(2)).persistActorCache(any());
-        assertion();
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
     }
 
     @Test

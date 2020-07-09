@@ -162,7 +162,7 @@ public class DeleteRoleAssignmentOrchestrator {
         }
     }
 
-     public void deleteLiveRecords(AssignmentRequest validatedAssignmentRequest, String actorId) {
+    public void deleteLiveRecords(AssignmentRequest validatedAssignmentRequest, String actorId) {
         if (actorId != null) {
             for (RoleAssignment requestedRole : validatedAssignmentRequest.getRequestedRoles()) {
                 persistenceService.deleteRoleAssignmentByActorId(requestedRole.getActorId());
@@ -173,7 +173,6 @@ public class DeleteRoleAssignmentOrchestrator {
             for (RoleAssignment requestedRole : validatedAssignmentRequest.getRequestedRoles()) {
                 persistenceService.deleteRoleAssignment(requestedRole);
                 persistenceService.persistActorCache(requestedRole);
-
             }
         }
     }
