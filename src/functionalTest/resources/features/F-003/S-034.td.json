@@ -1,0 +1,14 @@
+{
+  "title": "must receive an error when trying to delete a Role Assignment twice",
+  "_guid_": "S-034",
+  "_extends_": "F-003_Test_Data_Base",
+  "specs": [
+    "contains the same Assignment Id created above"
+  ],
+  "expectedResponse": {
+    "_extends_": "ResourceNotFoundResponse",
+    "body": {
+      "errorDescription": "Role Assignment not found for id : ${[scenarioContext][testData][request][pathVariables][assignmentId]}"
+    }
+  }
+}
