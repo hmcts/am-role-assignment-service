@@ -12,14 +12,13 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Role
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 
 
-rule "role  validation for Judge  P1" salience 60
+rule "R11_role_validation_for_organization_pattern" salience 65
 
 when
-$role           : Role()
-$request        : Request()
-$requestedRole  : RoleAssignment(roleName == $role.getName())
-                  Request(requestType!= RequestType.DELETE)
-                  RoleAssignment(roleType=RoleType.ORGANISATION)
+$requestedRole :  RoleAssignment()
+                  RoleAssignment($requestedRole.getStatus() == Status.ROLE_VALIDATED)
+                  Request(requestType == RequestType.CREATE)
+                  RoleAssignment(roleType == RoleType.ORGANISATION)
                   Role($patterns : patterns)
                   Pattern($data : data) from $patterns
                   $classificationEntry : JsonNode() from $data["Classification"]
@@ -38,20 +37,18 @@ $requestedRole  : RoleAssignment(roleName == $role.getName())
 
 then
 $requestedRole.setStatus(Status.APPROVED);
-$requestedRole.setLog(String.format("Requested Role has been approved by the   %s rule for organization type with correlation Id %s","role  validation for Judge  P1",$request.getCorrelationId()));
-
-
+$requestedRole.setLog(String.format("Requested Role has been approved by rule : R11_role_validation_for_organization_pattern "));
 end;
 
 
 
-rule "role  validation for Judge P2 with existing case id" salience 55
+rule "R12_role_validation_for_case_pattern" salience 60
+
 when
-$role           : Role()
-$request        : Request()
-                 Request(requestType!= RequestType.DELETE)
-$roleAssignment  : RoleAssignment(roleName == $role.getName())
-                    RoleAssignment(roleType=RoleType.CASE)
+$roleAssignment :  RoleAssignment()
+                  RoleAssignment($roleAssignment.getStatus() == Status.ROLE_VALIDATED)
+                  Request(requestType == RequestType.CREATE)
+                  RoleAssignment(roleType == RoleType.CASE)
                   Role($patterns : patterns)
                   Pattern($data : data) from $patterns
                   $classificationEntry : JsonNode() from $data["Classification"]
@@ -67,9 +64,18 @@ $roleAssignment  : RoleAssignment(roleName == $role.getName())
 
 then
 $roleAssignment.setStatus(Status.APPROVED);
-$roleAssignment.setLog(String.format("Requested Role has been approved by the   %s rule with correlation Id %s","role  validation for Judge P2 with existing case id",$request.getCorrelationId()));
+$roleAssignment.setLog(String.format("Requested Role has been approved by rule : R12_role_validation_for_case_pattern "));
 
+end;
 
+rule "R21_assignment_validation_fail" salience 55
+when
+$roleAssignment  : RoleAssignment()
+                   RoleAssignment($roleAssignment.getStatus()!=Status.APPROVED)
+
+then
+$roleAssignment.setLog(String.format("Requested Role pattern validation fail by rule R1X_role_validation_for_case_pattern "));
+$roleAssignment.setStatus(Status.REJECTED);
 end;
 
 

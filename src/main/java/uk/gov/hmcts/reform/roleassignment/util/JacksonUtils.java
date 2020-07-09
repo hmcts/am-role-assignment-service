@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Named
 @Singleton
@@ -23,6 +24,8 @@ public class JacksonUtils {
 
     private JacksonUtils() {
     }
+
+    public static Map<String, List<Role>> configuredRoles = new HashMap<>();
 
     public static final JsonFactory jsonFactory = JsonFactory.builder()
         // Change per-factory setting to prevent use of `String.intern()` on symbols
@@ -50,15 +53,16 @@ public class JacksonUtils {
         };
     }
 
-    public static List<Role> buildRole(String filename) {
+    static {
 
-        try (InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream(filename)) {
+        try (InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream("role.json")) {
             CollectionType listType = MAPPER.getTypeFactory().constructCollectionType(
                 ArrayList.class,
                 Role.class
             );
             List<Role> allRoles = MAPPER.readValue(input, listType);
-            return allRoles;
+            configuredRoles.put("roles", allRoles);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

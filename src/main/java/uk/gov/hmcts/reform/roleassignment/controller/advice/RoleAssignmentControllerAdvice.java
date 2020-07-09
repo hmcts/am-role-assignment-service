@@ -129,9 +129,9 @@ public class RoleAssignmentControllerAdvice {
     @ExceptionHandler(ResourceNotFoundException.class)
     protected ResponseEntity<Object> handleResourceNotFoundException(
         HttpServletRequest request,
-        ResourceNotFoundException exeception) {
+        ResourceNotFoundException exception) {
         return errorDetailsResponseEntity(
-            exeception,
+            exception,
             HttpStatus.NOT_FOUND,
             RESOURCE_NOT_FOUND.getErrorCode(),
             RESOURCE_NOT_FOUND.getErrorMessage()
