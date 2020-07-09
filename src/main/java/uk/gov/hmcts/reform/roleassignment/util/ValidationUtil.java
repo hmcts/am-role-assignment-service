@@ -9,6 +9,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -72,13 +73,24 @@ public class ValidationUtil {
         }
     }
 
-    public static void validateInputParams(String pattern, String... inputString) {
-        for (String input : inputString) {
-            if (StringUtils.isEmpty(input)) {
-                throw new BadRequestException("An input parameter is Null/Empty");
-            } else if (!Pattern.matches(pattern, input)) {
-                throw new BadRequestException("The input parameter: \"" + input + "\", does not comply with the "
-                                                  + "required pattern");
+    public static void validateInputParams(String pattern, String inputString) {
+        if (StringUtils.isEmpty(inputString)) {
+            throw new BadRequestException("An input parameter is Null/Empty");
+        } else if (!Pattern.matches(pattern, inputString)) {
+            throw new BadRequestException(
+                String.format("The input parameter: \"%s\", does not comply with the required pattern", inputString));
+        }
+    }
+
+    public static void validateEnumRoleType(String roleType) {
+        for (RoleType realRole : RoleType.values()) {
+            if (roleType != null) {
+                if (realRole.name().equalsIgnoreCase(roleType)) {
+                    break;
+                }
+            } else {
+                throw new BadRequestException(
+                    String.format("The Role Type parameter supplied: %s is not valid", roleType));
             }
         }
     }
@@ -115,6 +127,7 @@ public class ValidationUtil {
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
         for (RoleAssignment requestedRole : requestedRoles) {
             validateInputParams(UUID_PATTERN, requestedRole.getActorId().toString());
+            validateEnumRoleType(requestedRole.getRoleType().toString());
             if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
                 validateDateTime(requestedRole.getBeginTime().toString());
                 validateDateTime(requestedRole.getEndTime().toString());

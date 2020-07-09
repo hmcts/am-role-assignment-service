@@ -75,7 +75,7 @@ public class TestDataBuilder {
         return requestedRoles;
     }
 
-    private static RoleAssignment buildRequestedRole() throws IOException {
+    public static RoleAssignment buildRequestedRole() throws IOException {
 
         LocalDateTime timeStamp = LocalDateTime.now();
 

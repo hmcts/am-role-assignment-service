@@ -1,5 +1,17 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_PROCESS;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORD_FOUND_BY_ASSIGNMENT_ID;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,19 +26,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_PROCESS;
-
 @Service
 public class DeleteRoleAssignmentOrchestrator {
-
 
     private PersistenceService persistenceService;
     private ParseRequestService parseRequestService;
@@ -46,13 +47,14 @@ public class DeleteRoleAssignmentOrchestrator {
     public ResponseEntity<Object> deleteRoleAssignment(String actorId,
                                                        String process,
                                                        String reference,
+                                                       String assignmentId,
                                                        Map<String, String> headerMap) throws Exception {
         List<RoleAssignment> requestedRoles = null;
 
         //1. create the request Object
-        if (actorId != null || (process != null && reference != null)) {
-            request = parseRequestService.prepareDeleteRequest(process, reference, actorId, headerMap);
-            assignmentRequest = new AssignmentRequest();
+        if (actorId != null || (process != null && reference != null) || assignmentId != null) {
+            request = parseRequestService.prepareDeleteRequest(process, reference, actorId, assignmentId, headerMap);
+            assignmentRequest = new AssignmentRequest(new Request(), Collections.emptyList());
         } else {
             throw new BadRequestException(BAD_REQUEST_MISSING_PARAMETERS);
         }
@@ -73,10 +75,14 @@ public class DeleteRoleAssignmentOrchestrator {
             requestedRoles = persistenceService.getAssignmentsByProcess(
                 process,
                 reference,
-                Status.LIVE.toString()
-            );
+                Status.LIVE.toString());
             if (requestedRoles.isEmpty()) {
                 throw new ResourceNotFoundException(String.format(NO_RECORDS_FOUND_BY_PROCESS, process, reference));
+            }
+        } else {
+            requestedRoles = persistenceService.getAssignmentById(UUID.fromString(assignmentId));
+            if (requestedRoles.isEmpty()) {
+                throw new ResourceNotFoundException(String.format(NO_RECORD_FOUND_BY_ASSIGNMENT_ID, assignmentId));
             }
         }
 
@@ -132,11 +138,11 @@ public class DeleteRoleAssignmentOrchestrator {
     private void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
         // decision block
         List<RoleAssignment> deleteApprovedRoles = validatedAssignmentRequest.getRequestedRoles().stream()
-            .filter(role -> role.getStatus().equals(
-                Status.DELETE_APPROVED)).collect(
-                Collectors.toList());
+            .filter(role -> role.getStatus()
+                                .equals(Status.DELETE_APPROVED)).collect(Collectors.toList());
 
-        if (deleteApprovedRoles.size() == validatedAssignmentRequest.getRequestedRoles().size()) {
+        if (!deleteApprovedRoles.isEmpty()
+            && deleteApprovedRoles.size() == validatedAssignmentRequest.getRequestedRoles().size()) {
 
             //Delete existing Assignment records
             deleteLiveRecords(validatedAssignmentRequest, actorId);
