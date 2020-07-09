@@ -1,6 +1,9 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -9,14 +12,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,6 +26,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
 
 @RunWith(MockitoJUnitRunner.class)
 class ParseRequestServiceTest {
@@ -75,6 +79,20 @@ class ParseRequestServiceTest {
         verify(securityUtilsMock, times(1)).getServiceId();
         verify(securityUtilsMock, times(1)).getUserId();
         verify(correlationInterceptorUtilMock, times(1)).preHandle(any(HttpServletRequest.class));
+    }
+
+    @Test
+    @DisplayName("should throw 400 exception for a syntactically bad Assignment id")
+    void shouldThrowBadRequestForMalformedAssignmentId() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        String assignmentId = "you_cant_see_this_malformed_id";
+        UUID userId = UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c");
+        when(securityUtilsMock.getUserId()).thenReturn(userId.toString());
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            sut.prepareDeleteRequest(null, null, null, assignmentId);
+        });
     }
 
 }

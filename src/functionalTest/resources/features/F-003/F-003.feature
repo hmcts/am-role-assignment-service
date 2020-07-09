@@ -1,43 +1,46 @@
 @F-003
-Feature: Delete Role Assignments by Role Assignment Id
+Feature: F-003 : Delete Role Assignments by Role Assignment Id
 
   Background:
     Given an appropriate test context as detailed in the test data source
 
   @S-031
   Scenario: must successfully delete single Role Assignment by Role Assignment Id
-    Given a user with [an active caseworker profile with full permissions],
+    Given a user with [an active IDAM profile with full permissions],
+    And a successful call [to create a role assignment for an actor] as in [F-003_CreationDataForRoleAssignment],
     When a request is prepared with appropriate values,
     And the request [contains a Role Assignment Id],
-    And it is submitted to call the [Delete Role Assignments by Role Assignment Id] operation of [Role Assignment Service],
+    And it is submitted to call the [Delete Role Assignment by Assignment Id] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected.
 
   @S-032
   Scenario: must successfully delete Role Assignment without X-Corrlation-ID Header
-    Given a user with [an active caseworker profile with full permissions],
+    Given a user with [an active IDAM profile with full permissions],
+    And a successful call [to create a role assignment for an actor] as in [F-003_CreationDataForRoleAssignment],
     When a request is prepared with appropriate values,
     And the request [does not have X-Corrlation-ID header],
     And the request [contains a Role Assignment Id],
-    And it is submitted to call the [Delete Role Assignments by Role Assignment Id] operation of [Role Assignment Service],
+    And it is submitted to call the [Delete Role Assignment by Assignment Id] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected.
 
   @S-033
-  Scenario: must receive an error when delete Role Assignment with a non-existing Role Assignment Id
-    Given a user with [an active caseworker profile with full permissions],
+  Scenario: must receive an error response for a non-existing Role Assignment Id
+    Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
     And the request [contains a non-existing Role Assignment Id],
-    And it is submitted to call the [Delete Role Assignments by Role Assignment Id] operation of [Role Assignment Service],
+    And it is submitted to call the [Delete Role Assignment by Assignment Id] operation of [Role Assignment Service],
     Then a negative response is received,
     And the response has all other details as expected.
 
   @S-034
-  Scenario: must receive an error when content-type other than application/json
-    Given a user with [an active caseworker profile with full permissions],
+  Scenario: must receive an error when trying to delete a Role Assignment twice
+    Given a user with [an active IDAM profile with full permissions],
+    And a successful call [to create a role assignment for an actor] as in [F-003_CreationDataForRoleAssignment],
+    And another successful call [to delete a role assignment by by Assignment Id] as in [F-003_DeleteDataForRoleAssignment],
     When a request is prepared with appropriate values,
-    And the request [contains content-type of application/xml],
-    And the request [contains a Role Assignment Id],
-    And it is submitted to call the [Delete Role Assignments by Role Assignment Id] operation of [Role Assignment Service],
+    And the request [contains the same Assignment Id created above],
+    And it is submitted to call the [Delete Role Assignment by Assignment Id] operation of [Role Assignment Service],
     Then a negative response is received,
     And the response has all other details as expected.

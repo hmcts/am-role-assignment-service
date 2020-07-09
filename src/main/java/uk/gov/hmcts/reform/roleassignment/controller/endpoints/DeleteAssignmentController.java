@@ -98,6 +98,8 @@ public class DeleteAssignmentController {
                       )
                   })
     public ResponseEntity<Object> deleteRoleAssignmentById(
+        @RequestHeader(value = "assignerId", required = false)
+            String assignerId,
         @ApiParam(value = "assignmentId", required = true)
         @PathVariable String assignmentId) throws Exception {
         return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, null, null, assignmentId);
