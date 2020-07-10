@@ -86,9 +86,12 @@ class CreateRoleAssignmentOrchestratorTest {
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
 
-        verify(parseRequestService, times(1)).parseRequest(any(AssignmentRequest.class), any(RequestType.class));
-        verify(persistenceService, times(1)).persistRequest(any(Request.class));
-        verify(persistenceService, times(6)).persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(parseRequestService, times(1))
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
+        verify(persistenceService, times(1))
+            .persistRequest(any(Request.class));
+        verify(persistenceService, times(6))
+            .persistHistory(any(RoleAssignment.class), any(Request.class));
     }
 
     @Test
@@ -99,7 +102,8 @@ class CreateRoleAssignmentOrchestratorTest {
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
 
-        when(persistenceService.getAssignmentsByProcess(anyString(),anyString(),anyString())).thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
+        when(persistenceService.getAssignmentsByProcess(anyString(),anyString(),anyString()))
+            .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
             assignmentRequest);
@@ -118,10 +122,14 @@ class CreateRoleAssignmentOrchestratorTest {
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
 
-        verify(parseRequestService, times(1)).parseRequest(any(AssignmentRequest.class), any(RequestType.class));
-        verify(persistenceService, times(1)).persistRequest(any(Request.class));
-        verify(persistenceService, times(6)).persistHistory(any(RoleAssignment.class), any(Request.class));
-        verify(prepareResponseService, times(1)).prepareCreateRoleResponse(any(AssignmentRequest.class));
+        verify(parseRequestService, times(1))
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
+        verify(persistenceService, times(1))
+            .persistRequest(any(Request.class));
+        verify(persistenceService, times(6))
+            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(prepareResponseService, times(1))
+            .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
 
     @Test
@@ -132,7 +140,8 @@ class CreateRoleAssignmentOrchestratorTest {
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
 
-        when(persistenceService.getAssignmentsByProcess(anyString(),anyString(),anyString())).thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
+        when(persistenceService.getAssignmentsByProcess(anyString(),anyString(),anyString()))
+            .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
             assignmentRequest);
@@ -153,10 +162,14 @@ class CreateRoleAssignmentOrchestratorTest {
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
 
-        verify(parseRequestService, times(1)).parseRequest(any(AssignmentRequest.class), any(RequestType.class));
-        verify(persistenceService, times(1)).persistRequest(any(Request.class));
-        verify(persistenceService, times(10)).persistHistory(any(RoleAssignment.class), any(Request.class));
-        verify(prepareResponseService, times(1)).prepareCreateRoleResponse(any(AssignmentRequest.class));
+        verify(parseRequestService, times(1))
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
+        verify(persistenceService, times(1))
+            .persistRequest(any(Request.class));
+        verify(persistenceService, times(10))
+            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(prepareResponseService, times(1))
+            .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
 
     private void setApprovedStatusByDrool(AssignmentRequest assignmentRequest, HistoryEntity historyEntity) {
