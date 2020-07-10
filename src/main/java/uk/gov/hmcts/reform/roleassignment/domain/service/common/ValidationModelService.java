@@ -47,7 +47,7 @@ public class ValidationModelService {
         // Package up the request and the assignments
         List<Object> facts = new ArrayList<>();
         //Pre defined role configuration
-        List<Role> role = JacksonUtils.buildRole("role.json");
+        List<Role> role =  JacksonUtils.configuredRoles.get("roles");
         facts.addAll(role);
         facts.add(assignmentRequest.getRequest());
         facts.addAll(assignmentRequest.getRequestedRoles());
