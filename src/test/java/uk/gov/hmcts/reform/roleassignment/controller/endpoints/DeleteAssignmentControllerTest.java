@@ -93,6 +93,4 @@ class DeleteAssignmentControllerTest {
             sut.deleteRoleAssignment(null, ACTOR_ID, PROCESS, null);
         });
     }
-
-
 }
