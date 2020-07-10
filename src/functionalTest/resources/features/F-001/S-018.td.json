@@ -1,0 +1,62 @@
+{
+  "title": "must successfully create multiple Role Assignments when ReplaceExisting is True with Process and Reference",
+  "_guid_": "S-018",
+  "_extends_": "F-001_Test_Data_Base",
+  "specs": [
+    "contains multiple Role Assignments",
+    "contains ReplaceExisting is true and have process and Reference values"
+  ],
+  "request": {
+    "body": {
+      "roleRequest": {
+        "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+        "process": "S-018",
+        "reference": "S-018",
+        "replaceExisting": true
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole"
+        },
+        {
+          "_extends_": "RequestedRole",
+          "roleType": "ORGANISATION",
+          "grantType": "STANDARD"
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "links": [],
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest",
+          "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+          "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "replaceExisting": true
+        },
+        "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRole",
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+          },
+          {
+            "_extends_": "ResponseRequestedRole",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][1][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+          }
+        ]
+      }
+    }
+  }
+}
