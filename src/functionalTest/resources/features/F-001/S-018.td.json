@@ -50,8 +50,8 @@
           },
           {
             "_extends_": "ResponseRequestedRole",
-            "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][1][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
             "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
           }

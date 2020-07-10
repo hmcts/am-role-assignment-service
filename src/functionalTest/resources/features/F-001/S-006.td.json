@@ -17,6 +17,9 @@
     }
   },
   "expectedResponse": {
-    "_extends_": "BadRequestResponse"
+    "_extends_": "BadRequestResponse",
+    "body" : {
+      "errorDescription" :  "[[ANYTHING_PRESENT]]"
+    }
   }
 }
