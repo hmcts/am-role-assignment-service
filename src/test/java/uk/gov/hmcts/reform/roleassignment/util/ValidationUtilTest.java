@@ -7,7 +7,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -90,7 +89,7 @@ class ValidationUtilTest {
     }
 
     @Test
-    void validateRoleRequest() throws IOException {
+    void validateRoleRequest() {
         try {
             ValidationUtil.validateRoleRequest(TestDataBuilder.buildAssignmentRequest().getRequest());
         } catch (Exception e) {
@@ -99,7 +98,7 @@ class ValidationUtilTest {
     }
 
     @Test
-    void validateRequestedRoles() throws IOException, ParseException {
+    void validateRequestedRoles() {
         try {
             ValidationUtil.validateRequestedRoles(TestDataBuilder
                                                       .buildAssignmentRequest().getRequestedRoles());
