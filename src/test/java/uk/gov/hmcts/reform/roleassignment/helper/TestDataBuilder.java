@@ -17,12 +17,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
@@ -51,21 +50,47 @@ public class TestDataBuilder {
         return new AssignmentRequest(buildRequest(), buildRequestedRoleCollection());
     }
 
-    private static Request buildRequest() {
-        LocalDateTime timeStamp = LocalDateTime.now();
+    public static Request buildRequest() {
         return Request.builder()
-            .id(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
-            .correlationId("correlationId")
-            .clientId("clientId")
-            .authenticatedUserId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
-            .assignerId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
+            .authenticatedUserId(UUID.fromString("4772dc44-268f-4d0c-8f83-f0fb662aac84"))
+            .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
+            .assignerId(UUID.fromString("123e4567-e89b-42d3-a456-556642445678"))
             .requestType(RequestType.CREATE)
+            .reference("p2")
+            .process(("p2"))
+            .replaceExisting(false)
+            .status(Status.APPROVED)
+            .created(LocalDateTime.now())
+            .build();
+    }
+
+    public static RoleAssignment buildRequestedRole() throws IOException {
+        LocalDateTime timeStamp = LocalDateTime.now();
+        return RoleAssignment.builder()
+            .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
+            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .actorIdType(ActorIdType.IDAM)
+            .roleType(RoleType.CASE)
+            .roleName("judge")
+            .classification(Classification.PUBLIC)
+            .grantType(GrantType.STANDARD)
+            .roleCategory(RoleCategory.JUDICIAL)
+            .readOnly(true)
+            .beginTime(timeStamp.plusDays(1))
+            .endTime(timeStamp.plusMonths(1))
             .reference("reference")
             .process(("process"))
-            .status(Status.CREATED)
-            .replaceExisting(true)
-            .roleAssignmentId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
-            .created(timeStamp).build();
+            .statusSequence(10)
+            .status(Status.LIVE)
+            .created(timeStamp)
+            .attributes(buildAttributesFromFile())
+            .notes(buildNotesFromFile())
+            .build();
+    }
+
+    public static ResponseEntity<Object> buildRoleAssignmentResponse() throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(buildAssignmentRequest());
     }
 
     public static Collection<RoleAssignment> buildRequestedRoleCollection() throws IOException {
@@ -75,35 +100,19 @@ public class TestDataBuilder {
         return requestedRoles;
     }
 
-    public static RoleAssignment buildRequestedRole() throws IOException {
-
-        LocalDateTime timeStamp = LocalDateTime.now();
-
-        HashMap<String, JsonNode> attributes = buildAttributesFromFile();
-
-        RoleAssignment requestedRole = new RoleAssignment();
-        requestedRole.setActorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"));
-        requestedRole.setId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9a"));
-        requestedRole.setActorIdType(ActorIdType.IDAM);
-        requestedRole.setRoleType(RoleType.CASE);
-        requestedRole.setRoleName("RoleName");
-        requestedRole.setClassification(Classification.PUBLIC);
-        requestedRole.setGrantType(GrantType.STANDARD);
-        requestedRole.setReadOnly(false);
-        requestedRole.setBeginTime(timeStamp.plusDays(1));
-        requestedRole.setCreated(timeStamp);
-        requestedRole.setEndTime(timeStamp.plusMonths(1));
-        requestedRole.setAttributes(attributes);
-        requestedRole.setStatus(Status.CREATED);
-
-        return requestedRole;
-    }
-
     private static HashMap<String, JsonNode> buildAttributesFromFile() throws IOException {
         InputStream inputStream =
             TestDataBuilder.class.getClassLoader().getResourceAsStream("attributes.json");
         assert inputStream != null;
         return new ObjectMapper().readValue(inputStream, new TypeReference<HashMap<String, JsonNode>>() {
+        });
+    }
+
+    private static JsonNode buildNotesFromFile() throws IOException {
+        InputStream inputStream =
+            TestDataBuilder.class.getClassLoader().getResourceAsStream("notes.json");
+        assert inputStream != null;
+        return new ObjectMapper().readValue(inputStream, new TypeReference<JsonNode>() {
         });
     }
 
@@ -222,14 +231,6 @@ public class TestDataBuilder {
 
     }
 
-    public static ResponseEntity<Object> buildRoleAssignmentResponse() throws Exception {
-        List<RoleAssignment> roleAssignments = (List<RoleAssignment>) buildRequestedRoleCollection();
-        return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(
-            roleAssignments,
-            UUID.randomUUID()
-        ));
-    }
-
     public ActorCacheEntity convertActorCacheToEntity(ActorCache actorCache) {
         return ActorCacheEntity.builder()
             .actorId(actorCache.getActorId())
@@ -247,11 +248,6 @@ public class TestDataBuilder {
         roleAssignmentEntities.add(convertRoleAssignmentToEntity(roleAssignment));
         actorCache.setRoleAssignments(roleAssignmentEntities);
         return actorCache;
-    }
-
-    //update this
-    public static ResponseEntity<Object> buildResponseEntity(AssignmentRequest roleAssignmentRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentRequestResource(roleAssignmentRequest));
     }
 
     public static InputStream buildRequestBodyFromFile() throws IOException {

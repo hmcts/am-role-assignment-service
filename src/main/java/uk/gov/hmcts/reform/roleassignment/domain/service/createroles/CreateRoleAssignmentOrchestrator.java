@@ -291,11 +291,11 @@ public class CreateRoleAssignmentOrchestrator {
         for (RoleAssignment requestedAssignment : existingAssignmentRequest.getRequestedRoles()) {
             requestedAssignment.setRequest(existingAssignmentRequest.getRequest());
             if (!requestedAssignment.getStatus().equals(Status.APPROVED)) {
-                requestedAssignment.status = Status.DELETE_REJECTED;
-                requestedAssignment.statusSequence = Status.DELETE_REJECTED.sequence;
+                requestedAssignment.setStatus(Status.DELETE_REJECTED);
+                requestedAssignment.setStatusSequence(Status.DELETE_REJECTED.sequence);
             } else {
-                requestedAssignment.status = Status.DELETE_APPROVED;
-                requestedAssignment.statusSequence = Status.DELETE_APPROVED.sequence;
+                requestedAssignment.setStatus(Status.DELETE_APPROVED);
+                requestedAssignment.setStatusSequence(Status.DELETE_APPROVED.sequence);
             }
             // persist history in db
             requestEntity.getHistoryEntities().add(persistenceService.persistHistory(requestedAssignment, request));
