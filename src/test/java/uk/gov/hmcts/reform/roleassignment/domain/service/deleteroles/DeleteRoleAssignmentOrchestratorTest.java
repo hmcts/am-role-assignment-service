@@ -112,7 +112,6 @@ class DeleteRoleAssignmentOrchestratorTest {
         });
     }
 
-
     @Test
     @DisplayName("should get 204 when role assignment records delete  successful")
      void shouldDeleteRoleAssignmentByProcess() throws Exception {
