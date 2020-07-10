@@ -1,6 +1,24 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -183,20 +201,59 @@ class DeleteRoleAssignmentOrchestratorTest {
     @Test
     @DisplayName("should not delete any records if delete approved records are zero")
     void shouldNotDeleteRecordsForZeroApprovedItems() throws Exception {
+        mockRequest();
+        when(persistenceService.persistHistory(any(), any())).thenReturn(historyEntity);
+        sut.requestEntity = new RequestEntity();
+        sut.checkAllDeleteApproved(new AssignmentRequest(new Request(), Collections.emptyList()), "actorId");
+        verify(persistenceService, times(0)).deleteRoleAssignmentByActorId(any());
+        verify(persistenceService, times(0)).persistActorCache(any());
     }
 
     @Test
     @DisplayName("should not delete any records if delete approved records don't match requested items")
     void shouldNotDeleteRecordsForNonMatchingRequestItems() throws Exception {
+        mockRequest();
+        when(persistenceService.persistHistory(any(), any())).thenReturn(historyEntity);
+
+        RequestEntity requestEntity = RequestEntity.builder().historyEntities(new HashSet<>()).build();
+        sut.requestEntity = requestEntity;
+        sut.checkAllDeleteApproved(new AssignmentRequest(
+            new Request(),
+            new ArrayList<>() {
+                {
+                    add(RoleAssignment.builder().status(DELETE_APPROVED).build());
+                    add(RoleAssignment.builder().status(DELETE_REJECTED).build());
+                    add(RoleAssignment.builder().status(DELETED).build());
+
+                }
+            }
+        ), "actorId");
+        verify(persistenceService, times(0)).deleteRoleAssignmentByActorId(any());
+        verify(persistenceService, times(0)).persistActorCache(any());
+
     }
 
     @Test
     @DisplayName("should throw Conflict 409 if any record is rejected for deletion")
     void shouldThrowConflictIfRecordIsRejected() throws Exception {
+        //Set the status approved of all requested role manually for drool validation process
+        setApprovedStatusByDrool();
+        mockRequest();
+        when(persistenceService.getAssignmentsByActor(UUID.fromString(ACTOR_ID)))
+            .thenReturn(new ArrayList<>() {
+                {
+                    add(RoleAssignment.builder().status(DELETE_APPROVED).build());
+                    add(RoleAssignment.builder().status(DELETE_REJECTED).build());
+                    add(RoleAssignment.builder().status(DELETED).build());
+                }
+            });
+        mockHistoryEntity();
+        ResponseEntity response = sut.deleteRoleAssignment(ACTOR_ID, null, null, null);
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
     }
 
     @Test
-    @DisplayName("should throw 400 when  reference doesn't exist")
+    @DisplayName("should throw 400 when reference doesn't exist")
     void shouldThrowBadRequestWhenReferenceNotExist() throws Exception {
         mockRequest();
         Assertions.assertThrows(BadRequestException.class, () -> {
