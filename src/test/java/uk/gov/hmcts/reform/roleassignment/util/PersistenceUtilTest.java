@@ -6,9 +6,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(MockitoJUnitRunner.class)
 class PersistenceUtilTest {
