@@ -47,7 +47,7 @@ class ParseRequestServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
+    //@Test
     void parseRequest_CreateEndpoint_HappyPath() throws Exception {
 
         MockHttpServletRequest request = new MockHttpServletRequest();

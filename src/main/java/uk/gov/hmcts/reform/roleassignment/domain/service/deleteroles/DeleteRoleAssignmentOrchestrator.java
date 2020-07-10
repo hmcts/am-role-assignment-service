@@ -199,6 +199,7 @@ public class DeleteRoleAssignmentOrchestrator {
     private void updateRequestStatus(AssignmentRequest assignmentRequest, Status status) {
         assignmentRequest.getRequest().setStatus(status);
         requestEntity.setStatus(status.toString());
+        requestEntity.setLog(assignmentRequest.getRequest().getLog());
         persistenceService.persistRequestToHistory(requestEntity);
 
     }
