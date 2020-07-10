@@ -6,7 +6,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 
-rule "retrieve case detail" salience 100
+rule "R01_retrieve_case_detail" salience 100
 	when
 	  $request : Request()
 	  $role : RoleAssignment(attributes["caseId"]!=null, $caseId : attributes["caseId"])
@@ -14,6 +14,6 @@ rule "retrieve case detail" salience 100
 
 	then
    	insert (retrieveDataService.getCaseById($caseId.asText()));
-		$request.setLog(String.format(" Case has been inserted by the  %s with correlation Id %s","retrieve case detail rule",$request.getCorrelationId()));
+		$request.setLog(String.format("Case has been inserted by the rule : %s ","R01_retrieve_case_detail"));
 
 end
