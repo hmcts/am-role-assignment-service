@@ -88,11 +88,42 @@ public class TestDataBuilder {
             .build();
     }
 
+    public static RoleAssignment buildRoleAssignmentUpdated() throws IOException {
+        LocalDateTime timeStamp = LocalDateTime.now();
+        return RoleAssignment.builder()
+            .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
+            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .actorIdType(ActorIdType.IDAM)
+            .roleType(RoleType.CASE)
+            .roleName("top dog")
+            .classification(Classification.PUBLIC)
+            .grantType(GrantType.STANDARD)
+            .roleCategory(RoleCategory.JUDICIAL)
+            .readOnly(true)
+            .beginTime(timeStamp.plusDays(1))
+            .endTime(timeStamp.plusMonths(1))
+            .reference("new ref")
+            .process(("new process"))
+            .statusSequence(10)
+            .status(Status.LIVE)
+            .created(timeStamp)
+            .attributes(buildAttributesFromFile())
+            .notes(buildNotesFromFile())
+            .build();
+    }
+
     public static ResponseEntity<Object> buildRoleAssignmentResponse() throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(buildAssignmentRequest());
     }
 
     public static Collection<RoleAssignment> buildRequestedRoleCollection() throws IOException {
+        Collection<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(buildRoleAssignment());
+        requestedRoles.add(buildRoleAssignment());
+        return requestedRoles;
+    }
+
+    public static Collection<RoleAssignment> buildRequestedRoleCollection_Updated() throws IOException {
         Collection<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRoleAssignment());
         requestedRoles.add(buildRoleAssignment());
