@@ -65,8 +65,8 @@ class GetAssignmentControllerTest {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         ResponseEntity<Object> expectedResponse = TestDataBuilder.buildRoleAssignmentResponse();
         doReturn(expectedResponse).when(retrieveRoleAssignmentServiceMock).getAssignmentsByActor(actorId);
-        long eTag = 1;
-        doReturn(eTag).when(retrieveRoleAssignmentServiceMock).retrieveETag(UUID.fromString(actorId));
+        long etag = 1;
+        doReturn(etag).when(retrieveRoleAssignmentServiceMock).retrieveETag(UUID.fromString(actorId));
         ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorId("", actorId);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
