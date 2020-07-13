@@ -103,17 +103,17 @@ class DeleteRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    @DisplayName("should throw 404 when process and reference doesn't exist")
+    @DisplayName("should get 204 when process and reference doesn't exist")
     void shouldThrowResourceNotFoundWhenProcessNotExist() throws Exception {
         mockRequest();
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            sut.deleteRoleAssignment(null, PROCESS, REFERENCE, null);
-        });
+        ResponseEntity response = sut.deleteRoleAssignment(null, PROCESS, REFERENCE, null);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
     @Test
     @DisplayName("should throw 404 when actorId doesn't exist")
-     void shouldThrowResourceNotFoundWhenActorIdNotExist() throws Exception {
+    void shouldThrowResourceNotFoundWhenActorIdNotExist() throws Exception {
         mockRequest();
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             sut.deleteRoleAssignment(ACTOR_ID, null, null, null);
@@ -122,7 +122,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should get 204 when role assignment records delete  successful")
-     void shouldDeleteRoleAssignmentByProcess() throws Exception {
+    void shouldDeleteRoleAssignmentByProcess() throws Exception {
 
         //Set the status approved of all requested role manually for drool validation process
         setApprovedStatusByDrool();
@@ -130,7 +130,8 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentsByProcess(
             PROCESS,
             REFERENCE,
-            Status.LIVE.toString())).thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
+            Status.LIVE.toString()
+        )).thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
         mockHistoryEntity();
 
         ResponseEntity<Object> response = sut.deleteRoleAssignment(null, PROCESS, REFERENCE, null);
@@ -184,7 +185,8 @@ class DeleteRoleAssignmentOrchestratorTest {
             ResourceNotFoundException.class,
             () -> {
                 sut.deleteRoleAssignment(null, null, null, assignmentId);
-            });
+            }
+        );
     }
 
     @Test
@@ -273,7 +275,8 @@ class DeleteRoleAssignmentOrchestratorTest {
         doNothing().when(validationModelService).validateRequest(assignmentRequest);
         when(persistenceService.persistHistory(
             roleAssignment,
-            assignmentRequest.getRequest())).thenReturn(historyEntity);
+            assignmentRequest.getRequest()
+        )).thenReturn(historyEntity);
     }
 
 

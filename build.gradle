@@ -3,7 +3,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.10")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.11")
     classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
   }
 }
@@ -239,7 +239,7 @@ dependencies {
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   compile group: 'org.json', name: 'json', version: '20200518'
 
-  implementation 'com.squareup.okhttp3:okhttp:4.7.2'
+  implementation 'com.squareup.okhttp3:okhttp:4.8.0'
 
   // drools engine dependency
   compile group: 'org.drools', name: 'drools-core', version: '7.39.0.Final'

@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.assignment.domain.service.deleteroles;
 
 import static uk.gov.hmcts.reform.assignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
 import static uk.gov.hmcts.reform.assignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
-import static uk.gov.hmcts.reform.assignment.v1.V1.Error.NO_RECORDS_FOUND_BY_PROCESS;
 import static uk.gov.hmcts.reform.assignment.v1.V1.Error.NO_RECORD_FOUND_BY_ASSIGNMENT_ID;
 
 import java.util.Collections;
@@ -75,7 +74,9 @@ public class DeleteRoleAssignmentOrchestrator {
                 reference,
                 Status.LIVE.toString());
             if (requestedRoles.isEmpty()) {
-                throw new ResourceNotFoundException(String.format(NO_RECORDS_FOUND_BY_PROCESS, process, reference));
+                requestEntity.setStatus(Status.APPROVED.toString());
+                persistenceService.updateRequest(requestEntity);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         } else {
             requestedRoles = persistenceService.getAssignmentById(UUID.fromString(assignmentId));
@@ -130,7 +131,7 @@ public class DeleteRoleAssignmentOrchestrator {
         }
 
         //Persist request to update relationship with history entities
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
     }
 
     public void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
@@ -192,7 +193,7 @@ public class DeleteRoleAssignmentOrchestrator {
         }
 
         //Persist request to update relationship with history entities
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
 
     }
 
@@ -200,7 +201,7 @@ public class DeleteRoleAssignmentOrchestrator {
         assignmentRequest.getRequest().setStatus(status);
         requestEntity.setStatus(status.toString());
         requestEntity.setLog(assignmentRequest.getRequest().getLog());
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
 
     }
 
