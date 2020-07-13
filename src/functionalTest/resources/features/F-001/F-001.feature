@@ -140,13 +140,3 @@ Feature: F-001 : Create Role Assignments
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a negative response is received,
     And the response has all other details as expected.
-
-  @S-020
-  Scenario: must receive an error response when creation of any Role Assignment is not successful where ReplaceExisting is True
-    Given a user with [an active IDAM profile with full permissions],
-    When a request is prepared with appropriate values,
-    And the request [contains ReplaceExisting is true and have process and Reference values],
-    And the request [contains multiple Role Assignments where one of the role has invalid data],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
-    Then a negative response is received,
-    And the response has all other details as expected.
