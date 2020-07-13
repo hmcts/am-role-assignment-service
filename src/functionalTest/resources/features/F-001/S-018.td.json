@@ -9,19 +9,19 @@
   "request": {
     "body": {
       "roleRequest": {
-        "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-        "process": "S-018",
-        "reference": "S-018",
+        "reference": "123e4567-e89b-42d3-a456-556642445018",
         "replaceExisting": true
       },
       "requestedRoles": [
         {
-          "_extends_": "RequestedRole"
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
         },
         {
           "_extends_": "RequestedRole",
           "roleType": "ORGANISATION",
-          "grantType": "STANDARD"
+          "grantType": "STANDARD",
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
         }
       ]
     }
@@ -37,23 +37,16 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-          "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
-          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "replaceExisting": true
         },
         "requestedRoles": [
           {
-            "_extends_": "ResponseRequestedRole",
-            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "_extends_": "ResponseRequestedRole"
           },
           {
             "_extends_": "ResponseRequestedRole",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][1][roleType]}",
-            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
-            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}"
           }
         ]
       }
