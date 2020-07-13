@@ -6,12 +6,17 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(MockitoJUnitRunner.class)
 class PersistenceUtilTest {
 
     @InjectMocks
-    PersistenceUtil idamRoleService = new PersistenceUtil();
+    PersistenceUtil persistenceUtil = new PersistenceUtil();
 
 
     @BeforeEach
@@ -26,7 +31,9 @@ class PersistenceUtilTest {
 
     @Test
     void convertRequestToEntity() {
-        //idamRoleService.convertRequestToEntity();
+        Request request = TestDataBuilder.buildRequest();
+        RequestEntity requestEntity = persistenceUtil.convertRequestToEntity(request);
+        assertNotNull(requestEntity);
     }
 
     @Test
@@ -47,5 +54,23 @@ class PersistenceUtilTest {
     @Test
     void convertEntityToRoleAssignment() {
         //idamRoleService.convertEntityToRoleAssignment();
+    }
+
+    private RequestEntity convertRequestToEntityHelper(Request request) {
+        return RequestEntity.builder()
+            .correlationId(request.getCorrelationId())
+            .status(request.getStatus().toString())
+            .process(request.getProcess())
+            .reference(request.getReference())
+            .authenticatedUserId(request.getAuthenticatedUserId())
+            .clientId(request.getClientId())
+            .assignerId(request.getAssignerId())
+            .replaceExisting(request.replaceExisting)
+            .requestType(request.getRequestType().toString())
+            .created(request.getCreated())
+            .log(request.getLog())
+            .roleAssignmentId(request.getRoleAssignmentId())
+            .build();
+
     }
 }

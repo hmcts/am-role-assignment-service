@@ -91,7 +91,7 @@ class ValidationUtilTest {
     @Test
     void validateRoleRequest() {
         try {
-            ValidationUtil.validateRoleRequest(TestDataBuilder.buildAssignmentRequest().getRequest());
+            ValidationUtil.validateRoleRequest(TestDataBuilder.buildRequest());
         } catch (Exception e) {
             fail("failed");
         }
