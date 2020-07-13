@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 @Builder
@@ -29,7 +30,7 @@ public class RoleAssignmentSubset {
     public GrantType grantType;
     public RoleCategory roleCategory;
     public boolean readOnly;
-    public JsonNode attributes;
+    public Map<String, JsonNode> attributes;
     public JsonNode notes;
     public LocalDateTime beginTime;
     public LocalDateTime endTime;

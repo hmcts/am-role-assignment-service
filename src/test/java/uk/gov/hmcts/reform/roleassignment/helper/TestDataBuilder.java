@@ -83,7 +83,7 @@ public class TestDataBuilder {
             .statusSequence(10)
             .status(Status.LIVE)
             .created(timeStamp)
-            .attributes(buildAttributesFromFile())
+            .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
             .notes(buildNotesFromFile())
             .build();
     }
@@ -107,7 +107,7 @@ public class TestDataBuilder {
             .statusSequence(10)
             .status(Status.LIVE)
             .created(timeStamp)
-            .attributes(buildAttributesFromFile())
+            .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
             .notes(buildNotesFromFile())
             .build();
     }
@@ -218,7 +218,7 @@ public class TestDataBuilder {
         existingRole.setId(roleAssignmentEntity.getId());
         existingRole.setActorId(roleAssignmentEntity.getActorId());
         existingRole.setActorIdType(ActorIdType.valueOf(roleAssignmentEntity.getActorIdType()));
-        existingRole.setAttributes(roleAssignmentEntity.getAttributes());
+        existingRole.setAttributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()));
         existingRole.setBeginTime(roleAssignmentEntity.getBeginTime());
         existingRole.setEndTime(roleAssignmentEntity.getEndTime());
         existingRole.setCreated(roleAssignmentEntity.getCreated());
@@ -236,7 +236,7 @@ public class TestDataBuilder {
         requestedrole.setId(historyEntity.getId());
         requestedrole.setActorId(historyEntity.getActorId());
         requestedrole.setActorIdType(ActorIdType.valueOf(historyEntity.getActorIdType()));
-        requestedrole.setAttributes(historyEntity.getAttributes());
+        requestedrole.setAttributes(JacksonUtils.convertValue(historyEntity.getAttributes()));
         requestedrole.setBeginTime(historyEntity.getBeginTime());
         requestedrole.setEndTime(historyEntity.getEndTime());
         requestedrole.setCreated(historyEntity.getCreated());

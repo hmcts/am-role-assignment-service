@@ -13,6 +13,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -42,6 +43,6 @@ public  class RoleAssignment {
     public LocalDateTime created; //this will be set by app
     public String log; //this will be set app based on drool validation rule name on individual assignments.
     public Request request;
-    public JsonNode attributes;
+    public Map<String, JsonNode> attributes;
     public JsonNode notes;
 }
