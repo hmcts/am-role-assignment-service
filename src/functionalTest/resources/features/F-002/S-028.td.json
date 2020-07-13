@@ -1,5 +1,5 @@
 {
-  "title": "must receive an error when delete Role Assignment with a non-existing Reference",
+  "title": "must receive positive response when delete Role Assignment with a non-existing Reference",
   "_guid_": "S-028",
   "_extends_": "F-002_Test_Data_Base",
   "operationName": "Delete Role Assignments by Process",
@@ -14,9 +14,6 @@
     }
   },
   "expectedResponse": {
-    "_extends_": "ResourceNotFoundResponse",
-    "body": {
-      "errorDescription": "Role Assignment not found for process : ${[scenarioContext][testData][request][pathVariables][process]} & reference : ${[scenarioContext][testData][request][pathVariables][reference]}"
-    }
+    "_extends_": "Common_204_Response"
   }
 }
