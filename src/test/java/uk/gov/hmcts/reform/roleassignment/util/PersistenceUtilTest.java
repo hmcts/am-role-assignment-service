@@ -6,11 +6,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.io.IOException;
 
 @RunWith(MockitoJUnitRunner.class)
 class PersistenceUtilTest {
@@ -25,52 +25,36 @@ class PersistenceUtilTest {
     }
 
     @Test
-    void convertRoleAssignmentToHistoryEntity() {
-        //idamRoleService.convertRoleAssignmentToHistoryEntity();
+    void convertRoleAssignmentToHistoryEntity() throws IOException {
+        assertNotNull(persistenceUtil
+                          .convertRoleAssignmentToHistoryEntity(
+                              TestDataBuilder.buildRequestedRole(),
+                              persistenceUtil.convertRequestToEntity(TestDataBuilder.buildRequest()))
+        );
     }
 
     @Test
     void convertRequestToEntity() {
-        Request request = TestDataBuilder.buildRequest();
-        RequestEntity requestEntity = persistenceUtil.convertRequestToEntity(request);
-        assertNotNull(requestEntity);
+        assertNotNull(persistenceUtil.convertRequestToEntity(TestDataBuilder.buildRequest()));
     }
 
     @Test
-    void convertRoleAssignmentToEntity() {
-        //idamRoleService.convertRoleAssignmentToEntity();
+    void convertRoleAssignmentToEntity() throws IOException {
+        assertNotNull(persistenceUtil.convertRoleAssignmentToEntity(TestDataBuilder.buildRequestedRole()));
     }
 
     @Test
-    void convertActorCacheToEntity() {
-        //idamRoleService.convertActorCacheToEntity();
+    void convertActorCacheToEntity() throws IOException {
+        assertNotNull(persistenceUtil.convertActorCacheToEntity(TestDataBuilder.buildActorCache()));
     }
 
     @Test
     void convertHistoryEntityToRoleAssignment() {
-        //idamRoleService.convertHistoryEntityToRoleAssignment();
+        //persistenceUtil.convertHistoryEntityToRoleAssignment();
     }
 
     @Test
     void convertEntityToRoleAssignment() {
-        //idamRoleService.convertEntityToRoleAssignment();
-    }
-
-    private RequestEntity convertRequestToEntityHelper(Request request) {
-        return RequestEntity.builder()
-            .correlationId(request.getCorrelationId())
-            .status(request.getStatus().toString())
-            .process(request.getProcess())
-            .reference(request.getReference())
-            .authenticatedUserId(request.getAuthenticatedUserId())
-            .clientId(request.getClientId())
-            .assignerId(request.getAssignerId())
-            .replaceExisting(request.replaceExisting)
-            .requestType(request.getRequestType().toString())
-            .created(request.getCreated())
-            .log(request.getLog())
-            .roleAssignmentId(request.getRoleAssignmentId())
-            .build();
-
+        //persistenceUtil.convertEntityToRoleAssignment();
     }
 }

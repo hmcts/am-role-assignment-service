@@ -31,7 +31,6 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -100,11 +99,11 @@ public class TestDataBuilder {
         return requestedRoles;
     }
 
-    private static HashMap<String, JsonNode> buildAttributesFromFile() throws IOException {
+    private static JsonNode buildAttributesFromFile() throws IOException {
         InputStream inputStream =
             TestDataBuilder.class.getClassLoader().getResourceAsStream("attributes.json");
         assert inputStream != null;
-        return new ObjectMapper().readValue(inputStream, new TypeReference<HashMap<String, JsonNode>>() {
+        return new ObjectMapper().readValue(inputStream, new TypeReference<JsonNode>() {
         });
     }
 
@@ -222,23 +221,42 @@ public class TestDataBuilder {
     }
 
     public static ActorCacheEntity buildActorCacheEntity() throws IOException {
-        HashMap<String, JsonNode> attributes = buildAttributesFromFile();
+        JsonNode attributes = buildAttributesFromFile();
         return ActorCacheEntity.builder()
             .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
             .etag(1)
             .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(attributes))
             .build();
-
     }
 
-    public ActorCacheEntity convertActorCacheToEntity(ActorCache actorCache) {
-        return ActorCacheEntity.builder()
-            .actorId(actorCache.getActorId())
-            .etag(actorCache.getEtag())
-            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(actorCache.roleAssignments))
+    public static ActorCache buildActorCache() throws IOException {
+        HashSet<RoleAssignmentEntity> mySet = new HashSet<>();
+        mySet.add(TestDataBuilder.buildRoleAssignmentEntitySet());
+        return ActorCache.builder()
+            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .etag(1)
+            .roleAssignments(mySet)
             .build();
-
     }
+
+    private static RoleAssignmentEntity buildRoleAssignmentEntitySet() throws IOException {
+        LocalDateTime timeStamp = LocalDateTime.now();
+        return RoleAssignmentEntity.builder()
+            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .actorIdType(ActorIdType.IDAM.name())
+            .roleType(RoleType.CASE.name())
+            .roleName("judge")
+            .classification(Classification.PUBLIC.name())
+            .grantType(GrantType.STANDARD.name())
+            .roleCategory(RoleCategory.JUDICIAL.name())
+            .readOnly(true)
+            .beginTime(timeStamp.plusDays(1))
+            .endTime(timeStamp.plusMonths(1))
+            .created(timeStamp)
+            .attributes(buildAttributesFromFile())
+            .build();
+    }
+
 
     @NotNull
     public static ActorCache prepareActorCache(RoleAssignment roleAssignment) {
@@ -250,16 +268,5 @@ public class TestDataBuilder {
         return actorCache;
     }
 
-    public static InputStream buildRequestBodyFromFile() throws IOException {
-        InputStream inputStream =
-            TestDataBuilder.class.getClassLoader().getResourceAsStream("assignmentRequest.json");
-        return inputStream;
-    }
 
-    public static AssignmentRequest buildAssignmentRequestFromFile() throws IOException {
-        InputStream inputStream =
-            TestDataBuilder.class.getClassLoader().getResourceAsStream("assignmentRequest.json");
-        assert inputStream != null;
-        return new ObjectMapper().readValue(inputStream, AssignmentRequest.class);
-    }
 }
