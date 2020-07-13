@@ -26,7 +26,6 @@ public class RoleAssignmentRequestResource extends RepresentationModel<RoleAssig
     }
 
     public void addLinks(UUID documentId) {
-        //add(linkTo(methodOn(CreateAssignmentController.class).createRoleAssignment(documentId)).withSelfRel());
         //add(linkTo(methodOn(CreateAssignmentController.class).getRoleAssignmentByActorId("")).withRel("binary"));
     }
 

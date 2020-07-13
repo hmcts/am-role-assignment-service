@@ -264,7 +264,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     private void setApprovedStatusByDrool() {
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            requestedRole.status = Status.APPROVED;
+            requestedRole.setStatus(Status.APPROVED);
         }
         historyEntity.setStatus(DELETE_APPROVED.toString());
     }

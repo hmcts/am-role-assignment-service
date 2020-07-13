@@ -101,7 +101,7 @@ public class PersistenceService {
     public ActorCacheEntity persistActorCache(RoleAssignment roleAssignment) {
 
         ActorCacheEntity entity = persistenceUtil.convertActorCacheToEntity(prepareActorCache(roleAssignment));
-        ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.actorId);
+        ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
 
         if (existingActorCache != null) {
             entity.setEtag(existingActorCache.getEtag());
@@ -112,9 +112,9 @@ public class PersistenceService {
     @NotNull
     private ActorCache prepareActorCache(RoleAssignment roleAssignment) {
         ActorCache actorCache = new ActorCache();
-        actorCache.setActorId(roleAssignment.actorId);
+        actorCache.setActorId(roleAssignment.getActorId());
         Set<RoleAssignmentEntity> roleAssignmentEntities =
-            roleAssignmentRepository.findByActorId(roleAssignment.actorId);
+            roleAssignmentRepository.findByActorId(roleAssignment.getActorId());
         actorCache.setRoleAssignments(roleAssignmentEntities);
         return actorCache;
     }

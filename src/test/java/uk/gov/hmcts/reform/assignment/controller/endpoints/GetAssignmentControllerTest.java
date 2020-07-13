@@ -10,9 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.assignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.assignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.PersistenceService;
-import uk.gov.hmcts.reform.assignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.assignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.assignment.feignclients.DataStoreFeignClient;
 
@@ -33,18 +31,9 @@ class GetAssignmentControllerTest {
     @Mock
     private transient RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentServiceMock;
 
-    @Mock
-    private transient ParseRequestService parseRequestService;
-
-    @Mock
-    private CreateRoleAssignmentOrchestrator createRoleAssignmentService;
-
-
     @InjectMocks
-    private GetAssignmentController sut = new GetAssignmentController(parseRequestService,
-                                                                      persistenceServiceMock,
+    private GetAssignmentController sut = new GetAssignmentController(persistenceServiceMock,
                                                                       dataStoreFeignClientMock,
-                                                                      createRoleAssignmentService,
                                                                       retrieveRoleAssignmentServiceMock);
 
     @BeforeEach

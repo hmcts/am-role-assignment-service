@@ -30,9 +30,6 @@ public class ParseRequestService {
     @Autowired
     private CorrelationInterceptorUtil correlationInterceptorUtil;
 
-    private String serviceId;
-    private String userId;
-
     public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType)
         throws Exception {
         Request request = assignmentRequest.getRequest();

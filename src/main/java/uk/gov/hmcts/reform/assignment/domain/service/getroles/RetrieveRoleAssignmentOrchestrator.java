@@ -38,14 +38,14 @@ public class RetrieveRoleAssignmentOrchestrator {
         List<RoleAssignment> assignments = persistenceService.getAssignmentsByActor(UUID.fromString(actorId));
         if (CollectionUtils.isEmpty(assignments)) {
             throw new ResourceNotFoundException(String.format(V1.Error.NO_RECORDS_FOUND_BY_ACTOR + "%s",
-                                                              actorId.toString()));
+                                                              actorId));
         }
         return prepareResponseService.prepareRetrieveRoleResponse(
             assignments,
             UUID.fromString(actorId));
     }
 
-    public long retrieveETag(UUID actorId) throws Exception {
+    public long retrieveETag(UUID actorId) {
         ActorCacheEntity entity = persistenceService.getActorCacheEntity(actorId);
         return entity.getEtag();
     }

@@ -14,7 +14,7 @@ public class DroolConfig {
     private KieServices  kieServices = KieServices.Factory.get();
 
     @Bean
-    public KieContainer kieContainer() throws IOException {
+    public KieContainer kieContainer() {
         return  kieServices.getKieClasspathContainer();
     }
 

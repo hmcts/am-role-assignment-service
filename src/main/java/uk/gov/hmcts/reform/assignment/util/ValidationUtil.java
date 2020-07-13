@@ -122,7 +122,7 @@ public class ValidationUtil {
             )) {
             throw new BadRequestException(BAD_REQUEST_MISSING_PARAMETERS);
         }
-        validateInputParams(Constants.UUID_PATTERN, roleRequest.assignerId.toString());
+        validateInputParams(Constants.UUID_PATTERN, roleRequest.getAssignerId().toString());
     }
 
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {

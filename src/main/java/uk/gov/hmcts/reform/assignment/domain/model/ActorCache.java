@@ -16,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public  class ActorCache {
 
-    public UUID actorId;
-    public long etag;
-    public Set<RoleAssignmentEntity> roleAssignments;
+    private UUID actorId;
+    private long etag;
+    private Set<RoleAssignmentEntity> roleAssignments;
 }

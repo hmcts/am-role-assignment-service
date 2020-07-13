@@ -1,9 +1,9 @@
 package validationrules
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.assignment.domain.model.Request;
+import uk.gov.hmcts.reform.assignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.assignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.assignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
 
 rule "R02_request_validation" salience 90
 when

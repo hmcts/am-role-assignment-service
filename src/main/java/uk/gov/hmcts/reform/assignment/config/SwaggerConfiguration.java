@@ -23,6 +23,8 @@ public class SwaggerConfiguration {
 
     @Value("${swaggerUrl}")
     private String host;
+    private static final String VALUE = "string";
+    private static final String HEADER = "header";
 
     @Bean
     public Docket apiV2() {
@@ -54,8 +56,8 @@ public class SwaggerConfiguration {
         return new ParameterBuilder()
             .name("ServiceAuthorization")
             .description("Valid Service-to-Service JWT token for a whitelisted micro-service")
-            .modelRef(new ModelRef("string"))
-            .parameterType("header")
+            .modelRef(new ModelRef(VALUE))
+            .parameterType(HEADER)
             .required(true)
             .build();
     }
@@ -64,8 +66,8 @@ public class SwaggerConfiguration {
         return new ParameterBuilder()
             .name("Authorization")
             .description("Keyword `Bearer` followed by a valid IDAM user token")
-            .modelRef(new ModelRef("string"))
-            .parameterType("header")
+            .modelRef(new ModelRef(VALUE))
+            .parameterType(HEADER)
             .required(true)
             .build();
     }
@@ -75,8 +77,8 @@ public class SwaggerConfiguration {
             .name("correlationId")
             .description("Standard correlation header.  If not provided, a unique value is created for "
                              + "each request and used in logs.")
-            .modelRef(new ModelRef("string"))
-            .parameterType("header")
+            .modelRef(new ModelRef(VALUE))
+            .parameterType(HEADER)
             .required(false)
             .build();
     }

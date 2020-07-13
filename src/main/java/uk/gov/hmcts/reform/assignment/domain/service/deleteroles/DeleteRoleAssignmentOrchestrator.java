@@ -118,11 +118,11 @@ public class DeleteRoleAssignmentOrchestrator {
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
             requestedRole.setRequest(request);
             if (!requestedRole.getStatus().equals(Status.APPROVED)) {
-                requestedRole.status = Status.DELETE_REJECTED;
-                requestedRole.statusSequence = Status.DELETE_REJECTED.sequence;
+                requestedRole.setStatus(Status.DELETE_REJECTED);
+                requestedRole.setStatusSequence(Status.DELETE_REJECTED.sequence);
             } else {
-                requestedRole.status = Status.DELETE_APPROVED;
-                requestedRole.statusSequence = Status.DELETE_APPROVED.sequence;
+                requestedRole.setStatus(Status.DELETE_APPROVED);
+                requestedRole.setStatusSequence(Status.DELETE_APPROVED.sequence);
             }
             // persist history in db
             requestEntity.getHistoryEntities().add(persistenceService.persistHistory(requestedRole, request));
@@ -181,7 +181,7 @@ public class DeleteRoleAssignmentOrchestrator {
     private void insertRequestedRole(AssignmentRequest parsedAssignmentRequest, Status status) {
         for (RoleAssignment requestedRole : parsedAssignmentRequest.getRequestedRoles()) {
             requestedRole.setRequest(parsedAssignmentRequest.getRequest());
-            requestedRole.status = status;
+            requestedRole.setStatus(status);
             // persist history in db
             requestEntity.getHistoryEntities().add(persistenceService.persistHistory(
                 requestedRole,

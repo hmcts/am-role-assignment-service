@@ -234,7 +234,7 @@ public class TestDataBuilder {
         return ActorCacheEntity.builder()
             .actorId(actorCache.getActorId())
             .etag(actorCache.getEtag())
-            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(actorCache.roleAssignments))
+            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(actorCache.getRoleAssignments()))
             .build();
 
     }
@@ -242,7 +242,7 @@ public class TestDataBuilder {
     @NotNull
     public static ActorCache prepareActorCache(RoleAssignment roleAssignment) {
         ActorCache actorCache = new ActorCache();
-        actorCache.setActorId(roleAssignment.actorId);
+        actorCache.setActorId(roleAssignment.getActorId());
         Set<RoleAssignmentEntity> roleAssignmentEntities = new HashSet<>();
         roleAssignmentEntities.add(convertRoleAssignmentToEntity(roleAssignment));
         actorCache.setRoleAssignments(roleAssignmentEntities);

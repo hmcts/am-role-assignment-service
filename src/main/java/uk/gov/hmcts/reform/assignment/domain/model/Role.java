@@ -17,6 +17,6 @@ public class Role {
     String label;
     String description;
     RoleCategory category;
-    public List<Pattern> patterns;
+    private List<Pattern> patterns;
 
 }

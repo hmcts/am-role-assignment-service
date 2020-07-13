@@ -80,11 +80,6 @@ public class PrepareResponseService {
         roleAssignmentRequest.setRequestedRoles(requestedRoles);
     }
 
-    private ResponseEntity<Object> prepareResponse(AssignmentRequest roleAssignmentRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(roleAssignmentRequest);
-    }
-
-
     public void addHateoasLinks(Optional<?> payload, UUID roleAssignmentRequestId) {
         if (payload.isPresent()) {
             Object obj = payload.get();

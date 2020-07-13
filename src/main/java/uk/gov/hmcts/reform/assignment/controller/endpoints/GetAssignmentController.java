@@ -28,9 +28,7 @@ import uk.gov.hmcts.reform.assignment.v1.V1;
 import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.assignment.domain.model.Case;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignmentRequestResource;
-import uk.gov.hmcts.reform.assignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.PersistenceService;
-import uk.gov.hmcts.reform.assignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.assignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 
 import java.io.InputStream;
@@ -43,19 +41,14 @@ import java.util.UUID;
 public class GetAssignmentController {
 
     private RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentService;
-    private final ParseRequestService parseRequestService;
     private final PersistenceService persistenceService;
     private final DataStoreFeignClient dataStoreFeignClient;
-    private CreateRoleAssignmentOrchestrator createRoleAssignmentService;
 
-    public GetAssignmentController(ParseRequestService parseRequestService, PersistenceService persistenceService,
+    public GetAssignmentController(PersistenceService persistenceService,
                                    DataStoreFeignClient dataStoreFeignClient,
-                                   CreateRoleAssignmentOrchestrator createRoleAssignmentService,
                                    RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentService) {
-        this.parseRequestService = parseRequestService;
         this.persistenceService = persistenceService;
         this.dataStoreFeignClient = dataStoreFeignClient;
-        this.createRoleAssignmentService = createRoleAssignmentService;
         this.retrieveRoleAssignmentService = retrieveRoleAssignmentService;
     }
 
@@ -147,7 +140,7 @@ public class GetAssignmentController {
             response = Object.class
         )
     })
-    public ResponseEntity<Object> getListOfRoles() throws Exception {
+    public ResponseEntity<Object> getListOfRoles() throws RuntimeException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode;
         try (InputStream input = GetAssignmentController.class.getClassLoader()

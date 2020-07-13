@@ -1,10 +1,10 @@
 package validationrules
 
-global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService retrieveDataService
+global uk.gov.hmcts.reform.assignment.domain.service.common.RetrieveDataService retrieveDataService
 
-import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.assignment.domain.model.Case;
+import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.assignment.domain.model.Request;
 
 rule "R01_retrieve_case_detail" salience 100
 	when

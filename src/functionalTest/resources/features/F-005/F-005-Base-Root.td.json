@@ -16,7 +16,14 @@
   "expectedResponse": {
     "headers": {
       "Content-Length": "[[ANYTHING_PRESENT]]",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "timeStamp" :  "[[ANYTHING_PRESENT]]",
+      "status" :  "[[ANYTHING_PRESENT]]",
+      "error" :  "[[ANYTHING_PRESENT]]",
+      "message" :  "[[ANYTHING_PRESENT]]",
+      "errorCode" :  "[[ANYTHING_PRESENT]]",
+      "errorMessage" :  "[[ANYTHING_PRESENT]]",
+      "errorDescription" :  "[[ANYTHING_PRESENT]]"
     }
   }
 }

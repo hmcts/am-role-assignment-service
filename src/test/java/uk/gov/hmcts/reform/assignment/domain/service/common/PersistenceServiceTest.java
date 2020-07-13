@@ -122,15 +122,15 @@ class PersistenceServiceTest {
         RoleAssignment roleAssignment = assignmentRequest.getRequestedRoles().iterator().next();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.createObjectNode();
-        ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.actorId,1234, rootNode);
+        ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.getActorId(),1234, rootNode);
         ActorCache actorCache = TestDataBuilder.prepareActorCache(roleAssignment);
         when(persistenceUtil.convertActorCacheToEntity(any())).thenReturn(entity);
-        when(actorCacheRepository.findByActorId(roleAssignment.actorId)).thenReturn(entity);
+        when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(entity);
 
         sut.persistActorCache(roleAssignment);
 
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
-        verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.actorId);
+        verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
     }
 
     /*@Test

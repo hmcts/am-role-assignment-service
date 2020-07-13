@@ -36,6 +36,7 @@ public class CreateRoleAssignmentOrchestrator {
     Request request;
     RequestEntity requestEntity;
     List<UUID> emptyUUIds = new ArrayList<>();
+    private static final String LOG_MESSAGE = "Request has been rejected due to following assignment Ids :";
 
     public CreateRoleAssignmentOrchestrator(ParseRequestService parseRequestService,
                                             PersistenceService persistenceService,
@@ -98,8 +99,8 @@ public class CreateRoleAssignmentOrchestrator {
     private AssignmentRequest retrieveExistingAssignments(AssignmentRequest parsedAssignmentRequest) {
         AssignmentRequest existingAssignmentRequest;
         List<RoleAssignment> existingAssignments = persistenceService.getAssignmentsByProcess(
-            request.process,
-            request.reference,
+            request.getProcess(),
+            request.getReference(),
             Status.LIVE.toString()
                                                                                              );
 
@@ -152,9 +153,9 @@ public class CreateRoleAssignmentOrchestrator {
         request.setStatus(Status.REJECTED);
         requestEntity.setStatus(Status.REJECTED.toString());
         if (!rejectedAssignmentIds.isEmpty()) {
-            requestEntity.setLog("Request has been rejected due to following assignment Ids :"
+            requestEntity.setLog(LOG_MESSAGE
                                      + rejectedAssignmentIds.toString());
-            request.setLog("Request has been rejected due to following assignment Ids :"
+            request.setLog(LOG_MESSAGE
                                + rejectedAssignmentIds.toString());
         }
 
@@ -234,9 +235,9 @@ public class CreateRoleAssignmentOrchestrator {
         request.setStatus(Status.REJECTED);
         requestEntity.setStatus(Status.REJECTED.toString());
         if (!rejectedAssignmentIds.isEmpty()) {
-            requestEntity.setLog("Request has been rejected due to following assignment Ids :"
+            requestEntity.setLog(LOG_MESSAGE
                                      + rejectedAssignmentIds.toString());
-            request.setLog("Request has been rejected due to following assignment Ids :"
+            request.setLog(LOG_MESSAGE
                                + rejectedAssignmentIds.toString());
         }
 
@@ -255,9 +256,9 @@ public class CreateRoleAssignmentOrchestrator {
         request.setStatus(Status.REJECTED);
         requestEntity.setStatus(Status.REJECTED.toString());
         if (!rejectedAssignmentIds.isEmpty()) {
-            requestEntity.setLog("Request has been rejected due to following assignment Ids :"
+            requestEntity.setLog(LOG_MESSAGE
                                      + rejectedAssignmentIds.toString());
-            request.setLog("Request has been rejected due to following assignment Ids :"
+            request.setLog(LOG_MESSAGE
                                + rejectedAssignmentIds.toString());
         }
 
@@ -291,11 +292,11 @@ public class CreateRoleAssignmentOrchestrator {
         for (RoleAssignment requestedAssignment : existingAssignmentRequest.getRequestedRoles()) {
             requestedAssignment.setRequest(existingAssignmentRequest.getRequest());
             if (!requestedAssignment.getStatus().equals(Status.APPROVED)) {
-                requestedAssignment.status = Status.DELETE_REJECTED;
-                requestedAssignment.statusSequence = Status.DELETE_REJECTED.sequence;
+                requestedAssignment.setStatus(Status.DELETE_REJECTED);
+                requestedAssignment.setStatusSequence(Status.DELETE_REJECTED.sequence);
             } else {
-                requestedAssignment.status = Status.DELETE_APPROVED;
-                requestedAssignment.statusSequence = Status.DELETE_APPROVED.sequence;
+                requestedAssignment.setStatus(Status.DELETE_APPROVED);
+                requestedAssignment.setStatusSequence(Status.DELETE_APPROVED.sequence);
             }
             // persist history in db
             requestEntity.getHistoryEntities().add(persistenceService.persistHistory(requestedAssignment, request));
@@ -368,7 +369,7 @@ public class CreateRoleAssignmentOrchestrator {
                     "Requested Role has been rejected due to following new/existing assignment Ids :"
                         + rejectedAssignmentIds.toString());
             }
-            requestedAssignment.status = status;
+            requestedAssignment.setStatus(status);
             // persist history in db
             HistoryEntity entity = persistenceService.persistHistory(requestedAssignment, request);
             requestedAssignment.setId(entity.getId());
