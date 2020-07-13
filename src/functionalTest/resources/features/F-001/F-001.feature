@@ -9,7 +9,7 @@ Feature: F-001 : Create Role Assignments
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
     And the request [contains a single Role Assignment with only mandatory fields],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
     And the response has all other details as expected.
 
@@ -18,17 +18,17 @@ Feature: F-001 : Create Role Assignments
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
     And the request [contains multiple Role Assignments],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
     And the response has all other details as expected.
-
+#
   @S-003
   Scenario: must successfully create single Role Assignment with RoleTypeId as case
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
     And the request [contains a single Role Assignment],
     And the request [contains RoleTypeId as 'CASE'],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
     And the response has all other details as expected.
 
@@ -37,7 +37,7 @@ Feature: F-001 : Create Role Assignments
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
     And the request [contains multiple Role Assignments where one of the role has invalid data],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a negative response is received,
     And the response has all other details as expected.
 
@@ -47,7 +47,7 @@ Feature: F-001 : Create Role Assignments
     When a request is prepared with appropriate values,
     And the request [contains a single Role Assignment],
     And the request [contains data which is not as per rule validations],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a negative response is received,
     And the response has all other details as expected.
 
@@ -57,7 +57,7 @@ Feature: F-001 : Create Role Assignments
     When a request is prepared with appropriate values,
     And the request [contains a single Role Assignment],
     And the request [contains an invalid RoleName],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a negative response is received,
     And the response has all other details as expected.
 
@@ -67,7 +67,7 @@ Feature: F-001 : Create Role Assignments
     When a request is prepared with appropriate values,
     And the request [contains a single Role Assignment],
     And the request [contains ReplaceExisting is true and either process or Reference value is missed],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a negative response is received,
     And the response has all other details as expected.
 
@@ -77,7 +77,7 @@ Feature: F-001 : Create Role Assignments
     When a request is prepared with appropriate values,
     And the request [contains a single Role Assignment],
     And the request [contains BeginTime is less than current time],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a negative response is received,
     And the response has all other details as expected.
 
@@ -87,7 +87,7 @@ Feature: F-001 : Create Role Assignments
     When a request is prepared with appropriate values,
     And the request [contains a single Role Assignment],
     And  the request [contains EndTime is less than current time],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a negative response is received,
     And the response has all other details as expected.
 
@@ -97,7 +97,7 @@ Feature: F-001 : Create Role Assignments
     When a request is prepared with appropriate values,
     And the request [contains a single Role Assignment],
     And the request [contains EndTime is less than BeginTime],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a negative response is received,
     And the response has all other details as expected.
 
@@ -107,7 +107,7 @@ Feature: F-001 : Create Role Assignments
     When a request is prepared with appropriate values,
     And the request [contains a single Role Assignment],
     And the request [contains RoleTypeId as organisational],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
     And the response has all other details as expected.
 
@@ -117,7 +117,7 @@ Feature: F-001 : Create Role Assignments
     When a request is prepared with appropriate values,
     And the request [contains a single Role Assignment],
     And the request [contains ReplaceExisting is true and have process and Reference values],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
     And the response has all other details as expected.
 
@@ -127,7 +127,7 @@ Feature: F-001 : Create Role Assignments
     When a request is prepared with appropriate values,
     And the request [contains multiple Role Assignments],
     And the request [contains ReplaceExisting is true and have process and Reference values],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
     And the response has all other details as expected.
 
@@ -137,6 +137,6 @@ Feature: F-001 : Create Role Assignments
     When a request is prepared with appropriate values,
     And the request [contains ReplaceExisting is true and have process and Reference values],
     And the request [contains multiple Role Assignments where one of the role has invalid data],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments API],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a negative response is received,
     And the response has all other details as expected.
