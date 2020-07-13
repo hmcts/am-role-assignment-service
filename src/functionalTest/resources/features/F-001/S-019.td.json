@@ -9,19 +9,19 @@
   "request": {
     "body": {
       "roleRequest": {
-        "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-        "process": "S-019",
-        "reference": "S-019",
+        "reference": "123e4567-e89b-42d3-a456-556642445019",
         "replaceExisting": true
       },
       "requestedRoles": [
         {
-          "_extends_": "RequestedRole"
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
         },
         {
           "_extends_": "RequestedRole",
           "roleType": "ORGANISATION",
-          "grantType": "CHALLENGED"
+          "grantType": "CHALLENGED",
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
         }
       ]
     }
@@ -43,17 +43,13 @@
       "requestedRoles": [
         {
           "_extends_": "ResponseRequestedRole",
-          "status":"REJECTED",
-          "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
-          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+          "status":"REJECTED"
         },
         {
           "_extends_": "ResponseRequestedRole",
           "roleType": "${[scenarioContext][testData][request][body][requestedRoles][1][roleType]}",
           "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
-          "status":"REJECTED",
-          "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
-          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+          "status":"REJECTED"
         }
       ]
     }

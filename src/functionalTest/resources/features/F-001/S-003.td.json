@@ -8,9 +8,13 @@
   ],
   "request": {
     "body": {
+      "roleRequest": {
+        "reference": "123e4567-e89b-42d3-a456-556642445003"
+      },
       "requestedRoles": [
         {
-          "_extends_": "RequestedRole"
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
         }
       ]
     }

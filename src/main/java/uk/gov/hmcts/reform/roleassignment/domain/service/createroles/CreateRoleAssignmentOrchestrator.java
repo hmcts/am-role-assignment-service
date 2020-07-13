@@ -181,7 +181,7 @@ public class CreateRoleAssignmentOrchestrator {
         }
 
 
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
     }
 
     private void executeCreateRequest(AssignmentRequest parsedAssignmentRequest) {
@@ -195,7 +195,7 @@ public class CreateRoleAssignmentOrchestrator {
         request.setStatus(Status.APPROVED);
         requestEntity.setLog(request.getLog());
         requestEntity.setStatus(Status.APPROVED.toString());
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
     }
 
     private void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
@@ -262,7 +262,7 @@ public class CreateRoleAssignmentOrchestrator {
                                + rejectedAssignmentIds.toString());
         }
 
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
     }
 
     private void rejectReplaceRequest(AssignmentRequest existingAssignmentRequest,
@@ -283,7 +283,7 @@ public class CreateRoleAssignmentOrchestrator {
                                + rejectedAssignmentIds.toString());
         }
 
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
     }
 
     private void executeReplaceRequest(AssignmentRequest existingAssignmentRequest,
@@ -306,7 +306,7 @@ public class CreateRoleAssignmentOrchestrator {
         request.setStatus(Status.APPROVED);
         requestEntity.setStatus(Status.APPROVED.toString());
         requestEntity.setLog(request.getLog());
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
     }
 
     private void checkDeleteApproved(AssignmentRequest existingAssignmentRequest) {
@@ -325,7 +325,7 @@ public class CreateRoleAssignmentOrchestrator {
         }
 
         //Persist request to update relationship with history entities
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
     }
 
     //Create New Assignment Records
@@ -343,7 +343,7 @@ public class CreateRoleAssignmentOrchestrator {
         }
 
         //Persist request to update relationship with history entities
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
     }
 
     private void moveHistoryRecordsToLiveTable(RequestEntity requestEntity) {
@@ -397,7 +397,7 @@ public class CreateRoleAssignmentOrchestrator {
             requestEntity.getHistoryEntities().add(entity);
         }
         //Persist request to update relationship with history entities
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
     }
 
     private boolean hasAssignmentsUpdated(AssignmentRequest existingAssignmentRequest,
