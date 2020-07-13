@@ -94,14 +94,13 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentsByActor(UUID.fromString(ACTOR_ID)))
             .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
         mockHistoryEntity();
-        ResponseEntity response = sut.deleteRoleAssignment(ACTOR_ID, null, null, null);
+        ResponseEntity<Object> response = sut.deleteRoleAssignment(ACTOR_ID, null, null, null);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(2)).deleteRoleAssignmentByActorId(UUID.fromString(ACTOR_ID));
         verify(persistenceService, times(2)).persistActorCache(any());
         assertion();
 
     }
-
 
     @Test
     @DisplayName("should throw 404 when process and reference doesn't exist")
