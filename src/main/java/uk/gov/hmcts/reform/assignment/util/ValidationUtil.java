@@ -130,7 +130,7 @@ public class ValidationUtil {
             Collectors.toList());
         for (RoleAssignment requestedRole : requestedRoles) {
             if (!rolesName.contains(requestedRole.getRoleName())) {
-                throw new BadRequestException(BAD_REQUEST_INVALID_PARAMETER + "roleName :"
+                throw new BadRequestException(BAD_REQUEST_INVALID_PARAMETER + " roleName :"
                                                   + requestedRole.getRoleName());
             }
 

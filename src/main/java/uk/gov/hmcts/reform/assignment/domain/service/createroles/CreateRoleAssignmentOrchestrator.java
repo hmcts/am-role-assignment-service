@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.assignment.domain.service.createroles;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.assignment.domain.model.Request;
@@ -15,7 +16,10 @@ import uk.gov.hmcts.reform.assignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.ValidationModelService;
+import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignmentSubset;
+import uk.gov.hmcts.reform.assignment.util.JacksonUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -70,11 +74,29 @@ public class CreateRoleAssignmentOrchestrator {
             //retrieve existing assignments and prepared temp request
             existingAssignmentRequest = retrieveExistingAssignments(parsedAssignmentRequest);
 
-            //validation
-            evaluateDeleteAssignments(existingAssignmentRequest, parsedAssignmentRequest);
+            // compare identical existing and incoming requested roles based on some attributes
+            if (hasAssignmentsUpdated(existingAssignmentRequest, parsedAssignmentRequest)) {
 
-            //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
-            checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
+                //validation
+                evaluateDeleteAssignments(existingAssignmentRequest, parsedAssignmentRequest);
+
+                //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
+                checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
+            } else {
+                // Update request status to REJECTED
+                request.setStatus(Status.REJECTED);
+                requestEntity.setStatus(Status.REJECTED.toString());
+                requestEntity.setLog(
+                    "The request could not be completed due to a conflict(duplicate)"
+                        + " with the current state of the resource");
+                request.setLog(
+                    "The request could not be completed due to a conflict(duplicate) "
+                        + "with the current state of the resource.");
+                persistenceService.updateRequest(requestEntity);
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                    request);
+
+            }
 
         } else {
 
@@ -377,6 +399,26 @@ public class CreateRoleAssignmentOrchestrator {
         }
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
+    }
+
+    private boolean hasAssignmentsUpdated(AssignmentRequest existingAssignmentRequest,
+                                          AssignmentRequest parsedAssignmentRequest)
+        throws InvocationTargetException, IllegalAccessException {
+
+        // convert existing assignment records into role assignment subset
+        List<RoleAssignmentSubset> existingRecords = JacksonUtils.convertRequestedRolesIntoSubSet(
+            existingAssignmentRequest);
+        List<RoleAssignmentSubset> incomingRecords = JacksonUtils.convertRequestedRolesIntoSubSet(
+            parsedAssignmentRequest);
+
+        // prepare tempList from incoming requested roles
+        if (existingRecords.equals(incomingRecords)) {
+            return false;
+        } else {
+            return true;
+        }
+
+
     }
 
 
