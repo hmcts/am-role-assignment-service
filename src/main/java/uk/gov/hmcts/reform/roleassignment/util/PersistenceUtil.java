@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
@@ -15,8 +14,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-
-import java.util.Map;
 
 @Service
 public class PersistenceUtil {
@@ -110,7 +107,7 @@ public class PersistenceUtil {
             .endTime(historyEntity.getEndTime())
             .created(historyEntity.getCreated())
             .log(historyEntity.getLog())
-            .attributes(JacksonUtils.convertValue(historyEntity.getAttributes()))
+            .attributes(historyEntity.getAttributes())
             .notes(historyEntity.getNotes())
             .build();
     }
@@ -130,7 +127,7 @@ public class PersistenceUtil {
             .beginTime(roleAssignmentEntity.getBeginTime())
             .endTime(roleAssignmentEntity.getEndTime())
             .created(roleAssignmentEntity.getCreated())
-            .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
+            .attributes(roleAssignmentEntity.getAttributes())
             .build();
     }
 
