@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
@@ -91,7 +92,7 @@ class ValidationUtilTest {
     @Test
     void validateRoleRequest() {
         try {
-            ValidationUtil.validateRoleRequest(TestDataBuilder.buildRequest());
+            ValidationUtil.validateRoleRequest(TestDataBuilder.buildRequest(Status.APPROVED));
         } catch (Exception e) {
             fail("failed");
         }

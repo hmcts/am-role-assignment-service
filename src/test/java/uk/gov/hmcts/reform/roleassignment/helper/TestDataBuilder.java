@@ -46,10 +46,10 @@ public class TestDataBuilder {
     }
 
     public static AssignmentRequest buildAssignmentRequest() throws IOException {
-        return new AssignmentRequest(buildRequest(), buildRequestedRoleCollection());
+        return new AssignmentRequest(buildRequest(Status.APPROVED), buildRequestedRoleCollection());
     }
 
-    public static Request buildRequest() {
+    public static Request buildRequest(Status status) {
         return Request.builder()
             .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
             .authenticatedUserId(UUID.fromString("4772dc44-268f-4d0c-8f83-f0fb662aac84"))
@@ -59,12 +59,12 @@ public class TestDataBuilder {
             .reference("p2")
             .process(("p2"))
             .replaceExisting(false)
-            .status(Status.APPROVED)
+            .status(status)
             .created(LocalDateTime.now())
             .build();
     }
 
-    public static RoleAssignment buildRequestedRole() throws IOException {
+    public static RoleAssignment buildRoleAssignment() throws IOException {
         LocalDateTime timeStamp = LocalDateTime.now();
         return RoleAssignment.builder()
             .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
@@ -94,8 +94,8 @@ public class TestDataBuilder {
 
     public static Collection<RoleAssignment> buildRequestedRoleCollection() throws IOException {
         Collection<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(buildRequestedRole());
-        requestedRoles.add(buildRequestedRole());
+        requestedRoles.add(buildRoleAssignment());
+        requestedRoles.add(buildRoleAssignment());
         return requestedRoles;
     }
 
@@ -122,8 +122,7 @@ public class TestDataBuilder {
                 Role.class
             );
             assert input != null;
-            List<Role> allRoles = new ObjectMapper().readValue(input, listType);
-            return allRoles;
+            return new ObjectMapper().readValue(input, listType);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -269,4 +268,45 @@ public class TestDataBuilder {
     }
 
 
+    public static HistoryEntity buildHistoryEntity(RoleAssignment roleAssignment, RequestEntity requestEntity) {
+        return HistoryEntity.builder()
+            .actorId(roleAssignment.getActorId())
+            .actorIdType(roleAssignment.getActorIdType().toString())
+            .classification(roleAssignment.getClassification().toString())
+            .grantType(roleAssignment.getGrantType().toString())
+            .roleName(roleAssignment.getRoleName())
+            .roleType(roleAssignment.getRoleType().toString())
+            .roleCategory(roleAssignment.getRoleCategory().toString())
+            .readOnly(roleAssignment.isReadOnly())
+            .status(roleAssignment.getStatus().toString())
+            .requestEntity(requestEntity)
+            .process(roleAssignment.getProcess())
+            .reference(roleAssignment.getReference())
+            .created(roleAssignment.getCreated())
+            .beginTime(roleAssignment.getBeginTime())
+            .endTime(roleAssignment.getEndTime())
+            .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
+            .notes(roleAssignment.getNotes())
+            .sequence(roleAssignment.getStatusSequence())
+            .log(roleAssignment.getLog())
+            .build();
+    }
+
+    public static RoleAssignmentEntity buildRoleAssignmentEntity(RoleAssignment roleAssignment) {
+        return RoleAssignmentEntity.builder()
+            .id(roleAssignment.getId())
+            .actorId(roleAssignment.getActorId())
+            .actorIdType(roleAssignment.getActorIdType().toString())
+            .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
+            .beginTime(roleAssignment.getBeginTime())
+            .classification(roleAssignment.getClassification().toString())
+            .endTime(roleAssignment.getEndTime())
+            .created(roleAssignment.getCreated())
+            .grantType(roleAssignment.getGrantType().toString())
+            .roleName(roleAssignment.getRoleName())
+            .roleType(roleAssignment.getRoleType().toString())
+            .readOnly(roleAssignment.isReadOnly())
+            .roleCategory(roleAssignment.getRoleCategory().toString())
+            .build();
+    }
 }

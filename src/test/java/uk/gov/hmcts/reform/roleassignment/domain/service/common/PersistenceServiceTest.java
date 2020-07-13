@@ -118,7 +118,7 @@ class PersistenceServiceTest {
 
     @Test
     void persistActorCache() throws IOException {
-        RoleAssignment roleAssignment = TestDataBuilder.buildRequestedRole();
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.createObjectNode();
         ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.actorId,1234, rootNode);

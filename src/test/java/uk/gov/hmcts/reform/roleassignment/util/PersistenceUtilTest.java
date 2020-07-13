@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,21 +27,19 @@ class PersistenceUtilTest {
 
     @Test
     void convertRoleAssignmentToHistoryEntity() throws IOException {
-        assertNotNull(persistenceUtil
-                          .convertRoleAssignmentToHistoryEntity(
-                              TestDataBuilder.buildRequestedRole(),
-                              persistenceUtil.convertRequestToEntity(TestDataBuilder.buildRequest()))
-        );
+        assertNotNull(persistenceUtil.convertRoleAssignmentToHistoryEntity(
+                            TestDataBuilder.buildRoleAssignment(),
+                            TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED))));
     }
 
     @Test
     void convertRequestToEntity() {
-        assertNotNull(persistenceUtil.convertRequestToEntity(TestDataBuilder.buildRequest()));
+        assertNotNull(persistenceUtil.convertRequestToEntity(TestDataBuilder.buildRequest(Status.APPROVED)));
     }
 
     @Test
     void convertRoleAssignmentToEntity() throws IOException {
-        assertNotNull(persistenceUtil.convertRoleAssignmentToEntity(TestDataBuilder.buildRequestedRole()));
+        assertNotNull(persistenceUtil.convertRoleAssignmentToEntity(TestDataBuilder.buildRoleAssignment()));
     }
 
     @Test
@@ -49,12 +48,16 @@ class PersistenceUtilTest {
     }
 
     @Test
-    void convertHistoryEntityToRoleAssignment() {
-        //persistenceUtil.convertHistoryEntityToRoleAssignment();
+    void convertHistoryEntityToRoleAssignment() throws IOException {
+        assertNotNull(persistenceUtil.convertHistoryEntityToRoleAssignment(
+            TestDataBuilder.buildHistoryEntity(
+                TestDataBuilder.buildRoleAssignment(),
+                TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED)))));
     }
 
     @Test
-    void convertEntityToRoleAssignment() {
-        //persistenceUtil.convertEntityToRoleAssignment();
+    void convertEntityToRoleAssignment() throws IOException {
+        assertNotNull(persistenceUtil.convertEntityToRoleAssignment(
+            TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment())));
     }
 }
