@@ -74,7 +74,7 @@ class PersistenceServiceTest {
         Request request = TestDataBuilder.buildAssignmentRequest().getRequest();
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(request);
         try {
-            sut.persistRequestToHistory(requestEntity);
+            sut.updateRequest(requestEntity);
         } catch (Exception e) {
             throw new InternalError(e);
         }

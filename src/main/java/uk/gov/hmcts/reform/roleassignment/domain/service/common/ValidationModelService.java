@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Service
 public class ValidationModelService {
@@ -62,7 +61,7 @@ public class ValidationModelService {
 
     public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) throws Exception {
         Set<String> userIds = new HashSet<>();
-        userIds.add(String.valueOf(assignmentRequest.getRequest().assignerId));
+        userIds.add(String.valueOf(assignmentRequest.getRequest().getAssignerId()));
         userIds.add(String.valueOf(assignmentRequest.getRequest().getAuthenticatedUserId()));
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
             userIds.add(String.valueOf(requestedRole.getActorId()));
@@ -70,7 +69,7 @@ public class ValidationModelService {
         }
         for (String actorId : userIds) {
             if (actorId != null) {
-                facts.addAll(persistenceService.getAssignmentsByActor(UUID.fromString(actorId)));
+                //facts.addAll(persistenceService.getAssignmentsByActor(UUID.fromString(actorId)));
                 facts.addAll(idamRoleService.getIdamRoleAssignmentsForActor(actorId));
             }
 

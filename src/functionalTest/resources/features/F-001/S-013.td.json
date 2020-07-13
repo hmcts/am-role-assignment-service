@@ -9,14 +9,13 @@
   "request": {
     "body": {
       "roleRequest": {
-        "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-        "process": "S-013",
-        "reference": "S-013",
+        "reference": "123e4567-e89b-42d3-a456-556642445013",
         "replaceExisting": true
       },
       "requestedRoles": [
         {
-          "_extends_": "RequestedRole"
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
         }
       ]
     }
@@ -32,17 +31,12 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "assignerId": "${[scenarioContext][testData][request][body][roleRequest][assignerId]}",
-          "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
-          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "replaceExisting": true
         },
 
         "requestedRoles": [
           {
-            "_extends_": "ResponseRequestedRole",
-            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "_extends_": "ResponseRequestedRole"
           }
         ]
       }
