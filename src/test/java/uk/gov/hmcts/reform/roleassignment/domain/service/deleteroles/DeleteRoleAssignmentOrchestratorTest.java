@@ -74,7 +74,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         MockitoAnnotations.initMocks(this);
         assignmentRequest = TestDataBuilder.buildAssignmentRequest();
         requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
-        roleAssignment = TestDataBuilder.buildRequestedRole();
+        roleAssignment = TestDataBuilder.buildRoleAssignment();
         historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
     }

@@ -107,7 +107,7 @@ public class PersistenceUtil {
             .endTime(historyEntity.getEndTime())
             .created(historyEntity.getCreated())
             .log(historyEntity.getLog())
-            .attributes(JacksonUtils.convertValue(historyEntity.getAttributes()))
+            .attributes(historyEntity.getAttributes())
             .notes(historyEntity.getNotes())
             .build();
     }
@@ -127,7 +127,7 @@ public class PersistenceUtil {
             .beginTime(roleAssignmentEntity.getBeginTime())
             .endTime(roleAssignmentEntity.getEndTime())
             .created(roleAssignmentEntity.getCreated())
-            .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
+            .attributes(roleAssignmentEntity.getAttributes())
             .build();
     }
 
