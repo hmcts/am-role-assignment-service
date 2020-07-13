@@ -1,24 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +26,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelS
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,6 +39,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
 
@@ -113,17 +98,17 @@ class DeleteRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    @DisplayName("should throw 404 when process and reference doesn't exist")
+    @DisplayName("should get 204 when process and reference doesn't exist")
     void shouldThrowResourceNotFoundWhenProcessNotExist() throws Exception {
         mockRequest();
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            sut.deleteRoleAssignment(null, PROCESS, REFERENCE, null);
-        });
+        ResponseEntity response = sut.deleteRoleAssignment(null, PROCESS, REFERENCE, null);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
     @Test
     @DisplayName("should throw 404 when actorId doesn't exist")
-     void shouldThrowResourceNotFoundWhenActorIdNotExist() throws Exception {
+    void shouldThrowResourceNotFoundWhenActorIdNotExist() throws Exception {
         mockRequest();
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             sut.deleteRoleAssignment(ACTOR_ID, null, null, null);
@@ -132,7 +117,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should get 204 when role assignment records delete  successful")
-     void shouldDeleteRoleAssignmentByProcess() throws Exception {
+    void shouldDeleteRoleAssignmentByProcess() throws Exception {
 
         //Set the status approved of all requested role manually for drool validation process
         setApprovedStatusByDrool();
@@ -140,7 +125,8 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentsByProcess(
             PROCESS,
             REFERENCE,
-            Status.LIVE.toString())).thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
+            Status.LIVE.toString()
+        )).thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
         mockHistoryEntity();
 
         ResponseEntity<Object> response = sut.deleteRoleAssignment(null, PROCESS, REFERENCE, null);
@@ -194,7 +180,8 @@ class DeleteRoleAssignmentOrchestratorTest {
             ResourceNotFoundException.class,
             () -> {
                 sut.deleteRoleAssignment(null, null, null, assignmentId);
-            });
+            }
+        );
     }
 
     @Test
@@ -283,7 +270,8 @@ class DeleteRoleAssignmentOrchestratorTest {
         doNothing().when(validationModelService).validateRequest(assignmentRequest);
         when(persistenceService.persistHistory(
             roleAssignment,
-            assignmentRequest.getRequest())).thenReturn(historyEntity);
+            assignmentRequest.getRequest()
+        )).thenReturn(historyEntity);
     }
 
 
