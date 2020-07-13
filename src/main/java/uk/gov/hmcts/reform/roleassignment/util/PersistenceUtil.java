@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
@@ -14,6 +15,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+
+import java.util.Map;
 
 @Service
 public class PersistenceUtil {
