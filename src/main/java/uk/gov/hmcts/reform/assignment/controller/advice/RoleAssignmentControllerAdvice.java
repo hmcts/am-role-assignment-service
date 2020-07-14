@@ -30,7 +30,7 @@ import static uk.gov.hmcts.reform.assignment.controller.advice.ErrorConstants.RE
 import static uk.gov.hmcts.reform.assignment.controller.advice.ErrorConstants.UNKNOWN_EXCEPTION;
 
 @Slf4j
-@RestControllerAdvice(basePackages = "uk.gov.hmcts.reform.roleassignment")
+@RestControllerAdvice(basePackages = "uk.gov.hmcts.reform.assignment")
 @RequestMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 public class RoleAssignmentControllerAdvice {
 

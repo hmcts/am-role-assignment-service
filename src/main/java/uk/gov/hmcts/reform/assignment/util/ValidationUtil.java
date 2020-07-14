@@ -1,3 +1,4 @@
+
 package uk.gov.hmcts.reform.assignment.util;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,7 @@ public class ValidationUtil {
     }
 
     public static void validateDateTime(String strDate) {
+        LOG.info("validateDateTime");
         if (strDate.length() < 16) {
             throw new BadRequestException(String.format(
                 "Incorrect date format %s",

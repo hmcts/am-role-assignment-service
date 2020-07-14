@@ -86,7 +86,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should get 204 when role assignment records delete  successful")
-    public void shouldDeleteRoleAssignmentByActorId() throws Exception {
+    void shouldDeleteRoleAssignmentByActorId() throws Exception {
 
         //Set the status approved of all requested role manually for drool validation process
         setApprovedStatusByDrool();
@@ -145,7 +145,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should get 409 Conflict when request is rejected by drool rules")
-    public void shouldReturn409WhenDroolValidationRejectRequest() throws Exception {
+    void shouldReturn409WhenDroolValidationRejectRequest() throws Exception {
         historyEntity.setStatus(DELETE_REJECTED.toString());
         mockRequest();
         when(persistenceService.getAssignmentsByActor(UUID.fromString(ACTOR_ID)))

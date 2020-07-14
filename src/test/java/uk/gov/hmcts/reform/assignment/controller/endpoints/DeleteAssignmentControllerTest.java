@@ -44,7 +44,7 @@ class DeleteAssignmentControllerTest {
 
     @Test
     @DisplayName("should get 204 when role assignment records delete  successful")
-    public void shouldDeleteRoleAssignmentByActorId() throws Exception {
+    void shouldDeleteRoleAssignmentByActorId() throws Exception {
 
         when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, null, null,null))
             .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
@@ -59,7 +59,7 @@ class DeleteAssignmentControllerTest {
 
     @Test
     @DisplayName("should get 204 when role assignment records delete  successful")
-    public void shouldDeleteRoleAssignmentByProcessAndReference() throws Exception {
+    void shouldDeleteRoleAssignmentByProcessAndReference() throws Exception {
 
         when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, REFERENCE, null))
             .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
@@ -74,7 +74,7 @@ class DeleteAssignmentControllerTest {
 
     @Test
     @DisplayName("should throw 400 Bad Request when actor Id is null")
-    public void shouldThrowBadRequestWhenActorIdNull() throws Exception {
+    void shouldThrowBadRequestWhenActorIdNull() throws Exception {
 
         when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, REFERENCE, null))
             .thenThrow(new BadRequestException(BAD_REQUEST_MISSING_PARAMETERS));
@@ -85,7 +85,7 @@ class DeleteAssignmentControllerTest {
 
     @Test
     @DisplayName("should throw 404 Resource Not Found  when reference is null")
-    public void shouldThrowResourceNotFoundWhenReferenceNull() throws Exception {
+    void shouldThrowResourceNotFoundWhenReferenceNull() throws Exception {
 
         when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, null, null))
             .thenThrow(new ResourceNotFoundException(BAD_REQUEST_MISSING_PARAMETERS));

@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.assignment.domain.service.createroles;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -146,5 +147,12 @@ class CreateRoleAssignmentOrchestratorTest {
         verify(parseRequestService, times(1)).parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1)).persistRequest(any(Request.class));
         verify(persistenceService, times(6)).persistHistory(any(RoleAssignment.class), any(Request.class));
+    }
+
+    // This test should be removed later
+    @Test
+    void sampleTest() {
+        String caseId = "1234567812345678";
+        assertEquals(caseId, "1234567812345678");
     }
 }

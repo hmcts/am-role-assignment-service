@@ -66,7 +66,6 @@ public class DeleteAssignmentController {
                                                            String process,
                                                        @RequestParam(value = "reference", required = false)
                                                            String reference) throws Exception {
-        LOG.info("Request raised by assigner : {}", assignerId);
         return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, process, reference, null);
 
     }

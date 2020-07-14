@@ -9,7 +9,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 @SpringBootApplication
 @EnableSwagger2WebMvc
-@ComponentScan(basePackages = {"uk.gov.hmcts.reform.roleassignment"})
+@ComponentScan(basePackages = {"uk.gov.hmcts.reform.assignment"})
 public class Swagger2SpringBoot implements CommandLineRunner {
 
     public static void main(String[] args) {
