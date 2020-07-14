@@ -1,15 +1,15 @@
 package validationrules
-global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService retrieveDataService;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
-import uk.gov.hmcts.reform.roleassignment.domain.model.Pattern;
+global uk.gov.hmcts.reform.assignment.domain.service.common.RetrieveDataService retrieveDataService;
+import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.assignment.domain.model.Request;
+import uk.gov.hmcts.reform.assignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.assignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.assignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.assignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.assignment.domain.model.Pattern;
 import com.fasterxml.jackson.databind.JsonNode;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role
-import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.assignment.domain.model.Role
+import uk.gov.hmcts.reform.assignment.domain.model.Case;
 
 
 rule "R11_role_validation_for_organization_pattern" salience 65
