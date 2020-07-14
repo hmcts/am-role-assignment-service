@@ -25,8 +25,8 @@
     }
   },
   "expectedResponse": {
-    "responseCode": 409,
-    "responseMessage": "Conflict",
+    "responseCode": 422,
+    "responseMessage": "Unprocessable Entity",
     "headers": {
       "Content-Length": "[[ANYTHING_PRESENT]]",
       "Content-Type": "application/json"

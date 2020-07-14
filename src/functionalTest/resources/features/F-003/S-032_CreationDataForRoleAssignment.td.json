@@ -1,10 +1,10 @@
 {
-  "_guid_": "F-003_CreationDataForRoleAssignment",
+  "_guid_": "S-032_CreationDataForRoleAssignment",
   "_extends_": "CreationDataForRoleAssignment",
   "request": {
     "body": {
       "roleRequest": {
-        "reference": "123e4567-e89b-42d3-a456-556642445003",
+        "reference": "123e4567-e89b-42d3-a456-556642445032",
         "replaceExisting": true
       },
       "requestedRoles": [
