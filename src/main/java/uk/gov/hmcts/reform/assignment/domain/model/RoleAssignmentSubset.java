@@ -22,16 +22,16 @@ import java.util.UUID;
 public class RoleAssignmentSubset {
 
 
-    public ActorIdType actorIdType;
-    public UUID actorId;
-    public RoleType roleType;
-    public String roleName;
-    public Classification classification;
-    public GrantType grantType;
-    public RoleCategory roleCategory;
-    public boolean readOnly;
-    public Map<String, JsonNode> attributes;
-    public JsonNode notes;
-    public LocalDateTime beginTime;
-    public LocalDateTime endTime;
+    private ActorIdType actorIdType;
+    private UUID actorId;
+    private RoleType roleType;
+    private String roleName;
+    private Classification classification;
+    private GrantType grantType;
+    private RoleCategory roleCategory;
+    private boolean readOnly;
+    private Map<String, JsonNode> attributes;
+    private JsonNode notes;
+    private LocalDateTime beginTime;
+    private LocalDateTime endTime;
 }

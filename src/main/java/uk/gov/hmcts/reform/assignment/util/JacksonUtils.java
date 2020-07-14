@@ -44,7 +44,7 @@ public class JacksonUtils {
         .build();
 
 
-    public static HashMap<String, JsonNode> convertValue(Object from) {
+    public static Map<String, JsonNode> convertValue(Object from) {
         return MAPPER.convertValue(from, new TypeReference<HashMap<String, JsonNode>>() {
         });
     }

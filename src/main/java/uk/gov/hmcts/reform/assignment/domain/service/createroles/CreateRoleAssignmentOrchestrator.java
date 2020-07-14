@@ -138,7 +138,9 @@ public class CreateRoleAssignmentOrchestrator {
 
     private void evaluateDeleteAssignments(AssignmentRequest existingAssignmentRequest,
                                            AssignmentRequest parsedAssignmentRequest) throws Exception {
-        LOGGER.info(String.valueOf(parsedAssignmentRequest));
+        if (parsedAssignmentRequest != null) {
+            LOGGER.info(String.valueOf(parsedAssignmentRequest));
+        }
         //calling drools rules for validation
         validationModelService.validateRequest(existingAssignmentRequest);
 
@@ -163,7 +165,7 @@ public class CreateRoleAssignmentOrchestrator {
         } else {
             List<UUID> rejectedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()
                 .filter(role -> role.getStatus().equals(
-                    Status.REJECTED)).map(obj -> obj.getId()).collect(
+                    Status.REJECTED)).map(RoleAssignment::getId).collect(
                     Collectors.toList());
             rejectCreateRequest(parsedAssignmentRequest, rejectedAssignmentIds);
 
@@ -231,7 +233,7 @@ public class CreateRoleAssignmentOrchestrator {
             } else {
                 List<UUID> rejectedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()
                     .filter(role -> role.getStatus().equals(
-                        Status.REJECTED)).map(obj -> obj.getId()).collect(
+                        Status.REJECTED)).map(RoleAssignment::getId).collect(
                         Collectors.toList());
                 rejectReplaceRequest(existingAssignmentRequest, parsedAssignmentRequest, rejectedAssignmentIds);
 
@@ -240,7 +242,7 @@ public class CreateRoleAssignmentOrchestrator {
         } else {
             List<UUID> rejectedAssignmentIds = existingAssignmentRequest.getRequestedRoles().stream()
                 .filter(role -> role.getStatus().equals(
-                    Status.DELETE_REJECTED)).map(obj -> obj.getId()).collect(
+                    Status.DELETE_REJECTED)).map(RoleAssignment::getId).collect(
                     Collectors.toList());
 
 
@@ -416,14 +418,6 @@ public class CreateRoleAssignmentOrchestrator {
             parsedAssignmentRequest);
 
         // prepare tempList from incoming requested roles
-        if (existingRecords.equals(incomingRecords)) {
-            return false;
-        } else {
-            return true;
-        }
-
-
+        return !existingRecords.equals(incomingRecords);
     }
-
-
 }

@@ -109,8 +109,9 @@ class ValidationUtilTest {
 
     @Test
     void shouldThrowInvalidRequestException_ValidateLists() {
+        List list = new ArrayList();
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateLists(new ArrayList());
+            ValidationUtil.validateLists(list);
         });
     }
 

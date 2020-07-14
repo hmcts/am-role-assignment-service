@@ -10,6 +10,7 @@ import uk.gov.hmcts.reform.assignment.apihelper.Constants;
 import uk.gov.hmcts.reform.assignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.assignment.domain.model.Request;
+import uk.gov.hmcts.reform.assignment.domain.model.Role;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.assignment.domain.model.enums.RoleType;
 
@@ -48,7 +49,9 @@ public class ValidationUtil {
         sdfrmt.setLenient(false);
         try {
             Date javaDate = sdfrmt.parse(strDate);
-            LOG.info(String.valueOf(javaDate));
+            if (javaDate != null) {
+                LOG.info(String.valueOf(javaDate));
+            }
         } catch (ParseException e) {
             throw new BadRequestException(String.format(
                 "Incorrect date format %s",
@@ -129,7 +132,7 @@ public class ValidationUtil {
     }
 
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
-        List<String> rolesName = JacksonUtils.configuredRoles.get("roles").stream().map(obj -> obj.getName()).collect(
+        List<String> rolesName = JacksonUtils.configuredRoles.get("roles").stream().map(Role::getName).collect(
             Collectors.toList());
         for (RoleAssignment requestedRole : requestedRoles) {
             if (!rolesName.contains(requestedRole.getRoleName())) {
