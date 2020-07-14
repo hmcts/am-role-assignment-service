@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.validation.annotation.Validated;
 
@@ -16,6 +18,8 @@ import java.util.UUID;
 @Validated
 public class RoleAssignmentRequestResource extends RepresentationModel<RoleAssignmentRequestResource> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoleAssignmentRequestResource.class);
+
     @JsonProperty("roleAssignmentResponse")
     private AssignmentRequest roleAssignmentRequest;
 
@@ -26,7 +30,7 @@ public class RoleAssignmentRequestResource extends RepresentationModel<RoleAssig
     }
 
     public void addLinks(UUID documentId) {
-        //add(linkTo(methodOn(CreateAssignmentController.class).getRoleAssignmentByActorId("")).withRel("binary"));
+        LOGGER.info("add links");
     }
 
 

@@ -81,7 +81,7 @@ public class CreateRoleAssignmentOrchestrator {
             if (hasAssignmentsUpdated(existingAssignmentRequest, parsedAssignmentRequest)) {
 
                 //validation
-                evaluateDeleteAssignments(existingAssignmentRequest, parsedAssignmentRequest);
+                evaluateDeleteAssignments(existingAssignmentRequest);
 
                 //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
                 checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
@@ -136,11 +136,8 @@ public class CreateRoleAssignmentOrchestrator {
         return existingAssignmentRequest;
     }
 
-    private void evaluateDeleteAssignments(AssignmentRequest existingAssignmentRequest,
-                                           AssignmentRequest parsedAssignmentRequest) throws Exception {
-        if (parsedAssignmentRequest != null) {
-            LOGGER.info(String.valueOf(parsedAssignmentRequest));
-        }
+    private void evaluateDeleteAssignments(AssignmentRequest existingAssignmentRequest) throws Exception {
+
         //calling drools rules for validation
         validationModelService.validateRequest(existingAssignmentRequest);
 

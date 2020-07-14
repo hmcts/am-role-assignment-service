@@ -1,6 +1,7 @@
-/*
-package uk.gov.hmcts.reform.roleassignment.config;
 
+package uk.gov.hmcts.reform.assignment.config;
+
+/*
 import com.microsoft.applicationinsights.TelemetryClient;
 import com.microsoft.applicationinsights.telemetry.Duration;
 import com.microsoft.applicationinsights.telemetry.RequestTelemetry;

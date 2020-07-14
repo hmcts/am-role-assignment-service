@@ -40,7 +40,4 @@ public class Constants {
     public static final String STATUS = "Status";
     public static final String INTEGER = "Integer";
 
-    public static final String[] DESERIALIZEITEMTYPES = {ROLETYPE, CLASSIFICATION, UUID, ACTORIDTYPE, GRANTTYPE,
-        ROLECATEGORY, BOOLEAN,
-        LOCALDATETIME, STATUS, INTEGER};
 }

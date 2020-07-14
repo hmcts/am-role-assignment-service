@@ -1,5 +1,8 @@
 package uk.gov.hmcts.reform.assignment.apihelper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -10,6 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ApiOriginFilter implements Filter {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiOriginFilter.class);
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
@@ -22,9 +28,11 @@ public class ApiOriginFilter implements Filter {
 
     @Override
     public void destroy() {
+        LOGGER.info("destroy");
     }
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        LOGGER.info("init");
     }
 }

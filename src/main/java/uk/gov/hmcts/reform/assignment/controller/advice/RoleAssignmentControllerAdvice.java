@@ -39,6 +39,11 @@ public class RoleAssignmentControllerAdvice {
     private static final String LOG_STRING = "handling exception: {}";
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentControllerAdvice.class);
 
+    private static final String[] DESERIALIZEITEMTYPES = {Constants.ROLETYPE, Constants.CLASSIFICATION, Constants.UUID,
+        Constants.ACTORIDTYPE, Constants.GRANTTYPE,
+        Constants.ROLECATEGORY, Constants.BOOLEAN,
+        Constants.LOCALDATETIME, Constants.STATUS, Constants.INTEGER};
+
     @ExceptionHandler(InvalidRequest.class)
     public ResponseEntity<Object> customValidationError(
         InvalidRequest ex) {
@@ -85,7 +90,7 @@ public class RoleAssignmentControllerAdvice {
     private static ResponseEntity<ErrorResponse> stringContainsItemFromList(final String cause,
                                                                             final HttpStatus httpStatus) {
         if (!cause.isEmpty()) {
-            for (String listItem : Constants.DESERIALIZEITEMTYPES) {
+            for (String listItem : DESERIALIZEITEMTYPES) {
                 if (cause.toUpperCase().contains(listItem.toUpperCase())) {
                     return new ResponseEntity<>(
                         ErrorResponse.builder()

@@ -6,7 +6,6 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import java.io.IOException;
 
 @Configuration
 public class DroolConfig {
@@ -19,7 +18,7 @@ public class DroolConfig {
     }
 
     @Bean
-    public StatelessKieSession kieSession() throws IOException {
+    public StatelessKieSession kieSession() {
         return kieContainer().newStatelessKieSession("role-assignment-validation-session");
     }
 
