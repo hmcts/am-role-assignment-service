@@ -10,13 +10,14 @@ public final class V1 {
         }
 
         // External API
-        public static final String CREATE_ASSIGNMENTS = "application/vnd.uk.gov.hmcts.role-assignment-service"
+        public static final String SERVICE = "application/vnd.uk.gov.hmcts.role-assignment-service";
+        public static final String CREATE_ASSIGNMENTS = SERVICE
                                                        + ".create-assignments+json;charset=UTF-8;version=1.0";
-        public static final String DELETE_ASSIGNMENTS = "application/vnd.uk.gov.hmcts.role-assignment-service"
+        public static final String DELETE_ASSIGNMENTS = SERVICE
                                                        + ".delete-assignments+json;charset=UTF-8;version=1.0";
-        public static final String GET_ASSIGNMENTS = "application/vnd.uk.gov.hmcts.role-assignment-service"
+        public static final String GET_ASSIGNMENTS = SERVICE
             + ".get-assignments+json;charset=UTF-8;version=1.0";
-        public static final String GET_ROLES = "application/vnd.uk.gov.hmcts.role-assignment-service"
+        public static final String GET_ROLES = SERVICE
             + ".get-roles+json;charset=UTF-8;version=1.0";
     }
 

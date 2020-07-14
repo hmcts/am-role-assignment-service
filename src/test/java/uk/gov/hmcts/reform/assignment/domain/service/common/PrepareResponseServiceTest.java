@@ -10,6 +10,6 @@ class PrepareResponseServiceTest {
     @Test
     void sampleTest() {
         String caseId = "1234567812345678";
-        assertEquals(caseId, "1234567812345678");
+        assertEquals("1234567812345678", caseId);
     }
 }

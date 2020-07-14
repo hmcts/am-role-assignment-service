@@ -3,8 +3,6 @@ package uk.gov.hmcts.reform.assignment.domain.service.common;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,10 +23,7 @@ import java.util.UUID;
 @Service
 public class PrepareResponseService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PrepareResponseService.class);
-
     public ResponseEntity<Object> prepareCreateRoleResponse(AssignmentRequest roleAssignmentRequest) {
-        //LOG.info(" ----- prepareCreateRoleResponse : {}", roleAssignmentRequest);
 
         updateRoleRequestResponse(roleAssignmentRequest);
         updateRequestedRolesResponse(roleAssignmentRequest);

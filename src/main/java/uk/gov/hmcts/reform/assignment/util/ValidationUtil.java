@@ -48,6 +48,7 @@ public class ValidationUtil {
         sdfrmt.setLenient(false);
         try {
             Date javaDate = sdfrmt.parse(strDate);
+            LOG.info(String.valueOf(javaDate));
         } catch (ParseException e) {
             throw new BadRequestException(String.format(
                 "Incorrect date format %s",
