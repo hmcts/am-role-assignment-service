@@ -16,7 +16,7 @@
       <column name="authenticated_user_id" type="uuid">
         <constraints nullable="false"/>
       </column>
-      <column name="requester_id" type="uuid">
+      <column name="assigner_id" type="uuid">
         <constraints nullable="false"/>
       </column>
       <column name="request_type" type="text">
@@ -37,14 +37,8 @@
       <column name="log" type="text">
         <constraints nullable="true"/>
       </column>
-      <column name="status_sequence" type="integer">
-        <constraints nullable="true"/>
-      </column>
       <column name="role_assignment_id" type="uuid">
         <constraints nullable="true"/>
-      </column>
-      <column name="last_updated" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
-        <constraints nullable="false"/>
       </column>
       <column name="created" type="timestamp">
         <constraints nullable="false"/>
@@ -58,7 +52,7 @@
         <constraints nullable="false" primaryKey="true" primaryKeyName="pk_role_assignment_history"/>
       </column>
       <column name="request_id" type="uuid">
-        <constraints nullable="false" foreignKeyName="fk_role_assignment_history_role_assignment_request" references="role_assignment_request(id)"/>
+        <constraints nullable="false" foreignKeyName="fk_role_assignment_history_role_assignment_request" references="role_assignment_request(id)" primaryKey="true" primaryKeyName="pk_role_assignment_history"/>
       </column>
       <column name="actor_id_type" type="text">
         <constraints nullable="false"/>
@@ -78,11 +72,14 @@
       <column name="grant_type" type="text">
         <constraints nullable="false"/>
       </column>
-      <column name="read_only" type="boolean">
+      <column name="role_category" type="text">
         <constraints nullable="true"/>
       </column>
-      <column name="begin_time" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+      <column name="read_only" type="boolean">
         <constraints nullable="false"/>
+      </column>
+      <column name="begin_time" type="timestamp">
+        <constraints nullable="true"/>
       </column>
       <column name="end_time" type="timestamp">
         <constraints nullable="true"/>
@@ -99,17 +96,17 @@
       <column name="attributes" type="jsonb">
         <constraints nullable="false"/>
       </column>
+      <column name="notes" type="jsonb">
+        <constraints nullable="true"/>
+      </column>
       <column name="log" type="text">
         <constraints nullable="true"/>
       </column>
       <column name="status_sequence" type="integer">
-        <constraints nullable="true"/>
-      </column>
-      <column name="last_updated" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
         <constraints nullable="false"/>
       </column>
       <column name="created" type="timestamp">
-        <constraints nullable="true"/>
+        <constraints nullable="false"/>
       </column>
     </createTable>
   </changeSet>
@@ -137,11 +134,14 @@
       <column name="grant_type" type="text">
         <constraints nullable="false"/>
       </column>
+      <column name="role_category" type="text">
+        <constraints nullable="true"/>
+      </column>
       <column name="read_only" type="boolean">
         <constraints nullable="false"/>
       </column>
-      <column name="begin_type" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
-        <constraints nullable="false"/>
+      <column name="begin_time" type="timestamp">
+        <constraints nullable="true"/>
       </column>
       <column name="end_time" type="timestamp">
         <constraints nullable="true"/>
@@ -150,7 +150,7 @@
         <constraints nullable="false"/>
       </column>
       <column name="created" type="timestamp">
-        <constraints nullable="true"/>
+        <constraints nullable="false"/>
       </column>
     </createTable>
   </changeSet>

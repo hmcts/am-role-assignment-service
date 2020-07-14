@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import uk.gov.hmcts.reform.roleassignment.controller.WelcomeController;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
@@ -12,11 +14,23 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidReq
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.ACTORIDTYPE;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.BOOLEAN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.CLASSIFICATION;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.GRANTTYPE;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.INTEGER;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.LOCALDATETIME;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.ROLECATEGORY;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.ROLETYPE;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.STATUS;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 
 class RoleAssignmentControllerAdviceTest {
@@ -36,25 +50,47 @@ class RoleAssignmentControllerAdviceTest {
     }
 
     @Test
+    void customValidationBadRequestError() {
+        BadRequestException badRequestException = mock(BadRequestException.class);
+        ResponseEntity<Object> responseEntity = csda.customValidationBadRequestError(badRequestException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+    }
+
+    @Test
+    void customRequestHeaderError() {
+        HttpMediaTypeNotAcceptableException customContentTypeException = mock(
+            HttpMediaTypeNotAcceptableException.class);
+        ResponseEntity<Object> responseEntity = csda.customRequestHeaderError(customContentTypeException);
+        assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), responseEntity.getStatusCodeValue());
+    }
+
+    @Test
     void handleMethodArgumentNotValidException() {
         MethodArgumentNotValidException methodArgumentNotValidException = mock(MethodArgumentNotValidException.class);
-        ResponseEntity<Object> responseEntity = csda.handleMethodArgumentNotValidException(servletRequestMock, methodArgumentNotValidException);
+        ResponseEntity<Object> responseEntity =
+            csda.handleMethodArgumentNotValidException(servletRequestMock, methodArgumentNotValidException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
     }
 
     @Test
     void handleResourceNotFoundException() {
-        ResourceNotFoundException resourceNotFoundException = mock(ResourceNotFoundException.class);
-        ResponseEntity<Object> responseEntity = csda.handleResourceNotFoundException(servletRequestMock,resourceNotFoundException);
+        ResourceNotFoundException resourceNotFoundException =
+            mock(ResourceNotFoundException.class);
+        ResponseEntity<Object> responseEntity =
+            csda.handleResourceNotFoundException(servletRequestMock,resourceNotFoundException);
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         assertEquals(HttpStatus.NOT_FOUND.value(), responseEntity.getStatusCodeValue());
     }
 
     @Test
     void handleHttpMessageConversionException() {
-        HttpMessageConversionException httpMessageConversionException = mock(HttpMessageConversionException.class);
-        ResponseEntity<Object> responseEntity = csda.handleHttpMessageConversionException(servletRequestMock, httpMessageConversionException);
+        HttpMessageConversionException httpMessageConversionException =
+            mock(HttpMessageConversionException.class);
+        ResponseEntity<Object> responseEntity =
+            csda.handleHttpMessageConversionException(servletRequestMock, httpMessageConversionException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
     }
@@ -71,7 +107,8 @@ class RoleAssignmentControllerAdviceTest {
     @Test
     void getTimeStamp() {
         String time = csda.getTimeStamp();
-        assertEquals(time.substring(0,16), new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.ENGLISH).format(new Date()));
+        assertEquals(time.substring(0,16), new SimpleDateFormat("dd-MM-yyyy HH:mm",
+                                                                Locale.ENGLISH).format(new Date()));
     }
 
     @Test
@@ -102,4 +139,110 @@ class RoleAssignmentControllerAdviceTest {
         });
     }
 
+    @Test
+    void notReadableException_RoleType() {
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException(ROLETYPE);
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(ROLETYPE));
+    }
+
+    @Test
+    void notReadableException_UUID() {
+        HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException(UUID);
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(UUID));
+    }
+
+    @Test
+    void notReadableException_Classification() {
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException(CLASSIFICATION);
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(CLASSIFICATION));
+    }
+
+
+    @Test
+    void notReadableException_ActorIdType() {
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException(ACTORIDTYPE);
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(ACTORIDTYPE));
+    }
+
+    @Test
+    void notReadableException_GrantType() {
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException(GRANTTYPE);
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(GRANTTYPE));
+    }
+
+    @Test
+    void notReadableException_RoleCategory() {
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException(ROLECATEGORY);
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(ROLECATEGORY));
+    }
+
+    @Test
+    void notReadableException_Boolean() {
+        HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException(BOOLEAN);
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(BOOLEAN));
+    }
+
+    @Test
+    void notReadableException_LocalDateTime() {
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException(LOCALDATETIME);
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(LOCALDATETIME));
+    }
+
+    @Test
+    void notReadableException_Integer() {
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException(INTEGER);
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(INTEGER));
+    }
+
+    @Test
+    void notReadableException_Status() {
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException(STATUS);
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(STATUS));
+    }
+
+    @Test
+    void nullException() {
+        NullPointerException nullPointerException = mock(NullPointerException.class);
+        ResponseEntity<ErrorResponse> responseEntity = csda.nullException(nullPointerException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+    }
 }

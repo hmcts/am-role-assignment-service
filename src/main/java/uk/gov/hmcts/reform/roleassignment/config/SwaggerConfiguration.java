@@ -1,18 +1,20 @@
 package uk.gov.hmcts.reform.roleassignment.config;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
+import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
+import uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableSwagger2WebMvc
@@ -27,7 +29,7 @@ public class SwaggerConfiguration {
         return new Docket(DocumentationType.SWAGGER_2)
             .groupName("v2")
             .select()
-            //.apis(RequestHandlerSelectors.basePackage(TestFileName.class.getPackage().getName()))
+            .apis(RequestHandlerSelectors.basePackage(CreateAssignmentController.class.getPackage().getName()))
             .build()
             .useDefaultResponseMessages(false)
             .apiInfo(apiV2Info())
@@ -35,15 +37,15 @@ public class SwaggerConfiguration {
             .globalOperationParameters(Arrays.asList(
                 headerServiceAuthorization(),
                 headerAuthorization(),
-                headerUserId(),
-                headerUserRoles()
-                                                    ));
+                headerCorrelationId()
+
+            ));
     }
 
     private ApiInfo apiV2Info() {
         return new ApiInfoBuilder()
             .title("Role Assignment Service")
-            .description("download, upload")
+            .description("Manage role assignments")
             .version("2-beta")
             .build();
     }
@@ -68,29 +70,16 @@ public class SwaggerConfiguration {
             .build();
     }
 
-    private Parameter headerUserId() {
+    private Parameter headerCorrelationId() {
         return new ParameterBuilder()
-            .name("user-id")
-            .description(
-                "User-id of the currently authenticated user. If provided will be used to populate the creator field "
-                + "of a document and"
-                + " will be used for authorisation.")
+            .name("correlationId")
+            .description("Standard correlation header.  If not provided, a unique value is created for "
+                             + "each request and used in logs.")
             .modelRef(new ModelRef("string"))
             .parameterType("header")
             .required(false)
             .build();
     }
 
-    private Parameter headerUserRoles() {
-        return new ParameterBuilder()
-            .name("user-roles")
-            .description(
-                "Comma-separated list of roles of the currently authenticated user. If provided will be used for "
-                + "authorisation.")
-            .modelRef(new ModelRef("string"))
-            .parameterType("header")
-            .required(false)
-            .build();
-    }
 
 }

@@ -1,7 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.feignclients.configuration;
 
+import org.springframework.stereotype.Component;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 
+@Component
 public class DatastoreFeignClientFallback implements DataStoreFeignClient {
 
     public static final String DATA_STORE_NOT_AVAILABLE = "The data store Service is not available";
@@ -17,7 +20,8 @@ public class DatastoreFeignClientFallback implements DataStoreFeignClient {
     }
 
     @Override
-    public String getCaseDataV2(String caseId) {
-        return DATA_STORE_NOT_AVAILABLE;
+    public Case getCaseDataV2(String caseId) {
+        return Case.builder().id(caseId)
+            .caseTypeId("sample").build();
     }
 }
