@@ -86,7 +86,7 @@ public class DeleteRoleAssignmentOrchestrator {
         }
 
         //4. call validation rule
-        if (requestedRoles != null && !requestedRoles.isEmpty()) {
+        if (!requestedRoles.isEmpty()) {
             validationByDrool(request, requestedRoles);
         }
 

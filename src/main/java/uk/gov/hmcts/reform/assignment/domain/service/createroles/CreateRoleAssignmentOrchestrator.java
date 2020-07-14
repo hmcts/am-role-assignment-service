@@ -1,8 +1,6 @@
 package uk.gov.hmcts.reform.assignment.domain.service.createroles;
 
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,7 +32,6 @@ import java.util.stream.Collectors;
 @Service
 public class CreateRoleAssignmentOrchestrator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CreateRoleAssignmentOrchestrator.class);
     private ParseRequestService parseRequestService;
     private PersistenceService persistenceService;
     private ValidationModelService validationModelService;
