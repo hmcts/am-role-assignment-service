@@ -161,6 +161,8 @@ public class TestDataBuilder {
 
     public static RequestEntity buildRequestEntity(Request request) {
         return RequestEntity.builder()
+            .id(request.getId())
+            .assignerId(request.getAssignerId())
             .correlationId(request.getCorrelationId())
             .status(request.getStatus().toString())
             .process(request.getProcess())
