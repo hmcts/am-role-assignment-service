@@ -108,6 +108,7 @@ public class CreateRoleAssignmentOrchestrator {
             //Save requested role in history table with CREATED and Approved Status
             createNewAssignmentRecords(parsedAssignmentRequest);
             checkAllApproved(parsedAssignmentRequest);
+
         }
 
 
