@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.validation.annotation.Validated;
@@ -18,6 +19,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Validated
+@Slf4j
 public class RoleAssignmentResource extends RepresentationModel<RoleAssignmentResource> {
 
     @JsonProperty("roleAssignmentResponse")
@@ -31,7 +33,7 @@ public class RoleAssignmentResource extends RepresentationModel<RoleAssignmentRe
                 "",
                 actorId.toString())).withRel("binary"));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("context", e);
         }
     }
 }
