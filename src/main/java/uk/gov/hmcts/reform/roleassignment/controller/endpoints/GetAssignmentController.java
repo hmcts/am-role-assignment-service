@@ -185,7 +185,7 @@ public class GetAssignmentController {
                           message = V1.Error.NO_RECORDS_FOUND_FOR_CASE_ID
                       )
                   })
-    public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdOrCaseId(
+    public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdAndCaseId(
         @ApiParam(value = "Role Type", required = true)
         @RequestParam("roleType") String roleType,
         @ApiParam(value = "Actor Id", required = false)
