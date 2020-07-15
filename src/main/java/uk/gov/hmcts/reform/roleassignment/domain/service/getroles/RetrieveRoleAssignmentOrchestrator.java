@@ -1,5 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.getroles;
 
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
+
+import java.util.List;
+import java.util.UUID;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -9,12 +15,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
-
-import java.util.List;
-import java.util.UUID;
-
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
 
 @Service
 public class RetrieveRoleAssignmentOrchestrator {
@@ -43,6 +43,12 @@ public class RetrieveRoleAssignmentOrchestrator {
         return prepareResponseService.prepareRetrieveRoleResponse(
             assignments,
             UUID.fromString(actorId));
+    }
+
+    public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdOrCaseId(String actorId, String caseId) {
+        ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
+        persistenceService.getAssignmentsByActorAndCaseId(actorId,caseId);
+        return null;
     }
 
     public long retrieveETag(UUID actorId) throws Exception {

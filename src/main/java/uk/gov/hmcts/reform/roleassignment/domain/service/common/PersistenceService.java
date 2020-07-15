@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEnti
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
@@ -156,6 +157,13 @@ public class PersistenceService {
         return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
             .collect(Collectors.toList());
 
+    }
+
+    public List<RoleAssignment> getAssignmentsByActorAndCaseId(String actorId, String caseId) {
+        //roleAssignmentRepository.findByActorIdAndCaseId();
+        //roleAssignmentRepository.findByActorId(actorId);
+        //roleAssignmentRepository.findByCaseId(caseId);
+        return null;
     }
 
     public List<RoleAssignment> getAssignmentById(UUID assignmentId) {
