@@ -5,6 +5,11 @@
   "specs": [
     "contains a Role Assignment Id"
   ],
+  "request": {
+    "pathVariables": {
+      "assignmentId": "${[scenarioContext][childContexts][S-031_CreationDataForRoleAssignment][testData][actualResponse][body][roleAssignmentResponse][requestedRoles][0][id]}"
+    }
+  },
   "expectedResponse": {
     "_extends_": "Common_204_Response"
   }

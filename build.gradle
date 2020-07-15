@@ -3,14 +3,14 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.11")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.12")
     classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
   }
 }
 
 plugins {
   id 'application'
-  id 'uk.gov.hmcts.java' version '0.9.0'
+  id 'uk.gov.hmcts.java' version '0.10.0'
   id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.0.9.RELEASE'
@@ -247,7 +247,7 @@ dependencies {
   compile group: 'org.drools', name: 'drools-compiler', version: '7.39.0.Final'
   compile group: 'org.drools', name: 'drools-decisiontables', version: '7.39.0.Final'
   compile group: 'org.kie', name: 'kie-ci', version: '7.39.0.Final'
-  compile group: 'org.liquibase', name: 'liquibase-core', version: '3.10.1'
+  compile group: 'org.liquibase', name: 'liquibase-core', version: '4.0.0'
 
   //Added for Spring Security Implementation
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBoot
@@ -259,9 +259,9 @@ dependencies {
     exclude group: 'uk.gov.hmcts.reform', module: 'java-logging-spring'
   }
   compile group: 'javax.inject', name: 'javax.inject', version: '1'
-  compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.10.5'
-  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.10.5'
-  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: '2.10.5'
+  compile group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: '3.0.0'
 
   compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
