@@ -7,13 +7,13 @@ Feature: F-005 : Get Role Assignments by Actor Id
   @S-051
   Scenario: must successfully receive single Role Assignment by Actor Id
     Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create a role assignment for an actor] as in [S-051_CreationDataForRoleAssignment],
+    And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
     When a request is prepared with appropriate values,
     And the request [contains an Actor Id having only single Role Assignment],
     And it is submitted to call the [Get Role Assignments by Actor Id] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected,
-    And a successful call [to delete a role assignment just created above] as in [S-051_DeleteDataForRoleAssignment].
+    And a successful call [to delete role assignments just created above] as in [F-005_DeleteDataForMultipleRoleAssignments].
 
   @S-052
   Scenario: must successfully receive multiple Role Assignments by Actor Id
@@ -24,7 +24,7 @@ Feature: F-005 : Get Role Assignments by Actor Id
     And it is submitted to call the [Get Role Assignments by Actor Id] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected,
-    And a successful call [to delete role assignments just created above] as in [S-052_DeleteDataForRoleAssignment].
+    And a successful call [to delete role assignments just created above] as in [F-005_DeleteDataForMultipleRoleAssignments].
 
   @S-053
   Scenario: must receive an error response for a non-existing ActorId
@@ -38,14 +38,14 @@ Feature: F-005 : Get Role Assignments by Actor Id
   @S-054
   Scenario: must successfully receive Role Assignments without X-Correlation-ID Header
     Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create a role assignment for an actor] as in [S-054_CreationDataForRoleAssignment],
+    And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
     When a request is prepared with appropriate values,
     And the request [does not have X-Correlation-ID header],
     And the request [contains an Actor Id having only single Role Assignment],
     And it is submitted to call the [Get Role Assignments by Actor Id] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected,
-    And a successful call [to delete a role assignment just created above] as in [S-054_DeleteDataForRoleAssignment].
+    And a successful call [to delete role assignments just created above] as in [F-005_DeleteDataForMultipleRoleAssignments].
 
   @S-055
   Scenario: must receive an error response for an invalid ActorId
@@ -59,31 +59,31 @@ Feature: F-005 : Get Role Assignments by Actor Id
   @S-056
   Scenario: must successfully receive response for Role Assignments without If-None-Match Header
     Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create a role assignment for an actor] as in [S-056_CreationDataForRoleAssignment],
+    And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
     When a request is prepared with appropriate values,
     And the request [does not contain If-None-Match header],
     And the request [contains an Actor Id having only single Role Assignment],
     And it is submitted to call the [Get Role Assignments by Actor Id] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected,
-    And a successful call [to delete a role assignment just created above] as in [S-056_DeleteDataForRoleAssignment].
+    And a successful call [to delete role assignments just created above] as in [F-005_DeleteDataForMultipleRoleAssignments].
 
   @S-057
   Scenario: must successfully receive response for Role Assignments with If-None-Match Header having older Etag version
     Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create a role assignment for an actor] as in [S-057_CreationDataForRoleAssignment],
+    And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
     When a request is prepared with appropriate values,
     And the request [contains If-None-Match header with older Etag version],
     And the request [contains an Actor Id having only single Role Assignment],
     And it is submitted to call the [Get Role Assignments by Actor Id] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected,
-    And a successful call [to delete a role assignment just created above] as in [S-057_DeleteDataForRoleAssignment].
+    And a successful call [to delete role assignments just created above] as in [F-005_DeleteDataForMultipleRoleAssignments].
 
   @S-058
   Scenario: must receive a negative 'Not Modified' response If-None-Match Header having Latest Etag version
     Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create a role assignment for an actor] as in [S-058_CreationDataForRoleAssignment],
+    And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
     And another successful call [to get the role assignment for an actor] as in [S-058_GetDataForRoleAssignment],
     When a request is prepared with appropriate values,
     And the request [contains If-None-Match header with latest Etag version],
@@ -91,7 +91,7 @@ Feature: F-005 : Get Role Assignments by Actor Id
     And it is submitted to call the [Get Role Assignments by Actor Id] operation of [Role Assignment Service],
     Then a negative response is received,
     And the response has all other details as expected,
-    And a successful call [to delete a role assignment just created above] as in [S-058_DeleteDataForRoleAssignment].
+    And a successful call [to delete role assignments just created above] as in [F-005_DeleteDataForMultipleRoleAssignments].
 
 #Generic Scenarios for Security
   @S-058 @Ignore

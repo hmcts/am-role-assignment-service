@@ -7,7 +7,7 @@ Feature: F-002 : Delete Role Assignments by Actor Id
 #  @S-021 @Ignore # This end-point is currently disabled.
 #  Scenario: must successfully delete single Role Assignment by Actor Id
 #    Given a user with [an active IDAM profile with full permissions],
-#    And a successful call [to create a role assignment for an actor] as in [S-021_CreationDataForRoleAssignment],
+#    And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
 #    When a request is prepared with appropriate values,
 #    And the request [contains an Actor Id having only single Role Assignment],
 #    And it is submitted to call the [Delete Role Assignments by Actor Id] operation of [Role Assignment Service],
@@ -97,7 +97,7 @@ Feature: F-002 : Delete Role Assignments by Actor Id
   Scenario: must receive positive response when trying to delete a Role Assignment twice
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [S-025_CreationDataForRoleAssignment],
-    And another successful call [to delete a role assignment by Process] as in [S-030_DeleteDataForRoleAssignment],
+    And another successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
     When a request is prepared with appropriate values,
     And the request [contains the same Process and Reference created above],
     And it is submitted to call the [Delete Role Assignments by Process] operation of [Role Assignment Service],
