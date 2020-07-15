@@ -100,7 +100,7 @@ public class CreateRoleAssignmentOrchestrator {
                         request);
 
                 }
-            } catch (InvocationTargetException|IllegalAccessException e) {
+            } catch (InvocationTargetException | IllegalAccessException e) {
                 log.error("context", e);
             }
 
