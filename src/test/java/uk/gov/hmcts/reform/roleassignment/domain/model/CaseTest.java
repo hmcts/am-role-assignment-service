@@ -3,12 +3,13 @@ package uk.gov.hmcts.reform.roleassignment.domain.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 
@@ -35,7 +36,7 @@ class CaseTest {
     @Test
     void hasCaseReference() {
         assertTrue(caseData.hasCaseReference());
-        assertEquals((long) 1, caseData.getReference());
+        assertEquals(1L, caseData.getReference());
     }
 
     @Test

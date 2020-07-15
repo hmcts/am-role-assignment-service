@@ -45,8 +45,8 @@ public class TestDataBuilder {
         //not meant to be instantiated.
     }
 
-    public static AssignmentRequest buildAssignmentRequest() throws IOException {
-        return new AssignmentRequest(buildRequest(Status.APPROVED), buildRequestedRoleCollection());
+    public static AssignmentRequest buildAssignmentRequest(Status status) throws IOException {
+        return new AssignmentRequest(buildRequest(status), buildRequestedRoleCollection());
     }
 
     public static Request buildRequest(Status status) {
@@ -113,7 +113,7 @@ public class TestDataBuilder {
     }
 
     public static ResponseEntity<Object> buildRoleAssignmentResponse() throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(buildAssignmentRequest());
+        return ResponseEntity.status(HttpStatus.OK).body(buildAssignmentRequest(Status.CREATED));
     }
 
     public static Collection<RoleAssignment> buildRequestedRoleCollection() throws IOException {

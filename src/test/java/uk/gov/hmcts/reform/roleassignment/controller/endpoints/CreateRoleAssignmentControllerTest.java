@@ -9,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
@@ -34,7 +35,7 @@ class CreateRoleAssignmentControllerTest {
 
     @Test
     void createRoleAssignment() throws Exception { //TODO improve this
-        AssignmentRequest request = TestDataBuilder.buildAssignmentRequest();
+        AssignmentRequest request = TestDataBuilder.buildAssignmentRequest(Status.CREATED);
         ResponseEntity<Object> expectedResponse = TestDataBuilder.buildRoleAssignmentResponse();
         when(createRoleAssignmentServiceMock.createRoleAssignment(request)).thenReturn(expectedResponse);
         ResponseEntity<Object> response = sut.createRoleAssignment(request);

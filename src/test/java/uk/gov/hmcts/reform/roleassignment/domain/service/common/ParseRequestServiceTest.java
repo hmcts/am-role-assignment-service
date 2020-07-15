@@ -14,6 +14,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -59,7 +61,7 @@ class ParseRequestServiceTest {
         when(correlationInterceptorUtilMock.preHandle(
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
         RequestType requestType = RequestType.CREATE;
-        AssignmentRequest assignmentRequest =  TestDataBuilder.buildAssignmentRequest();
+        AssignmentRequest assignmentRequest =  TestDataBuilder.buildAssignmentRequest(CREATED);
         AssignmentRequest result = sut.parseRequest(assignmentRequest, requestType);
 
         assertNotNull(result);
@@ -95,4 +97,40 @@ class ParseRequestServiceTest {
         });
     }
 
+    @Test
+    void getCorrelationId() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        when(correlationInterceptorUtilMock.preHandle(
+            any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
+        assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9d", sut.getCorrelationId());
+        verify(correlationInterceptorUtilMock, times(1)).preHandle(any(HttpServletRequest.class));
+    }
+
+    @Test
+    void prepareDeleteRequest() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        String clientId = "copied client id";
+        UUID userId = UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c");
+        when(securityUtilsMock.getServiceId()).thenReturn(clientId);
+        when(securityUtilsMock.getUserId()).thenReturn(userId.toString());
+        when(correlationInterceptorUtilMock.preHandle(
+            any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
+
+        Request builtReq = TestDataBuilder.buildRequest(CREATED);
+        Request result = sut.prepareDeleteRequest(builtReq.getProcess(),builtReq.getReference(),
+                                                  "21334a2b-79ce-44eb-9168-2d49a744be9d",
+                                                  "21334a2b-79ce-44eb-9168-2d49a744be9d");
+        builtReq.setRequestType(RequestType.DELETE);
+
+        assertEquals(clientId, result.getClientId());
+        assertEquals(userId.toString(), result.getAuthenticatedUserId().toString());
+        assertEquals(builtReq.getStatus(), result.getStatus());
+        assertEquals(builtReq.getRequestType(), result.getRequestType());
+        assertEquals(builtReq.getProcess(), result.getProcess());
+        assertEquals(builtReq.getReference(), result.getReference());
+        assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9c", result.getAssignerId().toString());
+        assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9d", result.getCorrelationId());
+    }
 }

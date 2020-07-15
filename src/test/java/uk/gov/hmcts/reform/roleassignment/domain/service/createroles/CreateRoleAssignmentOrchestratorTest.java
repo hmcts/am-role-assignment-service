@@ -30,7 +30,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
 
 import java.util.List;
 
@@ -64,7 +66,41 @@ class CreateRoleAssignmentOrchestratorTest {
 
     @Test
     void createRoleAssignment_ReplaceFalse_AcceptRoleRequests() throws Exception {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest();
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED);
+        RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
+        HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
+            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
+
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
+            assignmentRequest);
+        when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
+        when(persistenceService.persistHistory(
+            any(RoleAssignment.class),
+            any(Request.class)
+        )).thenReturn(historyEntity);
+
+        when(prepareResponseService.prepareCreateRoleResponse(any()))
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(assignmentRequest));
+
+        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
+        AssignmentRequest result = (AssignmentRequest) response.getBody();
+
+        assertEquals(assignmentRequest, result);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
+        verify(parseRequestService, times(1))
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
+        verify(persistenceService, times(1))
+            .persistRequest(any(Request.class));
+        verify(persistenceService, times(6))
+            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(prepareResponseService, times(1))
+            .prepareCreateRoleResponse(any(AssignmentRequest.class));
+    }
+
+    //@Test not possible atm as an empty list is always being passed called emptyUUIds
+    void createRoleAssignment_ReplaceFalse_RejectRoleRequests() throws Exception {
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(REJECTED);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
@@ -98,7 +134,7 @@ class CreateRoleAssignmentOrchestratorTest {
 
     @Test
     void createRoleAssignment_ReplaceTrue_RejectRoleRequests() throws Exception {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest();
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED);
         assignmentRequest.getRequest().setReplaceExisting(true);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
 
@@ -125,7 +161,7 @@ class CreateRoleAssignmentOrchestratorTest {
 
     @Test
     void createRoleAssignment_ReplaceTrue_AcceptRoleRequests() throws Exception {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest();
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED);
         assignmentRequest.getRequest().setReplaceExisting(true);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(

@@ -39,6 +39,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
@@ -72,7 +73,7 @@ class DeleteRoleAssignmentOrchestratorTest {
     @BeforeEach
     public void setUp() throws IOException {
         MockitoAnnotations.initMocks(this);
-        assignmentRequest = TestDataBuilder.buildAssignmentRequest();
+        assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED);
         requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
         roleAssignment = TestDataBuilder.buildRoleAssignment();
         historyEntity = TestDataBuilder.buildHistoryIntoEntity(
