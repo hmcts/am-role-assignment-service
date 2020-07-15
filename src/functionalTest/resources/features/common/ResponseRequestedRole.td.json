@@ -2,7 +2,7 @@
   "_guid_": "ResponseRequestedRole",
   "id" : "[[ANYTHING_PRESENT]]",
   "actorIdType" : "IDAM",
-  "actorId" : "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+  "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
   "roleType": "CASE",
   "roleName" : "judge",
   "classification" : "PUBLIC",

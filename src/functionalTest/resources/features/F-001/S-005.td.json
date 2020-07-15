@@ -9,7 +9,7 @@
   "request": {
     "body": {
       "roleRequest": {
-        "reference": "123e4567-e89b-42d3-a456-556642445005"
+        "reference": "123e4567-e89b-42d3-a456-556642446005"
       },
       "requestedRoles": [
         {
@@ -22,8 +22,8 @@
     }
   },
   "expectedResponse": {
-    "responseCode": 409,
-    "responseMessage": "Conflict",
+    "responseCode": 422,
+    "responseMessage": "Unprocessable Entity",
     "headers": {
       "Content-Length": "[[ANYTHING_PRESENT]]",
       "Content-Type": "application/json"
