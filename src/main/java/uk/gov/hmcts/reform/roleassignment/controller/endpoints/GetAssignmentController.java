@@ -1,6 +1,13 @@
 
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.ROLES_JSON;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.ROLE_JSON_PATTERNS_FIELD;
+
+import java.io.InputStream;
+import java.text.ParseException;
+import java.util.UUID;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -19,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -31,13 +39,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAs
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
-
-import java.io.InputStream;
-import java.text.ParseException;
-import java.util.UUID;
-
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.ROLES_JSON;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.ROLE_JSON_PATTERNS_FIELD;
 
 @Slf4j
 @Api(value = "roles")
@@ -117,11 +118,6 @@ public class GetAssignmentController {
 
     }
 
-    @GetMapping("/getCaseDetails")
-    public String getDatastoreHealthStatus() {
-        return dataStoreFeignClient.getServiceStatus();
-    }
-
     @GetMapping(value = "/caseworkers/{uid}/jurisdictions/{jid}/case-types/{ctid}/cases/{cid}",
         produces = "application/json")
     public String getCaseData(@PathVariable("uid") String uid, @PathVariable("jid") String jurisdictionId,
@@ -134,7 +130,7 @@ public class GetAssignmentController {
         return dataStoreFeignClient.getCaseDataV2(caseId);
     }
 
-    //**************** Get Roles  API ***************
+    //**************** Get Roles API ***************
 
     @GetMapping(
         path = "/am/role-assignments/roles",
@@ -163,5 +159,40 @@ public class GetAssignmentController {
             throw new RuntimeException(e);
         }
         return ResponseEntity.status(HttpStatus.OK).body(rootNode);
+    }
+
+    @GetMapping(
+        path = "/am/role-assignments",
+        produces = V1.MediaType.GET_ASSIGNMENTS
+    )
+    @ApiOperation("Get Role assignment records by Case Id and Actor Id for RoleType as a CASE.")
+    @ApiResponses({
+                      @ApiResponse(
+                          code = 200,
+                          message = "Success",
+                          response = RoleAssignmentRequestResource.class
+                      ),
+                      @ApiResponse(
+                          code = 400,
+                          message = V1.Error.INVALID_REQUEST
+                      ),
+                      @ApiResponse(
+                          code = 404,
+                          message = V1.Error.NO_RECORDS_FOUND_BY_ACTOR
+                      ),
+                      @ApiResponse(
+                          code = 404,
+                          message = V1.Error.NO_RECORDS_FOUND_FOR_CASE_ID
+                      )
+                  })
+    public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdAndCaseId(
+        @ApiParam(value = "Role Type", required = true)
+        @RequestParam("roleType") String roleType,
+        @ApiParam(value = "Actor Id", required = false)
+        @PathVariable("actorId") String actorId,
+        @ApiParam(value = "Case Id", required = false)
+        @RequestParam("roleType") String caseId) throws Exception {
+        //persistenceService.getAssignmentsByActorAndCaseId(actorId, caseId);
+        return null;
     }
 }
