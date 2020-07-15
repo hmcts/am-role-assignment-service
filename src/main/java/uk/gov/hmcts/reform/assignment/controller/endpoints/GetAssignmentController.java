@@ -80,8 +80,8 @@ public class GetAssignmentController {
         @ApiParam(value = "Actor Id ", required = true)
         @PathVariable("actorId") String actorId) throws Exception {
 
-        log.info("ifNoneMatch :::: {}", ifNoneMatch);
-        log.info("actorId :::: {}", actorId);
+        //log.info("ifNoneMatch :::: {}", ifNoneMatch);
+        //log.info("actorId :::: {}", actorId);
         ResponseEntity<?> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
             actorId
         );

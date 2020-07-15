@@ -32,7 +32,7 @@ public class ValidationModelService {
         this.retrieveDataService = retrieveDataService;
     }
 
-    public void validateRequest(AssignmentRequest assignmentRequest) throws Exception {
+    public void validateRequest(AssignmentRequest assignmentRequest) {
 
         // Force the status and timestamp on all new request
         runRulesOnAllRequestedAssignments(assignmentRequest);

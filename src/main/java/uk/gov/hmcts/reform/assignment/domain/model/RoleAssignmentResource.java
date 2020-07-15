@@ -1,10 +1,5 @@
 package uk.gov.hmcts.reform.assignment.domain.model;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.util.List;
-import java.util.UUID;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,6 +8,11 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.validation.annotation.Validated;
 import uk.gov.hmcts.reform.assignment.controller.endpoints.GetAssignmentController;
+
+import java.util.List;
+import java.util.UUID;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -24,10 +24,14 @@ public class RoleAssignmentResource extends RepresentationModel<RoleAssignmentRe
     private List<RoleAssignment> roleAssignmentResponse;
 
 
-    public RoleAssignmentResource(List<RoleAssignment> roleAssignmentResponse, UUID actorId) throws Exception {
+    public RoleAssignmentResource(List<RoleAssignment> roleAssignmentResponse, UUID actorId) {
         this.roleAssignmentResponse = roleAssignmentResponse;
-        add(WebMvcLinkBuilder.linkTo(methodOn(GetAssignmentController.class).retrieveRoleAssignmentsByActorId(
-            "",
-            actorId.toString())).withRel("binary"));
+        try {
+            add(WebMvcLinkBuilder.linkTo(methodOn(GetAssignmentController.class).retrieveRoleAssignmentsByActorId(
+                "",
+                actorId.toString())).withRel("binary"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -6,11 +6,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.assignment.domain.model.Request;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignmentResource;
-import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignmentRequestResource;
+import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.assignment.domain.model.enums.Status;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class PrepareResponseService {
     }
 
     public ResponseEntity<Object> prepareRetrieveRoleResponse(List<RoleAssignment> roleAssignmentResponse,
-                                                              UUID actorId) throws Exception {
+                                                              UUID actorId)  {
         return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(roleAssignmentResponse, actorId));
     }
 
