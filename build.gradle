@@ -259,9 +259,9 @@ dependencies {
     exclude group: 'uk.gov.hmcts.reform', module: 'java-logging-spring'
   }
   compile group: 'javax.inject', name: 'javax.inject', version: '1'
-  compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.10.5'
-  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.10.5'
-  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: '2.10.5'
+  compile group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: '3.0.0'
 
   compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
