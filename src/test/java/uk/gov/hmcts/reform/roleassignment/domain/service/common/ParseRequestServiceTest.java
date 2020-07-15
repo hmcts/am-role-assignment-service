@@ -15,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
@@ -69,14 +70,16 @@ class ParseRequestServiceTest {
         assertNotNull(result.getRequestedRoles());
         assertEquals(clientId, result.getRequest().getClientId());
         assertEquals(userId, result.getRequest().getAuthenticatedUserId());
-        assertNotNull(result.getRequest().getStatus());
+        assertEquals(CREATED, result.getRequest().getStatus());
         assertEquals(requestType, result.getRequest().getRequestType());
         assertNotNull(result.getRequest().getCreated());
+
+        RoleAssignment refRoleAssignment = assignmentRequest.getRequestedRoles().iterator().next();
         result.getRequestedRoles().forEach(requestedRole -> {
-            assertNotNull(requestedRole.getProcess());
-            assertNotNull(requestedRole.getReference());
-            assertNotNull(requestedRole.getStatus());
-            assertNotNull(requestedRole.getStatusSequence());
+            assertEquals(refRoleAssignment.getProcess(), requestedRole.getProcess());
+            assertEquals(refRoleAssignment.getReference(), requestedRole.getReference());
+            assertEquals(refRoleAssignment.getStatus(), requestedRole.getStatus());
+            assertEquals(refRoleAssignment.getStatusSequence(), requestedRole.getStatusSequence());
         });
         verify(securityUtilsMock, times(1)).getServiceId();
         verify(securityUtilsMock, times(1)).getUserId();
