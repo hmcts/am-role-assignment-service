@@ -7,7 +7,7 @@
   ],
   "request": {
     "pathVariables": {
-      "assignmentId": "123e4567-e89b-42d3-a456-556642445033"
+      "assignmentId": "123e4567-e89b-42d3-a456-556642446033"
     }
   },
   "expectedResponse": {

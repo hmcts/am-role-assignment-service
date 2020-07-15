@@ -9,6 +9,9 @@
   "request": {
     "headers": {
       "X-Correlation-ID": ""
+    },
+    "pathVariables": {
+      "assignmentId": "${[scenarioContext][childContexts][S-032_CreationDataForRoleAssignment][testData][actualResponse][body][roleAssignmentResponse][requestedRoles][0][id]}"
     }
   },
   "expectedResponse": {
