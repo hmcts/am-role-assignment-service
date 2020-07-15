@@ -1,25 +1,27 @@
 package uk.gov.hmcts.reform.assignment.domain.service.createroles;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.assignment.domain.model.Request;
-import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.assignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.assignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.assignment.data.RequestEntity;
 import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.assignment.domain.model.Request;
+import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignmentSubset;
 import uk.gov.hmcts.reform.assignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.assignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.assignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.ValidationModelService;
-import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignmentSubset;
 import uk.gov.hmcts.reform.assignment.util.JacksonUtils;
+import uk.gov.hmcts.reform.assignment.util.PersistenceUtil;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,7 +30,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @Service
 public class CreateRoleAssignmentOrchestrator {
 
@@ -54,7 +56,7 @@ public class CreateRoleAssignmentOrchestrator {
         this.prepareResponseService = prepareResponseService;
     }
 
-    public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) throws Exception {
+    public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) throws ParseException {
 
         AssignmentRequest existingAssignmentRequest;
 
@@ -75,27 +77,31 @@ public class CreateRoleAssignmentOrchestrator {
             existingAssignmentRequest = retrieveExistingAssignments(parsedAssignmentRequest);
 
             // compare identical existing and incoming requested roles based on some attributes
-            if (hasAssignmentsUpdated(existingAssignmentRequest, parsedAssignmentRequest)) {
+            try {
+                if (hasAssignmentsUpdated(existingAssignmentRequest, parsedAssignmentRequest)) {
 
-                //validation
-                evaluateDeleteAssignments(existingAssignmentRequest);
+                    //validation
+                    evaluateDeleteAssignments(existingAssignmentRequest);
 
-                //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
-                checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
-            } else {
-                // Update request status to REJECTED
-                request.setStatus(Status.REJECTED);
-                requestEntity.setStatus(Status.REJECTED.toString());
-                requestEntity.setLog(
-                    "The request could not be completed due to a conflict(duplicate)"
-                        + " with the current state of the resource");
-                request.setLog(
-                    "The request could not be completed due to a conflict(duplicate) "
-                        + "with the current state of the resource.");
-                persistenceService.updateRequest(requestEntity);
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                    request);
+                    //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
+                    checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
+                } else {
+                    // Update request status to REJECTED
+                    request.setStatus(Status.REJECTED);
+                    requestEntity.setStatus(Status.REJECTED.toString());
+                    requestEntity.setLog(
+                        "The request could not be completed due to a conflict(duplicate)"
+                            + " with the current state of the resource");
+                    request.setLog(
+                        "The request could not be completed due to a conflict(duplicate) "
+                            + "with the current state of the resource.");
+                    persistenceService.updateRequest(requestEntity);
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                        request);
 
+                }
+            } catch (InvocationTargetException|IllegalAccessException e) {
+                log.error("context", e);
             }
 
         } else {
@@ -200,7 +206,7 @@ public class CreateRoleAssignmentOrchestrator {
     }
 
     private void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
-                                        AssignmentRequest parsedAssignmentRequest) throws Exception {
+                                        AssignmentRequest parsedAssignmentRequest) {
         // decision block
         List<RoleAssignment> deleteApprovedAssignments = existingAssignmentRequest.getRequestedRoles().stream()
             .filter(role -> role.getStatus().equals(
