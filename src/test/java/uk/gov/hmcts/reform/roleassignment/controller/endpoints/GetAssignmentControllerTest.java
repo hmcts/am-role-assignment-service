@@ -81,6 +81,27 @@ class GetAssignmentControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());*/
     }
+    @Test
+    void shouldGetRoleAssignmentByActorIdOnly() throws Exception {
+        /*String actorId = "123e4567-e89b-42d3-a456-556642445678";
+        ResponseEntity<Object> expectedResponse = TestDataBuilder.buildRoleAssignmentResponse();
+        doReturn(expectedResponse).when(retrieveRoleAssignmentServiceMock).retrieveRoleAssignmentsByActorIdOrCaseId(actorId, caseId);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId(RoleType.CASE.name(), actorId, caseId);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResponse.getBody(), response.getBody());*/
+    }
+
+    @Test
+    void shouldGetRoleAssignmentByCaseIdOnly() throws Exception {
+        /*String caseId = "1234567890123456";
+        ResponseEntity<Object> expectedResponse = TestDataBuilder.buildRoleAssignmentResponse();
+        doReturn(expectedResponse).when(retrieveRoleAssignmentServiceMock).retrieveRoleAssignmentsByActorIdOrCaseId(actorId, caseId);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId(RoleType.CASE.name(), actorId, caseId);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResponse.getBody(), response.getBody());*/
+    }
 
     @Test
     void shouldReturn404IfNoAssignmentFoundForGetRoleAssignmentByActorIdAndCaseId() throws Exception {
