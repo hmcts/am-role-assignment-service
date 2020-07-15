@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
@@ -8,19 +9,23 @@ import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -34,6 +39,7 @@ public class CreateRoleAssignmentOrchestrator {
     private PrepareResponseService prepareResponseService;
     Request request;
     RequestEntity requestEntity;
+    List<UUID> emptyUUIds = new ArrayList<>();
 
     public CreateRoleAssignmentOrchestrator(ParseRequestService parseRequestService,
                                             PersistenceService persistenceService,
@@ -68,11 +74,29 @@ public class CreateRoleAssignmentOrchestrator {
             //retrieve existing assignments and prepared temp request
             existingAssignmentRequest = retrieveExistingAssignments(parsedAssignmentRequest);
 
-            //validation
-            evaluateDeleteAssignments(existingAssignmentRequest, parsedAssignmentRequest);
+            // compare identical existing and incoming requested roles based on some attributes
+            if (hasAssignmentsUpdated(existingAssignmentRequest, parsedAssignmentRequest)) {
 
-            //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
-            checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
+                //validation
+                evaluateDeleteAssignments(existingAssignmentRequest, parsedAssignmentRequest);
+
+                //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
+                checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
+            } else {
+                // Update request status to REJECTED
+                request.setStatus(Status.REJECTED);
+                requestEntity.setStatus(Status.REJECTED.toString());
+                requestEntity.setLog(
+                    "The request could not be completed due to a conflict(duplicate)"
+                        + " with the current state of the resource");
+                request.setLog(
+                    "The request could not be completed due to a conflict(duplicate) "
+                        + "with the current state of the resource.");
+                persistenceService.updateRequest(requestEntity);
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                    request);
+
+            }
 
         } else {
 
@@ -100,7 +124,7 @@ public class CreateRoleAssignmentOrchestrator {
             request.process,
             request.reference,
             Status.LIVE.toString()
-                                                                                                   );
+        );
 
         //create a new existing assignment request for delete records
         existingAssignmentRequest = new AssignmentRequest(new Request(), Collections.emptyList());
@@ -124,8 +148,8 @@ public class CreateRoleAssignmentOrchestrator {
 
         // decision block
         List<RoleAssignment> createApprovedAssignments = parsedAssignmentRequest.getRequestedRoles().stream()
-                                                                         .filter(role -> role.getStatus().equals(
-                                                                             Status.APPROVED)).collect(
+            .filter(role -> role.getStatus().equals(
+                Status.APPROVED)).collect(
                 Collectors.toList());
 
         if (createApprovedAssignments.size() == parsedAssignmentRequest.getRequestedRoles().size()) {
@@ -133,20 +157,32 @@ public class CreateRoleAssignmentOrchestrator {
 
 
         } else {
-            rejectCreateRequest(parsedAssignmentRequest);
+            List<UUID> rejectedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()
+                .filter(role -> role.getStatus().equals(
+                    Status.REJECTED)).map(obj -> obj.getId()).collect(
+                    Collectors.toList());
+            rejectCreateRequest(parsedAssignmentRequest, rejectedAssignmentIds);
 
 
         }
     }
 
-    private void rejectCreateRequest(AssignmentRequest parsedAssignmentRequest) {
+    private void rejectCreateRequest(AssignmentRequest parsedAssignmentRequest, List<UUID> rejectedAssignmentIds) {
         // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status REJECTED
-        insertRequestedRole(parsedAssignmentRequest, Status.REJECTED);
+        insertRequestedRole(parsedAssignmentRequest, Status.REJECTED, rejectedAssignmentIds);
 
         // Update request status to REJECTED
         request.setStatus(Status.REJECTED);
         requestEntity.setStatus(Status.REJECTED.toString());
-        persistenceService.persistRequestToHistory(requestEntity);
+        if (!rejectedAssignmentIds.isEmpty()) {
+            requestEntity.setLog("Request has been rejected due to following assignment Ids :"
+                                     + rejectedAssignmentIds.toString());
+            request.setLog("Request has been rejected due to following assignment Ids :"
+                               + rejectedAssignmentIds.toString());
+        }
+
+
+        persistenceService.updateRequest(requestEntity);
     }
 
     private void executeCreateRequest(AssignmentRequest parsedAssignmentRequest) {
@@ -154,20 +190,21 @@ public class CreateRoleAssignmentOrchestrator {
         moveHistoryRecordsToLiveTable(requestEntity);
 
         // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status LIVE
-        insertRequestedRole(parsedAssignmentRequest, Status.LIVE);
+        insertRequestedRole(parsedAssignmentRequest, Status.LIVE, emptyUUIds);
 
         // Update request status to approved
         request.setStatus(Status.APPROVED);
+        requestEntity.setLog(request.getLog());
         requestEntity.setStatus(Status.APPROVED.toString());
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
     }
 
     private void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
                                         AssignmentRequest parsedAssignmentRequest) throws Exception {
         // decision block
         List<RoleAssignment> deleteApprovedAssignments = existingAssignmentRequest.getRequestedRoles().stream()
-                                                                           .filter(role -> role.getStatus().equals(
-                                                                               Status.DELETE_APPROVED)).collect(
+            .filter(role -> role.getStatus().equals(
+                Status.DELETE_APPROVED)).collect(
                 Collectors.toList());
 
         if (deleteApprovedAssignments.size() == existingAssignmentRequest.getRequestedRoles().size()) {
@@ -188,39 +225,66 @@ public class CreateRoleAssignmentOrchestrator {
 
 
             } else {
-                rejectReplaceRequest(existingAssignmentRequest, parsedAssignmentRequest);
+                List<UUID> rejectedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()
+                    .filter(role -> role.getStatus().equals(
+                        Status.REJECTED)).map(obj -> obj.getId()).collect(
+                        Collectors.toList());
+                rejectReplaceRequest(existingAssignmentRequest, parsedAssignmentRequest, rejectedAssignmentIds);
 
             }
 
         } else {
+            List<UUID> rejectedAssignmentIds = existingAssignmentRequest.getRequestedRoles().stream()
+                .filter(role -> role.getStatus().equals(
+                    Status.DELETE_REJECTED)).map(obj -> obj.getId()).collect(
+                    Collectors.toList());
 
 
-            rejectDeleteRequest(existingAssignmentRequest);
+            rejectDeleteRequest(existingAssignmentRequest, rejectedAssignmentIds, parsedAssignmentRequest);
 
         }
     }
 
-    private void rejectDeleteRequest(AssignmentRequest existingAssignmentRequest) {
+    private void rejectDeleteRequest(AssignmentRequest existingAssignmentRequest,
+                                     List<UUID> rejectedAssignmentIds,
+                                     AssignmentRequest parsedAssignmentRequest) {
         //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
-        insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED);
+        insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED, rejectedAssignmentIds);
+
+        // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status REJECTED
+        insertRequestedRole(parsedAssignmentRequest, Status.REJECTED, rejectedAssignmentIds);
         // Update request status to REJECTED
         request.setStatus(Status.REJECTED);
         requestEntity.setStatus(Status.REJECTED.toString());
-        persistenceService.persistRequestToHistory(requestEntity);
+        if (!rejectedAssignmentIds.isEmpty()) {
+            requestEntity.setLog("Request has been rejected due to following assignment Ids :"
+                                     + rejectedAssignmentIds.toString());
+            request.setLog("Request has been rejected due to following assignment Ids :"
+                               + rejectedAssignmentIds.toString());
+        }
+
+        persistenceService.updateRequest(requestEntity);
     }
 
     private void rejectReplaceRequest(AssignmentRequest existingAssignmentRequest,
-                                      AssignmentRequest parsedAssignmentRequest) {
+                                      AssignmentRequest parsedAssignmentRequest, List<UUID> rejectedAssignmentIds) {
         //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
-        insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED);
+        insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED, rejectedAssignmentIds);
 
         // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status REJECTED
-        insertRequestedRole(parsedAssignmentRequest, Status.REJECTED);
+        insertRequestedRole(parsedAssignmentRequest, Status.REJECTED, rejectedAssignmentIds);
 
         // Update request status to REJECTED
         request.setStatus(Status.REJECTED);
         requestEntity.setStatus(Status.REJECTED.toString());
-        persistenceService.persistRequestToHistory(requestEntity);
+        if (!rejectedAssignmentIds.isEmpty()) {
+            requestEntity.setLog("Request has been rejected due to following assignment Ids :"
+                                     + rejectedAssignmentIds.toString());
+            request.setLog("Request has been rejected due to following assignment Ids :"
+                               + rejectedAssignmentIds.toString());
+        }
+
+        persistenceService.updateRequest(requestEntity);
     }
 
     private void executeReplaceRequest(AssignmentRequest existingAssignmentRequest,
@@ -230,19 +294,20 @@ public class CreateRoleAssignmentOrchestrator {
 
         //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-soft
         // delete
-        insertRequestedRole(existingAssignmentRequest, Status.DELETED);
+        insertRequestedRole(existingAssignmentRequest, Status.DELETED, emptyUUIds);
 
 
         // Insert parsedAssignmentRequest.getRequestedRoles() records into live table
         moveHistoryRecordsToLiveTable(requestEntity);
 
         // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status LIVE
-        insertRequestedRole(parsedAssignmentRequest, Status.LIVE);
+        insertRequestedRole(parsedAssignmentRequest, Status.LIVE, emptyUUIds);
 
         // Update request status to approved
         request.setStatus(Status.APPROVED);
         requestEntity.setStatus(Status.APPROVED.toString());
-        persistenceService.persistRequestToHistory(requestEntity);
+        requestEntity.setLog(request.getLog());
+        persistenceService.updateRequest(requestEntity);
     }
 
     private void checkDeleteApproved(AssignmentRequest existingAssignmentRequest) {
@@ -261,14 +326,14 @@ public class CreateRoleAssignmentOrchestrator {
         }
 
         //Persist request to update relationship with history entities
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
     }
 
     //Create New Assignment Records
     private void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest) throws Exception {
         //Save new requested role in history table with CREATED Status
 
-        insertRequestedRole(parsedAssignmentRequest, Status.CREATED);
+        insertRequestedRole(parsedAssignmentRequest, Status.CREATED, emptyUUIds);
 
         validationModelService.validateRequest(parsedAssignmentRequest);
 
@@ -279,15 +344,15 @@ public class CreateRoleAssignmentOrchestrator {
         }
 
         //Persist request to update relationship with history entities
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
     }
 
     private void moveHistoryRecordsToLiveTable(RequestEntity requestEntity) {
         List<HistoryEntity> historyEntities = requestEntity.getHistoryEntities()
-                                                            .stream()
-                                                            .filter(entity -> entity.getStatus().equals(
-                                                               Status.APPROVED.toString()))
-                                                            .collect(Collectors.toList());
+            .stream()
+            .filter(entity -> entity.getStatus().equals(
+                Status.APPROVED.toString()))
+            .collect(Collectors.toList());
 
         List<RoleAssignment> roleAssignments = historyEntities.stream().map(entity -> persistenceUtil
             .convertHistoryEntityToRoleAssignment(
@@ -311,9 +376,21 @@ public class CreateRoleAssignmentOrchestrator {
         }
     }
 
-    private void insertRequestedRole(AssignmentRequest existingAssignmentRequest, Status status) {
-        for (RoleAssignment requestedAssignment : existingAssignmentRequest.getRequestedRoles()) {
-            requestedAssignment.setRequest(existingAssignmentRequest.getRequest());
+    private void insertRequestedRole(AssignmentRequest assignmentRequest,
+                                     Status status,
+                                     List<UUID> rejectedAssignmentIds) {
+        for (RoleAssignment requestedAssignment : assignmentRequest.getRequestedRoles()) {
+            requestedAssignment.setRequest(assignmentRequest.getRequest());
+            if (!rejectedAssignmentIds.isEmpty()
+                && (status.equals(Status.REJECTED)
+                || status.equals(Status.DELETE_REJECTED))
+                && (requestedAssignment.getStatus().equals(Status.APPROVED)
+                || requestedAssignment.getStatus().equals(Status.CREATED)
+                || requestedAssignment.getStatus().equals(Status.DELETE_APPROVED))) {
+                requestedAssignment.setLog(
+                    "Requested Role has been rejected due to following new/existing assignment Ids :"
+                        + rejectedAssignmentIds.toString());
+            }
             requestedAssignment.status = status;
             // persist history in db
             HistoryEntity entity = persistenceService.persistHistory(requestedAssignment, request);
@@ -321,7 +398,27 @@ public class CreateRoleAssignmentOrchestrator {
             requestEntity.getHistoryEntities().add(entity);
         }
         //Persist request to update relationship with history entities
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
+    }
+
+    private boolean hasAssignmentsUpdated(AssignmentRequest existingAssignmentRequest,
+                                          AssignmentRequest parsedAssignmentRequest)
+        throws InvocationTargetException, IllegalAccessException {
+
+        // convert existing assignment records into role assignment subset
+        List<RoleAssignmentSubset> existingRecords = JacksonUtils.convertRequestedRolesIntoSubSet(
+            existingAssignmentRequest);
+        List<RoleAssignmentSubset> incomingRecords = JacksonUtils.convertRequestedRolesIntoSubSet(
+            parsedAssignmentRequest);
+
+        // prepare tempList from incoming requested roles
+        if (existingRecords.equals(incomingRecords)) {
+            return false;
+        } else {
+            return true;
+        }
+
+
     }
 
 

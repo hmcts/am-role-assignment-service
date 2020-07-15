@@ -12,7 +12,8 @@ Feature: F-005 : Get Role Assignments by Actor Id
     And the request [contains an Actor Id having only single Role Assignment],
     And it is submitted to call the [Get Role Assignments by Actor Id] operation of [Role Assignment Service],
     Then a positive response is received,
-    And the response has all other details as expected.
+    And the response has all other details as expected,
+    And a successful call [to delete a role assignment just created above] as in [S-051_DeleteDataForRoleAssignment].
 
   @S-052
   Scenario: must successfully receive multiple Role Assignments by Actor Id
@@ -22,7 +23,8 @@ Feature: F-005 : Get Role Assignments by Actor Id
     And the request [contains an Actor Id having multiple Role Assignments],
     And it is submitted to call the [Get Role Assignments by Actor Id] operation of [Role Assignment Service],
     Then a positive response is received,
-    And the response has all other details as expected.
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [S-052_DeleteDataForRoleAssignment].
 
   @S-053
   Scenario: must receive an error response for a non-existing ActorId
@@ -42,7 +44,8 @@ Feature: F-005 : Get Role Assignments by Actor Id
     And the request [contains an Actor Id having only single Role Assignment],
     And it is submitted to call the [Get Role Assignments by Actor Id] operation of [Role Assignment Service],
     Then a positive response is received,
-    And the response has all other details as expected.
+    And the response has all other details as expected,
+    And a successful call [to delete a role assignment just created above] as in [S-054_DeleteDataForRoleAssignment].
 
   @S-055
   Scenario: must receive an error response for an invalid ActorId
@@ -62,7 +65,8 @@ Feature: F-005 : Get Role Assignments by Actor Id
     And the request [contains an Actor Id having only single Role Assignment],
     And it is submitted to call the [Get Role Assignments by Actor Id] operation of [Role Assignment Service],
     Then a positive response is received,
-    And the response has all other details as expected.
+    And the response has all other details as expected,
+    And a successful call [to delete a role assignment just created above] as in [S-056_DeleteDataForRoleAssignment].
 
   @S-057
   Scenario: must successfully receive response for Role Assignments with If-None-Match Header having older Etag version
@@ -73,7 +77,8 @@ Feature: F-005 : Get Role Assignments by Actor Id
     And the request [contains an Actor Id having only single Role Assignment],
     And it is submitted to call the [Get Role Assignments by Actor Id] operation of [Role Assignment Service],
     Then a positive response is received,
-    And the response has all other details as expected.
+    And the response has all other details as expected,
+    And a successful call [to delete a role assignment just created above] as in [S-057_DeleteDataForRoleAssignment].
 
   @S-058
   Scenario: must receive a negative 'Not Modified' response If-None-Match Header having Latest Etag version
@@ -85,7 +90,8 @@ Feature: F-005 : Get Role Assignments by Actor Id
     And the request [contains an Actor Id having only single Role Assignment],
     And it is submitted to call the [Get Role Assignments by Actor Id] operation of [Role Assignment Service],
     Then a negative response is received,
-    And the response has all other details as expected.
+    And the response has all other details as expected,
+    And a successful call [to delete a role assignment just created above] as in [S-058_DeleteDataForRoleAssignment].
 
 #Generic Scenarios for Security
   @S-058 @Ignore

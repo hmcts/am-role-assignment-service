@@ -17,11 +17,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_INVALID_PARAMETER;
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
 
 @Named
@@ -125,7 +128,14 @@ public class ValidationUtil {
     }
 
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
+        List<String> rolesName = JacksonUtils.configuredRoles.get("roles").stream().map(obj -> obj.getName()).collect(
+            Collectors.toList());
         for (RoleAssignment requestedRole : requestedRoles) {
+            if (!rolesName.contains(requestedRole.getRoleName())) {
+                throw new BadRequestException(BAD_REQUEST_INVALID_PARAMETER + " roleName :"
+                                                  + requestedRole.getRoleName());
+            }
+
             validateInputParams(UUID_PATTERN, requestedRole.getActorId().toString());
             validateEnumRoleType(requestedRole.getRoleType().toString());
             if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {

@@ -54,8 +54,6 @@ spring:
     default-property-inclusion: NON_NULL
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
-    log_statement: all
     properties:
       hibernate:
         jdbc:

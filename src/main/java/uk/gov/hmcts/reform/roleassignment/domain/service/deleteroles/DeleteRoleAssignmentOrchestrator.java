@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_PROCESS;
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORD_FOUND_BY_ASSIGNMENT_ID;
 
 import java.util.Collections;
@@ -77,7 +76,9 @@ public class DeleteRoleAssignmentOrchestrator {
                 reference,
                 Status.LIVE.toString());
             if (requestedRoles.isEmpty()) {
-                throw new ResourceNotFoundException(String.format(NO_RECORDS_FOUND_BY_PROCESS, process, reference));
+                requestEntity.setStatus(Status.APPROVED.toString());
+                persistenceService.updateRequest(requestEntity);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         } else {
             requestedRoles = persistenceService.getAssignmentById(UUID.fromString(assignmentId));
@@ -132,10 +133,10 @@ public class DeleteRoleAssignmentOrchestrator {
         }
 
         //Persist request to update relationship with history entities
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
     }
 
-    private void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
+    public void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
         // decision block
         List<RoleAssignment> deleteApprovedRoles = validatedAssignmentRequest.getRequestedRoles().stream()
             .filter(role -> role.getStatus()
@@ -153,9 +154,7 @@ public class DeleteRoleAssignmentOrchestrator {
             // Update request status to approved
             updateRequestStatus(validatedAssignmentRequest, Status.APPROVED);
 
-
         } else {
-
 
             //Insert requested roles  into history table with status deleted-Rejected
             insertRequestedRole(validatedAssignmentRequest, Status.DELETE_REJECTED);
@@ -163,11 +162,10 @@ public class DeleteRoleAssignmentOrchestrator {
             // Update request status to REJECTED
             updateRequestStatus(validatedAssignmentRequest, Status.REJECTED);
 
-
         }
     }
 
-    private void deleteLiveRecords(AssignmentRequest validatedAssignmentRequest, String actorId) {
+    public void deleteLiveRecords(AssignmentRequest validatedAssignmentRequest, String actorId) {
         if (actorId != null) {
             for (RoleAssignment requestedRole : validatedAssignmentRequest.getRequestedRoles()) {
                 persistenceService.deleteRoleAssignmentByActorId(requestedRole.getActorId());
@@ -178,7 +176,6 @@ public class DeleteRoleAssignmentOrchestrator {
             for (RoleAssignment requestedRole : validatedAssignmentRequest.getRequestedRoles()) {
                 persistenceService.deleteRoleAssignment(requestedRole);
                 persistenceService.persistActorCache(requestedRole);
-
             }
         }
     }
@@ -198,14 +195,15 @@ public class DeleteRoleAssignmentOrchestrator {
         }
 
         //Persist request to update relationship with history entities
-        persistenceService.persistRequestToHistory(requestEntity);
+        persistenceService.updateRequest(requestEntity);
 
     }
 
     private void updateRequestStatus(AssignmentRequest assignmentRequest, Status status) {
         assignmentRequest.getRequest().setStatus(status);
         requestEntity.setStatus(status.toString());
-        persistenceService.persistRequestToHistory(requestEntity);
+        requestEntity.setLog(assignmentRequest.getRequest().getLog());
+        persistenceService.updateRequest(requestEntity);
 
     }
 

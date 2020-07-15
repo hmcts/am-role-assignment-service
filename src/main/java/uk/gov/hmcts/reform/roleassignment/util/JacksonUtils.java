@@ -8,14 +8,20 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import org.apache.commons.beanutils.BeanUtils;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Named
 @Singleton
@@ -23,6 +29,8 @@ public class JacksonUtils {
 
     private JacksonUtils() {
     }
+
+    public static Map<String, List<Role>> configuredRoles = new HashMap<>();
 
     public static final JsonFactory jsonFactory = JsonFactory.builder()
         // Change per-factory setting to prevent use of `String.intern()` on symbols
@@ -50,15 +58,30 @@ public class JacksonUtils {
         };
     }
 
-    public static List<Role> buildRole(String filename) {
+    public static List<RoleAssignmentSubset> convertRequestedRolesIntoSubSet(AssignmentRequest assignmentRequest)
+        throws InvocationTargetException, IllegalAccessException {
+        RoleAssignmentSubset subset = null;
+        List<RoleAssignmentSubset> roleAssignmentSubsets = new ArrayList<>();
+        for (RoleAssignment roleAssignment : assignmentRequest.getRequestedRoles()) {
+            subset = RoleAssignmentSubset.builder().build();
+            BeanUtils.copyProperties(subset, roleAssignment);
+            roleAssignmentSubsets.add(subset);
+        }
 
-        try (InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream(filename)) {
+        return roleAssignmentSubsets;
+
+    }
+
+    static {
+
+        try (InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream("role.json")) {
             CollectionType listType = MAPPER.getTypeFactory().constructCollectionType(
                 ArrayList.class,
                 Role.class
             );
             List<Role> allRoles = MAPPER.readValue(input, listType);
-            return allRoles;
+            configuredRoles.put("roles", allRoles);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

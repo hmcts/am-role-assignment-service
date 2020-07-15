@@ -3,7 +3,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.10")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.11")
     classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
   }
 }
@@ -240,14 +240,14 @@ dependencies {
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   implementation group: 'org.json', name: 'json', version: '20200518'
 
-  implementation 'com.squareup.okhttp3:okhttp:4.7.2'
+  implementation 'com.squareup.okhttp3:okhttp:4.8.0'
 
   // drools engine dependency
-  implementation group: 'org.drools', name: 'drools-core', version: '7.39.0.Final'
-  implementation group: 'org.drools', name: 'drools-compiler', version: '7.39.0.Final'
-  implementation group: 'org.drools', name: 'drools-decisiontables', version: '7.39.0.Final'
-  implementation group: 'org.kie', name: 'kie-ci', version: '7.39.0.Final'
-  implementation group: 'org.liquibase', name: 'liquibase-core', version: '3.10.0'
+  compile group: 'org.drools', name: 'drools-core', version: '7.39.0.Final'
+  compile group: 'org.drools', name: 'drools-compiler', version: '7.39.0.Final'
+  compile group: 'org.drools', name: 'drools-decisiontables', version: '7.39.0.Final'
+  compile group: 'org.kie', name: 'kie-ci', version: '7.39.0.Final'
+  compile group: 'org.liquibase', name: 'liquibase-core', version: '4.0.0'
 
   //Added for Spring Security Implementation
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBoot

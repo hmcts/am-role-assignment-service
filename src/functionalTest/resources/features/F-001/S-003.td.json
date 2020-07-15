@@ -1,0 +1,42 @@
+{
+  "title": "must successfully create single Role Assignment with RoleTypeId as case",
+  "_guid_": "S-003",
+  "_extends_": "F-001_Test_Data_Base",
+  "specs": [
+    "contains a single Role Assignment",
+    "contains RoleTypeId as 'CASE'"
+  ],
+  "request": {
+    "body": {
+      "roleRequest": {
+        "reference": "123e4567-e89b-42d3-a456-556642445003"
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "links": [],
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest"
+        },
+        "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRole"
+          }
+        ]
+      }
+    }
+  }
+}

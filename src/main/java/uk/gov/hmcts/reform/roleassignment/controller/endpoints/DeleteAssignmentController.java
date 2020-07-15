@@ -64,15 +64,13 @@ public class DeleteAssignmentController {
     })
     public ResponseEntity<Object> deleteRoleAssignment(@RequestHeader(value = "assignerId", required = false)
                                                            String assignerId,
-                                                       @RequestParam(value = "actorId", required = false)
-                                                           String actorId,
                                                        @RequestParam(value = "process", required = false)
                                                            String process,
                                                        @RequestParam(value = "reference", required = false)
                                                                String reference,
                                                        @RequestHeader Map<String, String> headerMap) throws Exception {
         LOG.info("Request raised by assigner : {}", assignerId);
-        return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(actorId, process, reference,null, headerMap);
+        return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, process, reference, null,headerMap);
 
     }
 
