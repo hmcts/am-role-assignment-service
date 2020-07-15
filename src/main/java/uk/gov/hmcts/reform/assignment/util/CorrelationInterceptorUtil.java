@@ -5,14 +5,14 @@ import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.assignment.apihelper.Constants;
 
-import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @Component
 public class CorrelationInterceptorUtil  {
     private static final String CORRELATION_ID_LOG_VAR_NAME = "correlationId";
 
-    public String preHandle(final HttpServletRequest request) throws Exception {
+    public String preHandle(final HttpServletRequest request) {
         final String correlationId = getCorrelationIdFromHeader(request);
         MDC.put(CORRELATION_ID_LOG_VAR_NAME, correlationId);
         return correlationId;

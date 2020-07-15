@@ -229,7 +229,7 @@ public class CreateRoleAssignmentOrchestrator {
                     .filter(role -> role.getStatus().equals(
                         Status.REJECTED)).map(RoleAssignment::getId).collect(
                         Collectors.toList());
-                rejectReplaceRequest(existingAssignmentRequest, parsedAssignmentRequest, rejectedAssignmentIds);
+                rejectDeleteRequest(existingAssignmentRequest, rejectedAssignmentIds, parsedAssignmentRequest);
 
             }
 
@@ -266,26 +266,6 @@ public class CreateRoleAssignmentOrchestrator {
         persistenceService.updateRequest(requestEntity);
     }
 
-    private void rejectReplaceRequest(AssignmentRequest existingAssignmentRequest,
-                                      AssignmentRequest parsedAssignmentRequest, List<UUID> rejectedAssignmentIds) {
-        //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
-        insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED, rejectedAssignmentIds);
-
-        // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status REJECTED
-        insertRequestedRole(parsedAssignmentRequest, Status.REJECTED, rejectedAssignmentIds);
-
-        // Update request status to REJECTED
-        request.setStatus(Status.REJECTED);
-        requestEntity.setStatus(Status.REJECTED.toString());
-        if (!rejectedAssignmentIds.isEmpty()) {
-            requestEntity.setLog(LOG_MESSAGE
-                                     + rejectedAssignmentIds.toString());
-            request.setLog(LOG_MESSAGE
-                               + rejectedAssignmentIds.toString());
-        }
-
-        persistenceService.updateRequest(requestEntity);
-    }
 
     private void executeReplaceRequest(AssignmentRequest existingAssignmentRequest,
                                        AssignmentRequest parsedAssignmentRequest) {

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.reform.assignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.assignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.assignment.data.cachecontrol.ActorCacheRepository;
 import uk.gov.hmcts.reform.assignment.data.roleassignment.HistoryEntity;
@@ -21,6 +20,7 @@ import uk.gov.hmcts.reform.assignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.assignment.domain.model.Request;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.assignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.assignment.util.PersistenceUtil;
 
 import java.io.IOException;
@@ -75,6 +75,9 @@ class PersistenceServiceTest {
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(request);
         try {
             sut.updateRequest(requestEntity);
+            assertNotNull(requestEntity);
+            verify(requestRepository, times(1)).save(requestEntity);
+
         } catch (Exception e) {
             throw new InternalError(e);
         }
