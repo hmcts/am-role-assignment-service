@@ -48,8 +48,10 @@ public class ValidationUtil {
         SimpleDateFormat sdfrmt = new SimpleDateFormat(Constants.DATE_PATTERN);
         sdfrmt.setLenient(false);
         try {
-            Date javaDate;
-            javaDate = sdfrmt.parse(strDate);
+            Date javaDate = sdfrmt.parse(strDate);
+            if (LOG.isInfoEnabled() && javaDate != null) {
+                LOG.info(javaDate.toString());
+            }
         } catch (ParseException e) {
             throw new BadRequestException(String.format(
                 "Incorrect date format %s",

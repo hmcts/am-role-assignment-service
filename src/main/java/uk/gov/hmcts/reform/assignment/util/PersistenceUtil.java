@@ -52,7 +52,7 @@ public class PersistenceUtil {
             .authenticatedUserId(request.getAuthenticatedUserId())
             .clientId(request.getClientId())
             .assignerId(request.getAssignerId())
-            .replaceExisting(request.replaceExisting)
+            .replaceExisting(request.isReplaceExisting())
             .requestType(request.getRequestType().toString())
             .created(request.getCreated())
             .log(request.getLog())

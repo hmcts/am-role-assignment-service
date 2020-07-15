@@ -24,7 +24,7 @@ public class Request {
     private RequestType requestType;
     private String process;
     private String reference;
-    public boolean replaceExisting;
+    private boolean replaceExisting;
     private UUID roleAssignmentId;
     private Status status; //this will be set by app default = created
     private LocalDateTime created; //this will be set by app

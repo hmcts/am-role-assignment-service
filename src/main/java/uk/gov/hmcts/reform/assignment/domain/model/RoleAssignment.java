@@ -31,7 +31,7 @@ public  class RoleAssignment {
     private Classification classification;
     private GrantType grantType;
     private RoleCategory roleCategory;
-    public boolean readOnly;
+    private boolean readOnly;
     private LocalDateTime beginTime;
     private LocalDateTime endTime;
 

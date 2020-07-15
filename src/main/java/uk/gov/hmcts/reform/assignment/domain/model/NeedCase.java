@@ -8,10 +8,8 @@ public class NeedCase {
     //Get the commented code from history
     private static final Logger LOG = LoggerFactory.getLogger(NeedCase.class);
 
-    private String id;
-
     void sampleMethod() {
-        id = "1234567812345678";
-        LOG.info(id);
+        String caseId = "1234567812345678";
+        LOG.info(caseId);
     }
 }
