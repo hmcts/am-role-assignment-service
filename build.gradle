@@ -178,7 +178,8 @@ sonarqube {
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/roleassignment/*Application.java," +
+    property "sonar.exclusions", "src/main/java/**" +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/*Application.java," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/configuration/**"
     property "sonar.junit.reportPaths", "${project.buildDir}/test-results/junit-platform"
   }
