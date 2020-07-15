@@ -4,31 +4,7 @@
   "request": {
     "body": {
       "roleRequest": {
-        "reference": "123e4567-e89b-42d3-a456-556642445031",
-        "replaceExisting": true
-      },
-      "requestedRoles": [
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
-        }
-      ]
-    }
-  },
-  "expectedResponse": {
-    "body": {
-      "roleAssignmentResponse": {
-        "roleRequest": {
-          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "replaceExisting": true
-        },
-        "requestedRoles": [
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
-          }
-        ]
+        "reference": "123e4567-e89b-42d3-a456-556642446031"
       }
     }
   }
