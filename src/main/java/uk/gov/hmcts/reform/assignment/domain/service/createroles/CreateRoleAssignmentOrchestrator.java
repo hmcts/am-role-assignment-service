@@ -133,7 +133,7 @@ public class CreateRoleAssignmentOrchestrator {
         return existingAssignmentRequest;
     }
 
-    private void evaluateDeleteAssignments(AssignmentRequest existingAssignmentRequest) throws Exception {
+    private void evaluateDeleteAssignments(AssignmentRequest existingAssignmentRequest) {
 
         //calling drools rules for validation
         validationModelService.validateRequest(existingAssignmentRequest);
@@ -310,7 +310,7 @@ public class CreateRoleAssignmentOrchestrator {
     }
 
     //Create New Assignment Records
-    private void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest) throws Exception {
+    private void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest) {
         //Save new requested role in history table with CREATED Status
 
         insertRequestedRole(parsedAssignmentRequest, Status.CREATED, emptyUUIds);

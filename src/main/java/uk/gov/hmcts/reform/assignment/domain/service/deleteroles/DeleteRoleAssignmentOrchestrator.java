@@ -1,15 +1,5 @@
 package uk.gov.hmcts.reform.assignment.domain.service.deleteroles;
 
-import static uk.gov.hmcts.reform.assignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
-import static uk.gov.hmcts.reform.assignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
-import static uk.gov.hmcts.reform.assignment.v1.V1.Error.NO_RECORD_FOUND_BY_ASSIGNMENT_ID;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,6 +13,16 @@ import uk.gov.hmcts.reform.assignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.assignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.ValidationModelService;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static uk.gov.hmcts.reform.assignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
+import static uk.gov.hmcts.reform.assignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
+import static uk.gov.hmcts.reform.assignment.v1.V1.Error.NO_RECORD_FOUND_BY_ASSIGNMENT_ID;
 
 @Service
 public class DeleteRoleAssignmentOrchestrator {
@@ -45,7 +45,7 @@ public class DeleteRoleAssignmentOrchestrator {
     public ResponseEntity<Object> deleteRoleAssignment(String actorId,
                                                        String process,
                                                        String reference,
-                                                       String assignmentId) throws Exception {
+                                                       String assignmentId) {
         List<RoleAssignment> requestedRoles = null;
 
         //1. create the request Object
@@ -105,7 +105,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
     }
 
-    private void validationByDrool(Request request, List<RoleAssignment> requestedRoles) throws Exception {
+    private void validationByDrool(Request request, List<RoleAssignment> requestedRoles) {
         assignmentRequest.setRequest(request);
         assignmentRequest.setRequestedRoles(requestedRoles);
 

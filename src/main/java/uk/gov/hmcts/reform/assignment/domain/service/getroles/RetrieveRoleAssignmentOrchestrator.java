@@ -33,7 +33,7 @@ public class RetrieveRoleAssignmentOrchestrator {
     //4. Call persistence to fetch requested assignment records
     //5. Call prepare response to make HATEOUS based response.
 
-    public ResponseEntity<Object> getAssignmentsByActor(String actorId) throws Exception {
+    public ResponseEntity<Object> getAssignmentsByActor(String actorId) {
         ValidationUtil.validateInputParams(Constants.UUID_PATTERN, actorId);
         List<RoleAssignment> assignments = persistenceService.getAssignmentsByActor(UUID.fromString(actorId));
         if (CollectionUtils.isEmpty(assignments)) {
