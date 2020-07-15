@@ -18,7 +18,6 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -29,7 +28,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity(name = "role_assignment_history")
 @IdClass(RoleAssignmentIdentity.class)
-public class HistoryEntity implements Serializable {
+public class HistoryEntity {
 
     @Id
     private UUID id;

@@ -48,7 +48,7 @@ public class SampleRoleAssignmentController {
     }
 
     @PostMapping("/fireRoleExecution")
-    public AssignmentRequest testRue(@RequestBody AssignmentRequest assignmentRequest) throws Exception {
+    public AssignmentRequest testRue(@RequestBody AssignmentRequest assignmentRequest) {
 
         validationModelService.validateRequest(assignmentRequest);
 

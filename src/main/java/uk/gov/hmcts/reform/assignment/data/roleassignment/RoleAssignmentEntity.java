@@ -14,7 +14,6 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -25,7 +24,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity(name = "role_assignment")
 
-public class RoleAssignmentEntity implements Serializable {
+public class RoleAssignmentEntity {
 
     @Id
     private UUID id;

@@ -1,25 +1,26 @@
 package uk.gov.hmcts.reform.assignment.domain.service.common;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.assignment.apihelper.Constants;
+import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.assignment.domain.model.Request;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.assignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.assignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.assignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.assignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.assignment.util.ValidationUtil;
-import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.assignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.assignment.domain.model.enums.Status;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.UUID;
 
 @Service
 public class ParseRequestService {
@@ -31,7 +32,7 @@ public class ParseRequestService {
     private CorrelationInterceptorUtil correlationInterceptorUtil;
 
     public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType)
-        throws Exception {
+        throws ParseException {
         Request request = assignmentRequest.getRequest();
         //1. validates request and assignment record
         ValidationUtil.validateAssignmentRequest(assignmentRequest);
@@ -67,26 +68,25 @@ public class ParseRequestService {
         return parsedRequest;
     }
 
-    private void setCorrelationId(Request request) throws Exception {
+    private void setCorrelationId(Request request) {
         HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
             .currentRequestAttributes())
             .getRequest();
         request.setCorrelationId(correlationInterceptorUtil.preHandle(httpServletRequest));
     }
 
-    public String getCorrelationId() throws Exception {
+    public String getCorrelationId() {
         HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
             .currentRequestAttributes())
             .getRequest();
         return correlationInterceptorUtil.preHandle(httpServletRequest);
     }
 
-    public void removeCorrelationLog() throws Exception {
+    public void removeCorrelationLog() {
         correlationInterceptorUtil.afterCompletion();
     }
 
-    public Request prepareDeleteRequest(String process, String reference, String actorId, String assignmentId)
-        throws Exception {
+    public Request prepareDeleteRequest(String process, String reference, String actorId, String assignmentId) {
         if (actorId != null) {
             ValidationUtil.validateInputParams(Constants.UUID_PATTERN, actorId);
         }
