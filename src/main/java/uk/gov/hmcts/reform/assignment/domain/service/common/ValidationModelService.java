@@ -2,11 +2,11 @@ package uk.gov.hmcts.reform.assignment.domain.service.common;
 
 import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.assignment.domain.model.Role;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.assignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.assignment.util.JacksonUtils;
-import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,7 +43,7 @@ public class ValidationModelService {
         // Package up the request and the assignments
         List<Object> facts = new ArrayList<>();
         //Pre defined role configuration
-        List<Role> role =  JacksonUtils.configuredRoles.get("roles");
+        List<Role> role =  JacksonUtils.getConfiguredRoles().get("roles");
         facts.addAll(role);
         facts.add(assignmentRequest.getRequest());
         facts.addAll(assignmentRequest.getRequestedRoles());

@@ -8,10 +8,11 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
-import uk.gov.hmcts.reform.assignment.controller.advice.exception.ServiceException;
-import uk.gov.hmcts.reform.assignment.domain.model.Role;
+import lombok.Getter;
 import org.apache.commons.beanutils.BeanUtils;
+import uk.gov.hmcts.reform.assignment.controller.advice.exception.ServiceException;
 import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.assignment.domain.model.Role;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignmentSubset;
 
@@ -31,7 +32,8 @@ public class JacksonUtils {
     private JacksonUtils() {
     }
 
-    public static final Map<String, List<Role>> configuredRoles = new HashMap<>();
+    @Getter
+    private static final Map<String, List<Role>> configuredRoles = new HashMap<>();
 
     public static final JsonFactory jsonFactory = JsonFactory.builder()
         // Change per-factory setting to prevent use of `String.intern()` on symbols
