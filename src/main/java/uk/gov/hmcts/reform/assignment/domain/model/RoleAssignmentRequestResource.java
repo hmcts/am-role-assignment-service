@@ -30,7 +30,7 @@ public class RoleAssignmentRequestResource extends RepresentationModel<RoleAssig
     }
 
     public void addLinks(UUID documentId) {
-        LOGGER.info("add links");
+        LOGGER.info(" add links for document...{}", documentId);
     }
 
 

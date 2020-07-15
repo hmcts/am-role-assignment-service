@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.assignment.apihelper.Constants;
+import uk.gov.hmcts.reform.assignment.controller.advice.exception.ServiceException;
 import uk.gov.hmcts.reform.assignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.assignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.assignment.v1.V1;
@@ -140,7 +141,7 @@ public class GetAssignmentController {
             response = Object.class
         )
     })
-    public ResponseEntity<Object> getListOfRoles() throws RuntimeException {
+    public ResponseEntity<Object> getListOfRoles() {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode;
         try (InputStream input = GetAssignmentController.class.getClassLoader()
@@ -152,7 +153,7 @@ public class GetAssignmentController {
                 obj.remove(Constants.ROLE_JSON_PATTERNS_FIELD);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ServiceException("Service Exception", e);
         }
         return ResponseEntity.status(HttpStatus.OK).body(rootNode);
     }

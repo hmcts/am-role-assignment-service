@@ -39,7 +39,7 @@ public class ValidationModelService {
 
     }
 
-    private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) throws Exception {
+    private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) {
         // Package up the request and the assignments
         List<Object> facts = new ArrayList<>();
         //Pre defined role configuration

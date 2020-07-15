@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import uk.gov.hmcts.reform.assignment.controller.advice.exception.ServiceException;
 import uk.gov.hmcts.reform.assignment.domain.model.Role;
 import org.apache.commons.beanutils.BeanUtils;
 import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
@@ -83,7 +84,7 @@ public class JacksonUtils {
             configuredRoles.put("roles", allRoles);
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ServiceException("Service Exception", e);
         }
 
     }
