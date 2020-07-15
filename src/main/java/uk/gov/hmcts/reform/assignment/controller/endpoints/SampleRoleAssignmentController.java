@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.reform.assignment.controller.advice.exception.ServiceException;
 import uk.gov.hmcts.reform.assignment.data.roleassignment.HistoryEntity;
 import uk.gov.hmcts.reform.assignment.data.roleassignment.RequestEntity;
 import uk.gov.hmcts.reform.assignment.data.roleassignment.RequestRepository;
@@ -55,7 +56,7 @@ public class SampleRoleAssignmentController {
     }
 
 
-    private void convertIntoObject() throws RuntimeException {
+    private void convertIntoObject() {
         try {
             objectMapper = new ObjectMapper()
                 .registerModule(new JavaTimeModule())
@@ -78,7 +79,7 @@ public class SampleRoleAssignmentController {
 
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ServiceException("Service Exception", e);
         }
     }
 

@@ -18,11 +18,11 @@ public class CorrelationInterceptorUtil  {
         return correlationId;
     }
 
-    public void afterCompletion() throws Exception {
+    public void afterCompletion() {
         MDC.remove(CORRELATION_ID_LOG_VAR_NAME);
     }
 
-    private String getCorrelationIdFromHeader(final HttpServletRequest request) throws Exception {
+    private String getCorrelationIdFromHeader(final HttpServletRequest request) {
         String correlationId = request.getHeader(Constants.CORRELATION_ID_HEADER_NAME);
         if (StringUtils.isBlank(correlationId)) {
             correlationId = generateUniqueCorrelationId();
