@@ -7,17 +7,12 @@
   "request": {
     "body": {
       "roleRequest": {
-        "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}",
-        "replaceExisting": true
+        "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}"
-        },
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}",
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "grantType": "CHALLENGED"
         }
       ]
@@ -26,20 +21,11 @@
   "expectedResponse": {
     "body": {
       "roleAssignmentResponse": {
-        "roleRequest": {
-          "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}",
-          "replaceExisting": true
-        },
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}",
-            "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}"
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}",
-            "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}",
+            "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "grantType": "CHALLENGED"
           }
         ]

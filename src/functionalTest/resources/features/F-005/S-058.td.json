@@ -11,7 +11,7 @@
       "If-None-Match": "${[scenarioContext][childContexts][S-058_GetDataForRoleAssignment][testData][actualResponse][headers][ETag]}"
     },
     "pathVariables": {
-      "actorId": "123e4567-e89b-42d3-a456-556642445058"
+      "actorId": "123e4567-e89b-42d3-a456-556642446058"
     }
   },
   "expectedResponse": {
