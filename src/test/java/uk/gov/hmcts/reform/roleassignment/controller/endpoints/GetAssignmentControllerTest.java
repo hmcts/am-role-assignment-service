@@ -95,7 +95,7 @@ class GetAssignmentControllerTest {
 
     @Test
     void shouldReturn400IfRoleTypeIsNotCASEForGetRoleAssignmentByActorIdAndCaseId() throws Exception {
-        /*String actorId = "123e4567-e89b-42d3-a456-556642445678";
+        String actorId = "123e4567-e89b-42d3-a456-556642445678";
         String caseId = "1234567890123456";
         String CaseType = "SomeFakeCaseType";
         ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId(CaseType, actorId, caseId);
