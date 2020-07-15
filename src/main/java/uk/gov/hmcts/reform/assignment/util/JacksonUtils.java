@@ -31,7 +31,7 @@ public class JacksonUtils {
     private JacksonUtils() {
     }
 
-    public static Map<String, List<Role>> configuredRoles = new HashMap<>();
+    public static final Map<String, List<Role>> configuredRoles = new HashMap<>();
 
     public static final JsonFactory jsonFactory = JsonFactory.builder()
         // Change per-factory setting to prevent use of `String.intern()` on symbols
