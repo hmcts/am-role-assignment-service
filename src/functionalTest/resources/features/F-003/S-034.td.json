@@ -5,6 +5,11 @@
   "specs": [
     "contains the same Assignment Id created above"
   ],
+  "request": {
+    "pathVariables": {
+      "assignmentId": "${[scenarioContext][childContexts][S-034_CreationDataForRoleAssignment][testData][actualResponse][body][roleAssignmentResponse][requestedRoles][0][id]}"
+    }
+  },
   "expectedResponse": {
     "_extends_": "ResourceNotFoundResponse",
     "body": {

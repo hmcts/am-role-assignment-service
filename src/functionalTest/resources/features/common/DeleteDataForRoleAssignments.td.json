@@ -1,11 +1,11 @@
 {
-  "_guid_": "S-030_DeleteDataForRoleAssignment",
+  "_guid_": "DeleteDataForRoleAssignments",
   "productName": "Role Assignment Service",
   "operationName": "Delete Role Assignments by Process",
   "method": "DELETE",
   "uri": "/am/role-assignments?process={process}&reference={reference}",
   "specs": [
-    "to delete a role assignment by Process"
+    "to delete role assignments just created above"
   ],
   "users": {
     "invokingUser": {
@@ -21,7 +21,7 @@
     },
     "pathVariables": {
       "process": "businessProcess1",
-      "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}"
+      "reference": "${[scenarioContext][parentContext][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {
