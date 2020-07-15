@@ -1,5 +1,5 @@
 
-package uk.gov.hmcts.reform.assignment.data.roleassignment;
+package uk.gov.hmcts.reform.assignment.data;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;

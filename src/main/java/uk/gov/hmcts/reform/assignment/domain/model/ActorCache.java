@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.assignment.data.RoleAssignmentEntity;
 
 import java.util.Set;
 import java.util.UUID;

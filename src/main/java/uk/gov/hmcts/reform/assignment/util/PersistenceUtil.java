@@ -1,10 +1,10 @@
 package uk.gov.hmcts.reform.assignment.util;
 
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.assignment.data.cachecontrol.ActorCacheEntity;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.HistoryEntity;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.RequestEntity;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.assignment.data.ActorCacheEntity;
+import uk.gov.hmcts.reform.assignment.data.HistoryEntity;
+import uk.gov.hmcts.reform.assignment.data.RequestEntity;
+import uk.gov.hmcts.reform.assignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.assignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.assignment.domain.model.Request;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;

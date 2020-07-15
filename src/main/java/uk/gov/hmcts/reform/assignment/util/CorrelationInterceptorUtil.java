@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.assignment.util;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.assignment.apihelper.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;

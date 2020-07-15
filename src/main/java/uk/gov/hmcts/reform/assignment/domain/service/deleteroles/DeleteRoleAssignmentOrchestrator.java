@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.assignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.assignment.controller.advice.exception.ResourceNotFoundException;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.RequestEntity;
+import uk.gov.hmcts.reform.assignment.data.RequestEntity;
 import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.assignment.domain.model.Request;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;

@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.assignment.controller.advice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import uk.gov.hmcts.reform.assignment.apihelper.Constants;
+import uk.gov.hmcts.reform.assignment.util.Constants;
 
 import java.util.UUID;
 

@@ -15,14 +15,14 @@ import uk.gov.hmcts.reform.assignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.assignment.domain.model.Request;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.assignment.util.PersistenceUtil;
-import uk.gov.hmcts.reform.assignment.data.cachecontrol.ActorCacheEntity;
-import uk.gov.hmcts.reform.assignment.data.cachecontrol.ActorCacheRepository;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.HistoryEntity;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.HistoryRepository;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.RequestEntity;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.RequestRepository;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.RoleAssignmentEntity;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.RoleAssignmentRepository;
+import uk.gov.hmcts.reform.assignment.data.ActorCacheEntity;
+import uk.gov.hmcts.reform.assignment.data.ActorCacheRepository;
+import uk.gov.hmcts.reform.assignment.data.HistoryEntity;
+import uk.gov.hmcts.reform.assignment.data.HistoryRepository;
+import uk.gov.hmcts.reform.assignment.data.RequestEntity;
+import uk.gov.hmcts.reform.assignment.data.RequestRepository;
+import uk.gov.hmcts.reform.assignment.data.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.assignment.data.RoleAssignmentRepository;
 
 @Service
 public class PersistenceService {

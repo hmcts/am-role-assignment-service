@@ -8,10 +8,10 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.assignment.data.cachecontrol.ActorCacheEntity;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.HistoryEntity;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.RequestEntity;
-import uk.gov.hmcts.reform.assignment.data.roleassignment.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.assignment.data.ActorCacheEntity;
+import uk.gov.hmcts.reform.assignment.data.HistoryEntity;
+import uk.gov.hmcts.reform.assignment.data.RequestEntity;
+import uk.gov.hmcts.reform.assignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.assignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.assignment.domain.model.Request;
@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.ROLES_JSON;
+import static uk.gov.hmcts.reform.assignment.util.Constants.ROLES_JSON;
 
 @Setter
 public class TestDataBuilder {

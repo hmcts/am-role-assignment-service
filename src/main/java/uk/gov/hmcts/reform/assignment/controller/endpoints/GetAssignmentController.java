@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.reform.assignment.apihelper.Constants;
+import uk.gov.hmcts.reform.assignment.util.Constants;
 import uk.gov.hmcts.reform.assignment.controller.advice.exception.ServiceException;
 import uk.gov.hmcts.reform.assignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.assignment.util.ValidationUtil;

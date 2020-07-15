@@ -12,7 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import uk.gov.hmcts.reform.assignment.apihelper.Constants;
+import uk.gov.hmcts.reform.assignment.util.Constants;
 import uk.gov.hmcts.reform.assignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.assignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.assignment.controller.advice.exception.ResourceNotFoundException;

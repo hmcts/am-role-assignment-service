@@ -1,5 +1,5 @@
 
-package uk.gov.hmcts.reform.assignment.data.roleassignment;
+package uk.gov.hmcts.reform.assignment.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -26,7 +25,7 @@ import java.util.UUID;
 @Entity(name = "role_assignment_request")
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestEntity implements Serializable {
+public class RequestEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")

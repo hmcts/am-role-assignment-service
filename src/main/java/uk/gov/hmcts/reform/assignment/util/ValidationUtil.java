@@ -6,7 +6,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.hmcts.reform.assignment.apihelper.Constants;
 import uk.gov.hmcts.reform.assignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.assignment.domain.model.Request;

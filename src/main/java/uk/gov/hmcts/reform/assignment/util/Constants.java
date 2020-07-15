@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.assignment.apihelper;
+package uk.gov.hmcts.reform.assignment.util;
 
 public class Constants {
 

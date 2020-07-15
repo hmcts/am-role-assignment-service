@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import uk.gov.hmcts.reform.assignment.apihelper.Constants;
+import uk.gov.hmcts.reform.assignment.util.Constants;
 import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.assignment.domain.model.Request;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;

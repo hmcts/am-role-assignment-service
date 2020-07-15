@@ -16,16 +16,16 @@ import uk.gov.hmcts.reform.assignment.controller.advice.exception.ResourceNotFou
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.ACTORIDTYPE;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.BOOLEAN;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.CLASSIFICATION;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.GRANTTYPE;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.INTEGER;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.LOCALDATETIME;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.ROLECATEGORY;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.ROLETYPE;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.STATUS;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.UUID;
+import static uk.gov.hmcts.reform.assignment.util.Constants.ACTORIDTYPE;
+import static uk.gov.hmcts.reform.assignment.util.Constants.BOOLEAN;
+import static uk.gov.hmcts.reform.assignment.util.Constants.CLASSIFICATION;
+import static uk.gov.hmcts.reform.assignment.util.Constants.GRANTTYPE;
+import static uk.gov.hmcts.reform.assignment.util.Constants.INTEGER;
+import static uk.gov.hmcts.reform.assignment.util.Constants.LOCALDATETIME;
+import static uk.gov.hmcts.reform.assignment.util.Constants.ROLECATEGORY;
+import static uk.gov.hmcts.reform.assignment.util.Constants.ROLETYPE;
+import static uk.gov.hmcts.reform.assignment.util.Constants.STATUS;
+import static uk.gov.hmcts.reform.assignment.util.Constants.UUID;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

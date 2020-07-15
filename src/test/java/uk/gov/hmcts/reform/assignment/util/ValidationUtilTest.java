@@ -15,10 +15,10 @@ import java.util.UUID;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.NUMBER_PATTERN;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.TEXT_HYPHEN_PATTERN;
-import static uk.gov.hmcts.reform.assignment.apihelper.Constants.TEXT_PATTERN;
+import static uk.gov.hmcts.reform.assignment.util.Constants.NUMBER_PATTERN;
+import static uk.gov.hmcts.reform.assignment.util.Constants.NUMBER_TEXT_PATTERN;
+import static uk.gov.hmcts.reform.assignment.util.Constants.TEXT_HYPHEN_PATTERN;
+import static uk.gov.hmcts.reform.assignment.util.Constants.TEXT_PATTERN;
 
 class ValidationUtilTest {
 

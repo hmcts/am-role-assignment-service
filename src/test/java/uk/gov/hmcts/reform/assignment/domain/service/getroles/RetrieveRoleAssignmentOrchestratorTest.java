@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.assignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.assignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.assignment.controller.advice.exception.ResourceNotFoundException;
-import uk.gov.hmcts.reform.assignment.data.cachecontrol.ActorCacheEntity;
+import uk.gov.hmcts.reform.assignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.assignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.PrepareResponseService;

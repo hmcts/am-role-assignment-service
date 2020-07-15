@@ -3,12 +3,12 @@ package uk.gov.hmcts.reform.assignment.domain.service.getroles;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.assignment.apihelper.Constants;
+import uk.gov.hmcts.reform.assignment.util.Constants;
 import uk.gov.hmcts.reform.assignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.assignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.assignment.v1.V1;
-import uk.gov.hmcts.reform.assignment.data.cachecontrol.ActorCacheEntity;
+import uk.gov.hmcts.reform.assignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.assignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.PrepareResponseService;
 
