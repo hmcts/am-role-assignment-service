@@ -7,10 +7,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
@@ -21,9 +23,9 @@ import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEnti
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
+import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 @Service
 public class PersistenceService {
@@ -160,10 +162,18 @@ public class PersistenceService {
     }
 
     public List<RoleAssignment> getAssignmentsByActorAndCaseId(String actorId, String caseId) {
+        Set<RoleAssignmentEntity> roleAssignmentEntities = null;
+        if (StringUtils.isNotEmpty(actorId) && StringUtils.isNotEmpty(caseId)) {
+            roleAssignmentEntities = roleAssignmentRepository.findByActorIdAndCaseId(actorId, caseId);
+            //throw new BadRequestException(V1.Error.INVALID_ACTOR_AND_CASE_ID);
+        }
+        else if (StringUtils.isNotEmpty(actorId)) {
+            roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
+        }
+
         //roleAssignmentRepository.findByActorIdAndCaseId();
         //roleAssignmentRepository.findByActorId(actorId);
         //roleAssignmentRepository.findByCaseId(caseId);
-        return null;
     }
 
     public List<RoleAssignment> getAssignmentById(UUID assignmentId) {
