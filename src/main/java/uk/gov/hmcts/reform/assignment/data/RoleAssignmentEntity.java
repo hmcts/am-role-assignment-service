@@ -3,10 +3,10 @@ package uk.gov.hmcts.reform.assignment.data;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import uk.gov.hmcts.reform.assignment.util.JsonBConverter;
 
@@ -17,7 +17,7 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@SuperBuilder()
+@Builder(toBuilder = true)
 @Getter
 @Setter
 @NoArgsConstructor
