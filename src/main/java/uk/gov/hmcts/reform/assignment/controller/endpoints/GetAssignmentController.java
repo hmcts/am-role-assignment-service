@@ -78,7 +78,7 @@ public class GetAssignmentController {
         @RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch,
 
         @ApiParam(value = "Actor Id ", required = true)
-        @PathVariable("actorId") String actorId) throws Exception {
+        @PathVariable("actorId") String actorId) {
 
         ResponseEntity<?> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
             actorId

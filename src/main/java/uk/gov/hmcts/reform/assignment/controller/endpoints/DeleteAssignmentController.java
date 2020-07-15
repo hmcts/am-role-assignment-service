@@ -61,7 +61,7 @@ public class DeleteAssignmentController {
                                                        @RequestParam(value = "process", required = false)
                                                            String process,
                                                        @RequestParam(value = "reference", required = false)
-                                                           String reference) throws Exception {
+                                                           String reference) {
         return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, process, reference, null);
 
     }
@@ -94,7 +94,7 @@ public class DeleteAssignmentController {
         @RequestHeader(value = "assignerId", required = false)
             String assignerId,
         @ApiParam(value = "assignmentId", required = true)
-        @PathVariable String assignmentId) throws Exception {
+        @PathVariable String assignmentId) {
         return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, null, null, assignmentId);
     }
 }

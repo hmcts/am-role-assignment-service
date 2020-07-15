@@ -19,6 +19,8 @@ import uk.gov.hmcts.reform.assignment.v1.V1;
 import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.assignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 
+import java.text.ParseException;
+
 @Api(value = "roles")
 @RestController
 public class CreateAssignmentController {
@@ -57,7 +59,7 @@ public class CreateAssignmentController {
     })
     public ResponseEntity<Object> createRoleAssignment(
         @Validated
-        @RequestBody(required = true) AssignmentRequest assignmentRequest) throws Exception {
+        @RequestBody(required = true) AssignmentRequest assignmentRequest) throws ParseException {
 
         LOG.info("CreateAssignmentController : {}", createRoleAssignmentService);
         return createRoleAssignmentService.createRoleAssignment(assignmentRequest);
