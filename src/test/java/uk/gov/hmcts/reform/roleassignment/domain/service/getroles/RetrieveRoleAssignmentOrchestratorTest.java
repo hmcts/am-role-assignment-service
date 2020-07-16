@@ -1,6 +1,15 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.getroles;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,15 +28,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceServi
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 
 @RunWith(MockitoJUnitRunner.class)
 class RetrieveRoleAssignmentOrchestratorTest {
@@ -37,6 +37,8 @@ class RetrieveRoleAssignmentOrchestratorTest {
 
     @Mock
     private PrepareResponseService prepareResponseService = mock(PrepareResponseService.class);
+
+    private static final String ROLE_TYPE = "CASE";
 
     @InjectMocks
     private RetrieveRoleAssignmentOrchestrator sut = new RetrieveRoleAssignmentOrchestrator(
@@ -108,11 +110,10 @@ class RetrieveRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    void getRoleAssignmentByActorAndCaseId_shouldThrowBadRequestWhenActorIsEmpty() throws Exception {
+    void getRoleAssignmentByActorAndCaseId_shouldThrowBadRequestWhenActorAndCaseIdIsEmpty() throws Exception {
 
-        String actorId = "";
         Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null);
+            sut.retrieveRoleAssignmentsByActorIdAndCaseId(null, null, ROLE_TYPE);
         });
     }
 
@@ -121,7 +122,7 @@ class RetrieveRoleAssignmentOrchestratorTest {
 
         String actorId = "a_bad_uuid";
         Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null);
+            sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null, ROLE_TYPE);
         });
     }
 }

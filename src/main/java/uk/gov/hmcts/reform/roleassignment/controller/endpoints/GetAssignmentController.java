@@ -189,12 +189,12 @@ public class GetAssignmentController {
                       )
                   })
     public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdAndCaseId(
-        @ApiParam(value = "Role Type", required = true)
-        @RequestParam(value = "roleType", required = true) String roleType,
         @ApiParam(value = "Actor Id", required = false)
         @RequestParam(value = "actorId", required = false) String actorId,
         @ApiParam(value = "Case Id", required = false)
-        @RequestParam(value = "caseId", required = false) String caseId) {
+        @RequestParam(value = "caseId", required = false) String caseId,
+        @ApiParam(value = "Role Type", required = true)
+        @RequestParam(value = "roleType", required = true) String roleType) {
         if (StringUtils.isEmpty(roleType) || !roleType.equals(RoleType.CASE.name())) {
             throw new BadRequestException(V1.Error.INVALID_ROLE_TYPE);
         }

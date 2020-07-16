@@ -1,5 +1,22 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_INVALID_PARAMETER;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.INVALID_CASE_ID;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -10,23 +27,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_INVALID_PARAMETER;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.INVALID_CASE_ID;
 
 @Named
 @Singleton
@@ -152,9 +152,9 @@ public class ValidationUtil {
     }
 
     public static void validateCaseId(String caseId) {
-         validateInputParams(NUMBER_PATTERN, caseId);
-         if(caseId.length() != 16) {
-             throw new BadRequestException(INVALID_CASE_ID);
-         }
+        validateInputParams(NUMBER_PATTERN, caseId);
+        if (caseId.length() != 16) {
+            throw new BadRequestException(INVALID_CASE_ID);
+        }
     }
 }

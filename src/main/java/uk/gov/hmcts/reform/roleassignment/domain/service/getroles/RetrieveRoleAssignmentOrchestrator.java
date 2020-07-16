@@ -11,12 +11,14 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
+import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 @Service
 public class RetrieveRoleAssignmentOrchestrator {
@@ -47,14 +49,21 @@ public class RetrieveRoleAssignmentOrchestrator {
             UUID.fromString(actorId));
     }
 
-    public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdAndCaseId(String actorId, String caseId, String roleType) {
+    public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdAndCaseId(String actorId, String caseId,
+                                                                            String roleType) {
+        if (StringUtils.isEmpty(actorId) && StringUtils.isEmpty(caseId)) {
+            throw new BadRequestException(V1.Error.INVALID_ACTOR_AND_CASE_ID);
+        }
+
         if (StringUtils.isNotEmpty(actorId)) {
             ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
         }
         if (StringUtils.isNotEmpty(caseId)) {
             ValidationUtil.validateCaseId(caseId);
         }
-        List<RoleAssignment> assignmentList = persistenceService.getAssignmentsByActorAndCaseId(actorId,caseId, roleType);
+
+        List<RoleAssignment> assignmentList =
+            persistenceService.getAssignmentsByActorAndCaseId(actorId,caseId, roleType);
         return ResponseEntity.status(HttpStatus.OK).body(assignmentList);
     }
 
