@@ -11,7 +11,8 @@ Feature: F-001 : Create Role Assignments
     And the request [contains a single Role Assignment with only mandatory fields],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
-    And the response has all other details as expected.
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
   @S-002
   Scenario: must successfully create multiple Role Assignments
@@ -20,8 +21,9 @@ Feature: F-001 : Create Role Assignments
     And the request [contains multiple Role Assignments],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
-    And the response has all other details as expected.
-#
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
+
   @S-003
   Scenario: must successfully create single Role Assignment with RoleTypeId as case
     Given a user with [an active IDAM profile with full permissions],
@@ -30,7 +32,8 @@ Feature: F-001 : Create Role Assignments
     And the request [contains RoleTypeId as 'CASE'],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
-    And the response has all other details as expected.
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
   @S-004
   Scenario: must receive a Reject response when creation of any Role Assignment not successful
@@ -109,7 +112,8 @@ Feature: F-001 : Create Role Assignments
     And the request [contains RoleTypeId as organisational],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
-    And the response has all other details as expected.
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
   @S-013
   Scenario: must successfully create single Role Assignment when ReplaceExisting is True with Process and Reference
@@ -119,7 +123,8 @@ Feature: F-001 : Create Role Assignments
     And the request [contains ReplaceExisting is true and have process and Reference values],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
-    And the response has all other details as expected.
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
   @S-018
   Scenario: must successfully create multiple Role Assignments when ReplaceExisting is True with Process and Reference
@@ -129,7 +134,8 @@ Feature: F-001 : Create Role Assignments
     And the request [contains ReplaceExisting is true and have process and Reference values],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
-    And the response has all other details as expected.
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
   @S-019
   Scenario: must receive an error response when creation of any Role Assignment is not successful where ReplaceExisting is True

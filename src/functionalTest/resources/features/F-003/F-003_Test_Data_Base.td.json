@@ -7,10 +7,5 @@
   "uri": "/am/role-assignments/{assignmentId}",
   "specs": [
     "an active IDAM profile with full permissions"
-  ],
-  "request": {
-    "pathVariables": {
-      "assignmentId": "${[scenarioContext][childContexts][F-003_CreationDataForRoleAssignment][testData][actualResponse][body][roleAssignmentResponse][requestedRoles][0][id]}"
-    }
-  }
+  ]
 }
