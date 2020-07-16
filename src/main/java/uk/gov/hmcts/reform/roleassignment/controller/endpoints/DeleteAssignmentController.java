@@ -90,6 +90,6 @@ public class DeleteAssignmentController {
             String assignerId,
         @ApiParam(value = "assignmentId", required = true)
         @PathVariable String assignmentId) {
-        return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentAssignmentId(assignmentId);
+        return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByAssignmentId(assignmentId);
     }
 }

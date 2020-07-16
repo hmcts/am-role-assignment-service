@@ -41,7 +41,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 
 @RunWith(MockitoJUnitRunner.class)
 class DeleteRoleAssignmentOrchestratorTest {
@@ -121,7 +120,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId)))
             .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
         mockHistoryEntity();
-        ResponseEntity<Object> response = sut.deleteRoleAssignmentAssignmentId(assignmentId);
+        ResponseEntity<Object> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
         assertion();
@@ -136,7 +135,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId))).thenReturn(Collections.emptyList());
         mockHistoryEntity();
 
-        ResponseEntity<Object> response = sut.deleteRoleAssignmentAssignmentId(assignmentId);
+        ResponseEntity<Object> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 

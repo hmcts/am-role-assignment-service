@@ -71,7 +71,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
     }
 
-    public ResponseEntity<Object> deleteRoleAssignmentAssignmentId(String assignmentId) {
+    public ResponseEntity<Object> deleteRoleAssignmentByAssignmentId(String assignmentId) {
         List<RoleAssignment> requestedRoles = null;
 
         //1. create the request Object
