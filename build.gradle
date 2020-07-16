@@ -162,7 +162,14 @@ pitest {
   pitestVersion = "1.5.2"
   testPlugin = "junit5"
   targetClasses = ['uk.gov.hmcts.reform.*']
-  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication', 'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot', 'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants', 'uk.gov.hmcts.reform.roleassignment.config.*', 'uk.gov.hmcts.reform.roleassignment.apihelper.*', 'uk.gov.hmcts.reform.roleassignment.model.*', 'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication']
+  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
+                     'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot',
+                     'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants',
+                     'uk.gov.hmcts.reform.roleassignment.config.*',
+                     'uk.gov.hmcts.reform.roleassignment.apihelper.*',
+                     'uk.gov.hmcts.reform.roleassignment.model.*',
+                     'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication',
+                     'uk.gov.hmcts.reform.roleassignment.feignclients.exceptionhandler.*']
   threads = 15
   outputFormats = ['XML', 'HTML']
   timestampedReports = true
