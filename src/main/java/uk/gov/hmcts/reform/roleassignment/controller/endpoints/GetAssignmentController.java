@@ -16,26 +16,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ServiceException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
-import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
-import java.io.InputStream;
-import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
-import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
-import uk.gov.hmcts.reform.roleassignment.v1.V1;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ServiceException;
-import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
-import uk.gov.hmcts.reform.roleassignment.util.Constants;
-import uk.gov.hmcts.reform.roleassignment.v1.V1;
-import java.text.ParseException;
-import java.io.InputStream;
 import java.util.UUID;
 
 @Slf4j
