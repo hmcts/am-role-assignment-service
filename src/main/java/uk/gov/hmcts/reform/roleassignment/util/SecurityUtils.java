@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import com.auth0.jwt.JWT;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,7 +16,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -61,11 +59,12 @@ public class SecurityUtils {
         return jwtGrantedAuthoritiesConverter.getUserInfo().getUid();
     }
 
-    public UserRoles getUserRoles() throws InvocationTargetException, IllegalAccessException {
-        UserRoles userRoles = null;
+    public UserRoles getUserRoles() {
         UserInfo userInfo = jwtGrantedAuthoritiesConverter.getUserInfo();
-        BeanUtils.copyProperties(userRoles, userInfo);
-        return userRoles;
+        return UserRoles.builder()
+            .uid(userInfo.getUid())
+            .roles(userInfo.getRoles())
+            .build();
     }
 
 

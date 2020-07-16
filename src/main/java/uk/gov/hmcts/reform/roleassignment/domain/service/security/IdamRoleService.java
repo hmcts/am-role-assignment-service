@@ -21,7 +21,7 @@ public class IdamRoleService {
 
     public UserRoles getUserRoles(String userId) throws Exception {
 
-        UserDetails userDetails = idamRepository.getUserByUserId(securityUtils.getUserToken(), userId);
+        UserDetails userDetails = idamRepository.getUserByUserId(idamRepository.getManageUserToken(), userId);
         return UserRoles.builder()
             .uid(userDetails.getId())
             .roles(userDetails.getRoles())
