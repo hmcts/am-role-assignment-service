@@ -49,7 +49,7 @@ def versions = [
   feign_jackson      : '9.7.0'
 ]
 
-mainClassName = 'uk.gov.hmcts.reform.assignment.RoleAssignmentApplication'
+mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
 def jarName = 'am-role-assignment-service.jar'
 
 pmd {
@@ -162,7 +162,7 @@ pitest {
   pitestVersion = "1.5.2"
   testPlugin = "junit5"
   targetClasses = ['uk.gov.hmcts.reform.*']
-  excludedClasses = ['uk.gov.hmcts.reform.assignment.RoleAssignmentApplication', 'uk.gov.hmcts.reform.assignment.util.Swagger2SpringBoot', 'uk.gov.hmcts.reform.assignment.controller.advice.ErrorConstants', 'uk.gov.hmcts.reform.assignment.configuration.*', 'uk.gov.hmcts.reform.assignment.apihelper.*', 'uk.gov.hmcts.reform.assignment.model.*', 'uk.gov.hmcts.reform.assignment.controller.endpoints.S2SAuthentication']
+  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication', 'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot', 'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants', 'uk.gov.hmcts.reform.roleassignment.configuration.*', 'uk.gov.hmcts.reform.roleassignment.apihelper.*', 'uk.gov.hmcts.reform.roleassignment.model.*', 'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication']
   threads = 15
   outputFormats = ['XML', 'HTML']
   timestampedReports = true
