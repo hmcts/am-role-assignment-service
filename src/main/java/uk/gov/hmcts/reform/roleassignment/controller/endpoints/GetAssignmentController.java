@@ -2,8 +2,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.reform.roleassignment.util.Constants;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ServiceException;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
@@ -32,7 +28,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestReso
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 
-import java.io.InputStream;
 import java.text.ParseException;
 import java.util.UUID;
 
@@ -140,19 +135,7 @@ public class GetAssignmentController {
         )
     })
     public ResponseEntity<Object> getListOfRoles() {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode;
-        try (InputStream input = GetAssignmentController.class.getClassLoader()
-                                                              .getResourceAsStream(Constants.ROLES_JSON)) {
-            assert input != null;
-            rootNode = mapper.readTree(input);
-            for (JsonNode roleNode: rootNode) {
-                ObjectNode obj = (ObjectNode) roleNode;
-                obj.remove(Constants.ROLE_JSON_PATTERNS_FIELD);
-            }
-        } catch (Exception e) {
-            throw new ServiceException("Service Exception", e);
-        }
+        JsonNode rootNode = retrieveRoleAssignmentService.getListOfRoles();
         return ResponseEntity.status(HttpStatus.OK).body(rootNode);
     }
 }
