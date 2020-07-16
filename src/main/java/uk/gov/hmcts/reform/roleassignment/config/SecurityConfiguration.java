@@ -1,10 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.config;
 
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
-
-import java.util.List;
-import javax.inject.Inject;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -19,13 +14,17 @@ import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
-import org.springframework.security.oauth2.jwt.JwtIssuerValidator;
 import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationFilter;
 import uk.gov.hmcts.reform.authorisation.filters.ServiceAuthFilter;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
+
+import javax.inject.Inject;
+import java.util.List;
+
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @ConfigurationProperties(prefix = "security")
@@ -53,10 +52,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.anonymousPaths = anonymousPaths;
     }
 
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().antMatchers(anonymousPaths.toArray(new String[0]));
-    }
+    private static final String[] AUTH_WHITELIST = {
+        "/swagger-ui.html",
+        "/webjars/springfox-swagger-ui/**",
+        "/swagger-resources/**",
+        "/v2/**",
+        "/actuator/**",
+        "/health",
+        "/health/liveness",
+        "/status/health",
+        "/loggers/**",
+        "/welcome",
+        "/"
+    };
+
 
     @Inject
     public SecurityConfiguration(final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter,
@@ -66,6 +75,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
 
+    }
+
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers(AUTH_WHITELIST);
     }
 
     @Override
@@ -96,9 +110,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         // We are using issuerOverride instead of issuerUri as SIDAM has the wrong issuer at the moment
         OAuth2TokenValidator<Jwt> withTimestamp = new JwtTimestampValidator();
-        OAuth2TokenValidator<Jwt> withIssuer = new JwtIssuerValidator(issuerOverride);
-        // FIXME : enable `withIssuer` once idam migration is done
-        //OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(withTimestamp, withIssuer);
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(withTimestamp);
         jwtDecoder.setJwtValidator(validator);
         return jwtDecoder;
