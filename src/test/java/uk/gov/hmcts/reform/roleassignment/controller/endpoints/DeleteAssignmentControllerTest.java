@@ -61,7 +61,7 @@ class DeleteAssignmentControllerTest {
     @DisplayName("should get 204 when role assignment records delete  successful")
     public void shouldDeleteRoleAssignmentByProcessAndReference() throws Exception {
 
-        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, REFERENCE,null, null))
+        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, REFERENCE,null))
             .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
 
         ResponseEntity response = sut.deleteRoleAssignment(null,  PROCESS, REFERENCE);

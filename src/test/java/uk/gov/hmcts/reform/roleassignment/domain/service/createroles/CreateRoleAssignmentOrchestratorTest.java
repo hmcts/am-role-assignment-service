@@ -1,15 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -31,6 +21,13 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelS
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 @RunWith(MockitoJUnitRunner.class)
 class CreateRoleAssignmentOrchestratorTest {
 
@@ -45,11 +42,6 @@ class CreateRoleAssignmentOrchestratorTest {
     @Mock
     private PrepareResponseService prepareResponseService = mock(PrepareResponseService.class);
 
-    private final Map<String, String> headers = new HashMap<>() {
-        {
-            put("serviceauthorisation", "Bearer dummyToken");
-        }
-    };
 
     @InjectMocks
     private CreateRoleAssignmentOrchestrator sut = new CreateRoleAssignmentOrchestrator(
@@ -73,20 +65,21 @@ class CreateRoleAssignmentOrchestratorTest {
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
 
-        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class), headers))
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
             .thenReturn(
                 assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
         when(persistenceService.persistHistory(
             any(RoleAssignment.class),
-            any(Request.class))).thenReturn(historyEntity);
+            any(Request.class)
+        )).thenReturn(historyEntity);
 
         //TODO check rejected status
 
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest, headers);
+        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(parseRequestService, times(1))
-            .parseRequest(any(AssignmentRequest.class), any(RequestType.class), headers);
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1)).persistRequest(any(Request.class));
         verify(persistenceService, times(6)).persistHistory(any(RoleAssignment.class), any(Request.class));
     }
@@ -98,18 +91,18 @@ class CreateRoleAssignmentOrchestratorTest {
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
 
-        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class), headers))
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
             .thenReturn(
                 assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
         when(persistenceService.persistHistory(any(RoleAssignment.class), any(Request.class)))
             .thenReturn(historyEntity);
 
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest, headers);
+        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
 
         verify(parseRequestService, times(1))
-            .parseRequest(any(AssignmentRequest.class), any(RequestType.class), headers);
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1)).persistRequest(any(Request.class));
         verify(persistenceService, times(6)).persistHistory(any(RoleAssignment.class), any(Request.class));
     }
@@ -121,19 +114,19 @@ class CreateRoleAssignmentOrchestratorTest {
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
-        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class), headers))
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
             .thenReturn(
                 assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
         when(persistenceService.persistHistory(
             any(RoleAssignment.class),
             any(Request.class)
-                                              )).thenReturn(historyEntity);
+        )).thenReturn(historyEntity);
 
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest, headers);
+        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(parseRequestService, times(1))
-            .parseRequest(any(AssignmentRequest.class), any(RequestType.class), headers);
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1)).persistRequest(any(Request.class));
         verify(persistenceService, times(6)).persistHistory(any(RoleAssignment.class), any(Request.class));
     }
@@ -145,21 +138,21 @@ class CreateRoleAssignmentOrchestratorTest {
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
 
-        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class), headers))
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
             .thenReturn(
                 assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
         when(persistenceService.persistHistory(
             any(RoleAssignment.class),
             any(Request.class)
-                                              )).thenReturn(historyEntity);
+        )).thenReturn(historyEntity);
 
         //doCallRealMethod().when(validationModelService).validateRequest(any(AssignmentRequest.class));
 
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest, headers);
+        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(parseRequestService, times(1))
-            .parseRequest(any(AssignmentRequest.class), any(RequestType.class), headers);
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1)).persistRequest(any(Request.class));
         verify(persistenceService, times(6)).persistHistory(any(RoleAssignment.class), any(Request.class));
     }

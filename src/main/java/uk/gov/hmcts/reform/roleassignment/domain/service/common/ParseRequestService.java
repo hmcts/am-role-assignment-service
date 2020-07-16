@@ -1,14 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
-
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +14,14 @@ import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.UUID;
+
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
+
 @Service
 public class ParseRequestService {
 
@@ -35,8 +34,7 @@ public class ParseRequestService {
     private String serviceId;
     private String userId;
 
-    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType,
-                                          Map<String, String> headers)
+    public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType)
         throws Exception {
         Request request = assignmentRequest.getRequest();
         //1. validates request and assignment record
@@ -44,7 +42,7 @@ public class ParseRequestService {
 
         //2. Request Parsing
         //a. Extract client Id and place in the request
-        request.setClientId(securityUtils.getServiceName(headers));
+        request.setClientId(securityUtils.getServiceName());
         //b. Extract AuthenticatedUser Id from the User token and place in the request.
         request.setAuthenticatedUserId(UUID.fromString(securityUtils.getUserId()));
         //c. Set Status=Created and created Time = now
@@ -91,15 +89,14 @@ public class ParseRequestService {
         correlationInterceptorUtil.afterCompletion();
     }
 
-    public Request prepareDeleteRequest(String process, String reference, String actorId, String assignmentId,
-                                        Map<String, String> headerMap)
+    public Request prepareDeleteRequest(String process, String reference, String actorId, String assignmentId)
         throws Exception {
         if (actorId != null) {
             ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
         }
 
         Request request = Request.builder()
-                                 .clientId(securityUtils.getServiceName(headerMap))
+            .clientId(securityUtils.getServiceName())
             .authenticatedUserId(UUID.fromString(securityUtils.getUserId()))
             .status(Status.CREATED)
             .requestType(RequestType.DELETE)

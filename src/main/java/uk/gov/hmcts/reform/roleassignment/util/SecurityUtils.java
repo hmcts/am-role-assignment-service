@@ -1,20 +1,28 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION;
-
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import com.auth0.jwt.JWT;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.roleassignment.apihelper.Constants;
+import uk.gov.hmcts.reform.idam.client.models.UserInfo;
+import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
+
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.BEARER;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION;
 
 @Service
 public class SecurityUtils {
@@ -34,55 +42,60 @@ public class SecurityUtils {
 
     public HttpHeaders authorizationHeaders() {
         final HttpHeaders headers = new HttpHeaders();
-        headers.add(Constants.SERVICE_AUTHORIZATION2, authTokenGenerator.generate());
-        headers.add(HttpHeaders.AUTHORIZATION, getUserAuthorizationHeaders());
+        headers.add(SERVICE_AUTHORIZATION, authTokenGenerator.generate());
+        headers.add("user-id", getUserId());
+        headers.add("user-roles", getUserRolesHeader());
+
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            headers.add(HttpHeaders.AUTHORIZATION, getUserBearerToken());
+        }
         return headers;
     }
 
-    public String getUserAuthorizationHeaders() {
-        if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            final ServiceAndUserDetails serviceAndUser =
-                (ServiceAndUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (serviceAndUser.getPassword() != null) {
-                return serviceAndUser.getPassword();
-            }
-        }
-        return null;
+    private String getUserBearerToken() {
+        return BEARER + getUserToken();
     }
 
-    public String getServiceAuthorizationHeader() {
-        return authTokenGenerator.generate();
-    }
 
     public String getUserId() {
         return jwtGrantedAuthoritiesConverter.getUserInfo().getUid();
     }
 
-    public String getUserToken() {
-        final ServiceAndUserDetails serviceAndUser = (ServiceAndUserDetails) SecurityContextHolder.getContext()
-                                                                                                  .getAuthentication()
-                                                                                                  .getPrincipal();
-        return serviceAndUser.getPassword();
+    public UserRoles getUserRoles() throws InvocationTargetException, IllegalAccessException {
+        UserRoles userRoles = null;
+        UserInfo userInfo = jwtGrantedAuthoritiesConverter.getUserInfo();
+        BeanUtils.copyProperties(userRoles, userInfo);
+        return userRoles;
     }
 
-    public String getServiceId() {
-        final ServiceAndUserDetails serviceAndUser = (ServiceAndUserDetails) SecurityContextHolder.getContext()
-                                                                                                  .getAuthentication()
-                                                                                                  .getPrincipal();
-        return serviceAndUser.getServicename();
+
+    public String getUserToken() {
+        Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return jwt.getTokenValue();
     }
 
     public String getUserRolesHeader() {
-        final ServiceAndUserDetails serviceAndUser = (ServiceAndUserDetails) SecurityContextHolder.getContext()
-                                                                                                  .getAuthentication()
-                                                                                                  .getPrincipal();
-        return serviceAndUser.getAuthorities()
-                             .stream()
-                             .map(GrantedAuthority::getAuthority)
-                             .collect(Collectors.joining(","));
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext()
+            .getAuthentication().getAuthorities();
+        return authorities.stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.joining(","));
     }
 
-    public String getServiceName(Map<String, String> headers) {
-        return serviceAuthorisationApi.getServiceName(headers.get(SERVICE_AUTHORIZATION));
+
+    public String getServiceName() {
+        HttpServletRequest request =
+            ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getRequest();
+
+        return JWT.decode(removeBearerFromToken(request.getHeader(SERVICE_AUTHORIZATION))).getSubject();
+    }
+
+    private String removeBearerFromToken(String token) {
+        if (!token.startsWith(BEARER)) {
+            return token;
+        } else {
+            return token.substring(BEARER.length());
+        }
     }
 }

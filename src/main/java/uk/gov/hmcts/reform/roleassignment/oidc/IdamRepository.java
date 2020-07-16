@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.idam.client.IdamClient;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 
 @Component
@@ -19,6 +20,10 @@ public class IdamRepository {
 
     public UserInfo getUserInfo(String jwtToken) {
         return idamClient.getUserInfo("Bearer " + jwtToken);
+    }
+
+    public UserDetails getUserByUserId(String jwtToken, String userId) {
+        return idamClient.getUserByUserId("Bearer " + jwtToken, userId);
     }
 
 }

@@ -7,6 +7,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
+import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,18 +22,17 @@ public class ValidationModelService {
     //Note: These are aggregation records from Assignment_history table.
 
     private StatelessKieSession kieSession;
-    private PersistenceService persistenceService;
     private IdamRoleService idamRoleService;
     private RetrieveDataService retrieveDataService;
+    private SecurityUtils securityUtils;
 
     public ValidationModelService(StatelessKieSession kieSession,
-                                  PersistenceService persistenceService,
                                   IdamRoleService idamRoleService,
-                                  RetrieveDataService retrieveDataService) {
+                                  RetrieveDataService retrieveDataService, SecurityUtils securityUtils) {
         this.kieSession = kieSession;
-        this.persistenceService = persistenceService;
         this.idamRoleService = idamRoleService;
         this.retrieveDataService = retrieveDataService;
+        this.securityUtils = securityUtils;
     }
 
     public void validateRequest(AssignmentRequest assignmentRequest) throws Exception {
@@ -46,7 +46,7 @@ public class ValidationModelService {
         // Package up the request and the assignments
         List<Object> facts = new ArrayList<>();
         //Pre defined role configuration
-        List<Role> role =  JacksonUtils.configuredRoles.get("roles");
+        List<Role> role = JacksonUtils.configuredRoles.get("roles");
         facts.addAll(role);
         facts.add(assignmentRequest.getRequest());
         facts.addAll(assignmentRequest.getRequestedRoles());
@@ -60,17 +60,19 @@ public class ValidationModelService {
     }
 
     public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) throws Exception {
+        facts.add(securityUtils.getUserRoles());
         Set<String> userIds = new HashSet<>();
-        userIds.add(String.valueOf(assignmentRequest.getRequest().getAssignerId()));
-        userIds.add(String.valueOf(assignmentRequest.getRequest().getAuthenticatedUserId()));
+        if (!assignmentRequest.getRequest().getAssignerId().equals(
+            assignmentRequest.getRequest().getAuthenticatedUserId())) {
+            userIds.add(String.valueOf(assignmentRequest.getRequest().getAssignerId()));
+        }
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
             userIds.add(String.valueOf(requestedRole.getActorId()));
 
         }
-        for (String actorId : userIds) {
-            if (actorId != null) {
-                //facts.addAll(persistenceService.getAssignmentsByActor(UUID.fromString(actorId)));
-                facts.addAll(idamRoleService.getIdamRoleAssignmentsForActor(actorId));
+        for (String userId : userIds) {
+            if (userId != null) {
+                facts.add(idamRoleService.getUserRoles(userId));
             }
 
         }

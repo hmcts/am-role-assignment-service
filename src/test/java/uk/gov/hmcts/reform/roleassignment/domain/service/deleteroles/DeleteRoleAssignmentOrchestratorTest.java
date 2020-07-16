@@ -111,7 +111,7 @@ class DeleteRoleAssignmentOrchestratorTest {
     void shouldThrowResourceNotFoundWhenActorIdNotExist() throws Exception {
         mockRequest();
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            sut.deleteRoleAssignment(ACTOR_ID, null, null, null, null);
+            sut.deleteRoleAssignment(ACTOR_ID, null, null, null);
         });
     }
 
@@ -129,7 +129,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         )).thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
         mockHistoryEntity();
 
-        ResponseEntity<Object> response = sut.deleteRoleAssignment(null, PROCESS, REFERENCE, null, null);
+        ResponseEntity<Object> response = sut.deleteRoleAssignment(null, PROCESS, REFERENCE, null);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(2)).deleteRoleAssignment(any());
         verify(persistenceService, times(2)).persistActorCache(any());
@@ -162,7 +162,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId)))
             .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
         mockHistoryEntity();
-        ResponseEntity<Object> response = sut.deleteRoleAssignment(null, null, null, assignmentId, null);
+        ResponseEntity<Object> response = sut.deleteRoleAssignment(null, null, null, assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
         assertion();
@@ -243,18 +243,18 @@ class DeleteRoleAssignmentOrchestratorTest {
     void shouldThrowBadRequestWhenReferenceNotExist() throws Exception {
         mockRequest();
         Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.deleteRoleAssignment(null, PROCESS, null, null, null);
+            sut.deleteRoleAssignment(null, PROCESS, null, null);
         });
     }
 
     private void assertion() throws Exception {
-        verify(parseRequestService, times(1)).prepareDeleteRequest(any(), any(), any(), any(), any());
+        verify(parseRequestService, times(1)).prepareDeleteRequest(any(), any(), any(), any());
         verify(persistenceService, times(1)).persistRequest(any(Request.class));
         verify(persistenceService, times(4)).persistHistory(any(RoleAssignment.class), any(Request.class));
     }
 
     private void mockRequest() throws Exception {
-        when(parseRequestService.prepareDeleteRequest(any(), any(), any(), any(), any())).thenReturn(
+        when(parseRequestService.prepareDeleteRequest(any(), any(), any(), any())).thenReturn(
             assignmentRequest.getRequest());
         when(persistenceService.persistRequest(any())).thenReturn(requestEntity);
     }

@@ -1,32 +1,30 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.security;
 
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
+import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
+import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class IdamRoleService {
 
-    private Map<String, List<RoleAssignment>> existingRoleByActorId = new HashMap<>();
-    SecurityUtils securityUtils;
+    private SecurityUtils securityUtils;
 
-    public void getRequestedUserId() {
-        securityUtils.getUserId();
+    private IdamRepository idamRepository;
+
+    public IdamRoleService(SecurityUtils securityUtils, IdamRepository idamRepository) {
+        this.securityUtils = securityUtils;
+        this.idamRepository = idamRepository;
     }
 
-    public void getRequestUserRole() {
-        securityUtils.getUserRolesHeader();
-    }
 
+    public UserRoles getUserRoles(String userId) throws Exception {
 
-    public Collection<RoleAssignment> getIdamRoleAssignmentsForActor(String actorId) throws Exception {
-        List<RoleAssignment> existingRolesForActor = existingRoleByActorId.get(actorId);
-        return existingRolesForActor == null ? new ArrayList<>() : existingRolesForActor;
+        UserDetails userDetails = idamRepository.getUserByUserId(securityUtils.getUserToken(), userId);
+        return UserRoles.builder()
+            .uid(userDetails.getId())
+            .roles(userDetails.getRoles())
+            .build();
     }
 }

@@ -53,14 +53,13 @@ public class CreateRoleAssignmentOrchestrator {
         this.prepareResponseService = prepareResponseService;
     }
 
-    public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest,
-                                                       Map<String, String> headers) throws Exception {
+    public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) throws Exception {
 
         AssignmentRequest existingAssignmentRequest;
 
         //1. call parse request service
         AssignmentRequest parsedAssignmentRequest = parseRequestService
-            .parseRequest(roleAssignmentRequest, RequestType.CREATE, headers);
+            .parseRequest(roleAssignmentRequest, RequestType.CREATE);
 
         //2. Call persistence service to store only the request
         requestEntity = persistInitialRequest(parsedAssignmentRequest.getRequest());
