@@ -1,15 +1,9 @@
 {
   "_guid_": "S-034_DeleteDataForRoleAssignment",
-  "_extends_": "F-003_Test_Data_Base",
-  "specs": [
-    "to delete a role assignment by by Assignment Id"
-  ],
+  "_extends_": "DeleteDataForRoleAssignments",
   "request": {
     "pathVariables": {
-      "assignmentId": "${[scenarioContext][parentContext][childContexts][S-034_CreationDataForRoleAssignment][testData][actualResponse][body][roleAssignmentResponse][requestedRoles][0][id]}"
+      "reference": "${[scenarioContext][parentContext][childContexts][S-034_CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
     }
-  },
-  "expectedResponse": {
-    "_extends_": "Common_204_Response"
   }
 }
