@@ -11,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.assignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.assignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.assignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 
@@ -44,24 +43,9 @@ class DeleteAssignmentControllerTest {
 
     @Test
     @DisplayName("should get 204 when role assignment records delete  successful")
-    void shouldDeleteRoleAssignmentByActorId() throws Exception {
-
-        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, null, null,null))
-            .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
-
-        ResponseEntity response = sut.deleteRoleAssignment(null,  null, null);
-
-        assertAll(
-            () -> assertNotNull(response),
-            () -> assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode())
-        );
-    }
-
-    @Test
-    @DisplayName("should get 204 when role assignment records delete  successful")
     void shouldDeleteRoleAssignmentByProcessAndReference() throws Exception {
 
-        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, REFERENCE, null))
+        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE))
             .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
 
         ResponseEntity response = sut.deleteRoleAssignment(null,  PROCESS, REFERENCE);
@@ -73,21 +57,10 @@ class DeleteAssignmentControllerTest {
     }
 
     @Test
-    @DisplayName("should throw 400 Bad Request when actor Id is null")
-    void shouldThrowBadRequestWhenActorIdNull() throws Exception {
-
-        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, REFERENCE, null))
-            .thenThrow(new BadRequestException(BAD_REQUEST_MISSING_PARAMETERS));
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.deleteRoleAssignment(null, PROCESS, REFERENCE);
-        });
-    }
-
-    @Test
     @DisplayName("should throw 404 Resource Not Found  when reference is null")
     void shouldThrowResourceNotFoundWhenReferenceNull() throws Exception {
 
-        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, PROCESS, null, null))
+        when(deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByProcessAndReference(PROCESS, null))
             .thenThrow(new ResourceNotFoundException(BAD_REQUEST_MISSING_PARAMETERS));
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             sut.deleteRoleAssignment(null,  PROCESS, null);

@@ -31,7 +31,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.assignment.controller.advice.exception.BadRequestException;
-import uk.gov.hmcts.reform.assignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.assignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.assignment.data.RequestEntity;
 import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
@@ -42,11 +41,6 @@ import uk.gov.hmcts.reform.assignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.assignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.assignment.helper.TestDataBuilder;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 class DeleteRoleAssignmentOrchestratorTest {
@@ -85,39 +79,12 @@ class DeleteRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    @DisplayName("should get 204 when role assignment records delete  successful")
-    void shouldDeleteRoleAssignmentByActorId() throws Exception {
-
-        //Set the status approved of all requested role manually for drool validation process
-        setApprovedStatusByDrool();
-        mockRequest();
-        when(persistenceService.getAssignmentsByActor(UUID.fromString(ACTOR_ID)))
-            .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
-        mockHistoryEntity();
-        ResponseEntity<Object> response = sut.deleteRoleAssignment(ACTOR_ID, null, null, null);
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        verify(persistenceService, times(2)).deleteRoleAssignmentByActorId(UUID.fromString(ACTOR_ID));
-        verify(persistenceService, times(2)).persistActorCache(any());
-        assertion();
-
-    }
-
-    @Test
     @DisplayName("should get 204 when process and reference doesn't exist")
     void shouldThrowResourceNotFoundWhenProcessNotExist() throws Exception {
         mockRequest();
-        ResponseEntity response = sut.deleteRoleAssignment(null, PROCESS, REFERENCE, null);
+        ResponseEntity response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-    }
-
-    @Test
-    @DisplayName("should throw 404 when actorId doesn't exist")
-    void shouldThrowResourceNotFoundWhenActorIdNotExist() throws Exception {
-        mockRequest();
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            sut.deleteRoleAssignment(ACTOR_ID, null, null, null);
-        });
     }
 
     @Test
@@ -134,26 +101,12 @@ class DeleteRoleAssignmentOrchestratorTest {
         )).thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
         mockHistoryEntity();
 
-        ResponseEntity<Object> response = sut.deleteRoleAssignment(null, PROCESS, REFERENCE, null);
+        ResponseEntity<Object> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(2)).deleteRoleAssignment(any());
         verify(persistenceService, times(2)).persistActorCache(any());
         assertion();
 
-    }
-
-
-    @Test
-    @DisplayName("should get 409 Conflict when request is rejected by drool rules")
-    void shouldReturn409WhenDroolValidationRejectRequest() throws Exception {
-        historyEntity.setStatus(DELETE_REJECTED.toString());
-        mockRequest();
-        when(persistenceService.getAssignmentsByActor(UUID.fromString(ACTOR_ID)))
-            .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
-        mockHistoryEntity();
-        ResponseEntity response = sut.deleteRoleAssignment(ACTOR_ID, null, null, null);
-        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        assertion();
     }
 
     @Test
@@ -167,26 +120,23 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId)))
             .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
         mockHistoryEntity();
-        ResponseEntity<Object> response = sut.deleteRoleAssignment(null, null, null, assignmentId);
+        ResponseEntity<Object> response = sut.deleteRoleAssignmentAssignmentId(assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
         assertion();
     }
 
     @Test
-    @DisplayName("should throw 404 exception for a non existing Assignment id")
+    @DisplayName("should throw 204 exception for a non existing Assignment id")
     void shouldThrowNotFoundForAssignmentId() throws Exception {
         String assignmentId = UUID.randomUUID().toString();
         setApprovedStatusByDrool();
         mockRequest();
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId))).thenReturn(Collections.emptyList());
         mockHistoryEntity();
-        Assertions.assertThrows(
-            ResourceNotFoundException.class,
-            () -> {
-                sut.deleteRoleAssignment(null, null, null, assignmentId);
-            }
-        );
+
+        ResponseEntity<Object> response = sut.deleteRoleAssignmentAssignmentId(assignmentId);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
     @Test
@@ -225,12 +175,14 @@ class DeleteRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    @DisplayName("should throw Conflict 409 if any record is rejected for deletion")
-    void shouldThrowConflictIfRecordIsRejected() throws Exception {
+    @DisplayName("should throw Unprocessable Entity 422 if any record is rejected for deletion")
+    void shouldThrowUnprocessableIfRecordIsRejected() throws Exception {
         //Set the status approved of all requested role manually for drool validation process
         setApprovedStatusByDrool();
         mockRequest();
-        when(persistenceService.getAssignmentsByActor(UUID.fromString(ACTOR_ID)))
+        when(persistenceService.getAssignmentsByProcess(PROCESS,
+                                                        REFERENCE,
+                                                        Status.LIVE.toString()))
             .thenReturn(new ArrayList<>() {
                 {
                     add(RoleAssignment.builder().status(DELETE_APPROVED).build());
@@ -239,8 +191,8 @@ class DeleteRoleAssignmentOrchestratorTest {
                 }
             });
         mockHistoryEntity();
-        ResponseEntity response = sut.deleteRoleAssignment(ACTOR_ID, null, null, null);
-        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        ResponseEntity response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE);
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
     }
 
     @Test
@@ -248,7 +200,7 @@ class DeleteRoleAssignmentOrchestratorTest {
     void shouldThrowBadRequestWhenReferenceNotExist() throws Exception {
         mockRequest();
         Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.deleteRoleAssignment(null, PROCESS, null, null);
+            sut.deleteRoleAssignmentByProcessAndReference(PROCESS, null);
         });
     }
 

@@ -48,12 +48,8 @@ public class DeleteAssignmentController {
             message = V1.Error.BAD_REQUEST_MISSING_PARAMETERS
         ),
         @ApiResponse(
-            code = 404,
-            message = V1.Error.NO_RECORDS_FOUND_BY_ACTOR
-        ),
-        @ApiResponse(
-            code = 404,
-            message = V1.Error.NO_RECORDS_FOUND_BY_PROCESS
+            code = 422,
+            message = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
         )
     })
     public ResponseEntity<Object> deleteRoleAssignment(@RequestHeader(value = "assignerId", required = false)
@@ -62,8 +58,7 @@ public class DeleteAssignmentController {
                                                            String process,
                                                        @RequestParam(value = "reference", required = false)
                                                            String reference) {
-        return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, process, reference, null);
-
+        return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByProcessAndReference(process, reference);
     }
 
     @DeleteMapping(
@@ -73,28 +68,28 @@ public class DeleteAssignmentController {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @ApiOperation("Deletes the role assignment by assignment id.")
     @ApiResponses({
-                      @ApiResponse(
-                          code = 204,
-                          message = "No Content"
-                      ),
-                      @ApiResponse(
-                          code = 400,
-                          message = V1.Error.BAD_REQUEST_INVALID_PARAMETER
-                      ),
-                      @ApiResponse(
-                          code = 400,
-                          message = V1.Error.BAD_REQUEST_MISSING_PARAMETERS
-                      ),
-                      @ApiResponse(
-                          code = 404,
-                          message = V1.Error.NO_RECORD_FOUND_BY_ASSIGNMENT_ID
-                      )
-                  })
+        @ApiResponse(
+            code = 204,
+            message = "No Content"
+        ),
+        @ApiResponse(
+            code = 400,
+            message = V1.Error.BAD_REQUEST_INVALID_PARAMETER
+        ),
+        @ApiResponse(
+            code = 400,
+            message = V1.Error.BAD_REQUEST_MISSING_PARAMETERS
+        ),
+        @ApiResponse(
+            code = 422,
+            message = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
+        )
+    })
     public ResponseEntity<Object> deleteRoleAssignmentById(
         @RequestHeader(value = "assignerId", required = false)
             String assignerId,
         @ApiParam(value = "assignmentId", required = true)
         @PathVariable String assignmentId) {
-        return deleteRoleAssignmentOrchestrator.deleteRoleAssignment(null, null, null, assignmentId);
+        return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentAssignmentId(assignmentId);
     }
 }

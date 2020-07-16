@@ -87,7 +87,7 @@ public class ParseRequestService {
     }
 
     public Request prepareDeleteRequest(String process, String reference, String actorId, String assignmentId) {
-        if (actorId != null) {
+        if (!StringUtils.isEmpty(actorId)) {
             ValidationUtil.validateInputParams(Constants.UUID_PATTERN, actorId);
         }
 
@@ -103,7 +103,7 @@ public class ParseRequestService {
         setCorrelationId(request);
         setAssignerId(request);
 
-        if (assignmentId != null) {
+        if (!StringUtils.isEmpty(assignmentId)) {
             ValidationUtil.validateInputParams(Constants.UUID_PATTERN, assignmentId);
             request.setRoleAssignmentId(UUID.fromString(assignmentId));
         }
