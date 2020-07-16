@@ -112,7 +112,7 @@ class RetrieveRoleAssignmentOrchestratorTest {
 
         String actorId = "";
         Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.retrieveRoleAssignmentsByActorIdOrCaseId(actorId, null);
+            sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null);
         });
     }
 
@@ -121,7 +121,7 @@ class RetrieveRoleAssignmentOrchestratorTest {
 
         String actorId = "a_bad_uuid";
         Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.retrieveRoleAssignmentsByActorIdOrCaseId(actorId, null);
+            sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null);
         });
     }
 }

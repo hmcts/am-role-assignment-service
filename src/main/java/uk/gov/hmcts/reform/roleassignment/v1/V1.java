@@ -35,6 +35,8 @@ public final class V1 {
             + ": %s & reference : %s";
         public static final String NO_RECORD_FOUND_BY_ASSIGNMENT_ID = "Role Assignment not found for id : %s";
         public static final String BAD_REQUEST_MISSING_PARAMETERS = "Mandatory Parameters are missing";
+        public static final String INVALID_CASE_ID = "The Case id is invalid ";
+        public static final String ASSIGNMENT_RECORDS_NOT_FOUND = "No Assignment records found for given criteria ";
 
     }
 

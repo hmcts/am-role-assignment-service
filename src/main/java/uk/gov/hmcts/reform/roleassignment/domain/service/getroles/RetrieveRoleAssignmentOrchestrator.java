@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
@@ -45,10 +47,15 @@ public class RetrieveRoleAssignmentOrchestrator {
             UUID.fromString(actorId));
     }
 
-    public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdOrCaseId(String actorId, String caseId) {
-        ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
-        persistenceService.getAssignmentsByActorAndCaseId(actorId,caseId);
-        return null;
+    public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdAndCaseId(String actorId, String caseId, String roleType) {
+        if (StringUtils.isNotEmpty(actorId)) {
+            ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
+        }
+        if (StringUtils.isNotEmpty(caseId)) {
+            ValidationUtil.validateCaseId(caseId);
+        }
+        List<RoleAssignment> assignmentList = persistenceService.getAssignmentsByActorAndCaseId(actorId,caseId, roleType);
+        return ResponseEntity.status(HttpStatus.OK).body(assignmentList);
     }
 
     public long retrieveETag(UUID actorId) throws Exception {

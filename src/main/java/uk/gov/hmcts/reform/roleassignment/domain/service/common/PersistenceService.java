@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
@@ -161,19 +162,26 @@ public class PersistenceService {
 
     }
 
-    public List<RoleAssignment> getAssignmentsByActorAndCaseId(String actorId, String caseId) {
-        Set<RoleAssignmentEntity> roleAssignmentEntities = null;
+    public List<RoleAssignment> getAssignmentsByActorAndCaseId(String actorId, String caseId, String roleType) {
+        Set<RoleAssignmentEntity> roleAssignmentEntities;
+
         if (StringUtils.isNotEmpty(actorId) && StringUtils.isNotEmpty(caseId)) {
-            roleAssignmentEntities = roleAssignmentRepository.findByActorIdAndCaseId(actorId, caseId);
-            //throw new BadRequestException(V1.Error.INVALID_ACTOR_AND_CASE_ID);
-        }
-        else if (StringUtils.isNotEmpty(actorId)) {
-            roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
+            roleAssignmentEntities = roleAssignmentRepository.findByActorIdAndCaseId(actorId, caseId, roleType);
+        } else if (StringUtils.isNotEmpty(actorId)) {
+            roleAssignmentEntities = roleAssignmentRepository.findByActorIdAndRoleType(UUID.fromString(actorId), roleType);
+        } else if (StringUtils.isNotEmpty(caseId)) {
+            roleAssignmentEntities = roleAssignmentRepository.getAssignmentByCaseId(caseId, roleType);
+        } else {
+            throw new BadRequestException(V1.Error.INVALID_ACTOR_AND_CASE_ID);
         }
 
-        //roleAssignmentRepository.findByActorIdAndCaseId();
-        //roleAssignmentRepository.findByActorId(actorId);
-        //roleAssignmentRepository.findByCaseId(caseId);
+        if (roleAssignmentEntities == null || roleAssignmentEntities.isEmpty()) {
+            throw new ResourceNotFoundException(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND);
+        }
+
+        return roleAssignmentEntities.stream()
+                                     .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+                                     .collect(Collectors.toList());
     }
 
     public List<RoleAssignment> getAssignmentById(UUID assignmentId) {

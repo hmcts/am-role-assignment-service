@@ -26,6 +26,7 @@ import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATT
 import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_INVALID_PARAMETER;
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
+import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.INVALID_CASE_ID;
 
 @Named
 @Singleton
@@ -148,5 +149,12 @@ public class ValidationUtil {
             }
             validateInputParams(NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
         }
+    }
+
+    public static void validateCaseId(String caseId) {
+         validateInputParams(NUMBER_PATTERN, caseId);
+         if(caseId.length() != 16) {
+             throw new BadRequestException(INVALID_CASE_ID);
+         }
     }
 }
