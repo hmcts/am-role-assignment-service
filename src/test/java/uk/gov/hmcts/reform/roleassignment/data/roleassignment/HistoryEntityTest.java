@@ -23,7 +23,7 @@ class HistoryEntityTest {
     }
 
     @Test
-    public void test() throws IOException {
+    void test() throws IOException {
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryEntity(
             TestDataBuilder.buildRoleAssignment(),
             TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED)));
