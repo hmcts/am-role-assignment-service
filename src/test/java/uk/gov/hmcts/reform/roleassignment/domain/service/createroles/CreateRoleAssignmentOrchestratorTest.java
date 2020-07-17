@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -8,8 +9,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -19,6 +20,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceServi
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -155,5 +157,12 @@ class CreateRoleAssignmentOrchestratorTest {
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1)).persistRequest(any(Request.class));
         verify(persistenceService, times(6)).persistHistory(any(RoleAssignment.class), any(Request.class));
+    }
+
+    // This test should be removed later
+    @Test
+    void sampleTest() {
+        String caseId = "1234567812345678";
+        assertEquals("1234567812345678", caseId);
     }
 }

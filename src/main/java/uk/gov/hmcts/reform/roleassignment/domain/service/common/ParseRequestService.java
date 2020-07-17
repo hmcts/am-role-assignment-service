@@ -1,10 +1,19 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -13,14 +22,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
-
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.UUID;
-
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
 
 @Service
 public class ParseRequestService {
@@ -31,11 +32,8 @@ public class ParseRequestService {
     @Autowired
     private CorrelationInterceptorUtil correlationInterceptorUtil;
 
-    private String serviceId;
-    private String userId;
-
     public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType)
-        throws Exception {
+        throws ParseException {
         Request request = assignmentRequest.getRequest();
         //1. validates request and assignment record
         ValidationUtil.validateAssignmentRequest(assignmentRequest);
@@ -71,28 +69,27 @@ public class ParseRequestService {
         return parsedRequest;
     }
 
-    private void setCorrelationId(Request request) throws Exception {
+    private void setCorrelationId(Request request) {
         HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
             .currentRequestAttributes())
             .getRequest();
         request.setCorrelationId(correlationInterceptorUtil.preHandle(httpServletRequest));
     }
 
-    public String getCorrelationId() throws Exception {
+    public String getCorrelationId() {
         HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
             .currentRequestAttributes())
             .getRequest();
         return correlationInterceptorUtil.preHandle(httpServletRequest);
     }
 
-    public void removeCorrelationLog() throws Exception {
+    public void removeCorrelationLog() {
         correlationInterceptorUtil.afterCompletion();
     }
 
-    public Request prepareDeleteRequest(String process, String reference, String actorId, String assignmentId)
-        throws Exception {
-        if (actorId != null) {
-            ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
+    public Request prepareDeleteRequest(String process, String reference, String actorId, String assignmentId) {
+        if (!StringUtils.isEmpty(actorId)) {
+            ValidationUtil.validateInputParams(Constants.UUID_PATTERN, actorId);
         }
 
         Request request = Request.builder()
@@ -107,8 +104,8 @@ public class ParseRequestService {
         setCorrelationId(request);
         setAssignerId(request);
 
-        if (assignmentId != null) {
-            ValidationUtil.validateInputParams(UUID_PATTERN, assignmentId);
+        if (!StringUtils.isEmpty(assignmentId)) {
+            ValidationUtil.validateInputParams(Constants.UUID_PATTERN, assignmentId);
             request.setRoleAssignmentId(UUID.fromString(assignmentId));
         }
         return request;
@@ -123,7 +120,7 @@ public class ParseRequestService {
         if (StringUtils.isBlank(assignerId)) {
             request.setAssignerId(request.getAuthenticatedUserId());
         } else {
-            ValidationUtil.validateInputParams(UUID_PATTERN, assignerId);
+            ValidationUtil.validateInputParams(Constants.UUID_PATTERN, assignerId);
             request.setAssignerId(UUID.fromString(assignerId));
         }
     }

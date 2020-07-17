@@ -37,12 +37,12 @@ def versions = [
   pitest             : '1.4.2',
   reformHealthStarter: '0.0.5',
   reformLogging      : '5.1.1',
-  reformS2sClient    : '3.1.1',
+  reformS2sClient    : '3.0.0',
   serenity           : '2.1.0',
   sonarPitest        : '0.5',
   springBoot         : '2.3.1.RELEASE',
   springHystrix      : '2.1.1.RELEASE',
-  swagger2Version    : '3.0.0-SNAPSHOT',
+  swagger2Version    : '2.10.5',
   pact_version       : '3.5.24',
   rest_assured       : '3.3.0',
   cucumber           : '5.5.0',
@@ -125,7 +125,7 @@ task functional(type: Test, description: 'Runs the functional tests.', group: 'V
       main = "uk.gov.hmcts.reform.roleassignment.befta.RoleAssignmentBeftaMain"
       classpath += configurations.cucumberRuntime + sourceSets.functionalTest.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
       args = ['--plugin', "json:${projectDir}/target/cucumber.json", '--tags', 'not @Ignore', '--glue',
-              'uk.gov.hmcts.befta.player', 'src/functionalTest/resources/features/F-002/']
+              'uk.gov.hmcts.befta.player', 'src/functionalTest/resources/features/']
     }
   }
 }
@@ -174,10 +174,10 @@ sonarqube {
   properties {
     property "sonar.projectName", "am-role-assignment-service"
     property "sonar.projectKey", "am-role-assignment-service"
+    property "sonar.exclusions", "build/generated-sources/**/*.java,**/SecurityConfiguration.java,**/SwaggerConfiguration.java"
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/**"
     property "sonar.junit.reportPaths", "${project.buildDir}/test-results/junit-platform"
   }
 }
@@ -258,16 +258,16 @@ dependencies {
     // TODO remove when auth-checker-lib upgrades its dependency to spring boot 2.0.x
     exclude group: 'uk.gov.hmcts.reform', module: 'java-logging-spring'
   }
-  implementation group: 'javax.inject', name: 'javax.inject', version: '1'
-  implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.10.5'
-  implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.10.5'
-  implementation group: 'io.springfox', name: 'springfox-spring-webmvc', version: '2.10.5'
+  compile group: 'javax.inject', name: 'javax.inject', version: '1'
+  compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.swagger2Version
+  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.swagger2Version
+  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: versions.swagger2Version
 
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
-  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.3.RELEASE'
-  implementation('org.springframework.boot:spring-boot-starter-hateoas')
-  implementation group: 'org.springframework', name: 'spring-tx', version: '5.2.7.RELEASE'
+  compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
+  compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
+  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.3.RELEASE'
+  compile('org.springframework.boot:spring-boot-starter-hateoas')
+  compile group: 'org.springframework', name: 'spring-tx', version: '5.2.7.RELEASE'
 
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'

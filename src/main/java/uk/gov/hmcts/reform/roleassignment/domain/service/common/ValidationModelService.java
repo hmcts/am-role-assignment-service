@@ -35,14 +35,14 @@ public class ValidationModelService {
         this.securityUtils = securityUtils;
     }
 
-    public void validateRequest(AssignmentRequest assignmentRequest) throws Exception {
+    public void validateRequest(AssignmentRequest assignmentRequest) {
 
         // Force the status and timestamp on all new request
         runRulesOnAllRequestedAssignments(assignmentRequest);
 
     }
 
-    private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) throws Exception {
+    private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) {
         // Package up the request and the assignments
         List<Object> facts = new ArrayList<>();
         //Pre defined role configuration
@@ -59,7 +59,7 @@ public class ValidationModelService {
 
     }
 
-    public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) throws Exception {
+    public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts){
         facts.add(securityUtils.getUserRoles());
         Set<String> userIds = new HashSet<>();
         if (!assignmentRequest.getRequest().getAssignerId().equals(

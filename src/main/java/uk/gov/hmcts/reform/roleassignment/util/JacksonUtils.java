@@ -8,7 +8,9 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import lombok.Getter;
 import org.apache.commons.beanutils.BeanUtils;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ServiceException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -30,7 +32,8 @@ public class JacksonUtils {
     private JacksonUtils() {
     }
 
-    public static Map<String, List<Role>> configuredRoles = new HashMap<>();
+    @Getter
+    private static final Map<String, List<Role>> configuredRoles = new HashMap<>();
 
     public static final JsonFactory jsonFactory = JsonFactory.builder()
         // Change per-factory setting to prevent use of `String.intern()` on symbols
@@ -44,7 +47,7 @@ public class JacksonUtils {
         .build();
 
 
-    public static HashMap<String, JsonNode> convertValue(Object from) {
+    public static Map<String, JsonNode> convertValue(Object from) {
         return MAPPER.convertValue(from, new TypeReference<HashMap<String, JsonNode>>() {
         });
     }
@@ -83,7 +86,7 @@ public class JacksonUtils {
             configuredRoles.put("roles", allRoles);
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ServiceException("Service Exception", e);
         }
 
     }

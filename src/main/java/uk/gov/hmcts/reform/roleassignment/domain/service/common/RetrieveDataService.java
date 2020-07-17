@@ -2,8 +2,8 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 
 @Service
 public class RetrieveDataService {
