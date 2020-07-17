@@ -46,11 +46,23 @@ public class QueryAssignmentController {
                       ),
                       @ApiResponse(
                           code = 404,
+                          message = V1.Error.INVALID_ACTOR_AND_CASE_ID
+                      ),
+                      @ApiResponse(
+                          code = 400,
+                          message = V1.Error.INVALID_CASE_ID
+                      ),
+                      @ApiResponse(
+                          code = 404,
                           message = V1.Error.NO_RECORDS_FOUND_BY_ACTOR
                       ),
                       @ApiResponse(
                           code = 404,
                           message = V1.Error.NO_RECORDS_FOUND_FOR_CASE_ID
+                      ),
+                      @ApiResponse(
+                          code = 404,
+                          message = V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND
                       )
                   })
     public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdAndCaseId(

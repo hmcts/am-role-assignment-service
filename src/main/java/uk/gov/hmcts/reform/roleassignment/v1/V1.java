@@ -30,7 +30,7 @@ public final class V1 {
         public static final String NO_RECORDS_FOUND_BY_ACTOR = "Role Assignment not found for Actor ";
         public static final String NO_RECORDS_FOUND_FOR_CASE_ID = "Role Assignment not found for Case id  ";
         public static final String INVALID_ROLE_TYPE = "The role type is invalid  ";
-        public static final String INVALID_ACTOR_AND_CASE_ID = "The Actor and Case id is empty ";
+        public static final String INVALID_ACTOR_AND_CASE_ID = "The Actor and Case are is empty ";
         public static final String NO_RECORDS_FOUND_BY_PROCESS = "Role Assignment not found for process "
             + ": %s & reference : %s";
         public static final String NO_RECORD_FOUND_BY_ASSIGNMENT_ID = "Role Assignment not found for id : %s";
