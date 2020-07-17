@@ -1,11 +1,20 @@
 {
   "_guid_": "F-001-Base-Root",
   "users": {
-    "invokingUser": {
+    "userBefta": {
       "username": "befta.caseworker.2.solicitor.2@gmail.com",
+      "password": "[[$CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD]]"
+    },
+    "userDocker": {
+      "username": "am.docker.default@hmcts.net",
+      "password": "[[$CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD]]"
+    },
+    "userAuto": {
+      "username": "auto.test.cnp@gmail.com",
       "password": "[[$CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD]]"
     }
   },
+
   "request": {
     "headers": {
       "Authorization": "[[DEFAULT_AUTO_VALUE]]",
@@ -15,7 +24,7 @@
     },
     "body":{
       "roleRequest": {
-        "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+        "assignerId": "3168da13-00b3-41e3-81fa-cbc71ac28a0f",
         "process": "businessProcess1",
         "reference": "abc-3434242",
         "replaceExisting": false
