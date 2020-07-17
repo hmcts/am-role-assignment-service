@@ -3,16 +3,12 @@
   "_guid_": "S-001",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
-    "contains a single Role Assignment with only mandatory fields",
-    "autouser - who is the assigner",
-    "am-docker - who is the actor for requested role",
-    "Befta2 - who invokes the API"
+    "contains a single Role Assignment with only mandatory fields"
   ],
   "request": {
     "body": {
       "roleRequest": {
-        "assignerId": "${[scenarioContext][testData][users][userAuto][id]}",
-        "reference": "${[scenarioContext][testData][users][userDocker][id]}"
+        "reference": "123e4567-e89b-42d3-a456-556642446001"
       },
       "requestedRoles": [
         {
