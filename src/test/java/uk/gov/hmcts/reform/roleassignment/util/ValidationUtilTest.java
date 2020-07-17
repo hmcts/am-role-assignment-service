@@ -15,10 +15,10 @@ import java.util.UUID;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_HYPHEN_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_TEXT_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_HYPHEN_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_PATTERN;
 
 class ValidationUtilTest {
 
@@ -109,8 +109,9 @@ class ValidationUtilTest {
 
     @Test
     void shouldThrowInvalidRequestException_ValidateLists() {
+        List list = new ArrayList();
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateLists(new ArrayList());
+            ValidationUtil.validateLists(list);
         });
     }
 

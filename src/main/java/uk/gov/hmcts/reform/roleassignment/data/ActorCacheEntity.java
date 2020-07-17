@@ -1,21 +1,20 @@
 
-package uk.gov.hmcts.reform.roleassignment.data.cachecontrol;
+package uk.gov.hmcts.reform.roleassignment.data;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
-import java.io.Serializable;
-import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Version;
+import java.util.UUID;
 
 @Builder(toBuilder = true)
 @Getter
@@ -23,7 +22,7 @@ import javax.persistence.Version;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "actor_cache_control")
-public class ActorCacheEntity implements Serializable {
+public class ActorCacheEntity {
 
     @Id
     @Column(name = "actor_id", nullable = false)

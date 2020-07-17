@@ -1,5 +1,5 @@
 
-package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
+package uk.gov.hmcts.reform.roleassignment.data;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
@@ -13,12 +13,7 @@ import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,14 +22,12 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "role_assignment_history")
-@IdClass(RoleAssignmentIdentity.class)
-public class HistoryEntity implements Serializable {
+@Entity(name = "role_assignment")
+
+public class RoleAssignmentEntity {
 
     @Id
     private UUID id;
-    @Id
-    private String status;
 
     @Column(name = "actor_id_type", nullable = false)
     private String actorIdType;
@@ -66,18 +59,6 @@ public class HistoryEntity implements Serializable {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @Column(name = "process")
-    private String process;
-
-    @Column(name = "reference")
-    private String reference;
-
-    @Column(name = "log")
-    private String log;
-
-    @Column(name = "status_sequence", nullable = false)
-    private int sequence;
-
     @CreationTimestamp
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
@@ -85,20 +66,6 @@ public class HistoryEntity implements Serializable {
     @Column(name = "attributes", nullable = false, columnDefinition = "jsonb")
     @Convert(converter = JsonBConverter.class)
     private JsonNode attributes;
-
-    @Column(name = "notes", nullable = true, columnDefinition = "jsonb")
-    @Convert(converter = JsonBConverter.class)
-    private JsonNode notes;
-
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_id")
-    private RequestEntity requestEntity;
-
-    //getter method to retrieve the parent id in the child entity
-    public UUID getRequestId() {
-        return requestEntity.getId();
-    }
 
 }
 

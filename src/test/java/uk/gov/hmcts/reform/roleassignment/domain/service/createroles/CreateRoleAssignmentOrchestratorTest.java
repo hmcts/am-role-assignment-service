@@ -9,8 +9,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceServi
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -201,8 +202,15 @@ class CreateRoleAssignmentOrchestratorTest {
 
     private void setApprovedStatusByDrool(AssignmentRequest assignmentRequest, HistoryEntity historyEntity) {
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            requestedRole.status = Status.APPROVED;
+            requestedRole.setStatus(Status.APPROVED);
         }
         historyEntity.setStatus(DELETE_APPROVED.toString());
+    }
+
+    // This test should be removed later
+    @Test
+    void sampleTest() {
+        String caseId = "1234567812345678";
+        assertEquals("1234567812345678", caseId);
     }
 }

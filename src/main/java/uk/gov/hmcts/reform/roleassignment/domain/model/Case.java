@@ -17,7 +17,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Builder
-public class Case implements Cloneable {
+public class Case {
     private String id;
 
     @JsonIgnore
