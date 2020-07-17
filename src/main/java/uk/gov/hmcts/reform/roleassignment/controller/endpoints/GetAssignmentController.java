@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.util.UUID;
@@ -30,14 +28,8 @@ import java.util.UUID;
 public class GetAssignmentController {
 
     private RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentService;
-    private final PersistenceService persistenceService;
-    private final DataStoreFeignClient dataStoreFeignClient;
 
-    public GetAssignmentController(PersistenceService persistenceService,
-                                   DataStoreFeignClient dataStoreFeignClient,
-                                   RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentService) {
-        this.persistenceService = persistenceService;
-        this.dataStoreFeignClient = dataStoreFeignClient;
+    public GetAssignmentController(RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentService) {
         this.retrieveRoleAssignmentService = retrieveRoleAssignmentService;
     }
 
