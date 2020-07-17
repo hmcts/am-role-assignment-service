@@ -1,0 +1,32 @@
+{
+  "title": "must successfully receive Role Assignments by Role Type Case and Case Id",
+  "_guid_": "S-062",
+  "_extends_": "F-006_Test_Data_Base",
+  "specs": [
+    "contains an Actor Id having only single Role Assignment",
+    "contains Role Type Case and Case Id which are assigned to Role Assignments"
+  ],
+
+  "request": {
+    "queryParams": {
+      "caseId": "1234567890123456"
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_200_Response",
+    "body": {
+      "links": [
+        {
+          "rel": "binary",
+          "href": "{{TEST_URL}}/am/role-assignments?roleType=CASE&caseId=${[scenarioContext][testData][request][pathVariables][actorId]}"
+        }
+      ],
+      "roleAssignmentResponse": [
+        {
+          "_extends_": "ResponseRoleAssignment",
+          "caseId": "${[scenarioContext][testData][request][queryParams][actorId]}"
+        }
+      ]
+    }
+  }
+}
