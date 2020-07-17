@@ -170,7 +170,7 @@ public class PersistenceService {
             roleAssignmentEntities =
                 roleAssignmentRepository.findByActorIdAndRoleType(UUID.fromString(actorId), roleType);
         } else if (StringUtils.isNotEmpty(caseId)) {
-            roleAssignmentEntities = roleAssignmentRepository.getAssignmentsByCaseId(caseId, roleType);
+            roleAssignmentEntities = roleAssignmentRepository.getAssignmentByCaseId(caseId, roleType);
         }
 
         if (roleAssignmentEntities == null || roleAssignmentEntities.isEmpty()) {
