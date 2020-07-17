@@ -108,21 +108,4 @@ class RetrieveRoleAssignmentOrchestratorTest {
         long etag = sut.retrieveETag(UUID.fromString(actorId));
         assertEquals(1, etag);
     }
-
-    @Test
-    void getRoleAssignmentByActorAndCaseId_shouldThrowBadRequestWhenActorAndCaseIdIsEmpty() throws Exception {
-
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.retrieveRoleAssignmentsByActorIdAndCaseId(null, null, ROLE_TYPE);
-        });
-    }
-
-    @Test
-    void getRoleAssignmentByActorAndCaseId_shouldThrowBadRequestWhenActorIsNotUUID() throws Exception {
-
-        String actorId = "a_bad_uuid";
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null, ROLE_TYPE);
-        });
-    }
 }

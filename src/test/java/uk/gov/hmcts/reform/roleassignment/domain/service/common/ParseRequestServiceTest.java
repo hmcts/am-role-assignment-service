@@ -1,5 +1,16 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,17 +30,6 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
-
 @RunWith(MockitoJUnitRunner.class)
 class ParseRequestServiceTest {
 
@@ -41,6 +41,8 @@ class ParseRequestServiceTest {
 
     @Mock
     private CorrelationInterceptorUtil correlationInterceptorUtilMock = mock(CorrelationInterceptorUtil.class);
+
+    private static final String ROLE_TYPE = "CASE";
 
     @BeforeEach
     public void setUp() {
@@ -94,5 +96,32 @@ class ParseRequestServiceTest {
             sut.prepareDeleteRequest(null, null, null, assignmentId);
         });
     }
+
+    @Test
+    void shouldReturn400IfRoleTypeIsNotCaseForGetRoleAssignmentByActorIdAndCaseId() throws Exception {
+        String actorId = "123e4567-e89b-42d3-a456-556642445678";
+        String roleType = "SomeFakeCaseType";
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            sut.validateGetAssignmentsByActorIdAndCaseId(actorId, null, roleType);
+        });
+    }
+
+    @Test
+    void getRoleAssignmentByActorAndCaseId_shouldThrowBadRequestWhenActorAndCaseIdIsEmpty() throws Exception {
+
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            sut.validateGetAssignmentsByActorIdAndCaseId(null, null, ROLE_TYPE);
+        });
+    }
+
+    @Test
+    void getRoleAssignmentByActorAndCaseId_shouldThrowBadRequestWhenActorIsNotUUID() throws Exception {
+
+        String actorId = "a_bad_uuid";
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            sut.validateGetAssignmentsByActorIdAndCaseId(actorId, null, ROLE_TYPE);
+        });
+    }
+
 
 }

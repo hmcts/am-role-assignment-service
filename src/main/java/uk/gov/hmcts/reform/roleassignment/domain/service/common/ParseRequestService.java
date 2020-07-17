@@ -13,14 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
+import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 @Service
 public class ParseRequestService {
@@ -125,6 +128,23 @@ public class ParseRequestService {
         } else {
             ValidationUtil.validateInputParams(UUID_PATTERN, assignerId);
             request.setAssignerId(UUID.fromString(assignerId));
+        }
+    }
+
+    public void validateGetAssignmentsByActorIdAndCaseId(String actorId, String caseId, String roleType) {
+        if (StringUtils.isEmpty(roleType) || !roleType.equals(RoleType.CASE.name())) {
+            throw new BadRequestException(V1.Error.INVALID_ROLE_TYPE);
+        }
+
+        if (StringUtils.isEmpty(actorId) && StringUtils.isEmpty(caseId)) {
+            throw new BadRequestException(V1.Error.INVALID_ACTOR_AND_CASE_ID);
+        }
+
+        if (StringUtils.isNotEmpty(actorId)) {
+            ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
+        }
+        if (StringUtils.isNotEmpty(caseId)) {
+            ValidationUtil.validateCaseId(caseId);
         }
     }
 }

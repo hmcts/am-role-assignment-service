@@ -19,11 +19,11 @@ public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEn
 
     @Query(value = "select ra.* from role_assignment ra where ra.actor_id  = :actorId "
                    + "and ra.attributes ->> 'caseId' = :caseId "
-                   + "and role_type = :roleType;", nativeQuery = true)
+                   + "and ra.role_type = :roleType", nativeQuery = true)
     Set<RoleAssignmentEntity> findByActorIdAndCaseId(String actorId, String caseId, String roleType);
 
     @Query(value = "select ra.* from role_assignment ra where "
-                   + "role_type = :roleType and ra.attributes ->> 'caseId' = :caseId ;", nativeQuery = true)
+                   + "ra.role_type = :roleType and ra.attributes ->> 'caseId' = :caseId ;", nativeQuery = true)
     Set<RoleAssignmentEntity> getAssignmentByCaseId(String caseId, String roleType);
 
 }
