@@ -12,7 +12,7 @@ Feature: F-007 : Get Static List of Roles
     Then a positive response is received,
     And the response has all other details as expected.
 
-#  The content is not required for for Get operation.
+  #The content is not required for for Get operation.
 #  @S-072
 #  Scenario: must receive an error response when content-type other than application/json
 #    Given a user with [an active caseworker profile with full permissions],
