@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -15,10 +15,10 @@ import java.util.UUID;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_TEXT_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_HYPHEN_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.TEXT_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_TEXT_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_HYPHEN_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_PATTERN;
 
 class ValidationUtilTest {
 
@@ -90,18 +90,18 @@ class ValidationUtilTest {
     }
 
     @Test
-    void validateRoleRequest() throws IOException {
+    void validateRoleRequest() {
         try {
-            ValidationUtil.validateRoleRequest(TestDataBuilder.buildAssignmentRequest().getRequest());
+            ValidationUtil.validateRoleRequest(TestDataBuilder.buildRequest(Status.APPROVED));
         } catch (Exception e) {
             fail("failed");
         }
     }
 
-    //@Test
-    void validateRequestedRoles() throws IOException, ParseException {
+    @Test
+    void validateRequestedRoles() {
         try {
-            ValidationUtil.validateRequestedRoles(TestDataBuilder.buildAssignmentRequest().getRequestedRoles());
+            ValidationUtil.validateRequestedRoles(TestDataBuilder.buildRequestedRoleCollection());
         } catch (Exception e) {
             fail("failed");
         }
@@ -109,8 +109,9 @@ class ValidationUtilTest {
 
     @Test
     void shouldThrowInvalidRequestException_ValidateLists() {
+        List list = new ArrayList();
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateLists(new ArrayList());
+            ValidationUtil.validateLists(list);
         });
     }
 

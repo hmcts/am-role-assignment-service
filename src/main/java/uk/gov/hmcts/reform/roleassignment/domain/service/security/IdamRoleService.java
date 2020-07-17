@@ -16,16 +16,16 @@ public class IdamRoleService {
     private Map<String, List<RoleAssignment>> existingRoleByActorId = new HashMap<>();
     SecurityUtils securityUtils;
 
-    public void getRequestedUserId() {
-        securityUtils.getUserId();
+    public String getRequestedUserId() {
+        return securityUtils.getUserId();
     }
 
-    public void getRequestUserRole() {
-        securityUtils.getUserRolesHeader();
+    public String getRequestUserRole() {
+        return securityUtils.getUserRolesHeader();
     }
 
 
-    public Collection<RoleAssignment> getIdamRoleAssignmentsForActor(String actorId) throws Exception {
+    public Collection<RoleAssignment> getIdamRoleAssignmentsForActor(String actorId) {
         List<RoleAssignment> existingRolesForActor = existingRoleByActorId.get(actorId);
         return existingRolesForActor == null ? new ArrayList<>() : existingRolesForActor;
     }

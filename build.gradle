@@ -42,7 +42,7 @@ def versions = [
   sonarPitest        : '0.5',
   springBoot         : '2.3.1.RELEASE',
   springHystrix      : '2.1.1.RELEASE',
-  swagger2Version    : '3.0.0-SNAPSHOT',
+  swagger2Version    : '2.10.5',
   pact_version       : '3.5.24',
   rest_assured       : '3.3.0',
   cucumber           : '5.5.0',
@@ -162,7 +162,14 @@ pitest {
   pitestVersion = "1.5.2"
   testPlugin = "junit5"
   targetClasses = ['uk.gov.hmcts.reform.*']
-  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication', 'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot', 'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants', 'uk.gov.hmcts.reform.roleassignment.configuration.*', 'uk.gov.hmcts.reform.roleassignment.apihelper.*', 'uk.gov.hmcts.reform.roleassignment.model.*', 'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication']
+  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
+                     'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot',
+                     'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants',
+                     'uk.gov.hmcts.reform.roleassignment.config.*',
+                     'uk.gov.hmcts.reform.roleassignment.apihelper.*',
+                     'uk.gov.hmcts.reform.roleassignment.model.*',
+                     'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication',
+                     'uk.gov.hmcts.reform.roleassignment.feignclients.exceptionhandler.*']
   threads = 15
   outputFormats = ['XML', 'HTML']
   timestampedReports = true
@@ -174,11 +181,11 @@ sonarqube {
   properties {
     property "sonar.projectName", "am-role-assignment-service"
     property "sonar.projectKey", "am-role-assignment-service"
+    property "sonar.exclusions", "build/generated-sources/**/*.java,**/SecurityConfiguration.java,**/SwaggerConfiguration.java"
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/**"
-    property "sonar.junit.reportPaths", "${project.buildDir}/test-results/junit-platform"
+    property "sonar.junit.repoGetAssignmentControllerrtPaths", "${project.buildDir}/test-results/junit-platform"
   }
 }
 
@@ -259,9 +266,9 @@ dependencies {
     exclude group: 'uk.gov.hmcts.reform', module: 'java-logging-spring'
   }
   compile group: 'javax.inject', name: 'javax.inject', version: '1'
-  compile group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
-  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
-  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: '3.0.0'
+  compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.swagger2Version
+  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.swagger2Version
+  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: versions.swagger2Version
 
   compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging

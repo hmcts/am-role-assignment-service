@@ -6,26 +6,25 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
+import uk.gov.hmcts.reform.roleassignment.v1.V1;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
-import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
-import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheRepository;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryRepository;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestRepository;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
-import uk.gov.hmcts.reform.roleassignment.v1.V1;
+import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
+import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
+import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
+import uk.gov.hmcts.reform.roleassignment.data.HistoryRepository;
+import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
+import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 
 @Service
 public class PersistenceService {
@@ -104,7 +103,7 @@ public class PersistenceService {
     public ActorCacheEntity persistActorCache(RoleAssignment roleAssignment) {
 
         ActorCacheEntity entity = persistenceUtil.convertActorCacheToEntity(prepareActorCache(roleAssignment));
-        ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.actorId);
+        ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
 
         if (existingActorCache != null) {
             entity.setEtag(existingActorCache.getEtag());
@@ -115,9 +114,9 @@ public class PersistenceService {
     @NotNull
     private ActorCache prepareActorCache(RoleAssignment roleAssignment) {
         ActorCache actorCache = new ActorCache();
-        actorCache.setActorId(roleAssignment.actorId);
+        actorCache.setActorId(roleAssignment.getActorId());
         Set<RoleAssignmentEntity> roleAssignmentEntities =
-            roleAssignmentRepository.findByActorId(roleAssignment.actorId);
+            roleAssignmentRepository.findByActorId(roleAssignment.getActorId());
         actorCache.setRoleAssignments(roleAssignmentEntities);
         return actorCache;
     }

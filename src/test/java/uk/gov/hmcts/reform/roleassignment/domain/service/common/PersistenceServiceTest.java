@@ -8,19 +8,21 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
-import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheRepository;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryRepository;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestRepository;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentRepository;
+import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
+import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
+import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
+import uk.gov.hmcts.reform.roleassignment.data.HistoryRepository;
+import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
+import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.io.IOException;
@@ -58,7 +60,7 @@ class PersistenceServiceTest {
 
     @Test
     void persistRequest() throws IOException {
-        Request request = TestDataBuilder.buildAssignmentRequest().getRequest();
+        Request request = TestDataBuilder.buildRequest(Status.CREATED);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(request);
         when(persistenceUtil.convertRequestToEntity(request)).thenReturn(requestEntity);
         when(requestRepository.save(requestEntity)).thenReturn(requestEntity);
@@ -71,10 +73,13 @@ class PersistenceServiceTest {
 
     @Test
     void persistRequestToHistory() throws IOException {
-        Request request = TestDataBuilder.buildAssignmentRequest().getRequest();
+        Request request = TestDataBuilder.buildRequest(Status.CREATED);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(request);
         try {
             sut.updateRequest(requestEntity);
+            assertNotNull(requestEntity);
+            verify(requestRepository, times(1)).save(requestEntity);
+
         } catch (Exception e) {
             throw new InternalError(e);
         }
@@ -83,7 +88,7 @@ class PersistenceServiceTest {
 
     @Test
     void persistHistory() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest();
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
@@ -105,7 +110,7 @@ class PersistenceServiceTest {
 
     @Test
     void persistRoleAssignment() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest();
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED);
         RoleAssignmentEntity roleAssignmentEntity = TestDataBuilder.convertRoleAssignmentToEntity(
             assignmentRequest.getRequestedRoles().iterator().next());
         when(persistenceUtil.convertRoleAssignmentToEntity(
@@ -118,19 +123,18 @@ class PersistenceServiceTest {
 
     @Test
     void persistActorCache() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest();
-        RoleAssignment roleAssignment = assignmentRequest.getRequestedRoles().iterator().next();
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.createObjectNode();
-        ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.actorId,1234, rootNode);
+        ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.getActorId(),1234, rootNode);
         ActorCache actorCache = TestDataBuilder.prepareActorCache(roleAssignment);
         when(persistenceUtil.convertActorCacheToEntity(any())).thenReturn(entity);
-        when(actorCacheRepository.findByActorId(roleAssignment.actorId)).thenReturn(entity);
+        when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(entity);
 
         sut.persistActorCache(roleAssignment);
 
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
-        verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.actorId);
+        verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
     }
 
     /*@Test
@@ -164,7 +168,7 @@ class PersistenceServiceTest {
 
     @Test
     void getExistingRoleByProcessAndReference() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest();
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
@@ -186,7 +190,7 @@ class PersistenceServiceTest {
 
     @Test
     void deleteRoleAssignment() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest();
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED);
         RoleAssignmentEntity roleAssignmentEntity = TestDataBuilder.convertRoleAssignmentToEntity(
             assignmentRequest.getRequestedRoles().iterator().next());
 

@@ -15,10 +15,6 @@ public class DatastoreFeignClientInterceptor {
     @Bean
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
-            /*requestTemplate
-                .header(Constants.SERVICE_AUTHORIZATION2, "Bearer " + securityUtils.getServiceAuthorizationHeader());
-            requestTemplate.header(HttpHeaders.AUTHORIZATION, securityUtils.getUserAuthorizationHeaders());
-            requestTemplate.header(HttpHeaders.CONTENT_TYPE, "application/json");*/
         };
     }
 }

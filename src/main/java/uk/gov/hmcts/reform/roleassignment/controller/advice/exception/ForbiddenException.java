@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.controller.advice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import uk.gov.hmcts.reform.roleassignment.apihelper.Constants;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import java.util.UUID;
 

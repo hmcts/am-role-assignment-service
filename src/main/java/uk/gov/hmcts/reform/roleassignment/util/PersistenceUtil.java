@@ -1,10 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
+import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -52,7 +52,7 @@ public class PersistenceUtil {
             .authenticatedUserId(request.getAuthenticatedUserId())
             .clientId(request.getClientId())
             .assignerId(request.getAssignerId())
-            .replaceExisting(request.replaceExisting)
+            .replaceExisting(request.isReplaceExisting())
             .requestType(request.getRequestType().toString())
             .created(request.getCreated())
             .log(request.getLog())
@@ -83,7 +83,7 @@ public class PersistenceUtil {
         return ActorCacheEntity.builder()
             .actorId(actorCache.getActorId())
             .etag(actorCache.getEtag())
-            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(actorCache.roleAssignments))
+            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(actorCache.getRoleAssignments()))
             .build();
 
     }
