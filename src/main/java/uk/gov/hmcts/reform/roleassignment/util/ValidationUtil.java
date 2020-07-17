@@ -1,4 +1,3 @@
-
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -148,6 +148,13 @@ public class ValidationUtil {
                 );
             }
             validateInputParams(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
+        }
+    }
+
+    public static void validateCaseId(String caseId) {
+        validateInputParams(NUMBER_PATTERN, caseId);
+        if (caseId.length() != 16) {
+            throw new BadRequestException(V1.Error.INVALID_CASE_ID);
         }
     }
 }

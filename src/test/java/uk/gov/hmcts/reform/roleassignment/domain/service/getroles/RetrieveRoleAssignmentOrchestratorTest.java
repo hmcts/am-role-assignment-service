@@ -1,6 +1,15 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.getroles;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,15 +29,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceServi
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 
 @RunWith(MockitoJUnitRunner.class)
 class RetrieveRoleAssignmentOrchestratorTest {
@@ -38,6 +38,8 @@ class RetrieveRoleAssignmentOrchestratorTest {
 
     @Mock
     private PrepareResponseService prepareResponseService = mock(PrepareResponseService.class);
+
+    private static final String ROLE_TYPE = "CASE";
 
     @InjectMocks
     private RetrieveRoleAssignmentOrchestrator sut = new RetrieveRoleAssignmentOrchestrator(
