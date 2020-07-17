@@ -1,0 +1,35 @@
+{
+  "_guid_": "S-069_CreationDataForRoleAssignment",
+  "_extends_": "CreationDataForRoleAssignment",
+  "request": {
+    "body": {
+      "roleRequest": {
+        "reference": "61c1047c-e86a-47f9-ab8a-e31475edf62b",
+        "replaceExisting": true
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "61c1047c-e86a-47f9-ab8a-e31475edf62b"
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "body": {
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "replaceExisting": true
+        },
+        "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+          }
+        ]
+      }
+    }
+  }
+}
