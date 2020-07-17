@@ -25,7 +25,7 @@ public class IdamRoleService {
     }
 
 
-    public Collection<RoleAssignment> getIdamRoleAssignmentsForActor(String actorId) throws Exception {
+    public Collection<RoleAssignment> getIdamRoleAssignmentsForActor(String actorId) {
         List<RoleAssignment> existingRolesForActor = existingRoleByActorId.get(actorId);
         return existingRolesForActor == null ? new ArrayList<>() : existingRolesForActor;
     }

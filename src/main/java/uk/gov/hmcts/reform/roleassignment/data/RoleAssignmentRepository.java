@@ -1,5 +1,5 @@
 
-package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
+package uk.gov.hmcts.reform.roleassignment.data;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

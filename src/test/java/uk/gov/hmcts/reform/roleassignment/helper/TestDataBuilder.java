@@ -8,10 +8,10 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.HistoryEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RequestEntity;
-import uk.gov.hmcts.reform.roleassignment.data.roleassignment.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
+import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.ROLES_JSON;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.ROLES_JSON;
 
 @Setter
 public class TestDataBuilder {
@@ -130,7 +130,7 @@ public class TestDataBuilder {
             .authenticatedUserId(request.getAuthenticatedUserId())
             .clientId(request.getClientId())
             .assignerId(request.getAssignerId())
-            .replaceExisting(request.replaceExisting)
+            .replaceExisting(request.isReplaceExisting())
             .requestType(request.getRequestType().toString())
             .created(request.getCreated())
             .log(request.getLog())
@@ -147,7 +147,7 @@ public class TestDataBuilder {
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
-            .readOnly(model.readOnly)
+            .readOnly(model.isReadOnly())
             .status(model.getStatus().toString())
             .requestEntity(requestEntity)
             .process(model.getProcess())
@@ -170,7 +170,7 @@ public class TestDataBuilder {
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
-            .readOnly(model.readOnly)
+            .readOnly(model.isReadOnly())
             .build();
     }
 
@@ -234,7 +234,7 @@ public class TestDataBuilder {
         return ActorCacheEntity.builder()
             .actorId(actorCache.getActorId())
             .etag(actorCache.getEtag())
-            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(actorCache.roleAssignments))
+            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(actorCache.getRoleAssignments()))
             .build();
 
     }
@@ -242,7 +242,7 @@ public class TestDataBuilder {
     @NotNull
     public static ActorCache prepareActorCache(RoleAssignment roleAssignment) {
         ActorCache actorCache = new ActorCache();
-        actorCache.setActorId(roleAssignment.actorId);
+        actorCache.setActorId(roleAssignment.getActorId());
         Set<RoleAssignmentEntity> roleAssignmentEntities = new HashSet<>();
         roleAssignmentEntities.add(convertRoleAssignmentToEntity(roleAssignment));
         actorCache.setRoleAssignments(roleAssignmentEntities);

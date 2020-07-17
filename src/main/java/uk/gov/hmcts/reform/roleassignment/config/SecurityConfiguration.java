@@ -55,14 +55,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         authCheckerFilter.setAuthenticationManager(authenticationManager());
 
         http
+            .requestMatchers()
+                .antMatchers("/am/role-assignments", "/am/role-assignments/**")
+            .and()
             .addFilter(authCheckerFilter)
             .sessionManagement().sessionCreationPolicy(STATELESS).and()
             .csrf().disable()
             .formLogin().disable()
             .logout().disable()
             .authorizeRequests()
-            .anyRequest()
-            .authenticated();
+                .anyRequest().authenticated();
 
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import uk.gov.hmcts.reform.roleassignment.apihelper.Constants;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
@@ -24,7 +24,6 @@ import java.util.Locale;
 
 import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DESERIALIZEITEMTYPES;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.BAD_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.INVALID_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.RESOURCE_NOT_FOUND;
@@ -39,6 +38,11 @@ public class RoleAssignmentControllerAdvice {
 
     private static final String LOG_STRING = "handling exception: {}";
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentControllerAdvice.class);
+
+    private static final String[] DESERIALIZEITEMTYPES = {Constants.ROLETYPE, Constants.CLASSIFICATION, Constants.UUID,
+        Constants.ACTORIDTYPE, Constants.GRANTTYPE,
+        Constants.ROLECATEGORY, Constants.BOOLEAN,
+        Constants.LOCALDATETIME, Constants.STATUS, Constants.INTEGER};
 
     @ExceptionHandler(InvalidRequest.class)
     public ResponseEntity<Object> customValidationError(
