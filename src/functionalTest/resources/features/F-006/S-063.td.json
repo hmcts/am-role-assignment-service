@@ -1,0 +1,21 @@
+{
+  "title": "must receive an error response for Role Type other than Case",
+  "_guid_": "S-063",
+  "_extends_": "F-006_Test_Data_Base",
+  "specs": [
+    "contains Role Type other than Case"
+  ],
+  "uri": "/am/role-assignments?roleType=OTHERTHANCASE",
+
+  "request": {
+    "queryParams": {
+      "actorId": "123e4567-e89b-42d3-a456-556642445053"
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "BadRequestResponse",
+    "body": {
+      "errorDescription": ""
+    }
+  }
+}

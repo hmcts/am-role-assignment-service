@@ -6,11 +6,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
+import uk.gov.hmcts.reform.roleassignment.v1.V1;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -156,6 +158,27 @@ public class PersistenceService {
         return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
             .collect(Collectors.toList());
 
+    }
+
+    public List<RoleAssignment> getAssignmentsByActorAndCaseId(String actorId, String caseId, String roleType) {
+        Set<RoleAssignmentEntity> roleAssignmentEntities = null;
+
+        if (StringUtils.isNotEmpty(actorId) && StringUtils.isNotEmpty(caseId)) {
+            roleAssignmentEntities = roleAssignmentRepository.findByActorIdAndCaseId(actorId, caseId, roleType);
+        } else if (StringUtils.isNotEmpty(actorId)) {
+            roleAssignmentEntities =
+                roleAssignmentRepository.findByActorIdAndRoleType(UUID.fromString(actorId), roleType);
+        } else if (StringUtils.isNotEmpty(caseId)) {
+            roleAssignmentEntities = roleAssignmentRepository.getAssignmentByCaseId(caseId, roleType);
+        }
+
+        if (roleAssignmentEntities == null || roleAssignmentEntities.isEmpty()) {
+            throw new ResourceNotFoundException(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND);
+        }
+
+        return roleAssignmentEntities.stream()
+                                     .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+                                     .collect(Collectors.toList());
     }
 
     public List<RoleAssignment> getAssignmentById(UUID assignmentId) {
