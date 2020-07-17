@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
-import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.util.Collections;
@@ -21,16 +21,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORD_FOUND_BY_ASSIGNMENT_ID;
 
 @Service
 public class DeleteRoleAssignmentOrchestrator {

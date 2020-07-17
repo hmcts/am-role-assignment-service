@@ -46,7 +46,7 @@ public class ValidationModelService {
         // Package up the request and the assignments
         List<Object> facts = new ArrayList<>();
         //Pre defined role configuration
-        List<Role> role = JacksonUtils.configuredRoles.get("roles");
+        List<Role> role = JacksonUtils.getConfiguredRoles().get("roles");
         facts.addAll(role);
         facts.add(assignmentRequest.getRequest());
         facts.addAll(assignmentRequest.getRequestedRoles());
@@ -59,7 +59,7 @@ public class ValidationModelService {
 
     }
 
-    public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts){
+    public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) {
         facts.add(securityUtils.getUserRoles());
         Set<String> userIds = new HashSet<>();
         if (!assignmentRequest.getRequest().getAssignerId().equals(

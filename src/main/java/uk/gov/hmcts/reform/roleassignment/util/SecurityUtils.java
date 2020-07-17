@@ -9,7 +9,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.BEARER;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.BEARER;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION;
 
 @Service
@@ -27,15 +26,15 @@ public class SecurityUtils {
 
     private final AuthTokenGenerator authTokenGenerator;
     private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter;
-    private final ServiceAuthorisationApi serviceAuthorisationApi;
+
 
     @Autowired
     public SecurityUtils(final AuthTokenGenerator authTokenGenerator,
-                         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter,
-                         ServiceAuthorisationApi serviceAuthorisationApi) {
+                         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter
+                         ) {
         this.authTokenGenerator = authTokenGenerator;
         this.jwtGrantedAuthoritiesConverter = jwtGrantedAuthoritiesConverter;
-        this.serviceAuthorisationApi = serviceAuthorisationApi;
+
     }
 
     public HttpHeaders authorizationHeaders() {
