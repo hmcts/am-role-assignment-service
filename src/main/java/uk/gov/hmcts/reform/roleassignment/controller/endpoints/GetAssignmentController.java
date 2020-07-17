@@ -180,6 +180,10 @@ public class GetAssignmentController {
                           message = V1.Error.INVALID_REQUEST
                       ),
                       @ApiResponse(
+                          code = 400,
+                          message = V1.Error.INVALID_ROLE_TYPE
+                      ),
+                      @ApiResponse(
                           code = 404,
                           message = V1.Error.NO_RECORDS_FOUND_BY_ACTOR
                       ),
