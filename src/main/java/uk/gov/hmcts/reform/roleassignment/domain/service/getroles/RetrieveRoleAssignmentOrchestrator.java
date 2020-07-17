@@ -1,20 +1,24 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.getroles;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ServiceException;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
-import uk.gov.hmcts.reform.roleassignment.data.cachecontrol.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
+import uk.gov.hmcts.reform.roleassignment.v1.V1;
+import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
-import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
-
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.NO_RECORDS_FOUND_BY_ACTOR;
 
 @Service
 public class RetrieveRoleAssignmentOrchestrator {
@@ -34,18 +38,37 @@ public class RetrieveRoleAssignmentOrchestrator {
     //4. Call persistence to fetch requested assignment records
     //5. Call prepare response to make HATEOUS based response.
 
-    public ResponseEntity<Object> getAssignmentsByActor(String actorId) throws Exception {
-        ValidationUtil.validateInputParams(UUID_PATTERN, actorId);
+    public ResponseEntity<Object> getAssignmentsByActor(String actorId) {
+        ValidationUtil.validateInputParams(Constants.UUID_PATTERN, actorId);
         List<RoleAssignment> assignments = persistenceService.getAssignmentsByActor(UUID.fromString(actorId));
         if (CollectionUtils.isEmpty(assignments)) {
-            throw new ResourceNotFoundException(String.format(NO_RECORDS_FOUND_BY_ACTOR + "%s", actorId.toString()));
+            throw new ResourceNotFoundException(String.format(
+                V1.Error.NO_RECORDS_FOUND_BY_ACTOR + "%s",
+                actorId));
         }
         return prepareResponseService.prepareRetrieveRoleResponse(
             assignments,
             UUID.fromString(actorId));
     }
 
-    public long retrieveETag(UUID actorId) throws Exception {
+    public JsonNode getListOfRoles() {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode;
+        try (InputStream input = RetrieveRoleAssignmentOrchestrator.class.getClassLoader()
+            .getResourceAsStream(Constants.ROLES_JSON)) {
+            assert input != null;
+            rootNode = mapper.readTree(input);
+            for (JsonNode roleNode: rootNode) {
+                ObjectNode obj = (ObjectNode) roleNode;
+                obj.remove(Constants.ROLE_JSON_PATTERNS_FIELD);
+            }
+        } catch (Exception e) {
+            throw new ServiceException("Service Exception", e);
+        }
+        return rootNode;
+    }
+
+    public long retrieveETag(UUID actorId) {
         ActorCacheEntity entity = persistenceService.getActorCacheEntity(actorId);
         return entity.getEtag();
     }

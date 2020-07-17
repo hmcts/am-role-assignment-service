@@ -21,32 +21,29 @@ public class ValidationModelService {
     //Note: These are aggregation records from Assignment_history table.
 
     private StatelessKieSession kieSession;
-    private PersistenceService persistenceService;
     private IdamRoleService idamRoleService;
     private RetrieveDataService retrieveDataService;
 
     public ValidationModelService(StatelessKieSession kieSession,
-                                  PersistenceService persistenceService,
                                   IdamRoleService idamRoleService,
                                   RetrieveDataService retrieveDataService) {
         this.kieSession = kieSession;
-        this.persistenceService = persistenceService;
         this.idamRoleService = idamRoleService;
         this.retrieveDataService = retrieveDataService;
     }
 
-    public void validateRequest(AssignmentRequest assignmentRequest) throws Exception {
+    public void validateRequest(AssignmentRequest assignmentRequest) {
 
         // Force the status and timestamp on all new request
         runRulesOnAllRequestedAssignments(assignmentRequest);
 
     }
 
-    private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) throws Exception {
+    private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) {
         // Package up the request and the assignments
         List<Object> facts = new ArrayList<>();
         //Pre defined role configuration
-        List<Role> role =  JacksonUtils.configuredRoles.get("roles");
+        List<Role> role =  JacksonUtils.getConfiguredRoles().get("roles");
         facts.addAll(role);
         facts.add(assignmentRequest.getRequest());
         facts.addAll(assignmentRequest.getRequestedRoles());
@@ -59,7 +56,7 @@ public class ValidationModelService {
 
     }
 
-    public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) throws Exception {
+    public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) {
         Set<String> userIds = new HashSet<>();
         userIds.add(String.valueOf(assignmentRequest.getRequest().getAssignerId()));
         userIds.add(String.valueOf(assignmentRequest.getRequest().getAuthenticatedUserId()));
@@ -69,7 +66,6 @@ public class ValidationModelService {
         }
         for (String actorId : userIds) {
             if (actorId != null) {
-                //facts.addAll(persistenceService.getAssignmentsByActor(UUID.fromString(actorId)));
                 facts.addAll(idamRoleService.getIdamRoleAssignmentsForActor(actorId));
             }
 

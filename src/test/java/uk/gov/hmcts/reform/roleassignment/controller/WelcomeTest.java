@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class WelcomeTest {
+class WelcomeTest {
 
     @Test
-    public void shouldReturnWelcomeMessage() {
+    void shouldReturnWelcomeMessage() {
         assertEquals("2".toString(), "2".toString(), "Status code is NOT OK");
     }
 }

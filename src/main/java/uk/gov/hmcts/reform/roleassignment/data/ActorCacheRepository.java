@@ -1,5 +1,5 @@
 
-package uk.gov.hmcts.reform.roleassignment.data.cachecontrol;
+package uk.gov.hmcts.reform.roleassignment.data;
 
 import org.springframework.data.repository.CrudRepository;
 
