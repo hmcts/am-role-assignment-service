@@ -10,10 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentController;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 
 import static org.mockito.Mockito.doReturn;
 
@@ -24,18 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class GetAssignmentControllerTest {
 
     @Mock
-    private transient PersistenceService persistenceServiceMock;
-
-    @Mock
-    private transient DataStoreFeignClient dataStoreFeignClientMock;
-
-    @Mock
     private transient RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentServiceMock;
 
     @InjectMocks
-    private GetAssignmentController sut = new GetAssignmentController(persistenceServiceMock,
-                                                                      dataStoreFeignClientMock,
-                                                                      retrieveRoleAssignmentServiceMock);
+    private GetAssignmentController sut = new GetAssignmentController(retrieveRoleAssignmentServiceMock);
 
     @BeforeEach
     public void setUp() {
