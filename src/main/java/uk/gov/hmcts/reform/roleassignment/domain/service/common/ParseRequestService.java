@@ -128,7 +128,7 @@ public class ParseRequestService {
     }
 
     public void validateGetAssignmentsByActorIdAndCaseId(String actorId, String caseId, String roleType) {
-        if (StringUtils.isEmpty(roleType) || !roleType.equals(RoleType.CASE.name())) {
+        if (StringUtils.isEmpty(roleType) || !roleType.equalsIgnoreCase(RoleType.CASE.name())) {
             throw new BadRequestException(V1.Error.INVALID_ROLE_TYPE);
         }
 
