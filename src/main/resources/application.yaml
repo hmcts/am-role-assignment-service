@@ -90,6 +90,13 @@ idam:
   s2s-authorised:
     services: ${ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES:ccd_gw,am_role_assignment_service}
   api.url: ${IDAM_USER_URL:http://localhost:5000}
+  client:
+    id: ${IDAM_CLIENT_ID:am_docker}
+    secret: ${IDAM_CLIENT_SECRET:am_docker_secret}
+    admin:
+      userId: ${IDAM_ADMIN_USERID:befta.caseworker.2.solicitor.2@gmail.com}
+      password: ${IDAM_ADMIN_PASSWORD:Pa55word11}
+      scope: ${IDAM_ADMIN_SCOPE:manage-user}
 
 
 testS2S:
