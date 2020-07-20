@@ -51,6 +51,7 @@ class CreateRoleAssignmentOrchestratorTest {
     @Mock
     private PrepareResponseService prepareResponseService = mock(PrepareResponseService.class);
 
+
     @InjectMocks
     private CreateRoleAssignmentOrchestrator sut = new CreateRoleAssignmentOrchestrator(
         parseRequestService,
@@ -72,8 +73,9 @@ class CreateRoleAssignmentOrchestratorTest {
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
 
-        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
-            assignmentRequest);
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
+            .thenReturn(
+                assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
         when(persistenceService.persistHistory(
             any(RoleAssignment.class),
@@ -106,8 +108,9 @@ class CreateRoleAssignmentOrchestratorTest {
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
 
-        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
-            assignmentRequest);
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
+            .thenReturn(
+                assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
         when(persistenceService.persistHistory(
             any(RoleAssignment.class),
@@ -171,8 +174,9 @@ class CreateRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentsByProcess(anyString(),anyString(),anyString()))
             .thenReturn((List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection_Updated());
 
-        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
-            assignmentRequest);
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
+            .thenReturn(
+                assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
         when(persistenceService.persistHistory(
             any(RoleAssignment.class),

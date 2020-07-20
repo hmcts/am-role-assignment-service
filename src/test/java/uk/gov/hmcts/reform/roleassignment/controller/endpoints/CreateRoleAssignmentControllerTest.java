@@ -22,6 +22,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 class CreateRoleAssignmentControllerTest {
 
+
     @Mock
     private CreateRoleAssignmentOrchestrator createRoleAssignmentServiceMock =
         mock(CreateRoleAssignmentOrchestrator.class);
@@ -41,7 +42,7 @@ class CreateRoleAssignmentControllerTest {
         when(createRoleAssignmentServiceMock.createRoleAssignment(request)).thenReturn(expectedResponse);
         ResponseEntity<Object> response = sut.createRoleAssignment(request);
         assertNotNull(response);
-        assertEquals(expectedResponse.getStatusCode(),response.getStatusCode());
-        assertEquals(expectedResponse.getBody(),response.getBody());
+        assertEquals(expectedResponse.getStatusCode(), response.getStatusCode());
+        assertEquals(expectedResponse.getBody(), response.getBody());
     }
 }
