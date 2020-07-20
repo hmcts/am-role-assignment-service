@@ -69,7 +69,7 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
             "role_assignment_request record count ", 5, count);
     }
 
-     @Test
+    @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
          scripts = {"classpath:sql/insert_role_assignment_request.sql"})
     public void shoudGetRequestStatusFromRequestTable() throws Exception {
