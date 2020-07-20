@@ -1,4 +1,4 @@
-/*
+
 package uk.gov.hmcts.reform.roleassignment.controller;
 
 import org.junit.Before;
@@ -36,7 +36,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             "role_assignment_request record count ", 5, count);
     }
 
-    @Test
+    /*@Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {
         "classpath:sql/insert_role_assignment_request.sql",
         "classpath:sql/insert_role_assignment_history.sql"
@@ -58,6 +58,5 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         logger.info(" Role assignment actor id is...{}", actorId);
         assertEquals(
             "Role assignment actor Id", "123e4567-e89b-42d3-a456-556642445613", actorId);
-    }
+    }*/
 }
-*/
