@@ -1,3 +1,4 @@
+DELETE FROM role_assignment_history;
 DELETE FROM role_assignment_request;
 
 INSERT INTO public.role_assignment_request
