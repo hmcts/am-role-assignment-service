@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class ParseRequestService {
 
         //2. Request Parsing
         //a. Extract client Id and place in the request
-        request.setClientId(securityUtils.getServiceId());
+        request.setClientId(securityUtils.getServiceName());
         //b. Extract AuthenticatedUser Id from the User token and place in the request.
         request.setAuthenticatedUserId(UUID.fromString(securityUtils.getUserId()));
         //c. Set Status=Created and created Time = now
@@ -95,14 +96,14 @@ public class ParseRequestService {
         }
 
         Request request = Request.builder()
-                                 .clientId(securityUtils.getServiceId())
-                                 .authenticatedUserId(UUID.fromString(securityUtils.getUserId()))
-                                 .status(Status.CREATED)
-                                 .requestType(RequestType.DELETE)
-                                 .created(LocalDateTime.now())
-                                 .process(process)
-                                 .reference(reference)
-                                 .build();
+            .clientId(securityUtils.getServiceName())
+            .authenticatedUserId(UUID.fromString(securityUtils.getUserId()))
+            .status(Status.CREATED)
+            .requestType(RequestType.DELETE)
+            .created(LocalDateTime.now())
+            .process(process)
+            .reference(reference)
+            .build();
         setCorrelationId(request);
         setAssignerId(request);
 

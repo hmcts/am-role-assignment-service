@@ -1,32 +1,27 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.security;
 
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
+import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
+import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 
 @Service
 public class IdamRoleService {
 
-    private Map<String, List<RoleAssignment>> existingRoleByActorId = new HashMap<>();
-    SecurityUtils securityUtils;
 
-    public String getRequestedUserId() {
-        return securityUtils.getUserId();
-    }
+    private IdamRepository idamRepository;
 
-    public String getRequestUserRole() {
-        return securityUtils.getUserRolesHeader();
+    public IdamRoleService(IdamRepository idamRepository) {
+        this.idamRepository = idamRepository;
     }
 
 
-    public Collection<RoleAssignment> getIdamRoleAssignmentsForActor(String actorId) {
-        List<RoleAssignment> existingRolesForActor = existingRoleByActorId.get(actorId);
-        return existingRolesForActor == null ? new ArrayList<>() : existingRolesForActor;
+    public UserRoles getUserRoles(String userId) {
+
+        UserDetails userDetails = idamRepository.getUserByUserId(idamRepository.getManageUserToken(), userId);
+        return UserRoles.builder()
+            .uid(userDetails.getId())
+            .roles(userDetails.getRoles())
+            .build();
     }
 }

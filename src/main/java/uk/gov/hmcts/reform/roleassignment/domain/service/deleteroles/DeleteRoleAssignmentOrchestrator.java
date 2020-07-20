@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
-import org.apache.commons.lang.StringUtils;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.util.Collections;
@@ -155,7 +155,7 @@ public class DeleteRoleAssignmentOrchestrator {
         // decision block
         List<RoleAssignment> deleteApprovedRoles = validatedAssignmentRequest.getRequestedRoles().stream()
             .filter(role -> role.getStatus()
-                                .equals(Status.DELETE_APPROVED)).collect(Collectors.toList());
+                .equals(Status.DELETE_APPROVED)).collect(Collectors.toList());
 
         if (!deleteApprovedRoles.isEmpty()
             && deleteApprovedRoles.size() == validatedAssignmentRequest.getRequestedRoles().size()) {

@@ -25,8 +25,5 @@ class DatastoreFeignClientConfigurationTest {
         assertNotNull(datastoreFeignClientConfiguration.client());
     }
 
-    @Test
-    void errorDecoder() {
-        assertNotNull(datastoreFeignClientConfiguration.errorDecoder());
-    }
+
 }
