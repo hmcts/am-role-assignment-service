@@ -27,16 +27,6 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     }
 
     @Test
-    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
-        {"classpath:sql/insert_role_assignment_request.sql"})
-    public void shoudGetRecordCountFromRequestTable() throws Exception {
-        final int count = template.queryForObject(COUNT_RECORDS_QUERY, Integer.class);
-        logger.info(" Total number of records fetched from role assignment request table...{}", count);
-        assertEquals(
-            "role_assignment_request record count ", 5, count);
-    }
-
-    @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {
         "classpath:sql/insert_role_assignment_request.sql",
         "classpath:sql/insert_role_assignment_history.sql"
