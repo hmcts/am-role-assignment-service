@@ -12,7 +12,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -23,6 +22,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
 
 @Named
 @Singleton
@@ -109,9 +110,12 @@ public class ValidationUtil {
 
     public static void validateAssignmentRequest(AssignmentRequest assignmentRequest) throws ParseException {
         validateRoleRequest(assignmentRequest.getRequest());
-        validateLists(assignmentRequest.getRequestedRoles());
-        validateRequestedRoles(assignmentRequest.getRequestedRoles());
-
+        if (!(assignmentRequest.getRequest().isReplaceExisting())
+            || (assignmentRequest.getRequest().isReplaceExisting()
+            && assignmentRequest.getRequestedRoles().size() > 0)) {
+            validateLists(assignmentRequest.getRequestedRoles());
+            validateRequestedRoles(assignmentRequest.getRequestedRoles());
+        }
     }
 
     public static void validateRoleRequest(Request roleRequest) {
