@@ -101,7 +101,7 @@ class ValidationUtilTest {
     @Test
     void validateRequestedRoles() {
         try {
-            ValidationUtil.validateRequestedRoles(TestDataBuilder.buildRequestedRoleCollection());
+            ValidationUtil.validateRequestedRoles(TestDataBuilder.buildRequestedRoleCollection(Status.LIVE));
         } catch (Exception e) {
             fail("failed");
         }

@@ -26,7 +26,7 @@ class HistoryEntityTest {
     @Test
     void test() throws IOException {
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryEntity(
-            TestDataBuilder.buildRoleAssignment(),
+            TestDataBuilder.buildRoleAssignment(Status.LIVE),
             TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED)));
 
         assertNotNull(historyEntity.getRequestId());

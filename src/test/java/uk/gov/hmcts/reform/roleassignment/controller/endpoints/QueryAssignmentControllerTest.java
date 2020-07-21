@@ -14,6 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
@@ -38,7 +39,8 @@ class QueryAssignmentControllerTest {
     void shouldGetRoleAssignmentByActorIdAndCaseId() throws Exception {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         String caseId = "1234567890123456";
-        ResponseEntity<Object> expectedResponse = TestDataBuilder.buildRoleAssignmentResponse();
+        ResponseEntity<Object> expectedResponse
+            = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator).retrieveRoleAssignmentsByActorIdAndCaseId(
             actorId, caseId, ROLE_TYPE);
         ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, ROLE_TYPE);
@@ -50,7 +52,8 @@ class QueryAssignmentControllerTest {
     @Test
     void shouldGetRoleAssignmentByActorIdOnly() throws Exception {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
-        ResponseEntity<Object> expectedResponse = TestDataBuilder.buildRoleAssignmentResponse();
+        ResponseEntity<Object> expectedResponse
+            = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
                                   .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null, ROLE_TYPE);
         ResponseEntity<Object> response = sut
@@ -63,7 +66,8 @@ class QueryAssignmentControllerTest {
     @Test
     void shouldGetRoleAssignmentByCaseIdOnly() throws Exception {
         String caseId = "1234567890123456";
-        ResponseEntity<Object> expectedResponse = TestDataBuilder.buildRoleAssignmentResponse();
+        ResponseEntity<Object> expectedResponse
+            = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
                                   .retrieveRoleAssignmentsByActorIdAndCaseId(null, caseId, ROLE_TYPE);
         ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId(null, caseId, ROLE_TYPE);

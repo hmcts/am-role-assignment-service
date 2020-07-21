@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
@@ -28,7 +29,6 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -106,7 +106,8 @@ class ParseRequestServiceTest {
         when(correlationInterceptorUtilMock.preHandle(
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
         assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9d", sut.getCorrelationId());
-        verify(correlationInterceptorUtilMock, times(1)).preHandle(any(HttpServletRequest.class));
+        verify(correlationInterceptorUtilMock, times(1))
+            .preHandle(any(HttpServletRequest.class));
     }
 
     @Test
@@ -137,7 +138,7 @@ class ParseRequestServiceTest {
         assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9d", result.getCorrelationId());
     }
 
-    //@Test
+    @Test
     void parseRequest_CreateEndpoint_HappyPath() throws Exception {
 
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -150,8 +151,7 @@ class ParseRequestServiceTest {
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
 
         RequestType requestType = RequestType.CREATE;
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED);
-        doNothing().when(validationUtil).validateAssignmentRequest(assignmentRequest);
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, Status.LIVE);
         AssignmentRequest result = sut.parseRequest(assignmentRequest, requestType);
         assertNotNull(result);
         assertNotNull(result.getRequest());
@@ -171,6 +171,7 @@ class ParseRequestServiceTest {
         });
         verify(securityUtilsMock, times(1)).getServiceName();
         verify(securityUtilsMock, times(1)).getUserId();
-        verify(correlationInterceptorUtilMock, times(1)).preHandle(any(HttpServletRequest.class));
+        verify(correlationInterceptorUtilMock, times(1))
+            .preHandle(any(HttpServletRequest.class));
     }
 }

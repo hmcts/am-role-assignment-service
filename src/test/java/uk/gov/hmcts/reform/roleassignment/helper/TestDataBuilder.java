@@ -45,8 +45,8 @@ public class TestDataBuilder {
         //not meant to be instantiated.
     }
 
-    public static AssignmentRequest buildAssignmentRequest(Status status) throws IOException {
-        return new AssignmentRequest(buildRequest(status), buildRequestedRoleCollection());
+    public static AssignmentRequest buildAssignmentRequest(Status requestStatus, Status roleStatus) throws IOException {
+        return new AssignmentRequest(buildRequest(requestStatus), buildRequestedRoleCollection(roleStatus));
     }
 
     public static Request buildRequest(Status status) {
@@ -64,7 +64,7 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static RoleAssignment buildRoleAssignment() throws IOException {
+    public static RoleAssignment buildRoleAssignment(Status status) throws IOException {
         LocalDateTime timeStamp = LocalDateTime.now();
         return RoleAssignment.builder()
             .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
@@ -81,14 +81,14 @@ public class TestDataBuilder {
             .reference("reference")
             .process(("process"))
             .statusSequence(10)
-            .status(Status.LIVE)
+            .status(status)
             .created(timeStamp)
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
             .notes(buildNotesFromFile())
             .build();
     }
 
-    public static RoleAssignment buildRoleAssignmentUpdated() throws IOException {
+    public static RoleAssignment buildRoleAssignmentUpdated(Status status) throws IOException {
         LocalDateTime timeStamp = LocalDateTime.now();
         return RoleAssignment.builder()
             .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
@@ -105,28 +105,29 @@ public class TestDataBuilder {
             .reference("new ref")
             .process(("new process"))
             .statusSequence(10)
-            .status(Status.LIVE)
+            .status(status)
             .created(timeStamp)
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
             .notes(buildNotesFromFile())
             .build();
     }
 
-    public static ResponseEntity<Object> buildRoleAssignmentResponse() throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(buildAssignmentRequest(Status.CREATED));
+    public static ResponseEntity<Object> buildRoleAssignmentResponse(Status requestStatus,
+                                                                     Status roleStatus) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(buildAssignmentRequest(requestStatus, roleStatus));
     }
 
-    public static Collection<RoleAssignment> buildRequestedRoleCollection() throws IOException {
+    public static Collection<RoleAssignment> buildRequestedRoleCollection(Status status) throws IOException {
         Collection<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(buildRoleAssignment());
-        requestedRoles.add(buildRoleAssignment());
+        requestedRoles.add(buildRoleAssignment(status));
+        requestedRoles.add(buildRoleAssignment(status));
         return requestedRoles;
     }
 
-    public static Collection<RoleAssignment> buildRequestedRoleCollection_Updated() throws IOException {
+    public static Collection<RoleAssignment> buildRequestedRoleCollection_Updated(Status status) throws IOException {
         Collection<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(buildRoleAssignment());
-        requestedRoles.add(buildRoleAssignment());
+        requestedRoles.add(buildRoleAssignmentUpdated(status));
+        requestedRoles.add(buildRoleAssignmentUpdated(status));
         return requestedRoles;
     }
 
@@ -138,7 +139,7 @@ public class TestDataBuilder {
         });
     }
 
-    private static JsonNode buildNotesFromFile() throws IOException {
+    public static JsonNode buildNotesFromFile() throws IOException {
         InputStream inputStream =
             TestDataBuilder.class.getClassLoader().getResourceAsStream("notes.json");
         assert inputStream != null;

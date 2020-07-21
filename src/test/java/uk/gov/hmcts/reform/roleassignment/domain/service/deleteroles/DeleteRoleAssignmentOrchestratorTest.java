@@ -90,9 +90,9 @@ class DeleteRoleAssignmentOrchestratorTest {
     @BeforeEach
     public void setUp() throws IOException {
         MockitoAnnotations.initMocks(this);
-        assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED);
+        assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, Status.LIVE);
         requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
-        roleAssignment = TestDataBuilder.buildRoleAssignment();
+        roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
         historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
     }
@@ -226,7 +226,8 @@ class DeleteRoleAssignmentOrchestratorTest {
     private void assertion() throws Exception {
         verify(parseRequestService, times(1)).prepareDeleteRequest(any(), any(), any(), any());
         verify(persistenceService, times(1)).persistRequest(any(Request.class));
-        verify(persistenceService, times(4)).persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(persistenceService, times(4))
+            .persistHistory(any(RoleAssignment.class), any(Request.class));
     }
 
     private void mockRequest() throws Exception {

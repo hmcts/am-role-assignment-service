@@ -88,7 +88,7 @@ class PersistenceServiceTest {
 
     @Test
     void persistHistory() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED);
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
@@ -110,7 +110,7 @@ class PersistenceServiceTest {
 
     @Test
     void persistRoleAssignment() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED);
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE);
         RoleAssignmentEntity roleAssignmentEntity = TestDataBuilder.convertRoleAssignmentToEntity(
             assignmentRequest.getRequestedRoles().iterator().next());
         when(persistenceUtil.convertRoleAssignmentToEntity(
@@ -118,12 +118,13 @@ class PersistenceServiceTest {
 
         sut.persistRoleAssignment(assignmentRequest.getRequestedRoles().iterator().next());
 
-        verify(persistenceUtil, times(1)).convertRoleAssignmentToEntity(any(RoleAssignment.class));
+        verify(persistenceUtil, times(1))
+            .convertRoleAssignmentToEntity(any(RoleAssignment.class));
     }
 
     @Test
     void persistActorCache() throws IOException {
-        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment();
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.createObjectNode();
         ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.getActorId(),1234, rootNode);
@@ -168,7 +169,7 @@ class PersistenceServiceTest {
 
     @Test
     void getExistingRoleByProcessAndReference() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED);
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
@@ -190,7 +191,7 @@ class PersistenceServiceTest {
 
     @Test
     void deleteRoleAssignment() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED);
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE);
         RoleAssignmentEntity roleAssignmentEntity = TestDataBuilder.convertRoleAssignmentToEntity(
             assignmentRequest.getRequestedRoles().iterator().next());
 
@@ -199,6 +200,7 @@ class PersistenceServiceTest {
 
         sut.deleteRoleAssignment(assignmentRequest.getRequestedRoles().iterator().next());
 
-        verify(persistenceUtil, times(1)).convertRoleAssignmentToEntity(any(RoleAssignment.class));
+        verify(persistenceUtil, times(1))
+            .convertRoleAssignmentToEntity(any(RoleAssignment.class));
     }
 }
