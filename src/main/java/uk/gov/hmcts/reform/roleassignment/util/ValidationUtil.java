@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.CASE;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
 
 @Named
@@ -151,7 +152,9 @@ public class ValidationUtil {
                     requestedRole.getEndTime().toString()
                 );
             }
-            validateInputParams(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
+            if (requestedRole.getRoleType().equals(CASE)) {
+                validateInputParams(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
+            }
         }
     }
 
