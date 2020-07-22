@@ -1,20 +1,15 @@
 {
   "_guid_": "S-064_CreationDataForRoleAssignment",
   "_extends_": "CreationDataForRoleAssignment",
+  "specs": [
+    "to create multiple role assignments for an actor"
+  ],
   "request": {
     "body": {
-      "roleRequest": {
-        "reference": "dd9601bf-f1af-4a25-8374-547dc1fe5737",
-        "replaceExisting": true
-      },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "7ffb199e-e274-44d0-8fb6-8c449139cc9e"
-        },
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "dd9601bf-f1af-4a25-8374-547dc1fe5737"
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
         }
       ]
     }
@@ -22,10 +17,6 @@
   "expectedResponse": {
     "body": {
       "roleAssignmentResponse": {
-        "roleRequest": {
-          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "replaceExisting": true
-        },
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",

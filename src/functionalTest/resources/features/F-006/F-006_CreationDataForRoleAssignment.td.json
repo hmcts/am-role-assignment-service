@@ -1,9 +1,6 @@
 {
-  "_guid_": "S-065_CreationDataForRoleAssignment",
+  "_guid_": "F-006_CreationDataForRoleAssignment",
   "_extends_": "CreationDataForRoleAssignment",
-  "specs": [
-    "to create multiple role assignments having same CaseId"
-  ],
   "request": {
     "body": {
       "requestedRoles": [
@@ -13,14 +10,6 @@
           "grantType": "CHALLENGED",
           "attributes": {
             "caseId": "${[scenarioContext][customValues][generateCaseId]}"
-          }
-        },
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "grantType": "CHALLENGED",
-          "attributes": {
-            "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
           }
         }
       ]
@@ -38,18 +27,10 @@
             "attributes": {
               "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
             }
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "grantType": "CHALLENGED",
-            "attributes": {
-              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
-            }
           }
         ]
       }
     }
   }
 }
+
