@@ -66,8 +66,8 @@ public class CreateAssignmentController {
         )
     })
     @LogAudit(operationType = CREATE_ASSIGNMENTS,
-        process = "#process",
-        reference = "#result.body.roleAssignmentResponse.reference",
+        process = "T(uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController).buildProcess(#result)",
+        reference = "T(uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController).buildReference(#result)",
         id = "T(uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController).buildAssignmentIds(#result)",
         actorId = "#result.body.actorId",
         roleName = "#result.body.roleName",
@@ -86,5 +86,13 @@ public class CreateAssignmentController {
         return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
             .map(RoleAssignment::getId)
             .collect(Collectors.toList());
+    }
+
+    public static String buildProcess(ResponseEntity<RoleAssignmentRequestResource> response) {
+        return response.getBody().getRoleAssignmentRequest().getRequest().getProcess();
+    }
+
+    public static String buildReference(ResponseEntity<RoleAssignmentRequestResource> response) {
+        return response.getBody().getRoleAssignmentRequest().getRequest().getReference();
     }
 }
