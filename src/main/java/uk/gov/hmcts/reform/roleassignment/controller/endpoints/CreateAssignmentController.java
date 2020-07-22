@@ -17,10 +17,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.text.ParseException;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CREATE_ASSIGNMENTS;
 
@@ -61,9 +66,9 @@ public class CreateAssignmentController {
         )
     })
     @LogAudit(operationType = CREATE_ASSIGNMENTS,
-        process = "#result.body.process",
-        reference = "#result.body.reference",
-        id = "#result.body.id",
+        process = "#process",
+        reference = "#result.body.roleAssignmentResponse.reference",
+        id = "T(uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController).buildAssignmentIds(#result)",
         actorId = "#result.body.actorId",
         roleName = "#result.body.roleName",
         caseId = "#result.body.caseId",
@@ -75,5 +80,11 @@ public class CreateAssignmentController {
 
         LOG.info("CreateAssignmentController : {}", createRoleAssignmentService);
         return createRoleAssignmentService.createRoleAssignment(assignmentRequest);
+    }
+
+    public static List<UUID> buildAssignmentIds(ResponseEntity<RoleAssignmentRequestResource> response) {
+        return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
+            .map(RoleAssignment::getId)
+            .collect(Collectors.toList());
     }
 }

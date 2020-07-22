@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,25 +25,25 @@ public class RoleAssignmentRequestResource extends RepresentationModel<RoleAssig
     @JsonProperty("roleAssignmentResponse")
     private AssignmentRequest roleAssignmentRequest;
 
-    @JsonProperty("reference")
+/*    @JsonIgnore
     private String reference;
 
-    @JsonProperty("process")
-    private String process;
+    @JsonIgnore
+    private String process;*/
 
-    @JsonProperty("assignerId")
+    @JsonIgnore
     private String assignerId;
 
-    @JsonProperty("id")
-    private String id;
+    //@JsonIgnore
+    //private String id;
 
-    @JsonProperty("actorId")
+    @JsonIgnore
     private String actorId;
 
-    @JsonProperty("roleName")
+    @JsonIgnore
     private String roleName;
 
-    @JsonProperty("caseId")
+    @JsonIgnore
     private String caseId;
 
 
@@ -60,9 +61,9 @@ public class RoleAssignmentRequestResource extends RepresentationModel<RoleAssig
 
     private void copyProperties(AssignmentRequest assignmentRequest) {
         for (RoleAssignment roleAssignment : assignmentRequest.getRequestedRoles()) {
-            this.process = roleAssignment.getProcess();
-            this.reference = roleAssignment.getReference();
-            this.id = roleAssignment.getId().toString();
+            //this.process = roleAssignment.getProcess();
+            //this.reference = roleAssignment.getReference();
+            //this.id = roleAssignment.getId().toString();
             this.actorId = roleAssignment.getActorId().toString();
             this.roleName = roleAssignment.getRoleName();
             this.caseId = roleAssignment.getAttributes().get("caseId").asText();
