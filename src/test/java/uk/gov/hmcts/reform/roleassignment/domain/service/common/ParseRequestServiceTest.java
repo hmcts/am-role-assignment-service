@@ -121,7 +121,7 @@ class ParseRequestServiceTest {
         when(correlationInterceptorUtilMock.preHandle(
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
 
-        Request builtReq = TestDataBuilder.buildRequest(CREATED);
+        Request builtReq = TestDataBuilder.buildRequest(CREATED, false);
         Request result = sut.prepareDeleteRequest(builtReq.getProcess(), builtReq.getReference(),
                                                   "21334a2b-79ce-44eb-9168-2d49a744be9d",
                                                   "21334a2b-79ce-44eb-9168-2d49a744be9d"
@@ -151,7 +151,7 @@ class ParseRequestServiceTest {
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
 
         RequestType requestType = RequestType.CREATE;
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, Status.LIVE);
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, Status.LIVE, false);
         AssignmentRequest result = sut.parseRequest(assignmentRequest, requestType);
         assertNotNull(result);
         assertNotNull(result.getRequest());
@@ -173,5 +173,25 @@ class ParseRequestServiceTest {
         verify(securityUtilsMock, times(1)).getUserId();
         verify(correlationInterceptorUtilMock, times(1))
             .preHandle(any(HttpServletRequest.class));
+    }
+
+    @Test
+    void parseRequest() {
+    }
+
+    @Test
+    void testGetCorrelationId() {
+    }
+
+    @Test
+    void removeCorrelationLog() {
+    }
+
+    @Test
+    void testPrepareDeleteRequest() {
+    }
+
+    @Test
+    void validateGetAssignmentsByActorIdAndCaseId() {
     }
 }

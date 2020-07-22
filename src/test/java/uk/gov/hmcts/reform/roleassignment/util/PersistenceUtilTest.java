@@ -29,12 +29,12 @@ class PersistenceUtilTest {
     void convertRoleAssignmentToHistoryEntity() throws IOException {
         assertNotNull(persistenceUtil.convertRoleAssignmentToHistoryEntity(
             TestDataBuilder.buildRoleAssignment(Status.LIVE),
-            TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED))));
+            TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED, false))));
     }
 
     @Test
     void convertRequestToEntity() {
-        assertNotNull(persistenceUtil.convertRequestToEntity(TestDataBuilder.buildRequest(Status.APPROVED)));
+        assertNotNull(persistenceUtil.convertRequestToEntity(TestDataBuilder.buildRequest(Status.APPROVED, false)));
     }
 
     @Test
@@ -52,7 +52,7 @@ class PersistenceUtilTest {
         assertNotNull(persistenceUtil.convertHistoryEntityToRoleAssignment(
             TestDataBuilder.buildHistoryEntity(
                 TestDataBuilder.buildRoleAssignment(Status.LIVE),
-                TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED)))));
+                TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED, false)))));
     }
 
     @Test

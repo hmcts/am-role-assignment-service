@@ -45,11 +45,13 @@ public class TestDataBuilder {
         //not meant to be instantiated.
     }
 
-    public static AssignmentRequest buildAssignmentRequest(Status requestStatus, Status roleStatus) throws IOException {
-        return new AssignmentRequest(buildRequest(requestStatus), buildRequestedRoleCollection(roleStatus));
+    public static AssignmentRequest buildAssignmentRequest(Status requestStatus, Status roleStatus,
+                                                           Boolean replaceExisting) throws IOException {
+        return new AssignmentRequest(buildRequest(requestStatus, replaceExisting),
+                                     buildRequestedRoleCollection(roleStatus));
     }
 
-    public static Request buildRequest(Status status) {
+    public static Request buildRequest(Status status, Boolean replaceExisting) {
         return Request.builder()
             .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
             .authenticatedUserId(UUID.fromString("4772dc44-268f-4d0c-8f83-f0fb662aac84"))
@@ -58,7 +60,7 @@ public class TestDataBuilder {
             .requestType(RequestType.CREATE)
             .reference("p2")
             .process(("p2"))
-            .replaceExisting(false)
+            .replaceExisting(replaceExisting)
             .status(status)
             .created(LocalDateTime.now())
             .build();
@@ -113,8 +115,10 @@ public class TestDataBuilder {
     }
 
     public static ResponseEntity<Object> buildRoleAssignmentResponse(Status requestStatus,
-                                                                     Status roleStatus) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(buildAssignmentRequest(requestStatus, roleStatus));
+                                                                     Status roleStatus,
+                                                                     Boolean replaceExisting) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(buildAssignmentRequest(requestStatus, roleStatus, replaceExisting));
     }
 
     public static Collection<RoleAssignment> buildRequestedRoleCollection(Status status) throws IOException {
@@ -179,7 +183,7 @@ public class TestDataBuilder {
     }
 
     public static HistoryEntity buildHistoryIntoEntity(RoleAssignment model, RequestEntity requestEntity) {
-        return HistoryEntity.builder().actorId(model.getActorId())
+        return HistoryEntity.builder().id(model.getId()).actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
             .beginTime(model.getBeginTime())

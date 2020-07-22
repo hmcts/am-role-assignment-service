@@ -10,7 +10,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.util.UUID;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -27,8 +30,23 @@ class CorrelationInterceptorUtilTest {
     @Test
     void preHandle() {
         MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader(Constants.CORRELATION_ID_HEADER_NAME, "uniqueid");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-        assertNotNull(sut.preHandle(request));
+        String result = sut.preHandle(request);
+        assertNotNull(result);
+        assertEquals("uniqueid", result);
+    }
+
+    @Test
+    void preHandle_blank() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader(Constants.CORRELATION_ID_HEADER_NAME, "");
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        String result = sut.preHandle(request);
+        UUID validUuid = UUID.fromString(result);
+        assertNotNull(validUuid);
+        sut.afterCompletion();
     }
 }

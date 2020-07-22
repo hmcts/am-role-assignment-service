@@ -21,6 +21,7 @@ public class PersistenceUtil {
     public HistoryEntity convertRoleAssignmentToHistoryEntity(RoleAssignment roleAssignment,
                                                               RequestEntity requestEntity) {
         return HistoryEntity.builder()
+            .id(roleAssignment.getId())
             .actorId(roleAssignment.getActorId())
             .actorIdType(roleAssignment.getActorIdType().toString())
             .classification(roleAssignment.getClassification().toString())

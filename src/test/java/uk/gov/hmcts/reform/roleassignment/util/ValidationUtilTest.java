@@ -92,7 +92,7 @@ class ValidationUtilTest {
     @Test
     void validateRoleRequest() {
         try {
-            ValidationUtil.validateRoleRequest(TestDataBuilder.buildRequest(Status.APPROVED));
+            ValidationUtil.validateRoleRequest(TestDataBuilder.buildRequest(Status.APPROVED, false));
         } catch (Exception e) {
             fail("failed");
         }
@@ -121,4 +121,6 @@ class ValidationUtilTest {
         assertNotNull(roles);
         assertTrue(roles.size() > 1);
     }
+
+
 }

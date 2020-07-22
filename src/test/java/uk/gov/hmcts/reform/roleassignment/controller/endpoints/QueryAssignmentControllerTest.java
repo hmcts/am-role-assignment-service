@@ -40,7 +40,7 @@ class QueryAssignmentControllerTest {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         String caseId = "1234567890123456";
         ResponseEntity<Object> expectedResponse
-            = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE);
+            = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator).retrieveRoleAssignmentsByActorIdAndCaseId(
             actorId, caseId, ROLE_TYPE);
         ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, ROLE_TYPE);
@@ -53,7 +53,7 @@ class QueryAssignmentControllerTest {
     void shouldGetRoleAssignmentByActorIdOnly() throws Exception {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         ResponseEntity<Object> expectedResponse
-            = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE);
+            = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
                                   .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null, ROLE_TYPE);
         ResponseEntity<Object> response = sut
@@ -67,7 +67,7 @@ class QueryAssignmentControllerTest {
     void shouldGetRoleAssignmentByCaseIdOnly() throws Exception {
         String caseId = "1234567890123456";
         ResponseEntity<Object> expectedResponse
-            = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE);
+            = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
                                   .retrieveRoleAssignmentsByActorIdAndCaseId(null, caseId, ROLE_TYPE);
         ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId(null, caseId, ROLE_TYPE);

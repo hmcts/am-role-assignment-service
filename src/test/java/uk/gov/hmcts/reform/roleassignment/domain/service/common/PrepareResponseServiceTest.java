@@ -36,7 +36,7 @@ class PrepareResponseServiceTest {
     void prepareCreateRoleResponse() throws IOException {
         ResponseEntity<Object> responseEntity =
             prepareResponseService
-                .prepareCreateRoleResponse(TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE));
+                .prepareCreateRoleResponse(TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE, false));
         RoleAssignmentRequestResource assignmentRequestResponse =
             (RoleAssignmentRequestResource) responseEntity.getBody();
         assertNull(assignmentRequestResponse.getRoleAssignmentRequest().getRequest().getClientId());

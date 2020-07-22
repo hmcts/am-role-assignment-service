@@ -63,7 +63,7 @@ class RetrieveRoleAssignmentOrchestratorTest {
         List<RoleAssignment> roleAssignments
             = (List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection(Status.LIVE);
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
-        ResponseEntity<Object> roles = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE);
+        ResponseEntity<Object> roles = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         when(persistenceService.getAssignmentsByActor(UUID.fromString(actorId))).thenReturn(roleAssignments);
         when(prepareResponseService.prepareRetrieveRoleResponse(roleAssignments, UUID.fromString(actorId))).thenReturn(
             roles);
@@ -103,7 +103,7 @@ class RetrieveRoleAssignmentOrchestratorTest {
 
         List<RoleAssignment> roleAssignments = new ArrayList<>();
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
-        ResponseEntity<Object> roles = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE);
+        ResponseEntity<Object> roles = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         when(persistenceService.getAssignmentsByActor(UUID.fromString(actorId))).thenReturn(roleAssignments);
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             sut.getAssignmentsByActor(actorId);
@@ -115,7 +115,7 @@ class RetrieveRoleAssignmentOrchestratorTest {
     void getRoleAssignment_shouldRetrieveETag() throws Exception {
 
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
-        ResponseEntity<Object> roles = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE);
+        ResponseEntity<Object> roles = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         ActorCacheEntity actorCacheEntity = TestDataBuilder.buildActorCacheEntity();
         when(persistenceService.getActorCacheEntity(UUID.fromString(actorId))).thenReturn(actorCacheEntity);
         long etag = sut.retrieveETag(UUID.fromString(actorId));

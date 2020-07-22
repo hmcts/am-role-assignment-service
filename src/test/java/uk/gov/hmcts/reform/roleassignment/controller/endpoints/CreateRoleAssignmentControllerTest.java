@@ -37,9 +37,9 @@ class CreateRoleAssignmentControllerTest {
 
     @Test
     void createRoleAssignment() throws Exception { //TODO improve this
-        AssignmentRequest request = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE);
+        AssignmentRequest request = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
         ResponseEntity<Object> expectedResponse
-            = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE);
+            = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         when(createRoleAssignmentServiceMock.createRoleAssignment(request)).thenReturn(expectedResponse);
         ResponseEntity<Object> response = sut.createRoleAssignment(request);
         assertNotNull(response);

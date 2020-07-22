@@ -90,7 +90,7 @@ class DeleteRoleAssignmentOrchestratorTest {
     @BeforeEach
     public void setUp() throws IOException {
         MockitoAnnotations.initMocks(this);
-        assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, Status.LIVE);
+        assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, Status.LIVE, false);
         requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
         roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
         historyEntity = TestDataBuilder.buildHistoryIntoEntity(
