@@ -1,31 +1,35 @@
 {
-  "title": "must successfully receive multiple Role Assignments by Role Type Case and Case Id",
+  "title": "must successfully receive multiple Role Assignments by Role Type and Case Id",
   "_guid_": "S-065",
   "_extends_": "F-006_Test_Data_Base",
   "specs": [
     "contains multiple Role Assignments",
-    "contains Role Type Case and Id which are assigned to Role Assignments"
+    "contains Role Type as Case and existing CaseId"
   ],
 
 
   "request": {
     "queryParams": {
-      "caseId": "61c1047c-e86a-47f9-ab8a-e31475edf62b"
+      "caseId": "${[scenarioContext][childContexts][S-065_CreationDataForRoleAssignment][testData][request][body][requestedRoles][1][attributes][caseId]}"
     }
   },
   "expectedResponse": {
     "_extends_": "Common_200_Response",
     "body": {
-      "links": [
-        {
-          "rel": "binary",
-          "href": "{{TEST_URL}}/am/role-assignments?roleType=CASE&actorId=${[scenarioContext][testData][request][queryParams][actorId]}"
-        }
-      ],
-      "roleAssignmentResponse": [
+      "arrayInMap" : [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${[scenarioContext][testData][request][queryParams][actorId]}"
+          "actorId": "${[scenarioContext][childContexts][S-065_CreationDataForRoleAssignment][testData][request][body][requestedRoles][0][actorId]}",
+          "attributes" : {
+            "caseId" : "${[scenarioContext][testData][request][queryParams][caseId]}"
+          }
+        },
+        {
+          "_extends_": "ResponseRoleAssignment",
+          "actorId": "${[scenarioContext][childContexts][S-065_CreationDataForRoleAssignment][testData][request][body][requestedRoles][1][actorId]}",
+          "attributes" : {
+            "caseId" : "${[scenarioContext][testData][request][queryParams][caseId]}"
+          }
         }
       ]
     }

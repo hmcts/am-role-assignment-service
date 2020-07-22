@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
+import uk.gov.hmcts.reform.roleassignment.util.CreatedTimeComparator;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
@@ -63,7 +64,6 @@ public class CreateRoleAssignmentOrchestrator {
         //1. call parse request service
         AssignmentRequest parsedAssignmentRequest = parseRequestService
             .parseRequest(roleAssignmentRequest, RequestType.CREATE);
-
         //2. Call persistence service to store only the request
         requestEntity = persistInitialRequest(parsedAssignmentRequest.getRequest());
         requestEntity.setHistoryEntities(new HashSet<>());
@@ -125,9 +125,9 @@ public class CreateRoleAssignmentOrchestrator {
         List<RoleAssignment> existingAssignments = persistenceService.getAssignmentsByProcess(
             request.getProcess(),
             request.getReference(),
-            Status.LIVE.toString()
-                                                                                             );
-
+            Status.LIVE.toString());
+        CreatedTimeComparator createdTimeComparator = new CreatedTimeComparator();
+        existingAssignments.sort(createdTimeComparator);
         //create a new existing assignment request for delete records
         existingAssignmentRequest = new AssignmentRequest(new Request(), Collections.emptyList());
         existingAssignmentRequest.setRequest(parsedAssignmentRequest.getRequest());
@@ -355,6 +355,7 @@ public class CreateRoleAssignmentOrchestrator {
     private void deleteLiveAssignments(Collection<RoleAssignment> existingAssignments) {
         for (RoleAssignment requestedRole : existingAssignments) {
             persistenceService.deleteRoleAssignment(requestedRole);
+            persistenceService.persistActorCache(requestedRole);
         }
     }
 

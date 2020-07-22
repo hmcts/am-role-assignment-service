@@ -11,7 +11,7 @@
       "X-Correlation-ID": ""
     },
     "pathVariables": {
-      "assignmentId": "${[scenarioContext][childContexts][S-032_CreationDataForRoleAssignment][testData][actualResponse][body][roleAssignmentResponse][requestedRoles][0][id]}"
+      "assignmentId": "${[scenarioContext][childContexts][CreationDataForRoleAssignment][testData][actualResponse][body][roleAssignmentResponse][requestedRoles][0][id]}"
     }
   },
   "expectedResponse": {

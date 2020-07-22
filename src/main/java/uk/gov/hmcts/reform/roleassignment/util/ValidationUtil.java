@@ -111,9 +111,12 @@ public class ValidationUtil {
 
     public static void validateAssignmentRequest(AssignmentRequest assignmentRequest) throws ParseException {
         validateRoleRequest(assignmentRequest.getRequest());
-        validateLists(assignmentRequest.getRequestedRoles());
-        validateRequestedRoles(assignmentRequest.getRequestedRoles());
-
+        if (!(assignmentRequest.getRequest().isReplaceExisting())
+            || (assignmentRequest.getRequest().isReplaceExisting()
+            && assignmentRequest.getRequestedRoles().size() > 0)) {
+            validateLists(assignmentRequest.getRequestedRoles());
+            validateRequestedRoles(assignmentRequest.getRequestedRoles());
+        }
     }
 
     public static void validateRoleRequest(Request roleRequest) {
