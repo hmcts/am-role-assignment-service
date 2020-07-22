@@ -3,7 +3,7 @@
   "_extends_": "DeleteDataForRoleAssignments",
   "request": {
     "pathVariables": {
-      "reference": "${[scenarioContext][parentContext][childContexts][S-034_CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
+      "reference": "${[scenarioContext][parentContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
     }
   }
 }

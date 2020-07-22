@@ -7,14 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
-import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
+import uk.gov.hmcts.reform.roleassignment.util.CreatedTimeComparator;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
@@ -22,8 +23,8 @@ import uk.gov.hmcts.reform.roleassignment.v1.V1;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -56,7 +57,7 @@ public class ParseRequestService {
         //a. Copy process and reference from the request to RoleAssignment
         //b. Set Status=Created and statusSequenceNumber from Status Enum
         //c. created Time = now
-        Collection<RoleAssignment> requestedAssignments = assignmentRequest.getRequestedRoles();
+        List<RoleAssignment> requestedAssignments = (List<RoleAssignment>) assignmentRequest.getRequestedRoles();
 
         requestedAssignments.forEach(requestedAssignment -> {
             requestedAssignment.setProcess(request.getProcess());
@@ -65,6 +66,7 @@ public class ParseRequestService {
             requestedAssignment.setStatusSequence(Status.CREATED.sequence);
             requestedAssignment.setCreated(LocalDateTime.now());
         });
+        requestedAssignments.sort(new CreatedTimeComparator());
         AssignmentRequest parsedRequest = new AssignmentRequest(new Request(), Collections.emptyList());
         parsedRequest.setRequest(request);
         parsedRequest.setRequestedRoles(requestedAssignments);

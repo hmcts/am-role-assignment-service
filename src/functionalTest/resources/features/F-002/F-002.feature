@@ -47,7 +47,7 @@ Feature: F-002 : Delete Role Assignments by Actor Id
   @S-025
   Scenario: must successfully delete single Role Assignment by Process
     Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create a role assignment for an actor] as in [S-025_CreationDataForRoleAssignment],
+    And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
     When a request is prepared with appropriate values,
     And the request [contains Process and Reference associated with single Role Assignment],
     And it is submitted to call the [Delete Role Assignments by Process] operation of [Role Assignment Service],
@@ -85,7 +85,7 @@ Feature: F-002 : Delete Role Assignments by Actor Id
   @S-029
   Scenario: must successfully delete Role Assignment with Assigner Id Header
     Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create a role assignment for an actor] as in [S-025_CreationDataForRoleAssignment],
+    And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
     When a request is prepared with appropriate values,
     And the request [contains a valid Assigner Id header],
     And the request [contains Process and Reference associated with single Role Assignment],
@@ -96,7 +96,7 @@ Feature: F-002 : Delete Role Assignments by Actor Id
   @S-030
   Scenario: must receive positive response when trying to delete a Role Assignment twice
     Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create a role assignment for an actor] as in [S-025_CreationDataForRoleAssignment],
+    And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
     And another successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
     When a request is prepared with appropriate values,
     And the request [contains the same Process and Reference created above],
