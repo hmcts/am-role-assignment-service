@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-
+@Tag("integrationTest")
 public class WelcomeControllerIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(WelcomeControllerIntegrationTest.class);

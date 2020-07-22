@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
-@ActiveProfiles("test")
+@ActiveProfiles("integrationTest")
 @RunWith(SpringIntegrationSerenityRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class BaseTest {
