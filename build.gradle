@@ -134,6 +134,7 @@ task integration(type: Test, description: 'Runs the integration tests.', group: 
   description = 'Runs the integration tests.'
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
+  serenity.outputDirectory = file("${projectDir}/target/site/serenity")
   finalizedBy aggregate
   mustRunAfter test
 }
