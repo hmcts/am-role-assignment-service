@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
 
 @Aspect
 @Component
-@ConditionalOnProperty(name = "audit.log.enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = "audit.log", name = "enabled", havingValue = "true")
 public class AuditAspect {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuditAspect.class);
@@ -38,7 +38,7 @@ public class AuditAspect {
             String caseId = getValue(joinPoint, logAudit.caseId(), result, String.class);
             String roleName = getValue(joinPoint, logAudit.roleName(), result, String.class);
             String assignerId = getValue(joinPoint, logAudit.assignerId(), result, String.class);
-            String assignmentId = getValue(joinPoint, logAudit.assignmentId(), result, String.class);
+            String id = getValue(joinPoint, logAudit.id(), result, String.class);
             String actorId = getValue(joinPoint, logAudit.actorId(), result, String.class);
             String process = getValue(joinPoint, logAudit.process(), result, String.class);
             String reference = getValue(joinPoint, logAudit.reference(), result, String.class);
@@ -48,7 +48,7 @@ public class AuditAspect {
                                                    .caseId(caseId)
                                                    .roleName(roleName)
                                                    .assignerId(assignerId)
-                                                   .assignmentId(assignmentId)
+                                                   .assignmentId(id)
                                                    .actorId(actorId)
                                                    .process(process)
                                                    .reference(reference)

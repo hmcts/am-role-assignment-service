@@ -41,7 +41,8 @@ public class AuditService {
                                    ? auditContext.getAuditOperationType().getLabel() : null);
         entry.setCaseId(auditContext.getCaseId());
         entry.setAssignerId(auditContext.getAssignerId());
-        entry.setAssignerId(auditContext.getAssignmentId());
+        entry.setAssignerId(auditContext.getAssignerId());
+        entry.setAssignmentId(auditContext.getAssignmentId());
         entry.setRoleName(auditContext.getRoleName());
         entry.setPath(auditContext.getRequestPath());
         entry.setAuthenticateUserId(securityUtils.getUserId());

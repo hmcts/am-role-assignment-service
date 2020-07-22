@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
-import uk.gov.hmcts.reform.roleassignment.v1.V1;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.text.ParseException;
 
@@ -61,8 +60,15 @@ public class CreateAssignmentController {
             message = V1.Error.INVALID_REQUEST
         )
     })
-    @LogAudit(operationType = CREATE_ASSIGNMENTS, assignerId = "#assignerId",
-        process = "#process", reference = "#reference")
+    @LogAudit(operationType = CREATE_ASSIGNMENTS,
+        process = "#result.body.process",
+        reference = "#result.body.reference",
+        id = "#result.body.id",
+        actorId = "#result.body.actorId",
+        roleName = "#result.body.roleName",
+        caseId = "#result.body.caseId",
+        assignerId = "#result.body.assignerId")
+
     public ResponseEntity<Object> createRoleAssignment(
         @Validated
         @RequestBody(required = true) AssignmentRequest assignmentRequest) throws ParseException {

@@ -118,4 +118,4 @@ audit:
   log:
     ignore:
        statues: 404
-  enabled: true
+    enabled: true

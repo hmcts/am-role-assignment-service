@@ -18,7 +18,7 @@ public @interface LogAudit {
 
     String assignerId() default "";
 
-    String assignmentId() default "";
+    String id() default "";
 
     String actorId() default "";
 
