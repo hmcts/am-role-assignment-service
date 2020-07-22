@@ -150,6 +150,7 @@ class ValidationUtilTest {
                                                                                         false));
 
     }
+
     @Test
     void shouldThrow_ValidateAssignmentRequest() throws IOException {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
