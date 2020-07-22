@@ -114,12 +114,14 @@ feign:
 swaggerUrl: ${ROLE_ASSIGNMENT_SWAGGER_AM_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
 
+user:
+  username:{TEST_USER:befta.caseworker.2.solicitor.2@gmail.com}
+  password:{TEST_USER_PASSWORD:Pa55word11}
+  scope:{SCOPE:email roles openid}
+
 client:
   id: ${ROLE_ASSIGNMENT_CLIENT:am_docker}
   secret: ${ROLE_ASSIGNMENT_CLIENT_SECRET:am_docker_secret}
   redirectUri: ${REDIRECT_URI:}
 
-user:
-  username:{TEST_USER:befta.caseworker.2.solicitor.2@gmail.com}
-  password:{TEST_USER_PASSWORD:Pa55word11}
-  scope:{SCOPE:email roles openid}
+
