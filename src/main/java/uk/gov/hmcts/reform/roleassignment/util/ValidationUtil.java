@@ -13,9 +13,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.CASE;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
-
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.text.ParseException;
@@ -25,6 +22,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.CASE;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
 
 @Named
 @Singleton
@@ -149,7 +149,7 @@ public class ValidationUtil {
                     requestedRole.getEndTime().toString()
                 );
             }
-            if(requestedRole.getRoleType().equals(CASE)) {
+            if (requestedRole.getRoleType().equals(CASE)) {
                 validateInputParams(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
             }
         }
