@@ -77,11 +77,11 @@ withPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/cucumber/**/*'
   }
 
-  after('smoketest:preview') {
+  after('integrationTest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/site/serenity/**'
   }
 
-  after('smoketest:aat') {
+  after('integrationTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/site/serenity/**'
   }
 }

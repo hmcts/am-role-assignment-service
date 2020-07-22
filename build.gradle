@@ -134,9 +134,8 @@ task integration(type: Test, description: 'Runs the integration tests.', group: 
   description = 'Runs the integration tests.'
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
-  //serenity.outputDirectory = file("${projectDir}/integrationTest/site/reports")
-  //finalizedBy aggregate
-  //mustRunAfter test
+  finalizedBy aggregate
+  mustRunAfter test
 }
 
 check.dependsOn integration
@@ -151,6 +150,7 @@ jacocoTestReport {
   executionData(test)
   reports {
     xml.enabled = true
+    html.enabled true
     csv.enabled = false
     xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
   }
