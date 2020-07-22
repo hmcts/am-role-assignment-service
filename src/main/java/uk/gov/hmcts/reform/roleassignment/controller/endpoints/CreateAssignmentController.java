@@ -17,15 +17,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.text.ParseException;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CREATE_ASSIGNMENTS;
 
@@ -66,13 +61,13 @@ public class CreateAssignmentController {
         )
     })
     @LogAudit(operationType = CREATE_ASSIGNMENTS,
-        process = "T(uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController).buildProcess(#result)",
-        reference = "T(uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController).buildReference(#result)",
-        id = "T(uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController).buildAssignmentIds(#result)",
-        actorId = "#result.body.actorId",
-        roleName = "#result.body.roleName",
-        caseId = "#result.body.caseId",
-        assignerId = "#result.body.assignerId")
+        process = "#assignmentRequest.request.process",
+        reference = "#assignmentRequest.request.reference",
+        id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildAssignmentIds(#result)",
+        actorId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildActorIds(#result)",
+        roleName = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildRoleNames(#result)",
+        caseId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildCaseIds(#result)",
+        assignerId = "#assignmentRequest.request.assignerId")
 
     public ResponseEntity<Object> createRoleAssignment(
         @Validated
@@ -82,17 +77,5 @@ public class CreateAssignmentController {
         return createRoleAssignmentService.createRoleAssignment(assignmentRequest);
     }
 
-    public static List<UUID> buildAssignmentIds(ResponseEntity<RoleAssignmentRequestResource> response) {
-        return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
-            .map(RoleAssignment::getId)
-            .collect(Collectors.toList());
-    }
 
-    public static String buildProcess(ResponseEntity<RoleAssignmentRequestResource> response) {
-        return response.getBody().getRoleAssignmentRequest().getRequest().getProcess();
-    }
-
-    public static String buildReference(ResponseEntity<RoleAssignmentRequestResource> response) {
-        return response.getBody().getRoleAssignmentRequest().getRequest().getReference();
-    }
 }

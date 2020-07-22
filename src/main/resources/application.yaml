@@ -117,5 +117,5 @@ roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
 audit:
   log:
     ignore:
-       statues: 404
+       statues: 404,409,422
     enabled: true
