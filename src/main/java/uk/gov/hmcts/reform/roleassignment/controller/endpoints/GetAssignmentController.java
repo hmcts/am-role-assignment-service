@@ -64,12 +64,9 @@ public class GetAssignmentController {
             actorId
         );
         long etag = retrieveRoleAssignmentService.retrieveETag(UUID.fromString(actorId));
+        String weakEtag = "W/\"" + etag  + "\"";
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set(
-            "ETag",
-            String.valueOf(etag)
-        );
-
+        responseHeaders.setETag(weakEtag);
         return ResponseEntity
             .status(HttpStatus.OK)
             .headers(responseHeaders)

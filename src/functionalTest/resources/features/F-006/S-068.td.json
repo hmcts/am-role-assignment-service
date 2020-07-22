@@ -9,19 +9,13 @@
 
   "request": {
     "queryParams": {
-      "actorId": "61c1047c-e86a-47f9-ab8a-e31475edf62b"
+      "actorId": "${[scenarioContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {
     "_extends_": "Common_200_Response",
     "body": {
-      "links": [
-        {
-          "rel": "binary",
-          "href": "{{TEST_URL}}/am/role-assignments?roleType=CASE&actorId=${[scenarioContext][testData][request][queryParams][actorId]}"
-        }
-      ],
-      "roleAssignmentResponse": [
+      "arrayInMap" : [
         {
           "_extends_": "ResponseRoleAssignment",
           "actorId": "${[scenarioContext][testData][request][queryParams][actorId]}"

@@ -7,7 +7,7 @@
   ],
   "request": {
     "pathVariables": {
-      "actorId": "${[scenarioContext][parentContext][testData][request][pathVariables][actorId]}"
+      "actorId": "${[scenarioContext][parentContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {

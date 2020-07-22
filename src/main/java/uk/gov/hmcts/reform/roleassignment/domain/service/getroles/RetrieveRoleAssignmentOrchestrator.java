@@ -43,7 +43,7 @@ public class RetrieveRoleAssignmentOrchestrator {
         List<RoleAssignment> assignments = persistenceService.getAssignmentsByActor(UUID.fromString(actorId));
         if (CollectionUtils.isEmpty(assignments)) {
             throw new ResourceNotFoundException(String.format(
-                V1.Error.NO_RECORDS_FOUND_BY_ACTOR + "%s",
+                V1.Error.NO_RECORDS_FOUND_BY_ACTOR + " %s",
                 actorId));
         }
         return prepareResponseService.prepareRetrieveRoleResponse(
