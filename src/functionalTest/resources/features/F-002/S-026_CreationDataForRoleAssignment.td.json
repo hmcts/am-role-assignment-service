@@ -7,7 +7,7 @@
   "request": {
     "body": {
       "roleRequest": {
-        "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}"
+        "reference": "${[scenarioContext][customValues][generateUUID]}"
       },
       "requestedRoles": [
         {

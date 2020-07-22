@@ -21,7 +21,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RoleAssignmentSubset {
 
-
     private ActorIdType actorIdType;
     private UUID actorId;
     private RoleType roleType;

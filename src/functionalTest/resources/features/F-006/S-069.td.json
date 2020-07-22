@@ -8,25 +8,23 @@
 
   "request": {
     "queryParams": {
-      "actorId": "61c1047c-e86a-47f9-ab8a-e31475edf62b",
-      "caseId": "1234567890123456"
+      "actorId": "${[scenarioContext][childContexts][F-006_CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}",
+      "caseId": "${[scenarioContext][childContexts][F-006_CreationDataForRoleAssignment][testData][request][body][requestedRoles][0][attributes][caseId]}"
     }
   },
   "expectedResponse": {
     "_extends_": "Common_200_Response",
     "body": {
-      "links": [
-        {
-          "rel": "binary",
-          "href": "{{TEST_URL}}/am/role-assignments?roleType=CASE&actorId=${[scenarioContext][testData][request][queryParams][actorId]}"
-        }
-      ],
-      "roleAssignmentResponse": [
+      "arrayInMap" : [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${[scenarioContext][testData][request][queryParams][actorId]}"
+          "actorId": "${[scenarioContext][testData][request][queryParams][actorId]}",
+          "attributes" : {
+            "caseId" : "${[scenarioContext][testData][request][queryParams][caseId]}"
+          }
         }
       ]
     }
+  }
   }
 }

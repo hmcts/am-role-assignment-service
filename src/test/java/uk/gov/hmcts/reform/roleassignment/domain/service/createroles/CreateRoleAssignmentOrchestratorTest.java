@@ -23,6 +23,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelS
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -35,8 +37,6 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPRO
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
-
-import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 class CreateRoleAssignmentOrchestratorTest {
@@ -59,8 +59,7 @@ class CreateRoleAssignmentOrchestratorTest {
         persistenceService,
         validationModelService,
         persistenceUtil,
-        prepareResponseService
-    );
+        prepareResponseService);
 
     @BeforeEach
     public void setUp() {

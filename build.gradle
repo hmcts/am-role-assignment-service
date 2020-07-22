@@ -274,7 +274,7 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.3.RELEASE'
   compile('org.springframework.boot:spring-boot-starter-hateoas')
-  compile group: 'org.springframework', name: 'spring-tx', version: '5.2.7.RELEASE'
+  compile group: 'org.springframework', name: 'spring-tx', version: '5.2.8.RELEASE'
 
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
@@ -282,7 +282,7 @@ dependencies {
   implementation "org.springframework.security:spring-security-config"
   implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
   implementation 'uk.gov.hmcts.reform:idam-client:1.5.4'
-  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '7.9'
+  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.19'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
   testCompile('com.opentable.components:otj-pg-embedded:0.13.3')

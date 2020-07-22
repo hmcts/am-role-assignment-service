@@ -8,7 +8,7 @@
   "request": {
     "body": {
       "roleRequest": {
-        "reference": "123e4567-e89b-42d3-a456-556642446001"
+        "reference": "${[scenarioContext][customValues][generateUUID]}"
       },
       "requestedRoles": [
         {
