@@ -3,11 +3,14 @@ package uk.gov.hmcts.reform.roleassignment.util;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -122,5 +125,86 @@ class ValidationUtilTest {
         assertTrue(roles.size() > 1);
     }
 
+    @Test
+    void should_validateDateTime() {
+        ValidationUtil.validateDateTime(LocalDateTime.now().toString());
+    }
+
+    @Test
+    void validateDateTime_ThrowLessThanLimit() {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateDateTime("2050-09-01T00:");
+        });
+    }
+
+    @Test
+    void validateDateTime_ThrowParseException() {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateDateTime("2050-090000000000000");
+        });
+    }
+
+    @Test
+    void shouldValidateAssignmentRequest() throws IOException, ParseException {
+        ValidationUtil.validateAssignmentRequest(TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
+                                                                                        false));
+
+    }
+    @Test
+    void shouldThrow_ValidateAssignmentRequest() throws IOException {
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
+                                                                                     true);
+        assignmentRequest.getRequestedRoles().iterator().next().setProcess("");
+        assignmentRequest.getRequestedRoles().iterator().next().setReference("");
+        assignmentRequest.getRequest().setProcess("");
+        assignmentRequest.getRequest().setReference("");
+
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateAssignmentRequest(assignmentRequest);
+        });
+
+    }
+
+    @Test
+    void shouldValidateCaseId() {
+        ValidationUtil.validateCaseId("1234567890123456");
+    }
+
+    @Test
+    void shouldThrow_ValidateCaseId() {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateCaseId("1234567890123");
+        });
+    }
+
+    @Test
+    void shouldValidateDateOrder() throws ParseException {
+        ValidationUtil.validateDateOrder(LocalDateTime.now().plusDays(1).toString(),
+                                         LocalDateTime.now().plusDays(14).toString());
+    }
+
+    @Test
+    void shouldThrow_ValidateDateOrder_BeginTimeBeforeCurrent() {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateDateOrder(LocalDateTime.now().minusDays(1).toString(),
+                                             LocalDateTime.now().plusDays(14).toString());
+        });
+    }
+
+    @Test
+    void shouldThrow_ValidateDateOrder_EndTimeBeforeCurrent() {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateDateOrder(LocalDateTime.now().plusDays(14).toString(),
+                                             LocalDateTime.now().minusDays(1).toString());
+        });
+    }
+
+    @Test
+    void shouldThrow_ValidateDateOrder_EndTimeBeforeBegin() {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateDateOrder(LocalDateTime.now().plusDays(14).toString(),
+                                             LocalDateTime.now().plusDays(10).toString());
+        });
+    }
 
 }
