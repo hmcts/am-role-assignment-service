@@ -3,11 +3,14 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
@@ -20,6 +23,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
@@ -33,6 +37,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -236,6 +241,61 @@ class PersistenceServiceTest {
             .convertEntityToRoleAssignment(roleAssignmentEntitySet.iterator().next());
         verify(roleAssignmentRepository, times(1))
             .findByActorId(id);
+    }
+
+    @Test
+    void getAssignmentsByActorAndCaseId() throws IOException {
+        Set<RoleAssignmentEntity> roleAssignmentEntities = new HashSet<>();
+
+        String actorId = "003352d0-e699-48bc-b6f5-5810411e60af";
+        String caseId = "1234567890123457";
+
+        roleAssignmentEntities
+            .add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(Status.LIVE)));
+
+        when(roleAssignmentRepository
+                 .findByActorIdAndCaseId(actorId, caseId, RoleType.CASE.toString()))
+            .thenReturn(roleAssignmentEntities);
+        when(roleAssignmentRepository
+                 .findByActorIdAndRoleTypeIgnoreCase(UUID.fromString(actorId), RoleType.CASE.toString()))
+            .thenReturn(roleAssignmentEntities);
+        when(roleAssignmentRepository.getAssignmentByCaseId(caseId, RoleType.CASE.toString()))
+            .thenReturn(roleAssignmentEntities);
+
+        List<RoleAssignment> roleAssignmentList
+            = sut.getAssignmentsByActorAndCaseId(actorId, caseId, RoleType.CASE.toString());
+        assertNotNull(roleAssignmentList);
+
+        List<RoleAssignment> roleAssignmentList_Scenario2
+            = sut.getAssignmentsByActorAndCaseId(actorId, "", RoleType.CASE.toString());
+        assertNotNull(roleAssignmentList_Scenario2);
+
+        List<RoleAssignment> roleAssignmentList_Scenario3
+            = sut.getAssignmentsByActorAndCaseId("", caseId, RoleType.CASE.toString());
+        assertNotNull(roleAssignmentList_Scenario3);
+
+    }
+
+    @Test
+    void getAssignmentsByActorAndCaseId_ThrowsException() {
+        Set<RoleAssignmentEntity> roleAssignmentEntities = new HashSet<>();
+
+        String actorId = "003352d0-e699-48bc-b6f5-5810411e60af";
+        String caseId = "1234567890123457";
+
+        when(roleAssignmentRepository
+                 .findByActorIdAndCaseId(actorId, caseId, RoleType.CASE.toString()))
+            .thenReturn(roleAssignmentEntities);
+        when(roleAssignmentRepository
+                 .findByActorIdAndRoleTypeIgnoreCase(UUID.fromString(actorId), RoleType.CASE.toString()))
+            .thenReturn(roleAssignmentEntities);
+        when(roleAssignmentRepository.getAssignmentByCaseId(caseId, RoleType.CASE.toString()))
+            .thenReturn(roleAssignmentEntities);
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            sut.getAssignmentsByActorAndCaseId(actorId, caseId, RoleType.CASE.toString());
+        });
+
     }
 
     @Test

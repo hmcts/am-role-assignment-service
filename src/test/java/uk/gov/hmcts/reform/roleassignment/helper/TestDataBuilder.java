@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
@@ -346,5 +347,15 @@ public class TestDataBuilder {
             .readOnly(roleAssignment.isReadOnly())
             .roleCategory(roleAssignment.getRoleCategory().toString())
             .build();
+    }
+
+    public static UserInfo buildUserInfo(String uuid) throws IOException {
+        List<String> list = new ArrayList<>();
+        List<Role> roles = TestDataBuilder.buildRolesFromFile();
+        for(Role role : roles) {
+            list.add(role.toString());
+        }
+        return UserInfo.builder().sub("sub").uid(uuid)
+            .name("James").givenName("007").familyName("Bond").roles(list).build();
     }
 }
