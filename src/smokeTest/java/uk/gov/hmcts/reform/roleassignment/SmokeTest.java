@@ -37,27 +37,12 @@ public class SmokeTest {
     BaseTest baseTest;
 
     @Test
-    public void sample_test_setup_should_receive_response_for_role_assignment_api() {
-        RestAssured.baseURI = roleAssignmentUrl;
-        RestAssured.useRelaxedHTTPSValidation();
-        Response response = SerenityRest
-            .given()
-            .relaxedHTTPSValidation()
-            .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-            .when()
-            .get("/")
-            .andReturn();
-        response.then().assertThat().statusCode(HttpStatus.OK.value());
-    }
-
-    @Test
-    public void should_receive_response_for_a_get_document_meta_data() {
+    public void should_receive_response_for_get_by_query_params_case_id() {
 
         String serviceAuth = new BaseTest()
             .authTokenGenerator(secret, microService, baseTest.generateServiceAuthorisationApi(s2sUrl)).generate();
         String targetInstance = roleAssignmentUrl + "/am/role-assignments?roleType=case&caseId=1234567890000000";
 
-        RestAssured.baseURI = targetInstance;
         RestAssured.useRelaxedHTTPSValidation();
 
         Response response = SerenityRest
@@ -66,9 +51,115 @@ public class SmokeTest {
             .header("ServiceAuthorization", "Bearer " + serviceAuth)
             .header("Authorization", "Bearer " + baseTest.getManageUserToken())
             .when()
-            .get("am/role-assignments?roleType=case&actorId=123e4567-e89b-42d3-a456-556642445612")
+            .get(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
-                .body("message", Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
+                .body("errorDescription", Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
+        response.then().assertThat().body("errorMessage", Matchers.equalTo("Resource not found"));
     }
+
+    @Test
+    public void should_receive_response_for_get_by_query_params_actor_id() {
+
+        String serviceAuth = new BaseTest()
+            .authTokenGenerator(secret, microService, baseTest.generateServiceAuthorisationApi(s2sUrl)).generate();
+        String targetInstance = roleAssignmentUrl + "/am/role-assignments?roleType=case&actorId=0b00bfc0-bb00-00ea-b0de-0000ac000000";
+
+        RestAssured.useRelaxedHTTPSValidation();
+
+        Response response = SerenityRest
+            .given()
+            .relaxedHTTPSValidation()
+            .header("ServiceAuthorization", "Bearer " + serviceAuth)
+            .header("Authorization", "Bearer " + baseTest.getManageUserToken())
+            .when()
+            .get(targetInstance)
+            .andReturn();
+        response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
+            .body("errorDescription", Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
+        response.then().assertThat().body("errorMessage", Matchers.equalTo("Resource not found"));
+    }
+
+    @Test
+    public void should_receive_response_for_get_by_actor_id() {
+
+        String serviceAuth = new BaseTest()
+            .authTokenGenerator(secret, microService, baseTest.generateServiceAuthorisationApi(s2sUrl)).generate();
+        String targetInstance = roleAssignmentUrl + "/am/role-assignments/actors/0b00bfc0-bb00-00ea-b0de-0000ac000000";
+
+        RestAssured.useRelaxedHTTPSValidation();
+
+        Response response = SerenityRest
+            .given()
+            .relaxedHTTPSValidation()
+            .header("ServiceAuthorization", "Bearer " + serviceAuth)
+            .header("Authorization", "Bearer " + baseTest.getManageUserToken())
+            .when()
+            .get(targetInstance)
+            .andReturn();
+        response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
+            .body("errorDescription", Matchers.equalTo("Role Assignment not found for Actor 0b00bfc0-bb00-00ea-b0de-0000ac000000"));
+        response.then().assertThat().body("errorMessage", Matchers.equalTo("Resource not found"));
+    }
+
+    @Test
+    public void should_receive_response_for_get_static_roles() {
+
+        String serviceAuth = new BaseTest()
+            .authTokenGenerator(secret, microService, baseTest.generateServiceAuthorisationApi(s2sUrl)).generate();
+        String targetInstance = roleAssignmentUrl + "/am/role-assignments/roles";
+
+        RestAssured.useRelaxedHTTPSValidation();
+
+        Response response = SerenityRest
+            .given()
+            .relaxedHTTPSValidation()
+            .header("ServiceAuthorization", "Bearer " + serviceAuth)
+            .header("Authorization", "Bearer " + baseTest.getManageUserToken())
+            .when()
+            .get(targetInstance)
+            .andReturn();
+        response.then().assertThat().statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    public void should_receive_response_for_delete_by_assignment_id() {
+
+        String serviceAuth = new BaseTest()
+            .authTokenGenerator(secret, microService, baseTest.generateServiceAuthorisationApi(s2sUrl)).generate();
+        String targetInstance = roleAssignmentUrl + "/am/role-assignments/dbd4177f-94f6-4e91-bb9b-591faa81dfd5";
+
+        RestAssured.useRelaxedHTTPSValidation();
+
+        Response response = SerenityRest
+            .given()
+            .relaxedHTTPSValidation()
+            .header("ServiceAuthorization", "Bearer " + serviceAuth)
+            .header("Authorization", "Bearer " + baseTest.getManageUserToken())
+            .when()
+            .delete(targetInstance)
+            .andReturn();
+        response.then().assertThat().statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    public void should_receive_response_for_delete_by_process_and_reference() {
+
+        String serviceAuth = new BaseTest()
+            .authTokenGenerator(secret, microService, baseTest.generateServiceAuthorisationApi(s2sUrl)).generate();
+        String targetInstance = roleAssignmentUrl + "/am/role-assignments?process=p2&reference=r2";
+
+        RestAssured.useRelaxedHTTPSValidation();
+
+        Response response = SerenityRest
+            .given()
+            .relaxedHTTPSValidation()
+            .header("ServiceAuthorization", "Bearer " + serviceAuth)
+            .header("Authorization", "Bearer " + baseTest.getManageUserToken())
+            .when()
+            .delete(targetInstance)
+            .andReturn();
+        response.then().assertThat().statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
 }
