@@ -156,7 +156,7 @@ public class CreateRoleAssignmentOrchestrator {
 
         if (createApprovedAssignments.size() == parsedAssignmentRequest.getRequestedRoles().size()) {
             executeCreateRequest(parsedAssignmentRequest);
-            //TODO this is never hit in any scenario because empty list is passed in createNewAssignmentRecords()
+
 
         } else {
             List<UUID> rejectedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()
@@ -190,6 +190,7 @@ public class CreateRoleAssignmentOrchestrator {
     private void executeCreateRequest(AssignmentRequest parsedAssignmentRequest) {
         // Insert parsedAssignmentRequest.getRequestedRoles() records into live table
         moveHistoryRecordsToLiveTable(requestEntity);
+
         // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status LIVE
         insertRequestedRole(parsedAssignmentRequest, Status.LIVE, emptyUUIds);
 
@@ -221,8 +222,9 @@ public class CreateRoleAssignmentOrchestrator {
                 .collect(Collectors.toList());
 
             if (createApprovedAssignments.size() == parsedAssignmentRequest.getRequestedRoles().size()) {
+
                 executeReplaceRequest(existingAssignmentRequest, parsedAssignmentRequest);
-                //TODO also cannot ever be hit due to passing emptyUUIDs in createNewAssignmentRecords() above
+
 
             } else {
                 List<UUID> rejectedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()

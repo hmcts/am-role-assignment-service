@@ -24,7 +24,6 @@ public class QueryRoleAssignmentOrchestrator {
 
     public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdAndCaseId(String actorId, String caseId,
                                                                             String roleType) {
-
         parseRequestService.validateGetAssignmentsByActorIdAndCaseId(actorId, caseId, roleType);
 
         List<RoleAssignment> assignmentList =
