@@ -180,31 +180,35 @@ class ValidationUtilTest {
 
     @Test
     void shouldValidateDateOrder() throws ParseException {
-        ValidationUtil.validateDateOrder(LocalDateTime.now().plusDays(1).toString(),
-                                         LocalDateTime.now().plusDays(14).toString());
+        String beginTime = LocalDateTime.now().plusDays(1).toString();
+        String endTime = LocalDateTime.now().plusDays(14).toString();
+        ValidationUtil.validateDateOrder(beginTime,endTime);
     }
 
     @Test
     void shouldThrow_ValidateDateOrder_BeginTimeBeforeCurrent() {
+        String beginTime = LocalDateTime.now().minusDays(1).toString();
+        String endTime = LocalDateTime.now().plusDays(14).toString();
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateDateOrder(LocalDateTime.now().minusDays(1).toString(),
-                                             LocalDateTime.now().plusDays(14).toString());
+            ValidationUtil.validateDateOrder(beginTime,endTime);
         });
     }
 
     @Test
     void shouldThrow_ValidateDateOrder_EndTimeBeforeCurrent() {
+        String beginTime = LocalDateTime.now().plusDays(14).toString();
+        String endTime = LocalDateTime.now().minusDays(1).toString();
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateDateOrder(LocalDateTime.now().plusDays(14).toString(),
-                                             LocalDateTime.now().minusDays(1).toString());
+            ValidationUtil.validateDateOrder(beginTime,endTime);
         });
     }
 
     @Test
     void shouldThrow_ValidateDateOrder_EndTimeBeforeBegin() {
+        String beginTime = LocalDateTime.now().plusDays(14).toString();
+        String endTime = LocalDateTime.now().plusDays(10).toString();
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateDateOrder(LocalDateTime.now().plusDays(14).toString(),
-                                             LocalDateTime.now().plusDays(10).toString());
+            ValidationUtil.validateDateOrder(beginTime,endTime);
         });
     }
 
