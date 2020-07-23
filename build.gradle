@@ -148,10 +148,9 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
 jacocoTestReport {
   executionData(test)
   reports {
-    xml.enabled = false
+    xml.enabled = true
     csv.enabled = false
-    html.enabled = true
-    xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.html")
+    xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
   }
 }
 
@@ -184,8 +183,13 @@ sonarqube {
   properties {
     property "sonar.projectName", "am-role-assignment-service"
     property "sonar.projectKey", "am-role-assignment-service"
-    property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.html"
-    property "sonar.exclusions", "build/generated-sources/**/*.java,**/SecurityConfiguration.java,**/SwaggerConfiguration.java"
+    property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+    property "sonar.exclusions", "build/generated-sources/**/*.java," +
+      "**/SecurityConfiguration.java," +
+      "**/SwaggerConfiguration.java," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/*Application.java," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/config/**," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/V1/**"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.junit.repoGetAssignmentControllerrtPaths", "${project.buildDir}/test-results/junit-platform"
