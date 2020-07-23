@@ -24,15 +24,15 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.assignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.assignment.controller.advice.exception.BadRequestException;
-import uk.gov.hmcts.reform.assignment.controller.advice.exception.ResourceNotFoundException;
-import uk.gov.hmcts.reform.assignment.data.ActorCacheEntity;
-import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.assignment.domain.service.common.PersistenceService;
-import uk.gov.hmcts.reform.assignment.domain.service.common.PrepareResponseService;
-import uk.gov.hmcts.reform.assignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
+import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 
 
 @RunWith(MockitoJUnitRunner.class)

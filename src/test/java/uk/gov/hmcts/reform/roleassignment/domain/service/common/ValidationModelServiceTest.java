@@ -7,14 +7,12 @@ import org.kie.api.runtime.StatelessKieSession;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.assignment.domain.model.Role;
-import uk.gov.hmcts.reform.assignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.assignment.domain.service.common.RetrieveDataService;
-import uk.gov.hmcts.reform.assignment.domain.service.common.ValidationModelService;
-import uk.gov.hmcts.reform.assignment.domain.service.security.IdamRoleService;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.assignment.util.SecurityUtils;
+import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -40,8 +38,8 @@ class ValidationModelServiceTest {
     private static final Map<String, List<Role>> configuredRoles = new HashMap<>();
 
     @InjectMocks
-    ValidationModelService sut = new ValidationModelService(kieSessionMock, idamRoleServiceMock,
-                                                            retrieveDataServiceMock, securityUtilsMock);
+    ValidationModelService sut = new ValidationModelService(kieSessionMock,idamRoleServiceMock,
+                                                            retrieveDataServiceMock,securityUtilsMock);
 
     @BeforeEach
     void setUp() {

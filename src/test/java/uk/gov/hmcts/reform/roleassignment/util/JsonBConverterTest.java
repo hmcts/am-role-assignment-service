@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.reform.assignment.util.JsonBConverter;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 

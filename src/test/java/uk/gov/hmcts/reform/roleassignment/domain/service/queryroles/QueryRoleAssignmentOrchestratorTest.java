@@ -8,11 +8,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.assignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.assignment.domain.service.common.ParseRequestService;
-import uk.gov.hmcts.reform.assignment.domain.service.common.PersistenceService;
-import uk.gov.hmcts.reform.assignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.drools.compiler.lang.DroolsSoftKeywords.CASE;

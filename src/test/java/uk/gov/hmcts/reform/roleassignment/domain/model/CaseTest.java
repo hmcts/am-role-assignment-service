@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.reform.assignment.domain.model.Case;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -19,9 +18,9 @@ class CaseTest {
 
 
     private Case caseData = new Case("1234", (long)1, 1, "", "",
-                                     LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), "",
-                                     null, null, null,
-                                     null, null, null);
+                                     LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),"",
+                                     null,null,null,
+                                     null,null, null);
 
     @BeforeEach
     public void setUp() {

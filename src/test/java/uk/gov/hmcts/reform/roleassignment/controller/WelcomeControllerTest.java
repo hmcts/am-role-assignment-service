@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.reform.assignment.controller.WelcomeController;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
