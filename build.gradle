@@ -135,7 +135,9 @@ task integration(type: Test, description: 'Runs the integration tests.', group: 
   classpath = sourceSets.integrationTest.runtimeClasspath
   serenity.outputDirectory = file("${projectDir}/integrationTest/site/reports")
   finalizedBy aggregate
+  mustRunAfter test
 }
+check.dependsOn integration
 
 task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verification') {
   testClassesDirs = sourceSets.smokeTest.output.classesDirs
@@ -189,7 +191,7 @@ sonarqube {
   }
 }
 
-project.tasks['sonarqube'].dependsOn test, jacocoTestReport
+project.tasks['sonarqube'].dependsOn test, integration, jacocoTestReport
 project.tasks['sonarqube'].group = "Verification"
 
 dependencyUpdates.resolutionStrategy {
