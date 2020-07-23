@@ -13,7 +13,6 @@ import static org.junit.Assert.assertEquals;
 public class RoleAssignmentIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentIntegrationTest.class);
-    private static final String COUNT_RECORDS_QUERY = "SELECT count(1) as n FROM role_assignment_request";
     private static final String COUNT_HISTORY_RECORDS_QUERY = "SELECT count(1) as n FROM role_assignment_history";
     private static final String GET_ASSIGNMENT_STATUS_QUERY = "SELECT actor_id FROM role_assignment where id = ?";
     private transient MockMvc mockMvc;
@@ -23,16 +22,6 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     @Before
     public void setUp() {
         template = new JdbcTemplate(db);
-    }
-
-    @Test
-    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
-        {"classpath:sql/insert_role_assignment_request.sql"})
-    public void shoudGetRecordCountFromRequestTable() throws Exception {
-        final int count = template.queryForObject(COUNT_RECORDS_QUERY, Integer.class);
-        logger.info(" Total number of records fetched from role assignment request table...{}", count);
-        assertEquals(
-            "role_assignment_request record count ", 5, count);
     }
 
     @Test
