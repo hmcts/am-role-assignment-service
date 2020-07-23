@@ -1,4 +1,3 @@
-/*
 package uk.gov.hmcts.reform.roleassignment;
 
 import feign.Feign;
@@ -77,4 +76,3 @@ public class BaseTest {
         return tokenResponse.accessToken;
     }
 }
-*/
