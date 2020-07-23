@@ -8,10 +8,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.assignment.controller.endpoints.CreateAssignmentController;
+import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.assignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.assignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

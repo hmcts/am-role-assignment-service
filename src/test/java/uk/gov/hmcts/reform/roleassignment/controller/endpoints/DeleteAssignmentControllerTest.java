@@ -11,15 +11,16 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
-import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.assignment.controller.advice.exception.ResourceNotFoundException;
+import uk.gov.hmcts.reform.assignment.controller.endpoints.DeleteAssignmentController;
+import uk.gov.hmcts.reform.assignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
+import static uk.gov.hmcts.reform.assignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
 
 @RunWith(MockitoJUnitRunner.class)
 class DeleteAssignmentControllerTest {

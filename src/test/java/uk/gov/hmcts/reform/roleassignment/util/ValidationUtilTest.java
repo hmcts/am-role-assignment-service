@@ -2,10 +2,11 @@ package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.assignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.assignment.domain.model.Role;
+import uk.gov.hmcts.reform.assignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.assignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
@@ -18,10 +19,10 @@ import java.util.UUID;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_TEXT_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_HYPHEN_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_PATTERN;
+import static uk.gov.hmcts.reform.assignment.util.Constants.NUMBER_PATTERN;
+import static uk.gov.hmcts.reform.assignment.util.Constants.NUMBER_TEXT_PATTERN;
+import static uk.gov.hmcts.reform.assignment.util.Constants.TEXT_HYPHEN_PATTERN;
+import static uk.gov.hmcts.reform.assignment.util.Constants.TEXT_PATTERN;
 
 class ValidationUtilTest {
 

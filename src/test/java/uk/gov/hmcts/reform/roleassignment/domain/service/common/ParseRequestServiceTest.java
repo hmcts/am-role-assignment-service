@@ -12,16 +12,17 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.assignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.assignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.assignment.domain.model.Request;
+import uk.gov.hmcts.reform.assignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.assignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.assignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.assignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
-import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
-import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
+import uk.gov.hmcts.reform.assignment.util.CorrelationInterceptorUtil;
+import uk.gov.hmcts.reform.assignment.util.SecurityUtils;
+import uk.gov.hmcts.reform.assignment.util.ValidationUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
@@ -33,7 +34,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
+import static uk.gov.hmcts.reform.assignment.domain.model.enums.Status.CREATED;
 
 @RunWith(MockitoJUnitRunner.class)
 class ParseRequestServiceTest {

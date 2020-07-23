@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.junit.jupiter.api.Test;
+import uk.gov.hmcts.reform.assignment.util.JacksonUtils;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

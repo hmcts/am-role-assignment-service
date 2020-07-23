@@ -6,7 +6,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.assignment.domain.model.Case;
+import uk.gov.hmcts.reform.assignment.feignclients.configuration.DatastoreFeignClientFallback;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
