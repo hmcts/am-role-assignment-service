@@ -184,6 +184,7 @@ sonarqube {
     property "sonar.projectName", "am-role-assignment-service"
     property "sonar.projectKey", "am-role-assignment-service"
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+    property "sonar.exclusions", "build/generated-sources/**/*.java,**/SecurityConfiguration.java,**/SwaggerConfiguration.java"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.junit.repoGetAssignmentControllerrtPaths", "${project.buildDir}/test-results/junit-platform"
