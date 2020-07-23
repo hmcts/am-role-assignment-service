@@ -12,10 +12,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.expression.AnnotatedElementKey;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.spel.SpelEvaluationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 @Aspect
 @Component
@@ -28,13 +31,19 @@ public class AuditAspect {
 
     private ExpressionEvaluator evaluator = new ExpressionEvaluator();
 
+
+    List<Integer> statusCodes = Arrays.asList(409, 422);
+
+
     @Around("@annotation(logAudit)")
     public Object audit(ProceedingJoinPoint joinPoint, LogAudit logAudit) throws Throwable {
         Object result = null;
-        try {
-            result = joinPoint.proceed();
+
+        result = joinPoint.proceed();
+
+        if (result instanceof ResponseEntity && statusCodes.contains(((ResponseEntity) result).getStatusCodeValue())) {
             return result;
-        } finally {
+        } else {
             String caseId = getValue(joinPoint, logAudit.caseId(), result, String.class);
             String roleName = getValue(joinPoint, logAudit.roleName(), result, String.class);
             String assignerId = getValue(joinPoint, logAudit.assignerId(), result, String.class);
@@ -54,6 +63,9 @@ public class AuditAspect {
                                                    .reference(reference)
                                                    .build());
         }
+
+
+        return result;
     }
 
     private <T> T getValue(JoinPoint joinPoint, String condition, Object result, Class<T> returnType) {
