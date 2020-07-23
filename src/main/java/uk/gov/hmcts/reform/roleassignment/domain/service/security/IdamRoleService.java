@@ -15,7 +15,6 @@ public class IdamRoleService {
         this.idamRepository = idamRepository;
     }
 
-
     public UserRoles getUserRoles(String userId) {
 
         UserDetails userDetails = idamRepository.getUserByUserId(idamRepository.getManageUserToken(), userId);
