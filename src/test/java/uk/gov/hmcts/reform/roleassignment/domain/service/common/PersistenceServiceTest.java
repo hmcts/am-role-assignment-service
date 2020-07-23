@@ -239,10 +239,6 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getAssignmentsByActorAndCaseId() {
-    }
-
-    @Test
     void getAssignmentById() throws IOException {
         UUID id = UUID.randomUUID();
         Optional<RoleAssignmentEntity> roleAssignmentOptional =

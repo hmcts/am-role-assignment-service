@@ -174,24 +174,4 @@ class ParseRequestServiceTest {
         verify(correlationInterceptorUtilMock, times(1))
             .preHandle(any(HttpServletRequest.class));
     }
-
-    @Test
-    void parseRequest() {
-    }
-
-    @Test
-    void testGetCorrelationId() {
-    }
-
-    @Test
-    void removeCorrelationLog() {
-    }
-
-    @Test
-    void testPrepareDeleteRequest() {
-    }
-
-    @Test
-    void validateGetAssignmentsByActorIdAndCaseId() {
-    }
 }
