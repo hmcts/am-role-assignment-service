@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
@@ -37,7 +36,6 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -266,13 +264,13 @@ class PersistenceServiceTest {
             = sut.getAssignmentsByActorAndCaseId(actorId, caseId, RoleType.CASE.toString());
         assertNotNull(roleAssignmentList);
 
-        List<RoleAssignment> roleAssignmentList_Scenario2
+        List<RoleAssignment> roleAssignmentListScenario2
             = sut.getAssignmentsByActorAndCaseId(actorId, "", RoleType.CASE.toString());
-        assertNotNull(roleAssignmentList_Scenario2);
+        assertNotNull(roleAssignmentListScenario2);
 
-        List<RoleAssignment> roleAssignmentList_Scenario3
+        List<RoleAssignment> roleAssignmentListScenario3
             = sut.getAssignmentsByActorAndCaseId("", caseId, RoleType.CASE.toString());
-        assertNotNull(roleAssignmentList_Scenario3);
+        assertNotNull(roleAssignmentListScenario3);
 
     }
 

@@ -352,7 +352,7 @@ public class TestDataBuilder {
     public static UserInfo buildUserInfo(String uuid) throws IOException {
         List<String> list = new ArrayList<>();
         List<Role> roles = TestDataBuilder.buildRolesFromFile();
-        for(Role role : roles) {
+        for (Role role : roles) {
             list.add(role.toString());
         }
         return UserInfo.builder().sub("sub").uid(uuid)
