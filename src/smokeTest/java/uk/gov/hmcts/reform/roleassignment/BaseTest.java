@@ -17,7 +17,6 @@ import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 
 @Service
-@NoArgsConstructor
 public class BaseTest {
 
     @Autowired
