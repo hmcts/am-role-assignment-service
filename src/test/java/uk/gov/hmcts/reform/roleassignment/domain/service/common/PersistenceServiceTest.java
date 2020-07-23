@@ -290,8 +290,9 @@ class PersistenceServiceTest {
         when(roleAssignmentRepository.getAssignmentByCaseId(caseId, RoleType.CASE.toString()))
             .thenReturn(roleAssignmentEntities);
 
+        String roleType = RoleType.CASE.toString();
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            sut.getAssignmentsByActorAndCaseId(actorId, caseId, RoleType.CASE.toString());
+            sut.getAssignmentsByActorAndCaseId(actorId, caseId, roleType);
         });
 
     }
