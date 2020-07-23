@@ -18,7 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
-@SpringBootTest
+@SpringBootTest(classes = RoleAssignmentApplication.class)
 @RunWith(SpringIntegrationSerenityRunner.class)
 @NoArgsConstructor
 @TestPropertySource(value = "classpath:application.yaml")
