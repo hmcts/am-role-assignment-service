@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.reform.roleassignment.v1.V1;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.v1.V1;
+
+import java.text.ParseException;
 
 @Api(value = "roles")
 @RestController
@@ -57,7 +59,7 @@ public class CreateAssignmentController {
     })
     public ResponseEntity<Object> createRoleAssignment(
         @Validated
-        @RequestBody(required = true) AssignmentRequest assignmentRequest) throws Exception {
+        @RequestBody(required = true) AssignmentRequest assignmentRequest) throws ParseException {
 
         LOG.info("CreateAssignmentController : {}", createRoleAssignmentService);
         return createRoleAssignmentService.createRoleAssignment(assignmentRequest);

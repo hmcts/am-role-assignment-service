@@ -8,8 +8,10 @@ import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -17,12 +19,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.DATE_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.NUMBER_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.apihelper.Constants.UUID_PATTERN;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.CASE;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
 
 @Named
 @Singleton
@@ -35,16 +37,20 @@ public class ValidationUtil {
     }
 
     public static void validateDateTime(String strDate) {
+        LOG.info("validateDateTime");
         if (strDate.length() < 16) {
             throw new BadRequestException(String.format(
                 "Incorrect date format %s",
                 strDate
             ));
         }
-        SimpleDateFormat sdfrmt = new SimpleDateFormat(DATE_PATTERN);
+        SimpleDateFormat sdfrmt = new SimpleDateFormat(Constants.DATE_PATTERN);
         sdfrmt.setLenient(false);
         try {
             Date javaDate = sdfrmt.parse(strDate);
+            if (LOG.isInfoEnabled() && javaDate != null) {
+                LOG.info(javaDate.toString());
+            }
         } catch (ParseException e) {
             throw new BadRequestException(String.format(
                 "Incorrect date format %s",
@@ -54,7 +60,7 @@ public class ValidationUtil {
     }
 
     public static void validateDateOrder(String beginTime, String endTime) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_PATTERN);
         Date beginTimeP = sdf.parse(beginTime);
         Date endTimeP = sdf.parse(endTime);
         Date createTimeP = new Date();
@@ -105,9 +111,12 @@ public class ValidationUtil {
 
     public static void validateAssignmentRequest(AssignmentRequest assignmentRequest) throws ParseException {
         validateRoleRequest(assignmentRequest.getRequest());
-        validateLists(assignmentRequest.getRequestedRoles());
-        validateRequestedRoles(assignmentRequest.getRequestedRoles());
-
+        if (!(assignmentRequest.getRequest().isReplaceExisting())
+            || (assignmentRequest.getRequest().isReplaceExisting()
+            && assignmentRequest.getRequestedRoles().size() > 0)) {
+            validateLists(assignmentRequest.getRequestedRoles());
+            validateRequestedRoles(assignmentRequest.getRequestedRoles());
+        }
     }
 
     public static void validateRoleRequest(Request roleRequest) {
@@ -119,14 +128,21 @@ public class ValidationUtil {
             || ((roleRequest.getProcess() == null || roleRequest.getProcess().isEmpty())
             && (roleRequest.getReference() != null || !roleRequest.getReference().isEmpty()))
             )) {
-            throw new BadRequestException(BAD_REQUEST_MISSING_PARAMETERS);
+            throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
         }
-        validateInputParams(UUID_PATTERN, roleRequest.assignerId.toString());
+        validateInputParams(Constants.UUID_PATTERN, roleRequest.getAssignerId().toString());
     }
 
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
+        List<String> rolesName = JacksonUtils.getConfiguredRoles().get("roles").stream().map(Role::getName).collect(
+            Collectors.toList());
         for (RoleAssignment requestedRole : requestedRoles) {
-            validateInputParams(UUID_PATTERN, requestedRole.getActorId().toString());
+            if (!rolesName.contains(requestedRole.getRoleName())) {
+                throw new BadRequestException(V1.Error.BAD_REQUEST_INVALID_PARAMETER + " roleName :"
+                                                  + requestedRole.getRoleName());
+            }
+
+            validateInputParams(Constants.UUID_PATTERN, requestedRole.getActorId().toString());
             validateEnumRoleType(requestedRole.getRoleType().toString());
             if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
                 validateDateTime(requestedRole.getBeginTime().toString());
@@ -136,7 +152,16 @@ public class ValidationUtil {
                     requestedRole.getEndTime().toString()
                 );
             }
-            validateInputParams(NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
+            if (requestedRole.getRoleType().equals(CASE)) {
+                validateInputParams(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
+            }
+        }
+    }
+
+    public static void validateCaseId(String caseId) {
+        validateInputParams(NUMBER_PATTERN, caseId);
+        if (caseId.length() != 16) {
+            throw new BadRequestException(V1.Error.INVALID_CASE_ID);
         }
     }
 }

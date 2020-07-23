@@ -3,21 +3,21 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.10")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.2.12")
     classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
   }
 }
 
 plugins {
   id 'application'
-  id 'uk.gov.hmcts.java' version '0.9.0'
+  id 'uk.gov.hmcts.java' version '0.11.0'
   id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.0.9.RELEASE'
   id 'org.springframework.boot' version '2.3.1.RELEASE'
   id 'info.solidsoft.pitest' version '1.5.0'
   id 'org.owasp.dependencycheck' version '5.3.2.1'
-  id 'com.github.ben-manes.versions' version '0.28.0'
+  id 'com.github.ben-manes.versions' version '0.29.0'
   id 'org.sonarqube' version '2.8'
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.21'
 }
@@ -29,7 +29,6 @@ apply plugin: 'project-report'
 apply plugin: 'idea'
 apply plugin: 'io.spring.dependency-management'
 apply from: 'liquibase.gradle'
-apply plugin: 'org.sonarqube'
 
 def versions = [
   junit              : '5.5.0',
@@ -38,12 +37,12 @@ def versions = [
   pitest             : '1.4.2',
   reformHealthStarter: '0.0.5',
   reformLogging      : '5.1.1',
-  reformS2sClient    : '3.0.0',
+  reformS2sClient    : '3.1.1',
   serenity           : '2.1.0',
   sonarPitest        : '0.5',
   springBoot         : '2.3.1.RELEASE',
   springHystrix      : '2.1.1.RELEASE',
-  swagger2Version    : '3.0.0-SNAPSHOT',
+  swagger2Version    : '2.10.5',
   pact_version       : '3.5.24',
   rest_assured       : '3.3.0',
   cucumber           : '5.5.0',
@@ -136,7 +135,9 @@ task integration(type: Test, description: 'Runs the integration tests.', group: 
   classpath = sourceSets.integrationTest.runtimeClasspath
   serenity.outputDirectory = file("${projectDir}/integrationTest/site/reports")
   finalizedBy aggregate
+  mustRunAfter test
 }
+check.dependsOn integration
 
 task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verification') {
   testClassesDirs = sourceSets.smokeTest.output.classesDirs
@@ -163,30 +164,34 @@ pitest {
   pitestVersion = "1.5.2"
   testPlugin = "junit5"
   targetClasses = ['uk.gov.hmcts.reform.*']
-  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication', 'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot', 'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants', 'uk.gov.hmcts.reform.roleassignment.configuration.*', 'uk.gov.hmcts.reform.roleassignment.apihelper.*', 'uk.gov.hmcts.reform.roleassignment.model.*', 'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication']
+  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
+                     'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot',
+                     'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants',
+                     'uk.gov.hmcts.reform.roleassignment.config.*',
+                     'uk.gov.hmcts.reform.roleassignment.apihelper.*',
+                     'uk.gov.hmcts.reform.roleassignment.model.*',
+                     'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication',
+                     'uk.gov.hmcts.reform.roleassignment.feignclients.exceptionhandler.*']
   threads = 15
   outputFormats = ['XML', 'HTML']
   timestampedReports = true
   mutationThreshold = 40
 }
 
-project.tasks['pitest'].group="verification"
 
 sonarqube {
   properties {
     property "sonar.projectName", "am-role-assignment-service"
     property "sonar.projectKey", "am-role-assignment-service"
+    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/**"
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/roleassignment/controller/advice/exception/**," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/configuration/**," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/model/enums/**," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/apihelper/**"
-    property "sonar.junit.reportPaths", "${project.buildDir}/test-results/junit-platform"
+    property "sonar.junit.repoGetAssignmentControllerrtPaths", "${project.buildDir}/test-results/junit-platform"
   }
 }
-project.tasks['sonarqube'].dependsOn test, jacocoTestReport
+
+project.tasks['sonarqube'].dependsOn test, integration, jacocoTestReport
 project.tasks['sonarqube'].group = "Verification"
 
 dependencyUpdates.resolutionStrategy {
@@ -194,7 +199,7 @@ dependencyUpdates.resolutionStrategy {
     rules.all {
       def isNonStable = { String version ->
         ['alpha', 'beta', 'rc', 'cr', 'm', 'preview', 'b', 'ea'].any { qualifier ->
-          version ==~ /(?i).*[.-]\$qualifier[.\\d-+]*/
+          version ==~ /(?i).*[.-]$qualifier[.\d-+]*/
         }
       }
       if (isNonStable(candidate.version) && !isNonStable(currentVersion)) {
@@ -213,7 +218,7 @@ dependencyUpdates.resolutionStrategy = {
   componentSelection { rules ->
     rules.all { ComponentSelection selection ->
       boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
-        selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+        selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.d-]*/
       }
       if (rejected) {
         selection.reject('Release candidate')
@@ -244,14 +249,14 @@ dependencies {
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   compile group: 'org.json', name: 'json', version: '20200518'
 
-  implementation 'com.squareup.okhttp3:okhttp:4.7.2'
+  implementation 'com.squareup.okhttp3:okhttp:4.8.0'
 
   // drools engine dependency
   compile group: 'org.drools', name: 'drools-core', version: '7.39.0.Final'
   compile group: 'org.drools', name: 'drools-compiler', version: '7.39.0.Final'
   compile group: 'org.drools', name: 'drools-decisiontables', version: '7.39.0.Final'
   compile group: 'org.kie', name: 'kie-ci', version: '7.39.0.Final'
-  compile group: 'org.liquibase', name: 'liquibase-core', version: '3.10.1'
+  compile group: 'org.liquibase', name: 'liquibase-core', version: '4.0.0'
 
   //Added for Spring Security Implementation
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBoot
@@ -263,17 +268,25 @@ dependencies {
     exclude group: 'uk.gov.hmcts.reform', module: 'java-logging-spring'
   }
   compile group: 'javax.inject', name: 'javax.inject', version: '1'
-  compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.10.5'
-  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.10.5'
-  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: '2.10.5'
+  compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.swagger2Version
+  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.swagger2Version
+  compile group: 'io.springfox', name: 'springfox-spring-webmvc', version: versions.swagger2Version
 
   compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.3.RELEASE'
   compile('org.springframework.boot:spring-boot-starter-hateoas')
-  compile group: 'org.springframework', name: 'spring-tx', version: '5.2.7.RELEASE'
+  compile group: 'org.springframework', name: 'spring-tx', version: '5.2.8.RELEASE'
 
-  compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+  implementation "org.springframework.security:spring-security-web"
+  implementation "org.springframework.security:spring-security-config"
+  implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+  implementation 'uk.gov.hmcts.reform:idam-client:1.5.4'
+  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.19'
+  implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
   testCompile('com.opentable.components:otj-pg-embedded:0.13.3')
   testCompile('com.github.tomakehurst:wiremock-jre8:2.25.1')
   testCompile('org.springframework.cloud:spring-cloud-contract-wiremock:2.2.3.RELEASE')
@@ -289,11 +302,13 @@ dependencies {
   testCompile group: 'org.pitest', name: 'pitest', version: versions.pitest
   testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.7'
   testCompile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.security:spring-security-test'
 
   testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '3.4.0-DefnUpdate-SearchInputByRole.1'
+  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '4.1.0-prerelease.1'
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.3.RELEASE'
 
   compile group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
@@ -331,7 +346,6 @@ dependencies {
 
 
 test {
-  finalizedBy jacocoTestReport
   generateCucumberReports.enabled = false
   useJUnitPlatform()
   failFast = true

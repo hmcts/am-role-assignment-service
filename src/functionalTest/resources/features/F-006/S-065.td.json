@@ -1,0 +1,37 @@
+{
+  "title": "must successfully receive multiple Role Assignments by Role Type and Case Id",
+  "_guid_": "S-065",
+  "_extends_": "F-006_Test_Data_Base",
+  "specs": [
+    "contains multiple Role Assignments",
+    "contains Role Type as Case and existing CaseId"
+  ],
+
+
+  "request": {
+    "queryParams": {
+      "caseId": "${[scenarioContext][childContexts][S-065_CreationDataForRoleAssignment][testData][request][body][requestedRoles][1][attributes][caseId]}"
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_200_Response",
+    "body": {
+      "arrayInMap" : [
+        {
+          "_extends_": "ResponseRoleAssignment",
+          "actorId": "${[scenarioContext][childContexts][S-065_CreationDataForRoleAssignment][testData][request][body][requestedRoles][0][actorId]}",
+          "attributes" : {
+            "caseId" : "${[scenarioContext][testData][request][queryParams][caseId]}"
+          }
+        },
+        {
+          "_extends_": "ResponseRoleAssignment",
+          "actorId": "${[scenarioContext][childContexts][S-065_CreationDataForRoleAssignment][testData][request][body][requestedRoles][1][actorId]}",
+          "attributes" : {
+            "caseId" : "${[scenarioContext][testData][request][queryParams][caseId]}"
+          }
+        }
+      ]
+    }
+  }
+}

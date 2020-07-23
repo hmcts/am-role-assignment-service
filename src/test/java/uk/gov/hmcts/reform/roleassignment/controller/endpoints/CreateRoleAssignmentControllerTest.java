@@ -8,7 +8,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
@@ -19,6 +21,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 class CreateRoleAssignmentControllerTest {
+
 
     @Mock
     private CreateRoleAssignmentOrchestrator createRoleAssignmentServiceMock =
@@ -34,12 +37,12 @@ class CreateRoleAssignmentControllerTest {
 
     @Test
     void createRoleAssignment() throws Exception { //TODO improve this
-        AssignmentRequest request = TestDataBuilder.buildAssignmentRequest();
-        ResponseEntity<Object> expectedResponse = TestDataBuilder.buildResponseEntity(request);
+        AssignmentRequest request = TestDataBuilder.buildAssignmentRequest(Status.CREATED);
+        ResponseEntity<Object> expectedResponse = TestDataBuilder.buildRoleAssignmentResponse();
         when(createRoleAssignmentServiceMock.createRoleAssignment(request)).thenReturn(expectedResponse);
         ResponseEntity<Object> response = sut.createRoleAssignment(request);
         assertNotNull(response);
-        assertEquals(expectedResponse.getStatusCode(),response.getStatusCode());
-        assertEquals(expectedResponse.getBody(),response.getBody());
+        assertEquals(expectedResponse.getStatusCode(), response.getStatusCode());
+        assertEquals(expectedResponse.getBody(), response.getBody());
     }
 }

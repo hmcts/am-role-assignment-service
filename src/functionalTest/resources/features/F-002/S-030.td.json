@@ -1,5 +1,5 @@
 {
-  "title": "must receive an error when trying to delete a Role Assignment twice",
+  "title": "must receive positive response when trying to delete a Role Assignment twice",
   "_guid_": "S-030",
   "_extends_": "F-002_Test_Data_Base",
   "operationName": "Delete Role Assignments by Process",
@@ -13,13 +13,10 @@
     },
     "pathVariables": {
       "process": "businessProcess1",
-      "reference": "123e4567-e89b-42d3-a456-556642445030"
+      "reference": "${[scenarioContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {
-    "_extends_": "ResourceNotFoundResponse",
-    "body": {
-      "errorDescription": "Role Assignment not found for process : ${[scenarioContext][testData][request][pathVariables][process]} & reference : ${[scenarioContext][testData][request][pathVariables][reference]}"
-    }
+    "_extends_": "Common_204_Response"
   }
 }

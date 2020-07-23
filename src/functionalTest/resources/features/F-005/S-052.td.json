@@ -7,7 +7,7 @@
   ],
   "request": {
     "pathVariables": {
-      "actorId": "123e4567-e89b-42d3-a456-556642445052"
+      "actorId": "${[scenarioContext][childContexts][S-052_CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {
