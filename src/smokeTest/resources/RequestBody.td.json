@@ -1,0 +1,36 @@
+{
+    "roleRequest" : {
+      "assignerId" : "21334a2b-79ce-44eb-9168-2d49a744be9c",
+      "process" : "businessProcess1",
+      "reference" : "50ec2e72-cbdb-4ff8-b358-f083fb0da544",
+      "replaceExisting" : false
+    },
+    "requestedRoles" : [ {
+      "actorId" : "50ec2e72-cbdb-4ff8-b358-f083fb0da544",
+      "roleType" : "ORGANISATION",
+      "grantType" : "STANDARD",
+      "actorIdType" : "IDAM",
+      "roleName" : "judge",
+      "roleCategory" : "JUDICIAL",
+      "classification" : "PUBLIC",
+      "readOnly" : false,
+      "beginTime" : "2021-01-01T00:00",
+      "endTime" : "2023-01-01T00:00",
+      "attributes" : {
+        "jurisdiction" : "divorce",
+        "region" : "south-east",
+        "contractType" : "SALARIED",
+        "caseId" : "1234567890123456"
+      },
+      "notes" : [ {
+        "userId" : "003352d0-e699-48bc-b6f5-5810411e60ag",
+        "time" : "2020-01-01T00:00",
+        "comment" : "Need Access to case number 1234567890123456 for a month"
+      }, {
+        "userId" : "52aa3810-af1f-11ea-b3de-0242ac130004",
+        "time" : "2020-01-02T00:00",
+        "comment" : "Access granted for 6 months"
+      } ]
+    } ],
+  "multipart" : false
+}

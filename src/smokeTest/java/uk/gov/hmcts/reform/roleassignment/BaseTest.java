@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.roleassignment;
 
 import feign.Feign;
 import feign.jackson.JacksonEncoder;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
