@@ -1,6 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,14 +21,23 @@ import static org.mockito.Mockito.when;
 
 class SecurityUtilsTest {
 
+    @Mock
     private final AuthTokenGenerator authTokenGenerator = mock(AuthTokenGenerator.class);
+
+    @Mock
     private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
         mock(JwtGrantedAuthoritiesConverter.class);
 
+    @Mock
+    Authentication authentication = Mockito.mock(Authentication.class);
+
+    @Mock
+    SecurityContext securityContext = mock(SecurityContext.class);
+
+    @InjectMocks
     private final SecurityUtils securityUtils = new SecurityUtils(
         authTokenGenerator,
         jwtGrantedAuthoritiesConverter
-
     );
 
     private final String serviceAuthorization = "auth";
@@ -40,12 +53,14 @@ class SecurityUtilsTest {
             collection,
             "servicename"
         );
-        Authentication authentication = Mockito.mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
         when(securityContext.getAuthentication().getPrincipal()).thenReturn(serviceAndUserDetails);
     }
 
-
+    @BeforeEach
+    public void setUp() {
+        mockSecurityContextData();
+        MockitoAnnotations.initMocks(this);
+    }
 }
