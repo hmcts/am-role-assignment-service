@@ -113,3 +113,6 @@ feign:
 
 swaggerUrl: ${ROLE_ASSIGNMENT_SWAGGER_AM_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
+launchdarkly:
+  sdk:
+    key: sdk-c6816361-d35e-48e7-8523-4ad72a87f061
