@@ -22,8 +22,11 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 @Named
 @Singleton
@@ -61,14 +64,30 @@ public class JacksonUtils {
         };
     }
 
-    public static List<RoleAssignmentSubset> convertRequestedRolesIntoSubSet(AssignmentRequest assignmentRequest)
+    //Find Subset for Incoming Records
+    public static Set<RoleAssignmentSubset> convertRequestedRolesIntoSubSet(AssignmentRequest assignmentRequest)
         throws InvocationTargetException, IllegalAccessException {
         RoleAssignmentSubset subset = null;
-        List<RoleAssignmentSubset> roleAssignmentSubsets = new ArrayList<>();
+        Set<RoleAssignmentSubset> roleAssignmentSubsets = new HashSet<>();
         for (RoleAssignment roleAssignment : assignmentRequest.getRequestedRoles()) {
             subset = RoleAssignmentSubset.builder().build();
             BeanUtils.copyProperties(subset, roleAssignment);
             roleAssignmentSubsets.add(subset);
+        }
+
+        return roleAssignmentSubsets;
+
+    }
+
+    //Find Subset for Existing  Records
+    public static Map<UUID,RoleAssignmentSubset> convertExistingRolesIntoSubSet(AssignmentRequest assignmentRequest)
+        throws InvocationTargetException, IllegalAccessException {
+        RoleAssignmentSubset subset = null;
+        Map<UUID,RoleAssignmentSubset> roleAssignmentSubsets = new HashMap<>();
+        for (RoleAssignment roleAssignment : assignmentRequest.getRequestedRoles()) {
+            subset = RoleAssignmentSubset.builder().build();
+            BeanUtils.copyProperties(subset, roleAssignment);
+            roleAssignmentSubsets.put(roleAssignment.getId(),subset);
         }
 
         return roleAssignmentSubsets;
