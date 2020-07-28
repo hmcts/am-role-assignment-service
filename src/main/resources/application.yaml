@@ -89,7 +89,7 @@ idam:
     url: ${IDAM_S2S_URL:http://localhost:4502}
   s2s-authorised:
     services: ${ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES:ccd_gw,am_role_assignment_service}
-  api.url: ${IDAM_USER_URL:http://localhost:5000}
+  api.url: ${IDAM_URL:http://localhost:5000}
   client:
     id: ${IDAM_CLIENT_ID:am_docker}
     secret: ${IDAM_CLIENT_SECRET:am_docker_secret}
