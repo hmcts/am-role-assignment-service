@@ -96,7 +96,7 @@ idam:
     admin:
       userId: ${IDAM_ADMIN_USERID:befta.caseworker.2.solicitor.2@gmail.com}
       password: ${IDAM_ADMIN_PASSWORD:Pa55word11}
-      scope: ${IDAM_ADMIN_SCOPE:manage-user}
+      scope: ${IDAM_ADMIN_SCOPE:search-user}
 
 
 testS2S:
