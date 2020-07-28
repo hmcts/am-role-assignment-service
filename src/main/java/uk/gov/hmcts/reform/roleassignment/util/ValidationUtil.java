@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -121,13 +122,14 @@ public class ValidationUtil {
 
     public static void validateRoleRequest(Request roleRequest) {
         if (roleRequest.isReplaceExisting()
-            && (((roleRequest.getProcess() == null || roleRequest.getProcess().isEmpty())
+            /*&& (((roleRequest.getProcess() == null || roleRequest.getProcess().isEmpty())
             && (roleRequest.getReference() == null || roleRequest.getReference().isEmpty()))
             || ((roleRequest.getProcess() != null || !roleRequest.getProcess().isEmpty())
             && (roleRequest.getReference() == null || roleRequest.getReference().isEmpty()))
             || ((roleRequest.getProcess() == null || roleRequest.getProcess().isEmpty())
             && (roleRequest.getReference() != null || !roleRequest.getReference().isEmpty()))
-            )) {
+            )) {*/
+            && (Strings.isNullOrEmpty(roleRequest.getProcess()) || Strings.isNullOrEmpty(roleRequest.getReference()))) {
             throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
         }
         validateInputParams(Constants.UUID_PATTERN, roleRequest.getAssignerId().toString());

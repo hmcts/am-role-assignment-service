@@ -18,7 +18,7 @@ class CreatedTimeComparatorTest {
     void compare() throws IOException {
         result = sut.compare(TestDataBuilder.buildRoleAssignment(Status.CREATED),
                              TestDataBuilder.buildRoleAssignment(Status.CREATED));
-        assertEquals(-1 ,result);
+        assertEquals(-1, result);
 
     }
 }
