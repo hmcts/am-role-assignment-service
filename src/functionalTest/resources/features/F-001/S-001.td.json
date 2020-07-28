@@ -5,15 +5,15 @@
   "specs": [
     "contains a single Role Assignment with only mandatory fields",
     "contains a single Role Assignment with only mandatory fields",
-    "autouser - who is the assigner",
-    "am-docker - who is the actor for requested role",
-    "Befta2 - who invokes the API"
+    "Befta3 - who is the assigner",
+    "Befta2 - who invokes the API",
+    "Befta1 - who is the actor for requested role"
   ],
   "request": {
     "body": {
       "roleRequest": {
-        "assignerId": "${[scenarioContext][testData][users][userAuto][id]}",
-        "reference": "${[scenarioContext][testData][users][userDocker][id]}"
+        "assignerId": "${[scenarioContext][testData][users][befta3][id]}",
+        "reference": "${[scenarioContext][testData][users][befta1][id]}"
       },
       "requestedRoles": [
         {

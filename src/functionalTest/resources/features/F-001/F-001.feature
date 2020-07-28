@@ -8,8 +8,8 @@ Feature: F-001 : Create Role Assignments
   Scenario: must successfully create single Role Assignment with only mandatory fields
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
-    And a user [am-docker - who is the actor for requested role],
-    And a user [autouser - who is the assigner],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta3 - who is the assigner],
     When a request is prepared with appropriate values,
     And the request [contains a single Role Assignment with only mandatory fields],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
