@@ -22,12 +22,12 @@ public class IdamRoleService {
     @SuppressWarnings("unchecked")
     public UserRoles getUserRoles(String userId) {
         LinkedHashMap<String,Object> userDetail;
-        String id=null;
+        String id = null;
         List<String> roles = new ArrayList<>();
         ResponseEntity<Object> userDetails = idamRepository.searchUserByUserId(
             idamRepository.getManageUserToken(), userId);
         if (userDetails != null) {
-            userDetail = (LinkedHashMap <String,Object>)((ArrayList) userDetails.getBody()).get(0);
+            userDetail = (LinkedHashMap<String,Object>)((ArrayList) userDetails.getBody()).get(0);
             id = userDetail.get("id").toString();
             roles = (List<String>)userDetail.get("roles");
         }
