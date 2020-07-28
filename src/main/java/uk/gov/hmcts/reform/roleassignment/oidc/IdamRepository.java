@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.oidc;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,8 @@ public class IdamRepository {
     private OIdcAdminConfiguration oidcAdminConfiguration;
     private OAuth2Configuration oauth2Configuration;
     private RestTemplate restTemplate;
+    @Value("${idam.api.url}")
+    protected String idamUrl;
 
     @Autowired
     public IdamRepository(IdamClient idamClient,
@@ -53,7 +56,7 @@ public class IdamRepository {
         ResponseEntity<Object> responseResult = new ResponseEntity<>(HttpStatus.OK);
         try {
             final HttpEntity<?> requestEntity = new HttpEntity<>(getHttpHeaders(jwtToken));
-            String searchUserByUserIdUrl = String.format("%s/api/v1/users?query=%s", "http://localhost:5000", userId);
+            String searchUserByUserIdUrl = String.format("%s/api/v1/users?query=%s", idamUrl, userId);
             log.info("searchUserByUserIdUrl : {}", searchUserByUserIdUrl);
             ResponseEntity<Object> response = restTemplate.exchange(
                 searchUserByUserIdUrl,
