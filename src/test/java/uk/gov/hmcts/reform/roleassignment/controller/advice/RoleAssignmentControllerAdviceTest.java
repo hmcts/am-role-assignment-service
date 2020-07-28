@@ -9,13 +9,12 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import uk.gov.hmcts.reform.roleassignment.controller.WelcomeController;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorResponse;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.RoleAssignmentControllerAdvice;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.ACTORIDTYPE;
@@ -121,6 +120,13 @@ class RoleAssignmentControllerAdviceTest {
     }
 
     @Test
+    void testNull() {
+
+        ResponseEntity<String> responseEntity = welcomeController.getException("invalid");
+        assertNull(responseEntity);
+    }
+
+    @Test
     void testResourceNotFoundException() {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             welcomeController.getException("resourceNotFoundException");
@@ -149,6 +155,15 @@ class RoleAssignmentControllerAdviceTest {
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(ROLETYPE));
+    }
+
+    @Test
+    void notReadableException_Empty() {
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException("");
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
     }
 
     @Test

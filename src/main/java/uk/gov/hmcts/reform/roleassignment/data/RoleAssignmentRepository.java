@@ -13,7 +13,7 @@ public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEn
 
     Set<RoleAssignmentEntity> findByActorId(UUID actorId);
 
-    Set<RoleAssignmentEntity> findByActorIdAndRoleType(UUID actorId, String roleType);
+    Set<RoleAssignmentEntity> findByActorIdAndRoleTypeIgnoreCase(UUID actorId, String roleType);
 
     void deleteByActorId(UUID actorId);
 

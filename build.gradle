@@ -135,7 +135,9 @@ task integration(type: Test, description: 'Runs the integration tests.', group: 
   classpath = sourceSets.integrationTest.runtimeClasspath
   serenity.outputDirectory = file("${projectDir}/integrationTest/site/reports")
   finalizedBy aggregate
+  mustRunAfter test
 }
+check.dependsOn integration
 
 task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verification') {
   testClassesDirs = sourceSets.smokeTest.output.classesDirs
@@ -163,13 +165,7 @@ pitest {
   testPlugin = "junit5"
   targetClasses = ['uk.gov.hmcts.reform.*']
   excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
-                     'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot',
-                     'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants',
-                     'uk.gov.hmcts.reform.roleassignment.config.*',
-                     'uk.gov.hmcts.reform.roleassignment.apihelper.*',
-                     'uk.gov.hmcts.reform.roleassignment.model.*',
-                     'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication',
-                     'uk.gov.hmcts.reform.roleassignment.feignclients.exceptionhandler.*']
+                     'uk.gov.hmcts.reform.roleassignment.config.*']
   threads = 15
   outputFormats = ['XML', 'HTML']
   timestampedReports = true
@@ -181,15 +177,19 @@ sonarqube {
   properties {
     property "sonar.projectName", "am-role-assignment-service"
     property "sonar.projectKey", "am-role-assignment-service"
-    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/**"
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+    property "sonar.exclusions", "build/generated-sources/**/*.java," +
+      "**/SecurityConfiguration.java," +
+      "**/SwaggerConfiguration.java," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/*Application.java," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/config/**"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.junit.repoGetAssignmentControllerrtPaths", "${project.buildDir}/test-results/junit-platform"
   }
 }
 
-project.tasks['sonarqube'].dependsOn test, jacocoTestReport
+project.tasks['sonarqube'].dependsOn test, integration, jacocoTestReport
 project.tasks['sonarqube'].group = "Verification"
 
 dependencyUpdates.resolutionStrategy {
@@ -274,7 +274,7 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.3.RELEASE'
   compile('org.springframework.boot:spring-boot-starter-hateoas')
-  compile group: 'org.springframework', name: 'spring-tx', version: '5.2.7.RELEASE'
+  compile group: 'org.springframework', name: 'spring-tx', version: '5.2.8.RELEASE'
 
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
@@ -282,7 +282,7 @@ dependencies {
   implementation "org.springframework.security:spring-security-config"
   implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
   implementation 'uk.gov.hmcts.reform:idam-client:1.5.4'
-  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '7.9'
+  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.19'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
   testCompile('com.opentable.components:otj-pg-embedded:0.13.3')
@@ -306,7 +306,7 @@ dependencies {
   testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '4.0.2-fix.1'
+  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '4.1.0-prerelease.1'
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.3.RELEASE'
 
   compile group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber

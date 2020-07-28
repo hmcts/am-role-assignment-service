@@ -35,7 +35,8 @@ class PrepareResponseServiceTest {
     @Test
     void prepareCreateRoleResponse() throws IOException {
         ResponseEntity<Object> responseEntity =
-            prepareResponseService.prepareCreateRoleResponse(TestDataBuilder.buildAssignmentRequest(Status.CREATED));
+            prepareResponseService
+                .prepareCreateRoleResponse(TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE, false));
         RoleAssignmentRequestResource assignmentRequestResponse =
             (RoleAssignmentRequestResource) responseEntity.getBody();
         assertNull(assignmentRequestResponse.getRoleAssignmentRequest().getRequest().getClientId());
@@ -46,7 +47,8 @@ class PrepareResponseServiceTest {
         ResponseEntity<Object> responseEntity =
             prepareResponseService
                 .prepareRetrieveRoleResponse((List<RoleAssignment>) TestDataBuilder
-                    .buildRequestedRoleCollection(), UUID.fromString("6b36bfc6-bb21-11ea-b3de-0242ac140004"));
+                    .buildRequestedRoleCollection(Status.LIVE),
+                                             UUID.fromString("6b36bfc6-bb21-11ea-b3de-0242ac140004"));
         //RoleAssignmentResource assignmentRequestResponse = (RoleAssignmentResource) responseEntity.getBody();
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());

@@ -1,20 +1,27 @@
 {
   "_guid_": "S-065_CreationDataForRoleAssignment",
   "_extends_": "CreationDataForRoleAssignment",
+  "specs": [
+    "to create multiple role assignments having same CaseId"
+  ],
   "request": {
     "body": {
-      "roleRequest": {
-        "reference": "186a24c0-f688-41a5-98ab-6e53ff8fe9e8",
-        "replaceExisting": true
-      },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "186a24c0-f688-41a5-98ab-6e53ff8fe9e8"
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "grantType": "CHALLENGED",
+          "attributes": {
+            "caseId": "${[scenarioContext][customValues][generateCaseId]}"
+          }
         },
         {
           "_extends_": "RequestedRole",
-          "actorId": "186a24c0-f688-41a5-98ab-6e53ff8fe9e8"
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "grantType": "CHALLENGED",
+          "attributes": {
+            "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
+          }
         }
       ]
     }
@@ -22,20 +29,24 @@
   "expectedResponse": {
     "body": {
       "roleAssignmentResponse": {
-        "roleRequest": {
-          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "replaceExisting": true
-        },
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "grantType": "CHALLENGED",
+            "attributes": {
+              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
+            }
           },
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "grantType": "CHALLENGED",
+            "attributes": {
+              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
+            }
           }
         ]
       }
