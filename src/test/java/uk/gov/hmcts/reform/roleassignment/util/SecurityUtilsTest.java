@@ -108,10 +108,10 @@ class SecurityUtilsTest {
     void removeBearerFromToken() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader(SERVICE_AUTHORIZATION,
-                          "Bearer eyJhbGciOiJIUzUxMiJ9" +
-                              ".eyJzdWIiOiJjY2RfZ3ciLCJleHAiOjE1OTQ2ODQ5MTF9" +
-                              ".LH3aiNniHNMlTwuSdzgRic9sD_4inQv5oUqJ0kkRKVasS4RfhIz2tRdttf" +
-                              "-sSMkUga1p1teOt2iCq4BQBDS7KA");
+                          "Bearer eyJhbGciOiJIUzUxMiJ9"
+                              + ".eyJzdWIiOiJjY2RfZ3ciLCJleHAiOjE1OTQ2ODQ5MTF9"
+                              + ".LH3aiNniHNMlTwuSdzgRic9sD_4inQv5oUqJ0kkRKVasS4RfhIz2tRdttf"
+                              + "-sSMkUga1p1teOt2iCq4BQBDS7KA");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         assertEquals("ccd_gw", securityUtils.getServiceName());
     }
