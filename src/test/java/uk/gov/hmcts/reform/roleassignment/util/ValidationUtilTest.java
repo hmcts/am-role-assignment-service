@@ -173,20 +173,6 @@ class ValidationUtilTest {
     }
 
     @Test
-    void shouldThrow_ValidateAssignmentRequest_clf() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
-                                                                                     false);
-        assignmentRequest.getRequestedRoles().iterator().next().setProcess("");
-        assignmentRequest.getRequestedRoles().iterator().next().setReference("");
-        assignmentRequest.getRequest().setProcess("");
-        assignmentRequest.getRequest().setReference("");
-
-        Assertions.assertThrows(BadRequestException.class,
-                                () -> ValidationUtil.validateAssignmentRequest(assignmentRequest));
-
-    }
-
-    @Test
     void shouldValidateCaseId() {
         ValidationUtil.validateCaseId("1234567890123456");
     }
