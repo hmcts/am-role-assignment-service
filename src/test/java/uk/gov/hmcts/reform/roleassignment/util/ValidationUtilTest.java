@@ -167,8 +167,8 @@ class ValidationUtilTest {
         assignmentRequest.getRequest().setProcess("");
         assignmentRequest.getRequest().setReference("");
 
-        Assertions.assertThrows(BadRequestException.class,
-                                () -> ValidationUtil.validateAssignmentRequest(assignmentRequest));
+        Assertions
+            .assertThrows(BadRequestException.class, () -> ValidationUtil.validateAssignmentRequest(assignmentRequest));
 
     }
 
