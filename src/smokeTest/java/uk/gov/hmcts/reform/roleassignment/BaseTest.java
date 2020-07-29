@@ -54,6 +54,7 @@ public class BaseTest {
                 request.getUsername(),
                 request.getPassword()
             );
+            log.info("URL :   {}", url);
             headers.setContentType(MediaType.parseMediaType(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
             HttpEntity<?> entity = new HttpEntity<>(headers);
             response = restTemplate.exchange(
@@ -72,7 +73,9 @@ public class BaseTest {
                 throw new ResourceNotFoundException("Not Found");
             }
         } catch (HttpClientErrorException exception) {
+            log.error("HttpClientErrorException {}", exception.getStackTrace());
             throw new BadRequestException("Unable to fetch access token");
+
         }
     }
 }
