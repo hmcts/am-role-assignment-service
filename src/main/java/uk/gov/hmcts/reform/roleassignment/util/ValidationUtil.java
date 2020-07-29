@@ -91,7 +91,7 @@ public class ValidationUtil {
     public static void validateEnumRoleType(String roleType) {
         for (RoleType realRole : RoleType.values()) {
             if (roleType != null && realRole.name().equalsIgnoreCase(roleType)) {
-                    break;
+                break;
             } else {
                 throw new BadRequestException(
                     String.format("The Role Type parameter supplied: %s is not valid", roleType));
