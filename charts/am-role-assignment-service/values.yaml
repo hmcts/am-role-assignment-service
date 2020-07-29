@@ -25,3 +25,6 @@ java:
     S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     OIDC_ISSUER_URL: https://forgerock-am.service.core-compute-idam-{{ .Values.global.environment }}.internal:8443/openam/oauth2/hmcts
     OPEN_ID_API_BASE_URI: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o
+    IDAM_CLIENT_ID: am_role_assignment
+    IDAM_CLIENT_SECRET: fc5c22dc-335a-415f-be13-68c26da08fc0
+    IDAM_ADMIN_PASSWORD: PesZvqrb78
