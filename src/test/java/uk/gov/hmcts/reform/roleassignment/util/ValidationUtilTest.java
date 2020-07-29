@@ -39,7 +39,7 @@ class ValidationUtilTest {
     @Test
     void shouldThrow() {
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateInputParams(NUMBER_PATTERN, "2323232323232");
+            ValidationUtil.validateInputParams(NUMBER_PATTERN, "2323232323");
         });
     }
 
@@ -217,5 +217,21 @@ class ValidationUtilTest {
             ValidationUtil.validateDateOrder(beginTime,endTime);
         });
     }
+
+    @Test
+    void shouldThrowBad_ValidateEnumField() {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateEnumRoleType("SecretAgent");
+        });
+    }
+
+    @Test
+    void shouldValidateEnumField() {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateEnumRoleType("Case");
+            ValidationUtil.validateEnumRoleType("Organisation");
+        });
+    }
+
 
 }
