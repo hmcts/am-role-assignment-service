@@ -73,7 +73,7 @@ public class BaseTest {
                 throw new ResourceNotFoundException("Not Found");
             }
         } catch (HttpClientErrorException exception) {
-            log.error("HttpClientErrorException {}", exception.getStackTrace());
+            log.error("HttpClientErrorException {}", exception.getMessage());
             throw new BadRequestException("Unable to fetch access token");
 
         }
