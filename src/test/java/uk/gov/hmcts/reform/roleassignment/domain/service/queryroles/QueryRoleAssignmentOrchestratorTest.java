@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
 import static org.drools.compiler.lang.DroolsSoftKeywords.CASE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
