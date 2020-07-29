@@ -37,7 +37,7 @@ class IdamRepositoryTest {
                                                        oauth2Configuration);
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 

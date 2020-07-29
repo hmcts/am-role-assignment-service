@@ -16,6 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -364,5 +365,13 @@ public class TestDataBuilder {
     public static Jwt buildJwt() {
         return Jwt.withTokenValue("token_value").header("head", "head")
             .claim("tokenName", ACCESS_TOKEN).build();
+    }
+
+    public static Case buildCase() {
+        return Case.builder()
+            .version(1)
+            .state("state")
+            .reference(1L)
+            .lastStateModifiedDate(LocalDateTime.now().minusMonths(1L)).id("1234").build();
     }
 }

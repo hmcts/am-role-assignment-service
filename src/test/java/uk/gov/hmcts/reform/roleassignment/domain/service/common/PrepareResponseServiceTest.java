@@ -43,6 +43,14 @@ class PrepareResponseServiceTest {
     }
 
     @Test
+    void prepareCreateRoleResponse_Rejected() throws IOException {
+        ResponseEntity<Object> responseEntity =
+            prepareResponseService
+                .prepareCreateRoleResponse(TestDataBuilder.buildAssignmentRequest(Status.REJECTED, Status.LIVE, false));
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+    }
+
+    @Test
     void prepareRetrieveRoleResponse() throws Exception {
         ResponseEntity<Object> responseEntity =
             prepareResponseService
