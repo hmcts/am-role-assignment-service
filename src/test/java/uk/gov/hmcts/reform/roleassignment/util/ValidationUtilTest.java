@@ -159,13 +159,27 @@ class ValidationUtilTest {
     }
 
     @Test
-    void shouldThrow_ValidateAssignmentRequest_clt() throws IOException {
+    void shouldThrow_ValidateAssignmentRequest_clt_Empty() throws IOException {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
                                                                                      true);
         assignmentRequest.getRequestedRoles().iterator().next().setProcess("");
         assignmentRequest.getRequestedRoles().iterator().next().setReference("");
         assignmentRequest.getRequest().setProcess("");
         assignmentRequest.getRequest().setReference("");
+
+        Assertions
+            .assertThrows(BadRequestException.class, () -> ValidationUtil.validateAssignmentRequest(assignmentRequest));
+
+    }
+
+    @Test
+    void shouldThrow_ValidateAssignmentRequest_clt_null() throws IOException {
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
+                                                                                     true);
+        assignmentRequest.getRequestedRoles().iterator().next().setProcess(null);
+        assignmentRequest.getRequestedRoles().iterator().next().setReference("ref");
+        assignmentRequest.getRequest().setProcess(null);
+        assignmentRequest.getRequest().setReference("ref");
 
         Assertions
             .assertThrows(BadRequestException.class, () -> ValidationUtil.validateAssignmentRequest(assignmentRequest));
