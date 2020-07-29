@@ -58,7 +58,7 @@ env.ROLE_ASSIGNMENT_CLIENT = "am_docker"
 env.ROLE_ASSIGNMENT_CLIENT_SECRET = "am_docker_secret"
 env.TEST_USER = "befta.caseworker.2.solicitor.2@gmail.com"
 env.TEST_USER_PASSWORD = "Pa55word11"
-
+env.OPENID_SCOPE_VARIABLES = "email+roles+openid"
 withPipeline(type, product, component) {
   onMaster {
     enableSlackNotifications('#am-role-assignment-service-builds')

@@ -34,7 +34,7 @@ public class SmokeTest extends BaseTest {
     String clientSecret = System.getenv("ROLE_ASSIGNMENT_CLIENT_SECRET");
     String username = System.getenv("TEST_USER");
     String password = System.getenv("TEST_USER_PASSWORD");
-    String scope = System.getenv("OAUTH2_SCOPE_VARIABLES");
+    String scope = System.getenv("OPENID_SCOPE_VARIABLES");
 
     @Test
     public void should_receive_response_for_get_by_query_params_case_id() {
