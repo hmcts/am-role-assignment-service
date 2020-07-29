@@ -46,6 +46,16 @@ class IdamRepositoryTest {
     }
 
     @Test
+    void getUserInfo() {
+        idamRepository.getUserInfo("jwt");
+    }
+
+    @Test
+    void getUserByUserId() {
+        idamRepository.getUserByUserId("jwt", "userid");
+    }
+
+    @Test
     void getManageUserToken() {
 
         when(oauth2Configuration.getClientId()).thenReturn("clientId");
