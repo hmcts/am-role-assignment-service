@@ -11,11 +11,16 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.IdamClient;
 import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
+import uk.gov.hmcts.reform.idam.client.models.UserInfo;
+import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import java.io.IOException;
 
 @RunWith(MockitoJUnitRunner.class)
 class IdamRepositoryTest {
@@ -39,16 +44,6 @@ class IdamRepositoryTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-    }
-
-    @Test
-    void getUserInfo() {
-        idamRepository.getUserInfo("jwt");
-    }
-
-    @Test
-    void getUserByUserId() {
-        idamRepository.getUserByUserId("jwt", "userid");
     }
 
     @Test

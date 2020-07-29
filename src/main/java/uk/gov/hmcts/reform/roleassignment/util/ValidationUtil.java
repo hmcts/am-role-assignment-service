@@ -114,7 +114,7 @@ public class ValidationUtil {
         validateRoleRequest(assignmentRequest.getRequest());
         if (!(assignmentRequest.getRequest().isReplaceExisting())
             || (assignmentRequest.getRequest().isReplaceExisting()
-            && assignmentRequest.getRequestedRoles().size() > 0)) {
+            && !assignmentRequest.getRequestedRoles().isEmpty())) {
             validateLists(assignmentRequest.getRequestedRoles());
             validateRequestedRoles(assignmentRequest.getRequestedRoles());
         }
@@ -122,7 +122,13 @@ public class ValidationUtil {
 
     public static void validateRoleRequest(Request roleRequest) {
         if (roleRequest.isReplaceExisting()
-            && (Strings.isNullOrEmpty(roleRequest.getProcess()) || Strings.isNullOrEmpty(roleRequest.getReference()))) {
+            && (((roleRequest.getProcess() == null || roleRequest.getProcess().isEmpty())
+            && (roleRequest.getReference() == null || roleRequest.getReference().isEmpty()))
+            || ((roleRequest.getProcess() != null || !roleRequest.getProcess().isEmpty())
+            && (roleRequest.getReference() == null || roleRequest.getReference().isEmpty()))
+            || ((roleRequest.getProcess() == null || roleRequest.getProcess().isEmpty())
+            && (roleRequest.getReference() != null || !roleRequest.getReference().isEmpty()))
+        )) {
             throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
         }
         validateInputParams(Constants.UUID_PATTERN, roleRequest.getAssignerId().toString());
