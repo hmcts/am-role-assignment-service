@@ -36,7 +36,6 @@ def secrets = [
     secret('ccd-befta-caseworker-2-solicitor-1-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_1_PWD'),
     secret('ccd-befta-caseworker-2-solicitor-2-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD'),
     secret('ccd-befta-caseworker-2-solicitor-3-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_3_PWD'),
-    secret('ccd-befta-caseworker-2-solicitor-2-pwd', 'IDAM_ADMIN_PASSWORD'),
     secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
   ],
     's2s-${env}': [
@@ -57,10 +56,6 @@ env.OAUTH2_ACCESS_TOKEN_TYPE = "OIDC"
 env.BEFTA_RESPONSE_HEADER_CHECK_POLICY = "JUST_WARN"
 env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 env.OAUTH2_SCOPE_VARIABLES = "openid%20profile%20roles%20authorities"
-env.IDAM_CLIENT_ID = "am_role_assignment"
-env.IDAM_CLIENT_SECRET = "***REMOVED***"
-env.IDAM_ADMIN_USERID = "befta.caseworker.2.solicitor.2@gmail.com"
-env.IDAM_ADMIN_SCOPE = "search-user"
 
 withPipeline(type, product, component) {
   onMaster {
