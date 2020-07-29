@@ -24,6 +24,7 @@ public class SmokeTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(SmokeTest.class);
 
+    String idamURL = System.getenv("IDAM_URL");
     String roleAssignmentUrl = System.getenv("TEST_URL");
     String secret = System.getenv("AM_ROLE_ASSIGNMENT_SERVICE_SECRET");
     String microService = "am_role_assignment_service";
@@ -37,8 +38,7 @@ public class SmokeTest extends BaseTest {
 
     @Test
     public void should_receive_response_for_get_by_query_params_case_id() {
-
-        String accessToken = searchUserByUserId(getManageUserToken());
+        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
         String serviceAuth = new BaseTest()
             .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
         String targetInstance = roleAssignmentUrl + "/am/role-assignments?roleType=case&caseId=1234567890000000";
@@ -61,7 +61,7 @@ public class SmokeTest extends BaseTest {
     @Test
     public void should_receive_response_for_get_static_roles() {
 
-        String accessToken = searchUserByUserId(getManageUserToken());
+        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
         String serviceAuth = new BaseTest()
             .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
         String targetInstance = roleAssignmentUrl + "/am/role-assignments/roles";
@@ -80,7 +80,7 @@ public class SmokeTest extends BaseTest {
 
     @Test
     public void should_receive_response_for_get_by_query_params_actor_id() {
-        String accessToken = searchUserByUserId(getManageUserToken());
+        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
         String serviceAuth = new BaseTest()
             .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
         String targetInstance = roleAssignmentUrl
@@ -103,7 +103,7 @@ public class SmokeTest extends BaseTest {
 
     @Test
     public void should_receive_response_for_get_by_actor_id() {
-        String accessToken = searchUserByUserId(getManageUserToken());
+        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
         String serviceAuth = new BaseTest()
             .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
         String targetInstance = roleAssignmentUrl + "/am/role-assignments/actors/0b00bfc0-bb00-00ea-b0de-0000ac000000";
@@ -125,7 +125,7 @@ public class SmokeTest extends BaseTest {
 
     /* @Test
     public void should_receive_response_for_delete_by_assignment_id() {
-        String accessToken = searchUserByUserId(getManageUserToken());
+        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
         String serviceAuth = new BaseTest()
             .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
         String targetInstance = roleAssignmentUrl + "/am/role-assignments/dbd4177f-94f6-4e91-bb9b-591faa81dfd5";
@@ -145,7 +145,7 @@ public class SmokeTest extends BaseTest {
 
     /*@Test
     public void should_receive_response_for_delete_by_process_and_reference() {
-        String accessToken = searchUserByUserId(getManageUserToken());
+        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
         String serviceAuth = new BaseTest()
             .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
         String targetInstance = roleAssignmentUrl + "/am/role-assignments?process=p2&reference=r2";
@@ -165,7 +165,7 @@ public class SmokeTest extends BaseTest {
 
     /* @Test
     public void should_receive_response_for_add_role_assignment() throws IOException {
-        String accessToken = searchUserByUserId(getManageUserToken());
+        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
         String serviceAuth = new BaseTest()
             .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
         String targetInstance = roleAssignmentUrl + "/am/role-assignments?process=p2&reference=r2";
