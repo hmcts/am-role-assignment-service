@@ -127,7 +127,7 @@ public class ValidationUtil {
             && (roleRequest.getReference() == null || roleRequest.getReference().isEmpty()))
             || ((roleRequest.getProcess() == null || roleRequest.getProcess().isEmpty())
             && (roleRequest.getReference() != null || !roleRequest.getReference().isEmpty()))
-        )) {
+            )) {
             throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
         }
         validateInputParams(Constants.UUID_PATTERN, roleRequest.getAssignerId().toString());
