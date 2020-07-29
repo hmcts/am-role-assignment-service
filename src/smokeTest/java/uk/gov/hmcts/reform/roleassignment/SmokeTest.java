@@ -12,15 +12,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
-
-@SpringBootTest
 @RunWith(SpringIntegrationSerenityRunner.class)
 @NoArgsConstructor
 @TestPropertySource(value = "classpath:application.yaml")
@@ -28,31 +24,20 @@ public class SmokeTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(SmokeTest.class);
 
-    @Value("${roleAssignmentUrl}")
-    String roleAssignmentUrl;
-    @Value("${idam.s2s-auth.totp_secret}")
-    String secret;
-    @Value("${idam.s2s-auth.microservice}")
-    String microService;
-    @Value("${idam.s2s-auth.url}")
-    String s2sUrl;
+    String roleAssignmentUrl = System.getenv("TEST_URL");
+    String secret = System.getenv("AM_ROLE_ASSIGNMENT_SERVICE_SECRET");
+    String microService = "am_role_assignment_service";
+    String s2sUrl = System.getenv("IDAM_S2S_URL");
 
-    @Value("${client.id}")
-    String clientId;
-    @Value("${client.secret}")
-    String clientSecret;
-    @Value("${client.redirectUri}")
-    String redirectUri;
-
-    @Value("${user.username}")
-    String username;
-    @Value("${user.password}")
-    String password;
-    @Value("${user.scope}")
-     String scope;
+    String clientId = System.getenv("ROLE_ASSIGNMENT_CLIENT");
+    String clientSecret = System.getenv("ROLE_ASSIGNMENT_CLIENT_SECRET");
+    String username = System.getenv("TEST_USER");
+    String password = System.getenv("TEST_USER_PASSWORD");
+    String scope = System.getenv("OAUTH2_SCOPE_VARIABLES");
 
     @Test
     public void should_receive_response_for_get_by_query_params_case_id() {
+
         String accessToken = searchUserByUserId(getManageUserToken());
         String serviceAuth = new BaseTest()
             .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
@@ -122,7 +107,6 @@ public class SmokeTest extends BaseTest {
         String serviceAuth = new BaseTest()
             .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
         String targetInstance = roleAssignmentUrl + "/am/role-assignments/actors/0b00bfc0-bb00-00ea-b0de-0000ac000000";
-
         RestAssured.useRelaxedHTTPSValidation();
 
         Response response = SerenityRest
@@ -207,11 +191,12 @@ public class SmokeTest extends BaseTest {
     }*/
 
     public TokenRequest getManageUserToken() {
+
         TokenRequest tokenRequest = new TokenRequest(
             clientId,
             clientSecret,
             "password",
-            redirectUri,
+            "",
             username,
             password,
             getScope(scope),

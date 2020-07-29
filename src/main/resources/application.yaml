@@ -125,4 +125,4 @@ client:
 user:
   username: ${TEST_USER:befta.caseworker.2.solicitor.2@gmail.com}
   password: ${TEST_USER_PASSWORD:Pa55word11}
-  scope: ${SCOPE:email roles openid}
+  scope: ${OAUTH2_SCOPE_VARIABLES:email roles openid}
