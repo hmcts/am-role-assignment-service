@@ -1,5 +1,5 @@
 @F-002
-Feature: F-002 : Delete Role Assignments by Actor Id
+Feature: F-002 : Delete Role Assignments by Process and Reference
 
   Background:
     Given an appropriate test context as detailed in the test data source
