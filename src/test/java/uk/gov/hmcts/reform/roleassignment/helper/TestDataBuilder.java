@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.jwt.Jwt;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.ROLES_JSON;
 
 @Setter
@@ -357,5 +359,10 @@ public class TestDataBuilder {
         }
         return UserInfo.builder().sub("sub").uid(uuid)
             .name("James").givenName("007").familyName("Bond").roles(list).build();
+    }
+
+    public static Jwt buildJwt() {
+        return Jwt.withTokenValue("token_value").header("head", "head")
+            .claim("tokenName", ACCESS_TOKEN).build();
     }
 }
