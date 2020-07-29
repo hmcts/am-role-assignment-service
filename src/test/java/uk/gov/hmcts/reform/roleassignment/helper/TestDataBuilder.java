@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
@@ -45,11 +46,13 @@ public class TestDataBuilder {
         //not meant to be instantiated.
     }
 
-    public static AssignmentRequest buildAssignmentRequest(Status status) throws IOException {
-        return new AssignmentRequest(buildRequest(status), buildRequestedRoleCollection());
+    public static AssignmentRequest buildAssignmentRequest(Status requestStatus, Status roleStatus,
+                                                           Boolean replaceExisting) throws IOException {
+        return new AssignmentRequest(buildRequest(requestStatus, replaceExisting),
+                                     buildRequestedRoleCollection(roleStatus));
     }
 
-    public static Request buildRequest(Status status) {
+    public static Request buildRequest(Status status, Boolean replaceExisting) {
         return Request.builder()
             .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
             .authenticatedUserId(UUID.fromString("4772dc44-268f-4d0c-8f83-f0fb662aac84"))
@@ -58,13 +61,13 @@ public class TestDataBuilder {
             .requestType(RequestType.CREATE)
             .reference("p2")
             .process(("p2"))
-            .replaceExisting(false)
+            .replaceExisting(replaceExisting)
             .status(status)
             .created(LocalDateTime.now())
             .build();
     }
 
-    public static RoleAssignment buildRoleAssignment() throws IOException {
+    public static RoleAssignment buildRoleAssignment(Status status) throws IOException {
         LocalDateTime timeStamp = LocalDateTime.now();
         return RoleAssignment.builder()
             .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
@@ -81,14 +84,14 @@ public class TestDataBuilder {
             .reference("reference")
             .process(("process"))
             .statusSequence(10)
-            .status(Status.LIVE)
+            .status(status)
             .created(timeStamp)
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
             .notes(buildNotesFromFile())
             .build();
     }
 
-    public static RoleAssignment buildRoleAssignmentUpdated() throws IOException {
+    public static RoleAssignment buildRoleAssignmentUpdated(Status status) throws IOException {
         LocalDateTime timeStamp = LocalDateTime.now();
         return RoleAssignment.builder()
             .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
@@ -105,28 +108,31 @@ public class TestDataBuilder {
             .reference("new ref")
             .process(("new process"))
             .statusSequence(10)
-            .status(Status.LIVE)
+            .status(status)
             .created(timeStamp)
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
             .notes(buildNotesFromFile())
             .build();
     }
 
-    public static ResponseEntity<Object> buildRoleAssignmentResponse() throws Exception {
-        return ResponseEntity.status(HttpStatus.OK).body(buildAssignmentRequest(Status.CREATED));
+    public static ResponseEntity<Object> buildRoleAssignmentResponse(Status requestStatus,
+                                                                     Status roleStatus,
+                                                                     Boolean replaceExisting) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(buildAssignmentRequest(requestStatus, roleStatus, replaceExisting));
     }
 
-    public static Collection<RoleAssignment> buildRequestedRoleCollection() throws IOException {
+    public static Collection<RoleAssignment> buildRequestedRoleCollection(Status status) throws IOException {
         Collection<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(buildRoleAssignment());
-        requestedRoles.add(buildRoleAssignment());
+        requestedRoles.add(buildRoleAssignment(status));
+        requestedRoles.add(buildRoleAssignment(status));
         return requestedRoles;
     }
 
-    public static Collection<RoleAssignment> buildRequestedRoleCollection_Updated() throws IOException {
+    public static Collection<RoleAssignment> buildRequestedRoleCollection_Updated(Status status) throws IOException {
         Collection<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(buildRoleAssignment());
-        requestedRoles.add(buildRoleAssignment());
+        requestedRoles.add(buildRoleAssignmentUpdated(status));
+        requestedRoles.add(buildRoleAssignmentUpdated(status));
         return requestedRoles;
     }
 
@@ -138,7 +144,7 @@ public class TestDataBuilder {
         });
     }
 
-    private static JsonNode buildNotesFromFile() throws IOException {
+    public static JsonNode buildNotesFromFile() throws IOException {
         InputStream inputStream =
             TestDataBuilder.class.getClassLoader().getResourceAsStream("notes.json");
         assert inputStream != null;
@@ -178,7 +184,7 @@ public class TestDataBuilder {
     }
 
     public static HistoryEntity buildHistoryIntoEntity(RoleAssignment model, RequestEntity requestEntity) {
-        return HistoryEntity.builder().actorId(model.getActorId())
+        return HistoryEntity.builder().id(model.getId()).actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
             .beginTime(model.getBeginTime())
@@ -341,5 +347,15 @@ public class TestDataBuilder {
             .readOnly(roleAssignment.isReadOnly())
             .roleCategory(roleAssignment.getRoleCategory().toString())
             .build();
+    }
+
+    public static UserInfo buildUserInfo(String uuid) throws IOException {
+        List<String> list = new ArrayList<>();
+        List<Role> roles = TestDataBuilder.buildRolesFromFile();
+        for (Role role : roles) {
+            list.add(role.toString());
+        }
+        return UserInfo.builder().sub("sub").uid(uuid)
+            .name("James").givenName("007").familyName("Bond").roles(list).build();
     }
 }

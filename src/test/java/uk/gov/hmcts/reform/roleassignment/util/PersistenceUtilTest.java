@@ -28,18 +28,18 @@ class PersistenceUtilTest {
     @Test
     void convertRoleAssignmentToHistoryEntity() throws IOException {
         assertNotNull(persistenceUtil.convertRoleAssignmentToHistoryEntity(
-            TestDataBuilder.buildRoleAssignment(),
-            TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED))));
+            TestDataBuilder.buildRoleAssignment(Status.LIVE),
+            TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED, false))));
     }
 
     @Test
     void convertRequestToEntity() {
-        assertNotNull(persistenceUtil.convertRequestToEntity(TestDataBuilder.buildRequest(Status.APPROVED)));
+        assertNotNull(persistenceUtil.convertRequestToEntity(TestDataBuilder.buildRequest(Status.APPROVED, false)));
     }
 
     @Test
     void convertRoleAssignmentToEntity() throws IOException {
-        assertNotNull(persistenceUtil.convertRoleAssignmentToEntity(TestDataBuilder.buildRoleAssignment()));
+        assertNotNull(persistenceUtil.convertRoleAssignmentToEntity(TestDataBuilder.buildRoleAssignment(Status.LIVE)));
     }
 
     @Test
@@ -51,13 +51,13 @@ class PersistenceUtilTest {
     void convertHistoryEntityToRoleAssignment() throws IOException {
         assertNotNull(persistenceUtil.convertHistoryEntityToRoleAssignment(
             TestDataBuilder.buildHistoryEntity(
-                TestDataBuilder.buildRoleAssignment(),
-                TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED)))));
+                TestDataBuilder.buildRoleAssignment(Status.LIVE),
+                TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED, false)))));
     }
 
     @Test
     void convertEntityToRoleAssignment() throws IOException {
         assertNotNull(persistenceUtil.convertEntityToRoleAssignment(
-            TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment())));
+            TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(Status.LIVE))));
     }
 }

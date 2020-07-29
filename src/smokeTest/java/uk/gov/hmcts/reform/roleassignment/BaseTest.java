@@ -2,40 +2,29 @@ package uk.gov.hmcts.reform.roleassignment;
 
 import feign.Feign;
 import feign.jackson.JacksonEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
-import org.springframework.stereotype.Service;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
-import uk.gov.hmcts.reform.idam.client.IdamApi;
-import uk.gov.hmcts.reform.idam.client.IdamClient;
 import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
-import uk.gov.hmcts.reform.idam.client.models.UserDetails;
-import uk.gov.hmcts.reform.idam.client.models.UserInfo;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 
-@Service
 public class BaseTest {
 
-    @Autowired
-    private IdamClient idamClient;
-    @Autowired
-    private IdamApi idamApi;
+    private static final Logger log = LoggerFactory.getLogger(BaseTest.class);
 
-    @Value("${client.id}")
-    private String clientId;
-    @Value("${client.secret}")
-    private String clientSecret;
-    @Value("${client.redirectUri}")
-    private String redirectUri;
-
-    @Value("${user.username}")
-    private String username;
-    @Value("${user.password}")
-    private String password;
-    @Value("${user.scope}")
-    private  String scope;
+    RestTemplate restTemplate = new RestTemplate();
 
     public ServiceAuthorisationApi generateServiceAuthorisationApi(final String s2sUrl) {
         return Feign.builder()
@@ -51,27 +40,39 @@ public class BaseTest {
         return new ServiceAuthTokenGenerator(secret, microService, serviceAuthorisationApi);
     }
 
-    public UserInfo getUserInfo(String jwtToken) {
-        return idamClient.getUserInfo("Bearer " + jwtToken);
-    }
+    public String searchUserByUserId(TokenRequest request) {
+        ResponseEntity<TokenResponse> response = new ResponseEntity<>(HttpStatus.OK);
+        HttpHeaders headers = new HttpHeaders();
+        try {
+            String url = String.format(
+                "%s/o/token?client_id=%s&client_secret=%s&grant_type=%s&scope=%s&username=%s&password=%s",
+                "http://localhost:5000",
+                request.getClientId(),
+                request.getClientSecret(),
+                request.getGrantType(),
+                request.getScope(),
+                request.getUsername(),
+                request.getPassword()
+            );
+            headers.setContentType(MediaType.parseMediaType(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
+            HttpEntity<?> entity = new HttpEntity<>(headers);
+            response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                entity,
+                TokenResponse.class
+            );
 
-    public UserDetails getUserByUserId(String jwtToken, String userId) {
-        return idamClient.getUserByUserId("Bearer " + jwtToken, userId);
-    }
-
-    public String getManageUserToken() {
-        TokenRequest tokenRequest = new TokenRequest(
-            clientId,
-            clientSecret,
-            "password",
-            redirectUri,
-            username,
-            password,
-            scope,
-            "4",
-            ""
-        );
-        TokenResponse tokenResponse = idamApi.generateOpenIdToken(tokenRequest);
-        return tokenResponse.accessToken;
+            if (HttpStatus.OK.equals(response.getStatusCode())) {
+                log.info("Positive response");
+                return response.getBody().accessToken;
+            } else {
+                log.error("There is some problem in fetching access token {}", response
+                    .getStatusCode());
+                throw new ResourceNotFoundException("Not Found");
+            }
+        } catch (HttpClientErrorException exception) {
+            throw new BadRequestException("Unable to fetch access token");
+        }
     }
 }
