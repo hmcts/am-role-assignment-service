@@ -32,7 +32,7 @@ public class IdamRoleService {
             userDetail = (LinkedHashMap<String,Object>)((ArrayList) userDetails.getBody()).get(0);
             id = userDetail.get("id").toString();
             roles = (List<String>)userDetail.get("roles");
-            log.info("SearchUser*********UserId: "+id +"Roles: "+roles);
+            log.info("SearchUser*********UserId: " + id + "Roles: " + roles);
         }
 
         return UserRoles.builder()
