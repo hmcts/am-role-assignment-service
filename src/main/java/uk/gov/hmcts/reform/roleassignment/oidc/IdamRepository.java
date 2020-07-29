@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 
 import static org.springframework.http.HttpMethod.GET;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.BEARER;
 
 @Component
 @Slf4j
@@ -45,11 +46,11 @@ public class IdamRepository {
     }
 
     public UserInfo getUserInfo(String jwtToken) {
-        return idamClient.getUserInfo("Bearer " + jwtToken);
+        return idamClient.getUserInfo(BEARER + jwtToken);
     }
 
     public UserDetails getUserByUserId(String jwtToken, String userId) {
-        return idamClient.getUserByUserId("Bearer " + jwtToken, userId);
+        return idamClient.getUserByUserId(BEARER + jwtToken, userId);
     }
 
     public ResponseEntity<Object> searchUserByUserId(String jwtToken, String userId) {
@@ -57,7 +58,6 @@ public class IdamRepository {
         try {
             final HttpEntity<?> requestEntity = new HttpEntity<>(getHttpHeaders(jwtToken));
             String searchUserByUserIdUrl = String.format("%s/api/v1/users?query=%s", idamUrl, userId);
-            log.info("searchUserByUserIdUrl : {}", searchUserByUserIdUrl);
             ResponseEntity<Object> response = restTemplate.exchange(
                 searchUserByUserIdUrl,
                 GET,
@@ -91,9 +91,7 @@ public class IdamRepository {
             "4",
             ""
         );
-        log.info(tokenRequest.toString());
         TokenResponse tokenResponse = idamApi.generateOpenIdToken(tokenRequest);
-        log.info(tokenResponse.accessToken);
         return tokenResponse.accessToken;
     }
 

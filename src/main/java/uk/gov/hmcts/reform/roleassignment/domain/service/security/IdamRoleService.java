@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+@Slf4j
 @Service
 public class IdamRoleService {
 
@@ -30,6 +32,7 @@ public class IdamRoleService {
             userDetail = (LinkedHashMap<String,Object>)((ArrayList) userDetails.getBody()).get(0);
             id = userDetail.get("id").toString();
             roles = (List<String>)userDetail.get("roles");
+            log.info("SearchUser*********UserId: "+id +"Roles: "+roles);
         }
 
         return UserRoles.builder()
