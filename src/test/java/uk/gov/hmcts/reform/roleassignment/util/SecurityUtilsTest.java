@@ -6,32 +6,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpHeaders;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION;
 
 
 class SecurityUtilsTest {
@@ -55,35 +44,25 @@ class SecurityUtilsTest {
         jwtGrantedAuthoritiesConverter
     );
 
-    private final String serviceAuthorization = "Bearer eyJhbGciOiJIUzUxMiJ9"
-        + ".eyJzdWIiOiJjY2RfZ3ciLCJleHAiOjE1OTQ2ODQ5MTF9"
-        + ".LH3aiNniHNMlTwuSdzgRic9sD_4inQv5oUqJ0kkRKVasS4RfhIz2tRdttf-sSMkUga1p1teOt2iCq4BQBDS7KA";
-    private final String serviceAuthorizationNoBearer = "eyJhbGciOiJIUzUxMiJ9"
-        + ".eyJzdWIiOiJjY2RfZ3ciLCJleHAiOjE1OTQ2ODQ5MTF9"
-        + ".LH3aiNniHNMlTwuSdzgRic9sD_4inQv5oUqJ0kkRKVasS4RfhIz2tRdttf-sSMkUga1p1teOt2iCq4BQBDS7KA";
-    private static final String USER_ID = "21334a2b-79ce-44eb-9168-2d49a744be9c";
-
-    ServiceAndUserDetails serviceAndUserDetails;
+    private final String serviceAuthorization = "auth";
+    private static final String USER_ID = "userId";
 
 
     private void mockSecurityContextData() throws IOException {
         List<String> collection = new ArrayList<String>();
         collection.add("string");
-        serviceAndUserDetails = new ServiceAndUserDetails(
+        ServiceAndUserDetails serviceAndUserDetails = new ServiceAndUserDetails(
             USER_ID,
             serviceAuthorization,
             collection,
             "servicename"
         );
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("header", "head");
-        Jwt jwt = new Jwt("token", Instant.now(), Instant.now().plusSeconds(10),headers, headers);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
-        when(securityContext.getAuthentication().getPrincipal()).thenReturn(jwt);
+        when(securityContext.getAuthentication().getPrincipal()).thenReturn(serviceAndUserDetails);
+
         when(jwtGrantedAuthoritiesConverter.getUserInfo())
-            .thenReturn(TestDataBuilder.buildUserInfo(USER_ID));
-        when(authTokenGenerator.generate()).thenReturn(serviceAuthorization);
+            .thenReturn(TestDataBuilder.buildUserInfo("21334a2b-79ce-44eb-9168-2d49a744be9c"));
     }
 
     @BeforeEach
@@ -94,7 +73,7 @@ class SecurityUtilsTest {
 
     @Test
     void getUserId() {
-        assertEquals(USER_ID, securityUtils.getUserId());
+        assertNotNull(securityUtils.getUserId());
     }
 
     @Test
@@ -104,31 +83,6 @@ class SecurityUtilsTest {
 
     @Test
     void getUserRolesHeader() {
-        assertNotNull(securityUtils.getUserRolesHeader());
+        assertNotNull(securityUtils.getUserRoles());
     }
-
-    @Test
-    void getAuthorizationHeaders() {
-        HttpHeaders result = securityUtils.authorizationHeaders();
-        assertEquals(serviceAuthorization, Objects.requireNonNull(result.get(SERVICE_AUTHORIZATION)).get(0));
-        assertEquals(USER_ID, Objects.requireNonNull(result.get("user-id")).get(0));
-        assertEquals("", Objects.requireNonNull(Objects.requireNonNull(result.get("user-roles")).get(0)));
-    }
-
-    @Test
-    void removeBearerFromToken() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader(SERVICE_AUTHORIZATION, serviceAuthorization);
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        assertEquals("ccd_gw", securityUtils.getServiceName());
-    }
-
-    @Test
-    void removeBearerFromToken_NoBearerTag() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader(SERVICE_AUTHORIZATION, serviceAuthorizationNoBearer);
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        assertEquals("ccd_gw", securityUtils.getServiceName());
-    }
-
 }
