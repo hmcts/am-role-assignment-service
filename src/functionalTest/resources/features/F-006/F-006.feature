@@ -1,5 +1,5 @@
 @F-006
-Feature: Get Role Assignments by Query Params
+Feature: F-006 : Get Role Assignments by Query Params
 
   Background:
     Given an appropriate test context as detailed in the test data source
