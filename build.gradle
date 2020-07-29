@@ -45,8 +45,9 @@ def versions = [
   swagger2Version    : '2.10.5',
   pact_version       : '3.5.24',
   rest_assured       : '3.3.0',
-  cucumber           : '5.5.0',
-  feign_jackson      : '9.7.0'
+  cucumber           : '6.3.0',
+  feign_jackson      : '9.7.0',
+  drools             : '7.40.0.Final'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
@@ -178,11 +179,7 @@ sonarqube {
     property "sonar.projectName", "am-role-assignment-service"
     property "sonar.projectKey", "am-role-assignment-service"
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
-    property "sonar.exclusions", "build/generated-sources/**/*.java," +
-      "**/SecurityConfiguration.java," +
-      "**/SwaggerConfiguration.java," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/*Application.java," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/config/**"
+    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/**"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.junit.repoGetAssignmentControllerrtPaths", "${project.buildDir}/test-results/junit-platform"
@@ -250,10 +247,20 @@ dependencies {
   implementation 'com.squareup.okhttp3:okhttp:4.8.0'
 
   // drools engine dependency
-  compile group: 'org.drools', name: 'drools-core', version: '7.39.0.Final'
-  compile group: 'org.drools', name: 'drools-compiler', version: '7.39.0.Final'
-  compile group: 'org.drools', name: 'drools-decisiontables', version: '7.39.0.Final'
-  compile group: 'org.kie', name: 'kie-ci', version: '7.39.0.Final'
+  compile(group: 'org.drools', name: 'drools-core', version: versions.drools) {
+    exclude group: 'org.jsoup', module: 'jsoup'
+  }
+  compile(group: 'org.drools', name: 'drools-compiler', version: versions.drools) {
+    exclude group: 'org.jsoup', module: 'jsoup'
+  }
+  compile(group: 'org.drools', name: 'drools-decisiontables', version: versions.drools) {
+    exclude group: 'org.jsoup', module: 'jsoup'
+  }
+  compile(group: 'org.kie', name: 'kie-ci', version: versions.drools) {
+    exclude group: 'org.jsoup', module: 'jsoup'
+    exclude group: 'org.apache.ant', module: 'ant'
+    exclude group: 'org.apache.ant', module: 'ant-launcher'
+  }
   compile group: 'org.liquibase', name: 'liquibase-core', version: '4.0.0'
 
   //Added for Spring Security Implementation
@@ -281,7 +288,7 @@ dependencies {
   implementation "org.springframework.security:spring-security-web"
   implementation "org.springframework.security:spring-security-config"
   implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
-  implementation 'uk.gov.hmcts.reform:idam-client:1.5.4'
+  implementation 'uk.gov.hmcts.reform:idam-client:v1.5.5'
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.19'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
