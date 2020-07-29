@@ -1,4 +1,3 @@
-/*
 package uk.gov.hmcts.reform.roleassignment.controller;
 
 import static org.junit.Assert.assertEquals;
@@ -84,4 +83,3 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     }
 
 }
-*/
