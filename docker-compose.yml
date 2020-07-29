@@ -25,7 +25,7 @@ services:
        IDAM_CLIENT_SECRET: am_docker_secret
        IDAM_ADMIN_USERID: befta.caseworker.2.solicitor.2@gmail.com
        IDAM_ADMIN_PASSWORD: Pa55word11
-       IDAM_ADMIN_SCOPE: manage-user
+       IDAM_ADMIN_SCOPE: search-user
        AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY:
        REFORM_SERVICE_NAME: am-role-assignment-service
        REFORM_TEAM: am
