@@ -45,7 +45,7 @@ def versions = [
   swagger2Version    : '2.10.5',
   pact_version       : '3.5.24',
   rest_assured       : '3.3.0',
-  cucumber           : '6.3.0',
+  cucumber           : '5.5.0',
   feign_jackson      : '9.7.0',
   drools             : '7.40.0.Final'
 ]
@@ -285,7 +285,7 @@ dependencies {
     exclude group: 'org.apache.ant', module: 'ant'
     exclude group: 'org.apache.ant', module: 'ant-launcher'
   }
-  compile group: 'org.liquibase', name: 'liquibase-core', version: '3.7.0'
+  compile group: 'org.liquibase', name: 'liquibase-core', version: '3.10.0'
 
   //Added for Spring Security Implementation
   compile(group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBoot) {
@@ -351,7 +351,9 @@ dependencies {
   testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '4.1.0-prerelease.1'
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.3.RELEASE'
 
-  compile group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
+  testCompile (group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber) {
+    exclude group: 'javascript' , module : 'jquery'
+  }
   testCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
   testCompile group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
   testCompile group: 'io.github.openfeign', name: 'feign-jackson', version: versions.feign_jackson
