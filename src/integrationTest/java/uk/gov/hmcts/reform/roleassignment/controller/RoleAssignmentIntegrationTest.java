@@ -1,4 +1,3 @@
-/*
 package uk.gov.hmcts.reform.roleassignment.controller;
 
 import org.junit.Before;
@@ -49,4 +48,3 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             "Role assignment actor Id", "123e4567-e89b-42d3-a456-556642445613", actorId);
     }
 }
-*/
