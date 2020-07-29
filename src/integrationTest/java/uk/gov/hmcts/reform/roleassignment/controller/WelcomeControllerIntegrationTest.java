@@ -1,11 +1,4 @@
-/*
 package uk.gov.hmcts.reform.roleassignment.controller;
-
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-
-import java.nio.charset.Charset;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +11,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.nio.charset.Charset;
+
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 
 public class WelcomeControllerIntegrationTest extends BaseTest {
@@ -84,4 +83,3 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     }
 
 }
-*/
