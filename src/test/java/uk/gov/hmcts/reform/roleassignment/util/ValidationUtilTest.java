@@ -145,14 +145,21 @@ class ValidationUtilTest {
     }
 
     @Test
-    void shouldValidateAssignmentRequest() throws IOException, ParseException {
+    void shouldValidateAssignmentRequest_clf() throws IOException, ParseException {
         ValidationUtil.validateAssignmentRequest(TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
                                                                                         false));
 
     }
 
     @Test
-    void shouldThrow_ValidateAssignmentRequest() throws IOException {
+    void shouldValidateAssignmentRequest_clt() throws IOException, ParseException {
+        ValidationUtil.validateAssignmentRequest(TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
+                                                                                        true));
+
+    }
+
+    @Test
+    void shouldThrow_ValidateAssignmentRequest_clt() throws IOException {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
                                                                                      true);
         assignmentRequest.getRequestedRoles().iterator().next().setProcess("");
@@ -160,9 +167,8 @@ class ValidationUtilTest {
         assignmentRequest.getRequest().setProcess("");
         assignmentRequest.getRequest().setReference("");
 
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateAssignmentRequest(assignmentRequest);
-        });
+        Assertions
+            .assertThrows(BadRequestException.class, () -> ValidationUtil.validateAssignmentRequest(assignmentRequest));
 
     }
 
