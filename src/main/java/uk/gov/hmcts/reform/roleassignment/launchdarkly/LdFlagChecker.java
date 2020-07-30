@@ -3,29 +3,30 @@ package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 import java.io.IOException;
 
 import com.launchdarkly.sdk.LDUser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.launchdarkly.sdk.server.LDClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 @Component
 public class LdFlagChecker {
 
-    @Autowired
-    private LaunchDarklyConfiguration configuration;
+    @Value("${launchdarkly.sdk.key}")
+    private String sdkKey;
 
     public boolean verifyServiceAndFlag(String serviceName, String flagName) throws IOException {
-        LDUser user = new LDUser.Builder("accessmanagement@hmcts.net")
-            .firstName("david")
-            .lastName("jones")
-            .key(serviceName)
+
+        String environment =
+        LDClient client = new LDClient(sdkKey);
+
+        LDUser user = new LDUser.Builder(environment)
+            .firstName(environment)
+            .lastName("user")
+            .custom("servicename", serviceName)
             .build();
 
-        boolean showFeature = configuration.ldClient().boolVariation(flagName, user, false);
+        boolean showFeature = client.boolVariation(flagName, user, false);
 
-        configuration.ldClient().close();
-        ResponseEntity.status(HttpStatus.FORBIDDEN).body(Constants.ENDPOINT_NOT_AVAILABLE);
+        client.close();
         return showFeature;
     }
 }

@@ -103,8 +103,7 @@ public class DeleteAssignmentController {
         @ApiParam(value = "assignmentId", required = true)
         @PathVariable String assignmentId) throws IOException {
 
-        if (!ldFlagChecker
-            .verifyServiceAndFlag(securityUtils.getServiceName(), Constants.DELETE_BY_ASSIGNMENT_ID_FLAG)) {
+        if (!ldFlagChecker.verifyServiceAndFlag(securityUtils.getServiceName(), Constants.DELETE_BY_ASSIGNMENT_ID_FLAG)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Constants.ENDPOINT_NOT_AVAILABLE);
         }
         return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByAssignmentId(assignmentId);

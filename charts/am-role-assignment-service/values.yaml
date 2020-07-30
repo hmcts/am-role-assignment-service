@@ -24,3 +24,6 @@ java:
     S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     OIDC_ISSUER_URL: https://forgerock-am.service.core-compute-idam-{{ .Values.global.environment }}.internal:8443/openam/oauth2/hmcts
     OPEN_ID_API_BASE_URI: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o
+    LAUNCH_DARKLY_ENV: {{ .Values.global.environment }}
+    LAUNCH_DARKLY_ENV_TEST_KEY: LD_SDK_TEST_KEY
+    LAUNCH_DARKLY_ENV_PROD_KEY: LD_SDK_PROD_KEY
