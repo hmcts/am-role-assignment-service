@@ -23,10 +23,6 @@ public class LdFlagChecker {
     private String sdkProdKey;
 
     public boolean verifyServiceAndFlag(String serviceName, String flagName) throws IOException {
-        log.info("Environment is: " + environment);
-        log.info("sdkTestKey is: " + sdkTestKey);
-        log.info("sdkProdKey is: " + sdkProdKey);
-
         String sdkKey;
         if (environment.equalsIgnoreCase(Constants.AAT) || environment.equalsIgnoreCase(Constants.PROD)) {
             sdkKey = sdkProdKey;
