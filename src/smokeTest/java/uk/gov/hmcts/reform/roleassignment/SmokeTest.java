@@ -30,8 +30,8 @@ public class SmokeTest extends BaseTest {
     String microService = "am_role_assignment_service";
     String s2sUrl = System.getenv("IDAM_S2S_URL");
 
-    String clientId = System.getenv("ROLE_ASSIGNMENT_CLIENT");
-    String clientSecret = System.getenv("ROLE_ASSIGNMENT_CLIENT_SECRET");
+    String clientId = System.getenv("OAUTH2_CLIENT_ID");
+    String clientSecret = System.getenv("OAUTH2_CLIENT_SECRET");
     String username = System.getenv("TEST_USER");
     String password = System.getenv("TEST_USER_PASSWORD");
     String scope = System.getenv("OPENID_SCOPE_VARIABLES");
