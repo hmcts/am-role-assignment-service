@@ -4,16 +4,35 @@ import java.io.IOException;
 
 import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.LDClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 @Component
+@Slf4j
 public class LdFlagChecker {
 
-    @Value("${launchdarkly.sdk.key}")
-    private String sdkKey;
+    @Value("${launchdarkly.sdk.environment}")
+    private String environment;
+
+    @Value("${launchdarkly.sdk.testkey}")
+    private String sdkTestKey;
+
+    @Value("${launchdarkly.sdk.prodkey}")
+    private String sdkProdKey;
 
     public boolean verifyServiceAndFlag(String serviceName, String flagName) throws IOException {
+        log.info("Environment is: " + environment);
+        log.info("sdkTestKey is: " + sdkTestKey);
+        log.info("sdkProdKey is: " + sdkProdKey);
+
+        String sdkKey;
+        if (environment.equalsIgnoreCase(Constants.AAT) || environment.equalsIgnoreCase(Constants.PROD)) {
+            sdkKey = sdkProdKey;
+        } else {
+            sdkKey = sdkTestKey;
+        }
 
         LDClient client = new LDClient(sdkKey);
 
