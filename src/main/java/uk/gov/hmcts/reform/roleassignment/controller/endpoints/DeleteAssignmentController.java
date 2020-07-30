@@ -101,7 +101,7 @@ public class DeleteAssignmentController {
         @RequestHeader(value = "assignerId", required = false)
             String assignerId,
         @ApiParam(value = "assignmentId", required = true)
-        @PathVariable String assignmentId) throws IOException {
+        @PathVariable String assignmentId) {
         return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByAssignmentId(assignmentId);
     }
 
