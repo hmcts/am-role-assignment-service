@@ -115,5 +115,5 @@ swaggerUrl: ${ROLE_ASSIGNMENT_SWAGGER_AM_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
 launchdarkly:
   sdk:
-    key: ${LAUNCH_DARKLY_ENV_KEY:sdk-c6816361-d35e-48e7-8523-4ad72a87f061}
+    key: ${LAUNCH_DARKLY_ENV_KEY:}
     environment: ${LAUNCH_DARKLY_ENV:test}

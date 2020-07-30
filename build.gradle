@@ -40,13 +40,14 @@ def versions = [
   reformS2sClient    : '3.1.1',
   serenity           : '2.1.0',
   sonarPitest        : '0.5',
-  springBoot         : '2.3.1.RELEASE',
+  springBoot         : '2.3.2.RELEASE',
   springHystrix      : '2.1.1.RELEASE',
   swagger2Version    : '2.10.5',
   pact_version       : '3.5.24',
   rest_assured       : '3.3.0',
   cucumber           : '5.5.0',
   feign_jackson      : '9.7.0',
+  drools             : '7.40.0.Final',
   launchDarklySdk    : "5.+"
 ]
 
@@ -166,13 +167,7 @@ pitest {
   testPlugin = "junit5"
   targetClasses = ['uk.gov.hmcts.reform.*']
   excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
-                     'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot',
-                     'uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants',
-                     'uk.gov.hmcts.reform.roleassignment.config.*',
-                     'uk.gov.hmcts.reform.roleassignment.apihelper.*',
-                     'uk.gov.hmcts.reform.roleassignment.model.*',
-                     'uk.gov.hmcts.reform.roleassignment.controller.endpoints.S2SAuthentication',
-                     'uk.gov.hmcts.reform.roleassignment.feignclients.exceptionhandler.*']
+                     'uk.gov.hmcts.reform.roleassignment.config.*']
   threads = 15
   outputFormats = ['XML', 'HTML']
   timestampedReports = true
@@ -184,8 +179,8 @@ sonarqube {
   properties {
     property "sonar.projectName", "am-role-assignment-service"
     property "sonar.projectKey", "am-role-assignment-service"
-    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/**"
     property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/**"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.junit.repoGetAssignmentControllerrtPaths", "${project.buildDir}/test-results/junit-platform"
@@ -240,28 +235,65 @@ repositories {
 
 
 dependencies {
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBoot
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot
-  compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0'
+  compile(group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot) {
+    exclude group: 'org.hibernate', module: 'hibernate-core'
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-core"
+  }
+  compile(group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBoot) {
+    exclude group: 'org.hibernate', module: 'hibernate-core'
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-core"
+  }
+  compile(group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot) {
+    exclude group: 'org.hibernate', module: 'hibernate-core'
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-core"
+  }
+  compile(group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot) {
+    exclude group: 'org.hibernate', module: 'hibernate-core'
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-core"
+  }
+  compile(group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot) {
+    exclude group: 'org.hibernate', module: 'hibernate-core'
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-core"
+  }
+  compile(group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0') {
+    exclude group: 'org.hibernate', module: 'hibernate-core'
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-core"
+  }
 
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   compile group: 'org.json', name: 'json', version: '20200518'
 
   implementation 'com.squareup.okhttp3:okhttp:4.8.0'
-  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
 
   // drools engine dependency
-  compile group: 'org.drools', name: 'drools-core', version: '7.39.0.Final'
-  compile group: 'org.drools', name: 'drools-compiler', version: '7.39.0.Final'
-  compile group: 'org.drools', name: 'drools-decisiontables', version: '7.39.0.Final'
-  compile group: 'org.kie', name: 'kie-ci', version: '7.39.0.Final'
-  compile group: 'org.liquibase', name: 'liquibase-core', version: '4.0.0'
+  compile(group: 'org.drools', name: 'drools-core', version: versions.drools) {
+    exclude group: 'org.jsoup', module: 'jsoup'
+  }
+  compile(group: 'org.drools', name: 'drools-compiler', version: versions.drools) {
+    exclude group: 'org.jsoup', module: 'jsoup'
+  }
+  compile(group: 'org.drools', name: 'drools-decisiontables', version: versions.drools) {
+    exclude group: 'org.jsoup', module: 'jsoup'
+  }
+  compile(group: 'org.kie', name: 'kie-ci', version: versions.drools) {
+    exclude group: 'org.jsoup', module: 'jsoup'
+    exclude group: 'org.apache.ant', module: 'ant'
+    exclude group: 'org.apache.ant', module: 'ant-launcher'
+  }
+  compile group: 'org.liquibase', name: 'liquibase-core', version: '3.10.0'
 
   //Added for Spring Security Implementation
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBoot
+  compile(group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBoot) {
+    exclude group: 'org.hibernate', module: 'hibernate-core'
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-core"
+  }
 
   //Added for S2S and User Authentication
   compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.reformS2sClient
@@ -277,7 +309,15 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.3.RELEASE'
-  compile('org.springframework.boot:spring-boot-starter-hateoas')
+  compile('org.springframework.boot:spring-boot-starter-hateoas') {
+    exclude group: 'org.hibernate', module: 'hibernate-core'
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
+    exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-core"
+  }
+  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
+  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.37'
+  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.37'
+  compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.19.Final'
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.8.RELEASE'
 
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
@@ -285,7 +325,7 @@ dependencies {
   implementation "org.springframework.security:spring-security-web"
   implementation "org.springframework.security:spring-security-config"
   implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
-  implementation 'uk.gov.hmcts.reform:idam-client:1.5.4'
+  implementation 'uk.gov.hmcts.reform:idam-client:v1.5.4'
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.19'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
@@ -313,7 +353,9 @@ dependencies {
   testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '4.1.0-prerelease.1'
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.3.RELEASE'
 
-  compile group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber
+  testCompile (group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber) {
+    exclude group: 'javascript' , module : 'jquery'
+  }
   testCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
   testCompile group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
   testCompile group: 'io.github.openfeign', name: 'feign-jackson', version: versions.feign_jackson

@@ -15,7 +15,6 @@ public class LdFlagChecker {
 
     public boolean verifyServiceAndFlag(String serviceName, String flagName) throws IOException {
 
-        String environment =
         LDClient client = new LDClient(sdkKey);
 
         LDUser user = new LDUser.Builder(environment)

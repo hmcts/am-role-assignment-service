@@ -12,7 +12,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
-import uk.gov.hmcts.reform.roleassignment.controller.endpoints.DeleteAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -30,7 +29,7 @@ class DeleteAssignmentControllerTest {
         mock(DeleteRoleAssignmentOrchestrator.class);
 
     @InjectMocks
-    private DeleteAssignmentController sut;
+    private DeleteAssignmentController sut = new DeleteAssignmentController(deleteRoleAssignmentOrchestrator);
 
     @BeforeEach
     public void setUp() {
@@ -50,6 +49,23 @@ class DeleteAssignmentControllerTest {
             .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
 
         ResponseEntity response = sut.deleteRoleAssignment(null,  PROCESS, REFERENCE);
+
+        assertAll(
+            () -> assertNotNull(response),
+            () -> assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode())
+        );
+    }
+
+    @Test
+    @DisplayName("should get 204 when role assignment records delete by Id successful")
+    void shouldDeleteRoleAssignmentById() throws Exception {
+
+        when(deleteRoleAssignmentOrchestrator
+                 .deleteRoleAssignmentByAssignmentId("003352d0-e699-48bc-b6f5-5810411e68af"))
+            .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
+
+        ResponseEntity response = sut.deleteRoleAssignmentById("003352d0-e699-48bc-b6f5-5810411e68af",
+                                                               "003352d0-e699-48bc-b6f5-5810411e68af");
 
         assertAll(
             () -> assertNotNull(response),
