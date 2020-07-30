@@ -64,7 +64,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void persistRequest(){
+    void persistRequest() {
         Request request = TestDataBuilder.buildRequest(Status.CREATED, false);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(request);
         when(persistenceUtil.convertRequestToEntity(request)).thenReturn(requestEntity);
