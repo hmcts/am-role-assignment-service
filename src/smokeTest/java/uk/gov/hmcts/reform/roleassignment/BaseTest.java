@@ -40,13 +40,14 @@ public class BaseTest {
         return new ServiceAuthTokenGenerator(secret, microService, serviceAuthorisationApi);
     }
 
-    public String searchUserByUserId(TokenRequest request, String idamURL) {
+    public String searchUserByUserId(UserTokenProviderConfig config) {
+        TokenRequest request = config.prepareTokenRequest();
         ResponseEntity<TokenResponse> response = new ResponseEntity<>(HttpStatus.OK);
         HttpHeaders headers = new HttpHeaders();
         try {
             String url = String.format(
                 "%s/o/token?client_id=%s&client_secret=%s&grant_type=%s&scope=%s&username=%s&password=%s",
-                idamURL,
+                config.getIdamURL(),
                 request.getClientId(),
                 request.getClientSecret(),
                 request.getGrantType(),
