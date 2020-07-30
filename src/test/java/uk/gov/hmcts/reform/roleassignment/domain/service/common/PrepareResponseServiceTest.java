@@ -57,7 +57,6 @@ class PrepareResponseServiceTest {
                 .prepareRetrieveRoleResponse((List<RoleAssignment>) TestDataBuilder
                     .buildRequestedRoleCollection(Status.LIVE),
                                              UUID.fromString("6b36bfc6-bb21-11ea-b3de-0242ac140004"));
-        //RoleAssignmentResource assignmentRequestResponse = (RoleAssignmentResource) responseEntity.getBody();
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }

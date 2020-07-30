@@ -244,6 +244,4 @@ class ValidationUtilTest {
         ValidationUtil.validateEnumRoleType("Case");
         ValidationUtil.validateEnumRoleType("Organisation");
     }
-
-
 }
