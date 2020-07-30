@@ -42,7 +42,6 @@ public class Constants {
     public static final String LOCALDATETIME = "LocalDateTime";
     public static final String STATUS = "Status";
     public static final String INTEGER = "Integer";
-
-    public static final String DELETE_BY_ASSIGNMENT_ID_FLAG = "delete-by-assignment-id-flag";
+    public static final String GET_LD_FLAG = "get-ld-flag";
 
 }

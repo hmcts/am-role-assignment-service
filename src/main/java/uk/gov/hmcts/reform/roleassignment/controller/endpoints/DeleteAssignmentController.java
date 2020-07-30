@@ -1,14 +1,11 @@
 
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
-import java.io.IOException;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,21 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.LdFlagChecker;
-import uk.gov.hmcts.reform.roleassignment.util.Constants;
-import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 
 @Api(value = "roles")
 @RestController
 public class DeleteAssignmentController {
-
-    @Autowired
-    private LdFlagChecker ldFlagChecker;
-    @Autowired
-    private SecurityUtils securityUtils;
-
     private DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator;
 
     public DeleteAssignmentController(DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator) {
@@ -103,23 +91,5 @@ public class DeleteAssignmentController {
         @ApiParam(value = "assignmentId", required = true)
         @PathVariable String assignmentId) {
         return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByAssignmentId(assignmentId);
-    }
-
-    @DeleteMapping(
-        path = "am/role-assignments/ld/{assignmentId}",
-        produces = V1.MediaType.DELETE_ASSIGNMENTS
-    )
-    @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public ResponseEntity<Object> deleteRoleAssignmentByIdLdDemo(
-        @RequestHeader(value = "assignerId", required = false)
-            String assignerId,
-        @ApiParam(value = "assignmentId", required = true)
-        @PathVariable String assignmentId) throws IOException {
-
-        if (!ldFlagChecker
-            .verifyServiceAndFlag(securityUtils.getServiceName(), Constants.DELETE_BY_ASSIGNMENT_ID_FLAG)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Constants.ENDPOINT_NOT_AVAILABLE);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body("Launch Darkly flag check is successful");
     }
 }
