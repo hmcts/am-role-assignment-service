@@ -47,7 +47,8 @@ def versions = [
   rest_assured       : '3.3.0',
   cucumber           : '5.5.0',
   feign_jackson      : '9.7.0',
-  drools             : '7.40.0.Final'
+  drools             : '7.40.0.Final',
+  launchDarklySdk    : "5.+"
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
@@ -314,6 +315,7 @@ dependencies {
     exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
     exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-core"
   }
+  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.37'
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.37'
   compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.19.Final'
