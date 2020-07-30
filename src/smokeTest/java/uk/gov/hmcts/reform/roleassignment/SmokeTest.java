@@ -5,42 +5,48 @@ import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.TestPropertySource;
-import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 @NoArgsConstructor
-@TestPropertySource(value = "classpath:application.yaml")
 public class SmokeTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(SmokeTest.class);
 
-    String idamURL = System.getenv("IDAM_URL");
-    String roleAssignmentUrl = System.getenv("TEST_URL");
-    String secret = System.getenv("AM_ROLE_ASSIGNMENT_SERVICE_SECRET");
-    String microService = "am_role_assignment_service";
-    String s2sUrl = System.getenv("IDAM_S2S_URL");
+    UserTokenProviderConfig config;
+    String accessToken;
+    String serviceAuth;
 
-    String clientId = System.getenv("IDAM_CLIENT_ID");
-    String clientSecret = System.getenv("IDAM_CLIENT_SECRET");
-    String username = "befta.caseworker.2.solicitor.2@gmail.com";
-    String password = System.getenv("CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD");
-    String scope = System.getenv("OPENID_SCOPE_VARIABLES");
+    @Before
+    public void setUp() {
+        config = new UserTokenProviderConfig();
+        accessToken = searchUserByUserId(config);
+        serviceAuth = new BaseTest()
+            .authTokenGenerator(
+                config.getSecret(),
+                config.getMicroService(),
+                generateServiceAuthorisationApi(config.getS2sUrl())
+            ).generate();
+    }
 
     @Test
     public void should_receive_response_for_get_by_query_params_case_id() {
-        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
-        String serviceAuth = new BaseTest()
-            .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
-        String targetInstance = roleAssignmentUrl + "/am/role-assignments?roleType=case&caseId=1234567890000000";
 
+        String targetInstance = config.getRoleAssignmentUrl()
+            + "/am/role-assignments?roleType=case&caseId=1234567890000000";
         RestAssured.useRelaxedHTTPSValidation();
 
         Response response = SerenityRest
@@ -59,10 +65,7 @@ public class SmokeTest extends BaseTest {
     @Test
     public void should_receive_response_for_get_static_roles() {
 
-        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
-        String serviceAuth = new BaseTest()
-            .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
-        String targetInstance = roleAssignmentUrl + "/am/role-assignments/roles";
+        String targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments/roles";
         RestAssured.useRelaxedHTTPSValidation();
 
         Response response = SerenityRest
@@ -78,12 +81,9 @@ public class SmokeTest extends BaseTest {
 
     @Test
     public void should_receive_response_for_get_by_query_params_actor_id() {
-        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
-        String serviceAuth = new BaseTest()
-            .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
-        String targetInstance = roleAssignmentUrl
-            + "/am/role-assignments?roleType=case&actorId=0b00bfc0-bb00-00ea-b0de-0000ac000000";
 
+        String targetInstance = config.getRoleAssignmentUrl()
+            + "/am/role-assignments?roleType=case&actorId=0b00bfc0-bb00-00ea-b0de-0000ac000000";
         RestAssured.useRelaxedHTTPSValidation();
 
         Response response = SerenityRest
@@ -101,10 +101,9 @@ public class SmokeTest extends BaseTest {
 
     @Test
     public void should_receive_response_for_get_by_actor_id() {
-        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
-        String serviceAuth = new BaseTest()
-            .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
-        String targetInstance = roleAssignmentUrl + "/am/role-assignments/actors/0b00bfc0-bb00-00ea-b0de-0000ac000000";
+
+        String targetInstance = config.getRoleAssignmentUrl()
+            + "/am/role-assignments/actors/0b00bfc0-bb00-00ea-b0de-0000ac000000";
         RestAssured.useRelaxedHTTPSValidation();
 
         Response response = SerenityRest
@@ -116,63 +115,19 @@ public class SmokeTest extends BaseTest {
             .get(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
-            .body("errorDescription",
-                  Matchers.equalTo("Role Assignment not found for Actor 0b00bfc0-bb00-00ea-b0de-0000ac000000"));
+            .body(
+                "errorDescription",
+                Matchers.equalTo(
+                    "Role Assignment not found for Actor 0b00bfc0-bb00-00ea-b0de-0000ac000000"));
+
         response.then().assertThat().body("errorMessage", Matchers.equalTo("Resource not found"));
     }
 
-    /* @Test
+    @Test
     public void should_receive_response_for_delete_by_assignment_id() {
-        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
-        String serviceAuth = new BaseTest()
-            .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
-        String targetInstance = roleAssignmentUrl + "/am/role-assignments/dbd4177f-94f6-4e91-bb9b-591faa81dfd5";
 
-        RestAssured.useRelaxedHTTPSValidation();
-
-        Response response = SerenityRest
-            .given()
-            .relaxedHTTPSValidation()
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
-            .when()
-            .delete(targetInstance)
-            .andReturn();
-        response.then().assertThat().statusCode(HttpStatus.NO_CONTENT.value());
-    }*/
-
-    /*@Test
-    public void should_receive_response_for_delete_by_process_and_reference() {
-        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
-        String serviceAuth = new BaseTest()
-            .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
-        String targetInstance = roleAssignmentUrl + "/am/role-assignments?process=p2&reference=r2";
-
-        RestAssured.useRelaxedHTTPSValidation();
-
-        Response response = SerenityRest
-            .given()
-            .relaxedHTTPSValidation()
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
-            .when()
-            .delete(targetInstance)
-            .andReturn();
-        response.then().assertThat().statusCode(HttpStatus.NO_CONTENT.value());
-    }*/
-
-    /* @Test
-    public void should_receive_response_for_add_role_assignment() throws IOException {
-        String accessToken = searchUserByUserId(getManageUserToken(), idamURL);
-        String serviceAuth = new BaseTest()
-            .authTokenGenerator(secret, microService, generateServiceAuthorisationApi(s2sUrl)).generate();
-        String targetInstance = roleAssignmentUrl + "/am/role-assignments?process=p2&reference=r2";
-
-        //FileInputStream fileInputStream = new FileInputStream(new File("resources/RequestBody.td.json"));
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("RequestBody.td.json").getFile());
-        FileInputStream fileInputStream = new FileInputStream(file);
-
+        String targetInstance = config.getRoleAssignmentUrl()
+            + "/am/role-assignments/dbd4177f-94f6-4e91-bb9b-591faa81dfd5";
         RestAssured.useRelaxedHTTPSValidation();
 
         Response response = SerenityRest
@@ -181,26 +136,53 @@ public class SmokeTest extends BaseTest {
             .header("Content-Type", "application/json")
             .header("ServiceAuthorization", "Bearer " + serviceAuth)
             .header("Authorization", "Bearer " + accessToken)
-            .body(IOUtils.toString(fileInputStream, "UTF-8"))
+            .when()
+            .delete(targetInstance)
+            .andReturn();
+        response.then().assertThat().statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    public void should_receive_response_for_delete_by_process_and_reference() {
+
+        String targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments?process=p2&reference=r2";
+        RestAssured.useRelaxedHTTPSValidation();
+
+        Response response = SerenityRest
+            .given()
+            .relaxedHTTPSValidation()
+            .header("ServiceAuthorization", "Bearer " + serviceAuth)
+            .header("Authorization", "Bearer " + accessToken)
+            .when()
+            .delete(targetInstance)
+            .andReturn();
+        response.then().assertThat().statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    public void should_receive_response_for_add_role_assignment() throws IOException {
+
+        String targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments";
+        String payload = fetchRequestBody();
+        RestAssured.useRelaxedHTTPSValidation();
+
+        Response response = SerenityRest
+            .given()
+            .relaxedHTTPSValidation()
+            .header("Content-Type", "application/json")
+            .header("ServiceAuthorization", "Bearer " + serviceAuth)
+            .header("Authorization", "Bearer " + accessToken)
+            .body(payload)
             .when()
             .post(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.CREATED.value());
-    }*/
+    }
 
-    public TokenRequest getManageUserToken() {
-
-        TokenRequest tokenRequest = new TokenRequest(
-            clientId,
-            clientSecret,
-            "password",
-            "",
-            username,
-            password,
-            scope,
-            "4",
-            ""
-        );
-        return tokenRequest;
+    private String fetchRequestBody() throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("create_request_body.json").getFile());
+        FileInputStream fileInputStream = new FileInputStream(file);
+        return IOUtils.toString(fileInputStream, "UTF-8");
     }
 }
