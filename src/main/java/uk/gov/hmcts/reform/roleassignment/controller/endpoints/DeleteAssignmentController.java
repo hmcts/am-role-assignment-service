@@ -102,10 +102,24 @@ public class DeleteAssignmentController {
             String assignerId,
         @ApiParam(value = "assignmentId", required = true)
         @PathVariable String assignmentId) throws IOException {
+        return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByAssignmentId(assignmentId);
+    }
 
-        if (!ldFlagChecker.verifyServiceAndFlag(securityUtils.getServiceName(), Constants.DELETE_BY_ASSIGNMENT_ID_FLAG)) {
+    @DeleteMapping(
+        path = "am/role-assignments/ld/{assignmentId}",
+        produces = V1.MediaType.DELETE_ASSIGNMENTS
+    )
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public ResponseEntity<Object> deleteRoleAssignmentByIdLdDemo(
+        @RequestHeader(value = "assignerId", required = false)
+            String assignerId,
+        @ApiParam(value = "assignmentId", required = true)
+        @PathVariable String assignmentId) throws IOException {
+
+        if (!ldFlagChecker
+            .verifyServiceAndFlag(securityUtils.getServiceName(), Constants.DELETE_BY_ASSIGNMENT_ID_FLAG)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Constants.ENDPOINT_NOT_AVAILABLE);
         }
-        return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByAssignmentId(assignmentId);
+        return ResponseEntity.status(HttpStatus.OK).body("Launch Darkly flag check is successful");
     }
 }
