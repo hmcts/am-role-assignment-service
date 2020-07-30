@@ -22,7 +22,6 @@ public class QueryAssignmentController {
 
     public QueryAssignmentController(QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator) {
         this.queryRoleAssignmentOrchestrator = queryRoleAssignmentOrchestrator;
-
     }
 
     @GetMapping(
