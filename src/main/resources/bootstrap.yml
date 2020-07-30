@@ -7,4 +7,5 @@ spring:
         AppInsightsInstrumentationKey: azure.application-insights.instrumentation-key
         am-role-assignment-service-s2s-secret: AM_ROLE_ASSIGNMENT_SERVICE_SECRET
         role-assignment-service-POSTGRES-PASS: ROLE_ASSIGNMENT_DB_PASSWORD
-        role-assignment-service-LD-SDK-KEY: LD_SDK_KEY
+        role-assignment-service-LD-SDK-TEST-KEY: LD_SDK_TEST_KEY
+        role-assignment-service-LD-SDK-PROD-KEY: LD_SDK_PROD_KEY
