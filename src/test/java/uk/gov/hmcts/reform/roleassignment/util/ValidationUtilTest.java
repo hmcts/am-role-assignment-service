@@ -241,10 +241,8 @@ class ValidationUtilTest {
 
     @Test
     void shouldValidateEnumField() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateEnumRoleType("Case");
-            ValidationUtil.validateEnumRoleType("Organisation");
-        });
+        ValidationUtil.validateEnumRoleType("Case");
+        ValidationUtil.validateEnumRoleType("Organisation");
     }
 
 
