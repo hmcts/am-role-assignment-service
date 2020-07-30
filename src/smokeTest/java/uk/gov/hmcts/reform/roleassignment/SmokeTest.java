@@ -5,9 +5,7 @@ import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
-import org.apache.commons.lang.StringUtils;
 import org.hamcrest.Matchers;
-import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -30,10 +28,10 @@ public class SmokeTest extends BaseTest {
     String microService = "am_role_assignment_service";
     String s2sUrl = System.getenv("IDAM_S2S_URL");
 
-    String clientId = System.getenv("OAUTH2_CLIENT_ID");
-    String clientSecret = System.getenv("OAUTH2_CLIENT_SECRET");
-    String username = System.getenv("TEST_USER");
-    String password = System.getenv("TEST_USER_PASSWORD");
+    String clientId = System.getenv("IDAM_CLIENT_ID");
+    String clientSecret = System.getenv("IDAM_CLIENT_SECRET");
+    String username = "befta.caseworker.2.solicitor.2@gmail.com";
+    String password = System.getenv("CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD");
     String scope = System.getenv("OPENID_SCOPE_VARIABLES");
 
     @Test
@@ -199,18 +197,10 @@ public class SmokeTest extends BaseTest {
             "",
             username,
             password,
-            getScope(scope),
+            scope,
             "4",
             ""
         );
         return tokenRequest;
-    }
-
-    @NotNull
-    private String getScope(String scope) {
-        if (!StringUtils.isEmpty(scope)) {
-            return scope.replaceAll(" ", "+");
-        }
-        return scope;
     }
 }
