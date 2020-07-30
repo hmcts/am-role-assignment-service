@@ -166,7 +166,8 @@ pitest {
   testPlugin = "junit5"
   targetClasses = ['uk.gov.hmcts.reform.*']
   excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
-                     'uk.gov.hmcts.reform.roleassignment.config.*']
+                     'uk.gov.hmcts.reform.roleassignment.config.*',
+                     'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot']
   threads = 15
   outputFormats = ['XML', 'HTML']
   timestampedReports = true

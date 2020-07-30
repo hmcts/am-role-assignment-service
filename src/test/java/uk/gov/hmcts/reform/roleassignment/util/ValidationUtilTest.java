@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
@@ -159,6 +160,69 @@ class ValidationUtilTest {
     }
 
     @Test
+    void shouldValidateAssignmentRequest_clf_EmptyCollection() throws IOException {
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
+                                                                                     false);
+        assignmentRequest.getRequestedRoles().clear();
+
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateAssignmentRequest(assignmentRequest);
+        });
+    }
+
+    @Test
+    void shouldValidateAssignmentRequest_clf_InvalidRoleRequests() throws IOException {
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
+                                                                                     false);
+        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
+            requestedRole.setRoleName("commander");
+        }
+
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateAssignmentRequest(assignmentRequest);
+        });
+    }
+
+    @Test
+    void shouldValidateAssignmentRequest_clf_InvalidBeginTime() throws IOException {
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
+                                                                                     false);
+        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
+            requestedRole.setBeginTime(LocalDateTime.now().minusDays(1L));
+        }
+
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateAssignmentRequest(assignmentRequest);
+        });
+    }
+
+    @Test
+    void shouldValidateAssignmentRequest_clf_InvalidEndTime() throws IOException {
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
+                                                                                     false);
+        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
+            requestedRole.setEndTime(LocalDateTime.now().minusDays(1L));
+        }
+
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateAssignmentRequest(assignmentRequest);
+        });
+    }
+
+    @Test
+    void shouldValidateAssignmentRequest_clt_InvalidEndTime() throws IOException {
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
+                                                                                     false);
+        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
+            requestedRole.setEndTime(LocalDateTime.now().minusDays(1L));
+        }
+
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateAssignmentRequest(assignmentRequest);
+        });
+    }
+
+    @Test
     void shouldThrow_ValidateAssignmentRequest_clt_Empty() throws IOException {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
                                                                                      true);
@@ -173,7 +237,7 @@ class ValidationUtilTest {
     }
 
     @Test
-    void shouldThrow_ValidateAssignmentRequest_clt_null() throws IOException {
+    void shouldThrow_ValidateAssignmentRequest_clt_processEmpty() throws IOException {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
                                                                                      true);
         assignmentRequest.getRequestedRoles().iterator().next().setProcess("");
@@ -183,7 +247,19 @@ class ValidationUtilTest {
 
         Assertions
             .assertThrows(BadRequestException.class, () -> ValidationUtil.validateAssignmentRequest(assignmentRequest));
+    }
 
+    @Test
+    void shouldThrow_ValidateAssignmentRequest_clt_referenceEmpty() throws IOException {
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
+                                                                                     true);
+        assignmentRequest.getRequestedRoles().iterator().next().setProcess("pro");
+        assignmentRequest.getRequestedRoles().iterator().next().setReference("");
+        assignmentRequest.getRequest().setProcess("pro");
+        assignmentRequest.getRequest().setReference("");
+
+        Assertions
+            .assertThrows(BadRequestException.class, () -> ValidationUtil.validateAssignmentRequest(assignmentRequest));
     }
 
     @Test
@@ -243,5 +319,19 @@ class ValidationUtilTest {
     void shouldValidateEnumField() {
         ValidationUtil.validateEnumRoleType("Case");
         ValidationUtil.validateEnumRoleType("Organisation");
+    }
+
+    @Test
+    void shouldThrowBadReq_invalidCaseId() {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateCaseId("123456789012345A");
+        });
+    }
+
+    @Test
+    void shouldThrowBadReq_invalidCaseIdLength() {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            ValidationUtil.validateCaseId("123456789012345");
+        });
     }
 }
