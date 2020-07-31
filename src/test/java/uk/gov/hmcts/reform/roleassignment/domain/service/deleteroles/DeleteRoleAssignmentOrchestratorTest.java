@@ -251,5 +251,4 @@ class DeleteRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
     }
 
-
 }
