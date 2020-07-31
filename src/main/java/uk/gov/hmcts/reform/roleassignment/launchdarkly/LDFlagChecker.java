@@ -5,12 +5,20 @@ import java.io.IOException;
 import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.LDClient;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;
-import uk.gov.hmcts.reform.roleassignment.util.Constants;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
-@Cacheable(cacheNames = "ldconfig")
+@EnableCaching
+@CacheConfig(cacheNames = {"ldconfig" })
+@EnableScheduling
 @Configuration
 @Slf4j
 public class LDFlagChecker {
@@ -18,21 +26,14 @@ public class LDFlagChecker {
     @Value("${launchdarkly.sdk.environment}")
     private String environment;
 
-    @Value("${launchdarkly.sdk.testkey}")
-    private String sdkTestKey;
+    @Autowired
+    CacheManager cacheManager;
 
-    @Value("${launchdarkly.sdk.prodkey}")
-    private String sdkProdKey;
+    @Autowired
+    private LDConfiguration ldConfiguration;
 
+    @Cacheable({ "ldconfig"})
     public boolean verifyServiceAndFlag(String serviceName, String flagName) throws IOException {
-        String sdkKey;
-        if (environment.equalsIgnoreCase(Constants.AAT) || environment.equalsIgnoreCase(Constants.PROD)) {
-            sdkKey = sdkProdKey;
-        } else {
-            sdkKey = sdkTestKey;
-        }
-
-        LDClient client = new LDClient(sdkKey);
 
         LDUser user = new LDUser.Builder(environment)
             .firstName(environment)
@@ -40,9 +41,18 @@ public class LDFlagChecker {
             .custom("servicename", serviceName)
             .build();
 
-        boolean showFeature = client.boolVariation(flagName, user, false);
+        boolean showFeature = ldConfiguration.getLdClient().boolVariation(flagName, user, false);
 
-        client.close();
+        ldConfiguration.getLdClient().close();
         return showFeature;
+    }
+
+    @Scheduled(fixedRate = 6000)
+    @CacheEvict(allEntries = true, value = "ldconfig")
+    public void evictAllCaches() {
+        log.info("cleaning caches");
+        cacheManager.getCacheNames()
+                    .parallelStream()
+                    .forEach(cacheName -> cacheManager.getCache(cacheName).clear());
     }
 }
