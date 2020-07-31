@@ -1,14 +1,17 @@
 package uk.gov.hmcts.reform.roleassignment;
 
-import org.junit.Assert;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import net.serenitybdd.rest.SerenityRest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 
 public class SmokeTest {
 
     @Value("${roleAssignmentUrl}")
     private String baseUrl;
 
-    /*@Test
+    //@Test
     public void shouldGetHealthStatus() {
         RestAssured.baseURI = baseUrl;
         RestAssured.useRelaxedHTTPSValidation();
@@ -19,9 +22,5 @@ public class SmokeTest {
             .get("/health")
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.OK.value());
-    }*/
-
-    public void sampleTest() {
-        Assert.assertTrue(1 == 1);
     }
 }
