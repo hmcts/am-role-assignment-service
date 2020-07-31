@@ -123,4 +123,7 @@ swaggerUrl: ${ROLE_ASSIGNMENT_SWAGGER_AM_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
 launchdarkly:
   sdk:
-    key: ${LD_SDK_KEY:}
+    testkey: ${LD_SDK_TEST_KEY:}
+    prodkey: ${LD_SDK_PROD_KEY:}
+    environment: ${LAUNCH_DARKLY_ENV:demo}
+    fixedDelayString: ${LD_REFRESH_DELAY:10000}
