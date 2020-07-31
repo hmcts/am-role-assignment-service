@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.LdFlagChecker;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.LDFlagChecker;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
@@ -27,7 +27,7 @@ public class QueryAssignmentController {
 
     private final QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator;
     @Autowired
-    private LdFlagChecker ldFlagChecker;
+    private LDFlagChecker ldFlagChecker;
     @Autowired
     private SecurityUtils securityUtils;
 
