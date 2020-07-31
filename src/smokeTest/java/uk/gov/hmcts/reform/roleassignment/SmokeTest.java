@@ -163,7 +163,6 @@ public class SmokeTest extends BaseTest {
     public void should_receive_response_for_add_role_assignment() throws IOException {
 
         String targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments";
-        String payload = fetchRequestBody();
         RestAssured.useRelaxedHTTPSValidation();
 
         Response response = SerenityRest
@@ -172,11 +171,11 @@ public class SmokeTest extends BaseTest {
             .header("Content-Type", "application/json")
             .header("ServiceAuthorization", "Bearer " + serviceAuth)
             .header("Authorization", "Bearer " + accessToken)
-            .body(payload)
+            .body("Hello")
             .when()
             .post(targetInstance)
             .andReturn();
-        response.then().assertThat().statusCode(HttpStatus.CREATED.value());
+        response.then().assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     private String fetchRequestBody() throws IOException {
