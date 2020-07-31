@@ -43,13 +43,20 @@ class PrepareResponseServiceTest {
     }
 
     @Test
+    void prepareCreateRoleResponse_Rejected() throws IOException {
+        ResponseEntity<Object> responseEntity =
+            prepareResponseService
+                .prepareCreateRoleResponse(TestDataBuilder.buildAssignmentRequest(Status.REJECTED, Status.LIVE, false));
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+    }
+
+    @Test
     void prepareRetrieveRoleResponse() throws Exception {
         ResponseEntity<Object> responseEntity =
             prepareResponseService
                 .prepareRetrieveRoleResponse((List<RoleAssignment>) TestDataBuilder
                     .buildRequestedRoleCollection(Status.LIVE),
                                              UUID.fromString("6b36bfc6-bb21-11ea-b3de-0242ac140004"));
-        //RoleAssignmentResource assignmentRequestResponse = (RoleAssignmentResource) responseEntity.getBody();
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }

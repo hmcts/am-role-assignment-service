@@ -259,11 +259,4 @@ class CreateRoleAssignmentOrchestratorTest {
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
-
-    // This test should be removed later
-    @Test
-    void sampleTest() {
-        String caseId = "1234567812345678";
-        assertEquals("1234567812345678", caseId);
-    }
 }

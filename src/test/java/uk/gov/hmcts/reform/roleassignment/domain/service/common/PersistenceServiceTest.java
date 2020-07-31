@@ -64,7 +64,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void persistRequest() throws IOException {
+    void persistRequest() {
         Request request = TestDataBuilder.buildRequest(Status.CREATED, false);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(request);
         when(persistenceUtil.convertRequestToEntity(request)).thenReturn(requestEntity);
@@ -77,7 +77,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void persistRequestToHistory() throws IOException {
+    void persistRequestToHistory() {
         Request request = TestDataBuilder.buildRequest(Status.CREATED, false);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(request);
         try {
@@ -108,9 +108,42 @@ class PersistenceServiceTest {
             assignmentRequest.getRequestedRoles().iterator().next(), assignmentRequest.getRequest());
 
         assertNotNull(historyEntityResult);
+        assertNotNull(assignmentRequest.getRequest().getId());
 
         assertEquals(assignmentRequest.getRequest().getId(), historyEntityResult.getRequestEntity().getId());
-        assertEquals(assignmentRequest.getRequestedRoles().iterator().next().getId(), historyEntityResult.getId());
+        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
+            assertEquals(requestedRole.getId(), historyEntityResult.getId());
+        }
+
+        verify(persistenceUtil, times(1)).convertRequestToEntity(any(Request.class));
+        verify(persistenceUtil, times(1)).convertRoleAssignmentToHistoryEntity(
+            any(RoleAssignment.class),any(RequestEntity.class));
+        verify(historyRepository, times(1)).save(any(HistoryEntity.class));
+    }
+
+    @Test
+    void persistHistory_NullRequestId() throws IOException {
+        AssignmentRequest assignmentRequest = TestDataBuilder
+            .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
+        assignmentRequest.getRequest().setId(null);
+        RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
+        HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
+            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
+
+        when(persistenceUtil.convertRequestToEntity(assignmentRequest.getRequest())).thenReturn(requestEntity);
+        when(persistenceUtil.convertRoleAssignmentToHistoryEntity(
+            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity)).thenReturn(historyEntity);
+        when(historyRepository.save(historyEntity)).thenReturn(historyEntity);
+
+        HistoryEntity historyEntityResult = sut.persistHistory(
+            assignmentRequest.getRequestedRoles().iterator().next(), assignmentRequest.getRequest());
+
+        assertNotNull(historyEntityResult);
+
+        assertEquals(assignmentRequest.getRequest().getId(), historyEntityResult.getRequestEntity().getId());
+        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
+            assertEquals(requestedRole.getId(), historyEntityResult.getId());
+        }
 
         verify(persistenceUtil, times(1)).convertRequestToEntity(any(Request.class));
         verify(persistenceUtil, times(1)).convertRoleAssignmentToHistoryEntity(
@@ -152,26 +185,6 @@ class PersistenceServiceTest {
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
         verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
     }
-
-    /*@Test
-    void getExistingRoleAssignment() throws IOException {
-        RoleAssignment requestedRole = TestDataBuilder.buildAssignmentRequest().getRequestedRoles().iterator().next();
-        Set<RoleAssignmentEntity> roleAssignmentEntities = new HashSet<>();
-        roleAssignmentEntities.add(TestDataBuilder.convertRoleAssignmentToEntity(requestedRole));
-        RoleAssignment existingRole = TestDataBuilder.convertRoleAssignmentEntityInModel(
-            roleAssignmentEntities.iterator().next());
-        UUID id = UUID.randomUUID();
-
-        when(roleAssignmentRepository.findByActorId(id)).thenReturn(roleAssignmentEntities);
-        when(persistenceUtil.convertRoleAssignmentEntityInModel(
-            roleAssignmentEntities.iterator().next())).thenReturn(existingRole);
-
-        sut.getExistingRoleAssignment(id);
-
-        verify(roleAssignmentRepository, times(1)).findByActorId(id);
-        verify(persistenceUtil, times(1)).convertRoleAssignmentEntityInModel(
-            roleAssignmentEntities.iterator().next());
-    }*/
 
     @Test
     void getActorCacheEntity() throws IOException {

@@ -1,17 +1,24 @@
 
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
+import java.io.IOException;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.LDFlagChecker;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
+import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 @Api(value = "roles")
@@ -19,10 +26,13 @@ import uk.gov.hmcts.reform.roleassignment.v1.V1;
 public class QueryAssignmentController {
 
     private final QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator;
+    @Autowired
+    private LDFlagChecker ldFlagChecker;
+    @Autowired
+    private SecurityUtils securityUtils;
 
     public QueryAssignmentController(QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator) {
         this.queryRoleAssignmentOrchestrator = queryRoleAssignmentOrchestrator;
-
     }
 
     @GetMapping(
@@ -74,5 +84,14 @@ public class QueryAssignmentController {
         @RequestParam(value = "roleType", required = true) String roleType) {
 
         return queryRoleAssignmentOrchestrator.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, roleType);
+    }
+
+    @GetMapping(path = "am/role-assignments/ld")
+    public ResponseEntity<Object> getIdLdDemo() throws IOException {
+        if (!ldFlagChecker
+            .verifyServiceAndFlag(securityUtils.getServiceName(), Constants.GET_LD_FLAG)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Constants.ENDPOINT_NOT_AVAILABLE);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("Launch Darkly flag check is successful");
     }
 }
