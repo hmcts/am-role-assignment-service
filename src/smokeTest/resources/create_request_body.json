@@ -3,7 +3,7 @@
     "assignerId": "3168da13-00b3-41e3-81fa-cbc71ac28a0f",
     "process": "S-038",
     "reference": "S-038",
-    "replaceExisting": true
+    "replaceExisting": false
   },
   "requestedRoles": [
     {
