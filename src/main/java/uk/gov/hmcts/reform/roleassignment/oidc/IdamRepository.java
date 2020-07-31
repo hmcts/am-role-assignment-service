@@ -91,7 +91,11 @@ public class IdamRepository {
             "4",
             ""
         );
+        log.info("****************IDAM Client details: ClientId " + tokenRequest.getClientId() + " ClientSecret:"
+                     + tokenRequest.getClientSecret() + " UserId:" + tokenRequest.getUsername() + " Password:"
+                     + tokenRequest.getPassword() + " Scope:" + tokenRequest.getScope());
         TokenResponse tokenResponse = idamApi.generateOpenIdToken(tokenRequest);
+        log.info("****************IDAM token :" + tokenResponse.accessToken);
         return tokenResponse.accessToken;
     }
 
