@@ -126,3 +126,4 @@ launchdarkly:
     testkey: ${LD_SDK_TEST_KEY:}
     prodkey: ${LD_SDK_PROD_KEY:}
     environment: ${LAUNCH_DARKLY_ENV:demo}
+    fixedDelayString: ${LD_REFRESH_DELAY:10000}

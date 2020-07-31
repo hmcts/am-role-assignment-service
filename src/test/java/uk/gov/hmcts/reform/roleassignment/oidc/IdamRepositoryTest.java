@@ -37,18 +37,8 @@ class IdamRepositoryTest {
                                                        oauth2Configuration);
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.initMocks(this);
-    }
-
-    @Test
-    void getUserInfo() {
-        idamRepository.getUserInfo("jwt");
-    }
-
-    @Test
-    void getUserByUserId() {
-        idamRepository.getUserByUserId("jwt", "userid");
     }
 
     @Test
