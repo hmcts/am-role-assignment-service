@@ -6,12 +6,14 @@ import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.LDClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Configuration;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
-@Component
+@Cacheable(cacheNames = "ldconfig")
+@Configuration
 @Slf4j
-public class LdFlagChecker {
+public class LDFlagChecker {
 
     @Value("${launchdarkly.sdk.environment}")
     private String environment;
