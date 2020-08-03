@@ -49,9 +49,10 @@ public class CreateRoleAssignmentService {
     private RequestEntity requestEntity;
     private Request incomingRequest;
     List<UUID> emptyUUIds = new ArrayList<>();
+    CreatedTimeComparator createdTimeComparator;
     Map<UUID, RoleAssignmentSubset> needToDeleteRoleAssignments;
     Set<RoleAssignmentSubset> needToCreateRoleAssignments;
-    Set<RoleAssignment> needToRetainRoleAssignments  = new HashSet<>();
+    Set<RoleAssignment> needToRetainRoleAssignments;
     private static final String LOG_MESSAGE = "Request has been rejected due to following assignment Ids :";
 
     public CreateRoleAssignmentService(ParseRequestService parseRequestService,
@@ -107,8 +108,10 @@ public class CreateRoleAssignmentService {
                     }
                 } else {
                     //It will delete existing records from db.
-                    deleteExistingRecordsWhenNeedToCreateEmpty(existingAssignmentRequest,
-                                                               parsedAssignmentRequest.getRequest());
+                    deleteExistingRecordsWhenNeedToCreateEmpty(
+                        existingAssignmentRequest,
+                        parsedAssignmentRequest.getRequest()
+                    );
                 }
 
             } else {
@@ -272,7 +275,7 @@ public class CreateRoleAssignmentService {
                                          AssignmentRequest parsedAssignmentRequest)
         throws InvocationTargetException, IllegalAccessException {
 
-
+        needToRetainRoleAssignments = new HashSet<>();
         // convert existing assignment records into role assignment subset
         Map<UUID, RoleAssignmentSubset> existingRecords = JacksonUtils.convertExistingRolesIntoSubSet(
             existingAssignmentRequest);
@@ -334,7 +337,7 @@ public class CreateRoleAssignmentService {
             needToDeleteRoleAssignments = existingRecords;
         } else if (commonRecords.isEmpty() && incomingRecords.isEmpty() && existingRecords.isEmpty()) {
             throw new UnprocessableEntityException("Create with replace existing can not be processed "
-                                                       + "without new assignment records");
+                                                       + "without existing and new assignment records");
         }
 
 
@@ -401,11 +404,11 @@ public class CreateRoleAssignmentService {
         return result;
     }
 
-    public void updateParseRequestWithNewCreateRoleAssignments(AssignmentRequest existingAssignmentRequest,
-                                                               AssignmentRequest parsedAssignmentRequest)
+    public void updateNewAssignments(AssignmentRequest existingAssignmentRequest,
+                                     AssignmentRequest parsedAssignmentRequest)
         throws IllegalAccessException, InvocationTargetException {
 
-        Set<RoleAssignment> newRoleAssignments = new HashSet<>();
+        List<RoleAssignment> newRoleAssignments = new ArrayList<>();
 
         for (RoleAssignment roleAssignment : parsedAssignmentRequest.getRequestedRoles()) {
             RoleAssignmentSubset roleAssignmentSubset = RoleAssignmentSubset.builder().build();
@@ -415,6 +418,8 @@ public class CreateRoleAssignmentService {
                 newRoleAssignments.add(roleAssignment);
             }
         }
+        newRoleAssignments.sort(createdTimeComparator);
+
 
         //replace parsedAssignmentRequest with new role assignments that need to be created
         parsedAssignmentRequest.setRequestedRoles(newRoleAssignments);
@@ -427,7 +432,7 @@ public class CreateRoleAssignmentService {
         }
     }
 
-    public void updateExistingAssignmentWithNewDeleteRoleAssignments(AssignmentRequest existingAssignmentRequest) {
+    public void updateExistingAssignments(AssignmentRequest existingAssignmentRequest) {
 
         List<RoleAssignment> roleAssignmentList = existingAssignmentRequest.getRequestedRoles().stream().filter(
             e -> needToDeleteRoleAssignments.containsKey(
@@ -452,7 +457,7 @@ public class CreateRoleAssignmentService {
             request.getReference(),
             Status.LIVE.toString()
         );
-        CreatedTimeComparator createdTimeComparator = new CreatedTimeComparator();
+        createdTimeComparator = new CreatedTimeComparator();
         existingAssignments.sort(createdTimeComparator);
         //create a new existing assignment request for delete records
         existingAssignmentRequest = new AssignmentRequest(new Request(), Collections.emptyList());
