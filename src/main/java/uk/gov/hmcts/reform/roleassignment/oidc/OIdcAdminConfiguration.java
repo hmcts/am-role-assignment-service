@@ -15,9 +15,9 @@ public class OIdcAdminConfiguration {
 
     @Autowired
     public OIdcAdminConfiguration(
-        @Value("${idam.admin.userId:}") String userId,
-        @Value("${idam.admin.password:}") String password,
-        @Value("${idam.admin.scope:}") String scope
+        @Value("${idam.client.admin.userId:}") String userId,
+        @Value("${idam.client.admin.password:}") String password,
+        @Value("${idam.client.admin.scope:}") String scope
     ) {
         this.userId = userId;
         this.password = password;
