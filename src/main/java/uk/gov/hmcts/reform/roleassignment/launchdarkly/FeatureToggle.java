@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 public class FeatureToggle {
     @Autowired
     private final LDClient ldClient;
-    private final String ldUserKey;
 
     @Value("${launchdarkly.sdk.environment}")
     private String environment;
@@ -18,10 +17,8 @@ public class FeatureToggle {
     private final String userName;
 
     @Autowired
-    public FeatureToggle(LDClient ldClient, @Value("${launchdarkly.sdk.user}") String ldUserKey,
-                         @Value("${launchdarkly.sdk.user}") String userName) {
+    public FeatureToggle(LDClient ldClient, @Value("${launchdarkly.sdk.user}") String userName) {
         this.ldClient = ldClient;
-        this.ldUserKey = ldUserKey;
         this.userName = userName;
     }
 
