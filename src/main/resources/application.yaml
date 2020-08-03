@@ -123,6 +123,6 @@ swaggerUrl: ${ROLE_ASSIGNMENT_SWAGGER_AM_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
 launchdarkly:
   sdk:
-    key: ${LD_SDK_KEY}
+    key: ${LD_SDK_KEY:}
     environment: ${LAUNCH_DARKLY_ENV:demo}
     user: am-${LAUNCH_DARKLY_ENV:local}
