@@ -8,7 +8,10 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
+import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
@@ -22,20 +25,37 @@ public class CreateRoleAssignmentOrchestrator {
     private ParseRequestService parseRequestService;
     private PrepareResponseService prepareResponseService;
     private CreateRoleAssignmentService createRoleAssignmentService;
+    private PersistenceService persistenceService;
+    private ValidationModelService validationModelService;
+    private PersistenceUtil persistenceUtil;
+
+
     Request request;
     RequestEntity requestEntity;
 
     public CreateRoleAssignmentOrchestrator(ParseRequestService parseRequestService,
                                             PrepareResponseService prepareResponseService,
-                                            CreateRoleAssignmentService createRoleAssignmentService) {
+                                            PersistenceService persistenceService,
+                                            ValidationModelService validationModelService,
+                                            PersistenceUtil persistenceUtil) {
         this.parseRequestService = parseRequestService;
         this.prepareResponseService = prepareResponseService;
-        this.createRoleAssignmentService = createRoleAssignmentService;
+        this.persistenceService = persistenceService;
+
+        this.validationModelService = validationModelService;
+        this.persistenceUtil = persistenceUtil;
     }
 
     public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) throws ParseException {
 
         AssignmentRequest existingAssignmentRequest = null;
+        createRoleAssignmentService = new CreateRoleAssignmentService(
+            parseRequestService,
+            persistenceService,
+            validationModelService,
+            persistenceUtil,
+            prepareResponseService
+        );
 
         //1. call parse request service
         AssignmentRequest parsedAssignmentRequest = parseRequestService
@@ -64,13 +84,13 @@ public class CreateRoleAssignmentOrchestrator {
 
                     //update the existingAssignmentRequest with Only need to be removed record
                     if (!createRoleAssignmentService.needToDeleteRoleAssignments.isEmpty()) {
-                        createRoleAssignmentService.updateExistingAssignmentWithNewDeleteRoleAssignments(
+                        createRoleAssignmentService.updateExistingAssignments(
                             existingAssignmentRequest);
                     }
 
                     //update the parsedAssignmentRequest with Only new record
                     if (!createRoleAssignmentService.needToCreateRoleAssignments.isEmpty()) {
-                        createRoleAssignmentService.updateParseRequestWithNewCreateRoleAssignments(
+                        createRoleAssignmentService.updateNewAssignments(
                             existingAssignmentRequest,
                             parsedAssignmentRequest
                         );
@@ -91,6 +111,16 @@ public class CreateRoleAssignmentOrchestrator {
                     createRoleAssignmentService.duplicateRequest(existingAssignmentRequest, parsedAssignmentRequest);
 
                 }
+
+                //8. Call the persistence to copy assignment records to RoleAssignmentLive table
+                if (!createRoleAssignmentService.needToCreateRoleAssignments.isEmpty()
+                    && createRoleAssignmentService.needToRetainRoleAssignments.size() > 0) {
+                    parsedAssignmentRequest.getRequestedRoles()
+                        .addAll(createRoleAssignmentService.needToRetainRoleAssignments);
+                } else if (createRoleAssignmentService.needToRetainRoleAssignments.size() > 0) {
+                    parsedAssignmentRequest.setRequestedRoles(createRoleAssignmentService.needToRetainRoleAssignments);
+                }
+
             } catch (InvocationTargetException | IllegalAccessException e) {
                 log.error("context", e);
             }
@@ -103,15 +133,6 @@ public class CreateRoleAssignmentOrchestrator {
         }
 
 
-        //8. Call the persistence to copy assignment records to RoleAssignmentLive table
-        if (!createRoleAssignmentService.needToCreateRoleAssignments.isEmpty()
-            && createRoleAssignmentService.needToRetainRoleAssignments.size() > 0) {
-            parsedAssignmentRequest.getRequestedRoles().addAll(createRoleAssignmentService.needToRetainRoleAssignments);
-        } else if (createRoleAssignmentService.needToRetainRoleAssignments.size() > 0) {
-            parsedAssignmentRequest.setRequestedRoles(createRoleAssignmentService.needToRetainRoleAssignments);
-        }
-
-
         ResponseEntity<Object> result = prepareResponseService.prepareCreateRoleResponse(parsedAssignmentRequest);
 
         parseRequestService.removeCorrelationLog();
@@ -120,7 +141,3 @@ public class CreateRoleAssignmentOrchestrator {
 
 
 }
-
-
-
-

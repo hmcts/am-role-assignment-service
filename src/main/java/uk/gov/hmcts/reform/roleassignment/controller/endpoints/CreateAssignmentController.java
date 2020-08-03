@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 
@@ -26,11 +26,12 @@ import java.text.ParseException;
 public class CreateAssignmentController {
 
     private static final Logger LOG = LoggerFactory.getLogger(CreateAssignmentController.class);
-    private CreateRoleAssignmentOrchestrator createRoleAssignmentService;
 
-    @Autowired
-    public CreateAssignmentController(CreateRoleAssignmentOrchestrator createRoleAssignmentService) {
-        this.createRoleAssignmentService = createRoleAssignmentService;
+
+    private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
+
+    public CreateAssignmentController(CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator) {
+        this.createRoleAssignmentOrchestrator = createRoleAssignmentOrchestrator;
     }
 
     //**************** Create Role Assignment  API ***************
@@ -61,7 +62,7 @@ public class CreateAssignmentController {
         @Validated
         @RequestBody(required = true) AssignmentRequest assignmentRequest) throws ParseException {
 
-        LOG.info("CreateAssignmentController : {}", createRoleAssignmentService);
-        return createRoleAssignmentService.createRoleAssignment(assignmentRequest);
+        LOG.info("CreateAssignmentController : {}", createRoleAssignmentOrchestrator);
+        return createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
     }
 }

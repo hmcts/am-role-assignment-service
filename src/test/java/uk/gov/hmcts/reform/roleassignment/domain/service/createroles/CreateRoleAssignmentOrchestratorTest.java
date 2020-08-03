@@ -1,43 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
-import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
-import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
-
 /*@RunWith(MockitoJUnitRunner.class)
 class CreateRoleAssignmentOrchestratorTest {
 
