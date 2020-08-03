@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.IdamClient;
 import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
@@ -32,23 +33,16 @@ class IdamRepositoryTest {
     @Mock
     private OAuth2Configuration oauth2Configuration = mock(OAuth2Configuration.class);
 
+    @Mock
+    private RestTemplate restTemplate = mock(RestTemplate.class);
+
     @InjectMocks
     IdamRepository idamRepository = new IdamRepository(idamClient, idamApi, oidcAdminConfiguration,
-                                                       oauth2Configuration);
+                                                       oauth2Configuration, restTemplate);
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.initMocks(this);
-    }
-
-    @Test
-    void getUserInfo() {
-        idamRepository.getUserInfo("jwt");
-    }
-
-    @Test
-    void getUserByUserId() {
-        idamRepository.getUserByUserId("jwt", "userid");
     }
 
     @Test
