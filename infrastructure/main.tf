@@ -92,15 +92,3 @@ resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
   value = "${module.role-assignment-db.postgresql_database}"
   key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
 }
-
-resource "azurerm_key_vault_secret" "LAUNCH_DARKLY_SDK_TEST_KEY" {
-  name = "${var.component}-LD-SDK-TEST-KEY"
-  value = "ldtestkey"
-  key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
-}
-
-resource "azurerm_key_vault_secret" "LAUNCH_DARKLY_SDK_PROD_KEY" {
-  name = "${var.component}-LD-SDK-PROD-KEY"
-  value = "ldProdKey"
-  key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
-}
