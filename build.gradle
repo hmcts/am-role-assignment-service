@@ -352,7 +352,7 @@ dependencies {
     exclude group: 'junit', module: 'junit'
   }
   testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '4.1.0-prerelease.1'
-  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.3.RELEASE'
+  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.4.RELEASE'
 
   testCompile (group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber) {
     exclude group: 'javascript' , module : 'jquery'
