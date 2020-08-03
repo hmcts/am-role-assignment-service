@@ -15,8 +15,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
@@ -27,8 +27,8 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -106,7 +106,8 @@ class ParseRequestServiceTest {
         when(correlationInterceptorUtilMock.preHandle(
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
         assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9d", sut.getCorrelationId());
-        verify(correlationInterceptorUtilMock, times(1)).preHandle(any(HttpServletRequest.class));
+        verify(correlationInterceptorUtilMock, times(1))
+            .preHandle(any(HttpServletRequest.class));
     }
 
     @Test
@@ -120,7 +121,37 @@ class ParseRequestServiceTest {
         when(correlationInterceptorUtilMock.preHandle(
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
 
-        Request builtReq = TestDataBuilder.buildRequest(CREATED);
+        Request builtReq = TestDataBuilder.buildRequest(CREATED, false);
+        Request result = sut.prepareDeleteRequest(builtReq.getProcess(), builtReq.getReference(),
+                                                  "21334a2b-79ce-44eb-9168-2d49a744be9d",
+                                                  "21334a2b-79ce-44eb-9168-2d49a744be9d"
+        );
+        builtReq.setRequestType(RequestType.DELETE);
+
+        assertEquals(clientId, result.getClientId());
+        assertEquals(userId.toString(), result.getAuthenticatedUserId().toString());
+        assertEquals(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9d"), result.getRoleAssignmentId());
+        assertEquals(builtReq.getStatus(), result.getStatus());
+        assertEquals(builtReq.getRequestType(), result.getRequestType());
+        assertEquals(builtReq.getProcess(), result.getProcess());
+        assertEquals(builtReq.getReference(), result.getReference());
+        assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9c", result.getAssignerId().toString());
+        assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9d", result.getCorrelationId());
+    }
+
+    @Test
+    void prepareDeleteRequest_AssignerIdHeader() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("assignerId", "21334a2b-79ce-44eb-9168-2d49a744be9c");
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        String clientId = "copied client id";
+        UUID userId = UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c");
+        when(securityUtilsMock.getServiceName()).thenReturn(clientId);
+        when(securityUtilsMock.getUserId()).thenReturn(userId.toString());
+        when(correlationInterceptorUtilMock.preHandle(
+            any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
+
+        Request builtReq = TestDataBuilder.buildRequest(CREATED, false);
         Request result = sut.prepareDeleteRequest(builtReq.getProcess(), builtReq.getReference(),
                                                   "21334a2b-79ce-44eb-9168-2d49a744be9d",
                                                   "21334a2b-79ce-44eb-9168-2d49a744be9d"
@@ -137,7 +168,35 @@ class ParseRequestServiceTest {
         assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9d", result.getCorrelationId());
     }
 
-    //@Test
+    @Test
+    void prepareDeleteRequest_InvalidAssignerIdHeader() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("assignerId", "21334a2b-79ce-44eb-9168-2d49a744be9");
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        String clientId = "copied client id";
+        String userId = "21334a2b-79ce-44eb-9168-2d49a744be9";
+        when(securityUtilsMock.getServiceName()).thenReturn(clientId);
+        when(securityUtilsMock.getUserId()).thenReturn(userId);
+        when(correlationInterceptorUtilMock.preHandle(
+            any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
+
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            sut.prepareDeleteRequest("p2", "p2",
+                                     "21334a2b-79ce-44eb-9168-2d49a744be9d",
+                                     "21334a2b-79ce-44eb-9168-2d49a744be9d");
+        });
+    }
+
+    @Test
+    void prepareDeleteRequest_InvalidUuid() throws Exception {
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            sut.prepareDeleteRequest("p2", "p2",
+                                     "21334a2b-79ce-44eb-9168-2d49a744be9",
+                                     "21334a2b-79ce-44eb-9168-2d49a744be9d");
+        });
+    }
+
+    @Test
     void parseRequest_CreateEndpoint_HappyPath() throws Exception {
 
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -150,9 +209,11 @@ class ParseRequestServiceTest {
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
 
         RequestType requestType = RequestType.CREATE;
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED);
-        doNothing().when(validationUtil).validateAssignmentRequest(assignmentRequest);
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, Status.LIVE, false);
         AssignmentRequest result = sut.parseRequest(assignmentRequest, requestType);
+
+        sut.removeCorrelationLog();
+
         assertNotNull(result);
         assertNotNull(result.getRequest());
         assertNotNull(result.getRequestedRoles());
@@ -161,16 +222,39 @@ class ParseRequestServiceTest {
         assertEquals(CREATED, result.getRequest().getStatus());
         assertEquals(requestType, result.getRequest().getRequestType());
         assertNotNull(result.getRequest().getCreated());
+        assertNotNull(result.getRequestedRoles());
+        assertTrue(result.getRequestedRoles().size() > 1);
 
-        RoleAssignment refRoleAssignment = assignmentRequest.getRequestedRoles().iterator().next();
         result.getRequestedRoles().forEach(requestedRole -> {
-            assertEquals(refRoleAssignment.getProcess(), requestedRole.getProcess());
-            assertEquals(refRoleAssignment.getReference(), requestedRole.getReference());
-            assertEquals(refRoleAssignment.getStatus(), requestedRole.getStatus());
-            assertEquals(refRoleAssignment.getStatusSequence(), requestedRole.getStatusSequence());
+            assertEquals(result.getRequest().getProcess(), requestedRole.getProcess());
+            assertEquals(result.getRequest().getReference(), requestedRole.getReference());
+            assertEquals(CREATED, requestedRole.getStatus());
+            assertEquals(CREATED.sequence, requestedRole.getStatusSequence());
+            assertNotNull(requestedRole.getCreated());
         });
         verify(securityUtilsMock, times(1)).getServiceName();
         verify(securityUtilsMock, times(1)).getUserId();
-        verify(correlationInterceptorUtilMock, times(1)).preHandle(any(HttpServletRequest.class));
+        verify(correlationInterceptorUtilMock, times(1))
+            .preHandle(any(HttpServletRequest.class));
+    }
+
+    @Test
+    void parseRequest_CreateEndpoint_ValidationFailAssignmentRequest() throws Exception {
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        String clientId = "copied client id";
+        UUID userId = UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c");
+        when(securityUtilsMock.getServiceName()).thenReturn(clientId);
+        when(securityUtilsMock.getUserId()).thenReturn(userId.toString());
+        when(correlationInterceptorUtilMock.preHandle(
+            any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
+
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, Status.LIVE, true);
+        assignmentRequest.getRequest().setProcess("");
+
+        Assertions.assertThrows(BadRequestException.class, () -> {
+            sut.parseRequest(assignmentRequest, RequestType.CREATE);
+        });
     }
 }
