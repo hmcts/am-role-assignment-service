@@ -28,7 +28,7 @@ public class IdamRoleService {
         List<String> roles = new ArrayList<>();
         ResponseEntity<Object> userDetails = idamRepository.searchUserByUserId(
             idamRepository.getManageUserToken(), userId);
-        if (userDetails != null) {
+        if (userDetails != null &&  !((ArrayList) userDetails.getBody()).isEmpty()) {
             userDetail = (LinkedHashMap<String,Object>)((ArrayList) userDetails.getBody()).get(0);
             id = userDetail.get("id").toString();
             roles = (List<String>)userDetail.get("roles");
