@@ -53,11 +53,11 @@ public class IdamRepository {
         return idamClient.getUserByUserId(BEARER + jwtToken, userId);
     }
 
-    public ResponseEntity<Object> searchUserByUserId(String jwtToken, String userId) {
+    public ResponseEntity<Object> searchUserByUserId(String jwtToken, String userIds) {
         ResponseEntity<Object> responseResult = new ResponseEntity<>(HttpStatus.OK);
         try {
             final HttpEntity<?> requestEntity = new HttpEntity<>(getHttpHeaders(jwtToken));
-            String searchUserByUserIdUrl = String.format("%s/api/v1/users?query=%s", idamUrl, userId);
+            String searchUserByUserIdUrl = String.format("%s/api/v1/users?query=%s", idamUrl, userIds);
             ResponseEntity<Object> response = restTemplate.exchange(
                 searchUserByUserIdUrl,
                 GET,

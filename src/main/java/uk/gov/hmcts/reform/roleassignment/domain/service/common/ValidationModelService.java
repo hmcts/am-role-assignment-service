@@ -3,8 +3,10 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
@@ -60,21 +62,23 @@ public class ValidationModelService {
     }
 
     public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) {
+        Request request = assignmentRequest.getRequest();
         facts.add(securityUtils.getUserRoles());
         Set<String> userIds = new HashSet<>();
-        if (!assignmentRequest.getRequest().getAssignerId().equals(
-            assignmentRequest.getRequest().getAuthenticatedUserId())) {
-            userIds.add(String.valueOf(assignmentRequest.getRequest().getAssignerId()));
+        if (!request.getAssignerId().equals(
+            request.getAuthenticatedUserId())) {
+            userIds.add(String.valueOf(request.getAssignerId()));
         }
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
             userIds.add(String.valueOf(requestedRole.getActorId()));
-
         }
-        for (String userId : userIds) {
-            if (userId != null) {
-                facts.add(idamRoleService.getUserRoles(userId));
-            }
+        String userRolesCommaSeparated = String.join(",", userIds);
+        Set<UserRoles> userRolesEntities = idamRoleService.getUserRoles(userRolesCommaSeparated);
 
+        for (UserRoles userRoles : userRolesEntities) {
+            if (userRoles.getUid() != null) {
+                facts.add(userRoles);
+            }
         }
     }
 

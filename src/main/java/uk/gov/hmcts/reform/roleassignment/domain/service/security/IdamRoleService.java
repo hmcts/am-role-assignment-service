@@ -7,8 +7,10 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
 import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -22,21 +24,25 @@ public class IdamRoleService {
     }
 
     @SuppressWarnings("unchecked")
-    public UserRoles getUserRoles(String userId) {
-        LinkedHashMap<String,Object> userDetail;
-        String id = null;
-        List<String> roles = new ArrayList<>();
-        ResponseEntity<Object> userDetails = idamRepository.searchUserByUserId(
-            idamRepository.getManageUserToken(), userId);
-        if (userDetails != null &&  !((ArrayList) userDetails.getBody()).isEmpty()) {
-            userDetail = (LinkedHashMap<String,Object>)((ArrayList) userDetails.getBody()).get(0);
-            id = userDetail.get("id").toString();
-            roles = (List<String>)userDetail.get("roles");
+    public Set<UserRoles> getUserRoles(String userIds) {
+        Set<UserRoles> userRolesEntities = new HashSet<>();
+        ResponseEntity<Object> userSearchResponse = idamRepository.searchUserByUserId(
+            idamRepository.getManageUserToken(), userIds);
+        if (userSearchResponse != null) {
+            ArrayList<Object> userDetailsResponse = ((ArrayList) userSearchResponse.getBody());
+            if (!userDetailsResponse.isEmpty()) {
+                for (int i = 0; i < userDetailsResponse.size(); i++) {
+                    LinkedHashMap<String, Object> userDetail =
+                        (LinkedHashMap<String, Object>) userDetailsResponse.get(i);
+                    String id = userDetail.get("id").toString();
+                    List<String> roles = (List<String>) userDetail.get("roles");
+                    userRolesEntities.add(UserRoles.builder()
+                                              .uid(id)
+                                              .roles(roles)
+                                              .build());
+                }
+            }
         }
-
-        return UserRoles.builder()
-            .uid(id)
-            .roles(roles)
-            .build();
+        return userRolesEntities;
     }
 }
