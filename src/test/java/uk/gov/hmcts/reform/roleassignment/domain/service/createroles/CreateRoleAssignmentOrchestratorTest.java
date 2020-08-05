@@ -93,10 +93,6 @@ class CreateRoleAssignmentOrchestratorTest {
 
         ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
         AssignmentRequest result = (AssignmentRequest) response.getBody();
-        //for (RoleAssignment requestedRole : result.getRequestedRoles()) {
-        //    assertEquals(Status.APPROVED, requestedRole.getStatus());
-        //}
-
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
 
