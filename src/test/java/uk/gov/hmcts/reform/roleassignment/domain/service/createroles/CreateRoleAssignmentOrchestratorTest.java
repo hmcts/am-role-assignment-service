@@ -1,6 +1,44 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
-/*@RunWith(MockitoJUnitRunner.class)
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
+import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
+
+@RunWith(MockitoJUnitRunner.class)
 class CreateRoleAssignmentOrchestratorTest {
 
     @Mock
@@ -15,13 +53,16 @@ class CreateRoleAssignmentOrchestratorTest {
     private PrepareResponseService prepareResponseService = mock(PrepareResponseService.class);
 
 
+
+
     @InjectMocks
     private CreateRoleAssignmentOrchestrator sut = new CreateRoleAssignmentOrchestrator(
         parseRequestService,
+        prepareResponseService,
         persistenceService,
         validationModelService,
-        persistenceUtil,
-        prepareResponseService, createRoleAssignmentService
+        persistenceUtil
+
     );
 
     @BeforeEach
@@ -107,12 +148,16 @@ class CreateRoleAssignmentOrchestratorTest {
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
 
-    //@Test
+    @Test
     void createRoleAssignment_ReplaceTrue_RejectRoleRequests() throws Exception {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(REJECTED, Status.LIVE,
                                                                                      false);
         assignmentRequest.getRequest().setReplaceExisting(true);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
+
+
+        HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
+            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
 
         when(persistenceService.getAssignmentsByProcess(anyString(),anyString(),anyString()))
             .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
@@ -120,12 +165,17 @@ class CreateRoleAssignmentOrchestratorTest {
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
             assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
+        when(persistenceService.persistHistory(any(RoleAssignment.class),any(Request.class))).thenReturn(historyEntity);
+        when(prepareResponseService.prepareCreateRoleResponse(any()))
+            .thenReturn(ResponseEntity.status(HttpStatus.FORBIDDEN).body(assignmentRequest));
 
         ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
-        Request result = (Request) response.getBody();
+        AssignmentRequest result = (AssignmentRequest) response.getBody();
 
-        assertEquals(assignmentRequest.getRequest(), result);
-        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertEquals(REJECTED, result.getRequest().getStatus());
+        assertEquals(assignmentRequest.getRequest(), result.getRequest());
+
 
         verify(parseRequestService, times(1))
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
@@ -133,6 +183,8 @@ class CreateRoleAssignmentOrchestratorTest {
             .persistRequest(any(Request.class));
         verify(persistenceService, times(1))
             .getAssignmentsByProcess(anyString(),anyString(),anyString());
+        verify(prepareResponseService, times(1))
+            .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
 
     @Test
@@ -222,4 +274,4 @@ class CreateRoleAssignmentOrchestratorTest {
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
-}*/
+}
