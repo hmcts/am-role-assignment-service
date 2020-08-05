@@ -154,7 +154,7 @@ public class CreateRoleAssignmentService {
     }
 
 
-    private void executeReplaceRequest(AssignmentRequest existingAssignmentRequest,
+    public void executeReplaceRequest(AssignmentRequest existingAssignmentRequest,
                                        AssignmentRequest parsedAssignmentRequest) {
         //delete existingAssignmentRequest.getRequestedRoles() records from live table--Hard delete
         deleteRecords(existingAssignmentRequest);
