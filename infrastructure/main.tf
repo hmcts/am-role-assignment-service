@@ -46,30 +46,6 @@ resource "azurerm_key_vault_secret" "am_role_assignment_service_s2s_secret" {
   key_vault_id = data.azurerm_key_vault.am_key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "IDAM-CLIENT-SECRET" {
-  name = "${var.component}-IDAM-CLIENT-SECRET"
-  value = "IDAM-CLIENT-SECRET"
-  key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
-}
-
-resource "azurerm_key_vault_secret" "IDAM-ADMIN-SECRET" {
-  name = "${var.component}-IDAM-ADMIN-SECRET"
-  value = "IDAM-ADMIN-SECRET"
-  key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
-}
-
-resource "azurerm_key_vault_secret" "LAUNCH_DARKLY_SDK_TEST_KEY" {
-  name = "${var.component}-LD-SDK-TEST-KEY"
-  value = "ldtestkey"
-  key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
-}
-
-resource "azurerm_key_vault_secret" "LAUNCH_DARKLY_SDK_PROD_KEY" {
-  name = "${var.component}-LD-SDK-PROD-KEY"
-  value = "ldProdKey"
-  key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
-}
-
 module "role-assignment-db" {
   source = "git@github.com:hmcts/cnp-module-postgres?ref=master"
   product = "${local.app_full_name}-postgres-db"
