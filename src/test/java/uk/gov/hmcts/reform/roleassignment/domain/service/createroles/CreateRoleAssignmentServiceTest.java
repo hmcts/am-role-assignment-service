@@ -229,11 +229,11 @@ class CreateRoleAssignmentServiceTest {
     @Test
     void duplicateRequest() throws IOException {
         inputForCheckAllDeleteApproved();
-        String LOG_MESSAGE = "Duplicate Request: Requested Assignments are already live.";
+        String msg = "Duplicate Request: Requested Assignments are already live.";
         incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(APPROVED, LIVE,
                                                                            false
         );
-        incomingAssignmentRequest.getRequest().setLog(LOG_MESSAGE);
+        incomingAssignmentRequest.getRequest().setLog(msg);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
             .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(incomingAssignmentRequest));
@@ -245,7 +245,7 @@ class CreateRoleAssignmentServiceTest {
 
         assertEquals(incomingAssignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(LOG_MESSAGE,result.getRequest().getLog() );
+        assertEquals(msg, result.getRequest().getLog());
 
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
