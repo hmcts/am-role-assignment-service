@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -28,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -82,8 +85,6 @@ class CreateRoleAssignmentServiceTest {
         Set<HistoryEntity> historyEntities = new HashSet<>();
 
         historyEntities.add(historyEntity);
-
-
 
 
         RoleAssignmentSubset roleAssignmentSubset = RoleAssignmentSubset.builder().build();
@@ -166,15 +167,10 @@ class CreateRoleAssignmentServiceTest {
 
 
         //assertion
-        /*  verify(persistenceService, times(5))
+        verify(persistenceService, times(5))
             .updateRequest(any(RequestEntity.class));
-
-        verify(persistenceService, times(2))
-            .deleteRoleAssignment(any(RoleAssignment.class));
-        verify(persistenceService, times(2))
-            .persistActorCache(any(RoleAssignment.class));
-        verify(persistenceService, times(2))
-            .persistHistory(any(RoleAssignment.class),any(Request.class));*/
+        verify(persistenceService, times(8))
+            .persistHistory(any(RoleAssignment.class), any(Request.class));
 
     }
 
@@ -218,7 +214,7 @@ class CreateRoleAssignmentServiceTest {
 
 
         //assertion
-          verify(persistenceService, times(3))
+        verify(persistenceService, times(3))
             .updateRequest(any(RequestEntity.class));
 
         verify(persistenceService, times(2))
@@ -226,8 +222,33 @@ class CreateRoleAssignmentServiceTest {
         verify(persistenceService, times(2))
             .persistActorCache(any(RoleAssignment.class));
         verify(persistenceService, times(4))
-            .persistHistory(any(RoleAssignment.class),any(Request.class));
+            .persistHistory(any(RoleAssignment.class), any(Request.class));
 
+    }
+
+    @Test
+    void duplicateRequest() throws IOException {
+        inputForCheckAllDeleteApproved();
+        String LOG_MESSAGE = "Duplicate Request: Requested Assignments are already live.";
+        incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(APPROVED, LIVE,
+                                                                           false
+        );
+        incomingAssignmentRequest.getRequest().setLog(LOG_MESSAGE);
+
+        when(prepareResponseService.prepareCreateRoleResponse(any()))
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(incomingAssignmentRequest));
+        sut.setRequestEntity(requestEntity);
+
+        //Call actual Method
+        ResponseEntity<Object> response = sut.duplicateRequest(existingAssignmentRequest, incomingAssignmentRequest);
+        AssignmentRequest result = (AssignmentRequest) response.getBody();
+
+        assertEquals(incomingAssignmentRequest, result);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(LOG_MESSAGE,result.getRequest().getLog() );
+
+        verify(prepareResponseService, times(1))
+            .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
 
 
@@ -244,91 +265,5 @@ class CreateRoleAssignmentServiceTest {
             existingAssignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
     }
 
-    @Test
-    void createNewAssignmentRecords() {
-    }
 
-    @Test
-    void persistInitialRequest() {
-    }
-
-    @Test
-    void hasAssignmentsUpdated() {
-    }
-
-    @Test
-    void duplicateRequest() {
-    }
-
-    @Test
-    void updateNewAssignments() {
-    }
-
-    @Test
-    void updateExistingAssignments() {
-    }
-
-    @Test
-    void retrieveExistingAssignments() {
-    }
-
-    @Test
-    void checkAllApproved() {
-    }
-
-    @Test
-    void getParseRequestService() {
-    }
-
-    @Test
-    void getPersistenceService() {
-    }
-
-    @Test
-    void getValidationModelService() {
-    }
-
-    @Test
-    void getPersistenceUtil() {
-    }
-
-    @Test
-    void getPrepareResponseService() {
-    }
-
-    @Test
-    void getRequestEntity() {
-    }
-
-    @Test
-    void setCreatedTimeComparator() {
-    }
-
-    @Test
-    void setNeedToDeleteRoleAssignments() {
-    }
-
-    @Test
-    void setNeedToCreateRoleAssignments() {
-    }
-
-    @Test
-    void setNeedToRetainRoleAssignments() {
-    }
-
-    @Test
-    void testEquals() {
-    }
-
-    @Test
-    void canEqual() {
-    }
-
-    @Test
-    void testHashCode() {
-    }
-
-    @Test
-    void testToString() {
-    }
 }
