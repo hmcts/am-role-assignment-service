@@ -85,8 +85,13 @@ public class QueryAssignmentController {
         return queryRoleAssignmentOrchestrator.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, roleType);
     }
 
-    @GetMapping(path = "/am/role-assignments/ld")
-    public ResponseEntity<Object> getIdLdDemo() {
-        return ResponseEntity.status(HttpStatus.OK).body("Launch Darkly flag check is successful");
+    @GetMapping(path = "/am/role-assignments/ld/endpoint1")
+    public ResponseEntity<Object> getIdLdDemo1() {
+        return ResponseEntity.status(HttpStatus.OK).body("Launch Darkly flag check is successful for endpoint 1");
+    }
+
+    @GetMapping(path = "/am/role-assignments/ld/endpoint2")
+    public ResponseEntity<Object> getIdLdDemo2() {
+        return ResponseEntity.status(HttpStatus.OK).body("Launch Darkly flag check is successful for endpoint 2");
     }
 }
