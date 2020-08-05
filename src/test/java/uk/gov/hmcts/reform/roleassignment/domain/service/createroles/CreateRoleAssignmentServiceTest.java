@@ -37,6 +37,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 
 class CreateRoleAssignmentServiceTest {
 
@@ -174,6 +175,58 @@ class CreateRoleAssignmentServiceTest {
             .persistActorCache(any(RoleAssignment.class));
         verify(persistenceService, times(2))
             .persistHistory(any(RoleAssignment.class),any(Request.class));*/
+
+    }
+
+    @Test
+    void executeReplaceRequest() throws IOException, ParseException {
+
+        inputForCheckAllDeleteApproved();
+        incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, LIVE,
+                                                                           false
+        );
+        Set<HistoryEntity> historyEntities = new HashSet<>();
+
+        historyEntities.add(historyEntity);
+
+        Map<UUID, RoleAssignmentSubset> needToDeleteRoleAssignments = new HashMap<>();
+        Set<RoleAssignmentSubset> needToCreateRoleAssignments = new HashSet<>();
+
+        RoleAssignmentSubset roleAssignmentSubset = RoleAssignmentSubset.builder().build();
+        needToDeleteRoleAssignments.put(UUID.randomUUID(), roleAssignmentSubset);
+        needToCreateRoleAssignments.add(roleAssignmentSubset);
+
+        requestEntity.setHistoryEntities(historyEntities);
+        sut.setRequestEntity(requestEntity);
+        sut.setNeedToDeleteRoleAssignments(needToDeleteRoleAssignments);
+        sut.setNeedToCreateRoleAssignments(needToCreateRoleAssignments);
+
+        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
+            .thenReturn((List<RoleAssignment>) existingAssignmentRequest.getRequestedRoles());
+
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
+            existingAssignmentRequest);
+        when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
+        when(persistenceService.persistHistory(
+            any(RoleAssignment.class),
+            any(Request.class)
+        )).thenReturn(historyEntity);
+
+
+        //Call actual Method
+        sut.executeReplaceRequest(existingAssignmentRequest, incomingAssignmentRequest);
+
+
+        //assertion
+          verify(persistenceService, times(3))
+            .updateRequest(any(RequestEntity.class));
+
+        verify(persistenceService, times(2))
+            .deleteRoleAssignment(any(RoleAssignment.class));
+        verify(persistenceService, times(2))
+            .persistActorCache(any(RoleAssignment.class));
+        verify(persistenceService, times(4))
+            .persistHistory(any(RoleAssignment.class),any(Request.class));
 
     }
 
