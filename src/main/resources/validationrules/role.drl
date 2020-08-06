@@ -29,10 +29,6 @@ $request        : Request(requestType == RequestType.CREATE)
                   RoleAssignment($requestedRole.getGrantType().toString() == $grantTypeObj.asText() )
                   $roleTypeObj : JsonNode() from $data["RoleType"]
                   RoleAssignment($requestedRole.getRoleType().toString() == $roleTypeObj.asText() )
-                  $attributesEntry : JsonNode() from $data["Attributes"]
-                  $attributeObj : JsonNode() from $attributesEntry
-                  $Obj1 : JsonNode() from $attributeObj
-                  RoleAssignment(attributes["region"] == $Obj1)
 
 
 then
