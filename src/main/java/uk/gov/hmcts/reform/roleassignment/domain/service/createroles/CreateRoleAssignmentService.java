@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -155,7 +154,7 @@ public class CreateRoleAssignmentService {
 
 
     public void executeReplaceRequest(AssignmentRequest existingAssignmentRequest,
-                                       AssignmentRequest parsedAssignmentRequest) {
+                                      AssignmentRequest parsedAssignmentRequest) {
         //delete existingAssignmentRequest.getRequestedRoles() records from live table--Hard delete
         deleteRecords(existingAssignmentRequest);
 
@@ -315,8 +314,8 @@ public class CreateRoleAssignmentService {
     }
 
     void identifyRoleAssignments(Map<UUID, RoleAssignmentSubset> existingRecords,
-                                         Set<RoleAssignmentSubset> incomingRecords,
-                                         Map<UUID, RoleAssignmentSubset> commonRecords) {
+                                 Set<RoleAssignmentSubset> incomingRecords,
+                                 Map<UUID, RoleAssignmentSubset> commonRecords) {
         // initialize  needToCreateRoleAssignment & needToDeleteRoleAssignment
         needToCreateRoleAssignments = new HashSet<>();
         needToDeleteRoleAssignments = new HashMap<>();
