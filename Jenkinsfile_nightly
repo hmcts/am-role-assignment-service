@@ -40,12 +40,14 @@ def vaultOverrides = [
 withNightlyPipeline(type, product, component) {
   /*enableSlackNotifications('#am-role-assignment-service-builds')*/
 
+  env.TEST_URL = "http://localhost:4096"
   env.IDAM_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   env.Rules = params.SecurityRules
 
 
   overrideVaultEnvironments(vaultOverrides)
+  loadVaultSecrets(secrets)
 
   enableMutationTest()
   enableSecurityScan()
