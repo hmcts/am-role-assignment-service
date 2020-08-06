@@ -92,11 +92,11 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             assertEquals(
                 ROLE_ASSIGNMENT_ID,
                 response.getRoleAssignmentResponse().get(0).getId().toString()
-                        );
+            );
             assertEquals(
                 ACTOR_ID,
                 response.getRoleAssignmentResponse().get(0).getActorId().toString()
-                        );
+            );
         }
     }
 
@@ -125,11 +125,11 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             assertEquals(
                 ROLE_ASSIGNMENT_ID,
                 response.get(0).getId().toString()
-                        );
+            );
             assertEquals(
                 ACTOR_ID,
                 response.get(0).getActorId().toString()
-                        );
+            );
         }
     }
 
@@ -158,11 +158,11 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             assertEquals(
                 ROLE_ASSIGNMENT_ID,
                 response.get(0).getId().toString()
-                        );
+            );
             assertEquals(
                 ACTOR_ID,
                 response.get(0).getActorId().toString()
-                        );
+            );
         }
     }
 
@@ -183,19 +183,19 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         assertEquals(
             2,
             jsonResonse.size()
-                    );
+        );
         assertEquals(
             "judge",
             jsonResonse.get(0).get("name").asText()
-                    );
+        );
         assertEquals(
             "Judicial office holder able to do judicial case work",
             jsonResonse.get(0).get("description").asText()
-                    );
+        );
         assertEquals(
             "JUDICIAL",
             jsonResonse.get(0).get("category").asText()
-                    );
+        );
     }
 
     private void assertRoleAssignmentRecordSize() {
