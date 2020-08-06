@@ -18,4 +18,5 @@ VALUES('44276b66-11eb-42f5-a4dc-510fec18b0fb', 'IDAM', '123e4567-e89b-42d3-a456-
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-VALUES('ee7254d3-749b-4ed7-aec1-93d3191f3f9f', 'IDAM', '123e4567-e89b-42d3-a456-556642445615', 'ORGANISATION', 'judge', 'PUBLIC', 'STANDARD', NULL, true, '2021-01-01 12:00:00.000', '2022-01-01 11:00:00.000', '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-25 12:32:07.116');
+VALUES('2ef8ebf3-266e-45d3-a3b8-4ce1e5d93b9f', 'IDAM', '123e4567-e89b-42d3-a456-556642445612', 'CASE', 'judge', 'PUBLIC', 'SPECIFIC', 'JUDICIAL', false, '2021-08-01 00:00:00.000', '2022-01-01 00:00:00.000', '{"caseId": "1234567890123456", "region": "south-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-07-24 15:05:01.988');
+
