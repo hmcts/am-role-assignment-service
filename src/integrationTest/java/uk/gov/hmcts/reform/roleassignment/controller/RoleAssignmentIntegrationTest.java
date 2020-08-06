@@ -1,5 +1,13 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+import javax.inject.Inject;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jetbrains.annotations.NotNull;
@@ -19,14 +27,6 @@ import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 
-import javax.inject.Inject;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 public class RoleAssignmentIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentIntegrationTest.class);
@@ -34,7 +34,8 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
 
     private static final String GET_ASSIGNMENT_STATUS_QUERY = "SELECT actor_id FROM role_assignment where id = ?";
     private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445612";
-    private transient MockMvc mockMvc;
+    public static final String ROLE_ASSIGNMENT_ID = "2ef8ebf3-266e-45d3-a3b8-4ce1e5d93b9f";
+    private MockMvc mockMvc;
 
     private JdbcTemplate template;
 
@@ -53,7 +54,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         "classpath:sql/insert_role_assignment_request.sql",
         "classpath:sql/insert_role_assignment_history.sql"
     })
-    public void shouldGetRecordCountFromHistoryTable() throws Exception {
+    public void shouldGetRecordCountFromHistoryTable() {
         final int count = template.queryForObject(COUNT_HISTORY_RECORDS_QUERY, Integer.class);
         logger.info(" Total number of records fetched from role assignment history table...{}", count);
         assertEquals(
@@ -62,14 +63,14 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
-    public void shouldGetRecordsFromRoleAssignmentTable() throws Exception {
+    public void shouldGetRecordsFromRoleAssignmentTable() {
         assertRoleAssignmentRecordSize();
     }
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
         {"classpath:sql/insert_role_assignment.sql",
-            "classpath:sql/insert_actor_cache_control.sql"})
+         "classpath:sql/insert_actor_cache_control.sql"})
     public void shouldGetRoleAssignmentsBasedOnActorId() throws Exception {
         assertRoleAssignmentRecordSize();
         final String url = "/am/role-assignments/actors/" + ACTOR_ID;
@@ -77,25 +78,25 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         final MvcResult result = mockMvc.perform(get(url)
                                                      .contentType(JSON_CONTENT_TYPE)
                                                      .headers(getHttpHeaders()))
-            .andExpect(status().is(200))
-            .andReturn();
+                                        .andExpect(status().is(200))
+                                        .andReturn();
 
         RoleAssignmentResource response = mapper.readValue(
             result.getResponse().getContentAsString(),
             RoleAssignmentResource.class
-        );
+                                                          );
 
         assertNotNull(response.getRoleAssignmentResponse());
         if (!response.getRoleAssignmentResponse().isEmpty()) {
             assertEquals(1, response.getRoleAssignmentResponse().size());
             assertEquals(
-                "2ef8ebf3-266e-45d3-a3b8-4ce1e5d93b9f",
+                ROLE_ASSIGNMENT_ID,
                 response.getRoleAssignmentResponse().get(0).getId().toString()
-            );
+                        );
             assertEquals(
                 ACTOR_ID,
                 response.getRoleAssignmentResponse().get(0).getActorId().toString()
-            );
+                        );
         }
     }
 
@@ -110,9 +111,9 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
                                                      .headers(getHttpHeaders())
                                                      .param("roleType", "case")
                                                      .param("actorId", ACTOR_ID)
-        )
-            .andExpect(status().is(200))
-            .andReturn();
+                                                )
+                                        .andExpect(status().is(200))
+                                        .andReturn();
         String responseAsString = result.getResponse().getContentAsString();
 
         List<RoleAssignment> response = mapper.readValue(responseAsString, new TypeReference<>() {
@@ -122,13 +123,13 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         if (!response.isEmpty()) {
             assertEquals(1, response.size());
             assertEquals(
-                "2ef8ebf3-266e-45d3-a3b8-4ce1e5d93b9f",
+                ROLE_ASSIGNMENT_ID,
                 response.get(0).getId().toString()
-            );
+                        );
             assertEquals(
                 ACTOR_ID,
                 response.get(0).getActorId().toString()
-            );
+                        );
         }
     }
 
@@ -144,9 +145,9 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
                                                      .headers(getHttpHeaders())
                                                      .param("roleType", "case")
                                                      .param("caseId", "1234567890123456")
-        )
-            .andExpect(status().is(200))
-            .andReturn();
+                                                )
+                                        .andExpect(status().is(200))
+                                        .andReturn();
         String responseAsString = result.getResponse().getContentAsString();
 
         List<RoleAssignment> response = mapper.readValue(responseAsString, new TypeReference<>() {
@@ -155,13 +156,13 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         if (!response.isEmpty()) {
             assertEquals(1, response.size());
             assertEquals(
-                "2ef8ebf3-266e-45d3-a3b8-4ce1e5d93b9f",
+                ROLE_ASSIGNMENT_ID,
                 response.get(0).getId().toString()
-            );
+                        );
             assertEquals(
                 ACTOR_ID,
                 response.get(0).getActorId().toString()
-            );
+                        );
         }
     }
 
@@ -172,9 +173,9 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         final MvcResult result = mockMvc.perform(get(url)
                                                      .contentType(MediaType.APPLICATION_JSON)
                                                      .headers(getHttpHeaders())
-        )
-            .andExpect(status().is(200))
-            .andReturn();
+                                                )
+                                        .andExpect(status().is(200))
+                                        .andReturn();
         String response = result.getResponse().getContentAsString();
 
         JsonNode jsonResonse = mapper.readValue(response, JsonNode.class);
@@ -182,24 +183,24 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         assertEquals(
             2,
             jsonResonse.size()
-        );
+                    );
         assertEquals(
             "judge",
             jsonResonse.get(0).get("name").asText()
-        );
+                    );
         assertEquals(
             "Judicial office holder able to do judicial case work",
             jsonResonse.get(0).get("description").asText()
-        );
+                    );
         assertEquals(
             "JUDICIAL",
             jsonResonse.get(0).get("category").asText()
-        );
+                    );
     }
 
     private void assertRoleAssignmentRecordSize() {
-        final Object[] assignmentId = new Object[]{
-            "2ef8ebf3-266e-45d3-a3b8-4ce1e5d93b9f"
+        final Object[] assignmentId = new Object[] {
+            ROLE_ASSIGNMENT_ID
         };
         String actorId = template.queryForObject(GET_ASSIGNMENT_STATUS_QUERY, assignmentId, String.class);
         logger.info(" Role assignment actor id is...{}", actorId);
