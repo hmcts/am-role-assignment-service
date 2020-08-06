@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -7,6 +8,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -250,6 +253,91 @@ class CreateRoleAssignmentServiceTest {
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
+
+    @Test
+    void checkAllApproved() throws IOException {
+
+        incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, APPROVED,
+                                                                           false
+        );
+        existingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, APPROVED,
+                                                                           false
+        );
+        //prepare request entity
+        requestEntity = TestDataBuilder.buildRequestEntity(existingAssignmentRequest.getRequest());
+
+        sut.setRequestEntity(requestEntity);
+
+        //build history entity
+        historyEntity = TestDataBuilder.buildHistoryIntoEntity(
+            existingAssignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
+
+        //set history entity into request entity
+        Set<HistoryEntity> historyEntities = new HashSet<>();
+        historyEntities.add(historyEntity);
+        requestEntity.setHistoryEntities(historyEntities);
+
+        when(persistenceUtil.convertHistoryEntityToRoleAssignment(any(HistoryEntity.class)))
+            .thenReturn(existingAssignmentRequest.getRequestedRoles().iterator().next());
+        when(persistenceService.persistHistory(
+            any(RoleAssignment.class),
+            any(Request.class)
+        )).thenReturn(historyEntity);
+
+
+        //actual method call
+        sut.checkAllApproved(incomingAssignmentRequest);
+
+        //assertion
+        verify(persistenceService, times(2))
+            .updateRequest(any(RequestEntity.class));
+
+        verify(persistenceService, times(1))
+            .persistActorCache(any(RoleAssignment.class));
+        verify(persistenceService, times(2))
+            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(persistenceService, times(1))
+            .persistRoleAssignment(any(RoleAssignment.class));
+
+
+    }
+
+    @Test
+    void identifyRoleAssignments_ForIncomingRequest(){
+
+        Map<UUID, RoleAssignmentSubset> existingRecords = new HashMap<>();
+        Set<RoleAssignmentSubset> incomingRecords = new HashSet<>();
+        Map<UUID, RoleAssignmentSubset> commonRecords = new HashMap<>();
+        RoleAssignmentSubset roleAssignmentSubset =  RoleAssignmentSubset.builder().build();
+        incomingRecords.add(roleAssignmentSubset);
+        sut.identifyRoleAssignments(existingRecords,incomingRecords,commonRecords);
+        assertEquals(incomingRecords, sut.needToCreateRoleAssignments);
+
+
+    }
+
+    @Test
+    void identifyRoleAssignments_ForExistingRequest(){
+        Map<UUID, RoleAssignmentSubset> existingRecords = new HashMap<>();
+        Set<RoleAssignmentSubset> incomingRecords = new HashSet<>();
+        Map<UUID, RoleAssignmentSubset> commonRecords = new HashMap<>();
+        RoleAssignmentSubset roleAssignmentSubset =  RoleAssignmentSubset.builder().build();
+        existingRecords.put(UUID.randomUUID(),roleAssignmentSubset);
+        sut.identifyRoleAssignments(existingRecords,incomingRecords,commonRecords);
+        assertEquals(existingRecords, sut.needToDeleteRoleAssignments);
+    }
+
+    @Test
+    void identifyRoleAssignments_ThrowUnprocessableEntityException(){
+        Map<UUID, RoleAssignmentSubset> existingRecords = new HashMap<>();
+        Set<RoleAssignmentSubset> incomingRecords = new HashSet<>();
+        Map<UUID, RoleAssignmentSubset> commonRecords = new HashMap<>();
+        Assertions.assertThrows(UnprocessableEntityException.class, () -> {
+            sut.identifyRoleAssignments(existingRecords,incomingRecords,commonRecords);
+        });
+    }
+
+
 
 
     private void inputForCheckAllDeleteApproved() throws IOException {

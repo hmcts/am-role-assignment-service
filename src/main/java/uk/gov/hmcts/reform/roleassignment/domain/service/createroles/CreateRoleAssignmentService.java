@@ -314,7 +314,7 @@ public class CreateRoleAssignmentService {
 
     }
 
-    private void identifyRoleAssignments(Map<UUID, RoleAssignmentSubset> existingRecords,
+     void identifyRoleAssignments(Map<UUID, RoleAssignmentSubset> existingRecords,
                                          Set<RoleAssignmentSubset> incomingRecords,
                                          Map<UUID, RoleAssignmentSubset> commonRecords) {
         // initialize  needToCreateRoleAssignment & needToDeleteRoleAssignment
@@ -527,7 +527,7 @@ public class CreateRoleAssignmentService {
 
         // Update request status to approved
         parsedAssignmentRequest.getRequest().setStatus(Status.APPROVED);
-        requestEntity.setLog(incomingRequest.getLog());
+        requestEntity.setLog(parsedAssignmentRequest.getRequest().getLog());
         requestEntity.setStatus(Status.APPROVED.toString());
         persistenceService.updateRequest(requestEntity);
     }
