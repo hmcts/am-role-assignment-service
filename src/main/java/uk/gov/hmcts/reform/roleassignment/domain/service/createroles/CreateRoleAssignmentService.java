@@ -314,7 +314,7 @@ public class CreateRoleAssignmentService {
 
     }
 
-     void identifyRoleAssignments(Map<UUID, RoleAssignmentSubset> existingRecords,
+    void identifyRoleAssignments(Map<UUID, RoleAssignmentSubset> existingRecords,
                                          Set<RoleAssignmentSubset> incomingRecords,
                                          Map<UUID, RoleAssignmentSubset> commonRecords) {
         // initialize  needToCreateRoleAssignment & needToDeleteRoleAssignment

@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
@@ -73,15 +72,15 @@ class CreateRoleAssignmentServiceTest {
     );
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IOException {
         MockitoAnnotations.initMocks(this);
+        prepareInput();
     }
 
 
     @Test
     void checkAllDeleteApproved_WhenDeleteExistingRecords() throws IOException, ParseException {
 
-        inputForCheckAllDeleteApproved();
         incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, DELETE_APPROVED,
                                                                            false
         );
@@ -133,7 +132,6 @@ class CreateRoleAssignmentServiceTest {
     @Test
     void checkAllDeleteApproved_whenExecuteReplaceRequest() throws IOException, ParseException {
 
-        inputForCheckAllDeleteApproved();
         incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, APPROVED,
                                                                            false
         );
@@ -178,9 +176,9 @@ class CreateRoleAssignmentServiceTest {
     }
 
     @Test
-    void executeReplaceRequest() throws IOException, ParseException {
+    void check_ExecuteReplaceRequest() throws IOException, ParseException {
 
-        inputForCheckAllDeleteApproved();
+
         incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, LIVE,
                                                                            false
         );
@@ -212,7 +210,7 @@ class CreateRoleAssignmentServiceTest {
         )).thenReturn(historyEntity);
 
 
-        //Call actual Method
+        // actual Method call
         sut.executeReplaceRequest(existingAssignmentRequest, incomingAssignmentRequest);
 
 
@@ -230,8 +228,8 @@ class CreateRoleAssignmentServiceTest {
     }
 
     @Test
-    void duplicateRequest() throws IOException {
-        inputForCheckAllDeleteApproved();
+    void check_DuplicateRequest() throws IOException {
+
         String msg = "Duplicate Request: Requested Assignments are already live.";
         incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(APPROVED, LIVE,
                                                                            false
@@ -246,6 +244,7 @@ class CreateRoleAssignmentServiceTest {
         ResponseEntity<Object> response = sut.duplicateRequest(existingAssignmentRequest, incomingAssignmentRequest);
         AssignmentRequest result = (AssignmentRequest) response.getBody();
 
+        //assertion
         assertEquals(incomingAssignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(msg, result.getRequest().getLog());
@@ -255,7 +254,7 @@ class CreateRoleAssignmentServiceTest {
     }
 
     @Test
-    void checkAllApproved() throws IOException {
+    void checkAllApproved_ByDrool() throws IOException {
 
         incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, APPROVED,
                                                                            false
@@ -303,49 +302,55 @@ class CreateRoleAssignmentServiceTest {
     }
 
     @Test
-    void identifyRoleAssignments_ForIncomingRequest(){
+    void identifyRoleAssignments_FromIncomingRequest() {
 
         Map<UUID, RoleAssignmentSubset> existingRecords = new HashMap<>();
         Set<RoleAssignmentSubset> incomingRecords = new HashSet<>();
         Map<UUID, RoleAssignmentSubset> commonRecords = new HashMap<>();
-        RoleAssignmentSubset roleAssignmentSubset =  RoleAssignmentSubset.builder().build();
+        RoleAssignmentSubset roleAssignmentSubset = RoleAssignmentSubset.builder().build();
         incomingRecords.add(roleAssignmentSubset);
-        sut.identifyRoleAssignments(existingRecords,incomingRecords,commonRecords);
+
+        //actual method call
+        sut.identifyRoleAssignments(existingRecords, incomingRecords, commonRecords);
+
+        //assertion
         assertEquals(incomingRecords, sut.needToCreateRoleAssignments);
 
 
     }
 
     @Test
-    void identifyRoleAssignments_ForExistingRequest(){
+    void identifyRoleAssignments_FromExistingRequest() {
         Map<UUID, RoleAssignmentSubset> existingRecords = new HashMap<>();
         Set<RoleAssignmentSubset> incomingRecords = new HashSet<>();
         Map<UUID, RoleAssignmentSubset> commonRecords = new HashMap<>();
-        RoleAssignmentSubset roleAssignmentSubset =  RoleAssignmentSubset.builder().build();
-        existingRecords.put(UUID.randomUUID(),roleAssignmentSubset);
-        sut.identifyRoleAssignments(existingRecords,incomingRecords,commonRecords);
+        RoleAssignmentSubset roleAssignmentSubset = RoleAssignmentSubset.builder().build();
+        existingRecords.put(UUID.randomUUID(), roleAssignmentSubset);
+
+        //actual method call
+        sut.identifyRoleAssignments(existingRecords, incomingRecords, commonRecords);
+
+        //assertion
         assertEquals(existingRecords, sut.needToDeleteRoleAssignments);
+        assertEquals(existingRecords.values(), sut.needToDeleteRoleAssignments.values());
     }
 
     @Test
-    void identifyRoleAssignments_ThrowUnprocessableEntityException(){
+    void identifyRoleAssignments_ThrowUnprocessableEntityException() {
         Map<UUID, RoleAssignmentSubset> existingRecords = new HashMap<>();
         Set<RoleAssignmentSubset> incomingRecords = new HashSet<>();
         Map<UUID, RoleAssignmentSubset> commonRecords = new HashMap<>();
         Assertions.assertThrows(UnprocessableEntityException.class, () -> {
-            sut.identifyRoleAssignments(existingRecords,incomingRecords,commonRecords);
+            sut.identifyRoleAssignments(existingRecords, incomingRecords, commonRecords);
         });
     }
 
 
-
-
-    private void inputForCheckAllDeleteApproved() throws IOException {
+    private void prepareInput() throws IOException {
         existingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, DELETE_APPROVED,
                                                                            false
         );
 
-        existingAssignmentRequest.getRequest().setReplaceExisting(true);
         requestEntity = TestDataBuilder.buildRequestEntity(existingAssignmentRequest.getRequest());
 
 
