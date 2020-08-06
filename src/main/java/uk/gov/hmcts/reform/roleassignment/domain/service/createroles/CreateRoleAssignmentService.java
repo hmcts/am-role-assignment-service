@@ -303,7 +303,7 @@ public class CreateRoleAssignmentService {
 
     private Map<UUID, RoleAssignmentSubset> findCommonRoleAssignments(Map<UUID,
         RoleAssignmentSubset> existingRecords, Set<RoleAssignmentSubset> incomingRecords) {
-        Map<UUID, RoleAssignmentSubset> commonRoleAssignments = new Hashtable<>();
+        Map<UUID, RoleAssignmentSubset> commonRoleAssignments = new HashMap<>();
         existingRecords.forEach((K, V) -> {
             if (incomingRecords.contains(V)) {
                 commonRoleAssignments.put(K, V);
