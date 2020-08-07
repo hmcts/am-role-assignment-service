@@ -29,7 +29,6 @@ public class CreateRoleAssignmentOrchestrator {
     private ValidationModelService validationModelService;
     private PersistenceUtil persistenceUtil;
 
-
     Request request;
     RequestEntity requestEntity;
 
@@ -77,50 +76,22 @@ public class CreateRoleAssignmentOrchestrator {
 
             // compare identical existing and incoming requested roles based on some attributes
             try {
-                if (createRoleAssignmentService.hasAssignmentsUpdated(
-                    existingAssignmentRequest,
-                    parsedAssignmentRequest
-                )) {
-
-                    //update the existingAssignmentRequest with Only need to be removed record
-                    if (!createRoleAssignmentService.needToDeleteRoleAssignments.isEmpty()) {
-                        createRoleAssignmentService.updateExistingAssignments(
-                            existingAssignmentRequest);
-                    }
-
-                    //update the parsedAssignmentRequest with Only new record
-                    if (!createRoleAssignmentService.needToCreateRoleAssignments.isEmpty()) {
-                        createRoleAssignmentService.updateNewAssignments(
-                            existingAssignmentRequest,
-                            parsedAssignmentRequest
-                        );
-
-
-                    } else {
-                        parsedAssignmentRequest.setRequestedRoles(Collections.emptyList());
-
-                    }
-
-                    //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
-                    createRoleAssignmentService.checkAllDeleteApproved(
-                        existingAssignmentRequest,
-                        parsedAssignmentRequest
-                    );
+                if (createRoleAssignmentService.hasAssignmentsUpdated(existingAssignmentRequest,
+                    parsedAssignmentRequest)) {
+                    identifyAssignmentsToBeUpdated(existingAssignmentRequest, parsedAssignmentRequest);
 
                 } else {
                     createRoleAssignmentService.duplicateRequest(existingAssignmentRequest, parsedAssignmentRequest);
-
                 }
 
                 //8. Call the persistence to copy assignment records to RoleAssignmentLive table
                 if (!createRoleAssignmentService.needToCreateRoleAssignments.isEmpty()
-                    && createRoleAssignmentService.needToRetainRoleAssignments.size() > 0) {
+                    && !createRoleAssignmentService.needToRetainRoleAssignments.isEmpty()) {
                     parsedAssignmentRequest.getRequestedRoles()
                         .addAll(createRoleAssignmentService.needToRetainRoleAssignments);
-                } else if (createRoleAssignmentService.needToRetainRoleAssignments.size() > 0) {
+                } else if (!createRoleAssignmentService.needToRetainRoleAssignments.isEmpty()) {
                     parsedAssignmentRequest.setRequestedRoles(createRoleAssignmentService.needToRetainRoleAssignments);
                 }
-
             } catch (InvocationTargetException | IllegalAccessException e) {
                 log.error("context", e);
             }
@@ -131,13 +102,32 @@ public class CreateRoleAssignmentOrchestrator {
             createRoleAssignmentService.checkAllApproved(parsedAssignmentRequest);
 
         }
-
-
         ResponseEntity<Object> result = prepareResponseService.prepareCreateRoleResponse(parsedAssignmentRequest);
 
         parseRequestService.removeCorrelationLog();
         return result;
     }
 
+    private void identifyAssignmentsToBeUpdated(AssignmentRequest existingAssignmentRequest,
+                                                AssignmentRequest parsedAssignmentRequest)
+        throws IllegalAccessException, InvocationTargetException {
+        //update the existingAssignmentRequest with Only need to be removed record
+        if (!createRoleAssignmentService.needToDeleteRoleAssignments.isEmpty()) {
+            createRoleAssignmentService.updateExistingAssignments(
+                existingAssignmentRequest);
+        }
 
+        //update the parsedAssignmentRequest with Only new record
+        if (!createRoleAssignmentService.needToCreateRoleAssignments.isEmpty()) {
+            createRoleAssignmentService.updateNewAssignments(
+                existingAssignmentRequest,
+                parsedAssignmentRequest);
+
+        } else {
+            parsedAssignmentRequest.setRequestedRoles(Collections.emptyList());
+        }
+
+        //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
+        createRoleAssignmentService.checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
+    }
 }

@@ -27,8 +27,7 @@ public class CreateAssignmentController {
 
     private static final Logger LOG = LoggerFactory.getLogger(CreateAssignmentController.class);
 
-
-    private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
+    private final CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
 
     public CreateAssignmentController(CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator) {
         this.createRoleAssignmentOrchestrator = createRoleAssignmentOrchestrator;

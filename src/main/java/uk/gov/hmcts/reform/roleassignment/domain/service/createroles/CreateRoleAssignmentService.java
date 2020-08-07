@@ -1,5 +1,16 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
@@ -21,18 +32,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelS
 import uk.gov.hmcts.reform.roleassignment.util.CreatedTimeComparator;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Data
@@ -93,10 +92,7 @@ public class CreateRoleAssignmentService {
                         .collect(Collectors.toList());
 
                     if (createApprovedAssignments.size() == parsedAssignmentRequest.getRequestedRoles().size()) {
-
                         executeReplaceRequest(existingAssignmentRequest, parsedAssignmentRequest);
-
-
                     } else {
                         List<UUID> rejectedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()
                             .filter(role -> role.getStatus().equals(
@@ -143,10 +139,8 @@ public class CreateRoleAssignmentService {
         request.setStatus(Status.REJECTED);
         requestEntity.setStatus(Status.REJECTED.toString());
         if (!rejectedAssignmentIds.isEmpty()) {
-            requestEntity.setLog(LOG_MESSAGE
-                                     + rejectedAssignmentIds.toString());
-            request.setLog(LOG_MESSAGE
-                               + rejectedAssignmentIds.toString());
+            requestEntity.setLog(LOG_MESSAGE + rejectedAssignmentIds.toString());
+            request.setLog(LOG_MESSAGE + rejectedAssignmentIds.toString());
         }
 
         persistenceService.updateRequest(requestEntity);
@@ -248,9 +242,9 @@ public class CreateRoleAssignmentService {
         for (RoleAssignment requestedAssignment : assignmentRequest.getRequestedRoles()) {
             requestedAssignment.setRequest(assignmentRequest.getRequest());
             if (!rejectedAssignmentIds.isEmpty()
-                && (status.equals(Status.REJECTED)
-                || status.equals(Status.DELETE_REJECTED))
-                && (requestedAssignment.getStatus().equals(Status.APPROVED)
+                && (status.equals(Status.REJECTED) || status.equals(Status.DELETE_REJECTED))
+                &&
+                (requestedAssignment.getStatus().equals(Status.APPROVED)
                 || requestedAssignment.getStatus().equals(Status.CREATED)
                 || requestedAssignment.getStatus().equals(Status.DELETE_APPROVED))) {
                 requestedAssignment.setLog(
@@ -259,10 +253,8 @@ public class CreateRoleAssignmentService {
             }
             requestedAssignment.setStatus(status);
             // persist history in db
-            HistoryEntity entity = persistenceService.persistHistory(
-                requestedAssignment,
-                assignmentRequest.getRequest()
-            );
+            HistoryEntity entity = persistenceService.persistHistory(requestedAssignment,
+                assignmentRequest.getRequest());
             requestedAssignment.setId(entity.getId());
             requestEntity.getHistoryEntities().add(entity);
         }
@@ -296,21 +288,18 @@ public class CreateRoleAssignmentService {
 
         // prepare tempList from incoming requested roles
         return !needToDeleteRoleAssignments.isEmpty() || !needToCreateRoleAssignments.isEmpty();
-
-
     }
 
     private Map<UUID, RoleAssignmentSubset> findCommonRoleAssignments(Map<UUID,
         RoleAssignmentSubset> existingRecords, Set<RoleAssignmentSubset> incomingRecords) {
         Map<UUID, RoleAssignmentSubset> commonRoleAssignments = new HashMap<>();
-        existingRecords.forEach((K, V) -> {
-            if (incomingRecords.contains(V)) {
-                commonRoleAssignments.put(K, V);
+        existingRecords.forEach((key, value) -> {
+            if (incomingRecords.contains(value)) {
+                commonRoleAssignments.put(key, value);
             }
         });
 
         return commonRoleAssignments;
-
     }
 
     void identifyRoleAssignments(Map<UUID, RoleAssignmentSubset> existingRecords,
@@ -322,8 +311,14 @@ public class CreateRoleAssignmentService {
 
 
         if (!commonRecords.isEmpty() && !incomingRecords.isEmpty() && !existingRecords.isEmpty()) {
-            needToDeleteRoleAssignments = existingRecords.entrySet().stream().filter(e -> !(e.getValue().equals(
-                commonRecords.get(e.getKey())))).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            needToDeleteRoleAssignments =
+                existingRecords.entrySet().stream()
+                               .filter(roleAssignmentSubsetEntry ->
+                                           !(roleAssignmentSubsetEntry.getValue()
+                                                                      .equals(commonRecords.get(
+                                                                                      roleAssignmentSubsetEntry
+                                                                                          .getKey()))))
+                               .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             needToCreateRoleAssignments = findCreateRoleAssignments(incomingRecords, commonRecords);
 
@@ -338,8 +333,6 @@ public class CreateRoleAssignmentService {
             throw new UnprocessableEntityException("Create with replace existing can not be processed "
                                                        + "without existing and new assignment records");
         }
-
-
     }
 
     private Set<RoleAssignmentSubset> findCreateRoleAssignments(Set<RoleAssignmentSubset> incomingRecords,
@@ -425,7 +418,7 @@ public class CreateRoleAssignmentService {
 
         if (needToDeleteRoleAssignments.isEmpty()
             && existingAssignmentRequest != null
-            && existingAssignmentRequest.getRequestedRoles().size() > 0) {
+            && !existingAssignmentRequest.getRequestedRoles().isEmpty()) {
             needToRetainRoleAssignments.addAll(existingAssignmentRequest.getRequestedRoles());
 
         }
@@ -438,9 +431,7 @@ public class CreateRoleAssignmentService {
                 e.getId())).collect(Collectors.toList());
 
         needToRetainRoleAssignments = existingAssignmentRequest.getRequestedRoles().stream()
-            .filter(e -> !roleAssignmentList.contains(
-                e)).collect(
-                Collectors.toSet());
+            .filter(e -> !roleAssignmentList.contains(e)).collect(Collectors.toSet());
 
         existingAssignmentRequest.setRequestedRoles(roleAssignmentList);
         //validation
@@ -459,9 +450,7 @@ public class CreateRoleAssignmentService {
         createdTimeComparator = new CreatedTimeComparator();
         existingAssignments.sort(createdTimeComparator);
         //create a new existing assignment request for delete records
-        existingAssignmentRequest = new AssignmentRequest(new Request(), Collections.emptyList());
-        existingAssignmentRequest.setRequest(parsedAssignmentRequest.getRequest());
-        existingAssignmentRequest.setRequestedRoles(existingAssignments);
+        existingAssignmentRequest = new AssignmentRequest(parsedAssignmentRequest.getRequest(), existingAssignments);
         return existingAssignmentRequest;
     }
 
@@ -472,30 +461,21 @@ public class CreateRoleAssignmentService {
 
         // we are mocking delete rejected status
         checkDeleteApproved(existingAssignmentRequest);
-
-
     }
 
     public void checkAllApproved(AssignmentRequest parsedAssignmentRequest) {
 
         // decision block
         List<RoleAssignment> createApprovedAssignments = parsedAssignmentRequest.getRequestedRoles().stream()
-            .filter(role -> role.getStatus().equals(
-                Status.APPROVED)).collect(
-                Collectors.toList());
+            .filter(role -> role.getStatus().equals(Status.APPROVED)).collect(Collectors.toList());
 
         if (createApprovedAssignments.size() == parsedAssignmentRequest.getRequestedRoles().size()) {
             executeCreateRequest(parsedAssignmentRequest);
-
-
         } else {
             List<UUID> rejectedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()
-                .filter(role -> role.getStatus().equals(
-                    Status.REJECTED)).map(RoleAssignment::getId).collect(
+                .filter(role -> role.getStatus().equals(Status.REJECTED)).map(RoleAssignment::getId).collect(
                     Collectors.toList());
             rejectCreateRequest(parsedAssignmentRequest, rejectedAssignmentIds);
-
-
         }
     }
 
