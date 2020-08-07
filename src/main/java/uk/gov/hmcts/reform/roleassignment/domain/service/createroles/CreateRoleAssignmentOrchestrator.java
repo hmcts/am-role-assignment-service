@@ -93,6 +93,7 @@ public class CreateRoleAssignmentOrchestrator {
                     parsedAssignmentRequest.setRequestedRoles(createRoleAssignmentService.needToRetainRoleAssignments);
                 }
             } catch (InvocationTargetException | IllegalAccessException e) {
+                // Don't throw the exception, as we need to build the response as Http:201
                 log.error("context", e);
             }
 
