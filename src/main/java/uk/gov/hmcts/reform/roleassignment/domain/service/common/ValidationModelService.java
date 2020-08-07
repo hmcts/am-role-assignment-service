@@ -72,9 +72,10 @@ public class ValidationModelService {
         }
         for (String userId : userIds) {
             if (userId != null) {
-                //facts.add(idamRoleService.getUserRoles(userId));
+                //remove the below getter later
+                idamRoleService.getUserRoles(userId);
+                //facts.add(idamRoleService.getUserRoles(userId))
             }
-
         }
     }
 
