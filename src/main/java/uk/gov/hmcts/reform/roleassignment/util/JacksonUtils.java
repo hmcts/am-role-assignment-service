@@ -1,5 +1,17 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,18 +27,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 @Named
 @Singleton
@@ -59,7 +59,7 @@ public class JacksonUtils {
         return MAPPER.convertValue(from, JsonNode.class);
     }
 
-    public static final TypeReference<HashMap<String, JsonNode>> getHashMapTypeReference() {
+    public static TypeReference<HashMap<String, JsonNode>> getHashMapTypeReference() {
         return new TypeReference<HashMap<String, JsonNode>>() {
         };
     }
@@ -80,14 +80,14 @@ public class JacksonUtils {
     }
 
     //Find Subset for Existing  Records
-    public static Map<UUID,RoleAssignmentSubset> convertExistingRolesIntoSubSet(AssignmentRequest assignmentRequest)
+    public static Map<UUID, RoleAssignmentSubset> convertExistingRolesIntoSubSet(AssignmentRequest assignmentRequest)
         throws InvocationTargetException, IllegalAccessException {
         RoleAssignmentSubset subset = null;
-        Map<UUID,RoleAssignmentSubset> roleAssignmentSubsets = new HashMap<>();
+        Map<UUID, RoleAssignmentSubset> roleAssignmentSubsets = new HashMap<>();
         for (RoleAssignment roleAssignment : assignmentRequest.getRequestedRoles()) {
             subset = RoleAssignmentSubset.builder().build();
             BeanUtils.copyProperties(subset, roleAssignment);
-            roleAssignmentSubsets.put(roleAssignment.getId(),subset);
+            roleAssignmentSubsets.put(roleAssignment.getId(), subset);
         }
 
         return roleAssignmentSubsets;
