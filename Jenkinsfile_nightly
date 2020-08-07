@@ -19,6 +19,7 @@ def component = "role-assignment-service"
 
 def secrets = [
   's2s-${env}': [
+    secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
     secret('microservicekey-am-role-assignment-service', 'S2S_SECRET')
   ]
 ]
