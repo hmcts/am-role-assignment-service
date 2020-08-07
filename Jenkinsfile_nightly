@@ -73,4 +73,11 @@ withNightlyPipeline(type, product, component) {
   enableMutationTest()
   enableSecurityScan()
   enableFullFunctionalTest()
+
+  after('functionalTest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/cucumber/**/*'
+  }
+  after('functionalTest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/cucumber/**/*'
+  }
 }
