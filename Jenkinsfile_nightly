@@ -41,9 +41,11 @@ def vaultOverrides = [
 withNightlyPipeline(type, product, component) {
   /*enableSlackNotifications('#am-role-assignment-service-builds')*/
 
+  env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
   env.TEST_URL = "http://am-role-assignment-service-aat.service.core-compute-aat.internal"
   env.IDAM_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+  env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-pr-922.service.core-compute-preview.internal"
   env.BEFTA_S2S_CLIENT_ID = "am_role_assignment_service"
   env.Rules = params.SecurityRules
 
