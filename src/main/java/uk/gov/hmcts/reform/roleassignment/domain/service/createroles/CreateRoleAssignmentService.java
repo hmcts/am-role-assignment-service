@@ -341,10 +341,9 @@ public class CreateRoleAssignmentService {
         Set<RoleAssignmentSubset> needToCreateRoleAssignment = new HashSet<>();
         Set<RoleAssignmentSubset> commonRecordsSet = commonRecords.values().stream().collect(Collectors.toSet());
 
-        incomingRecords.forEach((K) -> {
-            if (!commonRecordsSet.contains(K)) {
-                needToCreateRoleAssignment.add(K);
-
+        incomingRecords.forEach(key -> {
+            if (!commonRecordsSet.contains(key)) {
+                needToCreateRoleAssignment.add(key);
             }
         });
 
