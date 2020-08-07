@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
@@ -28,6 +29,7 @@ import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstant
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.INVALID_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.RESOURCE_NOT_FOUND;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.UNKNOWN_EXCEPTION;
+import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.UNPROCESSABLE_ENTITY;
 
 @Slf4j
 @RestControllerAdvice(basePackages = "uk.gov.hmcts.reform.roleassignment")
@@ -163,6 +165,18 @@ public class RoleAssignmentControllerAdvice {
             HttpStatus.INTERNAL_SERVER_ERROR,
             UNKNOWN_EXCEPTION.getErrorCode(),
             UNKNOWN_EXCEPTION.getErrorMessage()
+        );
+    }
+
+    @ExceptionHandler(UnprocessableEntityException.class)
+    protected ResponseEntity<Object> handleUnProcessableEntityExcepton(
+        HttpServletRequest request,
+        Exception exeception) {
+        return errorDetailsResponseEntity(
+            exeception,
+            HttpStatus.UNPROCESSABLE_ENTITY,
+            UNPROCESSABLE_ENTITY.getErrorCode(),
+            UNPROCESSABLE_ENTITY.getErrorMessage()
         );
     }
 
