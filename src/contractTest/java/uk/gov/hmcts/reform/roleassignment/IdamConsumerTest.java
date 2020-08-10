@@ -32,23 +32,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class IdamConsumerTest {
 
     private static final String IDAM_OPEN_ID_TOKEN_URL = "/o/token";
-    private static final String IDAM_GET_USER_URL = "/api/v1/users";
-    private static final String ACCESS_TOKEN = "Bearer eyJ0eXAiOiJKV1QiLCJ6aXAiOiJOT05FIiwia2lkIjoiMWVyMFdSd2dJT1RBRm9"
-        + "qRTRyQy9mYmVLdTNJPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJhZG1pbi5yZWZkYXRhQGhtY3RzLm5ldCIsImN0cyI6Ik9BVVRIMl9"
-        + "TVEFURUxFU1NfR1JBTlQiLCJhdXRoX2xldmVsIjowLCJhdWRpdFRyYWNraW5nSWQiOiJhYjhlM2VlNi02ZjE1LTQ1MjItOTQzNC0yYzY"
-        + "0ZGJmZDcwYzAtMTEwMDY3NzUiLCJpc3MiOiJodHRwczovL2Zvcmdlcm9jay1hbS5zZXJ2aWNlLmNvcmUtY29tcHV0ZS1pZGFtLWFhdDI"
-        + "uaW50ZXJuYWw6ODQ0My9vcGVuYW0vb2F1dGgyL2htY3RzIiwidG9rZW5OYW1lIjoiYWNjZXNzX3Rva2VuIiwidG9rZW5fdHlwZSI6IkJ"
-        + "lYXJlciIsImF1dGhHcmFudElkIjoiSkVXSW1DejlZSHUybk9SNmF1SHJnWWdNS2dzIiwiYXVkIjoicmQtcHJvZmVzc2lvbmFsLWFwaSI"
-        + "sIm5iZiI6MTU5MjkwMzI4NCwiZ3JhbnRfdHlwZSI6InBhc3N3b3JkIiwic2NvcGUiOlsib3BlbmlkIiwicHJvZmlsZSIsInJvbGVzIiw"
-        + "iY3JlYXRlLXVzZXIiLCJtYW5hZ2UtdXNlciIsInNlYXJjaC11c2VyIl0sImF1dGhfdGltZSI6MTU5MjkwMzI4NCwicmVhbG0iOiIvaG1"
-        + "jdHMiLCJleHAiOjE1OTI5MzIwODQsImlhdCI6MTU5MjkwMzI4NCwiZXhwaXJlc19pbiI6Mjg4MDAsImp0aSI6Ii1vQmU1bWhSaGRzX2d"
-        + "qemZFWXlmRzgyNzNDTSJ9.VUAKkB2sPaZAYUEKOhkN5JWtCXKAjHB5Y016eRqGzCXaKWqdm2T6FLTz-51YGfGPh4OW0wGdzCNUW7FUZx"
-        + "OUVnRgkNtI-74f7l_zlLOSO1xGa1xhP0PJ1OZNrCB2jEwO31b6bwLhD_JPaIEIaWu727pU9v1DTrjpBcUSCN1vGeZN0o9iVuPLcMVUYi"
-        + "24YcsjDFhNp9j6S3elqCvZcH8pwhXXUZ2lvCsV9k86gEC-9rwX49Zi2xw_e_xxSHz6KMkjM8_-lPu3RyayiELfQwhjXeGDJJm4adquoh"
-        + "WJkL0YXBdgiHmHDGfuaoUVfDQ5R-g4eOtYkAUo8cOePO_PScURig";
-    private static final String FORE_NAME = "forename";
-    private static final String SUR_NAME = "surname";
-    private static final String ROLES = "roles";
 
 
     @Pact(provider = "Idam_api", consumer = "am_role_assignment_service__idam_api")
