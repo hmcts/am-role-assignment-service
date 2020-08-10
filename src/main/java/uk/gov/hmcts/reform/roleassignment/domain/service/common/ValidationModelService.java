@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import lombok.extern.slf4j.Slf4j;
 import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class ValidationModelService {
     //1. retrieve existingRoleAssignment records for Assignee
     //2. retrieve existingRoleAssignment records for Requester
@@ -72,8 +74,7 @@ public class ValidationModelService {
         }
         for (String userId : userIds) {
             if (userId != null) {
-                //remove the below getter later
-                idamRoleService.getUserRoles(userId);
+                log.info("Getting user Roles");
                 //facts.add(idamRoleService.getUserRoles(userId))
             }
         }
