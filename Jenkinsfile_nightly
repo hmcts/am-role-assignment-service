@@ -62,7 +62,6 @@ withNightlyPipeline(type, product, component) {
   env.BEFTA_RESPONSE_HEADER_CHECK_POLICY = "JUST_WARN"
   env.OAUTH2_SCOPE_VARIABLES = "openid%20profile%20roles%20authorities"
   env.IDAM_CLIENT_ID="am_role_assignment"
-  env.IDAM_CLIENT_SECRET="***REMOVED***"
   env.OPENID_SCOPE_VARIABLES = "openid+profile+roles+authorities"
 
   env.Rules = params.SecurityRules
