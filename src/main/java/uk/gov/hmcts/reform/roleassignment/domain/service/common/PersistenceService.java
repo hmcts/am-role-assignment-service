@@ -65,8 +65,6 @@ public class PersistenceService {
     public void updateRequest(RequestEntity requestEntity) {
         //Persist the request entity
         requestRepository.save(requestEntity);
-
-
     }
 
 
