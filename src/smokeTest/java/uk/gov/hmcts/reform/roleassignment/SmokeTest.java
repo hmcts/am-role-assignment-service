@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import io.restassured.RestAssured;
@@ -9,27 +7,20 @@ import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
-import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
-@ExtendWith(SpringExtension.class)
+@RunWith(SpringIntegrationSerenityRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @NoArgsConstructor
-@TestPropertySource(locations = "classpath:application-smoke.yaml")
 public class SmokeTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(SmokeTest.class);
@@ -79,7 +70,7 @@ public class SmokeTest extends BaseTest {
         response.then().assertThat().body("errorMessage", Matchers.equalTo("Resource not found"));
     }
 
-/*    @Test
+    @Test
     public void should_receive_response_for_get_static_roles() {
 
         String targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments/roles";
@@ -193,13 +184,6 @@ public class SmokeTest extends BaseTest {
             .post(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
-    }*/
-
-    private String fetchRequestBody() throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("create_request_body.json").getFile());
-        FileInputStream fileInputStream = new FileInputStream(file);
-        return IOUtils.toString(fileInputStream, "UTF-8");
     }
 
 }

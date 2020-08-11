@@ -24,9 +24,6 @@ class EvaluateLaunchDarklyFlag implements ExecutionCondition {
     private static final ConditionEvaluationResult DISABLED = ConditionEvaluationResult
         .disabled("Feature Flag is disabled");
 
-    @Autowired
-    ApplicationContext context;
-
     @Override
     public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
         SmokeTest test = (SmokeTest) context.getTestInstance().get();
