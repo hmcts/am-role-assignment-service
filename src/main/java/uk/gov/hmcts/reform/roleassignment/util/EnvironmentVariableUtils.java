@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment;
+package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.apache.commons.lang3.Validate;
 

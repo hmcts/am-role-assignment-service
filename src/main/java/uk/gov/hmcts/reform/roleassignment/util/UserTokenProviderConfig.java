@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment;
+package uk.gov.hmcts.reform.roleassignment.util;
 
 import lombok.Getter;
 import uk.gov.hmcts.reform.idam.client.models.TokenRequest;

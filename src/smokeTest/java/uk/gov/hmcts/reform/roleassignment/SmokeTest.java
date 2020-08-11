@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import uk.gov.hmcts.reform.roleassignment.util.UserTokenProviderConfig;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.io.File;
