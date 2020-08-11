@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FeatureToggle {
+public class FeatureToggleService {
 
     @Autowired
     private final LDClient ldClient;
@@ -23,7 +23,7 @@ public class FeatureToggle {
     private Map<String, String> launchDarklyMap;
 
     @Autowired
-    public FeatureToggle(LDClient ldClient, @Value("${launchdarkly.sdk.user}") String userName) {
+    public FeatureToggleService(LDClient ldClient, @Value("${launchdarkly.sdk.user}") String userName) {
         this.ldClient = ldClient;
         this.userName = userName;
     }

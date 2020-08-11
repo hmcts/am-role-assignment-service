@@ -1,0 +1,5 @@
+launchdarkly:
+  sdk:
+    key: ${LD_SDK_KEY:sdk-1be5f18b-59fd-4575-aa77-908bf0ecceab}
+    environment: ${LAUNCH_DARKLY_ENV:demo}
+    user: am-${LAUNCH_DARKLY_ENV:local}

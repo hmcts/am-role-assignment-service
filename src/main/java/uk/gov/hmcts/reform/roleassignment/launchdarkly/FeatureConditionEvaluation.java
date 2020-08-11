@@ -14,7 +14,7 @@ import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 public class FeatureConditionEvaluation implements HandlerInterceptor {
 
     @Autowired
-    FeatureToggle featureToggleService;
+    FeatureToggleService featureToggleService;
 
     @Autowired
     private SecurityUtils securityUtils;
