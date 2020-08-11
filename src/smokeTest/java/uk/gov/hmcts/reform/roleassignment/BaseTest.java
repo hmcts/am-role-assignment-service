@@ -5,12 +5,12 @@ import feign.jackson.JacksonEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
-import org.springframework.http.MediaType;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
@@ -24,9 +24,9 @@ public class BaseTest {
 
     private static final Logger log = LoggerFactory.getLogger(BaseTest.class);
 
-    RestTemplate restTemplate = new RestTemplate();
+    static RestTemplate restTemplate = new RestTemplate();
 
-    public ServiceAuthorisationApi generateServiceAuthorisationApi(final String s2sUrl) {
+    public static ServiceAuthorisationApi generateServiceAuthorisationApi(final String s2sUrl) {
         return Feign.builder()
                     .encoder(new JacksonEncoder())
                     .contract(new SpringMvcContract())
@@ -40,7 +40,8 @@ public class BaseTest {
         return new ServiceAuthTokenGenerator(secret, microService, serviceAuthorisationApi);
     }
 
-    public String searchUserByUserId(UserTokenProviderConfig config) {
+
+    public static String searchUserByUserId(UserTokenProviderConfig config) {
         TokenRequest request = config.prepareTokenRequest();
         ResponseEntity<TokenResponse> response = new ResponseEntity<>(HttpStatus.OK);
         HttpHeaders headers = new HttpHeaders();
@@ -53,8 +54,8 @@ public class BaseTest {
                 request.getGrantType(),
                 request.getScope(),
                 request.getUsername(),
-                request.getPassword()
-            );
+                request.getPassword());
+
             log.info("URL :   {}", url);
             headers.setContentType(MediaType.parseMediaType(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
             HttpEntity<?> entity = new HttpEntity<>(headers);
@@ -62,8 +63,7 @@ public class BaseTest {
                 url,
                 HttpMethod.POST,
                 entity,
-                TokenResponse.class
-            );
+                TokenResponse.class);
 
             if (HttpStatus.OK.equals(response.getStatusCode())) {
                 log.info("Positive response");

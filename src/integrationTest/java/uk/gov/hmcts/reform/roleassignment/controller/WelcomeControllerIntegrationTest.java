@@ -1,5 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+
+import java.nio.charset.StandardCharsets;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -12,12 +18,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.nio.charset.Charset;
-
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-
 
 public class WelcomeControllerIntegrationTest extends BaseTest {
 
@@ -27,21 +27,21 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     private static final String REQUEST_ID = "077dc12a-02ba-4238-87c3-803ca26b515f";
 
 
-    private transient MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     private JdbcTemplate template;
 
     @Value("${integrationTest.api.url}")
-    private transient String url;
+    private String url;
 
     private static final MediaType JSON_CONTENT_TYPE = new MediaType(
         MediaType.APPLICATION_JSON.getType(),
         MediaType.APPLICATION_JSON.getSubtype(),
-        Charset.forName("utf8")
+        StandardCharsets.UTF_8
     );
 
     @Autowired
-    private transient WelcomeController welcomeController;
+    private WelcomeController welcomeController;
 
     @Before
     public void setUp() {
@@ -62,7 +62,7 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
          scripts = {"classpath:sql/insert_role_assignment_request.sql"})
-    public void shoudGetRecordCountFromRequestTable() throws Exception {
+    public void shoudGetRecordCountFromRequestTable() {
         final int count = template.queryForObject(COUNT_RECORDS, Integer.class);
         logger.info(" Total number of records fetched from role assignment request table...{}", count);
         assertEquals(

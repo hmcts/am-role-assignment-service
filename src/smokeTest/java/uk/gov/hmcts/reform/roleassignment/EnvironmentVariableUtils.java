@@ -21,7 +21,7 @@ public class EnvironmentVariableUtils {
         return Validate.notNull(System.getenv(name), "Environment variable `%s` is required", name);
     }
 
-    public static String getOptionalVariable(String name) {
+    public static String gettOptionalVariable(String name) {
         return System.getenv(name);
     }
 
