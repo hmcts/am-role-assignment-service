@@ -57,7 +57,7 @@ public class IdamConsumerTest {
             .method(HttpMethod.POST.toString())
             .body(
                 "redirect_uri=http%3A%2F%2Fwww.dummy-pact-service.com%2Fcallback&client_id=pact&grant_type="
-                    + "password&username=prdadmin%40email.net&password=Password123&client_secret=pactsecret&scope="
+                    + "password&username=amadmin%40email.net&password=Password123&client_secret=pactsecret&scope="
                     + "openid profile roles manage-user create-user search-user",
                 "application/x-www-form-urlencoded"
             )
@@ -83,7 +83,7 @@ public class IdamConsumerTest {
                 )
                 .formParam("client_id", "pact")
                 .formParam("grant_type", "password")
-                .formParam("username", "prdadmin@email.net")
+                .formParam("username", "amadmin@email.net")
                 .formParam("password", "Password123")
                 .formParam("client_secret", "pactsecret")
                 .formParam(
@@ -106,7 +106,7 @@ public class IdamConsumerTest {
     private PactDslJsonBody createAuthResponse() {
 
         return new PactDslJsonBody()
-            .stringType("access_token", "eyJ0eXAiOiJKV1QiLCJ6aXAiOiJOT05FI")
+            .stringType("access_token", "eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre")
             .stringType("refresh_token", "eyJ0eXAiOiJKV1QiLCJ6aXAiOiJOT05FIiwia2lkIjoiYi9PNk92V")
             .stringType("scope", "openid profile roles manage-user create-user search-user")
             .stringType("id_token", "eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre")
