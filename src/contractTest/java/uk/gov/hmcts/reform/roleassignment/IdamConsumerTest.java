@@ -88,7 +88,7 @@ public class IdamConsumerTest {
                 .formParam("client_secret", "pactsecret")
                 .formParam(
                     "scope",
-                    "openid profile roles manage-user create-user search-user"
+                    "openid profile roles"
                 )
                 .post(mockServer.getUrl() + IDAM_OPEN_ID_TOKEN_URL)
                 .then()
