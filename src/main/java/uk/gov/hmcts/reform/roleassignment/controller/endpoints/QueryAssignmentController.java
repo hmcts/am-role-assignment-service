@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggle;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
@@ -23,9 +22,6 @@ import uk.gov.hmcts.reform.roleassignment.v1.V1;
 public class QueryAssignmentController {
 
     private final QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator;
-
-    @Autowired
-    private FeatureToggle featureToggle;
 
     @Autowired
     private SecurityUtils securityUtils;
@@ -88,10 +84,5 @@ public class QueryAssignmentController {
     @GetMapping(path = "/am/role-assignments/ld/endpoint1")
     public ResponseEntity<Object> getIdLdDemo1() {
         return ResponseEntity.status(HttpStatus.OK).body("Launch Darkly flag check is successful for endpoint 1");
-    }
-
-    @GetMapping(path = "/am/role-assignments/ld/endpoint2")
-    public ResponseEntity<Object> getIdLdDemo2() {
-        return ResponseEntity.status(HttpStatus.OK).body("Launch Darkly flag check is successful for endpoint 2");
     }
 }
