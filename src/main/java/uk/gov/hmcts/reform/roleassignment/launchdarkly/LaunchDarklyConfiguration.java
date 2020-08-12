@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import com.launchdarkly.sdk.server.LDClient;
@@ -25,3 +26,4 @@ public class LaunchDarklyConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(featureConditionEvaluation).addPathPatterns("/am/role-assignments/ld/endpoint2");
     }
 }
+*/
