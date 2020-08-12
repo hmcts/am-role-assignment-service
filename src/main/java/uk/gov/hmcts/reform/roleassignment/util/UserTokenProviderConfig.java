@@ -17,20 +17,20 @@ public class UserTokenProviderConfig {
     private final String username;
     private final String password;
     private final String scope;
-    private static final String MICROSERVICE_NAME = "am_role_assignment_service";
-    private static final String USER_NAME = "befta.caseworker.2.solicitor.2@gmail.com";
+    private final String microServiceName = "am_role_assignment_service";
+    private final String userName = "befta.caseworker.2.solicitor.2@gmail.com";
 
     public UserTokenProviderConfig() {
 
         idamURL = EnvironmentVariableUtils.getRequiredVariable("IDAM_URL");
         roleAssignmentUrl = EnvironmentVariableUtils.getRequiredVariable("TEST_URL");
         secret = EnvironmentVariableUtils.getRequiredVariable("AM_ROLE_ASSIGNMENT_SERVICE_SECRET");
-        microService = MICROSERVICE_NAME;
+        microService = microServiceName;
         s2sUrl = EnvironmentVariableUtils.getRequiredVariable("IDAM_S2S_URL");
 
         clientId = EnvironmentVariableUtils.getRequiredVariable("IDAM_CLIENT_ID");
         clientSecret = EnvironmentVariableUtils.getRequiredVariable("IDAM_CLIENT_SECRET");
-        username = USER_NAME;
+        username = userName;
         password = EnvironmentVariableUtils.getRequiredVariable("CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD");
         scope = EnvironmentVariableUtils.getRequiredVariable("OPENID_SCOPE_VARIABLES");
     }
