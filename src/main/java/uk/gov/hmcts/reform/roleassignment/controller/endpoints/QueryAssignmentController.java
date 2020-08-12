@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
@@ -23,9 +22,6 @@ import uk.gov.hmcts.reform.roleassignment.v1.V1;
 public class QueryAssignmentController {
 
     private final QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator;
-
-    @Autowired
-    private FeatureToggleService featureToggleService;
 
     @Autowired
     private SecurityUtils securityUtils;

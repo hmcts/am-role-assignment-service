@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import java.util.HashMap;
@@ -50,3 +51,4 @@ public class FeatureToggleService {
         return launchDarklyMap;
     }
 }
+*/

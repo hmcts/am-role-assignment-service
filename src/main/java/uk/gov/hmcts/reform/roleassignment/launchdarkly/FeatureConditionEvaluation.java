@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import java.util.Map;
@@ -38,3 +39,4 @@ public class FeatureConditionEvaluation implements HandlerInterceptor {
     }
 
 }
+*/
