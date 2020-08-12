@@ -5,20 +5,20 @@ import java.io.IOException;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @NoArgsConstructor
 public class SmokeTest extends BaseTest {
@@ -46,7 +46,8 @@ public class SmokeTest extends BaseTest {
             .authTokenGenerator(
                 config.getSecret(),
                 config.getMicroService(),
-                generateServiceAuthorisationApi(config.getS2sUrl())).generate();
+                generateServiceAuthorisationApi(config.getS2sUrl())
+                               ).generate();
     }
 
     @Test

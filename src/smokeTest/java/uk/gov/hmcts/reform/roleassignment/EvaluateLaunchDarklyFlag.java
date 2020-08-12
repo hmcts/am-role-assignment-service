@@ -6,12 +6,10 @@ import java.util.Optional;
 import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.LDClient;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.core.ApplicationContext;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExecutionCondition;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.commons.support.AnnotationSupport;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
 class EvaluateLaunchDarklyFlag implements ExecutionCondition {
