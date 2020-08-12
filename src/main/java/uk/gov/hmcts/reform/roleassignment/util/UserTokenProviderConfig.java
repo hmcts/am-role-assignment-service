@@ -6,8 +6,6 @@ import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 @Getter
 public class UserTokenProviderConfig {
 
-    public static final UserTokenProviderConfig DEFAULT_INSTANCE = new UserTokenProviderConfig();
-
     private final String idamURL;
     private final String roleAssignmentUrl;
     private final String secret;
