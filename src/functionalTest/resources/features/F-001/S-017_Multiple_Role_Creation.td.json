@@ -11,7 +11,15 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+          "actorId": "123e4567-e89b-42d3-a456-000000000001"
+        },
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "123e4567-e89b-42d3-a456-000000000002"
+        },
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "123e4567-e89b-42d3-a456-000000000003"
         }
       ]
     }
@@ -26,7 +34,17 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "actorId": "123e4567-e89b-42d3-a456-000000000001",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+          },
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "123e4567-e89b-42d3-a456-000000000002",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+          },
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "123e4567-e89b-42d3-a456-000000000003",
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
           }
         ]
