@@ -68,6 +68,11 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
 
     @Test
     @FeatureFlagToggle(flagEnabled = false)
+    public void disableTestAsPerFlagValue() {
+        assertRoleAssignmentRecordSize();
+    }
+
+    @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void shouldGetRecordsFromRoleAssignmentTable() {
         assertRoleAssignmentRecordSize();
