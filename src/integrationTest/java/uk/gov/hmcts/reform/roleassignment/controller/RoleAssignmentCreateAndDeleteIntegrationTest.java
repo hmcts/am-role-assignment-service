@@ -1,5 +1,15 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+import javax.inject.Inject;
+
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,28 +26,24 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.UserTokenProviderConfig;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-
-import javax.inject.Inject;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentIntegrationTest.class);
-    private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445612";
-    private static final String COUNT_HISTORY_RECORDS_QUERY = "SELECT count(1) as n FROM role_assignment_history";
-    private static final String COUNT_ASSIGNMENT_RECORDS_QUERY = "SELECT count(1) as n FROM role_assignment";
-    private static final String GET_ACTOR_FROM_ASSIGNMENT_QUERY = "select actor_id from role_assignment where id in "
-        + "(SELECT id from role_assignment_history where actor_id = ?)";
-    private static final String GET_ASSIGNMENT_STATUS_QUERY = "SELECT status from role_assignment_history "
-        + "where actor_id = ?";
-    private transient MockMvc mockMvc;
+    private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentCreateAndDeleteIntegrationTest.class);
 
+    private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445612";
+    private static final String COUNT_HISTORY_RECORDS_QUERY = "SELECT count(1) AS n FROM role_assignment_history";
+    private static final String COUNT_ASSIGNMENT_RECORDS_QUERY = "SELECT count(1) AS n FROM role_assignment";
+    private static final String GET_ACTOR_FROM_ASSIGNMENT_QUERY = "SELECT actor_id FROM role_assignment WHERE id IN "
+        + "(SELECT id FROM role_assignment_history WHERE actor_id = ?)";
+    private static final String GET_ASSIGNMENT_STATUS_QUERY = "SELECT status FROM role_assignment_history "
+        + "WHERE actor_id = ?";
+    public static final String CREATED = "CREATED";
+    public static final String APPROVED = "APPROVED";
+    public static final String LIVE = "LIVE";
+    public static final String DELETED = "DELETED";
+    public static final String DELETE_APPROVED = "DELETE_APPROVED";
+
+    private MockMvc mockMvc;
     private JdbcTemplate template;
 
     @Inject
@@ -81,14 +87,15 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
         logger.info(" -- Role Assignment record created successfully -- ");
         List<String> statusList = getStatusFromHistory();
+        assertNotNull(statusList);
         assertEquals(3, statusList.size());
-        assertEquals("CREATED", statusList.get(0).toString());
-        assertEquals("APPROVED", statusList.get(1).toString());
-        assertEquals("LIVE", statusList.get(2).toString());
+        assertEquals(CREATED, statusList.get(0));
+        assertEquals(APPROVED, statusList.get(1));
+        assertEquals(LIVE, statusList.get(2));
         assertEquals(1, getAssignmentRecordsCount().longValue());
         assertEquals(ACTOR_ID, getActorFromAssignmentTable());
         logger.info(" History record count after create request : {}", getHistoryRecordsCount());
-        logger.info(" LIVE table record count after create assignment request : {}", getAssignmentRecordsCount());
+        logger.info(" LIVE table record count after create assignment request: {}", getAssignmentRecordsCount());
         logger.info(" LIVE table actor Id after create assignment request : {}", getActorFromAssignmentTable());
 
         //Insert role assignment records with replace existing is True
@@ -100,6 +107,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             "** Creating another role assignment record with request :   {}",
             mapper.writeValueAsString(assignmentRequestWithReplaceExistingTrue)
         );
+
         mockMvc.perform(post(url)
                             .contentType(JSON_CONTENT_TYPE)
                             .headers(getHttpHeaders())
@@ -107,15 +115,16 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         ).andExpect(status().is(201)).andReturn();
 
         List<String> newStatusList = getStatusFromHistory();
+        assertNotNull(newStatusList);
         assertEquals(8, newStatusList.size());
-        assertEquals("CREATED", newStatusList.get(0).toString());
-        assertEquals("APPROVED", newStatusList.get(1).toString());
-        assertEquals("LIVE", newStatusList.get(2).toString());
-        assertEquals("DELETE_APPROVED", newStatusList.get(3).toString());
-        assertEquals("CREATED", newStatusList.get(4).toString());
-        assertEquals("APPROVED", newStatusList.get(5).toString());
-        assertEquals("DELETED", newStatusList.get(6).toString());
-        assertEquals("LIVE", newStatusList.get(7).toString());
+        assertEquals(CREATED, newStatusList.get(0));
+        assertEquals(APPROVED, newStatusList.get(1));
+        assertEquals(LIVE, newStatusList.get(2));
+        assertEquals(DELETE_APPROVED, newStatusList.get(3));
+        assertEquals(CREATED, newStatusList.get(4));
+        assertEquals(APPROVED, newStatusList.get(5));
+        assertEquals(DELETED, newStatusList.get(6));
+        assertEquals(LIVE, newStatusList.get(7));
         assertEquals(1, getAssignmentRecordsCount().longValue());
         assertEquals(ACTOR_ID, getActorFromAssignmentTable());
         logger.info(" History record count after create request : {}", getHistoryRecordsCount());
@@ -144,11 +153,11 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         logger.info(" LIVE table record count after create assignment request : {}", getAssignmentRecordsCount());
         List<String> statusList = getStatusFromHistory();
         assertEquals(5, statusList.size());
-        assertEquals("CREATED", statusList.get(0).toString());
-        assertEquals("APPROVED", statusList.get(1).toString());
-        assertEquals("LIVE", statusList.get(2).toString());
-        assertEquals("DELETE_APPROVED", statusList.get(3).toString());
-        assertEquals("DELETED", statusList.get(4).toString());
+        assertEquals(CREATED, statusList.get(0));
+        assertEquals(APPROVED, statusList.get(1));
+        assertEquals(LIVE, statusList.get(2));
+        assertEquals(DELETE_APPROVED, statusList.get(3));
+        assertEquals(DELETED, statusList.get(4));
 
     }
 

@@ -31,6 +31,7 @@ import uk.gov.hmcts.reform.roleassignment.util.UserTokenProviderConfig;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -43,7 +44,7 @@ public abstract class BaseTest {
     protected static final MediaType JSON_CONTENT_TYPE = new MediaType(
         MediaType.APPLICATION_JSON.getType(),
         MediaType.APPLICATION_JSON.getSubtype(),
-        Charset.forName("utf8"));
+        StandardCharsets.UTF_8);
 
 
     @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -56,8 +57,6 @@ public abstract class BaseTest {
     public static void init() {
         mapper.registerModule(new JavaTimeModule());
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
-        // Force re-initialisation of base types for each test suite
     }
 
     public ServiceAuthorisationApi generateServiceAuthorisationApi(final String s2sUrl) {
