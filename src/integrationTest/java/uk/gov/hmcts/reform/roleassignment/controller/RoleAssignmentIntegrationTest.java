@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
@@ -37,6 +38,9 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     public static final String ROLE_ASSIGNMENT_ID = "2ef8ebf3-266e-45d3-a3b8-4ce1e5d93b9f";
     private MockMvc mockMvc;
 
+    @Rule
+    public FeatureFlagToggleEvaluator featureFlagToggleEvaluator = new FeatureFlagToggleEvaluator();
+
     private JdbcTemplate template;
 
     @Inject
@@ -50,6 +54,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     }
 
     @Test
+    @FeatureFlagToggle(flagEnabled = true)
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {
         "classpath:sql/insert_role_assignment_request.sql",
         "classpath:sql/insert_role_assignment_history.sql"
@@ -62,6 +67,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     }
 
     @Test
+    @FeatureFlagToggle(flagEnabled = false)
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void shouldGetRecordsFromRoleAssignmentTable() {
         assertRoleAssignmentRecordSize();
