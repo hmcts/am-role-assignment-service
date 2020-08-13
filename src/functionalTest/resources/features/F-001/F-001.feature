@@ -184,7 +184,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to create a role assignment for an actor] as in [S-018_Multiple_Role_Creation],
     When a request is prepared with appropriate values,
     And the request [contains ReplaceExisting is true and have process and Reference values],
-    And the request [contains multiple Role Assignments just created and no new role assignments],
+    And the request [contains multiple Role Assignments just created and has no new role assignments],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
     And the response has all other details as expected.
