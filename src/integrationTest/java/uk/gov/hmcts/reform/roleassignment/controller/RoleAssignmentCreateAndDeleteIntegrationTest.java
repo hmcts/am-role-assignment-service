@@ -36,7 +36,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     private static final String GET_ACTOR_FROM_ASSIGNMENT_QUERY = "SELECT actor_id FROM role_assignment WHERE id IN "
         + "(SELECT id FROM role_assignment_history WHERE actor_id = ?)";
     private static final String GET_ASSIGNMENT_STATUS_QUERY = "SELECT status FROM role_assignment_history "
-        + "WHERE actor_id = ?";
+        + "WHERE actor_id = ? ORDER BY created";
     public static final String CREATED = "CREATED";
     public static final String APPROVED = "APPROVED";
     public static final String LIVE = "LIVE";

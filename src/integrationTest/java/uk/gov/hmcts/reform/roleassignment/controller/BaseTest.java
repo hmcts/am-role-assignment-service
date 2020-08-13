@@ -30,7 +30,6 @@ import uk.gov.hmcts.reform.roleassignment.util.UserTokenProviderConfig;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 @RunWith(SpringRunner.class)
@@ -97,8 +96,7 @@ public abstract class BaseTest {
                 entity,
                 TokenResponse.class
             );
-
-            if (HttpStatus.OK.equals(response.getStatusCode())) {
+            if (HttpStatus.OK.equals(response.getStatusCode()) && response.getBody() != null) {
                 log.info("Positive response");
                 return response.getBody().accessToken;
             } else {
