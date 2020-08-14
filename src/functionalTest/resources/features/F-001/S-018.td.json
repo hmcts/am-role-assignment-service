@@ -1,24 +1,20 @@
 {
   "title": "must receive an error response when creating same assignment record twice with ReplaceExisting set to True",
-  "_guid_": "S-016",
+  "_guid_": "S-018",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
-    "contains the same create assignment request executed above",
-    "contains ReplaceExisting is true and have process and Reference values"
+    "contains ReplaceExisting is true and have process and Reference values",
+    "contains multiple Role Assignments just created and has no new role assignments"
   ],
   "request": {
     "body": {
       "roleRequest": {
         "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
         "process": "businessProcess1",
-        "reference": "${[scenarioContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}",
+        "reference": "${[scenarioContext][childContexts][S-018_Multiple_Role_Creation][testData][request][body][roleRequest][reference]}",
         "replaceExisting": true
       },
       "requestedRoles": [
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
-        }
       ]
     }
   },
@@ -33,13 +29,9 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "replaceExisting" : true,
-          "log" : "Duplicate Request: Requested Assignments are already live."
+          "replaceExisting" : true
         },
         "requestedRoles": [
-          {
-            "_extends_": "ResponseRequestedRole"
-          }
         ]
       }
     }
