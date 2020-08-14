@@ -37,7 +37,7 @@ def versions = [
   pitest             : '1.4.2',
   reformLogging      : '5.1.1',
   reformS2sClient    : '3.1.1',
-  serenity           : '2.1.0',
+  serenity           : '2.2.12',
   sonarPitest        : '0.5',
   springBoot         : '2.3.2.RELEASE',
   springHystrix      : '2.1.1.RELEASE',
@@ -134,8 +134,8 @@ task functional(type: Test, description: 'Runs the functional tests.', group: 'V
 task integration(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
-  //serenity.outputDirectory = file("${projectDir}/integrationTest/site/reports")
   mustRunAfter test
+  finalizedBy aggregate
 }
 check.dependsOn integration
 
