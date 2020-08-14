@@ -51,12 +51,12 @@
           },
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "123e4567-e89b-42d3-a456-000000000003",
+            "actorId": "123e4567-e89b-42d3-a456-000000000002",
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
           },
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "123e4567-e89b-42d3-a456-000000000002",
+            "actorId": "123e4567-e89b-42d3-a456-000000000003",
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
           }
         ]
