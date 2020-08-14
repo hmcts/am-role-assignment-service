@@ -20,7 +20,8 @@ import java.util.HashMap;
 
 @ActiveProfiles("test")
 @RunWith(SpringIntegrationSerenityRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+                properties = { "serenity.outputDirectory=target/reports2" })
 public abstract class BaseTest {
     protected static final ObjectMapper mapper = new ObjectMapper();
     protected static final TypeReference STRING_NODE_TYPE = new TypeReference<HashMap<String, JsonNode>>() {};
