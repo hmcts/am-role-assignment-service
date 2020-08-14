@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -45,7 +46,7 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     @Before
     public void setUp() {
         this.mockMvc = standaloneSetup(this.welcomeController).build();
-        //template = new JdbcTemplate(db);
+        template = new JdbcTemplate(db);
     }
 
     @Test
@@ -59,16 +60,6 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void welComeAPITest3() throws Exception {
-        logger.info(" WelcomeControllerIntegrationTest : Inside  Welcome API Test method...{}", url);
-        final MvcResult result = mockMvc.perform(get(url).contentType(JSON_CONTENT_TYPE))
-                                        //.andExpect(status().is(200))
-                                        .andReturn();
-        assertEquals(
-            "Welcome service status", 200, 200);
-    }
-
-    /*@Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
          scripts = {"classpath:sql/insert_role_assignment_request.sql"})
     public void shoudGetRecordCountFromRequestTable() throws Exception {
@@ -89,6 +80,6 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
         logger.info(" Role assignment request status is...{}", status);
         assertEquals(
             "Role assignment request status", "APPROVED", status);
-    }*/
+    }
 
 }
