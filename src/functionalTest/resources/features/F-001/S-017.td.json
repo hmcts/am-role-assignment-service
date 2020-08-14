@@ -21,11 +21,9 @@
         },
         {
           "_extends_": "RequestedRole",
-          "actorId": "123e4567-e89b-42d3-a456-000000000003"
-        },
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "123e4567-e89b-42d3-a456-000000000004"
+          "actorId": "123e4567-e89b-42d3-a456-000000000004",
+          "roleType": "ORGANISATION",
+          "grantType": "STANDARD"
         }
       ]
     }
@@ -47,12 +45,9 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "123e4567-e89b-42d3-a456-000000000004",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "123e4567-e89b-42d3-a456-000000000003",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD"
           },
           {
             "_extends_": "ResponseRequestedRole",
