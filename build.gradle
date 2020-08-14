@@ -135,9 +135,9 @@ task integration(type: Test, description: 'Runs the integration tests.', group: 
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
   //serenity.outputDirectory = file("${projectDir}/integrationTest/site/reports")
+  finalizedBy aggregate
   mustRunAfter test
 }
-check.dependsOn integration
 
 task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verification') {
   testClassesDirs = sourceSets.smokeTest.output.classesDirs
