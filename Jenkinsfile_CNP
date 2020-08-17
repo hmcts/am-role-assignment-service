@@ -73,8 +73,8 @@ withPipeline(type, product, component) {
   disableLegacyDeploymentOnAAT()
   disableLegacyDeployment()
 
-  after(“integrationTest:preview”){
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**'
+  before('functionalTest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/integrationTests/**'
   }
 
   after('functionalTest:preview') {
