@@ -51,7 +51,7 @@ public class BaseTest {
                 request.getClientId(),
                 request.getClientSecret(),
                 request.getGrantType(),
-                "openid roles profile authorities",
+                "openid+roles+profile+authorities",
                 request.getUsername(),
                 request.getPassword()
             );
