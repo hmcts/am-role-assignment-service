@@ -2,14 +2,15 @@ package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 
 class EnvironmentVariableUtilsTest {
 
     @Test
     void getRequiredVariable() {
-        Assertions.assertThrows(NullPointerException.class, () -> {
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             EnvironmentVariableUtils.getRequiredVariable("A_DUMMY_VARIABLE");
         });
-
     }
+
 }
