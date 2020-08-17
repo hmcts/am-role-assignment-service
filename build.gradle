@@ -284,8 +284,9 @@ dependencies {
     exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-common'
   }
 
-  compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.4.0-rc'
+  compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.4.0'
   compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-common', version: '1.4.0'
+
   // drools engine dependency
   compile(group: 'org.drools', name: 'drools-core', version: versions.drools) {
     exclude group: 'org.jsoup', module: 'jsoup'
@@ -335,7 +336,7 @@ dependencies {
   compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.19.Final'
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.8.RELEASE'
 
-  implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.15'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
   implementation "org.springframework.security:spring-security-web"
   implementation "org.springframework.security:spring-security-config"
