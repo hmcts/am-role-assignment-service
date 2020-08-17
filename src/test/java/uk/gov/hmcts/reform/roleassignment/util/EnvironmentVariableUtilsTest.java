@@ -10,5 +10,4 @@ class EnvironmentVariableUtilsTest {
     void getRequiredVariable() {
         assertNotNull(EnvironmentVariableUtils.getRequiredVariable("TEST_URL"));
     }
-
 }
