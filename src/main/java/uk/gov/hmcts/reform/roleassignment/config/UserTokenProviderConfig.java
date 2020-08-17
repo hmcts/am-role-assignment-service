@@ -39,7 +39,7 @@ public class UserTokenProviderConfig {
 
     public TokenRequest prepareTokenRequest() {
 
-        TokenRequest tokenRequest = new TokenRequest(
+        return new TokenRequest(
             clientId,
             clientSecret,
             "password",
@@ -50,6 +50,5 @@ public class UserTokenProviderConfig {
             "4",
             ""
         );
-        return tokenRequest;
     }
 }
