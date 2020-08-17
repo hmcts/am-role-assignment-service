@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
+import net.thucydides.core.annotations.WithTag;
+import net.thucydides.core.annotations.WithTags;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -18,7 +20,9 @@ import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
-
+@WithTags({
+              @WithTag("testType:Integration")
+          })
 public class WelcomeControllerIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(WelcomeControllerIntegrationTest.class);
@@ -50,7 +54,7 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void welComeAPITest() throws Exception {
+    public void welcomeApiTest() throws Exception {
         logger.info(" WelcomeControllerIntegrationTest : Inside  Welcome API Test method...{}", url);
         final MvcResult result = mockMvc.perform(get(url).contentType(JSON_CONTENT_TYPE))
                                         //.andExpect(status().is(200))
