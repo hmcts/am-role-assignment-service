@@ -9,23 +9,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 import javax.inject.Inject;
+import javax.sql.DataSource;
 
+import net.thucydides.core.annotations.WithTag;
+import net.thucydides.core.annotations.WithTags;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.UserTokenProviderConfig;
 
+@WithTags({@WithTag("testType:Integration")})
 public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentCreateAndDeleteIntegrationTest.class);
@@ -49,13 +55,16 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @Inject
     private WebApplicationContext wac;
 
+    @Autowired
+    private DataSource ds;
+
     UserTokenProviderConfig config;
     String accessToken;
     String serviceAuth;
 
     @Before
     public void setUp() {
-        template = new JdbcTemplate(db);
+        template = new JdbcTemplate(ds);
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).apply(springSecurity()).build();
         MockitoAnnotations.initMocks(this);
 

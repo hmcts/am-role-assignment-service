@@ -45,7 +45,7 @@ public class UserTokenProviderConfig {
             "",
             username,
             password,
-            scope,
+            "openid roles profile authorities",
             "4",
             ""
         );

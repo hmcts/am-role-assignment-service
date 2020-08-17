@@ -7,15 +7,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 import javax.inject.Inject;
+import javax.sql.DataSource;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import net.thucydides.core.annotations.WithTag;
+import net.thucydides.core.annotations.WithTags;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,9 +28,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 
+@WithTags({@WithTag("testType:Integration")})
 public class RoleAssignmentIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentIntegrationTest.class);
@@ -42,9 +48,12 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     @Inject
     private WebApplicationContext wac;
 
+    @Autowired
+    private DataSource ds;
+
     @Before
     public void setUp() {
-        template = new JdbcTemplate(db);
+        template = new JdbcTemplate(ds);
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         MockitoAnnotations.initMocks(this);
     }
@@ -83,8 +92,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
 
         RoleAssignmentResource response = mapper.readValue(
             result.getResponse().getContentAsString(),
-            RoleAssignmentResource.class
-                                                          );
+            RoleAssignmentResource.class);
 
         assertNotNull(response.getRoleAssignmentResponse());
         if (!response.getRoleAssignmentResponse().isEmpty()) {
