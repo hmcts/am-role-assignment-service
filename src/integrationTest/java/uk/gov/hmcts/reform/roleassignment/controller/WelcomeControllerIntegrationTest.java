@@ -28,7 +28,6 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     private static final String GET_STATUS = "SELECT status FROM role_assignment_request where id = ?";
     private static final String REQUEST_ID = "077dc12a-02ba-4238-87c3-803ca26b515f";
 
-
     private transient MockMvc mockMvc;
 
     private JdbcTemplate template;
