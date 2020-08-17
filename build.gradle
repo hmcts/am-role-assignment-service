@@ -285,7 +285,8 @@ dependencies {
   }
 
   compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.4.0'
-  compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-common', version: '1.4.0-rc'
+  compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-common', version: '1.4.0'
+
   // drools engine dependency
   compile(group: 'org.drools', name: 'drools-core', version: versions.drools) {
     exclude group: 'org.jsoup', module: 'jsoup'
