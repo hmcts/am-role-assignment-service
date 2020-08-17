@@ -57,7 +57,7 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void welComeAPITest() throws Exception {
+    public void welcomeApiTest() throws Exception {
         logger.info(" WelcomeControllerIntegrationTest : Inside  Welcome API Test method...{}", url);
         final MvcResult result = mockMvc.perform(get(url).contentType(JSON_CONTENT_TYPE))
                                         //.andExpect(status().is(200))
