@@ -1,13 +1,16 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-import org.apache.commons.lang3.Validate;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 
 public class EnvironmentVariableUtils {
-    private EnvironmentVariableUtils(){
+    private EnvironmentVariableUtils() {
 
     }
 
     public static String getRequiredVariable(String name) {
-        return Validate.notNull(System.getenv(name), "Environment variable `%s` is required", name);
+        if (System.getenv(name) == null) {
+            throw new ResourceNotFoundException(String.format("Environment variable %s not found", name));
+        }
+        return System.getenv(name);
     }
 }
