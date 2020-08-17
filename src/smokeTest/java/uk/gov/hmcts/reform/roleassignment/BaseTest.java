@@ -36,7 +36,7 @@ import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
-import uk.gov.hmcts.reform.roleassignment.util.UserTokenProviderConfig;
+import uk.gov.hmcts.reform.roleassignment.config.UserTokenProviderConfig;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

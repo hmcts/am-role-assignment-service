@@ -1,7 +1,8 @@
-package uk.gov.hmcts.reform.roleassignment.util;
+package uk.gov.hmcts.reform.roleassignment.config;
 
 import lombok.Getter;
 import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
+import uk.gov.hmcts.reform.roleassignment.util.EnvironmentVariableUtils;
 
 @Getter
 public class UserTokenProviderConfig {

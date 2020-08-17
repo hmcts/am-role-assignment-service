@@ -29,7 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.util.UserTokenProviderConfig;
+import uk.gov.hmcts.reform.roleassignment.config.UserTokenProviderConfig;
 
 @WithTags({@WithTag("testType:Integration")})
 public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
