@@ -335,7 +335,7 @@ dependencies {
   compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.19.Final'
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.8.RELEASE'
 
-  implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.15'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
   implementation "org.springframework.security:spring-security-web"
   implementation "org.springframework.security:spring-security-config"
