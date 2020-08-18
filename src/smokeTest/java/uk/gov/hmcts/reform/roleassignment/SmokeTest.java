@@ -10,10 +10,13 @@ import net.thucydides.core.annotations.WithTags;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
@@ -21,8 +24,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-
 @RunWith(SpringIntegrationSerenityRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @NoArgsConstructor
 @WithTags({@WithTag("testType:Smoke")})
 public class SmokeTest extends BaseTest {
@@ -32,6 +35,15 @@ public class SmokeTest extends BaseTest {
     UserTokenProviderConfig config;
     String accessToken;
     String serviceAuth;
+
+    @Value("${launchdarkly.sdk.environment}")
+    String environment;
+
+    @Value("${launchdarkly.sdk.user}")
+    String userName;
+
+    @Value("${launchdarkly.sdk.key}")
+    String sdkKey;
 
     @Before
     public void setUp() {
@@ -45,7 +57,11 @@ public class SmokeTest extends BaseTest {
                                ).generate();
     }
 
+    @Rule
+    public FeatureFlagToggleEvaluator featureFlagToggleEvaluator = new FeatureFlagToggleEvaluator(this);
+
     @Test
+    @LaunchDarklyFlagEvaluator("get-ld-flag")
     public void should_receive_response_for_get_by_query_params_case_id() {
 
         String targetInstance = config.getRoleAssignmentUrl()
