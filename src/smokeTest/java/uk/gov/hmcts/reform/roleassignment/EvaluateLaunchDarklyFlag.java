@@ -1,3 +1,7 @@
+/*
+
+This is a Junit 5 class. Will remove the old Junit 4 once we migrate to this class.
+
 package uk.gov.hmcts.reform.roleassignment;
 
 import java.io.IOException;
@@ -6,10 +10,14 @@ import java.util.Optional;
 import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.LDClient;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assume;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExecutionCondition;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.commons.support.AnnotationSupport;
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
 
 @Slf4j
 class EvaluateLaunchDarklyFlag implements ExecutionCondition {
@@ -49,3 +57,4 @@ class EvaluateLaunchDarklyFlag implements ExecutionCondition {
         return isFlagEnabled ? ENABLED : DISABLED;
     }
 }
+*/
