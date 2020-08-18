@@ -1,45 +1,40 @@
 package uk.gov.hmcts.reform.roleassignment;
 
-import java.io.IOException;
-
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
+import net.thucydides.core.annotations.WithTag;
+import net.thucydides.core.annotations.WithTags;
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+
+@RunWith(SpringIntegrationSerenityRunner.class)
 @NoArgsConstructor
+@WithTags({@WithTag("testType:Smoke")})
 public class SmokeTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(SmokeTest.class);
 
-    static UserTokenProviderConfig config;
-    static String accessToken;
-    static String serviceAuth;
+    UserTokenProviderConfig config;
+    String accessToken;
+    String serviceAuth;
 
-    @Value("${launchdarkly.sdk.environment}")
-    String environment;
-
-    @Value("${launchdarkly.sdk.user}")
-    String userName;
-
-    @Value("${launchdarkly.sdk.key}")
-    String sdkKey;
-
-    @BeforeAll
-    public static void setUp() {
+    @Before
+    public void setUp() {
         config = new UserTokenProviderConfig();
         accessToken = searchUserByUserId(config);
         serviceAuth = new BaseTest()
@@ -51,7 +46,6 @@ public class SmokeTest extends BaseTest {
     }
 
     @Test
-    @LaunchDarklyFlagEvaluator("get-ld-flag")
     public void should_receive_response_for_get_by_query_params_case_id() {
 
         String targetInstance = config.getRoleAssignmentUrl()
@@ -187,4 +181,10 @@ public class SmokeTest extends BaseTest {
         response.then().assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
+    private String fetchRequestBody() throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("create_request_body.json").getFile());
+        FileInputStream fileInputStream = new FileInputStream(file);
+        return IOUtils.toString(fileInputStream, "UTF-8");
+    }
 }

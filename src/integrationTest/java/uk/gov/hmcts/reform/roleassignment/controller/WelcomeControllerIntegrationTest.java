@@ -1,11 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-
-import java.nio.charset.StandardCharsets;
-
+import net.thucydides.core.annotations.WithTag;
+import net.thucydides.core.annotations.WithTags;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -18,7 +14,13 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.nio.charset.Charset;
 
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+
+@WithTags({@WithTag("testType:Integration")})
 public class WelcomeControllerIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(WelcomeControllerIntegrationTest.class);
@@ -26,22 +28,21 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     private static final String GET_STATUS = "SELECT status FROM role_assignment_request where id = ?";
     private static final String REQUEST_ID = "077dc12a-02ba-4238-87c3-803ca26b515f";
 
-
-    private MockMvc mockMvc;
+    private transient MockMvc mockMvc;
 
     private JdbcTemplate template;
 
     @Value("${integrationTest.api.url}")
-    private String url;
+    private transient String url;
 
     private static final MediaType JSON_CONTENT_TYPE = new MediaType(
         MediaType.APPLICATION_JSON.getType(),
         MediaType.APPLICATION_JSON.getSubtype(),
-        StandardCharsets.UTF_8
+        Charset.forName("utf8")
     );
 
     @Autowired
-    private WelcomeController welcomeController;
+    private transient WelcomeController welcomeController;
 
     @Before
     public void setUp() {
@@ -50,7 +51,7 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void welComeAPITest() throws Exception {
+    public void welcomeApiTest() throws Exception {
         logger.info(" WelcomeControllerIntegrationTest : Inside  Welcome API Test method...{}", url);
         final MvcResult result = mockMvc.perform(get(url).contentType(JSON_CONTENT_TYPE))
                                         //.andExpect(status().is(200))
@@ -62,7 +63,7 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
          scripts = {"classpath:sql/insert_role_assignment_request.sql"})
-    public void shoudGetRecordCountFromRequestTable() {
+    public void shoudGetRecordCountFromRequestTable() throws Exception {
         final int count = template.queryForObject(COUNT_RECORDS, Integer.class);
         logger.info(" Total number of records fetched from role assignment request table...{}", count);
         assertEquals(
