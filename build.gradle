@@ -190,7 +190,6 @@ sonarqube {
       "**/SecurityConfiguration.java," +
       "**/SwaggerConfiguration.java," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/*Application.java," +
-      "src/main/java/uk/**," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/config/**"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
