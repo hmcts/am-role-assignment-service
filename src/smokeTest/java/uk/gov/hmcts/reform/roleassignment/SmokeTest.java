@@ -25,7 +25,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @NoArgsConstructor
 @WithTags({@WithTag("testType:Smoke")})
 public class SmokeTest extends BaseTest {
