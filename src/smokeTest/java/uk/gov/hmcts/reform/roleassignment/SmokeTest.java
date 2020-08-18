@@ -5,6 +5,8 @@ import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
+import net.thucydides.core.annotations.WithTag;
+import net.thucydides.core.annotations.WithTags;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -22,6 +24,7 @@ import java.io.IOException;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 @NoArgsConstructor
+@WithTags({@WithTag("testType:Smoke")})
 public class SmokeTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(SmokeTest.class);
