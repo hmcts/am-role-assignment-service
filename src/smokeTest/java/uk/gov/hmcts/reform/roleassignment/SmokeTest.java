@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment;
 
+import java.io.IOException;
+
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
@@ -7,7 +9,6 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.WithTag;
 import net.thucydides.core.annotations.WithTags;
-import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,13 +17,8 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 @NoArgsConstructor
@@ -30,6 +26,12 @@ import java.io.IOException;
 public class SmokeTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(SmokeTest.class);
+    public static final String ERROR_DESCRIPTION = "errorDescription";
+    public static final String AUTHORIZATION = "Authorization";
+    public static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
+    public static final String BEARER = "Bearer ";
+    public static final String ERROR_MESSAGE = "errorMessage";
+    public static final String RESOURCE_NOT_FOUND = "Resource not found";
 
     UserTokenProviderConfig config;
     String accessToken;
@@ -70,14 +72,14 @@ public class SmokeTest extends BaseTest {
         Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .when()
             .get(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
-                .body("errorDescription", Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
-        response.then().assertThat().body("errorMessage", Matchers.equalTo("Resource not found"));
+                .body(ERROR_DESCRIPTION, Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
+        response.then().assertThat().body(ERROR_MESSAGE, Matchers.equalTo(RESOURCE_NOT_FOUND));
     }
 
     @Test
@@ -89,8 +91,8 @@ public class SmokeTest extends BaseTest {
         Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .when()
             .get(targetInstance)
             .andReturn();
@@ -107,14 +109,14 @@ public class SmokeTest extends BaseTest {
         Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .when()
             .get(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
-                .body("errorDescription", Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
-        response.then().assertThat().body("errorMessage", Matchers.equalTo("Resource not found"));
+                .body(ERROR_DESCRIPTION, Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
+        response.then().assertThat().body(ERROR_MESSAGE, Matchers.equalTo(RESOURCE_NOT_FOUND));
     }
 
     @Test
@@ -127,18 +129,18 @@ public class SmokeTest extends BaseTest {
         Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .when()
             .get(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
                 .body(
-                    "errorDescription",
+                    ERROR_DESCRIPTION,
                     Matchers.equalTo(
                         "Role Assignment not found for Actor 0b00bfc0-bb00-00ea-b0de-0000ac000000"));
 
-        response.then().assertThat().body("errorMessage", Matchers.equalTo("Resource not found"));
+        response.then().assertThat().body(ERROR_MESSAGE, Matchers.equalTo(RESOURCE_NOT_FOUND));
     }
 
     @Test
@@ -152,8 +154,8 @@ public class SmokeTest extends BaseTest {
             .given()
             .relaxedHTTPSValidation()
             .header("Content-Type", "application/json")
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .when()
             .delete(targetInstance)
             .andReturn();
@@ -169,8 +171,8 @@ public class SmokeTest extends BaseTest {
         Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .when()
             .delete(targetInstance)
             .andReturn();
@@ -187,8 +189,8 @@ public class SmokeTest extends BaseTest {
             .given()
             .relaxedHTTPSValidation()
             .header("Content-Type", "application/json")
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .body("Hello")
             .when()
             .post(targetInstance)
@@ -196,10 +198,4 @@ public class SmokeTest extends BaseTest {
         response.then().assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
-    private String fetchRequestBody() throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("create_request_body.json").getFile());
-        FileInputStream fileInputStream = new FileInputStream(file);
-        return IOUtils.toString(fileInputStream, "UTF-8");
-    }
 }
