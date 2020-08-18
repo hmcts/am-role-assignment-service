@@ -1,4 +1,3 @@
-/*
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import java.util.HashMap;
@@ -37,7 +36,6 @@ public class FeatureToggleService {
     }
 
     public boolean isFlagEnabled(String serviceName, String flag) {
-
         LDUser user = new LDUser.Builder(environment)
             .firstName(userName)
             .lastName("user")
@@ -51,4 +49,3 @@ public class FeatureToggleService {
         return launchDarklyMap;
     }
 }
-*/
