@@ -35,14 +35,14 @@ public class FeatureToggleService {
         launchDarklyMap.put("/am/role-assignments/ld/endpoint2", "delete-by-assignment-id-flag");
     }
 
-    public boolean isFlagEnabled(String serviceName, String flag) {
+    public boolean isFlagEnabled(String serviceName, String flagName) {
         LDUser user = new LDUser.Builder(environment)
             .firstName(userName)
             .lastName("user")
             .custom("servicename", serviceName)
             .build();
 
-        return ldClient.boolVariation(flag, user, false);
+        return ldClient.boolVariation(flagName, user, false);
     }
 
     public Map<String, String> getLaunchDarklyMap() {
