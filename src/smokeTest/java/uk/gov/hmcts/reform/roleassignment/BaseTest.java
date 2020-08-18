@@ -52,7 +52,7 @@ public class BaseTest {
                 request.getClientId(),
                 request.getClientSecret(),
                 request.getGrantType(),
-                request.getScope(),
+                "openid+roles+profile+authorities",
                 request.getUsername(),
                 request.getPassword());
 
