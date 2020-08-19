@@ -20,6 +20,9 @@ import uk.gov.hmcts.reform.roleassignment.v1.V1;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.MAPPER;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -168,17 +171,20 @@ public class SmokeTest extends BaseTest {
         String targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments";
         RestAssured.useRelaxedHTTPSValidation();
 
-        Response response = SerenityRest
+        InputStream input = SmokeTest.class.getClassLoader().getResourceAsStream("create_request_body.json");
+        String requestBody = MAPPER.readValue(input, String.class);
+
+            Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
             .header("Content-Type", "application/json")
             .header("ServiceAuthorization", "Bearer " + serviceAuth)
             .header("Authorization", "Bearer " + accessToken)
-            .body("Hello")
+            .body(requestBody)
             .when()
             .post(targetInstance)
             .andReturn();
-        response.then().assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
+        response.then().assertThat().statusCode(HttpStatus.CREATED.value());
     }
 
     private String fetchRequestBody() throws IOException {
