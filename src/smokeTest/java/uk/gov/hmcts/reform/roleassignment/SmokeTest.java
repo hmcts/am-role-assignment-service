@@ -38,13 +38,13 @@ public class SmokeTest extends BaseTest {
     String serviceAuth;
 
     @Value("${launchdarkly.sdk.environment}")
-    String environment;
+    private String environment;
 
     @Value("${launchdarkly.sdk.user}")
-    String userName;
+    private String userName;
 
     @Value("${launchdarkly.sdk.key}")
-    String sdkKey;
+    private String sdkKey;
 
     @Before
     public void setUp() {
@@ -198,4 +198,15 @@ public class SmokeTest extends BaseTest {
         response.then().assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getSdkKey() {
+        return sdkKey;
+    }
 }

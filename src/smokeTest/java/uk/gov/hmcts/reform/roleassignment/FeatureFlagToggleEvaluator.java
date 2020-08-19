@@ -32,10 +32,10 @@ public class FeatureFlagToggleEvaluator implements TestRule {
                     .getAnnotation(LaunchDarklyFlagEvaluator.class);
                 if (launchDarklyFlagEvaluator != null) {
                     if (StringUtils.isNotEmpty(launchDarklyFlagEvaluator.value())) {
-                        try (LDClient client = new LDClient(smokeTest.sdkKey)) {
+                        try (LDClient client = new LDClient(smokeTest.getSdkKey())) {
 
-                            LDUser user = new LDUser.Builder(smokeTest.environment)
-                                .firstName(smokeTest.userName)
+                            LDUser user = new LDUser.Builder(smokeTest.getEnvironment())
+                                .firstName(smokeTest.getUserName())
                                 .lastName("user")
                                 .custom("servicename", "am_role_assignment_service")
                                 .build();
