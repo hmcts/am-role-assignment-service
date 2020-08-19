@@ -59,7 +59,7 @@ public class ValidationUtil {
         }
     }
 
-    public static void validateDateOrder(String beginTime, String endTime) throws ParseException {
+    public static void compareDateOrder(String beginTime, String endTime) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_PATTERN);
         Date beginTimeP = sdf.parse(beginTime);
         Date endTimeP = sdf.parse(endTime);
@@ -79,7 +79,7 @@ public class ValidationUtil {
         }
     }
 
-    public static void validateInputParams(String pattern, String inputString) {
+    public static void validateId(String pattern, String inputString) {
         if (StringUtils.isEmpty(inputString)) {
             throw new BadRequestException("An input parameter is Null/Empty");
         } else if (!Pattern.matches(pattern, inputString)) {
@@ -88,7 +88,7 @@ public class ValidationUtil {
         }
     }
 
-    public static void validateEnumRoleType(String roleType) {
+    public static void compareRoleType(String roleType) {
         boolean valid = false;
         for (RoleType realRole : RoleType.values()) {
             if (realRole.name().equalsIgnoreCase(roleType)) {
@@ -102,7 +102,7 @@ public class ValidationUtil {
         }
     }
 
-    public static void validateLists(Collection<?>... inputList) {
+    public static void isRequestedRolesEmpty(Collection<?>... inputList) {
         for (Collection<?> collection : inputList) {
             if (CollectionUtils.isEmpty(collection)) {
                 throw new BadRequestException("The Collection is empty");
@@ -115,23 +115,23 @@ public class ValidationUtil {
         if (!(assignmentRequest.getRequest().isReplaceExisting())
             || (assignmentRequest.getRequest().isReplaceExisting()
             && !assignmentRequest.getRequestedRoles().isEmpty())) {
-            validateLists(assignmentRequest.getRequestedRoles());
+            isRequestedRolesEmpty(assignmentRequest.getRequestedRoles());
             validateRequestedRoles(assignmentRequest.getRequestedRoles());
         }
     }
 
     public static void validateRoleRequest(Request roleRequest) {
         if (roleRequest.isReplaceExisting()
-            && (((roleRequest.getProcess() == null || roleRequest.getProcess().isEmpty())
-            && (roleRequest.getReference() == null || roleRequest.getReference().isEmpty()))
-            || ((roleRequest.getProcess() != null || !roleRequest.getProcess().isEmpty())
-            && (roleRequest.getReference() == null || roleRequest.getReference().isEmpty()))
-            || ((roleRequest.getProcess() == null || roleRequest.getProcess().isEmpty())
-            && (roleRequest.getReference() != null || !roleRequest.getReference().isEmpty()))
+            && ((RoleAssignmentUtil.isEmpty(roleRequest.getProcess())
+            && (RoleAssignmentUtil.isEmpty(roleRequest.getReference())))
+            || (RoleAssignmentUtil.notEmpty(roleRequest.getProcess())
+            && RoleAssignmentUtil.isEmpty(roleRequest.getReference()))
+            || (RoleAssignmentUtil.isEmpty(roleRequest.getProcess())
+            && RoleAssignmentUtil.notEmpty(roleRequest.getReference()))
             )) {
             throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
         }
-        validateInputParams(Constants.UUID_PATTERN, roleRequest.getAssignerId().toString());
+        validateId(Constants.UUID_PATTERN, roleRequest.getAssignerId().toString());
     }
 
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
@@ -143,24 +143,24 @@ public class ValidationUtil {
                                                   + requestedRole.getRoleName());
             }
 
-            validateInputParams(Constants.UUID_PATTERN, requestedRole.getActorId().toString());
-            validateEnumRoleType(requestedRole.getRoleType().toString());
+            validateId(Constants.UUID_PATTERN, requestedRole.getActorId().toString());
+            compareRoleType(requestedRole.getRoleType().toString());
             if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
                 validateDateTime(requestedRole.getBeginTime().toString());
                 validateDateTime(requestedRole.getEndTime().toString());
-                validateDateOrder(
+                compareDateOrder(
                     requestedRole.getBeginTime().toString(),
                     requestedRole.getEndTime().toString()
                 );
             }
             if (requestedRole.getRoleType().equals(CASE)) {
-                validateInputParams(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
+                validateId(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
             }
         }
     }
 
     public static void validateCaseId(String caseId) {
-        validateInputParams(NUMBER_PATTERN, caseId);
+        validateId(NUMBER_PATTERN, caseId);
         if (caseId.length() != 16) {
             throw new BadRequestException(V1.Error.INVALID_CASE_ID);
         }
