@@ -33,26 +33,25 @@ public class IdamConsumerTest {
 
     private static final String IDAM_OPEN_ID_TOKEN_URL = "/o/token";
 
-    //        rolesArray[0] = "befta.caseworker.2.solicitor.2";
-
-    //        params.put("email", "befta.caseworker.2.solicitor.2@gmail.com");
-    //        params.put("password", "Password123");
-
-    //                      + "password&username=befta.caseworker.2.solicitor.2%40gmail"
-    //                      + ".com&password=Pa55word11&client_secret=pactsecret&scope="
-
-    //                .formParam("username", "befta.caseworker.2.solicitor.2@gmail.com")
-    //                .formParam("password", "Pa55word11")
+    private PactDslJsonBody createAuthResponse() {
+        return new PactDslJsonBody()
+            .stringType("access_token", "eyJ0eXAiOiJKV1QiLCJ6aXAiOiJOT05FI")
+            .stringType("refresh_token", "eyJ0eXAiOiJKV1QiLCJ6aXAiOiJOT05FIiwia2lkIjoiYi9PNk92V")
+            .stringType("scope", "openid profile roles authorities")
+            .stringType("id_token", "eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre")
+            .stringType("token_type", "Bearer")
+            .stringType("expires_in","28799");
+    }
 
     @Pact(provider = "Idam_api", consumer = "am_role_assignment_service")
     public RequestResponsePact executeGetIdamAccessTokenAndGet200(PactDslWithProvider builder) throws JSONException {
         String[] rolesArray = new String[1];
-        rolesArray[0] = "am-import";
+        rolesArray[0] = "consumer";
         Map<String, String> responseHeaders = Maps.newHashMap();
         responseHeaders.put("Content-Type", "application/json");
         Map<String, Object> params = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        params.put("email", "prdadmin@email.net");
-        params.put("password", "Password123");
+        params.put("email", "befta.caseworker.2.solicitor.2@gmail.com");
+        params.put("password", "Pa55word11");
         params.put("forename","testfirstname");
         params.put("surname", "testsurname");
         params.put("roles", rolesArray);
@@ -62,9 +61,10 @@ public class IdamConsumerTest {
                                + "- ROLE ASSIGNMENT API")
             .path(IDAM_OPEN_ID_TOKEN_URL)
             .method(HttpMethod.POST.toString())
-            .body("redirect_uri=http%3A%2F%2Fwww.dummy-pact-service.com%2Fcallback&client_id=pact&grant_type="
-                      + "password&username=prdadmin%40email.net&password=Password123&client_secret=pactsecret&scope="
-                      + "openid profile roles",
+            .body("redirect_uri=http%3A%2F%2Fwww.dummy-pact-service.com%2Fcallback&client_id=am_docker&grant_type="
+                      + "password&username=befta.caseworker.2.solicitor.2%40gmail"
+                      + ".com&password=Pa55word11&client_secret=am_docker_secret&scope="
+                      + "openid profile roles authorities",
                   "application/x-www-form-urlencoded")
             .willRespondWith()
             .status(HttpStatus.OK.value())
@@ -74,20 +74,21 @@ public class IdamConsumerTest {
     }
     @Test
     @PactTestFor(pactMethod = "executeGetIdamAccessTokenAndGet200")
-    void shouldPostToTokenEndpointAndReceiveAccessTokenWith200Response(MockServer mockServer) {
+    public void should_post_to_token_endpoint_and_receive_access_token_with_200_response(MockServer mockServer)
+        throws JSONException {
         String actualResponseBody =
             SerenityRest
                 .given()
                 .contentType(ContentType.URLENC)
                 .formParam("redirect_uri",
                            "http://www.dummy-pact-service.com/callback")
-                .formParam("client_id", "pact")
+                .formParam("client_id", "am_docker")
                 .formParam("grant_type", "password")
-                .formParam("username", "prdadmin@email.net")
-                .formParam("password", "Password123")
-                .formParam("client_secret", "pactsecret")
+                .formParam("username", "befta.caseworker.2.solicitor.2@gmail.com")
+                .formParam("password", "Pa55word11")
+                .formParam("client_secret", "am_docker_secret")
                 .formParam("scope",
-                           "openid profile roles")
+                           "openid profile roles authorities")
                 .post(mockServer.getUrl() + IDAM_OPEN_ID_TOKEN_URL)
                 .then()
                 .log().all().extract().asString();
@@ -96,16 +97,5 @@ public class IdamConsumerTest {
         assertThat(response.getString("access_token")).isNotBlank();
         assertThat(response.getString("token_type")).isEqualTo("Bearer");
         assertThat(response.getString("expires_in")).isNotBlank();
-    }
-
-    private PactDslJsonBody createAuthResponse() {
-
-        return new PactDslJsonBody()
-            .stringType("access_token", "eyJ0eXAiOiJKV1QiLCJ6aXAiOiJOT05FI")
-            .stringType("refresh_token", "eyJ0eXAiOiJKV1QiLCJ6aXAiOiJOT05FIiwia2lkIjoiYi9PNk92V")
-            .stringType("scope", "openid profile roles authorities")
-            .stringType("id_token", "eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre")
-            .stringType("token_type", "Bearer")
-            .stringType("expires_in","28798");
     }
 }
