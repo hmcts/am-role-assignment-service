@@ -28,10 +28,10 @@ public class FeatureFlagToggleEvaluator implements TestRule {
             @Override
             public void evaluate() throws Throwable {
                 boolean isFlagEnabled = false;
-                LaunchDarklyFlagEvaluator launchDarklyFlagEvaluator = description
-                    .getAnnotation(LaunchDarklyFlagEvaluator.class);
-                if (launchDarklyFlagEvaluator != null) {
-                    if (StringUtils.isNotEmpty(launchDarklyFlagEvaluator.value())) {
+                FeatureFlagToggle featureFlagToggle = description
+                    .getAnnotation(FeatureFlagToggle.class);
+                if (featureFlagToggle != null) {
+                    if (StringUtils.isNotEmpty(featureFlagToggle.value())) {
                         try (LDClient client = new LDClient(smokeTest.getSdkKey())) {
 
                             LDUser user = new LDUser.Builder(smokeTest.getEnvironment())
@@ -40,7 +40,7 @@ public class FeatureFlagToggleEvaluator implements TestRule {
                                 .custom("servicename", "am_role_assignment_service")
                                 .build();
 
-                            isFlagEnabled = client.boolVariation(launchDarklyFlagEvaluator.value(), user, false);
+                            isFlagEnabled = client.boolVariation(featureFlagToggle.value(), user, false);
                         } catch (IOException exception) {
                             log.warn("Error getting Launch Darkly connection in Smoke tests");
                         }

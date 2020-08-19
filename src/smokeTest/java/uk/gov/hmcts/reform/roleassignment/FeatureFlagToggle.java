@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LaunchDarklyFlagEvaluator {
+public @interface FeatureFlagToggle {
     String value() default "";
 }
