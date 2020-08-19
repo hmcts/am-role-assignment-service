@@ -56,7 +56,16 @@ public class FeatureConditionEvaluationTest {
     }
 
     @Test
-    public void expectExceptionForNonRegisteredURI() throws Exception {
+    public void getNegativeResponseForFlag() throws Exception {
+        when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint1");
+        when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(false);
+        Assertions.assertThrows(ForbiddenException.class, () -> {
+            featureConditionEvaluation.preHandle(request, response, new Object());
+        });
+    }
+
+    @Test
+    public void expectExceptionForNonRegisteredURI() {
         when(request.getRequestURI()).thenReturn("");
         Assertions.assertThrows(ForbiddenException.class, () -> {
             featureConditionEvaluation.preHandle(request, response, new Object());
