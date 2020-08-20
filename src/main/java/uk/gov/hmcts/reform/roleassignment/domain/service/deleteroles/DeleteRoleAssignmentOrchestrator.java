@@ -135,7 +135,6 @@ public class DeleteRoleAssignmentOrchestrator {
 
     private void updateStatusAndPersist(Request request) {
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            requestedRole.setRequest(request);
             if (!requestedRole.getStatus().equals(Status.APPROVED)) {
                 requestedRole.setStatus(Status.DELETE_REJECTED);
                 requestedRole.setStatusSequence(Status.DELETE_REJECTED.sequence);
@@ -200,7 +199,6 @@ public class DeleteRoleAssignmentOrchestrator {
 
     private void insertRequestedRole(AssignmentRequest parsedAssignmentRequest, Status status) {
         for (RoleAssignment requestedRole : parsedAssignmentRequest.getRequestedRoles()) {
-            requestedRole.setRequest(parsedAssignmentRequest.getRequest());
             requestedRole.setStatus(status);
             // persist history in db
             requestEntity.getHistoryEntities().add(persistenceService.persistHistory(

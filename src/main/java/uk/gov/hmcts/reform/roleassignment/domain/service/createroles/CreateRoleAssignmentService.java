@@ -165,7 +165,6 @@ public class CreateRoleAssignmentService {
 
     private void checkDeleteApproved(AssignmentRequest existingAssignmentRequest) {
         for (RoleAssignment requestedAssignment : existingAssignmentRequest.getRequestedRoles()) {
-            requestedAssignment.setRequest(existingAssignmentRequest.getRequest());
             if (!requestedAssignment.getStatus().equals(Status.APPROVED)) {
                 requestedAssignment.setStatus(Status.DELETE_REJECTED);
                 requestedAssignment.setStatusSequence(Status.DELETE_REJECTED.sequence);
@@ -195,7 +194,6 @@ public class CreateRoleAssignmentService {
 
         //Save requested role in history table with APPROVED/REJECTED Status
         for (RoleAssignment requestedAssignment : parsedAssignmentRequest.getRequestedRoles()) {
-            requestedAssignment.setRequest(parsedAssignmentRequest.getRequest());
             requestEntity.getHistoryEntities().add(persistenceService.persistHistory(
                 requestedAssignment,
                 parsedAssignmentRequest.getRequest()
@@ -240,7 +238,6 @@ public class CreateRoleAssignmentService {
                                      Status status,
                                      List<UUID> rejectedAssignmentIds) {
         for (RoleAssignment requestedAssignment : assignmentRequest.getRequestedRoles()) {
-            requestedAssignment.setRequest(assignmentRequest.getRequest());
             if (!rejectedAssignmentIds.isEmpty()
                 && (status.equals(Status.REJECTED) || status.equals(Status.DELETE_REJECTED))
                 &&
