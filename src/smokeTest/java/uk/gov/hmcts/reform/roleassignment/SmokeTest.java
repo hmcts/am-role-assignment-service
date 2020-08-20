@@ -174,7 +174,7 @@ public class SmokeTest extends BaseTest {
         InputStream input = SmokeTest.class.getClassLoader().getResourceAsStream("create_request_body.json");
         String requestBody = MAPPER.readValue(input, String.class);
 
-            Response response = SerenityRest
+        Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
             .header("Content-Type", "application/json")
