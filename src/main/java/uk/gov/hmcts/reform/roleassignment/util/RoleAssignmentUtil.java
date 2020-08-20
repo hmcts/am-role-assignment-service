@@ -15,9 +15,5 @@ public class RoleAssignmentUtil {
         return (input == null || input.isEmpty());
     }
 
-    public static boolean notEmpty(String input) {
-        return (input != null && !input.isEmpty());
-    }
-
 
 }
