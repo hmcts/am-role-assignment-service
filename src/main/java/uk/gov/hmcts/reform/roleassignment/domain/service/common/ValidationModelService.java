@@ -67,10 +67,10 @@ public class ValidationModelService {
             assignmentRequest.getRequest().getAuthenticatedUserId())) {
             userIds.add(String.valueOf(assignmentRequest.getRequest().getAssignerId()));
         }
-        assignmentRequest.getRequestedRoles().stream().forEach((requestedRole) -> {
+        assignmentRequest.getRequestedRoles().stream().forEach(requestedRole -> {
             userIds.add(String.valueOf(requestedRole.getActorId()));
         });
-        userIds.stream().forEach((userId) -> {
+        userIds.stream().forEach(userId -> {
             if (userId != null) {
                 log.info("Getting user Roles");
                 //facts.add(idamRoleService.getUserRoles(userId));
