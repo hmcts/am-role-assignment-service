@@ -74,11 +74,11 @@ withPipeline(type, product, component) {
   disableLegacyDeployment()
 
   before('functionalTest:aat') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/integrationTests/**'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/integrationTests/**/*'
   }
 
   before('functionalTest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/integrationTests/**'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/integrationTests/**/*'
   }
 
   after('functionalTest:preview') {
