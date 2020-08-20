@@ -17,12 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.MAPPER;
+import java.nio.charset.StandardCharsets;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -172,7 +169,7 @@ public class SmokeTest extends BaseTest {
         RestAssured.useRelaxedHTTPSValidation();
 
         InputStream input = SmokeTest.class.getClassLoader().getResourceAsStream("create_request_body.json");
-        String requestBody = MAPPER.readValue(input, String.class);
+        String requestBody = IOUtils.toString(input, StandardCharsets.UTF_8.name());
 
         Response response = SerenityRest
             .given()
@@ -185,12 +182,5 @@ public class SmokeTest extends BaseTest {
             .post(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.CREATED.value());
-    }
-
-    private String fetchRequestBody() throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("create_request_body.json").getFile());
-        FileInputStream fileInputStream = new FileInputStream(file);
-        return IOUtils.toString(fileInputStream, "UTF-8");
     }
 }
