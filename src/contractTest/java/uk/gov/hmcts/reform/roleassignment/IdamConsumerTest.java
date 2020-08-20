@@ -61,10 +61,13 @@ public class IdamConsumerTest {
                                + "- ROLE ASSIGNMENT API")
             .path(IDAM_OPEN_ID_TOKEN_URL)
             .method(HttpMethod.POST.toString())
-            .body("redirect_uri=http%3A%2F%2Fwww.dummy-pact-service.com%2Fcallback&client_id=am_docker&grant_type="
-                      + "password&username=befta.caseworker.2.solicitor.2%40gmail"
-                      + ".com&password=Pa55word11&client_secret=am_docker_secret&scope="
-                      + "openid profile roles authorities",
+            .body("redirect_uri=http%3A%2F%2Fwww.dummy-pact-service.com%2Fcallback"
+                      + "&client_id=am_docker"
+                      + "&client_secret=am_docker_secret"
+                      + "&grant_type=password"
+                      + "&scope=openid profile roles authorities"
+                      + "&username=befta.caseworker.2.solicitor.2%40gmail.com"
+                      + "&password=Pa55word11",
                   "application/x-www-form-urlencoded")
             .willRespondWith()
             .status(HttpStatus.OK.value())
