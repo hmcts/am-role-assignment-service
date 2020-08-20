@@ -66,7 +66,7 @@ public class CreateRoleAssignmentService {
 
     }
 
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
                                        AssignmentRequest parsedAssignmentRequest) {
         // decision block
@@ -146,7 +146,7 @@ public class CreateRoleAssignmentService {
         persistenceService.updateRequest(requestEntity);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+
     public void executeReplaceRequest(AssignmentRequest existingAssignmentRequest,
                                       AssignmentRequest parsedAssignmentRequest) {
         //delete existingAssignmentRequest.getRequestedRoles() records from live table--Hard delete
