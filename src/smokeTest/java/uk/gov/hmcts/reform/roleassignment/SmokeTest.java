@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import uk.gov.hmcts.reform.roleassignment.config.UserTokenProviderConfig;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.io.IOException;
@@ -37,8 +38,7 @@ public class SmokeTest extends BaseTest {
     public void setUp() {
         config = new UserTokenProviderConfig();
         accessToken = searchUserByUserId(config);
-        serviceAuth = new BaseTest()
-            .authTokenGenerator(
+        serviceAuth = authTokenGenerator(
                 config.getSecret(),
                 config.getMicroService(),
                 generateServiceAuthorisationApi(config.getS2sUrl())
