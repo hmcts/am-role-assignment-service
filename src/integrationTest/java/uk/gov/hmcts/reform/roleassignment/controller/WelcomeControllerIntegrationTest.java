@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import net.thucydides.core.annotations.WithTag;
-import net.thucydides.core.annotations.WithTags;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -23,7 +21,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 
 import javax.sql.DataSource;
 
-@WithTags({@WithTag("testType:Integration")})
 public class WelcomeControllerIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(WelcomeControllerIntegrationTest.class);
