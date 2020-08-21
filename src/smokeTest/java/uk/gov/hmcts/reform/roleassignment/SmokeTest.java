@@ -18,9 +18,9 @@ import org.springframework.http.HttpStatus;
 import uk.gov.hmcts.reform.roleassignment.config.UserTokenProviderConfig;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -168,23 +168,19 @@ public class SmokeTest extends BaseTest {
         String targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments";
         RestAssured.useRelaxedHTTPSValidation();
 
+        InputStream input = SmokeTest.class.getClassLoader().getResourceAsStream("create_request_body.json");
+        String requestBody = IOUtils.toString(input, StandardCharsets.UTF_8.name());
+
         Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
             .header("Content-Type", "application/json")
             .header("ServiceAuthorization", "Bearer " + serviceAuth)
             .header("Authorization", "Bearer " + accessToken)
-            .body("Hello")
+            .body(requestBody)
             .when()
             .post(targetInstance)
             .andReturn();
-        response.then().assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
-    }
-
-    private String fetchRequestBody() throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("create_request_body.json").getFile());
-        FileInputStream fileInputStream = new FileInputStream(file);
-        return IOUtils.toString(fileInputStream, "UTF-8");
+        response.then().assertThat().statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
     }
 }
