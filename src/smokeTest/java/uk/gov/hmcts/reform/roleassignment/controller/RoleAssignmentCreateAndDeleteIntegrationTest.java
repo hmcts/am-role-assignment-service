@@ -1,35 +1,43 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.List;
-import javax.inject.Inject;
-import javax.sql.DataSource;
-
 import net.thucydides.core.annotations.WithTag;
 import net.thucydides.core.annotations.WithTags;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
+import uk.gov.hmcts.reform.roleassignment.MockUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.config.UserTokenProviderConfig;
+import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
+
+import javax.inject.Inject;
+import javax.sql.DataSource;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.doReturn;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WithTags({@WithTag("testType:Integration")})
 public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
@@ -48,6 +56,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     public static final String LIVE = "LIVE";
     public static final String DELETED = "DELETED";
     public static final String DELETE_APPROVED = "DELETE_APPROVED";
+    private static final String AUTHORISED_SERVICE = "ccd_gw";
 
     private MockMvc mockMvc;
     private JdbcTemplate template;
@@ -55,26 +64,44 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @Inject
     private WebApplicationContext wac;
 
+    @Inject
+    private JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter;
+
+
     @Autowired
     private DataSource ds;
 
-    UserTokenProviderConfig config;
-    String accessToken;
-    String serviceAuth;
+    @Mock
+    private Authentication authentication;
+
+
+    @Mock
+    private SecurityContext securityContext;
+
 
     @Before
     public void setUp() {
+
+
         template = new JdbcTemplate(ds);
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).apply(springSecurity()).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         MockitoAnnotations.initMocks(this);
 
-        config = new UserTokenProviderConfig();
-        accessToken = searchUserByUserId(config);
-        serviceAuth = authTokenGenerator(
-                config.getSecret(),
-                config.getMicroService(),
-                generateServiceAuthorisationApi(config.getS2sUrl())
-            ).generate();
+        doReturn(authentication).when(securityContext).getAuthentication();
+        SecurityContextHolder.setContext(securityContext);
+
+        MockUtils.setSecurityAuthorities(authentication, MockUtils.ROLE_CASEWORKER);
+        UserInfo userInfo = UserInfo.builder()
+            .uid("6b36bfc6-bb21-11ea-b3de-0242ac130006")
+            .sub("emailId@a.com")
+            .build();
+        ReflectionTestUtils.setField(
+            jwtGrantedAuthoritiesConverter,
+            "userInfo", userInfo
+
+        );
+
+
     }
 
     @Test
@@ -87,6 +114,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             false, false);
         logger.info(" assignmentRequest :  {}", mapper.writeValueAsString(assignmentRequest));
         final String url = "/am/role-assignments";
+
 
         mockMvc.perform(post(url)
                             .contentType(JSON_CONTENT_TYPE)
@@ -144,7 +172,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
         {"classpath:sql/role_assignment_clean_up.sql",
-        "classpath:sql/insert_assignment_records_to_delete.sql"})
+            "classpath:sql/insert_assignment_records_to_delete.sql"})
     public void shouldDeleteRoleAssignments() throws Exception {
         logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count before create assignment request : {}", getAssignmentRecordsCount());
@@ -181,8 +209,9 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @NotNull
     private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("ServiceAuthorization", "Bearer " + serviceAuth);
-        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add(AUTHORIZATION, "Bearer user1");
+        String s2SToken = MockUtils.generateDummyS2SToken(AUTHORISED_SERVICE);
+        headers.add("ServiceAuthorization", "Bearer " + s2SToken);
         return headers;
     }
 
@@ -193,4 +222,6 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     public String getActorFromAssignmentTable() {
         return template.queryForObject(GET_ACTOR_FROM_ASSIGNMENT_QUERY, new Object[]{ACTOR_ID}, String.class);
     }
+
+
 }
