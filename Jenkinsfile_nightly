@@ -82,9 +82,9 @@ withNightlyPipeline(type, product, component) {
       sh "./gradlew integration"
       steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
     }
+  }
 
-    after('fullFunctionalTest') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/cucumber/**/*'
-    }
+  after('fullFunctionalTest') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/cucumber/**/*'
   }
 }
