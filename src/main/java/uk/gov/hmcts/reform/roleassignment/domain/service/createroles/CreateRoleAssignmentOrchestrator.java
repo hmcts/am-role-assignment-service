@@ -1,12 +1,14 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
@@ -17,6 +19,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.HashSet;
+
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 
 @Slf4j
 @Service
@@ -74,10 +78,23 @@ public class CreateRoleAssignmentOrchestrator {
             existingAssignmentRequest = createRoleAssignmentService
                 .retrieveExistingAssignments(parsedAssignmentRequest);
 
+            // return 201 when there is no existing records in db and incoming request also have empty requested roles.
+            if (existingAssignmentRequest.getRequestedRoles().isEmpty()
+                && parsedAssignmentRequest.getRequestedRoles().isEmpty()) {
+                request.setStatus(APPROVED);
+                request.setLog("Request has been approved");
+                requestEntity.setStatus(Status.APPROVED.toString());
+                requestEntity.setLog(request.getLog());
+                persistenceService.updateRequest(requestEntity);
+                return ResponseEntity.status(HttpStatus.CREATED).body(parsedAssignmentRequest);
+            }
+
             // compare identical existing and incoming requested roles based on some attributes
             try {
-                if (createRoleAssignmentService.hasAssignmentsUpdated(existingAssignmentRequest,
-                    parsedAssignmentRequest)) {
+                if (createRoleAssignmentService.hasAssignmentsUpdated(
+                    existingAssignmentRequest,
+                    parsedAssignmentRequest
+                )) {
                     identifyAssignmentsToBeUpdated(existingAssignmentRequest, parsedAssignmentRequest);
 
                 } else {
@@ -122,7 +139,8 @@ public class CreateRoleAssignmentOrchestrator {
         if (!createRoleAssignmentService.needToCreateRoleAssignments.isEmpty()) {
             createRoleAssignmentService.updateNewAssignments(
                 existingAssignmentRequest,
-                parsedAssignmentRequest);
+                parsedAssignmentRequest
+            );
 
         } else {
             parsedAssignmentRequest.setRequestedRoles(Collections.emptyList());
