@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -286,7 +287,6 @@ class CreateRoleAssignmentOrchestratorTest {
         AssignmentRequest result = (AssignmentRequest) response.getBody();
 
 
-
         //assert values
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -345,6 +345,36 @@ class CreateRoleAssignmentOrchestratorTest {
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
 
+    @Test
+    void shouldReturn201WhenExistingAndIncomingRolesEmpty() throws IOException, ParseException {
+
+
+        prepareRequestWhenReplaceExistingTrue();
+        assignmentRequest.setRequestedRoles(Collections.emptyList());
+
+        requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
+
+        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
+            .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
+
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
+            .thenReturn(
+                assignmentRequest);
+        when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
+
+        //actual method call
+        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
+
+        //assert values
+        assertNotNull(response);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        verify(parseRequestService, times(1))
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
+        verify(persistenceService, times(1))
+            .persistRequest(any(Request.class));
+
+    }
+
     private void verifyNUmberOfInvocations() throws ParseException {
         verify(parseRequestService, times(1))
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
@@ -362,4 +392,6 @@ class CreateRoleAssignmentOrchestratorTest {
         );
         assignmentRequest.getRequest().setReplaceExisting(true);
     }
+
+
 }
