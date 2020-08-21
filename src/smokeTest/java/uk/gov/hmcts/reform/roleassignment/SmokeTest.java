@@ -181,6 +181,6 @@ public class SmokeTest extends BaseTest {
             .when()
             .post(targetInstance)
             .andReturn();
-        response.then().assertThat().statusCode(HttpStatus.CREATED.value());
+        response.then().assertThat().statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
     }
 }
