@@ -73,6 +73,10 @@ withNightlyPipeline(type, product, component) {
   enableSecurityScan()
   enableFullFunctionalTest()
 
+  before('fullFunctionalTest') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
+  }
+
   after('fullFunctionalTest') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/cucumber/**/*'
   }
