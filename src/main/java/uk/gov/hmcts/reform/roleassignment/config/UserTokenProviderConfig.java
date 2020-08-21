@@ -1,12 +1,11 @@
-package uk.gov.hmcts.reform.roleassignment;
+package uk.gov.hmcts.reform.roleassignment.config;
 
 import lombok.Getter;
 import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
+import uk.gov.hmcts.reform.roleassignment.util.EnvironmentVariableUtils;
 
 @Getter
 public class UserTokenProviderConfig {
-
-    public static final UserTokenProviderConfig DEFAULT_INSTANCE = new UserTokenProviderConfig();
 
     private final String idamURL;
     private final String roleAssignmentUrl;
@@ -19,7 +18,7 @@ public class UserTokenProviderConfig {
     private final String username;
     private final String password;
     private final String scope;
-    private static final String MICROSERVICE_NAME = "am_role_assignment_service";
+    private static final String MICRO_SERVICE_NAME = "am_role_assignment_service";
     private static final String USER_NAME = "befta.caseworker.2.solicitor.2@gmail.com";
 
     public UserTokenProviderConfig() {
@@ -27,7 +26,7 @@ public class UserTokenProviderConfig {
         idamURL = EnvironmentVariableUtils.getRequiredVariable("IDAM_URL");
         roleAssignmentUrl = EnvironmentVariableUtils.getRequiredVariable("TEST_URL");
         secret = EnvironmentVariableUtils.getRequiredVariable("AM_ROLE_ASSIGNMENT_SERVICE_SECRET");
-        microService = MICROSERVICE_NAME;
+        microService = MICRO_SERVICE_NAME;
         s2sUrl = EnvironmentVariableUtils.getRequiredVariable("IDAM_S2S_URL");
 
         clientId = EnvironmentVariableUtils.getRequiredVariable("IDAM_CLIENT_ID");
@@ -40,17 +39,16 @@ public class UserTokenProviderConfig {
 
     public TokenRequest prepareTokenRequest() {
 
-        TokenRequest tokenRequest = new TokenRequest(
+        return new TokenRequest(
             clientId,
             clientSecret,
             "password",
             "",
             username,
             password,
-            scope,
+            "openid roles profile authorities",
             "4",
             ""
         );
-        return tokenRequest;
     }
 }
