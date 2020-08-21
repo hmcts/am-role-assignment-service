@@ -31,7 +31,7 @@ class ValidationUtilTest {
     @Test
     void shouldValidate() {
         try {
-            ValidationUtil.validateId(NUMBER_PATTERN, "1212121212121213");
+            ValidationUtil.validateInputParams(NUMBER_PATTERN, "1212121212121213");
         } catch (Exception e) {
             fail("failed");
         }
@@ -40,14 +40,14 @@ class ValidationUtilTest {
     @Test
     void shouldThrow() {
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateId(NUMBER_PATTERN, "2323232323");
+            ValidationUtil.validateInputParams(NUMBER_PATTERN, "2323232323");
         });
     }
 
     @Test
     void validateTextField() {
         try {
-            ValidationUtil.validateId(TEXT_PATTERN, "CREATE");
+            ValidationUtil.validateInputParams(TEXT_PATTERN, "CREATE");
         } catch (Exception e) {
             fail("failed");
         }
@@ -56,7 +56,7 @@ class ValidationUtilTest {
     @Test
     void throw_validateTextField() {
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateId(NUMBER_PATTERN, "1234");
+            ValidationUtil.validateInputParams(NUMBER_PATTERN,"1234");
         });
     }
 
@@ -64,7 +64,7 @@ class ValidationUtilTest {
     @Test
     void validateNumberTextField() {
         try {
-            ValidationUtil.validateId(NUMBER_TEXT_PATTERN, "request1");
+            ValidationUtil.validateInputParams(NUMBER_TEXT_PATTERN,"request1");
         } catch (Exception e) {
             fail("failed");
         }
@@ -73,14 +73,14 @@ class ValidationUtilTest {
     @Test
     void throw_validateNumberTextField() {
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateId(NUMBER_TEXT_PATTERN, "requ-est1");
+            ValidationUtil.validateInputParams(NUMBER_TEXT_PATTERN,"requ-est1");
         });
     }
 
     @Test
     void shouldValidateHyphenTextField() {
         try {
-            ValidationUtil.validateId(TEXT_HYPHEN_PATTERN, "north-west");
+            ValidationUtil.validateInputParams(TEXT_HYPHEN_PATTERN,"north-west");
         } catch (Exception e) {
             fail("failed");
         }
@@ -89,7 +89,7 @@ class ValidationUtilTest {
     @Test
     void should_ValidateHyphenTextField() {
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateId(TEXT_HYPHEN_PATTERN, "north-west1");
+            ValidationUtil.validateInputParams(TEXT_HYPHEN_PATTERN,"north-west1");
         });
     }
 
@@ -115,7 +115,7 @@ class ValidationUtilTest {
     void shouldThrowInvalidRequestException_ValidateLists() {
         List list = new ArrayList();
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.isRequestedRolesEmpty(list);
+            ValidationUtil.validateLists(list);
         });
     }
 
@@ -278,7 +278,7 @@ class ValidationUtilTest {
     void shouldValidateDateOrder() throws ParseException {
         String beginTime = LocalDateTime.now().plusDays(1).toString();
         String endTime = LocalDateTime.now().plusDays(14).toString();
-        ValidationUtil.compareDateOrder(beginTime,endTime);
+        ValidationUtil.validateDateOrder(beginTime,endTime);
     }
 
     @Test
@@ -286,7 +286,7 @@ class ValidationUtilTest {
         String beginTime = LocalDateTime.now().minusDays(1).toString();
         String endTime = LocalDateTime.now().plusDays(14).toString();
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.compareDateOrder(beginTime,endTime);
+            ValidationUtil.validateDateOrder(beginTime,endTime);
         });
     }
 
@@ -295,7 +295,7 @@ class ValidationUtilTest {
         String beginTime = LocalDateTime.now().plusDays(14).toString();
         String endTime = LocalDateTime.now().minusDays(1).toString();
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.compareDateOrder(beginTime,endTime);
+            ValidationUtil.validateDateOrder(beginTime,endTime);
         });
     }
 
@@ -304,21 +304,21 @@ class ValidationUtilTest {
         String beginTime = LocalDateTime.now().plusDays(14).toString();
         String endTime = LocalDateTime.now().plusDays(10).toString();
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.compareDateOrder(beginTime,endTime);
+            ValidationUtil.validateDateOrder(beginTime,endTime);
         });
     }
 
     @Test
     void shouldThrowBad_ValidateEnumField() {
         Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.compareRoleType("SecretAgent");
+            ValidationUtil.validateEnumRoleType("SecretAgent");
         });
     }
 
     @Test
     void shouldValidateEnumField() {
-        ValidationUtil.compareRoleType("Case");
-        ValidationUtil.compareRoleType("Organisation");
+        ValidationUtil.validateEnumRoleType("Case");
+        ValidationUtil.validateEnumRoleType("Organisation");
     }
 
     @Test

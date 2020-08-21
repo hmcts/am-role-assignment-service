@@ -1,12 +1,23 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -22,18 +33,7 @@ import uk.gov.hmcts.reform.roleassignment.util.CreatedTimeComparator;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-
+@Service
 @Data
 @Slf4j
 public class CreateRoleAssignmentService {
@@ -66,7 +66,7 @@ public class CreateRoleAssignmentService {
 
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+
     public void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
                                        AssignmentRequest parsedAssignmentRequest) {
         // decision block
@@ -165,6 +165,7 @@ public class CreateRoleAssignmentService {
 
     private void checkDeleteApproved(AssignmentRequest existingAssignmentRequest) {
         for (RoleAssignment requestedAssignment : existingAssignmentRequest.getRequestedRoles()) {
+            requestedAssignment.setRequest(existingAssignmentRequest.getRequest());
             if (!requestedAssignment.getStatus().equals(Status.APPROVED)) {
                 requestedAssignment.setStatus(Status.DELETE_REJECTED);
                 requestedAssignment.setStatusSequence(Status.DELETE_REJECTED.sequence);
@@ -194,6 +195,7 @@ public class CreateRoleAssignmentService {
 
         //Save requested role in history table with APPROVED/REJECTED Status
         for (RoleAssignment requestedAssignment : parsedAssignmentRequest.getRequestedRoles()) {
+            requestedAssignment.setRequest(parsedAssignmentRequest.getRequest());
             requestEntity.getHistoryEntities().add(persistenceService.persistHistory(
                 requestedAssignment,
                 parsedAssignmentRequest.getRequest()
@@ -238,22 +240,21 @@ public class CreateRoleAssignmentService {
                                      Status status,
                                      List<UUID> rejectedAssignmentIds) {
         for (RoleAssignment requestedAssignment : assignmentRequest.getRequestedRoles()) {
+            requestedAssignment.setRequest(assignmentRequest.getRequest());
             if (!rejectedAssignmentIds.isEmpty()
                 && (status.equals(Status.REJECTED) || status.equals(Status.DELETE_REJECTED))
                 &&
                 (requestedAssignment.getStatus().equals(Status.APPROVED)
-                    || requestedAssignment.getStatus().equals(Status.CREATED)
-                    || requestedAssignment.getStatus().equals(Status.DELETE_APPROVED))) {
+                || requestedAssignment.getStatus().equals(Status.CREATED)
+                || requestedAssignment.getStatus().equals(Status.DELETE_APPROVED))) {
                 requestedAssignment.setLog(
                     "Requested Role has been rejected due to following new/existing assignment Ids :"
                         + rejectedAssignmentIds.toString());
             }
             requestedAssignment.setStatus(status);
             // persist history in db
-            HistoryEntity entity = persistenceService.persistHistory(
-                requestedAssignment,
-                assignmentRequest.getRequest()
-            );
+            HistoryEntity entity = persistenceService.persistHistory(requestedAssignment,
+                assignmentRequest.getRequest());
             requestedAssignment.setId(entity.getId());
             requestEntity.getHistoryEntities().add(entity);
         }
@@ -312,12 +313,12 @@ public class CreateRoleAssignmentService {
         if (!commonRecords.isEmpty() && !incomingRecords.isEmpty() && !existingRecords.isEmpty()) {
             needToDeleteRoleAssignments =
                 existingRecords.entrySet().stream()
-                    .filter(roleAssignmentSubsetEntry ->
-                                !(roleAssignmentSubsetEntry.getValue()
-                                    .equals(commonRecords.get(
-                                        roleAssignmentSubsetEntry
-                                            .getKey()))))
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                               .filter(roleAssignmentSubsetEntry ->
+                                           !(roleAssignmentSubsetEntry.getValue()
+                                                                      .equals(commonRecords.get(
+                                                                                      roleAssignmentSubsetEntry
+                                                                                          .getKey()))))
+                               .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             needToCreateRoleAssignments = findCreateRoleAssignments(incomingRecords, commonRecords);
 
@@ -328,6 +329,9 @@ public class CreateRoleAssignmentService {
             needToCreateRoleAssignments = incomingRecords;
         } else if (commonRecords.isEmpty() && incomingRecords.isEmpty() && !existingRecords.isEmpty()) {
             needToDeleteRoleAssignments = existingRecords;
+        } else if (commonRecords.isEmpty() && incomingRecords.isEmpty() && existingRecords.isEmpty()) {
+            throw new UnprocessableEntityException("Create with replace existing can not be processed "
+                                                       + "without existing and new assignment records");
         }
     }
 

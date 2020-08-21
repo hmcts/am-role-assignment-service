@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-public final class Constants {
+public class Constants {
 
     private Constants() {
     }
