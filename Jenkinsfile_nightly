@@ -61,7 +61,7 @@ withNightlyPipeline(type, product, component) {
   env.OAUTH2_ACCESS_TOKEN_TYPE = "OIDC"
   env.BEFTA_RESPONSE_HEADER_CHECK_POLICY = "JUST_WARN"
   env.OAUTH2_SCOPE_VARIABLES = "openid%20profile%20roles%20authorities"
-  env.IDAM_CLIENT_ID="am_role_assignment"
+  env.IDAM_CLIENT_ID = "am_role_assignment"
   env.OPENID_SCOPE_VARIABLES = "openid+profile+roles+authorities"
 
   env.Rules = params.SecurityRules
@@ -77,7 +77,14 @@ withNightlyPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
   }
 
-  after('fullFunctionalTest') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/cucumber/**/*'
+  after('build') {
+    stage("integration tests") {
+      sh "./gradlew integration"
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
+    }
+
+    after('fullFunctionalTest') {
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/cucumber/**/*'
+    }
   }
 }
