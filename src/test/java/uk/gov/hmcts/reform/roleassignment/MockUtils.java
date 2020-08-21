@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 public class MockUtils {
 
-    public static final String CCD_GW = "am_role_assignment_service";
+    public static final String CCD_GW = "CCD_GW";
     public static final String ROLE_CASEWORKER = "caseworker";
 
     private MockUtils() {
@@ -45,7 +45,7 @@ public class MockUtils {
 
         Jwt jwt = Jwt.withTokenValue(jwtToken)
             .claim("aClaim", "aClaim")
-            .claim("aud", Lists.newArrayList(CCD_GW))
+            .claim("aud", Lists.newArrayList(CCD_GW,"am_role_assignment_service"))
             .header("aHeader", "aHeader")
             .build();
         when(authenticationMock.getPrincipal()).thenReturn(jwt);
