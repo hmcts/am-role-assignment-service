@@ -5,7 +5,7 @@ public final class V1 {
     private V1() {
     }
 
-    public final class MediaType {
+    public static final class MediaType {
         private MediaType() {
         }
 
