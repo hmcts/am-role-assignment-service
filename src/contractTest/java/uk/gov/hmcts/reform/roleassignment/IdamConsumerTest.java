@@ -46,7 +46,7 @@ public class IdamConsumerTest {
     @Pact(provider = "Idam_api", consumer = "am_role_assignment_service")
     public RequestResponsePact executeGetIdamAccessTokenAndGet200(PactDslWithProvider builder) throws JSONException {
         String[] rolesArray = new String[1];
-        rolesArray[0] = "consumer";
+        rolesArray[0] = "Consumer";
         Map<String, String> responseHeaders = Maps.newHashMap();
         responseHeaders.put("Content-Type", "application/json");
         Map<String, Object> params = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -61,8 +61,7 @@ public class IdamConsumerTest {
                                + "- ROLE ASSIGNMENT API")
             .path(IDAM_OPEN_ID_TOKEN_URL)
             .method(HttpMethod.POST.toString())
-            .body("redirect_uri=http%3A%2F%2Fwww.dummy-pact-service.com%2Fcallback"
-                      + "&client_id=am_docker"
+            .body ("client_id=am_docker"
                       + "&client_secret=am_docker_secret"
                       + "&grant_type=password"
                       + "&scope=openid profile roles authorities"
@@ -83,8 +82,6 @@ public class IdamConsumerTest {
             SerenityRest
                 .given()
                 .contentType(ContentType.URLENC)
-                .formParam("redirect_uri",
-                           "http://www.dummy-pact-service.com/callback")
                 .formParam("client_id", "am_docker")
                 .formParam("grant_type", "password")
                 .formParam("username", "befta.caseworker.2.solicitor.2@gmail.com")
