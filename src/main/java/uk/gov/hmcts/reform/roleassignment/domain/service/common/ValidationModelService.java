@@ -1,10 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import lombok.extern.slf4j.Slf4j;
 import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class ValidationModelService {
     //1. retrieve existingRoleAssignment records for Assignee
     //2. retrieve existingRoleAssignment records for Requester
@@ -66,16 +67,16 @@ public class ValidationModelService {
             assignmentRequest.getRequest().getAuthenticatedUserId())) {
             userIds.add(String.valueOf(assignmentRequest.getRequest().getAssignerId()));
         }
-        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            userIds.add(String.valueOf(requestedRole.getActorId()));
-
-        }
-        for (String userId : userIds) {
+        assignmentRequest.getRequestedRoles().stream().forEach(requestedRole ->
+            userIds.add(String.valueOf(requestedRole.getActorId()))
+        );
+        userIds.stream().forEach(userId -> {
             if (userId != null) {
+                log.info("Getting user Roles");
                 //facts.add(idamRoleService.getUserRoles(userId));
             }
+        });
 
-        }
     }
 
 

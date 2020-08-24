@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-public class Constants {
+public final class Constants {
 
     private Constants() {
     }
@@ -15,6 +15,9 @@ public class Constants {
     public static final String AUTHORIZATION = "Authorization";
     public static final String SERVICE_AUTHORIZATION2 = "ServiceAuthorization";
     public static final String BEARER = "Bearer ";
+    public static final String ENDPOINT_NOT_AVAILABLE = "The endpoint is not available ";
+    public static final String AAT = "AAT";
+    public static final String PROD = "PROD";
 
     public static final String NUMBER_PATTERN = "^[0-9]{16}$";
     public static final String NUMBER_TEXT_PATTERN = "^[a-zA-Z0-9]+$";
@@ -39,5 +42,6 @@ public class Constants {
     public static final String LOCALDATETIME = "LocalDateTime";
     public static final String STATUS = "Status";
     public static final String INTEGER = "Integer";
+    public static final String GET_LD_FLAG = "get-ld-flag";
 
 }
