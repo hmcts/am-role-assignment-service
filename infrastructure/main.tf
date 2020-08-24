@@ -46,7 +46,6 @@ resource "azurerm_key_vault_secret" "am_role_assignment_service_s2s_secret" {
   key_vault_id = data.azurerm_key_vault.am_key_vault.id
 }
 
-
 module "role-assignment-db" {
   source = "git@github.com:hmcts/cnp-module-postgres?ref=master"
   product = "${local.app_full_name}-postgres-db"

@@ -3,12 +3,17 @@
   "_guid_": "S-001",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
-    "contains a single Role Assignment with only mandatory fields"
+    "contains a single Role Assignment with only mandatory fields",
+    "contains a single Role Assignment with only mandatory fields",
+    "Befta3 - who is the assigner",
+    "Befta2 - who invokes the API",
+    "Befta1 - who is the actor for requested role"
   ],
   "request": {
     "body": {
       "roleRequest": {
-        "reference": "${[scenarioContext][customValues][generateUUID]}"
+        "assignerId": "${[scenarioContext][testData][users][befta3][id]}",
+        "reference": "${[scenarioContext][testData][users][befta1][id]}"
       },
       "requestedRoles": [
         {
