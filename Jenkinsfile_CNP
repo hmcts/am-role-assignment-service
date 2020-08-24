@@ -29,6 +29,7 @@ def vaultOverrides = [
     'spreview': 'saat'
 ]
 
+//These secrets will be available in the functional tests in the virtual machine where pipeline executes.
 def secrets = [
   'ccd-${env}': [
     secret('ccd-caseworker-autotest-email', 'CCD_CASEWORKER_AUTOTEST_EMAIL'),
