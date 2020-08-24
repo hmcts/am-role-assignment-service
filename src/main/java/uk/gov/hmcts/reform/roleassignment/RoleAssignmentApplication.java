@@ -52,6 +52,7 @@ public class RoleAssignmentApplication {
     public Clock utcClock() {
         return Clock.systemUTC();
     }
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();

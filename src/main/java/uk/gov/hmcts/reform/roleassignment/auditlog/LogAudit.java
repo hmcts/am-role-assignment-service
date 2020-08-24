@@ -28,5 +28,7 @@ public @interface LogAudit {
 
     String reference() default "";
 
+    String assignmentId() default "";
+
 
 }
