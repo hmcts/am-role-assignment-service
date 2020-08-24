@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.util;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -41,12 +42,30 @@ public class AuditLoggerUtil {
     public static Set<String> buildCaseIds(ResponseEntity<RoleAssignmentRequestResource> response) {
         Set<String> caseIds = new HashSet<>();
         response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream()
-            .map(RoleAssignment::getAttributes).forEach(obj -> obj.forEach((K, V) -> {
-                if (K.equals("caseId")) {
-                    caseIds.add(V.asText());
+            .map(RoleAssignment::getAttributes).forEach(obj -> obj.forEach((Key, Value) -> {
+                if (Key.equals("caseId")) {
+                    caseIds.add(Value.asText());
                 }
 
             }));
         return caseIds;
+    }
+
+    public static List<UUID> getAssignmentIds(ResponseEntity<RoleAssignmentResource> response) {
+        return response.getBody().getRoleAssignmentResponse().stream().limit(10)
+            .map(RoleAssignment::getId)
+            .collect(Collectors.toList());
+    }
+
+    public static List<UUID> getActorIds(ResponseEntity<RoleAssignmentResource> response) {
+        return response.getBody().getRoleAssignmentResponse().stream().limit(10)
+            .map(RoleAssignment::getActorId)
+            .collect(Collectors.toList());
+    }
+
+    public static List<UUID> searchAssignmentIds(ResponseEntity<List<RoleAssignment>> response) {
+        return response.getBody().stream().limit(10)
+            .map(RoleAssignment::getId)
+            .collect(Collectors.toList());
     }
 }

@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
+import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DELETE_ASSIGNMENTS_BY_ID;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DELETE_ASSIGNMENTS_BY_PROCESS;
 
 
@@ -55,7 +56,9 @@ public class DeleteAssignmentController {
             message = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
         )
     })
-    @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_PROCESS)
+    @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_PROCESS,
+        process = "#process",
+        reference = "#reference")
     public ResponseEntity<Object> deleteRoleAssignment(@RequestHeader(value = "assignerId", required = false)
                                                            String assignerId,
                                                        @RequestParam(value = "process", required = false)
@@ -89,6 +92,9 @@ public class DeleteAssignmentController {
             message = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
         )
     })
+    @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_ID,
+        assignmentId = "#assignmentId"
+    )
     public ResponseEntity<Object> deleteRoleAssignmentById(
         @RequestHeader(value = "assignerId", required = false)
             String assignerId,
