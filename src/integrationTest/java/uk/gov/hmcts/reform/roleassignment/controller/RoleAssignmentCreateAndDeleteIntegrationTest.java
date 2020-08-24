@@ -97,8 +97,6 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             "userInfo", userInfo
 
         );
-
-
     }
 
     @Test
