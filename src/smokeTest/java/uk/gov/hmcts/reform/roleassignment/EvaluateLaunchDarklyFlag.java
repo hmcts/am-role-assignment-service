@@ -19,6 +19,8 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
+//This class will be used when we migrate to Junit 5
+
 @Slf4j
 class EvaluateLaunchDarklyFlag implements ExecutionCondition {
 
