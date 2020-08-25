@@ -374,4 +374,43 @@ public class TestDataBuilder {
             .reference(1L)
             .lastStateModifiedDate(LocalDateTime.now().minusMonths(1L)).id("1234").build();
     }
+
+    public static AssignmentRequest createRoleAssignmentRequest(
+        boolean replaceExisting, boolean readOnly) throws IOException {
+        return new AssignmentRequest(buildRequestForRoleAssignment(replaceExisting),
+                                     buildRequestedRoles(readOnly));
+    }
+
+    public static Request buildRequestForRoleAssignment(boolean replaceExisting) {
+        return Request.builder()
+            .assignerId(UUID.fromString("123e4567-e89b-42d3-a456-556642445678"))
+            .reference("S-052")
+            .process(("S-052"))
+            .replaceExisting(replaceExisting)
+            .build();
+    }
+
+    public static Collection<RoleAssignment> buildRequestedRoles(boolean readOnly) throws IOException {
+        Collection<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(buildRoleAssignments(readOnly));
+        return requestedRoles;
+    }
+
+    public static RoleAssignment buildRoleAssignments(boolean readOnly) throws IOException {
+        LocalDateTime timeStamp = LocalDateTime.now();
+        return RoleAssignment.builder()
+            .actorId(UUID.fromString("123e4567-e89b-42d3-a456-556642445612"))
+            .actorIdType(ActorIdType.IDAM)
+            .roleType(RoleType.CASE)
+            .roleName("judge")
+            .classification(Classification.PUBLIC)
+            .grantType(GrantType.SPECIFIC)
+            .roleCategory(RoleCategory.JUDICIAL)
+            .readOnly(readOnly)
+            .beginTime(timeStamp.plusDays(1))
+            .endTime(timeStamp.plusMonths(1))
+            .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
+            .notes(buildNotesFromFile())
+            .build();
+    }
 }

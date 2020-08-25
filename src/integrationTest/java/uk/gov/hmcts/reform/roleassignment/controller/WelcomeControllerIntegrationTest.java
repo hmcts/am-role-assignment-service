@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import net.thucydides.core.annotations.WithTag;
-import net.thucydides.core.annotations.WithTags;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -13,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import uk.gov.hmcts.reform.roleassignment.BaseTest;
 
 import java.nio.charset.Charset;
 
@@ -20,13 +19,17 @@ import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
-@WithTags({@WithTag("testType:Integration")})
+import javax.sql.DataSource;
+
 public class WelcomeControllerIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(WelcomeControllerIntegrationTest.class);
     private static final String COUNT_RECORDS = "SELECT count(1) as n FROM role_assignment_request";
     private static final String GET_STATUS = "SELECT status FROM role_assignment_request where id = ?";
     private static final String REQUEST_ID = "077dc12a-02ba-4238-87c3-803ca26b515f";
+
+    @Autowired
+    private DataSource ds;
 
     private transient MockMvc mockMvc;
 
@@ -47,7 +50,7 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     @Before
     public void setUp() {
         this.mockMvc = standaloneSetup(this.welcomeController).build();
-        template = new JdbcTemplate(db);
+        template = new JdbcTemplate(ds);
     }
 
     @Test

@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment;
 
-import java.io.IOException;
-
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
@@ -14,18 +12,19 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import uk.gov.hmcts.reform.roleassignment.config.UserTokenProviderConfig;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 @NoArgsConstructor
 @WithTags({@WithTag("testType:Smoke")})
 public class SmokeTest extends BaseTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(SmokeTest.class);
     public static final String ERROR_DESCRIPTION = "errorDescription";
     public static final String AUTHORIZATION = "Authorization";
     public static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
@@ -50,8 +49,7 @@ public class SmokeTest extends BaseTest {
     public void setUp() {
         config = new UserTokenProviderConfig();
         accessToken = searchUserByUserId(config);
-        serviceAuth = new BaseTest()
-            .authTokenGenerator(
+        serviceAuth = authTokenGenerator(
                 config.getSecret(),
                 config.getMicroService(),
                 generateServiceAuthorisationApi(config.getS2sUrl())
@@ -185,16 +183,20 @@ public class SmokeTest extends BaseTest {
         String targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments";
         RestAssured.useRelaxedHTTPSValidation();
 
+        InputStream input = SmokeTest.class.getClassLoader().getResourceAsStream("create_request_body.json");
+        String requestBody = input.readAllBytes().toString();
+
         Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
             .header("Content-Type", "application/json")
             .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
             .header(AUTHORIZATION, BEARER + accessToken)
-            .body("Hello")
+            .body(requestBody)
             .when()
             .post(targetInstance)
             .andReturn();
+        response.then().assertThat().statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
         response.then().assertThat().statusCode(HttpStatus.BAD_REQUEST.value());
     }
 

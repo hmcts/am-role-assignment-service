@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -8,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -333,16 +331,6 @@ class CreateRoleAssignmentServiceTest {
         //assertion
         assertEquals(existingRecords, sut.needToDeleteRoleAssignments);
         assertEquals(existingRecords.values(), sut.needToDeleteRoleAssignments.values());
-    }
-
-    @Test
-    void identifyRoleAssignments_ThrowUnprocessableEntityException() {
-        Map<UUID, RoleAssignmentSubset> existingRecords = new HashMap<>();
-        Set<RoleAssignmentSubset> incomingRecords = new HashSet<>();
-        Map<UUID, RoleAssignmentSubset> commonRecords = new HashMap<>();
-        Assertions.assertThrows(UnprocessableEntityException.class, () -> {
-            sut.identifyRoleAssignments(existingRecords, incomingRecords, commonRecords);
-        });
     }
 
 
