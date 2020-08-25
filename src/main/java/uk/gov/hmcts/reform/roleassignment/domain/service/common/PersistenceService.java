@@ -49,7 +49,7 @@ public class PersistenceService {
         this.actorCacheRepository = actorCacheRepository;
     }
 
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public RequestEntity persistRequest(Request request) {
 
         //Prepare request entity

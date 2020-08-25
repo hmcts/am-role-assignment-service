@@ -94,7 +94,7 @@ public class ParseRequestService {
 
     public Request prepareDeleteRequest(String process, String reference, String actorId, String assignmentId) {
         if (!StringUtils.isEmpty(actorId)) {
-            ValidationUtil.validateInputParams(Constants.UUID_PATTERN, actorId);
+            ValidationUtil.validateId(Constants.UUID_PATTERN, actorId);
         }
 
         Request request = Request.builder()
@@ -110,7 +110,7 @@ public class ParseRequestService {
         setAssignerId(request);
 
         if (!StringUtils.isEmpty(assignmentId)) {
-            ValidationUtil.validateInputParams(Constants.UUID_PATTERN, assignmentId);
+            ValidationUtil.validateId(Constants.UUID_PATTERN, assignmentId);
             request.setRoleAssignmentId(UUID.fromString(assignmentId));
         }
         return request;
@@ -125,7 +125,7 @@ public class ParseRequestService {
         if (StringUtils.isBlank(assignerId)) {
             request.setAssignerId(request.getAuthenticatedUserId());
         } else {
-            ValidationUtil.validateInputParams(Constants.UUID_PATTERN, assignerId);
+            ValidationUtil.validateId(Constants.UUID_PATTERN, assignerId);
             request.setAssignerId(UUID.fromString(assignerId));
         }
     }
@@ -140,7 +140,7 @@ public class ParseRequestService {
         }
 
         if (StringUtils.isNotEmpty(actorId)) {
-            ValidationUtil.validateInputParams(Constants.UUID_PATTERN, actorId);
+            ValidationUtil.validateId(Constants.UUID_PATTERN, actorId);
         }
         if (StringUtils.isNotEmpty(caseId)) {
             ValidationUtil.validateCaseId(caseId);
