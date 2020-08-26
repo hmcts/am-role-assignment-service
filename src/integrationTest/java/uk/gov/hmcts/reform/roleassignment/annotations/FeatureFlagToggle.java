@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.controller;
+package uk.gov.hmcts.reform.roleassignment.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

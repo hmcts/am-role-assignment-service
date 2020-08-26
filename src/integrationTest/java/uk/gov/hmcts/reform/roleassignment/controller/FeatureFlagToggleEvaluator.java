@@ -4,6 +4,7 @@ import org.junit.Assume;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+import uk.gov.hmcts.reform.roleassignment.annotations.FeatureFlagToggle;
 
 public class FeatureFlagToggleEvaluator implements TestRule {
 
