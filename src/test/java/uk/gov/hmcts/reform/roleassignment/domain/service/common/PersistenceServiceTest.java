@@ -35,7 +35,9 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -109,8 +111,10 @@ class PersistenceServiceTest {
 
         assertNotNull(historyEntityResult);
         assertNotNull(assignmentRequest.getRequest().getId());
+        assertNotNull(historyEntityResult.getRequestEntity().getId());
 
         assertEquals(assignmentRequest.getRequest().getId(), historyEntityResult.getRequestEntity().getId());
+        assertEquals(assignmentRequest.getRequestedRoles().iterator().next().getId(), historyEntityResult.getId());
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
             assertEquals(requestedRole.getId(), historyEntityResult.getId());
         }
@@ -126,24 +130,24 @@ class PersistenceServiceTest {
         AssignmentRequest assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
         assignmentRequest.getRequest().setId(null);
+        assignmentRequest.getRequestedRoles().iterator().next().setId(null);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
 
         when(persistenceUtil.convertRequestToEntity(assignmentRequest.getRequest())).thenReturn(requestEntity);
-        when(persistenceUtil.convertRoleAssignmentToHistoryEntity(
-            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity)).thenReturn(historyEntity);
+        when(persistenceUtil.convertRoleAssignmentToHistoryEntity(any(), any())).thenReturn(historyEntity);
         when(historyRepository.save(historyEntity)).thenReturn(historyEntity);
 
         HistoryEntity historyEntityResult = sut.persistHistory(
             assignmentRequest.getRequestedRoles().iterator().next(), assignmentRequest.getRequest());
 
         assertNotNull(historyEntityResult);
+        assertNotNull(historyEntityResult.getId());
+        assertNull(historyEntityResult.getRequestEntity().getId());
 
-        assertEquals(assignmentRequest.getRequest().getId(), historyEntityResult.getRequestEntity().getId());
-        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            assertEquals(requestedRole.getId(), historyEntityResult.getId());
-        }
+        assertEquals(assignmentRequest.getRequestedRoles().iterator().next().getId(),
+            historyEntityResult.getRequestEntity().getId());
 
         verify(persistenceUtil, times(1)).convertRequestToEntity(any(Request.class));
         verify(persistenceUtil, times(1)).convertRoleAssignmentToHistoryEntity(
