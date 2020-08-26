@@ -63,8 +63,6 @@ public class ExpressionEvaluator extends CachedExpressionEvaluator {
             return object;
         }
 
-        public Object[] getArgs() {
-            return args;
-        }
+
     }
 }
