@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.Pact;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
@@ -12,26 +10,28 @@ import au.com.dius.pact.model.RequestResponsePact;
 import com.google.common.collect.Maps;
 import groovy.util.logging.Slf4j;
 import io.restassured.http.ContentType;
-
-import java.util.Map;
-import java.util.TreeMap;
-
 import net.serenitybdd.rest.SerenityRest;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
+import uk.gov.hmcts.reform.roleassignment.oidc.OIdcAdminConfiguration;
+import java.util.Map;
+import java.util.TreeMap;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @ExtendWith(PactConsumerTestExt.class)
-@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class IdamConsumerTest {
-
     private static final String IDAM_OPEN_ID_TOKEN_URL = "/o/token";
+
+    @Autowired
+    private OIdcAdminConfiguration oIdcAdminConfiguration;
 
     private PactDslJsonBody createAuthResponse() {
         return new PactDslJsonBody()
@@ -40,9 +40,8 @@ public class IdamConsumerTest {
             .stringType("scope", "openid profile roles authorities")
             .stringType("id_token", "eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre")
             .stringType("token_type", "Bearer")
-            .stringType("expires_in","28799");
+            .stringType("expires_in", "28799");
     }
-
     @Pact(provider = "Idam_api", consumer = "am_role_assignment_service")
     public RequestResponsePact executeGetIdamAccessTokenAndGet200(PactDslWithProvider builder) throws JSONException {
         String[] rolesArray = new String[1];
@@ -51,8 +50,8 @@ public class IdamConsumerTest {
         responseHeaders.put("Content-Type", "application/json");
         Map<String, Object> params = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         params.put("email", "befta.caseworker.2.solicitor.2@gmail.com");
-        params.put("password", "Pa55word11");
-        params.put("forename","testfirstname");
+        params.put("password", oIdcAdminConfiguration.getPassword());
+        params.put("forename", "testfirstname");
         params.put("surname", "testsurname");
         params.put("roles", rolesArray);
         return builder
@@ -61,13 +60,15 @@ public class IdamConsumerTest {
                                + "- ROLE ASSIGNMENT API")
             .path(IDAM_OPEN_ID_TOKEN_URL)
             .method(HttpMethod.POST.toString())
-            .body ("client_id=am_docker"
-                      + "&client_secret=am_docker_secret"
-                      + "&grant_type=password"
-                      + "&scope=openid profile roles authorities"
-                      + "&username=befta.caseworker.2.solicitor.2%40gmail.com"
-                      + "&password=Pa55word11",
-                  "application/x-www-form-urlencoded")
+            .body(
+                "client_id=am_docker"
+                    + "&client_secret=am_docker_secret"
+                    + "&grant_type=password"
+                    + "&scope=openid profile roles authorities"
+                    + "&username=befta.caseworker.2.solicitor.2%40gmail.com"
+                    + "&password=Pa55word11",
+                "application/x-www-form-urlencoded"
+            )
             .willRespondWith()
             .status(HttpStatus.OK.value())
             .headers(responseHeaders)
@@ -85,10 +86,12 @@ public class IdamConsumerTest {
                 .formParam("client_id", "am_docker")
                 .formParam("grant_type", "password")
                 .formParam("username", "befta.caseworker.2.solicitor.2@gmail.com")
-                .formParam("password", "Pa55word11")
+                .formParam("password", oIdcAdminConfiguration.getPassword())
                 .formParam("client_secret", "am_docker_secret")
-                .formParam("scope",
-                           "openid profile roles authorities")
+                .formParam(
+                    "scope",
+                    "openid profile roles authorities"
+                )
                 .post(mockServer.getUrl() + IDAM_OPEN_ID_TOKEN_URL)
                 .then()
                 .log().all().extract().asString();
