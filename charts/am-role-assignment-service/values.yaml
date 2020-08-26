@@ -29,3 +29,4 @@ java:
     OPEN_ID_API_BASE_URI: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o
     LAUNCH_DARKLY_ENV: "{{ .Values.global.environment }}"
     ROLE_ASSIGNMENT_IDAM_CLIENT_ID: am_role_assignment
+    MICROSERVICE_NAME: am_role_assignment_service
