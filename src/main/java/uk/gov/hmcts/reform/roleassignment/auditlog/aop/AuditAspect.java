@@ -44,7 +44,6 @@ public class AuditAspect {
         if (result instanceof ResponseEntity && statusCodes.contains(((ResponseEntity) result).getStatusCodeValue())) {
             return result;
         } else {
-            String caseId = getValue(joinPoint, logAudit.caseId(), result, String.class);
             String roleName = getValue(joinPoint, logAudit.roleName(), result, String.class);
             String assignerId = getValue(joinPoint, logAudit.assignerId(), result, String.class);
             String id = getValue(joinPoint, logAudit.id(), result, String.class);

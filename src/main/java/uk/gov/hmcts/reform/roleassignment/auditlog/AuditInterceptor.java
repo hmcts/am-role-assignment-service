@@ -6,7 +6,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import uk.gov.hmcts.reform.roleassignment.ApplicationParams;
-import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditAspect;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContext;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContextHolder;
 
@@ -15,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class AuditInterceptor extends HandlerInterceptorAdapter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AuditAspect.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AuditInterceptor.class);
 
     public static final String REQUEST_ID = "request-id";
 
