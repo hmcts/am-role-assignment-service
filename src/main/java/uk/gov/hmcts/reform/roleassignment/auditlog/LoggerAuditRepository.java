@@ -19,6 +19,7 @@ public class LoggerAuditRepository implements AuditRepository {
 
     @Override
     public void save(final AuditEntry auditEntry) {
-        LOG.info(logFormatter.format(auditEntry));
+        String msg = logFormatter.format(auditEntry);
+        LOG.info(msg);
     }
 }
