@@ -17,7 +17,6 @@ public class AuditContext {
     public static final int MAX_CASE_IDS_LIST = 10;
     public static final String CASE_ID_SEPARATOR = ",";
 
-    private String caseId;
     private String caseType;
     private String caseTypeIds;
     private String jurisdiction;

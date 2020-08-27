@@ -54,7 +54,6 @@ public class AuditAspect {
 
             AuditContextHolder.setAuditContext(AuditContext.auditContextWith()
                                                    .auditOperationType(logAudit.operationType())
-                                                   .caseId(caseId)
                                                    .roleName(roleName)
                                                    .assignerId(assignerId)
                                                    .assignmentId(id)

@@ -20,7 +20,6 @@ public class AuditLogFormatter {
             .append(" ")
             .append(getFirstPair("dateTime", entry.getDateTime()))
             .append(getPair("operationType", entry.getOperationType()))
-            .append(getPair("caseId", entry.getCaseId()))
             .append(getPair("assignerId", entry.getAssignerId()))
             .append(getPair("assignmentId", entry.getAssignmentId()))
             .append(getPair("invokingService", entry.getInvokingService()))

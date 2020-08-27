@@ -62,7 +62,6 @@ class AuditServiceTest {
     @DisplayName("should save to audit repository")
     void shouldSaveToAuditRepository() {
         AuditContext auditContext = AuditContext.auditContextWith()
-            .caseId(CASE_ID)
             .auditOperationType(AuditOperationType.CREATE_ASSIGNMENTS)
             .jurisdiction(JURISDICTION)
             .caseType(CASE_TYPE)
@@ -85,11 +84,9 @@ class AuditServiceTest {
         assertThat(captor.getValue().getPath(), is(equalTo((PATH))));
 
         assertThat(captor.getValue().getInvokingService(), is(equalTo((SERVICE_NAME))));
-
-
         assertThat(captor.getValue().getOperationType(), is(equalTo(AuditOperationType.CREATE_ASSIGNMENTS.getLabel())));
 
-        assertThat(captor.getValue().getCaseId(), is(equalTo(CASE_ID)));
+
 
     }
 
