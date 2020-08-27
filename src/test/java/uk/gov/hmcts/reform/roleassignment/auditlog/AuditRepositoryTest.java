@@ -7,7 +7,7 @@ import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.verify;
 
-public class AuditRepositoryTest {
+class AuditRepositoryTest {
 
     private AuditRepository repository;
 
@@ -21,7 +21,7 @@ public class AuditRepositoryTest {
     }
 
     @Test
-    public void shouldSaveAuditEntry() {
+    void shouldSaveAuditEntry() {
         AuditEntry auditEntry = new AuditEntry();
 
         repository.save(auditEntry);

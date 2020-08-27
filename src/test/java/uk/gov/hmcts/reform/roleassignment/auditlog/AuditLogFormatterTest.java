@@ -33,8 +33,8 @@ class AuditLogFormatterTest {
 
         String result = logFormatter.format(auditEntry);
 
-        assertThat(result).containsOnlyOnce("operationType:CREAT_CASE");
-        assertThat(result).doesNotContainPattern("caseId:");
+        assertThat(result).containsOnlyOnce("operationType:CREAT_CASE").doesNotContainPattern("caseId:");
+
     }
 
     @Test

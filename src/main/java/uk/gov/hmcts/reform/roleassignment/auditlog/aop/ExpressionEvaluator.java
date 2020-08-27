@@ -29,7 +29,7 @@ public class ExpressionEvaluator extends CachedExpressionEvaluator {
                                                      Class<?> targetClass,
                                                      Method method, Object[] args) {
         Method targetMethod = getTargetMethod(targetClass, method);
-        ExpressionRootObject root = new ExpressionRootObject(object, args);
+        ExpressionRootObject root = new ExpressionRootObject(object);
         return new MethodBasedEvaluationContext(root, targetMethod, args, this.paramNameDiscoverer);
     }
 
@@ -42,7 +42,7 @@ public class ExpressionEvaluator extends CachedExpressionEvaluator {
 
     private Method getTargetMethod(Class<?> targetClass, Method method) {
         AnnotatedElementKey methodKey = new AnnotatedElementKey(method, targetClass);
-        Method targetMethod = targetMethodCache.get(methodKey);
+        Method targetMethod = targetMethodCache.computeIfAbsent(methodKey, key -> null);
         if (targetMethod == null) {
             targetMethod = AopUtils.getMostSpecificMethod(method, targetClass);
             this.targetMethodCache.put(methodKey, targetMethod);
@@ -53,7 +53,7 @@ public class ExpressionEvaluator extends CachedExpressionEvaluator {
     private static class ExpressionRootObject {
         private final Object object;
 
-        public ExpressionRootObject(Object object, Object[] args) {
+        public ExpressionRootObject(Object object) {
             this.object = object;
 
         }

@@ -50,7 +50,7 @@ public class ExpressionEvaluatorTest {
         AnnotatedElementKey elementKey = new AnnotatedElementKey(method, SampleMethods.class);
 
         assertThat(evaluator.condition("#foo", elementKey, context, String.class)).isEqualTo("test");
-        assertThat(evaluator.condition("#flag", elementKey, context, Boolean.class)).isEqualTo(true);
+        assertThat(evaluator.condition("#flag", elementKey, context, Boolean.class)).isTrue();
         assertThat(evaluator.condition("#unknownProperty", elementKey, context, String.class)).isNull();
     }
 
@@ -94,7 +94,8 @@ public class ExpressionEvaluatorTest {
             evaluator.condition("#roleAssignment.unknownProperty", elementKey, context, String.class);
         });
 
-        assertThat(exception.getMessage().contains("EL1008E: Property or field 'unknownProperty' cannot be found"));
+        assertThat(exception.getMessage().contains("EL1008E: Property or field 'unknownProperty' cannot be found"))
+            .isTrue();
 
     }
 
