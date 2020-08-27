@@ -95,7 +95,8 @@ public class ExpressionEvaluatorTest {
         });
 
         assertThat(exception.getMessage().contains("EL1008E: Property or field 'unknownProperty' cannot be found"))
-            .isNotNull();
+            .toString();
+
 
     }
 
