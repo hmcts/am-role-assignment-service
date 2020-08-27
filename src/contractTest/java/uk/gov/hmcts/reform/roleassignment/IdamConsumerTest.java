@@ -15,11 +15,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import uk.gov.hmcts.reform.roleassignment.oidc.OIdcAdminConfiguration;
 import java.util.Map;
 import java.util.TreeMap;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,14 +28,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class IdamConsumerTest {
     private static final String IDAM_OPEN_ID_TOKEN_URL = "/o/token";
 
-    @Autowired
-    private OIdcAdminConfiguration oIdcAdminConfiguration;
-
     private PactDslJsonBody createAuthResponse() {
         return new PactDslJsonBody()
             .stringType("access_token", "eyJ0eXAiOiJKV1QiLCJ6aXAiOiJOT05FI")
             .stringType("refresh_token", "eyJ0eXAiOiJKV1QiLCJ6aXAiOiJOT05FIiwia2lkIjoiYi9PNk92V")
-            .stringType("scope", "openid profile roles authorities")
+            .stringType("scope", "openid profile roles")
             .stringType("id_token", "eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre")
             .stringType("token_type", "Bearer")
             .stringType("expires_in", "28799");
@@ -45,12 +40,12 @@ public class IdamConsumerTest {
     @Pact(provider = "Idam_api", consumer = "am_role_assignment_service")
     public RequestResponsePact executeGetIdamAccessTokenAndGet200(PactDslWithProvider builder) throws JSONException {
         String[] rolesArray = new String[1];
-        rolesArray[0] = "Consumer";
+        rolesArray[0] = "caseworker";
         Map<String, String> responseHeaders = Maps.newHashMap();
         responseHeaders.put("Content-Type", "application/json");
         Map<String, Object> params = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        params.put("email", "befta.caseworker.2.solicitor.2@gmail.com");
-        params.put("password", oIdcAdminConfiguration.getPassword());
+        params.put("email", "am_pact_user@mailtest.gov.uk");
+        params.put("password", "Pa55word11");
         params.put("forename", "testfirstname");
         params.put("surname", "testsurname");
         params.put("roles", rolesArray);
@@ -61,11 +56,11 @@ public class IdamConsumerTest {
             .path(IDAM_OPEN_ID_TOKEN_URL)
             .method(HttpMethod.POST.toString())
             .body(
-                "client_id=am_docker"
-                    + "&client_secret=am_docker_secret"
+                "client_id=pact"
+                    + "&client_secret=pactsecret"
                     + "&grant_type=password"
-                    + "&scope=openid profile roles authorities"
-                    + "&username=befta.caseworker.2.solicitor.2%40gmail.com"
+                    + "&scope=openid profile roles"
+                    + "&username=am_pact_user@mailtest.gov.uk"
                     + "&password=Pa55word11",
                 "application/x-www-form-urlencoded"
             )
@@ -83,14 +78,14 @@ public class IdamConsumerTest {
             SerenityRest
                 .given()
                 .contentType(ContentType.URLENC)
-                .formParam("client_id", "am_docker")
+                .formParam("client_id", "pact")
                 .formParam("grant_type", "password")
-                .formParam("username", "befta.caseworker.2.solicitor.2@gmail.com")
-                .formParam("password", oIdcAdminConfiguration.getPassword())
-                .formParam("client_secret", "am_docker_secret")
+                .formParam("username", "am_pact_user@mailtest.gov.uk")
+                .formParam("password", "Pa55word11")
+                .formParam("client_secret", "pactsecret")
                 .formParam(
                     "scope",
-                    "openid profile roles authorities"
+                    "openid profile roles"
                 )
                 .post(mockServer.getUrl() + IDAM_OPEN_ID_TOKEN_URL)
                 .then()
