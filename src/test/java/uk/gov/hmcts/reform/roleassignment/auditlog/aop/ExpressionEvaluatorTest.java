@@ -94,8 +94,7 @@ public class ExpressionEvaluatorTest {
             evaluator.condition("#roleAssignment.unknownProperty", elementKey, context, String.class);
         });
 
-        assertThat(exception.getMessage().contains("EL1008E: Property or field 'unknownProperty' cannot be found"))
-            .isTrue();
+        assertThat(exception.getMessage().contains("EL1008E: Property or field 'unknownProperty' cannot be found"));
 
     }
 
