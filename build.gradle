@@ -366,7 +366,7 @@ dependencies {
   testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '4.1.0-prerelease.1'
+  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '5.5.0-RDM-9033'
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.3.RELEASE'
 
   testCompile(group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber) {
