@@ -12,7 +12,6 @@ public class AuditEntry {
     private String httpMethod;
     private String authenticateUserId;
     private String assignerId;
-    private String caseId;
     private String roleName;
     private String assignmentId;
     private String actorId;

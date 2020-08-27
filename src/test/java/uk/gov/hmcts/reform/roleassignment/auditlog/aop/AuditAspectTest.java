@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.GET_ASSIGNMENTS_BY_ACTOR;
 
+
 public class AuditAspectTest {
     private static final String ACTOR_ID = "6b36bfc6-bb21-11ea-b3de-0242ac130004";
     private static final String ID = "56a95928-6fd9-42b4-afda-12b6c69f1036";
