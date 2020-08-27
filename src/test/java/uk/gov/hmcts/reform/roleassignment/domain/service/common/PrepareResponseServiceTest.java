@@ -16,6 +16,8 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,6 +42,8 @@ class PrepareResponseServiceTest {
         RoleAssignmentRequestResource assignmentRequestResponse =
             (RoleAssignmentRequestResource) responseEntity.getBody();
         assertNull(assignmentRequestResponse.getRoleAssignmentRequest().getRequest().getClientId());
+        assertNotNull(assignmentRequestResponse.getRoleAssignmentRequest().getRequest());
+        assertNotNull(assignmentRequestResponse.getRoleAssignmentRequest().getRequestedRoles());
     }
 
     @Test
@@ -59,5 +63,16 @@ class PrepareResponseServiceTest {
                                              UUID.fromString("6b36bfc6-bb21-11ea-b3de-0242ac140004"));
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+    @Test
+    void addHateosLinks() throws IOException {
+        RoleAssignmentRequestResource roleAssignmentRequestResource = new RoleAssignmentRequestResource();
+        roleAssignmentRequestResource
+            .setRoleAssignmentRequest(TestDataBuilder
+                                          .buildAssignmentRequest(Status.CREATED, Status.LIVE, false));
+
+        prepareResponseService.addHateoasLinks(java.util.Optional.of(roleAssignmentRequestResource),
+                                               UUID.fromString("6b36bfc6-bb21-11ea-b3de-0242ac140004"));
     }
 }

@@ -35,9 +35,11 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -185,6 +187,28 @@ class PersistenceServiceTest {
 
         assertNotNull(result);
         assertNotNull(result.getActorId());
+        assertEquals(entity.getEtag(), result.getEtag());
+
+        verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
+        verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
+    }
+
+    @Test
+    void persistActorCache_nullEntity() throws IOException {
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.createObjectNode();
+        ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.getActorId(),1234, rootNode);
+        ActorCache actorCache = TestDataBuilder.prepareActorCache(roleAssignment);
+        when(persistenceUtil.convertActorCacheToEntity(any())).thenReturn(entity);
+        when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(null);
+        when(actorCacheRepository.save(entity)).thenReturn(entity);
+
+        ActorCacheEntity result = sut.persistActorCache(roleAssignment);
+
+        assertNotNull(result);
+        assertNotNull(result.getActorId());
+        assertEquals(entity.getEtag(), result.getEtag());
 
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
         verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
@@ -216,7 +240,10 @@ class PersistenceServiceTest {
             "process", "reference", "status")).thenReturn(historyEntities);
         when(persistenceUtil.convertHistoryEntityToRoleAssignment(historyEntity)).thenReturn(requestedRole);
 
-        sut.getAssignmentsByProcess("process", "reference", "status");
+        List<RoleAssignment> result = sut.getAssignmentsByProcess("process", "reference", "status");
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
 
         verify(historyRepository, times(1)).findByReference(
             "process", "reference", "status");
@@ -252,8 +279,28 @@ class PersistenceServiceTest {
         List<RoleAssignment> roleAssignmentList = sut.getAssignmentsByActor(id);
         assertNotNull(roleAssignmentList);
 
+        assertNotNull(roleAssignmentList);
+        assertFalse(roleAssignmentList.isEmpty());
+
         verify(persistenceUtil, times(1))
             .convertEntityToRoleAssignment(roleAssignmentEntitySet.iterator().next());
+        verify(roleAssignmentRepository, times(1))
+            .findByActorId(id);
+    }
+
+    @Test
+    void getAssignmentsByActor_NPE() throws IOException {
+        UUID id = UUID.randomUUID();
+        Set<RoleAssignmentEntity> roleAssignmentEntitySet = new HashSet<>();
+        roleAssignmentEntitySet.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
+                                                                                  .buildRoleAssignment(Status.LIVE)));
+        when(roleAssignmentRepository.findByActorId(id))
+            .thenReturn(null);
+
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            sut.getAssignmentsByActor(id);
+        });
+
         verify(roleAssignmentRepository, times(1))
             .findByActorId(id);
     }
@@ -280,14 +327,17 @@ class PersistenceServiceTest {
         List<RoleAssignment> roleAssignmentList
             = sut.getAssignmentsByActorAndCaseId(actorId, caseId, RoleType.CASE.toString());
         assertNotNull(roleAssignmentList);
+        assertFalse(roleAssignmentList.isEmpty());
 
         List<RoleAssignment> roleAssignmentListScenario2
             = sut.getAssignmentsByActorAndCaseId(actorId, "", RoleType.CASE.toString());
         assertNotNull(roleAssignmentListScenario2);
+        assertFalse(roleAssignmentListScenario2.isEmpty());
 
         List<RoleAssignment> roleAssignmentListScenario3
             = sut.getAssignmentsByActorAndCaseId("", caseId, RoleType.CASE.toString());
         assertNotNull(roleAssignmentListScenario3);
+        assertFalse(roleAssignmentListScenario3.isEmpty());
 
     }
 
@@ -322,5 +372,14 @@ class PersistenceServiceTest {
         when(roleAssignmentRepository.findById(id)).thenReturn(roleAssignmentOptional);
         List<RoleAssignment> roleAssignmentList = sut.getAssignmentById(id);
         assertNotNull(roleAssignmentList);
+    }
+
+    @Test
+    void getAssignmentById_NPE() throws IOException {
+        UUID id = UUID.randomUUID();
+        when(roleAssignmentRepository.findById(id)).thenReturn(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            sut.getAssignmentById(id);
+        });
     }
 }
