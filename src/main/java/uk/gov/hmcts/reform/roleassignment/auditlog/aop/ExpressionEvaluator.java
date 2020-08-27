@@ -42,7 +42,7 @@ public class ExpressionEvaluator extends CachedExpressionEvaluator {
 
     private Method getTargetMethod(Class<?> targetClass, Method method) {
         AnnotatedElementKey methodKey = new AnnotatedElementKey(method, targetClass);
-        Method targetMethod = this.targetMethodCache.get(methodKey);
+        Method targetMethod = targetMethodCache.get(methodKey);
         if (targetMethod == null) {
             targetMethod = AopUtils.getMostSpecificMethod(method, targetClass);
             this.targetMethodCache.put(methodKey, targetMethod);
@@ -52,11 +52,10 @@ public class ExpressionEvaluator extends CachedExpressionEvaluator {
 
     private static class ExpressionRootObject {
         private final Object object;
-        private final Object[] args;
 
         public ExpressionRootObject(Object object, Object[] args) {
             this.object = object;
-            this.args = args;
+
         }
 
         public Object getObject() {

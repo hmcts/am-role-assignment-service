@@ -2,9 +2,6 @@ package uk.gov.hmcts.reform.roleassignment.auditlog;
 
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Component
@@ -41,7 +38,4 @@ public class AuditLogFormatter {
         return isNotBlank(value) ? label + COLON + value : "";
     }
 
-    private String commaSeparatedList(List<String> list) {
-        return list == null ? null : list.stream().map(String::toString).collect(Collectors.joining(COMMA));
-    }
 }
