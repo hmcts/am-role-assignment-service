@@ -51,11 +51,11 @@ public class RetrieveRoleAssignmentOrchestrator {
             UUID.fromString(actorId));
     }
 
-    public JsonNode getListOfRoles() {
+    public JsonNode getListOfRoles(String resourcePath) {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode;
         try (InputStream input = RetrieveRoleAssignmentOrchestrator.class.getClassLoader()
-            .getResourceAsStream(Constants.ROLES_JSON)) {
+            .getResourceAsStream(resourcePath)) {
             assert input != null;
             rootNode = mapper.readTree(input);
             for (JsonNode roleNode: rootNode) {
