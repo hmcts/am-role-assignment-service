@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.RepresentationModel;
@@ -24,8 +25,9 @@ public class RoleAssignmentRequestResource extends RepresentationModel<RoleAssig
     private AssignmentRequest roleAssignmentRequest;
 
 
-    public RoleAssignmentRequestResource(AssignmentRequest roleAssignmentRequest) {
+    public RoleAssignmentRequestResource(@NonNull AssignmentRequest roleAssignmentRequest) {
         this.roleAssignmentRequest = roleAssignmentRequest;
+
         //add(linkTo(methodOn(CreateAssignmentController.class).getRoleAssignmentByActorId("")).withRel("binary"))
     }
 
