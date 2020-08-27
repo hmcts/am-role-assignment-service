@@ -33,6 +33,8 @@ public class FeatureConditionEvaluationTest {
 
     Map<String, String> launchDarklyMap;
 
+    Object object = new Object();
+
     @Before
     public void initializeMocks() {
         launchDarklyMap = new HashMap<>();
@@ -60,7 +62,7 @@ public class FeatureConditionEvaluationTest {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint1");
         when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(false);
         Assertions.assertThrows(ForbiddenException.class, () -> {
-            featureConditionEvaluation.preHandle(request, response, new Object());
+            featureConditionEvaluation.preHandle(request, response, object);
         });
     }
 
@@ -68,7 +70,7 @@ public class FeatureConditionEvaluationTest {
     public void expectExceptionForNonRegisteredURI() {
         when(request.getRequestURI()).thenReturn("");
         Assertions.assertThrows(ForbiddenException.class, () -> {
-            featureConditionEvaluation.preHandle(request, response, new Object());
+            featureConditionEvaluation.preHandle(request, response, object);
         });
     }
 
