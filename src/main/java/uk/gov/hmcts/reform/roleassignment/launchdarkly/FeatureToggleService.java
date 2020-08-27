@@ -1,4 +1,3 @@
-/*
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import java.util.HashMap;
@@ -12,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FeatureToggle {
+public class FeatureToggleService {
 
     @Autowired
     private final LDClient ldClient;
@@ -24,7 +23,7 @@ public class FeatureToggle {
     private Map<String, String> launchDarklyMap;
 
     @Autowired
-    public FeatureToggle(LDClient ldClient, @Value("${launchdarkly.sdk.user}") String userName) {
+    public FeatureToggleService(LDClient ldClient, @Value("${launchdarkly.sdk.user}") String userName) {
         this.ldClient = ldClient;
         this.userName = userName;
     }
@@ -36,19 +35,17 @@ public class FeatureToggle {
         launchDarklyMap.put("/am/role-assignments/ld/endpoint2", "delete-by-assignment-id-flag");
     }
 
-    public boolean isFlagEnabled(String serviceName, String flag) {
-
+    public boolean isFlagEnabled(String serviceName, String flagName) {
         LDUser user = new LDUser.Builder(environment)
             .firstName(userName)
             .lastName("user")
             .custom("servicename", serviceName)
             .build();
 
-        return ldClient.boolVariation(flag, user, false);
+        return ldClient.boolVariation(flagName, user, false);
     }
 
     public Map<String, String> getLaunchDarklyMap() {
         return launchDarklyMap;
     }
 }
-*/
