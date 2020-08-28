@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-
+import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 
 import java.text.ParseException;
+
+import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CREATE_ASSIGNMENTS;
 
 @Api(value = "roles")
 @RestController
@@ -57,6 +59,15 @@ public class CreateAssignmentController {
             message = V1.Error.INVALID_REQUEST
         )
     })
+    @LogAudit(operationType = CREATE_ASSIGNMENTS,
+        process = "#assignmentRequest.request.process",
+        reference = "#assignmentRequest.request.reference",
+        id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildAssignmentIds(#result)",
+        actorId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildActorIds(#result)",
+        roleName = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildRoleNames(#result)",
+        caseId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildCaseIds(#result)",
+        assignerId = "#assignmentRequest.request.assignerId")
+
     public ResponseEntity<Object> createRoleAssignment(
         @Validated
         @RequestBody(required = true) AssignmentRequest assignmentRequest) throws ParseException {
@@ -64,4 +75,6 @@ public class CreateAssignmentController {
         LOG.info("CreateAssignmentController : {}", createRoleAssignmentOrchestrator);
         return createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
     }
+
+
 }

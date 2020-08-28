@@ -12,9 +12,12 @@ import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
+
+import java.time.Clock;
 
 @SpringBootApplication
 @EnableTransactionManagement(proxyTargetClass = true)
@@ -43,6 +46,11 @@ public class RoleAssignmentApplication {
         @Value("${idam.s2s-auth.microservice}") final String microService,
         final ServiceAuthorisationApi serviceAuthorisationApi) {
         return new ServiceAuthTokenGenerator(secret, microService, serviceAuthorisationApi);
+    }
+
+    @Bean
+    public Clock utcClock() {
+        return Clock.systemUTC();
     }
 
     @Bean

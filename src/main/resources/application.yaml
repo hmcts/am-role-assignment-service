@@ -126,3 +126,9 @@ launchdarkly:
     key: ${LD_SDK_KEY:}
     environment: ${LAUNCH_DARKLY_ENV:demo}
     user: am-${LAUNCH_DARKLY_ENV:local}
+
+audit:
+  log:
+    ignore:
+       statues: 404
+    enabled: true
