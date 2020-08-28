@@ -16,8 +16,6 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.util.List;
