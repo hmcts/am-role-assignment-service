@@ -7,12 +7,12 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.WithTag;
 import net.thucydides.core.annotations.WithTags;
-import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import uk.gov.hmcts.reform.roleassignment.config.UserTokenProviderConfig;
@@ -39,10 +39,10 @@ public class SmokeTest extends BaseTest {
         config = new UserTokenProviderConfig();
         accessToken = searchUserByUserId(config);
         serviceAuth = authTokenGenerator(
-                config.getSecret(),
-                config.getMicroService(),
-                generateServiceAuthorisationApi(config.getS2sUrl())
-            ).generate();
+            config.getSecret(),
+            config.getMicroService(),
+            generateServiceAuthorisationApi(config.getS2sUrl())
+        ).generate();
     }
 
     @Test
