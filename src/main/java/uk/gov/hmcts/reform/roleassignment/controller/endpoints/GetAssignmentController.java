@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.util.UUID;
@@ -90,7 +89,7 @@ public class GetAssignmentController {
         )
     })
     public ResponseEntity<Object> getListOfRoles() {
-        JsonNode rootNode = retrieveRoleAssignmentService.getListOfRoles(Constants.ROLES_JSON);
+        JsonNode rootNode = retrieveRoleAssignmentService.getListOfRoles();
         return ResponseEntity.status(HttpStatus.OK).body(rootNode);
     }
 }

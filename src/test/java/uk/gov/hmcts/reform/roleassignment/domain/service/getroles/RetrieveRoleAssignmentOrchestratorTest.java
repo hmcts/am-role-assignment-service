@@ -24,7 +24,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ServiceException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
@@ -33,8 +32,6 @@ import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -127,15 +124,8 @@ class RetrieveRoleAssignmentOrchestratorTest {
 
     @Test
     void getListOfRoles() {
-        JsonNode roles = sut.getListOfRoles(Constants.ROLES_JSON);
+        JsonNode roles = sut.getListOfRoles();
         assertNotNull(roles);
         assertEquals(2, roles.size());
-    }
-
-    @Test
-    void getListOfRoles_PathIncorrect() {
-        Assertions.assertThrows(ServiceException.class, () -> {
-            sut.getListOfRoles("");
-        });
     }
 }
