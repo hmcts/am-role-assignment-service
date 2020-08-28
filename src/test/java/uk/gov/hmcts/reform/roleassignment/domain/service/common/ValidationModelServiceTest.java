@@ -14,6 +14,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleServic
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
@@ -56,5 +57,6 @@ class ValidationModelServiceTest {
 
         Mockito.verify(kieSessionMock, times(1)).setGlobal("retrieveDataService",
                                                            retrieveDataServiceMock);
+        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
     }
 }
