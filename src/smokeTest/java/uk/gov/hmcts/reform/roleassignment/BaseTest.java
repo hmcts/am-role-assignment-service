@@ -75,6 +75,7 @@ public abstract class BaseTest {
         return new ServiceAuthTokenGenerator(secret, microService, serviceAuthorisationApi);
     }
 
+
     public String searchUserByUserId(UserTokenProviderConfig config) {
         TokenRequest request = config.prepareTokenRequest();
         ResponseEntity<TokenResponse> response = new ResponseEntity<>(HttpStatus.OK);

@@ -41,6 +41,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentCreateAndDeleteIntegrationTest.class);
 
+    private static final String ASSIGNMENT_ID = "f7edb29d-e421-450c-be66-a10169b04f0a";
     private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445612";
     private static final String COUNT_HISTORY_RECORDS_QUERY = "SELECT count(1) AS n FROM role_assignment_history";
     private static final String COUNT_ASSIGNMENT_RECORDS_QUERY = "SELECT count(1) AS n FROM role_assignment";
@@ -97,8 +98,6 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             "userInfo", userInfo
 
         );
-
-
     }
 
     @Test
@@ -170,7 +169,9 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
         {"classpath:sql/role_assignment_clean_up.sql",
             "classpath:sql/insert_assignment_records_to_delete.sql"})
-    public void shouldDeleteRoleAssignments() throws Exception {
+    public void shouldDeleteRoleAssignmentsByProcessAndReference() throws Exception {
+
+        logger.info(" Method shouldDeleteRoleAssignmentsByProcessAndReference starts :");
         logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count before create assignment request : {}", getAssignmentRecordsCount());
         final String url = "/am/role-assignments";
@@ -183,6 +184,33 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         )
             .andExpect(status().is(204))
             .andReturn();
+
+        assertAssignmentRecords();
+
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
+        {"classpath:sql/role_assignment_clean_up.sql",
+            "classpath:sql/insert_assignment_records_to_delete.sql"})
+    public void shouldDeleteRoleAssignmentsByAssignmentId() throws Exception {
+
+        logger.info(" Method shouldDeleteRoleAssignmentsByAssignmentId starts : ");
+        logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
+        logger.info(" LIVE table record count before create assignment request : {}", getAssignmentRecordsCount());
+        final String url = "/am/role-assignments/" + ASSIGNMENT_ID;
+
+        mockMvc.perform(delete(url)
+                            .contentType(JSON_CONTENT_TYPE)
+                            .headers(getHttpHeaders())
+        )
+            .andExpect(status().is(204))
+            .andReturn();
+
+        assertAssignmentRecords();
+    }
+
+    private void assertAssignmentRecords() {
         logger.info(" History record count after create assignment request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count after create assignment request : {}", getAssignmentRecordsCount());
         List<String> statusList = getStatusFromHistory();
@@ -192,7 +220,6 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         assertEquals(LIVE, statusList.get(2));
         assertEquals(DELETE_APPROVED, statusList.get(3));
         assertEquals(DELETED, statusList.get(4));
-
     }
 
     private Integer getHistoryRecordsCount() {
@@ -219,6 +246,4 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     public String getActorFromAssignmentTable() {
         return template.queryForObject(GET_ACTOR_FROM_ASSIGNMENT_QUERY, new Object[]{ACTOR_ID}, String.class);
     }
-
-
 }
