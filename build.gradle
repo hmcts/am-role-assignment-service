@@ -167,6 +167,7 @@ pitest {
   excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
                      'uk.gov.hmcts.reform.roleassignment.config.*',
                      'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot']
+  excludedMethods = ['getListOfRoles', 'removeCorrelationLog', 'getExitCode', 'validateDateTime', 'requestInterceptor']
   threads = 15
   outputFormats = ['XML', 'HTML']
   timestampedReports = true
