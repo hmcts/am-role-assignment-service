@@ -9,11 +9,13 @@ import net.thucydides.core.annotations.WithTag;
 import net.thucydides.core.annotations.WithTags;
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import uk.gov.hmcts.reform.roleassignment.config.UserTokenProviderConfig;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
@@ -22,17 +24,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-
 @RunWith(SpringIntegrationSerenityRunner.class)
 @NoArgsConstructor
 @WithTags({@WithTag("testType:Smoke")})
 public class SmokeTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(SmokeTest.class);
+    public static final String ERROR_DESCRIPTION = "errorDescription";
+    public static final String AUTHORIZATION = "Authorization";
+    public static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
+    public static final String BEARER = "Bearer ";
+    public static final String ERROR_MESSAGE = "errorMessage";
+    public static final String RESOURCE_NOT_FOUND = "Resource not found";
 
     UserTokenProviderConfig config;
     String accessToken;
     String serviceAuth;
+
+    @Value("${launchdarkly.sdk.environment}")
+    private String environment;
+
+    @Value("${launchdarkly.sdk.user}")
+    private String userName;
+
+    @Value("${launchdarkly.sdk.key}")
+    private String sdkKey;
 
     @Before
     public void setUp() {
@@ -45,7 +61,11 @@ public class SmokeTest extends BaseTest {
         ).generate();
     }
 
+    @Rule
+    public FeatureFlagToggleEvaluator featureFlagToggleEvaluator = new FeatureFlagToggleEvaluator(this);
+
     @Test
+    @FeatureFlagToggle("get-ld-flag")
     public void should_receive_response_for_get_by_query_params_case_id() {
 
         String targetInstance = config.getRoleAssignmentUrl()
@@ -55,14 +75,14 @@ public class SmokeTest extends BaseTest {
         Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .when()
             .get(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
-            .body("errorDescription", Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
-        response.then().assertThat().body("errorMessage", Matchers.equalTo("Resource not found"));
+                .body(ERROR_DESCRIPTION, Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
+        response.then().assertThat().body(ERROR_MESSAGE, Matchers.equalTo(RESOURCE_NOT_FOUND));
     }
 
     @Test
@@ -74,8 +94,8 @@ public class SmokeTest extends BaseTest {
         Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .when()
             .get(targetInstance)
             .andReturn();
@@ -92,14 +112,14 @@ public class SmokeTest extends BaseTest {
         Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .when()
             .get(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
-            .body("errorDescription", Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
-        response.then().assertThat().body("errorMessage", Matchers.equalTo("Resource not found"));
+                .body(ERROR_DESCRIPTION, Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
+        response.then().assertThat().body(ERROR_MESSAGE, Matchers.equalTo(RESOURCE_NOT_FOUND));
     }
 
     @Test
@@ -112,18 +132,18 @@ public class SmokeTest extends BaseTest {
         Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .when()
             .get(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
             .body(
-                "errorDescription",
+                    ERROR_DESCRIPTION,
                 Matchers.equalTo(
                     "Role Assignment not found for Actor 0b00bfc0-bb00-00ea-b0de-0000ac000000"));
 
-        response.then().assertThat().body("errorMessage", Matchers.equalTo("Resource not found"));
+        response.then().assertThat().body(ERROR_MESSAGE, Matchers.equalTo(RESOURCE_NOT_FOUND));
     }
 
     @Test
@@ -137,8 +157,8 @@ public class SmokeTest extends BaseTest {
             .given()
             .relaxedHTTPSValidation()
             .header("Content-Type", "application/json")
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .when()
             .delete(targetInstance)
             .andReturn();
@@ -154,8 +174,8 @@ public class SmokeTest extends BaseTest {
         Response response = SerenityRest
             .given()
             .relaxedHTTPSValidation()
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .when()
             .delete(targetInstance)
             .andReturn();
@@ -175,12 +195,24 @@ public class SmokeTest extends BaseTest {
             .given()
             .relaxedHTTPSValidation()
             .header("Content-Type", "application/json")
-            .header("ServiceAuthorization", "Bearer " + serviceAuth)
-            .header("Authorization", "Bearer " + accessToken)
+            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
+            .header(AUTHORIZATION, BEARER + accessToken)
             .body(requestBody)
             .when()
             .post(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
+    }
+
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getSdkKey() {
+        return sdkKey;
     }
 }
