@@ -325,7 +325,7 @@ dependencies {
 
   compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
-  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.3.RELEASE'
+  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.5.RELEASE'
   compile('org.springframework.boot:spring-boot-starter-hateoas') {
     exclude group: 'org.hibernate', module: 'hibernate-core'
     exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
@@ -348,7 +348,7 @@ dependencies {
 
   testCompile('com.opentable.components:otj-pg-embedded:0.13.3')
   testCompile('com.github.tomakehurst:wiremock-jre8:2.25.1')
-  testCompile('org.springframework.cloud:spring-cloud-contract-wiremock:2.3.3.RELEASE')
+  testCompile('org.springframework.cloud:spring-cloud-contract-wiremock:2.2.4.RELEASE')
 
   testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
 
@@ -368,7 +368,7 @@ dependencies {
     exclude group: 'junit', module: 'junit'
   }
   testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '4.1.0-prerelease.1'
-  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.3.3.RELEASE'
+  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.5.RELEASE'
 
   testCompile(group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber) {
     exclude group: 'javascript', module: 'jquery'
