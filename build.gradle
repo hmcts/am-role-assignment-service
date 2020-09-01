@@ -331,7 +331,13 @@ dependencies {
     exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
     exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-core"
   }
-  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
+  compile 'com.launchdarkly:launchdarkly-java-server-sdk:5.0.3:thin'
+  //needs to be removed :thin of LD SDK jar and following 4 jars of LD dependency once  CVE-2017-18640 fixed LD
+  compile "com.launchdarkly:launchdarkly-java-sdk-common:1.0.0"
+  compile "commons-codec:commons-codec:1.10"
+  compile "com.google.code.gson:gson:2.7"
+  compile "com.launchdarkly:okhttp-eventsource:2.3.1"
+
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.37'
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.37'
   compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.19.Final'
