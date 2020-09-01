@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment;
 
+import com.launchdarkly.sdk.LDUser;
+import com.launchdarkly.sdk.server.LDClient;
 import liquibase.util.StringUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +9,8 @@ import org.junit.Assume;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+
+import java.io.IOException;
 
 @Slf4j
 public class FeatureFlagToggleEvaluator implements TestRule {
@@ -28,7 +32,7 @@ public class FeatureFlagToggleEvaluator implements TestRule {
                     .getAnnotation(FeatureFlagToggle.class);
                 if (featureFlagToggle != null) {
                     if (StringUtils.isNotEmpty(featureFlagToggle.value())) {
-                        /*try (LDClient client = new LDClient(smokeTest.getSdkKey())) {
+                        try (LDClient client = new LDClient(smokeTest.getSdkKey())) {
 
                             LDUser user = new LDUser.Builder(smokeTest.getEnvironment())
                                 .firstName(smokeTest.getUserName())
@@ -39,12 +43,11 @@ public class FeatureFlagToggleEvaluator implements TestRule {
                             isFlagEnabled = client.boolVariation(featureFlagToggle.value(), user, false);
                         } catch (IOException exception) {
                             log.warn("Error getting Launch Darkly connection in Smoke tests");
-                        }*/
+                        }
                     }
-
                     Assume.assumeTrue("Test is ignored!", isFlagEnabled);
-                    base.evaluate();
                 }
+                base.evaluate();
             }
         };
     }
