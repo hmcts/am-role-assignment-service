@@ -37,6 +37,7 @@ public class IdamConsumerTest {
             .stringType("token_type", "Bearer")
             .stringType("expires_in", "28799");
     }
+
     @Pact(provider = "Idam_api", consumer = "am_role_assignment_service")
     public RequestResponsePact executeGetIdamAccessTokenAndGet200(PactDslWithProvider builder) throws JSONException {
         String[] rolesArray = new String[1];
@@ -70,6 +71,7 @@ public class IdamConsumerTest {
             .body(createAuthResponse())
             .toPact();
     }
+
     @Test
     @PactTestFor(pactMethod = "executeGetIdamAccessTokenAndGet200")
     public void should_post_to_token_endpoint_and_receive_access_token_with_200_response(MockServer mockServer)
