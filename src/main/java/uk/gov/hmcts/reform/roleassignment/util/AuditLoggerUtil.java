@@ -50,7 +50,9 @@ public class AuditLoggerUtil {
 
     public static Set<String> buildCaseIds(ResponseEntity<RoleAssignmentRequestResource> response) {
         Set<String> caseIds = new HashSet<>();
-        if (response != null && response.getBody() != null) {
+        if (response != null && response.getBody() != null
+            && response.getBody().getRoleAssignmentRequest() != null
+            && response.getBody().getRoleAssignmentRequest().getRequestedRoles() != null) {
             response.getBody().getRoleAssignmentRequest().getRequestedRoles()
                 .stream().map(RoleAssignment::getAttributes).forEach(obj -> obj.forEach((key, value) -> {
                     if (key.equals("caseId")) {
