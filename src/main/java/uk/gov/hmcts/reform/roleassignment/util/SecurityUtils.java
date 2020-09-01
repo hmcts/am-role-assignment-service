@@ -88,10 +88,8 @@ public class SecurityUtils {
             && servletRequestAttributes.getRequest().getHeader(SERVICE_AUTHORIZATION) != null) {
             return JWT.decode(removeBearerFromToken(servletRequestAttributes.getRequest().getHeader(
                 SERVICE_AUTHORIZATION))).getSubject();
-
         }
         return null;
-
     }
 
     private String removeBearerFromToken(String token) {
