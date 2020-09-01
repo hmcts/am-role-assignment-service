@@ -14,7 +14,6 @@ import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -82,11 +81,17 @@ public class SecurityUtils {
 
 
     public String getServiceName() {
-        HttpServletRequest request =
-            ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                .getRequest();
+        ServletRequestAttributes servletRequestAttributes =
+            ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
 
-        return JWT.decode(removeBearerFromToken(request.getHeader(SERVICE_AUTHORIZATION))).getSubject();
+        if (servletRequestAttributes != null
+            && servletRequestAttributes.getRequest().getHeader(SERVICE_AUTHORIZATION) != null) {
+            return JWT.decode(removeBearerFromToken(servletRequestAttributes.getRequest().getHeader(
+                SERVICE_AUTHORIZATION))).getSubject();
+
+        }
+        return null;
+
     }
 
     private String removeBearerFromToken(String token) {
