@@ -29,6 +29,7 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION;
@@ -77,7 +78,7 @@ class SecurityUtilsTest {
         );
         Map<String, Object> headers = new HashMap<>();
         headers.put("header", "head");
-        Jwt jwt = new Jwt("token", Instant.now(), Instant.now().plusSeconds(10),headers, headers);
+        Jwt jwt = new Jwt(serviceAuthorizationNoBearer, Instant.now(), Instant.now().plusSeconds(10),headers, headers);
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
         when(securityContext.getAuthentication().getPrincipal()).thenReturn(jwt);
@@ -93,22 +94,29 @@ class SecurityUtilsTest {
     }
 
     @Test
-    void getUserId() {
+    void getUserId() throws IOException {
         assertEquals(USER_ID, securityUtils.getUserId());
     }
 
     @Test
-    void getUserRoles() {
+    void getUserRoles() throws IOException {
         assertNotNull(securityUtils.getUserRoles());
     }
 
     @Test
-    void getUserRolesHeader() {
+    void getUserRolesHeader() throws IOException {
         assertNotNull(securityUtils.getUserRolesHeader());
     }
 
     @Test
-    void getAuthorizationHeaders() {
+    void getUserToken() throws IOException {
+        String result = securityUtils.getUserToken();
+        assertNotNull(result);
+        assertTrue(result.contains("eyJhbG"));
+    }
+
+    @Test
+    void getAuthorizationHeaders() throws IOException {
         HttpHeaders result = securityUtils.authorizationHeaders();
         assertEquals(serviceAuthorization, Objects.requireNonNull(result.get(SERVICE_AUTHORIZATION)).get(0));
         assertEquals(USER_ID, Objects.requireNonNull(result.get("user-id")).get(0));
@@ -116,7 +124,16 @@ class SecurityUtilsTest {
     }
 
     @Test
-    void removeBearerFromToken() {
+    void getAuthorizationHeaders_NoContext() {
+        when(securityContext.getAuthentication()).thenReturn(null);
+        HttpHeaders result = securityUtils.authorizationHeaders();
+        assertEquals(serviceAuthorization, Objects.requireNonNull(result.get(SERVICE_AUTHORIZATION)).get(0));
+        assertEquals(USER_ID, Objects.requireNonNull(result.get("user-id")).get(0));
+        assertEquals("", Objects.requireNonNull(Objects.requireNonNull(result.get("user-roles")).get(0)));
+    }
+
+    @Test
+    void removeBearerFromToken() throws IOException {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader(SERVICE_AUTHORIZATION, serviceAuthorization);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
@@ -124,7 +141,7 @@ class SecurityUtilsTest {
     }
 
     @Test
-    void removeBearerFromToken_NoBearerTag() {
+    void removeBearerFromToken_NoBearerTag() throws IOException {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader(SERVICE_AUTHORIZATION, serviceAuthorizationNoBearer);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
