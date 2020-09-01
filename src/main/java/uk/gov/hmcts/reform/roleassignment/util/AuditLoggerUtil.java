@@ -53,7 +53,7 @@ public class AuditLoggerUtil {
         RoleAssignmentRequestResource body = response.getBody();
         if (body != null && body.getRoleAssignmentRequest() != null
             && body.getRoleAssignmentRequest().getRequestedRoles() != null) {
-            response.getBody().getRoleAssignmentRequest().getRequestedRoles()
+            body.getRoleAssignmentRequest().getRequestedRoles()
                 .stream().map(RoleAssignment::getAttributes).forEach(obj -> obj.forEach((key, value) -> {
                     if (key.equals("caseId")) {
                         caseIds.add(value.asText());
