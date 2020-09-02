@@ -13,6 +13,8 @@ import java.util.Map;
 @Service
 public class FeatureToggleService {
 
+    public static final String USER = "user";
+    public static final String SERVICENAME = "servicename";
     @Autowired
     private final LDClient ldClient;
 
@@ -37,11 +39,15 @@ public class FeatureToggleService {
     public boolean isFlagEnabled(String serviceName, String flagName) {
         LDUser user = new LDUser.Builder(environment)
             .firstName(userName)
-            .lastName("user")
-            .custom("servicename", serviceName)
+            .lastName(USER)
+            .custom(SERVICENAME, serviceName)
             .build();
 
         return ldClient.boolVariation(flagName, user, false);
+    }
+
+    public boolean isValidFlag(String flagName) {
+        return ldClient.isFlagKnown(flagName);
     }
 
     public Map<String, String> getLaunchDarklyMap() {
