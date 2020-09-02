@@ -1,12 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.Map;
-
 import com.launchdarkly.sdk.server.LDClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +8,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.Map;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FeatureToggleServiceTest {
@@ -48,5 +48,12 @@ public class FeatureToggleServiceTest {
         when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(false);
         featureToggleService = new FeatureToggleService(ldClient, "user");
         Assertions.assertFalse(featureToggleService.isFlagEnabled("serviceName", "userName"));
+    }
+
+    @Test
+    public void isValidFlag() {
+        when(ldClient.isFlagKnown(any())).thenReturn(true);
+        featureToggleService = new FeatureToggleService(ldClient, "user");
+        Assertions.assertTrue(featureToggleService.isValidFlag("serviceName"));
     }
 }

@@ -1,18 +1,20 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.PostConstruct;
-
 import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.LDClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class FeatureToggleService {
 
+    public static final String USER = "user";
+    public static final String SERVICENAME = "servicename";
     @Autowired
     private final LDClient ldClient;
 
@@ -31,18 +33,21 @@ public class FeatureToggleService {
     @PostConstruct
     public void mapServiceToFlag() {
         launchDarklyMap = new HashMap<>();
-        launchDarklyMap.put("/am/role-assignments/ld/endpoint1", "get-ld-flag");
-        launchDarklyMap.put("/am/role-assignments/ld/endpoint2", "delete-by-assignment-id-flag");
+        launchDarklyMap.put("/am/role-assignments/ld/endpoint", "get-ld-flag");
     }
 
     public boolean isFlagEnabled(String serviceName, String flagName) {
         LDUser user = new LDUser.Builder(environment)
             .firstName(userName)
-            .lastName("user")
-            .custom("servicename", serviceName)
+            .lastName(USER)
+            .custom(SERVICENAME, serviceName)
             .build();
 
         return ldClient.boolVariation(flagName, user, false);
+    }
+
+    public boolean isValidFlag(String flagName) {
+        return ldClient.isFlagKnown(flagName);
     }
 
     public Map<String, String> getLaunchDarklyMap() {
