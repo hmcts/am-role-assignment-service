@@ -65,6 +65,16 @@ class IdamRoleServiceTest {
     }
 
     @Test
+    void getUserRolesEmptyUserDetails() throws IOException {
+        String userId = "003352d0-e699-48bc-b6f5-5810411e60af";
+
+        when(idamRepositoryMock.searchUserByUserId(any(), any()))
+            .thenReturn(ResponseEntity.ok().body(new ArrayList<>()));
+
+        assertNotNull(sut.getUserRoles(userId));
+    }
+
+    @Test
     void getUserRolesBlankResponse() throws IOException {
         String userId = "003352d0-e699-48bc-b6f5-5810411e60af";
         UserDetails userDetails = UserDetails.builder().email("black@betty.com").forename("ram").surname("jam").id(
