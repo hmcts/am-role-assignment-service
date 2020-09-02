@@ -31,7 +31,8 @@ public class FeatureToggleService {
     @PostConstruct
     public void mapServiceToFlag() {
         launchDarklyMap = new HashMap<>();
-        launchDarklyMap.put("/am/role-assignments/ld/endpoint", "get-ld-flag");
+        launchDarklyMap.put("/am/role-assignments/ld/endpoint1", "get-ld-flag");
+        launchDarklyMap.put("/am/role-assignments/ld/endpoint2", "delete-by-assignment-id-flag");
     }
 
     public boolean isFlagEnabled(String serviceName, String flagName) {
