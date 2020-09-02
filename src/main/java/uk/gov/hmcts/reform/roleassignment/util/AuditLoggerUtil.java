@@ -22,50 +22,70 @@ public class AuditLoggerUtil {
     }
 
     public static List<UUID> buildAssignmentIds(ResponseEntity<RoleAssignmentRequestResource> response) {
-        return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
-            .map(RoleAssignment::getId)
-            .collect(Collectors.toList());
+        if (response.getBody() != null) {
+            return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
+                .map(RoleAssignment::getId)
+                .collect(Collectors.toList());
+        }
+        return List.of();
     }
 
     public static List<UUID> buildActorIds(ResponseEntity<RoleAssignmentRequestResource> response) {
-        return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
-            .map(RoleAssignment::getActorId)
-            .collect(Collectors.toList());
+        if (response.getBody() != null) {
+            return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
+                .map(RoleAssignment::getActorId)
+                .collect(Collectors.toList());
+        }
+        return List.of();
     }
 
     public static List<String> buildRoleNames(ResponseEntity<RoleAssignmentRequestResource> response) {
-        return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
-            .map(RoleAssignment::getRoleName)
-            .collect(Collectors.toList());
+        if (response.getBody() != null) {
+            return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
+                .map(RoleAssignment::getRoleName)
+                .collect(Collectors.toList());
+        }
+        return List.of();
     }
 
     public static Set<String> buildCaseIds(ResponseEntity<RoleAssignmentRequestResource> response) {
         Set<String> caseIds = new HashSet<>();
-        response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream()
-            .map(RoleAssignment::getAttributes).forEach(obj -> obj.forEach((key, value) -> {
-                if (key.equals("caseId")) {
-                    caseIds.add(value.asText());
-                }
-
-            }));
+        RoleAssignmentRequestResource body = response.getBody();
+        if (body != null) {
+            body.getRoleAssignmentRequest().getRequestedRoles()
+                .stream().map(RoleAssignment::getAttributes).forEach(obj -> obj.forEach((key, value) -> {
+                    if (key.equals("caseId")) {
+                        caseIds.add(value.asText());
+                    }
+                }));
+        }
         return caseIds;
     }
 
     public static List<UUID> getAssignmentIds(ResponseEntity<RoleAssignmentResource> response) {
-        return response.getBody().getRoleAssignmentResponse().stream().limit(10)
-            .map(RoleAssignment::getId)
-            .collect(Collectors.toList());
+        if (response.getBody() != null) {
+            return response.getBody().getRoleAssignmentResponse().stream().limit(10)
+                .map(RoleAssignment::getId)
+                .collect(Collectors.toList());
+        }
+        return List.of();
     }
 
     public static List<UUID> getActorIds(ResponseEntity<RoleAssignmentResource> response) {
-        return response.getBody().getRoleAssignmentResponse().stream().limit(10)
-            .map(RoleAssignment::getActorId)
-            .collect(Collectors.toList());
+        if (response.getBody() != null) {
+            return response.getBody().getRoleAssignmentResponse().stream().limit(10)
+                .map(RoleAssignment::getActorId)
+                .collect(Collectors.toList());
+        }
+        return List.of();
     }
 
     public static List<UUID> searchAssignmentIds(ResponseEntity<List<RoleAssignment>> response) {
-        return response.getBody().stream().limit(10)
-            .map(RoleAssignment::getId)
-            .collect(Collectors.toList());
+        if (response.getBody() != null) {
+            return response.getBody().stream().limit(10)
+                .map(RoleAssignment::getId)
+                .collect(Collectors.toList());
+        }
+        return List.of();
     }
 }
