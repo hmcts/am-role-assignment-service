@@ -8,8 +8,9 @@ class EnvironmentVariableUtilsTest {
 
     @Test
     void getRequiredVariable() {
-        Assertions.assertNotNull(EnvironmentVariableUtils.getRequiredVariable("PATH"));
-
+        String result = EnvironmentVariableUtils.getRequiredVariable("PATH");
+        Assertions.assertNotNull(result);
+        Assertions.assertTrue(result.contains("/usr/"));
     }
 
     @Test
