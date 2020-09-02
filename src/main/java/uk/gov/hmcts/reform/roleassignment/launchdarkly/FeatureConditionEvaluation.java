@@ -1,9 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +7,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ForbiddenException;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @Component
 @AllArgsConstructor
@@ -33,8 +33,8 @@ public class FeatureConditionEvaluation implements HandlerInterceptor {
             throw new ForbiddenException("The endpoint is not configured in Launch Darkly");
         }
 
-        boolean flagStatus = featureToggleService
-            .isFlagEnabled(securityUtils.getServiceName(), launchDarklyUrlMap.get(request.getRequestURI()));
+        boolean flagStatus = featureToggleService.isFlagEnabled(securityUtils.getServiceName(),
+                                                                launchDarklyUrlMap.get(request.getRequestURI()));
         if (!flagStatus) {
             throw new ForbiddenException("Forbidden");
         }
