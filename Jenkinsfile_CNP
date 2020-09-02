@@ -74,6 +74,11 @@ withPipeline(type, product, component) {
   disableLegacyDeploymentOnAAT()
   disableLegacyDeployment()
 
+  enablePactAs([
+    AppPipelineDsl.PactRoles.CONSUMER,
+    AppPipelineDsl.PactRoles.PROVIDER
+  ])
+
   before('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
   }
