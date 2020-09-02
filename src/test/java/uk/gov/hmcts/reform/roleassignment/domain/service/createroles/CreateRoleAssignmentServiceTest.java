@@ -246,6 +246,7 @@ class CreateRoleAssignmentServiceTest {
         assertEquals(incomingAssignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(msg, result.getRequest().getLog());
+        assertEquals(incomingAssignmentRequest, result);
 
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
