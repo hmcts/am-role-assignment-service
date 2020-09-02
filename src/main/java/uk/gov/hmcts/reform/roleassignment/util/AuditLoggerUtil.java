@@ -21,7 +21,7 @@ public class AuditLoggerUtil {
 
     }
 
-    public static List<UUID> buildAssignmentIds(ResponseEntity<RoleAssignmentRequestResource> response) {
+    public static List<UUID> buildAssignmentIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
         if (response.getBody() != null) {
             return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
                 .map(RoleAssignment::getId)
@@ -30,7 +30,7 @@ public class AuditLoggerUtil {
         return List.of();
     }
 
-    public static List<UUID> buildActorIds(ResponseEntity<RoleAssignmentRequestResource> response) {
+    public static List<UUID> buildActorIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
         if (response.getBody() != null) {
             return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
                 .map(RoleAssignment::getActorId)
@@ -39,7 +39,7 @@ public class AuditLoggerUtil {
         return List.of();
     }
 
-    public static List<String> buildRoleNames(ResponseEntity<RoleAssignmentRequestResource> response) {
+    public static List<String> buildRoleNames(final ResponseEntity<RoleAssignmentRequestResource> response) {
         if (response.getBody() != null) {
             return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
                 .map(RoleAssignment::getRoleName)
@@ -48,7 +48,7 @@ public class AuditLoggerUtil {
         return List.of();
     }
 
-    public static Set<String> buildCaseIds(ResponseEntity<RoleAssignmentRequestResource> response) {
+    public static Set<String> buildCaseIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
         Set<String> caseIds = new HashSet<>();
         RoleAssignmentRequestResource body = response.getBody();
         if (body != null) {
@@ -62,7 +62,7 @@ public class AuditLoggerUtil {
         return caseIds;
     }
 
-    public static List<UUID> getAssignmentIds(ResponseEntity<RoleAssignmentResource> response) {
+    public static List<UUID> getAssignmentIds(final ResponseEntity<RoleAssignmentResource> response) {
         if (response.getBody() != null) {
             return response.getBody().getRoleAssignmentResponse().stream().limit(10)
                 .map(RoleAssignment::getId)
@@ -71,7 +71,7 @@ public class AuditLoggerUtil {
         return List.of();
     }
 
-    public static List<UUID> getActorIds(ResponseEntity<RoleAssignmentResource> response) {
+    public static List<UUID> getActorIds(final ResponseEntity<RoleAssignmentResource> response) {
         if (response.getBody() != null) {
             return response.getBody().getRoleAssignmentResponse().stream().limit(10)
                 .map(RoleAssignment::getActorId)
@@ -80,7 +80,7 @@ public class AuditLoggerUtil {
         return List.of();
     }
 
-    public static List<UUID> searchAssignmentIds(ResponseEntity<List<RoleAssignment>> response) {
+    public static List<UUID> searchAssignmentIds(final ResponseEntity<List<RoleAssignment>> response) {
         if (response.getBody() != null) {
             return response.getBody().stream().limit(10)
                 .map(RoleAssignment::getId)
