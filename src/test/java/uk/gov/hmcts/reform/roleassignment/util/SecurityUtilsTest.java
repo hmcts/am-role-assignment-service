@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -146,6 +147,14 @@ class SecurityUtilsTest {
         request.addHeader(SERVICE_AUTHORIZATION, serviceAuthorizationNoBearer);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         assertEquals("ccd_gw", securityUtils.getServiceName());
+    }
+
+    @Test
+    void shouldNotGetServiceNameFromContext() throws IOException {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader(SERVICE_AUTHORIZATION, serviceAuthorizationNoBearer);
+        RequestContextHolder.setRequestAttributes(null);
+        Assertions.assertNull(securityUtils.getServiceName());
     }
 
 }
