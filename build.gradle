@@ -374,7 +374,8 @@ dependencies {
   testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '4.1.0-prerelease.1'
+  //testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '4.1.0-prerelease.1'
+  compile fileTree(dir: 'lib', include: ['befta-fw-5.2.0-SNAPSHOT.jar'])
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.5.RELEASE'
 
   testCompile(group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber) {
