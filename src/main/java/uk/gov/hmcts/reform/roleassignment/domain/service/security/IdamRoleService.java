@@ -14,7 +14,6 @@ import java.util.List;
 @Service
 public class IdamRoleService {
 
-
     private IdamRepository idamRepository;
 
     public IdamRoleService(IdamRepository idamRepository) {
@@ -23,15 +22,16 @@ public class IdamRoleService {
 
     @SuppressWarnings("unchecked")
     public UserRoles getUserRoles(String userId) {
-        LinkedHashMap<String,Object> userDetail;
+        LinkedHashMap<String, Object> userDetail;
         String id = null;
         List<String> roles = new ArrayList<>();
         ResponseEntity<Object> userDetails = idamRepository.searchUserByUserId(
             idamRepository.getManageUserToken(), userId);
-        if (userDetails != null &&  !((ArrayList) userDetails.getBody()).isEmpty()) {
-            userDetail = (LinkedHashMap<String,Object>)((ArrayList) userDetails.getBody()).get(0);
+        Object userDetailsList = userDetails != null ? userDetails.getBody() : null;
+        if (userDetailsList instanceof ArrayList && !((ArrayList)(userDetailsList)).isEmpty()) {
+            userDetail = (LinkedHashMap<String, Object>) ((ArrayList) userDetailsList).get(0);
             id = userDetail.get("id").toString();
-            roles = (List<String>)userDetail.get("roles");
+            roles = (List<String>) userDetail.get("roles");
         }
 
         return UserRoles.builder()
