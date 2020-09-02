@@ -59,8 +59,9 @@ public class FeatureConditionEvaluationTest {
     }
 
     @Test
-    public void getNegativeResponseForFlag() throws Exception {
-        when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint1");
+    public void getNegativeResponseForFlag() {
+        when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint");
+        when(featureToggleService.isValidFlag(any())).thenReturn(true);
         when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(false);
         Assertions.assertThrows(ForbiddenException.class, () -> {
             featureConditionEvaluation.preHandle(request, response, object);
