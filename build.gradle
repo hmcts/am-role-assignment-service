@@ -216,10 +216,12 @@ pitest {
   excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
                      'uk.gov.hmcts.reform.roleassignment.config.*',
                      'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot']
+  excludedMethods = ['getListOfRoles', 'removeCorrelationLog', 'getExitCode', 'validateDateTime', 'requestInterceptor']
+  excludedTestClasses = ['uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditAspectTest']
   threads = 15
   outputFormats = ['XML', 'HTML']
   timestampedReports = true
-  mutationThreshold = 40
+  mutationThreshold = 60
 }
 
 
