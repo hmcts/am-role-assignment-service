@@ -30,7 +30,7 @@ public class FeatureConditionEvaluation implements HandlerInterceptor {
         Map<String, String> launchDarklyUrlMap = featureToggleService.getLaunchDarklyMap();
         String flagName = launchDarklyUrlMap.get(request.getRequestURI());
 
-        if (flagName == null || flagName.isEmpty()) {
+        if (flagName == null) {
             throw new ForbiddenException("The endpoint is not configured in Launch Darkly");
         }
 
