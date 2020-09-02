@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ForbiddenException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -70,6 +71,15 @@ public class FeatureConditionEvaluationTest {
     public void expectExceptionForNonRegisteredURI() {
         when(request.getRequestURI()).thenReturn("");
         Assertions.assertThrows(ForbiddenException.class, () -> {
+            featureConditionEvaluation.preHandle(request, response, object);
+        });
+    }
+
+    @Test
+    public void expectExceptionForInvalidFlagName() {
+        when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint");
+        when(featureToggleService.isValidFlag(any())).thenReturn(false);
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             featureConditionEvaluation.preHandle(request, response, object);
         });
     }
