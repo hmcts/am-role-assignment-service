@@ -42,7 +42,7 @@ public class FeatureConditionEvaluation implements HandlerInterceptor {
         boolean flagStatus = featureToggleService.isFlagEnabled(securityUtils.getServiceName(),
                                                                 launchDarklyUrlMap.get(request.getRequestURI()));
         if (!flagStatus) {
-            throw new ForbiddenException("Forbidden");
+            throw new ForbiddenException("Launch Darkly flag is not enabled for the endpoint");
         }
         return flagStatus;
     }
