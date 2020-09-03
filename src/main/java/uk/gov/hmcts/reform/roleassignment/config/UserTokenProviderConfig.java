@@ -14,7 +14,7 @@ public class UserTokenProviderConfig {
     private final String s2sUrl;
 
     private final String clientId;
-    private String clientSecret;
+    private final String clientSecret;
     private final String username;
     private final String password;
     private final String scope;
