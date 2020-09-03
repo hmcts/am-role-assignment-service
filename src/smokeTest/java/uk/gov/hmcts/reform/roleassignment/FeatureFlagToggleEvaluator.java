@@ -15,6 +15,10 @@ import java.io.IOException;
 @Slf4j
 public class FeatureFlagToggleEvaluator implements TestRule {
 
+    public static final String USER = "user";
+    public static final String SERVICENAME = "servicename";
+    public static final String AM_ROLE_ASSIGNMENT_SERVICE = "am_role_assignment_service";
+
     private final SmokeTest smokeTest;
 
     public FeatureFlagToggleEvaluator(SmokeTest smokeTest) {
@@ -28,24 +32,30 @@ public class FeatureFlagToggleEvaluator implements TestRule {
             @Override
             public void evaluate() throws Throwable {
                 boolean isFlagEnabled = false;
-                FeatureFlagToggle featureFlagToggle = description
-                    .getAnnotation(FeatureFlagToggle.class);
+                String message = "The test is ignored as LD flag is false";
+
+                FeatureFlagToggle featureFlagToggle = description.getAnnotation(FeatureFlagToggle.class);
+
                 if (featureFlagToggle != null) {
                     if (StringUtils.isNotEmpty(featureFlagToggle.value())) {
                         try (LDClient client = new LDClient(smokeTest.getSdkKey())) {
 
                             LDUser user = new LDUser.Builder(smokeTest.getEnvironment())
                                 .firstName(smokeTest.getUserName())
-                                .lastName("user")
-                                .custom("servicename", "am_role_assignment_service")
+                                .lastName(USER)
+                                .custom(SERVICENAME, AM_ROLE_ASSIGNMENT_SERVICE)
                                 .build();
 
+                            if (!client.isFlagKnown(featureFlagToggle.value())) {
+                                message = String.format("The flag %s is not registered with Launch Darkly",
+                                    featureFlagToggle.value());
+                            }
                             isFlagEnabled = client.boolVariation(featureFlagToggle.value(), user, false);
                         } catch (IOException exception) {
                             log.warn("Error getting Launch Darkly connection in Smoke tests");
                         }
                     }
-                    Assume.assumeTrue("Test is ignored!", isFlagEnabled);
+                    Assume.assumeTrue(message, isFlagEnabled);
                 }
                 base.evaluate();
             }
