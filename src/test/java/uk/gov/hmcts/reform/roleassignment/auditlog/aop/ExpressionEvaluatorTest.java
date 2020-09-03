@@ -90,9 +90,9 @@ public class ExpressionEvaluatorTest {
             "test", roleAssignment});
         AnnotatedElementKey elementKey = new AnnotatedElementKey(method, SampleMethods.class);
 
-        Exception exception = assertThrows(SpelEvaluationException.class, () -> {
-            evaluator.condition("#roleAssignment.unknownProperty", elementKey, context, String.class);
-        });
+        Exception exception = assertThrows(SpelEvaluationException.class, () ->
+            evaluator.condition("#roleAssignment.unknownProperty", elementKey, context, String.class)
+        );
 
         assertThat(exception.getMessage().contains("EL1008E: Property or field 'unknownProperty' cannot be found"))
             .toString();
