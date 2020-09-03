@@ -63,26 +63,26 @@ public class FeatureConditionEvaluationTest {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint");
         when(featureToggleService.isValidFlag(any())).thenReturn(true);
         when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(false);
-        Assertions.assertThrows(ForbiddenException.class, () -> {
-            featureConditionEvaluation.preHandle(request, response, object);
-        });
+        Assertions.assertThrows(ForbiddenException.class, () ->
+            featureConditionEvaluation.preHandle(request, response, object)
+        );
     }
 
     @Test
     public void expectExceptionForNonRegisteredURI() {
         when(request.getRequestURI()).thenReturn("");
-        Assertions.assertThrows(ForbiddenException.class, () -> {
-            featureConditionEvaluation.preHandle(request, response, object);
-        });
+        Assertions.assertThrows(ForbiddenException.class, () ->
+            featureConditionEvaluation.preHandle(request, response, object)
+        );
     }
 
     @Test
     public void expectExceptionForInvalidFlagName() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint");
         when(featureToggleService.isValidFlag(any())).thenReturn(false);
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            featureConditionEvaluation.preHandle(request, response, object);
-        });
+        Assertions.assertThrows(ResourceNotFoundException.class, () ->
+            featureConditionEvaluation.preHandle(request, response, object)
+        );
     }
 
 }

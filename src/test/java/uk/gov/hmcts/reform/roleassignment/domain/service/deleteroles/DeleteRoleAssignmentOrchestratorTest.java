@@ -217,9 +217,9 @@ class DeleteRoleAssignmentOrchestratorTest {
     @DisplayName("should throw 400 when reference doesn't exist")
     void shouldThrowBadRequestWhenReferenceNotExist() throws Exception {
         mockRequest();
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.deleteRoleAssignmentByProcessAndReference(PROCESS, null);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.deleteRoleAssignmentByProcessAndReference(PROCESS, null)
+        );
     }
 
     private void assertion() throws Exception {

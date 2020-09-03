@@ -295,9 +295,9 @@ class PersistenceServiceTest {
         when(roleAssignmentRepository.findByActorId(id))
             .thenReturn(null);
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            sut.getAssignmentsByActor(id);
-        });
+        Assertions.assertThrows(NullPointerException.class, () ->
+            sut.getAssignmentsByActor(id)
+        );
 
         verify(roleAssignmentRepository, times(1))
             .findByActorId(id);
@@ -356,9 +356,9 @@ class PersistenceServiceTest {
             .thenReturn(roleAssignmentEntities);
 
         String roleType = RoleType.CASE.toString();
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            sut.getAssignmentsByActorAndCaseId(actorId, caseId, roleType);
-        });
+        Assertions.assertThrows(ResourceNotFoundException.class, () ->
+            sut.getAssignmentsByActorAndCaseId(actorId, caseId, roleType)
+        );
 
     }
 
@@ -376,8 +376,8 @@ class PersistenceServiceTest {
     void getAssignmentById_NPE() throws IOException {
         UUID id = UUID.randomUUID();
         when(roleAssignmentRepository.findById(id)).thenReturn(null);
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            sut.getAssignmentById(id);
-        });
+        Assertions.assertThrows(NullPointerException.class, () ->
+            sut.getAssignmentById(id)
+        );
     }
 }
