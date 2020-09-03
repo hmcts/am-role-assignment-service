@@ -58,9 +58,10 @@ public class DeleteAssignmentController {
     })
     @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_PROCESS,
         process = "#process",
-        reference = "#reference")
-    public ResponseEntity<Object> deleteRoleAssignment(@RequestHeader(value = "assignerId", required = false)
-                                                           String assignerId,
+        reference = "#reference",
+        correlationId = "#correlationId")
+    public ResponseEntity<Object> deleteRoleAssignment(@RequestHeader(value = "x-correlation-id", required = false)
+                                                           String correlationId,
                                                        @RequestParam(value = "process", required = false)
                                                            String process,
                                                        @RequestParam(value = "reference", required = false)
@@ -93,13 +94,13 @@ public class DeleteAssignmentController {
         )
     })
     @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_ID,
-        assignmentId = "#assignmentId"
+        assignmentId = "#assignmentId",
+        correlationId = "#correlationId"
     )
-    public ResponseEntity<Object> deleteRoleAssignmentById(
-        @RequestHeader(value = "assignerId", required = false)
-            String assignerId,
-        @ApiParam(value = "assignmentId", required = true)
-        @PathVariable String assignmentId) {
+    public ResponseEntity<Object> deleteRoleAssignmentById(@RequestHeader(value = "x-correlation-id", required = false)
+                                                               String correlationId,
+                                                           @ApiParam(value = "assignmentId", required = true)
+                                                           @PathVariable String assignmentId) {
         return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByAssignmentId(assignmentId);
     }
 }

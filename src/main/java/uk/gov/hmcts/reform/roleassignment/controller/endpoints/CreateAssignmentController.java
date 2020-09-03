@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
@@ -67,9 +68,10 @@ public class CreateAssignmentController {
         roleName = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildRoleNames(#result)",
         caseId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildCaseIds(#result)",
         assignerId = "#assignmentRequest.request.assignerId",
-        correlationId = "#assignmentRequest.request.correlationId")
+        correlationId = "#correlationId")
 
-    public ResponseEntity<Object> createRoleAssignment(
+    public ResponseEntity<Object> createRoleAssignment(@RequestHeader(value = "x-correlation-id", required = false)
+                                                               String correlationId,
         @Validated
         @RequestBody(required = true) AssignmentRequest assignmentRequest) throws ParseException {
 
