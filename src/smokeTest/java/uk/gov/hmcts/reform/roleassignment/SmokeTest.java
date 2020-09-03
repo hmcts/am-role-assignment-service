@@ -3,17 +3,15 @@ package uk.gov.hmcts.reform.roleassignment;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.WithTag;
 import net.thucydides.core.annotations.WithTags;
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -24,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
 @NoArgsConstructor
 @WithTags({@WithTag("testType:Smoke")})
 public class SmokeTest extends BaseTest {
@@ -49,6 +46,9 @@ public class SmokeTest extends BaseTest {
 
     @Value("${launchdarkly.sdk.key}")
     private String sdkKey;
+
+    @Value("${idam.client.secret}")
+    private String idamClientSecret;
 
     @Before
     public void setUp() {
@@ -214,5 +214,9 @@ public class SmokeTest extends BaseTest {
 
     public String getSdkKey() {
         return sdkKey;
+    }
+
+    public String getIdamClientSecret() {
+        return idamClientSecret;
     }
 }
