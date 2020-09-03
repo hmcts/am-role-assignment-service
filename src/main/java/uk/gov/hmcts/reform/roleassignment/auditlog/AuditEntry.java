@@ -10,7 +10,7 @@ public class AuditEntry {
     private String dateTime;
     private int httpStatus;
     private String httpMethod;
-    private String authenticateUserId;
+    private String authenticatedUserId;
     private String assignerId;
     private String roleName;
     private String assignmentId;
