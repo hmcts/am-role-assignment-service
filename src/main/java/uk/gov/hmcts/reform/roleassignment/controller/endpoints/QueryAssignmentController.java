@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
@@ -74,14 +75,16 @@ public class QueryAssignmentController {
         )
     })
     @LogAudit(operationType = SEARCH_ASSIGNMENTS,
-        id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).searchAssignmentIds(#result)")
-    public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdAndCaseId(
-        @ApiParam(value = "Actor Id", required = false)
-        @RequestParam(value = "actorId", required = false) String actorId,
-        @ApiParam(value = "Case Id", required = false)
-        @RequestParam(value = "caseId", required = false) String caseId,
-        @ApiParam(value = "Role Type", required = true)
-        @RequestParam(value = "roleType", required = true) String roleType) {
+        id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).searchAssignmentIds(#result)",
+        correlationId = "#correlationId")
+    public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdAndCaseId(@RequestHeader(value = "x-correlation-id",
+                                              required = false) String correlationId,
+                                               @ApiParam(value = "Actor Id", required = false)
+                                               @RequestParam(value = "actorId", required = false) String actorId,
+                                               @ApiParam(value = "Case Id", required = false)
+                                               @RequestParam(value = "caseId", required = false) String caseId,
+                                               @ApiParam(value = "Role Type", required = true)
+                                               @RequestParam(value = "roleType", required = true) String roleType) {
 
         return queryRoleAssignmentOrchestrator.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, roleType);
     }
