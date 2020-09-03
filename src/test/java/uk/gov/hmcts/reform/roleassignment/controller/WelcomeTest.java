@@ -9,7 +9,7 @@ class WelcomeTest {
 
     @Test
     void shouldReturnWelcomeMessage() {
-        assertEquals("2".toString(), "2".toString(), "Status code is NOT OK");
+        assertEquals("2", "2", "Status code is NOT OK");
     }
 }
 

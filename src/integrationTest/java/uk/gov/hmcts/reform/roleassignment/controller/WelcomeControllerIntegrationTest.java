@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
@@ -13,10 +12,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 import javax.sql.DataSource;
@@ -35,13 +35,10 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
 
     private JdbcTemplate template;
 
-    @Value("${integrationTest.api.url}")
-    private transient String url;
-
     private static final MediaType JSON_CONTENT_TYPE = new MediaType(
         MediaType.APPLICATION_JSON.getType(),
         MediaType.APPLICATION_JSON.getSubtype(),
-        Charset.forName("utf8")
+        StandardCharsets.UTF_8
     );
 
     @Autowired
@@ -55,18 +52,21 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
 
     @Test
     public void welcomeApiTest() throws Exception {
+        final String url = "/welcome";
         logger.info(" WelcomeControllerIntegrationTest : Inside  Welcome API Test method...{}", url);
         final MvcResult result = mockMvc.perform(get(url).contentType(JSON_CONTENT_TYPE))
-                                        //.andExpect(status().is(200))
-                                        .andReturn();
+            .andExpect(status().is(200))
+            .andReturn();
         assertEquals(
-            "Welcome service status", 200, 200);
+            "Welcome service status", 200, result.getResponse().getStatus());
+        assertEquals(
+            "Welcome service message", "welcome to role assignment service", result.getResponse().getContentAsString());
     }
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
          scripts = {"classpath:sql/insert_role_assignment_request.sql"})
-    public void shoudGetRecordCountFromRequestTable() throws Exception {
+    public void shouldGetRecordCountFromRequestTable() throws Exception {
         final int count = template.queryForObject(COUNT_RECORDS, Integer.class);
         logger.info(" Total number of records fetched from role assignment request table...{}", count);
         assertEquals(
@@ -76,7 +76,7 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
          scripts = {"classpath:sql/insert_role_assignment_request.sql"})
-    public void shoudGetRequestStatusFromRequestTable() throws Exception {
+    public void shouldGetRequestStatusFromRequestTable() throws Exception {
         final Object[] parameters = new Object[] {
             REQUEST_ID
         };

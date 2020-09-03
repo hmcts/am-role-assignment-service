@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 class AuditInterceptorTest {
 
@@ -76,7 +76,7 @@ class AuditInterceptorTest {
 
         interceptor.afterCompletion(request, response, handler, null);
 
-        verifyZeroInteractions(auditService);
+        verifyNoInteractions(auditService);
 
     }
 
@@ -87,7 +87,7 @@ class AuditInterceptorTest {
 
         interceptor.afterCompletion(request, response, handler, null);
 
-        verifyZeroInteractions(auditService);
+        verifyNoInteractions(auditService);
 
     }
 
@@ -112,7 +112,7 @@ class AuditInterceptorTest {
 
         interceptor.afterCompletion(request, response, handler, null);
 
-        verifyZeroInteractions(auditService);
+        verifyNoInteractions(auditService);
 
     }
 }

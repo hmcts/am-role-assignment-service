@@ -143,7 +143,7 @@ public class TestDataBuilder {
         InputStream inputStream =
             TestDataBuilder.class.getClassLoader().getResourceAsStream("attributes.json");
         assert inputStream != null;
-        return new ObjectMapper().readValue(inputStream, new TypeReference<JsonNode>() {
+        return new ObjectMapper().readValue(inputStream, new TypeReference<>() {
         });
     }
 
@@ -151,7 +151,7 @@ public class TestDataBuilder {
         InputStream inputStream =
             TestDataBuilder.class.getClassLoader().getResourceAsStream("notes.json");
         assert inputStream != null;
-        return new ObjectMapper().readValue(inputStream, new TypeReference<JsonNode>() {
+        return new ObjectMapper().readValue(inputStream, new TypeReference<>() {
         });
     }
 

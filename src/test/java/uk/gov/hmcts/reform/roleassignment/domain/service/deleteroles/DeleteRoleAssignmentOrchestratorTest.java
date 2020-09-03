@@ -175,8 +175,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         mockRequest();
         when(persistenceService.persistHistory(any(), any())).thenReturn(historyEntity);
 
-        RequestEntity requestEntity = RequestEntity.builder().historyEntities(new HashSet<>()).build();
-        sut.requestEntity = requestEntity;
+        sut.requestEntity = RequestEntity.builder().historyEntities(new HashSet<>()).build();
         sut.checkAllDeleteApproved(new AssignmentRequest(
             new Request(),
             new ArrayList<>() {
