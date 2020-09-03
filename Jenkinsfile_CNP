@@ -73,14 +73,6 @@ withPipeline(type, product, component) {
   disableLegacyDeploymentOnAAT()
   disableLegacyDeployment()
 
-  after('build:preview') {
-    steps {
-      sh './gradlew contract
-        -Dpact.provider.version=${GIT_COMMIT}
-        -Dpact.verifier.publishResults=true'
-    }
-  }
-
   before('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
   }
