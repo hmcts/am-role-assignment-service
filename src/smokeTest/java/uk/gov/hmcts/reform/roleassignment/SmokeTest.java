@@ -3,16 +3,17 @@ package uk.gov.hmcts.reform.roleassignment;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.WithTag;
 import net.thucydides.core.annotations.WithTags;
-import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+@RunWith(SpringIntegrationSerenityRunner.class)
 @NoArgsConstructor
 @WithTags({@WithTag("testType:Smoke")})
-@Slf4j
 public class SmokeTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(SmokeTest.class);
@@ -49,25 +50,9 @@ public class SmokeTest extends BaseTest {
     @Value("${launchdarkly.sdk.key}")
     private String sdkKey;
 
-    @Value("${idam.client.secret}")
-    private String idamClientSecret;
-
     @Before
     public void setUp() {
         config = new UserTokenProviderConfig();
-
-        log.error("Config client Secret is : " + config.getClientSecret());
-        System.out.println("Config client Secret is : " + config.getClientSecret());
-
-        log.error("client Secret is : " + idamClientSecret);
-        System.out.println("client Secret is : " + idamClientSecret);
-        log.error("Config client Secret is : " + config.getClientSecret());
-        System.out.println("Config client Secret is : " + config.getClientSecret());
-
-        log.error("Role Assignment  Secret is : " + config.getSecret());
-        System.out.println("Role Assignment  Secret is : " + config.getClientSecret());
-
-
         accessToken = searchUserByUserId(config);
         serviceAuth = authTokenGenerator(
             config.getSecret(),
@@ -96,7 +81,7 @@ public class SmokeTest extends BaseTest {
             .get(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
-                .body(ERROR_DESCRIPTION, Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
+            .body(ERROR_DESCRIPTION, Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
         response.then().assertThat().body(ERROR_MESSAGE, Matchers.equalTo(RESOURCE_NOT_FOUND));
     }
 
@@ -133,7 +118,7 @@ public class SmokeTest extends BaseTest {
             .get(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
-                .body(ERROR_DESCRIPTION, Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
+            .body(ERROR_DESCRIPTION, Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
         response.then().assertThat().body(ERROR_MESSAGE, Matchers.equalTo(RESOURCE_NOT_FOUND));
     }
 
@@ -154,7 +139,7 @@ public class SmokeTest extends BaseTest {
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
             .body(
-                    ERROR_DESCRIPTION,
+                ERROR_DESCRIPTION,
                 Matchers.equalTo(
                     "Role Assignment not found for Actor 0b00bfc0-bb00-00ea-b0de-0000ac000000"));
 
@@ -230,5 +215,4 @@ public class SmokeTest extends BaseTest {
     public String getSdkKey() {
         return sdkKey;
     }
-
 }
