@@ -14,7 +14,6 @@ public class UserTokenProviderConfig {
     private final String s2sUrl;
 
     private final String clientId;
-    private final String clientSecret;
     private final String username;
     private final String password;
     private final String scope;
@@ -30,7 +29,6 @@ public class UserTokenProviderConfig {
         s2sUrl = EnvironmentVariableUtils.getRequiredVariable("IDAM_S2S_URL");
 
         clientId = EnvironmentVariableUtils.getRequiredVariable("IDAM_CLIENT_ID");
-        clientSecret = EnvironmentVariableUtils.getRequiredVariable("ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET");
         username = USER_NAME;
         password = EnvironmentVariableUtils.getRequiredVariable("CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD");
         scope = EnvironmentVariableUtils.getRequiredVariable("OPENID_SCOPE_VARIABLES");
@@ -41,7 +39,7 @@ public class UserTokenProviderConfig {
 
         return new TokenRequest(
             clientId,
-            clientSecret,
+            "dummySecret",
             "password",
             "",
             username,
