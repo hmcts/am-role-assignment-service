@@ -67,14 +67,20 @@ withPipeline(type, product, component) {
   onPR {
     enableSlackNotifications('#am-role-assignment-service-builds')
   }
-
+  enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
   enableAksStagingDeployment()
   disableLegacyDeploymentOnAAT()
   disableLegacyDeployment()
 
-  enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+  after('build:preview') {
+    steps {
+      sh './gradlew contract
+        -Dpact.provider.version=${GIT_COMMIT}
+        -Dpact.verifier.publishResults=true'
+    }
+  }
 
   before('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
