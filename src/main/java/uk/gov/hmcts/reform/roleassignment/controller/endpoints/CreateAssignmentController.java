@@ -66,7 +66,8 @@ public class CreateAssignmentController {
         actorId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildActorIds(#result)",
         roleName = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildRoleNames(#result)",
         caseId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildCaseIds(#result)",
-        assignerId = "#assignmentRequest.request.assignerId")
+        assignerId = "#assignmentRequest.request.assignerId",
+        correlationId = "#assignmentRequest.request.correlationId")
 
     public ResponseEntity<Object> createRoleAssignment(
         @Validated

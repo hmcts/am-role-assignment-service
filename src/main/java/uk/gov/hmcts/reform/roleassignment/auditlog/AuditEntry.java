@@ -20,6 +20,7 @@ public class AuditEntry {
     private String operationType;
     private String reference;
     private String path;
+    private String correlationId;
 
 
 }
