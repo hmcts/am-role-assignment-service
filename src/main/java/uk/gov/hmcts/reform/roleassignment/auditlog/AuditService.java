@@ -45,6 +45,7 @@ public class AuditService {
         entry.setRoleName(auditContext.getRoleName());
         entry.setPath(auditContext.getRequestPath());
         entry.setAuthenticateUserId(securityUtils.getUserId());
+        entry.setCorrelationId(auditContext.getCorrelationId());
 
         auditRepository.save(entry);
 
