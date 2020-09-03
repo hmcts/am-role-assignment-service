@@ -61,7 +61,6 @@ public class SmokeTest extends BaseTest {
 
         log.error("client Secret is : " + idamClientSecret);
         System.out.println("client Secret is : " + idamClientSecret);
-        config.setClientSecret(idamClientSecret);
         log.error("Config client Secret is : " + config.getClientSecret());
         System.out.println("Config client Secret is : " + config.getClientSecret());
 
