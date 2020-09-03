@@ -47,9 +47,6 @@ public class SmokeTest extends BaseTest {
     @Value("${launchdarkly.sdk.key}")
     private String sdkKey;
 
-    @Value("${idam.client.secret}")
-    private String idamClientSecret;
-
     @Before
     public void setUp() {
         config = new UserTokenProviderConfig();
@@ -216,7 +213,4 @@ public class SmokeTest extends BaseTest {
         return sdkKey;
     }
 
-    public String getIdamClientSecret() {
-        return idamClientSecret;
-    }
 }
