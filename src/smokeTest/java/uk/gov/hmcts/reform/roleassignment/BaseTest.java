@@ -11,7 +11,6 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
@@ -51,9 +50,6 @@ public abstract class BaseTest {
     RestTemplate restTemplate = new RestTemplate();
     protected static final ObjectMapper mapper = new ObjectMapper();
 
-    @Value("${idam.client.secret}")
-    private String idamClientSecret;
-
     @BeforeClass
     public static void init() {
         mapper.registerModule(new JavaTimeModule());
@@ -89,7 +85,7 @@ public abstract class BaseTest {
                 "%s/o/token?client_id=%s&client_secret=%s&grant_type=%s&scope=%s&username=%s&password=%s",
                 config.getIdamURL(),
                 request.getClientId(),
-                idamClientSecret,
+                config.getClientSecret(),
                 request.getGrantType(),
                 "openid+roles+profile+authorities",
                 request.getUsername(),
