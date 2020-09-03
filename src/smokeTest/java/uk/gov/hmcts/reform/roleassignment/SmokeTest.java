@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.WithTag;
 import net.thucydides.core.annotations.WithTags;
@@ -24,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 
 @NoArgsConstructor
 @WithTags({@WithTag("testType:Smoke")})
+@Slf4j
 public class SmokeTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(SmokeTest.class);
@@ -47,9 +49,26 @@ public class SmokeTest extends BaseTest {
     @Value("${launchdarkly.sdk.key}")
     private String sdkKey;
 
+    @Value("${idam.client.secret}")
+    private String idamClientSecret;
+
     @Before
     public void setUp() {
         config = new UserTokenProviderConfig();
+
+        log.error("Config client Secret is : " + config.getClientSecret());
+        System.out.println("Config client Secret is : " + config.getClientSecret());
+
+        log.error("client Secret is : " + idamClientSecret);
+        System.out.println("client Secret is : " + idamClientSecret);
+        config.setClientSecret(idamClientSecret);
+        log.error("Config client Secret is : " + config.getClientSecret());
+        System.out.println("Config client Secret is : " + config.getClientSecret());
+
+        log.error("Role Assignment  Secret is : " + config.getSecret());
+        System.out.println("Role Assignment  Secret is : " + config.getClientSecret());
+
+
         accessToken = searchUserByUserId(config);
         serviceAuth = authTokenGenerator(
             config.getSecret(),
