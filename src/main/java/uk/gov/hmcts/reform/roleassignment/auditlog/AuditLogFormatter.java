@@ -26,7 +26,8 @@ public class AuditLogFormatter {
             .append(getPair("process", entry.getProcess()))
             .append(getPair("reference", entry.getReference()))
             .append(getPair("roleName", entry.getRoleName()))
-            .append(getPair("authenticateUserId", entry.getAuthenticateUserId()))
+            .append(getPair("authenticatedUserId", entry.getAuthenticatedUserId()))
+            .append(getPair("correlationId", entry.getCorrelationId()))
             .toString();
     }
 
