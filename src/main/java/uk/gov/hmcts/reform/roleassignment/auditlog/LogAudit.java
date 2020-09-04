@@ -30,5 +30,7 @@ public @interface LogAudit {
 
     String assignmentId() default "";
 
+    String correlationId() default "";
+
 
 }

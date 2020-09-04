@@ -39,9 +39,12 @@ def secrets = [
     secret('ccd-befta-caseworker-2-solicitor-3-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_3_PWD'),
     secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
   ],
-    's2s-${env}': [
-        secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
-        secret('microservicekey-am-role-assignment-service', 'AM_ROLE_ASSIGNMENT_SERVICE_SECRET')
+  's2s-${env}': [
+    secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
+    secret('microservicekey-am-role-assignment-service', 'AM_ROLE_ASSIGNMENT_SERVICE_SECRET')
+  ],
+  'am-${env}': [
+      secret('role-assignment-service-IDAM-CLIENT-SECRET', 'ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET')
     ]
 ]
 
@@ -58,7 +61,6 @@ env.BEFTA_RESPONSE_HEADER_CHECK_POLICY = "JUST_WARN"
 env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 env.OAUTH2_SCOPE_VARIABLES = "openid%20profile%20roles%20authorities"
 env.IDAM_CLIENT_ID="am_role_assignment"
-env.IDAM_CLIENT_SECRET="***REMOVED***"
 env.OPENID_SCOPE_VARIABLES = "openid+profile+roles+authorities"
 withPipeline(type, product, component) {
   onMaster {
