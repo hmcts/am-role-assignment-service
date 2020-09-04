@@ -14,7 +14,6 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -24,8 +23,6 @@ import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_HYPHEN_PATT
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_PATTERN;
 
 class ValidationUtilTest {
-
-    UUID uuid = UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c");
 
     @Test
     void shouldValidate() {
