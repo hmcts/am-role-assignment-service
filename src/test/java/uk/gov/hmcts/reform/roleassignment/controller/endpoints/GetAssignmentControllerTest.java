@@ -49,7 +49,7 @@ class GetAssignmentControllerTest {
         doReturn(expectedResponse).when(retrieveRoleAssignmentServiceMock).getAssignmentsByActor(actorId);
         long etag = 1;
         doReturn(etag).when(retrieveRoleAssignmentServiceMock).retrieveETag(UUID.fromString(actorId));
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorId("", actorId);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorId("","", actorId);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());

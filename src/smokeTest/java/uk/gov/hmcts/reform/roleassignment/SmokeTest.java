@@ -81,7 +81,7 @@ public class SmokeTest extends BaseTest {
             .get(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
-                .body(ERROR_DESCRIPTION, Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
+            .body(ERROR_DESCRIPTION, Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
         response.then().assertThat().body(ERROR_MESSAGE, Matchers.equalTo(RESOURCE_NOT_FOUND));
     }
 
@@ -118,7 +118,7 @@ public class SmokeTest extends BaseTest {
             .get(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
-                .body(ERROR_DESCRIPTION, Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
+            .body(ERROR_DESCRIPTION, Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
         response.then().assertThat().body(ERROR_MESSAGE, Matchers.equalTo(RESOURCE_NOT_FOUND));
     }
 
@@ -139,7 +139,7 @@ public class SmokeTest extends BaseTest {
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
             .body(
-                    ERROR_DESCRIPTION,
+                ERROR_DESCRIPTION,
                 Matchers.equalTo(
                     "Role Assignment not found for Actor 0b00bfc0-bb00-00ea-b0de-0000ac000000"));
 
