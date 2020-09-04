@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.oidc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
+
+import java.util.List;
 
 import static org.springframework.http.HttpMethod.GET;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.BEARER;
@@ -53,24 +56,24 @@ public class IdamRepository {
         return idamClient.getUserByUserId(BEARER + jwtToken, userId);
     }
 
-    public ResponseEntity<Object> searchUserByUserId(String jwtToken, String userId) {
-        ResponseEntity<Object> responseResult = new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<List<Object>> searchUserByUserId(String jwtToken, String userId) {
         try {
-            final HttpEntity<?> requestEntity = new HttpEntity<>(getHttpHeaders(jwtToken));
-            String searchUserByUserIdUrl = String.format("%s/api/v1/users?query=%s", idamUrl, userId);
-            ResponseEntity<Object> response = restTemplate.exchange(
-                searchUserByUserIdUrl,
+
+            ResponseEntity<List<Object>> response = restTemplate.exchange(
+                String.format("%s/api/v1/users?query=%s", idamUrl, userId),
                 GET,
-                requestEntity,
-                Object.class
+                new HttpEntity<>(getHttpHeaders(jwtToken)),
+                new ParameterizedTypeReference<List<Object>>() {
+                }
             );
             if (HttpStatus.OK.equals(response.getStatusCode())) {
-                responseResult = response;
+                return response;
             }
         } catch (HttpClientErrorException exception) {
             log.info(exception.getMessage());
+            throw exception;
         }
-        return responseResult;
+        return null;
     }
 
     private static HttpHeaders getHttpHeaders(String jwtToken) {
