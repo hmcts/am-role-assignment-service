@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
 import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -24,15 +24,16 @@ public class IdamRoleService {
     public UserRoles getUserRoles(String userId) {
         LinkedHashMap<String, Object> userDetail;
         String id = null;
-        List<String> roles = new ArrayList<>();
-        ResponseEntity<Object> userDetails = idamRepository.searchUserByUserId(
+        List<String> roles = Collections.emptyList();
+        ResponseEntity<List<Object>> userDetails = idamRepository.searchUserByUserId(
             idamRepository.getManageUserToken(), userId);
-        Object userDetailsList = userDetails != null ? userDetails.getBody() : null;
-        if (userDetailsList instanceof ArrayList && !((ArrayList)(userDetailsList)).isEmpty()) {
-            userDetail = (LinkedHashMap<String, Object>) ((ArrayList) userDetailsList).get(0);
+        List<Object> userDetailsList = userDetails != null ? userDetails.getBody() : null;
+        if (userDetailsList != null && !userDetailsList.isEmpty()) {
+            userDetail = (LinkedHashMap<String, Object>) userDetailsList.get(0);
             id = userDetail.get("id").toString();
             roles = (List<String>) userDetail.get("roles");
         }
+
 
         return UserRoles.builder()
             .uid(id)

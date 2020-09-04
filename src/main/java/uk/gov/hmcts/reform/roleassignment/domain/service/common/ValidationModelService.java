@@ -9,7 +9,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleServic
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,7 +44,7 @@ public class ValidationModelService {
 
     private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) {
         // Package up the request and the assignments
-        List<Object> facts = new ArrayList<>();
+        Set<Object> facts = new HashSet<>();
         //Pre defined role configuration
         List<Role> role = JacksonUtils.getConfiguredRoles().get("roles");
         facts.addAll(role);
@@ -60,7 +59,7 @@ public class ValidationModelService {
 
     }
 
-    public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, List<Object> facts) {
+    public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, Set<Object> facts) {
         facts.add(securityUtils.getUserRoles());
         Set<String> userIds = new HashSet<>();
         if (!assignmentRequest.getRequest().getAssignerId().equals(
@@ -68,12 +67,12 @@ public class ValidationModelService {
             userIds.add(String.valueOf(assignmentRequest.getRequest().getAssignerId()));
         }
         assignmentRequest.getRequestedRoles().stream().forEach(requestedRole ->
-            userIds.add(String.valueOf(requestedRole.getActorId()))
+                                                                   userIds.add(String.valueOf(requestedRole.getActorId()))
         );
         userIds.stream().forEach(userId -> {
             if (userId != null) {
                 log.info("Getting user Roles");
-                //facts.add(idamRoleService.getUserRoles(userId));
+                facts.add(idamRoleService.getUserRoles(userId));
             }
         });
 
