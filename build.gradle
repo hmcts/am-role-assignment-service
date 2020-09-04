@@ -48,7 +48,7 @@ def versions = [
   cucumber       : '5.5.0',
   feign_jackson  : '9.7.0',
   drools         : '7.40.0.Final',
-  launchDarklySdk: "5.0.3"
+  launchDarklySdk: '5.0.5'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
@@ -381,12 +381,7 @@ dependencies {
     exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
     exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-core"
   }
-  compile 'com.launchdarkly:launchdarkly-java-server-sdk:5.0.3:thin'
-  //needs to be removed :thin of LD SDK jar and following 4 jars of LD dependency once  CVE-2017-18640 fixed LD
-  compile "com.launchdarkly:launchdarkly-java-sdk-common:1.0.0"
-  compile "commons-codec:commons-codec:1.10"
-  compile "com.google.code.gson:gson:2.7"
-  compile "com.launchdarkly:okhttp-eventsource:2.3.1"
+  compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
 
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.37'
   compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.37'
