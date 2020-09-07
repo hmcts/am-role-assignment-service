@@ -11,6 +11,8 @@ properties(
 
 @Library("Infrastructure")
 
+import uk.gov.hmcts.contino.AppPipelineDsl
+
 def type = "java"
 def product = "am"
 def component = "role-assignment-service"
@@ -69,7 +71,6 @@ withPipeline(type, product, component) {
   onPR {
     enableSlackNotifications('#am-role-assignment-service-builds')
   }
-
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
   enableAksStagingDeployment()
@@ -99,4 +100,8 @@ withPipeline(type, product, component) {
   after('smoketest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/site/serenity/**'
   }
+
+  enablePactAs([
+          AppPipelineDsl.PactRoles.CONSUMER
+  ])
 }
