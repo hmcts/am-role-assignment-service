@@ -336,7 +336,7 @@ dependencies {
   }
 
   compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.3.72'
-  compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-common', version: '1.3.72'
+  compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-common', version: '1.4.0'
 
   // drools engine dependency
   compile(group: 'org.drools', name: 'drools-core', version: versions.drools) {
