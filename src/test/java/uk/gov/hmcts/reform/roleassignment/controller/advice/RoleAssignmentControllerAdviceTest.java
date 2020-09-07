@@ -114,9 +114,9 @@ class RoleAssignmentControllerAdviceTest {
 
     @Test
     void testInvalidRequest() {
-        Assertions.assertThrows(InvalidRequest.class, () -> {
-            welcomeController.getException("invalidRequest");
-        });
+        Assertions.assertThrows(InvalidRequest.class, () ->
+            welcomeController.getException("invalidRequest")
+        );
     }
 
     @Test
@@ -128,23 +128,23 @@ class RoleAssignmentControllerAdviceTest {
 
     @Test
     void testResourceNotFoundException() {
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            welcomeController.getException("resourceNotFoundException");
-        });
+        Assertions.assertThrows(ResourceNotFoundException.class, () ->
+            welcomeController.getException("resourceNotFoundException")
+        );
     }
 
     @Test
     void testHttpMessageConversionException() {
-        Assertions.assertThrows(HttpMessageConversionException.class, () -> {
-            welcomeController.getException("httpMessageConversionException");
-        });
+        Assertions.assertThrows(HttpMessageConversionException.class, () ->
+            welcomeController.getException("httpMessageConversionException")
+        );
     }
 
     @Test
     void testBadRequestException() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            welcomeController.getException("badRequestException");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            welcomeController.getException("badRequestException")
+        );
     }
 
     @Test
