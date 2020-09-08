@@ -106,6 +106,7 @@ class CreateRoleAssignmentOrchestratorTest {
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verifyNUmberOfInvocations();
+        verify(parseRequestService, times(1)).removeCorrelationLog();
     }
 
     @Test
@@ -257,6 +258,7 @@ class CreateRoleAssignmentOrchestratorTest {
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verifyNUmberOfInvocations();
+        verify(validationModelService, times(1)).validateRequest(any(AssignmentRequest.class));
     }
 
     @Test
@@ -372,6 +374,8 @@ class CreateRoleAssignmentOrchestratorTest {
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
+        verify(persistenceService, times(1))
+            .updateRequest(any(RequestEntity.class));
 
     }
 
