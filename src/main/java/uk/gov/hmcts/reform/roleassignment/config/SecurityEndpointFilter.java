@@ -14,14 +14,15 @@ import java.io.IOException;
 public class SecurityEndpointFilter extends OncePerRequestFilter {
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+        throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            //e.printStackTrace();
             Throwable throwable = e.getCause();
             if (throwable instanceof FeignException.FeignClientException) {
-                FeignException.FeignClientException feignClientException = (FeignException.FeignClientException) throwable;
+                FeignException.FeignClientException feignClientException =
+                    (FeignException.FeignClientException) throwable;
                 response.sendError(feignClientException.status(), feignClientException.getMessage());
                 return;
             }

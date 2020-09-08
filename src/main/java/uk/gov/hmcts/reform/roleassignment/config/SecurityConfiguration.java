@@ -71,7 +71,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Inject
     public SecurityConfiguration(final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter,
-                                 final ServiceAuthFilter serviceAuthFilter, SecurityEndpointFilter securityEndpointFilter) {
+                                 final ServiceAuthFilter serviceAuthFilter,
+                                 SecurityEndpointFilter securityEndpointFilter) {
 
         this.serviceAuthFilter = serviceAuthFilter;
         this.securityEndpointFilter = securityEndpointFilter;
