@@ -34,4 +34,5 @@ public class AuditContext {
     private String process;
     private String reference;
     private AuditOperationType auditOperationType;
+    private String correlationId;
 }

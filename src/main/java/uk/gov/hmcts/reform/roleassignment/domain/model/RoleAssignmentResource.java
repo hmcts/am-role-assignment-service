@@ -31,6 +31,7 @@ public class RoleAssignmentResource extends RepresentationModel<RoleAssignmentRe
         try {
             add(WebMvcLinkBuilder.linkTo(methodOn(GetAssignmentController.class).retrieveRoleAssignmentsByActorId(
                 "",
+                "",
                 actorId.toString())).withRel("binary"));
         } catch (Exception e) {
             log.error("context", e);

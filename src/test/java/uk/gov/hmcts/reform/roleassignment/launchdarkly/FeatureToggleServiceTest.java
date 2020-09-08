@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import com.launchdarkly.sdk.server.LDClient;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -21,10 +20,6 @@ public class FeatureToggleServiceTest {
 
     @Mock
     LDClient ldClient = mock(LDClient.class);
-
-    @Before
-    public void initializeMocks() {
-    }
 
     @InjectMocks
     FeatureToggleService featureToggleService = new FeatureToggleService(ldClient, "user");
