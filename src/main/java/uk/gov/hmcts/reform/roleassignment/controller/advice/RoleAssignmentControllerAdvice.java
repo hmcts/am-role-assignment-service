@@ -71,7 +71,7 @@ public class RoleAssignmentControllerAdvice {
         );
     }
 
-    @ExceptionHandler(FeignException.Unauthorized.class)
+    @ExceptionHandler(FeignException.class)
     public ResponseEntity<Object> customFeignException(
         FeignException ex) {
         return errorDetailsResponseEntity(
