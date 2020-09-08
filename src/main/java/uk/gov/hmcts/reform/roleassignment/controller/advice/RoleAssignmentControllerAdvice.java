@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.controller.advice;
 
-import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,17 +67,6 @@ public class RoleAssignmentControllerAdvice {
             HttpStatus.BAD_REQUEST,
             BAD_REQUEST.getErrorCode(),
             BAD_REQUEST.getErrorMessage()
-        );
-    }
-
-    @ExceptionHandler(FeignException.class)
-    public ResponseEntity<Object> customFeignException(
-        FeignException ex) {
-        return errorDetailsResponseEntity(
-            ex,
-            HttpStatus.FORBIDDEN,
-            ACCESS_DENIED.getErrorCode(),
-            ACCESS_DENIED.getErrorMessage()
         );
     }
 
