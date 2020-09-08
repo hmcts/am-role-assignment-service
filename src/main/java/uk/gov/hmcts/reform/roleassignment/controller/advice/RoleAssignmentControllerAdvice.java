@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller.advice;
 
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +13,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
-import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ForbiddenException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -25,6 +27,7 @@ import java.util.Locale;
 
 import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.ACCESS_DENIED;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.BAD_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.INVALID_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.RESOURCE_NOT_FOUND;
@@ -65,6 +68,28 @@ public class RoleAssignmentControllerAdvice {
             HttpStatus.BAD_REQUEST,
             BAD_REQUEST.getErrorCode(),
             BAD_REQUEST.getErrorMessage()
+        );
+    }
+
+    @ExceptionHandler(FeignException.Unauthorized.class)
+    public ResponseEntity<Object> customFeignException(
+        FeignException ex) {
+        return errorDetailsResponseEntity(
+            ex,
+            HttpStatus.FORBIDDEN,
+            ACCESS_DENIED.getErrorCode(),
+            ACCESS_DENIED.getErrorMessage()
+        );
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<Object> customForbiddenException(
+        ForbiddenException ex) {
+        return errorDetailsResponseEntity(
+            ex,
+            HttpStatus.FORBIDDEN,
+            ACCESS_DENIED.getErrorCode(),
+            ACCESS_DENIED.getErrorMessage()
         );
     }
 
