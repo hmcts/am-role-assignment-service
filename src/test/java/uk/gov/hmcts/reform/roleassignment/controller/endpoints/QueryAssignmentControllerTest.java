@@ -43,7 +43,7 @@ class QueryAssignmentControllerTest {
             = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator).retrieveRoleAssignmentsByActorIdAndCaseId(
             actorId, caseId, ROLE_TYPE);
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, ROLE_TYPE);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("",actorId, caseId, ROLE_TYPE);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());
@@ -57,7 +57,7 @@ class QueryAssignmentControllerTest {
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
                                   .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null, ROLE_TYPE);
         ResponseEntity<Object> response = sut
-            .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null, RoleType.CASE.name());
+            .retrieveRoleAssignmentsByActorIdAndCaseId("",actorId, null, RoleType.CASE.name());
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());
@@ -70,7 +70,7 @@ class QueryAssignmentControllerTest {
             = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
                                   .retrieveRoleAssignmentsByActorIdAndCaseId(null, caseId, ROLE_TYPE);
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId(null, caseId, ROLE_TYPE);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("",null, caseId, ROLE_TYPE);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());
@@ -84,7 +84,7 @@ class QueryAssignmentControllerTest {
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
                                   .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, ROLE_TYPE);
 
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, ROLE_TYPE);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("",actorId, caseId, ROLE_TYPE);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
     }

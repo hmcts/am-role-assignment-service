@@ -79,9 +79,8 @@ class DeleteAssignmentControllerTest {
 
         when(deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByProcessAndReference(PROCESS, null))
             .thenThrow(new ResourceNotFoundException(BAD_REQUEST_MISSING_PARAMETERS));
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            sut.deleteRoleAssignment(null,  PROCESS, null);
-        });
+        Assertions.assertThrows(ResourceNotFoundException.class, () ->
+            sut.deleteRoleAssignment(null, PROCESS, null));
     }
 
 

@@ -35,7 +35,6 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
     private Object generateCaseId() {
         Long currentTime = new Date().getTime();
         String time = currentTime.toString();
-        String caseId = time + ("0000000000000000".substring(time.length()));
-        return caseId;
+        return time + ("0000000000000000".substring(time.length()));
     }
 }
