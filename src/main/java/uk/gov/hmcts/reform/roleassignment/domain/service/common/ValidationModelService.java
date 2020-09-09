@@ -67,7 +67,7 @@ public class ValidationModelService {
             userIds.add(String.valueOf(assignmentRequest.getRequest().getAssignerId()));
         }
         assignmentRequest.getRequestedRoles().stream().forEach(requestedRole ->
-                                                                   userIds.add(String.valueOf(requestedRole.getActorId()))
+                                           userIds.add(String.valueOf(requestedRole.getActorId()))
         );
         userIds.stream().forEach(userId -> {
             if (userId != null) {
