@@ -50,80 +50,104 @@ public class CreateRoleAssignmentOrchestrator {
     }
 
     public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) throws ParseException {
+        try {
+            AssignmentRequest existingAssignmentRequest = null;
+            createRoleAssignmentService = new CreateRoleAssignmentService(
+                parseRequestService,
+                persistenceService,
+                validationModelService,
+                persistenceUtil,
+                prepareResponseService
+            );
 
-        AssignmentRequest existingAssignmentRequest = null;
-        createRoleAssignmentService = new CreateRoleAssignmentService(
-            parseRequestService,
-            persistenceService,
-            validationModelService,
-            persistenceUtil,
-            prepareResponseService
-        );
+            //1. call parse request service
+            AssignmentRequest parsedAssignmentRequest = parseRequestService
+                .parseRequest(roleAssignmentRequest, RequestType.CREATE);
+            //2. Call persistence service to store only the request
+            requestEntity = createRoleAssignmentService.persistInitialRequest(parsedAssignmentRequest.getRequest());
+            requestEntity.setHistoryEntities(new HashSet<>());
+            request = parsedAssignmentRequest.getRequest();
+            request.setId(requestEntity.getId());
+            createRoleAssignmentService.setRequestEntity(requestEntity);
+            createRoleAssignmentService.setIncomingRequest(request);
 
-        //1. call parse request service
-        AssignmentRequest parsedAssignmentRequest = parseRequestService
-            .parseRequest(roleAssignmentRequest, RequestType.CREATE);
-        //2. Call persistence service to store only the request
-        requestEntity = createRoleAssignmentService.persistInitialRequest(parsedAssignmentRequest.getRequest());
-        requestEntity.setHistoryEntities(new HashSet<>());
-        request = parsedAssignmentRequest.getRequest();
-        request.setId(requestEntity.getId());
-        createRoleAssignmentService.setRequestEntity(requestEntity);
-        createRoleAssignmentService.setIncomingRequest(request);
+            //Check replace existing true/false
+            if (request.isReplaceExisting()) {
 
-        //Check replace existing true/false
-        if (request.isReplaceExisting()) {
+                //retrieve existing assignments and prepared temp request
+                existingAssignmentRequest = createRoleAssignmentService
+                    .retrieveExistingAssignments(parsedAssignmentRequest);
 
-            //retrieve existing assignments and prepared temp request
-            existingAssignmentRequest = createRoleAssignmentService
-                .retrieveExistingAssignments(parsedAssignmentRequest);
-
-            // return 201 when there is no existing records in db and incoming request also have empty requested roles.
-            if (existingAssignmentRequest.getRequestedRoles().isEmpty()
-                && parsedAssignmentRequest.getRequestedRoles().isEmpty()) {
-                request.setStatus(APPROVED);
-                request.setLog("Request has been approved");
-                requestEntity.setStatus(Status.APPROVED.toString());
-                requestEntity.setLog(request.getLog());
-                persistenceService.updateRequest(requestEntity);
-                return ResponseEntity.status(HttpStatus.CREATED).body(parsedAssignmentRequest);
-            }
-
-            // compare identical existing and incoming requested roles based on some attributes
-            try {
-                if (createRoleAssignmentService.hasAssignmentsUpdated(
-                    existingAssignmentRequest,
-                    parsedAssignmentRequest
-                )) {
-                    identifyAssignmentsToBeUpdated(existingAssignmentRequest, parsedAssignmentRequest);
-
-                } else {
-                    createRoleAssignmentService.duplicateRequest(existingAssignmentRequest, parsedAssignmentRequest);
+                // return 201 when there is no existing records in db and incoming request also have
+                // empty requested roles.
+                if (existingAssignmentRequest.getRequestedRoles().isEmpty()
+                    && parsedAssignmentRequest.getRequestedRoles().isEmpty()) {
+                    request.setStatus(APPROVED);
+                    request.setLog("Request has been approved");
+                    requestEntity.setStatus(Status.APPROVED.toString());
+                    requestEntity.setLog(request.getLog());
+                    persistenceService.updateRequest(requestEntity);
+                    return ResponseEntity.status(HttpStatus.CREATED).body(parsedAssignmentRequest);
                 }
 
-                //8. Call the persistence to copy assignment records to RoleAssignmentLive table
-                if (!createRoleAssignmentService.needToCreateRoleAssignments.isEmpty()
-                    && !createRoleAssignmentService.needToRetainRoleAssignments.isEmpty()) {
-                    parsedAssignmentRequest.getRequestedRoles()
-                        .addAll(createRoleAssignmentService.needToRetainRoleAssignments);
-                } else if (!createRoleAssignmentService.needToRetainRoleAssignments.isEmpty()) {
-                    parsedAssignmentRequest.setRequestedRoles(createRoleAssignmentService.needToRetainRoleAssignments);
+                // compare identical existing and incoming requested roles based on some attributes
+                try {
+                    if (createRoleAssignmentService.hasAssignmentsUpdated(
+                        existingAssignmentRequest,
+                        parsedAssignmentRequest
+                    )) {
+                        identifyAssignmentsToBeUpdated(existingAssignmentRequest, parsedAssignmentRequest);
+
+                    } else {
+                        createRoleAssignmentService.duplicateRequest(
+                            existingAssignmentRequest,
+                            parsedAssignmentRequest
+                        );
+                    }
+
+                    //8. Call the persistence to copy assignment records to RoleAssignmentLive table
+                    if (!createRoleAssignmentService.needToCreateRoleAssignments.isEmpty()
+                        && !createRoleAssignmentService.needToRetainRoleAssignments.isEmpty()) {
+                        parsedAssignmentRequest.getRequestedRoles()
+                            .addAll(createRoleAssignmentService.needToRetainRoleAssignments);
+                    } else if (!createRoleAssignmentService.needToRetainRoleAssignments.isEmpty()) {
+                        parsedAssignmentRequest.setRequestedRoles(createRoleAssignmentService
+                                                                      .needToRetainRoleAssignments);
+                    }
+                } catch (InvocationTargetException | IllegalAccessException e) {
+                    // Don't throw the exception, as we need to build the response as Http:201
+                    log.error("context", e);
                 }
-            } catch (InvocationTargetException | IllegalAccessException e) {
-                // Don't throw the exception, as we need to build the response as Http:201
-                log.error("context", e);
+
+            } else {
+                //Save requested role in history table with CREATED and Approved Status
+                createRoleAssignmentService.createNewAssignmentRecords(parsedAssignmentRequest);
+                createRoleAssignmentService.checkAllApproved(parsedAssignmentRequest);
+
             }
 
-        } else {
-            //Save requested role in history table with CREATED and Approved Status
-            createRoleAssignmentService.createNewAssignmentRecords(parsedAssignmentRequest);
-            createRoleAssignmentService.checkAllApproved(parsedAssignmentRequest);
+            ResponseEntity<Object> result = prepareResponseService.prepareCreateRoleResponse(parsedAssignmentRequest);
+
+            parseRequestService.removeCorrelationLog();
+            return result;
+        } finally {
+            if (createRoleAssignmentService.needToDeleteRoleAssignments != null) {
+                createRoleAssignmentService.needToDeleteRoleAssignments.clear();
+            }
+            if (createRoleAssignmentService.needToCreateRoleAssignments != null) {
+                createRoleAssignmentService.needToCreateRoleAssignments.clear();
+            }
+            if (createRoleAssignmentService.needToRetainRoleAssignments != null) {
+                createRoleAssignmentService.needToRetainRoleAssignments.clear();
+            }
+            if (!createRoleAssignmentService.emptyUUIds.isEmpty()) {
+                createRoleAssignmentService.emptyUUIds.clear();
+
+            }
+
 
         }
-        ResponseEntity<Object> result = prepareResponseService.prepareCreateRoleResponse(parsedAssignmentRequest);
 
-        parseRequestService.removeCorrelationLog();
-        return result;
     }
 
     private void identifyAssignmentsToBeUpdated(AssignmentRequest existingAssignmentRequest,

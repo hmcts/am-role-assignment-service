@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.security;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
@@ -20,6 +21,7 @@ public class IdamRoleService {
         this.idamRepository = idamRepository;
     }
 
+    @Cacheable(value = "userRoles", key = "#userId")
     @SuppressWarnings("unchecked")
     public UserRoles getUserRoles(String userId) {
         LinkedHashMap<String, Object> userDetail;
