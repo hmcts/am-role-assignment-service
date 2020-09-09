@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment;
 
+import com.hazelcast.config.EvictionPolicy;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -31,4 +32,42 @@ class ApplicationParamsTest {
         assertThat(result).isEqualTo(Boolean.TRUE);
 
     }
+
+    @Test
+    void shouldCheckRoleCacheMaxSize() {
+        ReflectionTestUtils.setField(applicationParams, "roleCacheMaxSize", 100);
+        Integer result = applicationParams.getRoleCacheMaxSize();
+        assertNotNull(result);
+        assertThat(result).isEqualTo(100);
+
+    }
+
+    @Test
+    void shouldCheckUserCacheTTL() {
+        ReflectionTestUtils.setField(applicationParams, "userCacheTTLSecs", 1800);
+        Integer result = applicationParams.getUserCacheTTLSecs();
+        assertNotNull(result);
+        assertThat(result).isEqualTo(1800);
+
+    }
+
+    @Test
+    void shouldCheckRoleCacheMaxIdle() {
+        ReflectionTestUtils.setField(applicationParams, "roleCacheMaxIdleSecs", 250000);
+        Integer result = applicationParams.getRoleCacheMaxIdleSecs();
+        assertNotNull(result);
+        assertThat(result).isEqualTo(250000);
+
+    }
+
+    @Test
+    void shouldCheckEvictionPolicy() {
+        ReflectionTestUtils.setField(applicationParams, "roleCacheEvictionPolicy", EvictionPolicy.NONE);
+        EvictionPolicy result = applicationParams.getRoleCacheEvictionPolicy();
+        assertNotNull(result);
+        assertThat(result).isEqualTo(EvictionPolicy.NONE);
+
+    }
+
+
 }
