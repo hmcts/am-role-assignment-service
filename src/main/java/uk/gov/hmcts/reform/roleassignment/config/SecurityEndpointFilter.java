@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.config;
 
 import feign.FeignException;
+import org.apache.http.HttpStatus;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -23,7 +24,7 @@ public class SecurityEndpointFilter extends OncePerRequestFilter {
             if (throwable instanceof FeignException.FeignClientException) {
                 FeignException.FeignClientException feignClientException =
                     (FeignException.FeignClientException) throwable;
-                response.sendError(feignClientException.status(), feignClientException.getMessage());
+                response.sendError(HttpStatus.SC_FORBIDDEN, feignClientException.getMessage());
                 return;
             }
             throw e;
