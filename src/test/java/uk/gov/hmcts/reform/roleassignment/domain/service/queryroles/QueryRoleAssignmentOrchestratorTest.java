@@ -55,9 +55,9 @@ class QueryRoleAssignmentOrchestratorTest {
         String actorId = "003352d0-e699-48bc-b6f5-5810411e60af";
         String caseId = "1234567890123456";
 
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, "SecretAgent");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, "SecretAgent")
+        );
     }
 
     @Test
@@ -65,9 +65,9 @@ class QueryRoleAssignmentOrchestratorTest {
         String actorId = "003352d0-e699-48bc-b6f5-5810411e60a";
         String caseId = "1234567890123456";
 
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, "Case");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, "Case")
+        );
     }
 
     @Test
@@ -75,8 +75,8 @@ class QueryRoleAssignmentOrchestratorTest {
         String actorId = "003352d0-e699-48bc-b6f5-5810411e60af";
         String caseId = "123456789012";
 
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, "Case");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, "Case")
+        );
     }
 }

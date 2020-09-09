@@ -25,8 +25,8 @@ public class ExpressionEvaluatorTest {
     @Test
     public void shouldCreateEvaluationContext() {
 
-        Method method = ReflectionUtils.findMethod(SampleMethods.class, "hello", String.class, Boolean.class);
-        EvaluationContext context = evaluator.createEvaluationContext(this, SampleMethods.class, method, new Object[]{
+        Method method = ReflectionUtils.findMethod(EvaluateMethods.class, "evaluate", String.class, Boolean.class);
+        EvaluationContext context = evaluator.createEvaluationContext(this, EvaluateMethods.class, method, new Object[]{
             "test", true});
 
         assertThat(context.lookupVariable("a0")).isEqualTo("test");
@@ -44,10 +44,10 @@ public class ExpressionEvaluatorTest {
     @Test
     public void shouldParseValidExpressions() {
 
-        Method method = ReflectionUtils.findMethod(SampleMethods.class, "hello", String.class, Boolean.class);
-        EvaluationContext context = evaluator.createEvaluationContext(this, SampleMethods.class, method, new Object[]{
+        Method method = ReflectionUtils.findMethod(EvaluateMethods.class, "evaluate", String.class, Boolean.class);
+        EvaluationContext context = evaluator.createEvaluationContext(this, EvaluateMethods.class, method, new Object[]{
             "test", true});
-        AnnotatedElementKey elementKey = new AnnotatedElementKey(method, SampleMethods.class);
+        AnnotatedElementKey elementKey = new AnnotatedElementKey(method, EvaluateMethods.class);
 
         assertThat(evaluator.condition("#foo", elementKey, context, String.class)).isEqualTo("test");
         assertThat(evaluator.condition("#flag", elementKey, context, Boolean.class)).isTrue();
@@ -57,16 +57,16 @@ public class ExpressionEvaluatorTest {
     @Test
     public void shouldParseBeanExpressions() {
         Method method = ReflectionUtils.findMethod(
-            SampleMethods.class,
-            "hello",
+            EvaluateMethods.class,
+            "evaluate",
             String.class,
             RoleAssignment.class
         );
         RoleAssignment roleAssignment = new RoleAssignment();
         roleAssignment.setRoleName("judge");
-        EvaluationContext context = evaluator.createEvaluationContext(this, SampleMethods.class, method, new Object[]{
+        EvaluationContext context = evaluator.createEvaluationContext(this, EvaluateMethods.class, method, new Object[]{
             "test", roleAssignment});
-        AnnotatedElementKey elementKey = new AnnotatedElementKey(method, SampleMethods.class);
+        AnnotatedElementKey elementKey = new AnnotatedElementKey(method, EvaluateMethods.class);
 
         assertThat(evaluator.condition("#roleAssignment.roleName",
                                        elementKey, context,
@@ -79,20 +79,20 @@ public class ExpressionEvaluatorTest {
     public void shouldThrowErrorWhenPropertyNotFound() {
 
         Method method = ReflectionUtils.findMethod(
-            SampleMethods.class,
-            "hello",
+            EvaluateMethods.class,
+            "evaluate",
             String.class,
             RoleAssignment.class
         );
         RoleAssignment roleAssignment = new RoleAssignment();
         roleAssignment.setRoleName("judge");
-        EvaluationContext context = evaluator.createEvaluationContext(this, SampleMethods.class, method, new Object[]{
+        EvaluationContext context = evaluator.createEvaluationContext(this, EvaluateMethods.class, method, new Object[]{
             "test", roleAssignment});
-        AnnotatedElementKey elementKey = new AnnotatedElementKey(method, SampleMethods.class);
+        AnnotatedElementKey elementKey = new AnnotatedElementKey(method, EvaluateMethods.class);
 
-        Exception exception = assertThrows(SpelEvaluationException.class, () -> {
-            evaluator.condition("#roleAssignment.unknownProperty", elementKey, context, String.class);
-        });
+        Exception exception = assertThrows(SpelEvaluationException.class, () ->
+            evaluator.condition("#roleAssignment.unknownProperty", elementKey, context, String.class)
+        );
 
         assertThat(exception.getMessage().contains("EL1008E: Property or field 'unknownProperty' cannot be found"))
             .toString();
@@ -101,12 +101,12 @@ public class ExpressionEvaluatorTest {
     }
 
     @SuppressWarnings("unused")
-    private static class SampleMethods {
+    private static class EvaluateMethods {
 
-        private void hello(String foo, Boolean flag) {
+        private void evaluate(String foo, Boolean flag) {
         }
 
-        private void hello(String foo, RoleAssignment roleAssignment) {
+        private void evaluate(String foo, RoleAssignment roleAssignment) {
         }
     }
 }

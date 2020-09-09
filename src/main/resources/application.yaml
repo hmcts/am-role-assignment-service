@@ -103,9 +103,6 @@ idam:
 testS2S:
   api:
     url: "/testS2SAuthorization"
-integrationTest:
-  api:
-    url: "/"
 
 feign:
   client:

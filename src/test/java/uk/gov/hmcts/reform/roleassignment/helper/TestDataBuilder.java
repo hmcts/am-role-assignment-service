@@ -143,7 +143,7 @@ public class TestDataBuilder {
         InputStream inputStream =
             TestDataBuilder.class.getClassLoader().getResourceAsStream("attributes.json");
         assert inputStream != null;
-        return new ObjectMapper().readValue(inputStream, new TypeReference<JsonNode>() {
+        return new ObjectMapper().readValue(inputStream, new TypeReference<>() {
         });
     }
 
@@ -151,7 +151,7 @@ public class TestDataBuilder {
         InputStream inputStream =
             TestDataBuilder.class.getClassLoader().getResourceAsStream("notes.json");
         assert inputStream != null;
-        return new ObjectMapper().readValue(inputStream, new TypeReference<JsonNode>() {
+        return new ObjectMapper().readValue(inputStream, new TypeReference<>() {
         });
     }
 
@@ -221,24 +221,6 @@ public class TestDataBuilder {
             .roleType(model.getRoleType().toString())
             .readOnly(model.isReadOnly())
             .build();
-    }
-
-    public static RoleAssignment convertRoleAssignmentEntityInModel(RoleAssignmentEntity roleAssignmentEntity) {
-
-        RoleAssignment existingRole = new RoleAssignment();
-        existingRole.setId(roleAssignmentEntity.getId());
-        existingRole.setActorId(roleAssignmentEntity.getActorId());
-        existingRole.setActorIdType(ActorIdType.valueOf(roleAssignmentEntity.getActorIdType()));
-        existingRole.setAttributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()));
-        existingRole.setBeginTime(roleAssignmentEntity.getBeginTime());
-        existingRole.setEndTime(roleAssignmentEntity.getEndTime());
-        existingRole.setCreated(roleAssignmentEntity.getCreated());
-        existingRole.setClassification(Classification.valueOf(roleAssignmentEntity.getClassification()));
-        existingRole.setGrantType(GrantType.valueOf(roleAssignmentEntity.getGrantType()));
-        existingRole.setReadOnly(roleAssignmentEntity.isReadOnly());
-        existingRole.setRoleName(roleAssignmentEntity.getRoleName());
-        existingRole.setRoleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()));
-        return existingRole;
     }
 
     public static RoleAssignment convertHistoryEntityInModel(HistoryEntity historyEntity) {

@@ -15,9 +15,9 @@ class EnvironmentVariableUtilsTest {
 
     @Test
     void getNonExistingRequiredVariable() {
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            EnvironmentVariableUtils.getRequiredVariable("A_DUMMY_VARIABLE");
-        });
+        Assertions.assertThrows(ResourceNotFoundException.class, () ->
+            EnvironmentVariableUtils.getRequiredVariable("A_DUMMY_VARIABLE")
+        );
     }
 
 }
