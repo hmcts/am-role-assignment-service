@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment;
+package uk.gov.hmcts.reform.roleassignment.config;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.MapConfig;
@@ -6,6 +6,7 @@ import com.hazelcast.config.MaxSizeConfig;
 import com.hazelcast.config.NetworkConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import uk.gov.hmcts.reform.roleassignment.ApplicationParams;
 
 @Configuration
 public class CachingConfiguration {
