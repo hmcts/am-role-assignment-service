@@ -15,13 +15,11 @@ import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -53,7 +51,7 @@ class IdamRepositoryTest {
 
     @Test
     void getUserInfo() {
-        UserInfo userInfo = new UserInfo("1", "2", "3", "4", "5", List.of("6","7"));
+        UserInfo userInfo = mock(UserInfo.class);
         when(idamApi.retrieveUserInfo(anyString())).thenReturn(userInfo);
         UserInfo returnedUserInfo = idamRepository.getUserInfo("Test");
         assertNotNull(returnedUserInfo);
