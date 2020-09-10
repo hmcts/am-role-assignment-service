@@ -80,13 +80,7 @@ public class CreateRoleAssignmentOrchestrator {
 
                 // return 201 when there is no existing records in db and incoming request also have
                 // empty requested roles.
-                if (existingAssignmentRequest.getRequestedRoles().isEmpty()
-                    && parsedAssignmentRequest.getRequestedRoles().isEmpty()) {
-                    request.setStatus(APPROVED);
-                    request.setLog("Request has been approved");
-                    requestEntity.setStatus(Status.APPROVED.toString());
-                    requestEntity.setLog(request.getLog());
-                    persistenceService.updateRequest(requestEntity);
+                if (isExistingAndIncomingRecordsEmpty(existingAssignmentRequest, parsedAssignmentRequest)) {
                     return ResponseEntity.status(HttpStatus.CREATED).body(parsedAssignmentRequest);
                 }
 
@@ -131,23 +125,41 @@ public class CreateRoleAssignmentOrchestrator {
             parseRequestService.removeCorrelationLog();
             return result;
         } finally {
-            if (createRoleAssignmentService.needToDeleteRoleAssignments != null) {
-                createRoleAssignmentService.needToDeleteRoleAssignments.clear();
-            }
-            if (createRoleAssignmentService.needToCreateRoleAssignments != null) {
-                createRoleAssignmentService.needToCreateRoleAssignments.clear();
-            }
-            if (createRoleAssignmentService.needToRetainRoleAssignments != null) {
-                createRoleAssignmentService.needToRetainRoleAssignments.clear();
-            }
-            if (!createRoleAssignmentService.emptyUUIds.isEmpty()) {
-                createRoleAssignmentService.emptyUUIds.clear();
-
-            }
+            flushGlobalVariables();
 
 
         }
 
+    }
+
+    private void flushGlobalVariables() {
+        if (createRoleAssignmentService.needToDeleteRoleAssignments != null) {
+            createRoleAssignmentService.needToDeleteRoleAssignments.clear();
+        }
+        if (createRoleAssignmentService.needToCreateRoleAssignments != null) {
+            createRoleAssignmentService.needToCreateRoleAssignments.clear();
+        }
+        if (createRoleAssignmentService.needToRetainRoleAssignments != null) {
+            createRoleAssignmentService.needToRetainRoleAssignments.clear();
+        }
+        if (!createRoleAssignmentService.emptyUUIds.isEmpty()) {
+            createRoleAssignmentService.emptyUUIds.clear();
+
+        }
+    }
+
+    private boolean isExistingAndIncomingRecordsEmpty(AssignmentRequest existingAssignmentRequest,
+                                         AssignmentRequest parsedAssignmentRequest) {
+        if (existingAssignmentRequest.getRequestedRoles().isEmpty()
+            && parsedAssignmentRequest.getRequestedRoles().isEmpty()) {
+            request.setStatus(APPROVED);
+            request.setLog("Request has been approved");
+            requestEntity.setStatus(Status.APPROVED.toString());
+            requestEntity.setLog(request.getLog());
+            persistenceService.updateRequest(requestEntity);
+            return true;
+        }
+        return false;
     }
 
     private void identifyAssignmentsToBeUpdated(AssignmentRequest existingAssignmentRequest,
