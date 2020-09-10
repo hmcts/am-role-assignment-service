@@ -7,8 +7,4 @@
     <cve>CVE-2018-1258</cve>
   </suppress>
 
-  <suppress> <!-- Temporary suppressions to allow continued development -->
-    <cve>CVE-2017-18640</cve>
-  </suppress>
-
 </suppressions>

@@ -20,7 +20,7 @@ public class IdamRoleService {
         this.idamRepository = idamRepository;
     }
 
-    // @Cacheable(value = "userRoles", key = "#userId")
+
     @SuppressWarnings("unchecked")
     public UserRoles getUserRoles(String userId) {
         LinkedHashMap<String, Object> userDetail;

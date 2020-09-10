@@ -388,9 +388,6 @@ dependencies {
   compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.19.Final'
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.8.RELEASE'
 
-  //HazelCast Dependency
-  compile group: 'com.hazelcast', name: 'hazelcast', version: '4.0-BETA-1'
-
 
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'

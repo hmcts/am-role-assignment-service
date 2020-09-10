@@ -137,13 +137,4 @@ user:
 
 
 
-role:
-  cache:
-    max:
-      size: 5000
 
-    eviction:
-      policy: ${ROLE_CACHE_EVICTION_POLICY:NONE}
-
-    max-idle:
-      secs: ${ROLE_CACHE_MAX_IDLE_SEC:259200}
