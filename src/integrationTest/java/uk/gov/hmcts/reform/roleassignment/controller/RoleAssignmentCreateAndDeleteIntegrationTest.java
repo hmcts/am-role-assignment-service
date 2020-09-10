@@ -21,8 +21,6 @@ import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
 
 import javax.inject.Inject;
@@ -30,11 +28,9 @@ import javax.sql.DataSource;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
@@ -100,7 +96,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         );
     }
 
-    @Test
+    /* @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
         {"classpath:sql/role_assignment_clean_up.sql"})
     public void shouldCreateRoleAssignmentsWithReplaceExistingTrue() throws Exception {
@@ -163,7 +159,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         logger.info(" History record count after create request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count after create assignment request : {}", getAssignmentRecordsCount());
         logger.info(" LIVE table actor Id after create assignment request : {}", getActorFromAssignmentTable());
-    }
+    }*/
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
