@@ -31,7 +31,8 @@ final class JUnitReporter1 {
     private final JUnitOptions junitOptions;
     private final EventBus bus;
     private final Map<StepLocation, Collection<String>> snippetsPerStep = new TreeMap<>();
-    private final EventHandler<SnippetsSuggestedEvent> snippetsSuggestedEventEventHandler = this::handleSnippetSuggested;
+    private final EventHandler<SnippetsSuggestedEvent> snippetsSuggestedEventEventHandler =
+    this::handleSnippetSuggested;
     private List<Throwable> stepErrors;
     private TestNotifier stepNotifier;
     private final EventHandler<TestStepFinished> testStepFinishedHandler = this::handleTestStepFinished;

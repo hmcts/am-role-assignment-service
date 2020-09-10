@@ -122,6 +122,12 @@ task functional(type: Test, description: 'Runs the functional tests.', group: 'V
   classpath = sourceSets.functionalTest.runtimeClasspath
   doFirst {
     generateCucumberReports.enabled = true
+    javaexec {
+      main = "uk.gov.hmcts.reform.roleassignment.befta.RoleAssignmentBeftaMain"
+      classpath += configurations.cucumberRuntime + sourceSets.functionalTest.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
+      args = ['--plugin', "json:${projectDir}/target/cucumber.json", '--tags', 'not @Ignore', '--glue',
+              'uk.gov.hmcts.befta.player', 'src/functionalTest/resources/features/']
+    }
   }
 }
 
@@ -369,7 +375,7 @@ dependencies {
     exclude group: 'junit', module: 'junit'
   }
   //testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '4.1.0-prerelease.1'
-  compile fileTree(dir: 'lib', include: ['befta-fw-5.2.0-SNAPSHOT.jar'])
+  compile fileTree(dir: 'lib', include: ['befta-fw-5.9.0.jar'])
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.5.RELEASE'
 
   testCompile(group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber) {

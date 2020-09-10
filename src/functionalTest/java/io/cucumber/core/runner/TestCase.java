@@ -1,3 +1,4 @@
+/*
 package io.cucumber.core.runner;
 
 import io.cucumber.core.eventbus.EventBus;
@@ -60,10 +61,12 @@ final class TestCase implements io.cucumber.plugin.event.TestCase {
         Status status = Status.valueOf(state.getStatus().name());
 
         Throwable error = state.getError();
-     /*   if (status.equals(Status.SKIPPED)) {
+     */
+/*   if (status.equals(Status.SKIPPED)) {
             status = Status.SKIPPED;
             error = null;
-        }*/
+        }*//*
+
         Result result = new Result(status, duration, error);
         bus.send(new TestCaseFinished(stop, this, result));
 
@@ -121,3 +124,4 @@ final class TestCase implements io.cucumber.plugin.event.TestCase {
     }
 
 }
+*/

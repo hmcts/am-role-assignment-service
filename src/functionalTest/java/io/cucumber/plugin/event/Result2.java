@@ -1,3 +1,4 @@
+/*
 package io.cucumber.plugin.event;
 
 import org.apiguardian.api.API;
@@ -15,13 +16,15 @@ public final class Result2 {
     private final Duration duration;
     private final Throwable error;
 
-    /**
+    */
+/**
      * The result of a step or scenario
      *
      * @param status   status of the step or scenario
      * @param duration the duration
      * @param error    the error that caused the failure if any
-     */
+     *//*
+
     public Result2(Status status, Duration duration, Throwable error) {
         if (error instanceof AssumptionViolatedException) {
             error = null;
@@ -40,13 +43,15 @@ public final class Result2 {
         return duration;
     }
 
-    /**
+    */
+/**
      * Returns the error encountered while executing a step or scenario. Will
      * return null when passed. May return null when undefined in case of the
      * empty scenario or when skipped due to a failing prior step.
      *
      * @return the error encountered while executing a step or scenario.
-     */
+     *//*
+
     public Throwable getError() {
         return error;
     }
@@ -75,3 +80,4 @@ public final class Result2 {
         return Objects.hash(status, duration, error);
     }
 }
+*/
