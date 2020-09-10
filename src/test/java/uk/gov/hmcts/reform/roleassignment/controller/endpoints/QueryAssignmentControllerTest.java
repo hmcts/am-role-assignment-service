@@ -77,7 +77,7 @@ class QueryAssignmentControllerTest {
     }
 
     @Test
-    void shouldReturn404IfNoAssignmentFoundForGetRoleAssignmentByActorIdAndCaseId() throws Exception {
+    void shouldReturn404IfNoAssignmentFoundForGetRoleAssignmentByActorIdAndCaseId() {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         String caseId = "1234567890123456";
         ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -89,4 +89,11 @@ class QueryAssignmentControllerTest {
 
     }
 
+    @Test
+    void shouldGetIdLdDemo() {
+        ResponseEntity<Object> response = sut.getIdLdDemo();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Launch Darkly flag check is successful for the endpoint", response.getBody().toString());
+
+    }
 }
