@@ -5,11 +5,14 @@ import feign.jackson.JacksonEncoder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
@@ -22,10 +25,12 @@ import java.time.Clock;
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableCircuitBreaker
 @EnableCaching
+@EnableScheduling
 @EnableFeignClients(basePackages = {
     "uk.gov.hmcts.reform.roleassignment"}, basePackageClasses = {IdamApi.class, ServiceAuthorisationApi.class})
 
 public class RoleAssignmentApplication {
+
 
     public static void main(final String[] args) {
         SpringApplication.run(RoleAssignmentApplication.class);
@@ -55,5 +60,11 @@ public class RoleAssignmentApplication {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+
+    @CacheEvict(allEntries = true, cacheNames = "token")
+    @Scheduled(fixedDelayString = "${token.cache.ttl.secs}")
+    public void cacheEvict() {
     }
 }
