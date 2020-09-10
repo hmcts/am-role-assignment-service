@@ -23,7 +23,7 @@ public class SecurityEndpointFilter extends OncePerRequestFilter {
             if (throwable instanceof FeignException.FeignClientException) {
                 FeignException.FeignClientException feignClientException =
                     (FeignException.FeignClientException) throwable;
-                response.sendError(feignClientException.status(), feignClientException.getMessage());
+                response.setStatus(feignClientException.status());
                 return;
             }
             throw e;
