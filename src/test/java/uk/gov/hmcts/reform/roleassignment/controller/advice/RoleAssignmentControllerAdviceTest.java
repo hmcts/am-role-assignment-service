@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.WelcomeController;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -85,6 +86,17 @@ class RoleAssignmentControllerAdviceTest {
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         assertEquals(HttpStatus.NOT_FOUND.value(), responseEntity.getStatusCodeValue());
     }
+
+    @Test
+    void handleUnprocessableEntityException() {
+        UnprocessableEntityException unprocessableEntityException =
+            mock(UnprocessableEntityException.class);
+        ResponseEntity<Object> responseEntity =
+            csda.handleUnProcessableEntityExcepton(servletRequestMock,unprocessableEntityException);
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), responseEntity.getStatusCodeValue());
+    }
+
 
     @Test
     void handleHttpMessageConversionException() {
