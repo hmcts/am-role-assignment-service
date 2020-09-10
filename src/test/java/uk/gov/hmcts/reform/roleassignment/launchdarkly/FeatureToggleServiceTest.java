@@ -51,4 +51,11 @@ public class FeatureToggleServiceTest {
         featureToggleService = new FeatureToggleService(ldClient, "user");
         Assertions.assertTrue(featureToggleService.isValidFlag("serviceName"));
     }
+
+    @Test
+    public void isValidFlagReturnsFalse() {
+        when(ldClient.isFlagKnown(any())).thenReturn(false);
+        featureToggleService = new FeatureToggleService(ldClient, "user");
+        Assertions.assertFalse(featureToggleService.isValidFlag("serviceName"));
+    }
 }
