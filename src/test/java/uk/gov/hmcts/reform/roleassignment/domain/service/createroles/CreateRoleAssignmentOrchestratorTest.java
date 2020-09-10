@@ -105,6 +105,7 @@ class CreateRoleAssignmentOrchestratorTest {
         //assert values
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(result.getRequest().getId());
         verifyNUmberOfInvocations();
         verify(parseRequestService, times(1)).removeCorrelationLog();
     }
@@ -350,7 +351,6 @@ class CreateRoleAssignmentOrchestratorTest {
     @Test
     void shouldReturn201WhenExistingAndIncomingRolesEmpty() throws IOException, ParseException {
 
-
         prepareRequestWhenReplaceExistingTrue();
         assignmentRequest.setRequestedRoles(Collections.emptyList());
 
@@ -366,10 +366,18 @@ class CreateRoleAssignmentOrchestratorTest {
 
         //actual method call
         ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
+        AssignmentRequest assignmentRequest = (AssignmentRequest) response.getBody();
 
         //assert values
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
+        assertEquals(APPROVED, assignmentRequest.getRequest().getStatus());
+        assertEquals("Request has been approved", assignmentRequest.getRequest().getLog());
+
+        assertEquals(APPROVED.toString(), requestEntity.getStatus());
+        assertEquals("Request has been approved", requestEntity.getLog());
+
         verify(parseRequestService, times(1))
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
@@ -392,9 +400,9 @@ class CreateRoleAssignmentOrchestratorTest {
 
     private void prepareRequestWhenReplaceExistingTrue() throws IOException {
         assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.APPROVED,
-                                                                   false
+                                                                   true
         );
-        assignmentRequest.getRequest().setReplaceExisting(true);
+        //assignmentRequest.getRequest().setReplaceExisting(true);
     }
 
 
