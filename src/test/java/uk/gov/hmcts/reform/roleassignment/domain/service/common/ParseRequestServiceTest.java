@@ -68,35 +68,35 @@ class ParseRequestServiceTest {
         String assignmentId = "you_cant_see_this_malformed_id";
         UUID userId = UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c");
         when(securityUtilsMock.getUserId()).thenReturn(userId.toString());
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.prepareDeleteRequest(null, null, null, assignmentId);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.prepareDeleteRequest(null, null, null, assignmentId)
+        );
     }
 
     @Test
     void shouldReturn400IfRoleTypeIsNotCaseForGetRoleAssignmentByActorIdAndCaseId() throws Exception {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         String roleType = "SomeFakeCaseType";
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.validateGetAssignmentsByActorIdAndCaseId(actorId, null, roleType);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.validateGetAssignmentsByActorIdAndCaseId(actorId, null, roleType)
+        );
     }
 
     @Test
     void getRoleAssignmentByActorAndCaseId_shouldThrowBadRequestWhenActorAndCaseIdIsEmpty() throws Exception {
 
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.validateGetAssignmentsByActorIdAndCaseId(null, null, ROLE_TYPE);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.validateGetAssignmentsByActorIdAndCaseId(null, null, ROLE_TYPE)
+        );
     }
 
     @Test
     void getRoleAssignmentByActorAndCaseId_shouldThrowBadRequestWhenActorIsNotUUID() throws Exception {
 
         String actorId = "a_bad_uuid";
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.validateGetAssignmentsByActorIdAndCaseId(actorId, null, ROLE_TYPE);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.validateGetAssignmentsByActorIdAndCaseId(actorId, null, ROLE_TYPE)
+        );
     }
 
     @Test
@@ -180,20 +180,20 @@ class ParseRequestServiceTest {
         when(correlationInterceptorUtilMock.preHandle(
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
 
-        Assertions.assertThrows(BadRequestException.class, () -> {
+        Assertions.assertThrows(BadRequestException.class, () ->
             sut.prepareDeleteRequest("p2", "p2",
                                      "21334a2b-79ce-44eb-9168-2d49a744be9d",
-                                     "21334a2b-79ce-44eb-9168-2d49a744be9d");
-        });
+                                     "21334a2b-79ce-44eb-9168-2d49a744be9d")
+        );
     }
 
     @Test
     void prepareDeleteRequest_InvalidUuid() throws Exception {
-        Assertions.assertThrows(BadRequestException.class, () -> {
+        Assertions.assertThrows(BadRequestException.class, () ->
             sut.prepareDeleteRequest("p2", "p2",
                                      "21334a2b-79ce-44eb-9168-2d49a744be9",
-                                     "21334a2b-79ce-44eb-9168-2d49a744be9d");
-        });
+                                     "21334a2b-79ce-44eb-9168-2d49a744be9d")
+        );
     }
 
     @Test
@@ -253,8 +253,8 @@ class ParseRequestServiceTest {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, Status.LIVE, true);
         assignmentRequest.getRequest().setProcess("");
 
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.parseRequest(assignmentRequest, RequestType.CREATE);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.parseRequest(assignmentRequest, RequestType.CREATE)
+        );
     }
 }

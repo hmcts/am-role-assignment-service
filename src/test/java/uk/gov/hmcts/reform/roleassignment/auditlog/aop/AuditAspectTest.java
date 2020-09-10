@@ -64,7 +64,7 @@ public class AuditAspectTest {
 
     @Test
     public void shouldPopulateUnProcessEntity() {
-        ResponseEntity result = controllerProxy.unProcessEntity(PROCESS, REFERENCE, ACTOR_ID, ROLE_NAME);
+        ResponseEntity<?> result = controllerProxy.unProcessEntity(PROCESS, REFERENCE, ACTOR_ID, ROLE_NAME);
         assertThat(result).isNotNull();
         AuditContext context = AuditContextHolder.getAuditContext();
         assertThat(context).isNull();
@@ -99,7 +99,7 @@ public class AuditAspectTest {
             process = "#process",
             reference = "#reference",
             actorId = "#actorId")
-        public ResponseEntity unProcessEntity(String process, String reference, String actorId, String roleName) {
+        public ResponseEntity<?> unProcessEntity(String process, String reference, String actorId, String roleName) {
             RoleAssignment roleAssignment = RoleAssignment.builder()
                 .id(UUID.fromString(ID))
                 .roleName(roleName).build();
