@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.oidc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -82,6 +83,7 @@ public class IdamRepository {
         return headers;
     }
 
+    @Cacheable(value = "token")
     public String getManageUserToken() {
         TokenRequest tokenRequest = new TokenRequest(
             oauth2Configuration.getClientId(),

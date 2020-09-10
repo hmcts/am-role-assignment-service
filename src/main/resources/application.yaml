@@ -130,10 +130,10 @@ audit:
       statues: 404
     enabled: true
 
-user:
+token:
   cache:
     ttl:
-      secs: 1800
+      secs: 300000
 
 
 
