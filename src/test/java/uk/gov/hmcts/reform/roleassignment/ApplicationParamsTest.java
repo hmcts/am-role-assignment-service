@@ -32,5 +32,14 @@ class ApplicationParamsTest {
 
     }
 
+    @Test
+    void shouldCheckWhenAuditLogNotEnabled() {
+        ReflectionTestUtils.setField(applicationParams, "auditLogEnabled", false);
+        Boolean result = applicationParams.isAuditLogEnabled();
+        assertNotNull(result);
+        assertThat(result).isEqualTo(Boolean.FALSE);
+
+    }
+
 
 }

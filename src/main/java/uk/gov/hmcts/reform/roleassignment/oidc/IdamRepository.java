@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
-import uk.gov.hmcts.reform.idam.client.IdamClient;
 import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
 import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
@@ -29,7 +28,6 @@ import static uk.gov.hmcts.reform.roleassignment.util.Constants.BEARER;
 @Slf4j
 public class IdamRepository {
 
-    private final IdamClient idamClient;
     private IdamApi idamApi;
     private OIdcAdminConfiguration oidcAdminConfiguration;
     private OAuth2Configuration oauth2Configuration;
@@ -38,11 +36,10 @@ public class IdamRepository {
     protected String idamUrl;
 
     @Autowired
-    public IdamRepository(IdamClient idamClient,
-                          IdamApi idamApi,
+    public IdamRepository(IdamApi idamApi,
                           OIdcAdminConfiguration oidcAdminConfiguration,
-                          OAuth2Configuration oauth2Configuration, RestTemplate restTemplate) {
-        this.idamClient = idamClient;
+                          OAuth2Configuration oauth2Configuration,
+                          RestTemplate restTemplate) {
         this.idamApi = idamApi;
         this.oidcAdminConfiguration = oidcAdminConfiguration;
         this.oauth2Configuration = oauth2Configuration;
@@ -50,11 +47,11 @@ public class IdamRepository {
     }
 
     public UserInfo getUserInfo(String jwtToken) {
-        return idamClient.getUserInfo(BEARER + jwtToken);
+        return idamApi.retrieveUserInfo(BEARER + jwtToken);
     }
 
     public UserDetails getUserByUserId(String jwtToken, String userId) {
-        return idamClient.getUserByUserId(BEARER + jwtToken, userId);
+        return idamApi.getUserByUserId(BEARER + jwtToken, userId);
     }
 
     public ResponseEntity<List<Object>> searchUserByUserId(String jwtToken, String userId) {
