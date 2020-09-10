@@ -52,7 +52,7 @@
           }
         },
         "hystrix" : {
-          "status" : "UP"
+          "status" : "[[ANYTHING_PRESENT]]"
         },
         "livenessState" : {
           "status" : "UP"
