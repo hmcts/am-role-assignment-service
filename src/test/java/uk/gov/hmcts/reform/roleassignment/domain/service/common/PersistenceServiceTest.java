@@ -262,6 +262,17 @@ class PersistenceServiceTest {
 
         verify(persistenceUtil, times(1))
             .convertRoleAssignmentToEntity(any(RoleAssignment.class));
+        verify(roleAssignmentRepository, times(1)).delete(any(RoleAssignmentEntity.class));
+    }
+
+    @Test
+    void deleteRoleAssignmentById() throws IOException {
+        AssignmentRequest assignmentRequest = TestDataBuilder
+            .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
+
+        sut.deleteRoleAssignmentByActorId(assignmentRequest.getRequest().getId());
+
+        verify(roleAssignmentRepository, times(1)).deleteByActorId(any(UUID.class));
     }
 
     @Test
