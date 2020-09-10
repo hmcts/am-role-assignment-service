@@ -8,7 +8,7 @@
   </suppress>
 
   <suppress> <!-- Temporary suppressions to allow continued development -->
-    <cve>CVE-2016-10750</cve>
     <cve>CVE-2017-18640</cve>
   </suppress>
+
 </suppressions>
