@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestReso
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.GET_ASSIGNMENTS_BY_ACTOR;
@@ -94,7 +95,7 @@ public class GetAssignmentController {
             response = Object.class
         )
     })
-    public ResponseEntity<Object> getListOfRoles() {
+    public ResponseEntity<Object> getListOfRoles() throws IOException {
         JsonNode rootNode = retrieveRoleAssignmentService.getListOfRoles();
         return ResponseEntity.status(HttpStatus.OK).body(rootNode);
     }
