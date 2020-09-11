@@ -3,10 +3,15 @@ package uk.gov.hmcts.reform.roleassignment.oidc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
@@ -15,12 +20,21 @@ import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -37,16 +51,17 @@ class IdamRepositoryTest {
     @Mock
     private OAuth2Configuration oauth2Configuration = mock(OAuth2Configuration.class);
 
-    @Mock
-    private RestTemplate restTemplate = mock(RestTemplate.class);
 
-    @InjectMocks
-    IdamRepository idamRepository = new IdamRepository(idamApi, oidcAdminConfiguration,
-                                                       oauth2Configuration, restTemplate);
+    private RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
+
+    IdamRepository idamRepository;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
+        idamRepository = new IdamRepository(idamApi, oidcAdminConfiguration,
+                                            oauth2Configuration, restTemplate
+        );
     }
 
     @Test
@@ -100,6 +115,38 @@ class IdamRepositoryTest {
             .exchange(anyString(), any(), any(), (Class<?>) any(Class.class));
 
         assertThrows(NullPointerException.class, () -> idamRepository.searchUserByUserId(token, userId));
+
+
+    }
+
+    @Test
+    void shouldReturnUserRoles() {
+
+        String token = "eyJhbGciOiJIUzUxMiJ9.Eim7hdYejtBbWXnqCf1gntbYpWHRX8BRzm4zIC_oszmC3D5QlNmkIetVPcMINg";
+        String userId = "4dc7dd3c-3fb5-4611-bbde-5101a97681e0";
+
+        Map<String, Object> mapRoles = new HashMap<>();
+
+        mapRoles.put("userRoles", Arrays.asList("caseworker", "am_import"));
+
+        List<Object> list = new ArrayList<>();
+        list.add(mapRoles);
+
+        ResponseEntity<List<Object>> responseEntity = new ResponseEntity<List<Object>>(HttpStatus.OK);
+
+
+        doReturn(responseEntity)
+            .when(restTemplate)
+            .exchange(
+                isA(String.class),
+                eq(HttpMethod.GET),
+                isA(HttpEntity.class),
+                (ParameterizedTypeReference<?>) any(ParameterizedTypeReference.class)
+            );
+
+        ResponseEntity<List<Object>> actualResponse = idamRepository.searchUserByUserId(token, userId);
+        assertNotNull(actualResponse);
+        assertEquals(actualResponse.getStatusCode(), HttpStatus.OK);
 
 
     }

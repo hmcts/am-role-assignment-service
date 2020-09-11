@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
@@ -56,9 +55,9 @@ public class IdamRepository {
 
     public ResponseEntity<List<Object>> searchUserByUserId(String jwtToken, String userId) {
         try {
-
+            String url = String.format("%s/api/v1/users?query=%s", idamUrl, userId);
             ResponseEntity<List<Object>> response = restTemplate.exchange(
-                String.format("%s/api/v1/users?query=%s", idamUrl, userId),
+                url,
                 GET,
                 new HttpEntity<>(getHttpHeaders(jwtToken)),
                 new ParameterizedTypeReference<List<Object>>() {
@@ -67,7 +66,7 @@ public class IdamRepository {
             if (HttpStatus.OK.equals(response.getStatusCode())) {
                 return response;
             }
-        } catch (HttpClientErrorException exception) {
+        } catch (Exception exception) {
             log.info(exception.getMessage());
             throw exception;
         }
