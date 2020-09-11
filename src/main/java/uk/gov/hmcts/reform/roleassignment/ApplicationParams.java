@@ -16,6 +16,7 @@ public class ApplicationParams {
     @Value("#{'${audit.log.ignore.statues}'.split(',')}")
     private List<Integer> auditLogIgnoreStatuses;
 
+
     public boolean isAuditLogEnabled() {
         return auditLogEnabled;
     }
@@ -23,4 +24,6 @@ public class ApplicationParams {
     public List<Integer> getAuditLogIgnoreStatuses() {
         return auditLogIgnoreStatuses;
     }
+
+
 }

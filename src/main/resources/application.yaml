@@ -127,5 +127,14 @@ launchdarkly:
 audit:
   log:
     ignore:
-       statues: 404
+      statues: 404
     enabled: true
+
+token:
+  cache:
+    ttl:
+      secs: 900000
+
+
+
+

@@ -1,17 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -21,13 +9,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ServiceException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+@Slf4j
 @Named
 @Singleton
 public class JacksonUtils {
@@ -96,17 +98,19 @@ public class JacksonUtils {
 
     static {
 
-        try (InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream("role.json")) {
-            CollectionType listType = MAPPER.getTypeFactory().constructCollectionType(
-                ArrayList.class,
-                Role.class
-            );
-            List<Role> allRoles = MAPPER.readValue(input, listType);
-            configuredRoles.put("roles", allRoles);
-
-        } catch (Exception e) {
-            throw new ServiceException("Service Exception", e);
+        InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream("role.json");
+        CollectionType listType = MAPPER.getTypeFactory().constructCollectionType(
+            ArrayList.class,
+            Role.class
+        );
+        List<Role> allRoles = null;
+        try {
+            allRoles = MAPPER.readValue(input, listType);
+        } catch (IOException e) {
+            log.error(e.getMessage());
         }
+        configuredRoles.put("roles", allRoles);
+
 
     }
 }

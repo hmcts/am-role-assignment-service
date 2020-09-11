@@ -177,7 +177,7 @@ public class RoleAssignmentControllerAdvice {
             exeception,
             HttpStatus.INTERNAL_SERVER_ERROR,
             UNKNOWN_EXCEPTION.getErrorCode(),
-            UNKNOWN_EXCEPTION.getErrorMessage()
+            UNKNOWN_EXCEPTION.getErrorMessage() + " :::" + exeception.getMessage()
         );
     }
 

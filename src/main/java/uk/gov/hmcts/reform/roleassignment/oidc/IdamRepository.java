@@ -3,12 +3,13 @@ package uk.gov.hmcts.reform.roleassignment.oidc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
@@ -16,6 +17,8 @@ import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
+
+import java.util.List;
 
 import static org.springframework.http.HttpMethod.GET;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.BEARER;
@@ -50,24 +53,24 @@ public class IdamRepository {
         return idamApi.getUserByUserId(BEARER + jwtToken, userId);
     }
 
-    public ResponseEntity<Object> searchUserByUserId(String jwtToken, String userId) {
-        ResponseEntity<Object> responseResult = new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<List<Object>> searchUserByUserId(String jwtToken, String userId) {
         try {
-            final HttpEntity<?> requestEntity = new HttpEntity<>(getHttpHeaders(jwtToken));
-            String searchUserByUserIdUrl = String.format("%s/api/v1/users?query=%s", idamUrl, userId);
-            ResponseEntity<Object> response = restTemplate.exchange(
-                searchUserByUserIdUrl,
+            String url = String.format("%s/api/v1/users?query=%s", idamUrl, userId);
+            ResponseEntity<List<Object>> response = restTemplate.exchange(
+                url,
                 GET,
-                requestEntity,
-                Object.class
+                new HttpEntity<>(getHttpHeaders(jwtToken)),
+                new ParameterizedTypeReference<List<Object>>() {
+                }
             );
             if (HttpStatus.OK.equals(response.getStatusCode())) {
-                responseResult = response;
+                return response;
             }
-        } catch (HttpClientErrorException exception) {
+        } catch (Exception exception) {
             log.info(exception.getMessage());
+            throw exception;
         }
-        return responseResult;
+        return null;
     }
 
     private static HttpHeaders getHttpHeaders(String jwtToken) {
@@ -76,6 +79,7 @@ public class IdamRepository {
         return headers;
     }
 
+    @Cacheable(value = "token")
     public String getManageUserToken() {
         TokenRequest tokenRequest = new TokenRequest(
             oauth2Configuration.getClientId(),
