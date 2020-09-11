@@ -7,6 +7,78 @@
     },
     "interactions": [
         {
+            "description": "Provider returns user info to AM - ROLE ASSIGNMENT API",
+            "request": {
+                "method": "GET",
+                "path": "/o/userinfo",
+                "headers": {
+                    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre"
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "uid": "1181-1249-4206-9527",
+                    "roles": [
+                        "caseworker"
+                    ],
+                    "given_name": "am_pact_user",
+                    "family_name": "Jar"
+                },
+                "matchingRules": {
+                    "body": {
+                        "$.uid": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.given_name": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.family_name": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.roles[0]": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        }
+                    }
+                }
+            },
+            "providerStates": [
+                {
+                    "name": "I have obtained an access_token as a user",
+                    "params": {
+                        "client_id": "pact",
+                        "client_secret": "pactsecret",
+                        "password": "Pa55word11",
+                        "scope": "openid profile roles",
+                        "username": "am_pact_user@mailtest.gov.uk"
+                    }
+                }
+            ]
+        },
+        {
             "description": "Provider takes user/pwd and returns Access Token to AM - ROLE ASSIGNMENT API",
             "request": {
                 "method": "POST",
