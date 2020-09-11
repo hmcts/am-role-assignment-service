@@ -447,7 +447,7 @@ dependencies {
   smokeTestCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   smokeTestCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   smokeTestCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
-  smokeTestCompile group: 'commons-io', name: 'commons-io', version: '2.7'
+  smokeTestCompile group: 'commons-io', name: 'commons-io', version: '2.8.0'
   // AM-467-Serenity report for Integration test
   integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
