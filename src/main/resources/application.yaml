@@ -133,7 +133,7 @@ audit:
 token:
   cache:
     ttl:
-      secs: 300000
+      secs: 900000
 
 
 
