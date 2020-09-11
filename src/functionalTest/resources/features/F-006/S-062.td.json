@@ -18,7 +18,7 @@
       "arrayInMap" : [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${[scenarioContext][childContexts][F-006_CreationDataForRoleAssignment][testData][request][body][requestedRoles][1][actorId]}",
+          "actorId": "${}${[scenarioContext][childContexts][F-006_CreationDataForRoleAssignment][testData][request][body][requestedRoles][1][actorId]}",
           "attributes" : {
             "caseId" : "${[scenarioContext][testData][request][queryParams][caseId]}"
           }
