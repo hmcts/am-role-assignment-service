@@ -51,6 +51,16 @@ def vaultOverrides = [
 ]
 
 withNightlyPipeline(type, product, component) {
+  if (env.BRANCH_NAME.startsWith("PR")) {
+    env.LAUNCH_DARKLY_ENV = "pr"
+  }
+  else if (env.BRANCH_NAME == 'master') {
+    env.LAUNCH_DARKLY_ENV = "aat"
+  }
+  else {
+    env.LAUNCH_DARKLY_ENV = env.BRANCH_NAME
+  }
+
   enableSlackNotifications('#am-role-assignment-service-builds')
 
   env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
