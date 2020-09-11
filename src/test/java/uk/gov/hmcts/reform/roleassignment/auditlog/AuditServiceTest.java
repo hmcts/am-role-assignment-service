@@ -82,6 +82,14 @@ class AuditServiceTest {
         assertThat(captor.getValue().getHttpStatus(), is(equalTo(200)));
         assertThat(captor.getValue().getHttpMethod(), is(equalTo(HTTP_METHOD)));
         assertThat(captor.getValue().getPath(), is(equalTo((PATH))));
+        assertThat(captor.getValue().getActorId(), is(equalTo(auditContext.getActorId())));
+        assertThat(captor.getValue().getProcess(), is(equalTo(auditContext.getProcess())));
+        assertThat(captor.getValue().getReference(), is(equalTo(auditContext.getReference())));
+        assertThat(captor.getValue().getAssignerId(), is(equalTo(auditContext.getAssignerId())));
+        assertThat(captor.getValue().getAssignmentId(), is(equalTo(auditContext.getAssignmentId())));
+        assertThat(captor.getValue().getRoleName(), is(equalTo(auditContext.getRoleName())));
+        assertThat(captor.getValue().getCorrelationId(), is(equalTo(auditContext.getCorrelationId())));
+        assertThat(captor.getValue().getAuthenticatedUserId(), is(equalTo(securityUtils.getUserId())));
 
         assertThat(captor.getValue().getInvokingService(), is(equalTo((SERVICE_NAME))));
         assertThat(captor.getValue().getOperationType(), is(equalTo(AuditOperationType.CREATE_ASSIGNMENTS.getLabel())));
