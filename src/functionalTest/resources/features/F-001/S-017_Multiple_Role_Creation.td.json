@@ -11,17 +11,11 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "123e4567-e89b-42d3-a456-000000000001",
-          "roleType": "ORGANISATION",
-          "grantType": "STANDARD"
+          "actorId": "${[scenarioContext][customValues][generateUUID]}"
         },
         {
           "_extends_": "RequestedRole",
-          "actorId": "123e4567-e89b-42d3-a456-000000000002"
-        },
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "123e4567-e89b-42d3-a456-000000000003"
+          "actorId": "${[scenarioContext][customValues][generateUUID]}"
         }
       ]
     }
@@ -36,19 +30,12 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "123e4567-e89b-42d3-a456-000000000001",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "roleType": "ORGANISATION",
-            "grantType": "STANDARD"
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "123e4567-e89b-42d3-a456-000000000002",
+            "actorId": "${}${[scenarioContext][testData][request][body][requestedRoles][0][actorId]}",
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
           },
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "123e4567-e89b-42d3-a456-000000000003",
+            "actorId": "${}${[scenarioContext][testData][request][body][requestedRoles][1][actorId]}",
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
           }
         ]
