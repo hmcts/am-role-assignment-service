@@ -8,7 +8,7 @@
     "requestType": "CREATE",
     "status": "APPROVED",
     "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
-    "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+    "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
     "replaceExisting": false,
     "created": "[[ANYTHING_PRESENT]]",
     "log": "[[ANYTHING_PRESENT]]"
