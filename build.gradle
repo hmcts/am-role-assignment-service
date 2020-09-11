@@ -215,9 +215,9 @@ pitest {
   targetClasses = ['uk.gov.hmcts.reform.*']
   excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
                      'uk.gov.hmcts.reform.roleassignment.config.*',
-                     'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot']
+                     'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot',
+                     'uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType']
   excludedMethods = ['getListOfRoles', 'removeCorrelationLog', 'getExitCode', 'validateDateTime', 'requestInterceptor']
-  excludedTestClasses = ['uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditAspectTest']
   threads = 15
   outputFormats = ['XML', 'HTML']
   timestampedReports = true
