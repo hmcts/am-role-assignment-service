@@ -52,7 +52,10 @@
           }
         },
         "hystrix" : {
-          "status" : "[[ANYTHING_PRESENT]]"
+          "status" : "[[ANYTHING_PRESENT]]",
+          "details" : {
+            "openCircuitBreakers" : "[[ANYTHING_PRESENT]]"
+          }
         },
         "livenessState" : {
           "status" : "UP"
