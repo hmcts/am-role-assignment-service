@@ -32,8 +32,8 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "grantType": "CHALLENGED",
             "attributes": {
               "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
@@ -41,8 +41,8 @@
           },
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "grantType": "CHALLENGED",
             "attributes": {
               "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
