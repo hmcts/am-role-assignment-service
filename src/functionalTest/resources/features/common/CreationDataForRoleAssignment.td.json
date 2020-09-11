@@ -19,14 +19,14 @@
     "body": {
       "roleAssignmentResponse": {
         "roleRequest": {
-          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "replaceExisting": true
         },
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
           }
         ]
       }

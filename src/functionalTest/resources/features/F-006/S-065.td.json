@@ -19,14 +19,14 @@
       "arrayInMap" : [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${[scenarioContext][childContexts][S-065_CreationDataForRoleAssignment][testData][request][body][requestedRoles][0][actorId]}",
+          "actorId": "${}${[scenarioContext][childContexts][S-065_CreationDataForRoleAssignment][testData][request][body][requestedRoles][0][actorId]}",
           "attributes" : {
             "caseId" : "${[scenarioContext][testData][request][queryParams][caseId]}"
           }
         },
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${[scenarioContext][childContexts][S-065_CreationDataForRoleAssignment][testData][request][body][requestedRoles][1][actorId]}",
+          "actorId": "${}${[scenarioContext][childContexts][S-065_CreationDataForRoleAssignment][testData][request][body][requestedRoles][1][actorId]}",
           "attributes" : {
             "caseId" : "${[scenarioContext][testData][request][queryParams][caseId]}"
           }
