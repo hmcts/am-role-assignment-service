@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -123,7 +124,7 @@ class RetrieveRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    void getListOfRoles() {
+    void getListOfRoles() throws IOException {
         JsonNode roles = sut.getListOfRoles();
         assertNotNull(roles);
         assertEquals(2, roles.size());

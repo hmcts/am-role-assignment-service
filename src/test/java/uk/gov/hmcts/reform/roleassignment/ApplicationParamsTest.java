@@ -14,7 +14,7 @@ class ApplicationParamsTest {
     private ApplicationParams applicationParams = new ApplicationParams();
 
     @Test
-     void shouldGetAuditLogEnabled() {
+    void shouldGetAuditLogEnabled() {
         List<Integer> statusCodes = Arrays.asList(404);
         ReflectionTestUtils.setField(applicationParams, "auditLogIgnoreStatuses", statusCodes);
         List<Integer> result = applicationParams.getAuditLogIgnoreStatuses();
@@ -24,7 +24,7 @@ class ApplicationParamsTest {
     }
 
     @Test
-     void shouldCheckAuditLogEnabled() {
+    void shouldCheckAuditLogEnabled() {
         ReflectionTestUtils.setField(applicationParams, "auditLogEnabled", true);
         Boolean result = applicationParams.isAuditLogEnabled();
         assertNotNull(result);
@@ -40,4 +40,6 @@ class ApplicationParamsTest {
         assertThat(result).isEqualTo(Boolean.FALSE);
 
     }
+
+
 }
