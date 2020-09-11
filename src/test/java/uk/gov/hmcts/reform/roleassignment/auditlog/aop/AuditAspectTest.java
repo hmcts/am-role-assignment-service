@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.GET_ASSIGNMENTS_BY_ACTOR;
 
 
@@ -53,21 +52,6 @@ public class AuditAspectTest {
         assertThat(context.getAssignmentId()).isEqualTo(ID);
         assertThat(context.getRoleName()).isEqualTo(ROLE_NAME);
 
-    }
-
-    @Test
-    public void shouldPopulateAuditContextEvenMethodExecutionReturnsError() {
-        assertThrows(RuntimeException.class, () -> controllerProxy.createRoleAssignment(PROCESS, REFERENCE, ACTOR_ID));
-        AuditContext context = AuditContextHolder.getAuditContext();
-        assertThat(context).isNull();
-    }
-
-    @Test
-    public void shouldPopulateUnProcessEntity() {
-        ResponseEntity<?> result = controllerProxy.unProcessEntity(PROCESS, REFERENCE, ACTOR_ID, ROLE_NAME);
-        assertThat(result).isNotNull();
-        AuditContext context = AuditContextHolder.getAuditContext();
-        assertThat(context).isNull();
     }
 
 

@@ -2,14 +2,15 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ServiceException;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-import java.io.IOException;
 
+@Slf4j
 @Converter(autoApply = true)
 public class JsonBConverter implements AttributeConverter<JsonNode, String> {
     private static ObjectMapper mapper = new ObjectMapper();
@@ -28,14 +29,16 @@ public class JsonBConverter implements AttributeConverter<JsonNode, String> {
 
     @Override
     public JsonNode convertToEntityAttribute(final String dataValue) {
-        try {
-            if (dataValue == null) {
-                return null;
-            }
-            return mapper.readTree(dataValue);
-        } catch (IOException e) {
-            throw new ServiceException("Unable to deserialize to json field", e);
+
+        if (dataValue == null) {
+            return null;
         }
+        try {
+            return mapper.readTree(dataValue);
+        } catch (JsonProcessingException e) {
+            log.error(e.getMessage());
+        }
+        return null;
     }
 }
 
