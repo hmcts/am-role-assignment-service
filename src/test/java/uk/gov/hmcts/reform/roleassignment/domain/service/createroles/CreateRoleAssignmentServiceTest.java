@@ -170,6 +170,8 @@ class CreateRoleAssignmentServiceTest {
             .updateRequest(any(RequestEntity.class));
         verify(persistenceService, times(8))
             .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(validationModelService, times(1))
+            .validateRequest(any(AssignmentRequest.class));
 
     }
 
@@ -250,6 +252,10 @@ class CreateRoleAssignmentServiceTest {
 
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
+        verify(persistenceService, times(1))
+            .updateRequest(any(RequestEntity.class));
+        verify(parseRequestService, times(1))
+            .removeCorrelationLog();
     }
 
     @Test
