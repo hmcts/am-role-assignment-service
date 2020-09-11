@@ -105,7 +105,9 @@ class CreateRoleAssignmentOrchestratorTest {
         //assert values
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(result.getRequest().getId());
         verifyNUmberOfInvocations();
+        verify(parseRequestService, times(1)).removeCorrelationLog();
     }
 
     @Test
@@ -257,6 +259,7 @@ class CreateRoleAssignmentOrchestratorTest {
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verifyNUmberOfInvocations();
+        verify(validationModelService, times(1)).validateRequest(any(AssignmentRequest.class));
     }
 
     @Test
@@ -348,7 +351,6 @@ class CreateRoleAssignmentOrchestratorTest {
     @Test
     void shouldReturn201WhenExistingAndIncomingRolesEmpty() throws IOException, ParseException {
 
-
         prepareRequestWhenReplaceExistingTrue();
         assignmentRequest.setRequestedRoles(Collections.emptyList());
 
@@ -364,14 +366,24 @@ class CreateRoleAssignmentOrchestratorTest {
 
         //actual method call
         ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
+        AssignmentRequest assignmentRequest = (AssignmentRequest) response.getBody();
 
         //assert values
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
+        assertEquals(APPROVED, assignmentRequest.getRequest().getStatus());
+        assertEquals("Request has been approved", assignmentRequest.getRequest().getLog());
+
+        assertEquals(APPROVED.toString(), requestEntity.getStatus());
+        assertEquals("Request has been approved", requestEntity.getLog());
+
         verify(parseRequestService, times(1))
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
+        verify(persistenceService, times(1))
+            .updateRequest(any(RequestEntity.class));
 
     }
 
@@ -388,9 +400,9 @@ class CreateRoleAssignmentOrchestratorTest {
 
     private void prepareRequestWhenReplaceExistingTrue() throws IOException {
         assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.APPROVED,
-                                                                   false
+                                                                   true
         );
-        assignmentRequest.getRequest().setReplaceExisting(true);
+        //assignmentRequest.getRequest().setReplaceExisting(true);
     }
 
 
