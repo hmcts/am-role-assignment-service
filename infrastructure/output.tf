@@ -1,3 +1,3 @@
 output "envname" {
-  value = "${local.local_env}"
+  value = "${var.env}"
 }
