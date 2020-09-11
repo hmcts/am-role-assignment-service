@@ -19,11 +19,11 @@
       "arrayInMap" : [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${[scenarioContext][testData][request][queryParams][actorId]}"
+          "actorId": "${}${[scenarioContext][testData][request][queryParams][actorId]}"
         },
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${[scenarioContext][testData][request][queryParams][actorId]}"
+          "actorId": "${}${[scenarioContext][testData][request][queryParams][actorId]}"
         }
       ]
     }
