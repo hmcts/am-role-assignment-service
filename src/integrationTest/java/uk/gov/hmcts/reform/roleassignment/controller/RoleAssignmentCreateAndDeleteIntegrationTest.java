@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
@@ -22,15 +23,19 @@ import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
+import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -76,6 +81,9 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @Mock
     private SecurityContext securityContext;
 
+    @MockBean
+    private IdamRoleService idamRoleService;
+
 
     @Before
     public void setUp() {
@@ -84,6 +92,13 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         template = new JdbcTemplate(ds);
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         MockitoAnnotations.initMocks(this);
+        String uid = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
+        UserRoles roles = UserRoles.builder()
+            .uid(uid)
+            .roles(Arrays.asList("caseworker", "am-import"))
+            .build();
+
+        doReturn(roles).when(idamRoleService).getUserRoles(anyString());
 
         doReturn(authentication).when(securityContext).getAuthentication();
         SecurityContextHolder.setContext(securityContext);
