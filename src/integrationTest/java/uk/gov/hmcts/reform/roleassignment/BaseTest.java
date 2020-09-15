@@ -27,6 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public abstract class BaseTest {
 
     protected static final ObjectMapper mapper = new ObjectMapper();
+    static Connection connection = null;
 
     @BeforeClass
     public static void init() {
@@ -56,13 +57,19 @@ public abstract class BaseTest {
             final Properties props = new Properties();
             // Instruct JDBC to accept JSON string for JSONB
             props.setProperty("stringtype", "unspecified");
-            final Connection connection = DriverManager.getConnection(pg.getJdbcUrl("postgres", "postgres"), props);
+            connection = DriverManager.getConnection(pg.getJdbcUrl("postgres", "postgres"), props);
             return new SingleConnectionDataSource(connection, true);
         }
 
         @PreDestroy
         public void contextDestroyed() throws IOException {
             embeddedPostgres().close();
+        }
+    }
+
+    public static void closeConnection() throws SQLException {
+        if (connection != null) {
+            connection.close();
         }
     }
 }
