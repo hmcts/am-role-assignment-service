@@ -1,6 +1,8 @@
 server:
   port: ${PORT:4096}
-
+info:
+  app:
+    name: "am role assignment service"
 management:
   health:
     db:
@@ -11,31 +13,26 @@ management:
       enabled: true
   endpoint:
     health:
+      show-details: "always"
       enabled: true
       cache:
         time-to-live: 5s
-      show-details: "always"
-    env:
-      cache:
-        time-to-live:
   security:
-    enabled: false
+    enabled: true
   endpoints:
     health:
       sensitive: false
     web:
-      base-path: /
+      base-path: /actuator
       exposure:
-        include: 'health'
+        include: "*"
+
 
 #If you use a database then uncomment below lines and update db properties accordingly
 
 security:
   anonymousPaths:
     - "/"
-    - "/health/**"
-    - "/actuator/**"
-    - "/loggers/**"
     - "/swagger-ui.html"
     - "/swagger-resources/**"
     - "/v2/api-docs"
