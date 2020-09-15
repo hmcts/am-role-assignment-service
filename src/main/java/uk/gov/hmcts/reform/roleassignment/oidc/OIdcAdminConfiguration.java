@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class OIdcAdminConfiguration {
 
-    private String userId;
-    private String password;
-    private String scope;
+    private final String userId;
+    private final String password;
+    private final String scope;
 
     @Autowired
     public OIdcAdminConfiguration(
         @Value("${idam.client.admin.userId:}") String userId,
-        @Value("${idam.client.admin.password:}") String password,
+        @Value("${idam.client.admin.password}") String password,
         @Value("${idam.client.admin.scope:}") String scope
     ) {
         this.userId = userId;
