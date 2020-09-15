@@ -64,7 +64,7 @@ public class FeatureToggleService {
                 }
                 break;
             case "DELETE":
-                if (uri.equalsIgnoreCase("am/role-assignments")) {
+                if (uri.equalsIgnoreCase("/am/role-assignments")) {
                     return "delete-role-assignments";
                 } else if (uri.contains("am/role-assignments/")) {
                     return "delete-role-assignments-by-id";
