@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Service
@@ -30,12 +29,6 @@ public class FeatureToggleService {
         this.userName = userName;
     }
 
-    @PostConstruct
-    public void mapServiceToFlag() {
-        launchDarklyMap = new HashMap<>();
-        launchDarklyMap.put("/am/role-assignments/ld/endpoint", "get-ld-flag");
-    }
-
     public boolean isFlagEnabled(String serviceName, String flagName) {
         LDUser user = new LDUser.Builder(environment)
             .firstName(userName)
@@ -50,7 +43,36 @@ public class FeatureToggleService {
         return ldClient.isFlagKnown(flagName);
     }
 
-    public Map<String, String> getLaunchDarklyMap() {
-        return launchDarklyMap;
+    public String getLaunchDarklyFlag(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        switch (request.getMethod()) {
+            case "GET":
+                if (uri.contains("/am/role-assignments/actors/")) {
+                    return "get-role-assignments-by-actor-id";
+                }
+                if (uri.contains("/am/role-assignments/ld/endpoint")) {
+                    return "get-ld-flag";
+                } else if (uri.equalsIgnoreCase("/am/role-assignments/roles")) {
+                    return "get-list-of-roles";
+                } else if (uri.equalsIgnoreCase("/am/role-assignments")) {
+                    return "get-assignment-by-case-actor-id";
+                }
+                break;
+            case "POST":
+                if (uri.equalsIgnoreCase("/am/role-assignments")) {
+                    return "create-role-assignments";
+                }
+                break;
+            case "DELETE":
+                if (uri.equalsIgnoreCase("am/role-assignments")) {
+                    return "delete-role-assignments";
+                } else if (uri.contains("am/role-assignments/")) {
+                    return "delete-role-assignments-by-id";
+                }
+                break;
+
+            default:
+        }
+        return null;
     }
 }
