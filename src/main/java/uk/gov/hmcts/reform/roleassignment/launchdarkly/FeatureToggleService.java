@@ -55,7 +55,7 @@ public class FeatureToggleService {
                 } else if (uri.equalsIgnoreCase("/am/role-assignments/roles")) {
                     return "get-list-of-roles";
                 } else if (uri.equalsIgnoreCase("/am/role-assignments")) {
-                    return "get-assignment-by-case-actor-id";
+                    return "get-assignments-by-case-actor-id";
                 }
                 break;
             case "POST":
