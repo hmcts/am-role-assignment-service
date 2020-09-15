@@ -8,8 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Map;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.mock;
@@ -23,13 +21,6 @@ public class FeatureToggleServiceTest {
 
     @InjectMocks
     FeatureToggleService featureToggleService = new FeatureToggleService(ldClient, "user");
-
-    @Test
-    public void getLdMap() {
-        featureToggleService.mapServiceToFlag();
-        Map<String, String> serviceMap = featureToggleService.getLaunchDarklyMap();
-        Assertions.assertNotNull(serviceMap);
-    }
 
     @Test
     public void evaluateLdFlag() {
