@@ -132,13 +132,6 @@ class RoleAssignmentControllerAdviceTest {
     }
 
     @Test
-    void testNull() {
-
-        ResponseEntity<String> responseEntity = welcomeController.getException("invalid");
-        assertNull(responseEntity);
-    }
-
-    @Test
     void testResourceNotFoundException() {
         Assertions.assertThrows(ResourceNotFoundException.class, () ->
             welcomeController.getException("resourceNotFoundException")
