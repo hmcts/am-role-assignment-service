@@ -143,16 +143,18 @@ public class TestDataBuilder {
         InputStream inputStream =
             TestDataBuilder.class.getClassLoader().getResourceAsStream("attributes.json");
         assert inputStream != null;
-        return new ObjectMapper().readValue(inputStream, new TypeReference<>() {
-        });
+        JsonNode result = new ObjectMapper().readValue(inputStream, new TypeReference<>() {});
+        inputStream.close();
+        return result;
     }
 
     public static JsonNode buildNotesFromFile() throws IOException {
         InputStream inputStream =
             TestDataBuilder.class.getClassLoader().getResourceAsStream("notes.json");
         assert inputStream != null;
-        return new ObjectMapper().readValue(inputStream, new TypeReference<>() {
-        });
+        JsonNode result = new ObjectMapper().readValue(inputStream, new TypeReference<>() {});
+        inputStream.close();
+        return result;
     }
 
     public static List<Role> buildRolesFromFile() throws IOException {
