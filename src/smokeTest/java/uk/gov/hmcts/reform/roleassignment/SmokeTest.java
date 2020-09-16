@@ -202,6 +202,9 @@ public class SmokeTest extends BaseTest {
             .post(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
+        if (input != null) {
+            input.close();
+        }
     }
 
     public String getEnvironment() {
