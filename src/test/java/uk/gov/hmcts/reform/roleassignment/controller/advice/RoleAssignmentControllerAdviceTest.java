@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNo
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.ACTORIDTYPE;
