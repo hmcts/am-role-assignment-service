@@ -27,7 +27,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 public abstract class BaseTest {
 
     protected static final ObjectMapper mapper = new ObjectMapper();
-    static Connection connection = null;
 
     @BeforeClass
     public static void init() {
@@ -42,6 +41,7 @@ public abstract class BaseTest {
 
     @TestConfiguration
     static class Configuration {
+        Connection connection;
         @Bean
         public EmbeddedPostgres embeddedPostgres() throws IOException {
             return EmbeddedPostgres
@@ -62,14 +62,11 @@ public abstract class BaseTest {
         }
 
         @PreDestroy
-        public void contextDestroyed() throws IOException {
+        public void contextDestroyed() throws IOException, SQLException {
+            if (connection != null) {
+                connection.close();
+            }
             embeddedPostgres().close();
-        }
-    }
-
-    public static void closeConnection() throws SQLException {
-        if (connection != null) {
-            connection.close();
         }
     }
 }

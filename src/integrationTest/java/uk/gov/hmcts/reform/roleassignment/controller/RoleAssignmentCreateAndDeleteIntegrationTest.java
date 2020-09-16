@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -31,7 +30,6 @@ import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -262,10 +260,5 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     public String getActorFromAssignmentTable() {
         return template.queryForObject(GET_ACTOR_FROM_ASSIGNMENT_QUERY, new Object[]{ACTOR_ID}, String.class);
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws SQLException {
-        closeConnection();
     }
 }
