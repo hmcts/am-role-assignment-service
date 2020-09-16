@@ -34,7 +34,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 
 public class RoleAssignmentIntegrationTest extends BaseTest {
 
-    private static final Logger log = LoggerFactory.getLogger(RoleAssignmentIntegrationTest.class);
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentIntegrationTest.class);
     private static final String COUNT_HISTORY_RECORDS_QUERY = "SELECT count(1) as n FROM role_assignment_history";
 
