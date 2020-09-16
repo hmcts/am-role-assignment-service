@@ -13,6 +13,7 @@ public class FeatureToggleService {
 
     public static final String USER = "user";
     public static final String SERVICENAME = "servicename";
+    public static final String AM_ROLE_ASSIGNMENTS = "/am/role-assignments";
     @Autowired
     private final LDClient ldClient;
 
@@ -52,17 +53,17 @@ public class FeatureToggleService {
                     return "get-ld-flag";
                 } else if (uri.equalsIgnoreCase("/am/role-assignments/roles")) {
                     return "get-list-of-roles";
-                } else if (uri.equalsIgnoreCase("/am/role-assignments")) {
+                } else if (uri.equalsIgnoreCase(AM_ROLE_ASSIGNMENTS)) {
                     return "get-assignments-by-case-actor-id";
                 }
                 break;
             case "POST":
-                if (uri.equalsIgnoreCase("/am/role-assignments")) {
+                if (uri.equalsIgnoreCase(AM_ROLE_ASSIGNMENTS)) {
                     return "create-role-assignments";
                 }
                 break;
             case "DELETE":
-                if (uri.equalsIgnoreCase("/am/role-assignments")) {
+                if (uri.equalsIgnoreCase(AM_ROLE_ASSIGNMENTS)) {
                     return "delete-role-assignments";
                 } else if (uri.contains("am/role-assignments/")) {
                     return "delete-role-assignments-by-id";
