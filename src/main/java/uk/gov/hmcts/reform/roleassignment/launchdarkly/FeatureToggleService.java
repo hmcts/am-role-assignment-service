@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 @Service
 public class FeatureToggleService {
@@ -21,7 +20,6 @@ public class FeatureToggleService {
     private String environment;
 
     private final String userName;
-    private Map<String, String> launchDarklyMap;
 
     @Autowired
     public FeatureToggleService(LDClient ldClient, @Value("${launchdarkly.sdk.user}") String userName) {
