@@ -27,6 +27,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
 
 import javax.inject.Inject;
@@ -90,7 +91,8 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     @Mock
     private FeatureConditionEvaluation featureConditionEvaluation = mock(FeatureConditionEvaluation.class);
-
+    @Mock
+    private FeatureToggleService featureToggleService = mock(FeatureToggleService.class);
 
     @Before
     public void setUp() throws Exception {
@@ -107,6 +109,9 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         doReturn(authentication).when(securityContext).getAuthentication();
         SecurityContextHolder.setContext(securityContext);
         when(featureConditionEvaluation.preHandle(any(),any(),any())).thenReturn(true);
+        when(featureToggleService.getLaunchDarklyFlag(any())).thenReturn("get-ld-flag");
+        when(featureToggleService.isValidFlag(any())).thenReturn(true);
+        when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(true);
         MockUtils.setSecurityAuthorities(authentication, MockUtils.ROLE_CASEWORKER);
         UserInfo userInfo = UserInfo.builder()
             .uid("6b36bfc6-bb21-11ea-b3de-0242ac130006")
