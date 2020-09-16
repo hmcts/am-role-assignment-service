@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
@@ -89,10 +90,10 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @MockBean
     private IdamRoleService idamRoleService;
 
-    @Mock
-    private FeatureConditionEvaluation featureConditionEvaluation = mock(FeatureConditionEvaluation.class);
-    @Mock
-    private FeatureToggleService featureToggleService = mock(FeatureToggleService.class);
+    @MockBean
+    private FeatureConditionEvaluation featureConditionEvaluation;
+    @SpyBean
+    private FeatureToggleService featureToggleService;
 
     @Before
     public void setUp() throws Exception {
@@ -108,10 +109,11 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         doReturn(roles).when(idamRoleService).getUserRoles(anyString());
         doReturn(authentication).when(securityContext).getAuthentication();
         SecurityContextHolder.setContext(securityContext);
-        when(featureConditionEvaluation.preHandle(any(),any(),any())).thenReturn(true);
+        doReturn(true).when(featureConditionEvaluation).preHandle(any(),any(),any());
+        /*when(featureConditionEvaluation.preHandle(any(),any(),any())).thenReturn(true);
         when(featureToggleService.getLaunchDarklyFlag(any())).thenReturn("get-ld-flag");
         when(featureToggleService.isValidFlag(any())).thenReturn(true);
-        when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(true);
+        when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(true);*/
         MockUtils.setSecurityAuthorities(authentication, MockUtils.ROLE_CASEWORKER);
         UserInfo userInfo = UserInfo.builder()
             .uid("6b36bfc6-bb21-11ea-b3de-0242ac130006")
