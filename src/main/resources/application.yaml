@@ -17,24 +17,26 @@ management:
       enabled: true
       cache:
         time-to-live: 5s
+  security:
+    enabled: true
   endpoints:
     health:
       sensitive: false
     web:
-      base-path: /actuator
+      base-path: /
       exposure:
         include: "*"
   server:
     servlet:
-      context-path: /actuator
+      context-path: /
 
 #If you use a database then uncomment below lines and update db properties accordingly
 
 security:
   anonymousPaths:
-    - "/actuator"
-    - "/actuator/health/**"
-    - "/actuator/loggers/**"
+    - "/"
+    - "/health"
+    - "/loggers/**"
     - "/swagger-ui.html"
     - "/swagger-resources/**"
     - "/v2/api-docs"
