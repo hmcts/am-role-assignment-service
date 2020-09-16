@@ -107,4 +107,13 @@ public class FeatureToggleServiceTest {
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
         Assertions.assertNull(flagName);
     }
+
+    @Test
+    public void getLdFlagInvalidRequestMethod() {
+        when(request.getRequestURI()).thenReturn("/am/dummy");
+        when(request.getMethod()).thenReturn("INVALID");
+        featureToggleService = new FeatureToggleService(ldClient, "user");
+        String flagName = featureToggleService.getLaunchDarklyFlag(request);
+        Assertions.assertNull(flagName);
+    }
 }
