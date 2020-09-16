@@ -5,5 +5,5 @@
   "operationName": "Access Role Assignment API",
 
   "method": "GET",
-  "uri": "/"
+  "uri": "/health/liveness"
 }
