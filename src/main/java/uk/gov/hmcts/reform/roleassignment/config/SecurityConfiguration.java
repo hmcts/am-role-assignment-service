@@ -59,12 +59,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/webjars/springfox-swagger-ui/**",
         "/swagger-resources/**",
         "/v2/**",
-        "/actuator/**",
+        "/status/health",
+        "/welcome",
         "/health/**",
         "/health/liveness",
-        "/status/health",
         "/loggers/**",
-        "/welcome",
         "/"
     };
 
