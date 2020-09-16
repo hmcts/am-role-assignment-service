@@ -65,6 +65,15 @@ public class FeatureToggleServiceTest {
     }
 
     @Test
+    public void getLdFlagGetCaseNoMatch() {
+        when(request.getRequestURI()).thenReturn("/am/dummy");
+        when(request.getMethod()).thenReturn("GET");
+        featureToggleService = new FeatureToggleService(ldClient, "user");
+        String flagName = featureToggleService.getLaunchDarklyFlag(request);
+        Assertions.assertNull(flagName);
+    }
+
+    @Test
     public void getLdFlagGetContainsScenario() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/actors/");
         when(request.getMethod()).thenReturn("GET");
@@ -83,6 +92,15 @@ public class FeatureToggleServiceTest {
     }
 
     @Test
+    public void getLdFlagPostCaseNoMatch() {
+        when(request.getRequestURI()).thenReturn("/am/dummy");
+        when(request.getMethod()).thenReturn("POST");
+        featureToggleService = new FeatureToggleService(ldClient, "user");
+        String flagName = featureToggleService.getLaunchDarklyFlag(request);
+        Assertions.assertNull(flagName);
+    }
+
+    @Test
     public void getLdFlagDeleteCase() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments");
         when(request.getMethod()).thenReturn("DELETE");
@@ -90,6 +108,16 @@ public class FeatureToggleServiceTest {
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
         Assertions.assertEquals("delete-role-assignments", flagName);
     }
+
+    @Test
+    public void getLdFlagDeleteCaseNoMatch() {
+        when(request.getRequestURI()).thenReturn("/am/dummy");
+        when(request.getMethod()).thenReturn("DELETE");
+        featureToggleService = new FeatureToggleService(ldClient, "user");
+        String flagName = featureToggleService.getLaunchDarklyFlag(request);
+        Assertions.assertNull(flagName);
+    }
+
     @Test
     public void getLdFlagDeleteStringContainsCase() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/");
