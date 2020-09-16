@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.sql.SQLException;
 import java.util.List;
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -13,7 +12,6 @@ import javax.sql.DataSource;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jetbrains.annotations.NotNull;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -234,11 +232,5 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         headers.add("ServiceAuthorization", "Bearer " + "1234");
         headers.add("Authorization", "Bearer " + "2345");
         return headers;
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws SQLException {
-        log.info("AfterClass....");
-        closeConnection();
     }
 }
