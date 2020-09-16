@@ -78,12 +78,12 @@ public class FeatureToggleService {
                 break;
             case POST:
                 if (postRequestMap.get(uri) != null) {
-                    return getRequestMap.get(uri);
+                    return postRequestMap.get(uri);
                 }
                 break;
             case DELETE:
                 if (deleteRequestMap.get(uri) != null) {
-                    return getRequestMap.get(uri);
+                    return deleteRequestMap.get(uri);
                 } else if (uri.contains(URI_DELETE_ASSIGNMENTS_BY_ID)) {
                     return LD_FLAG_DELETE_ROLE_ASSIGNMENTS_BY_ID;
                 }
