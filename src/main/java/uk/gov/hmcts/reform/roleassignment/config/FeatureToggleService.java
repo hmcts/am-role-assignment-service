@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.launchdarkly;
+package uk.gov.hmcts.reform.roleassignment.config;
 
 import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.LDClient;
@@ -14,6 +14,7 @@ public class FeatureToggleService {
     public static final String USER = "user";
     public static final String SERVICENAME = "servicename";
     public static final String AM_ROLE_ASSIGNMENTS = "/am/role-assignments";
+
     @Autowired
     private final LDClient ldClient;
 
