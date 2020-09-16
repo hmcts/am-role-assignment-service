@@ -64,7 +64,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/actuator/health/**",
         "/actuator/health/liveness",
         "/actuator/loggers/**",
-        "/actuator"
+        "/actuator",
+        "/"
     };
 
 
