@@ -67,11 +67,9 @@ withNightlyPipeline(type, product, component) {
   env.TEST_URL = "http://am-role-assignment-service-aat.service.core-compute-aat.internal"
   env.IDAM_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-  env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-pr-922.service.core-compute-preview.internal"
   env.BEFTA_S2S_CLIENT_ID = "am_role_assignment_service"
-  env.DEFINITION_STORE_HOST = "http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal"
-  env.OAUTH2_CLIENT_ID = "ccd_gateway"
-  env.OAUTH2_REDIRECT_URI = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect"
+  env.OAUTH2_CLIENT_ID = "am_role_assignment"
+  env.OAUTH2_REDIRECT_URI = "http://am-role-assignment-service-aat.service.core-compute-aat.internal/oauth2redirect"
   env.OAUTH2_ACCESS_TOKEN_TYPE = "OIDC"
   env.BEFTA_RESPONSE_HEADER_CHECK_POLICY = "JUST_WARN"
   env.OAUTH2_SCOPE_VARIABLES = "openid%20profile%20roles%20authorities"
@@ -84,20 +82,12 @@ withNightlyPipeline(type, product, component) {
 
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
-
   enableMutationTest()
   enableSecurityScan()
   enableFullFunctionalTest()
 
   before('fullFunctionalTest') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
-  }
-
-  after('build') {
-    stage("integration tests") {
-      sh "./gradlew integration"
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
-    }
   }
 
   after('fullFunctionalTest') {
