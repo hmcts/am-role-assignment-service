@@ -24,7 +24,9 @@ management:
       base-path: /actuator
       exposure:
         include: "*"
-
+  server:
+    servlet:
+      context-path: /actuator
 
 #If you use a database then uncomment below lines and update db properties accordingly
 
