@@ -35,7 +35,7 @@ management:
 security:
   anonymousPaths:
     - "/"
-    - "/health"
+    - "/health/**"
     - "/loggers/**"
     - "/swagger-ui.html"
     - "/swagger-resources/**"
