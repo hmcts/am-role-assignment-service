@@ -42,6 +42,7 @@ public abstract class BaseTest {
     @TestConfiguration
     static class Configuration {
         Connection connection;
+
         @Bean
         public EmbeddedPostgres embeddedPostgres() throws IOException {
             return EmbeddedPostgres
