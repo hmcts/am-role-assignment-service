@@ -21,7 +21,7 @@ management:
     health:
       sensitive: false
     web:
-      base-path: /
+      base-path: /actuator
       exposure:
         include: "*"
   server:
@@ -32,9 +32,9 @@ management:
 
 security:
   anonymousPaths:
-    - "/"
-    - "/health/**"
-    - "/loggers/**"
+    - "/actuator"
+    - "/actuator/health/**"
+    - "/actuator/loggers/**"
     - "/swagger-ui.html"
     - "/swagger-resources/**"
     - "/v2/api-docs"
