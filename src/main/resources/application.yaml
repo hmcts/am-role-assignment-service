@@ -17,8 +17,6 @@ management:
       enabled: true
       cache:
         time-to-live: 5s
-  security:
-    enabled: true
   endpoints:
     health:
       sensitive: false
