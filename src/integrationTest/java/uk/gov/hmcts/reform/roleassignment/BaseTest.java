@@ -41,6 +41,8 @@ public abstract class BaseTest {
 
     @TestConfiguration
     static class Configuration {
+        Connection connection;
+
         @Bean
         public EmbeddedPostgres embeddedPostgres() throws IOException {
             return EmbeddedPostgres
@@ -56,12 +58,15 @@ public abstract class BaseTest {
             final Properties props = new Properties();
             // Instruct JDBC to accept JSON string for JSONB
             props.setProperty("stringtype", "unspecified");
-            final Connection connection = DriverManager.getConnection(pg.getJdbcUrl("postgres", "postgres"), props);
+            connection = DriverManager.getConnection(pg.getJdbcUrl("postgres", "postgres"), props);
             return new SingleConnectionDataSource(connection, true);
         }
 
         @PreDestroy
-        public void contextDestroyed() throws IOException {
+        public void contextDestroyed() throws IOException, SQLException {
+            if (connection != null) {
+                connection.close();
+            }
             embeddedPostgres().close();
         }
     }
