@@ -8,9 +8,11 @@ import org.springframework.stereotype.Component;
 @Getter
 @Component
 public class OIdcAdminConfiguration {
+
     private String userId;
     private String password;
     private String scope;
+
     @Autowired
     public OIdcAdminConfiguration(
         @Value("${idam.client.admin.userId:}") String userId,
