@@ -68,6 +68,7 @@ withNightlyPipeline(type, product, component) {
   env.IDAM_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   env.BEFTA_S2S_CLIENT_ID = "am_role_assignment_service"
+  env.DEFINITION_STORE_HOST = "http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal"
   env.OAUTH2_CLIENT_ID = "ccd_gateway"
   env.OAUTH2_REDIRECT_URI = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect"
   env.OAUTH2_ACCESS_TOKEN_TYPE = "OIDC"
