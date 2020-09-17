@@ -21,6 +21,7 @@ public class FeatureToggleService {
     public static final String LD_FLAG_GET_ROLE_ASSIGNMENTS_BY_ACTOR_ID = "get-role-assignments-by-actor-id";
     public static final String URI_DELETE_ASSIGNMENTS_BY_ID = "/am/role-assignments/";
     public static final String LD_FLAG_DELETE_ROLE_ASSIGNMENTS_BY_ID = "delete-role-assignments-by-id";
+    public static final String LD_FLAG_GET_ASSIGNMENTS_BY_QUERY_PARAMS = "get-assignments-by-query-params";
 
     @Autowired
     private final LDClient ldClient;
@@ -39,7 +40,6 @@ public class FeatureToggleService {
         //Get Map
         getRequestMap.put("/am/role-assignments/ld/endpoint","get-ld-flag");
         getRequestMap.put("/am/role-assignments/roles","get-list-of-roles");
-        getRequestMap.put(AM_ROLE_ASSIGNMENTS, "get-assignments-by-case-actor-id");
         //Post Map
         postRequestMap.put(AM_ROLE_ASSIGNMENTS, "create-role-assignments");
         //Delete Map
@@ -74,6 +74,8 @@ public class FeatureToggleService {
                     return getRequestMap.get(uri);
                 } else if (uri.contains(URI_GET_ASSIGNMENTS_BY_ACTOR_ID)) {
                     return LD_FLAG_GET_ROLE_ASSIGNMENTS_BY_ACTOR_ID;
+                } else if (uri.contains(AM_ROLE_ASSIGNMENTS)) {
+                    return LD_FLAG_GET_ASSIGNMENTS_BY_QUERY_PARAMS;
                 }
                 break;
             case POST:
