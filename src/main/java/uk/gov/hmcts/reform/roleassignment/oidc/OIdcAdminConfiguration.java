@@ -8,20 +8,16 @@ import org.springframework.stereotype.Component;
 @Getter
 @Component
 public class OIdcAdminConfiguration {
-
-    private final String userId;
-    private final String password;
-    private final String scope;
-
+    private String userId;
+    private String password;
+    private String scope;
     @Autowired
     public OIdcAdminConfiguration(
         @Value("${idam.client.admin.userId:}") String userId,
-        @Value("${idam.client.admin.password}") String password,
         @Value("${idam.client.admin.scope:}") String scope
     ) {
         this.userId = userId;
-        this.password = password;
+        this.password = System.getenv("ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD");
         this.scope = scope;
     }
-
 }
