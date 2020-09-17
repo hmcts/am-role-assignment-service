@@ -72,13 +72,11 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @Inject
     private JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter;
 
-
     @Autowired
     private DataSource ds;
 
     @Mock
     private Authentication authentication;
-
 
     @Mock
     private SecurityContext securityContext;
