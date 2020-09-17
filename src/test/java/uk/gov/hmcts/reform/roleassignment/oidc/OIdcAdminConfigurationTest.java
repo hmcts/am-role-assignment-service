@@ -14,11 +14,6 @@ class OIdcAdminConfigurationTest {
     }
 
     @Test
-    void getPassword() {
-        assertNotNull(sut.getPassword());
-    }
-
-    @Test
     void getScope() {
         assertNotNull(sut.getScope());
     }
