@@ -139,20 +139,28 @@ public class TestDataBuilder {
         return requestedRoles;
     }
 
-    private static JsonNode buildAttributesFromFile() throws IOException {
-        InputStream inputStream =
-            TestDataBuilder.class.getClassLoader().getResourceAsStream("attributes.json");
-        assert inputStream != null;
-        return new ObjectMapper().readValue(inputStream, new TypeReference<>() {
-        });
+    private static JsonNode buildAttributesFromFile() {
+        try (InputStream inputStream =
+            TestDataBuilder.class.getClassLoader().getResourceAsStream("attributes.json")) {
+            assert inputStream != null;
+            JsonNode result = new ObjectMapper().readValue(inputStream, new TypeReference<>() {});
+            inputStream.close();
+            return result;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public static JsonNode buildNotesFromFile() throws IOException {
-        InputStream inputStream =
-            TestDataBuilder.class.getClassLoader().getResourceAsStream("notes.json");
-        assert inputStream != null;
-        return new ObjectMapper().readValue(inputStream, new TypeReference<>() {
-        });
+    public static JsonNode buildNotesFromFile() {
+        try (InputStream inputStream =
+            TestDataBuilder.class.getClassLoader().getResourceAsStream("notes.json")) {
+            assert inputStream != null;
+            JsonNode result = new ObjectMapper().readValue(inputStream, new TypeReference<>() {});
+            inputStream.close();
+            return result;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static List<Role> buildRolesFromFile() throws IOException {
