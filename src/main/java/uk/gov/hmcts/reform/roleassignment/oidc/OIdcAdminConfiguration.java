@@ -20,7 +20,7 @@ public class OIdcAdminConfiguration {
         @Value("${idam.client.admin.scope:}") String scope
     ) {
         this.userId = userId;
-        this.password = password; //System.getenv("ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD");
+        this.password = password;
         this.scope = scope;
     }
 }
