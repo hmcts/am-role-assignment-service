@@ -92,7 +92,9 @@ public class IdamRepository {
             "4",
             ""
         );
+        log.info("oidcAdminConfiguration.getPassword() :::::{}", oidcAdminConfiguration.getPassword());
         TokenResponse tokenResponse = idamApi.generateOpenIdToken(tokenRequest);
+        log.info("tokenResponse :::::{}", tokenResponse);
         return tokenResponse.accessToken;
     }
 
