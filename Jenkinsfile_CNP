@@ -38,8 +38,7 @@ def secrets = [
     secret('ccd-caseworker-autotest-password', 'CCD_CASEWORKER_AUTOTEST_PASSWORD'),
     secret('ccd-befta-caseworker-2-solicitor-1-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_1_PWD'),
     secret('ccd-befta-caseworker-2-solicitor-2-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD'),
-    secret('ccd-befta-caseworker-2-solicitor-3-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_3_PWD'),
-    secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
+    secret('ccd-befta-caseworker-2-solicitor-3-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_3_PWD')
   ],
   's2s-${env}': [
     secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
@@ -47,7 +46,8 @@ def secrets = [
   ],
   'am-${env}': [
       secret('role-assignment-service-IDAM-CLIENT-SECRET', 'ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET'),
-      secret('role-assignment-service-LD-SDK-KEY', 'LD_SDK_KEY')
+      secret('role-assignment-service-LD-SDK-KEY', 'LD_SDK_KEY'),
+      secret('role-assignment-service-IDAM-CLIENT-SECRET', 'OAUTH2_CLIENT_SECRET')
     ]
 ]
 
@@ -55,10 +55,9 @@ def secrets = [
 env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
 env.IDAM_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 env.DEFINITION_STORE_HOST = "http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal"
-env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-pr-922.service.core-compute-preview.internal"
 env.BEFTA_S2S_CLIENT_ID = "am_role_assignment_service"
-env.OAUTH2_CLIENT_ID = "ccd_gateway"
-env.OAUTH2_REDIRECT_URI = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect"
+env.OAUTH2_CLIENT_ID = "am_role_assignment"
+env.OAUTH2_REDIRECT_URI = "http://am-role-assignment-service-aat.service.core-compute-aat.internal/oauth2redirect"
 env.OAUTH2_ACCESS_TOKEN_TYPE = "OIDC"
 env.BEFTA_RESPONSE_HEADER_CHECK_POLICY = "JUST_WARN"
 env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
