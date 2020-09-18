@@ -16,10 +16,11 @@ public class OIdcAdminConfiguration {
     @Autowired
     public OIdcAdminConfiguration(
         @Value("${idam.client.admin.userId:}") String userId,
+        @Value("${idam.client.admin.password}") String password,
         @Value("${idam.client.admin.scope:}") String scope
     ) {
         this.userId = userId;
-        this.password = System.getenv("ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD");
+        this.password = password; //System.getenv("ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD");
         this.scope = scope;
     }
 }

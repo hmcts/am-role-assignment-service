@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class OIdcAdminConfigurationTest {
 
-    OIdcAdminConfiguration sut = new OIdcAdminConfiguration("userId", "scope");
+    OIdcAdminConfiguration sut = new OIdcAdminConfiguration("userId", "password", "scope");
 
     @Test
     void getUserId() {
