@@ -4,7 +4,7 @@ Feature: F-006 : Get Role Assignments by Query Params
   Background:
     Given an appropriate test context as detailed in the test data source
 
-  @S-061 @FeatureToggle(get-assignments-by-query-params)
+  @S-061 @FeatureToggle(get-assignments-by-query-params) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive single Role Assignment by Role Type and Actor Id
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
@@ -16,7 +16,7 @@ Feature: F-006 : Get Role Assignments by Query Params
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [F-006_DeleteRoleAssignmentsByActorId].
 
-  @S-062 @FeatureToggle(get-assignments-by-query-params)
+  @S-062 @FeatureToggle(get-assignments-by-query-params) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive single Role Assignment by Role Type and Case Id
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [F-006_CreationDataForRoleAssignment],
@@ -37,7 +37,7 @@ Feature: F-006 : Get Role Assignments by Query Params
     Then a negative response is received,
     And the response has all other details as expected.
 
-  @S-064 @FeatureToggle(get-assignments-by-query-params)
+  @S-064 @FeatureToggle(get-assignments-by-query-params) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive multiple Role Assignments by Role Type and Actor Id
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create multiple role assignments for an actor] as in [S-064_CreationDataForRoleAssignment],
@@ -49,7 +49,7 @@ Feature: F-006 : Get Role Assignments by Query Params
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [F-006_DeleteRoleAssignmentsByActorId].
 
-  @S-065 @FeatureToggle(get-assignments-by-query-params)
+  @S-065 @FeatureToggle(get-assignments-by-query-params) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive multiple Role Assignments by Role Type and Case Id
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create multiple role assignments having same CaseId] as in [S-065_CreationDataForRoleAssignment],
@@ -79,7 +79,7 @@ Feature: F-006 : Get Role Assignments by Query Params
     Then a negative response is received,
     And the response has all other details as expected.
 
-  @S-068 @FeatureToggle(get-assignments-by-query-params)
+  @S-068 @FeatureToggle(get-assignments-by-query-params) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments without X-Correlation-ID Header
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
@@ -90,7 +90,7 @@ Feature: F-006 : Get Role Assignments by Query Params
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [F-006_DeleteRoleAssignmentsByActorId].
 
-  @S-069 @FeatureToggle(get-assignments-by-query-params)
+  @S-069 @FeatureToggle(get-assignments-by-query-params) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments by both Actor Id and Case Id
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [F-006_CreationDataForRoleAssignment],
