@@ -87,12 +87,12 @@ public class IdamRepository {
             "password",
             "",
             oidcAdminConfiguration.getUserId(),
-            oidcAdminConfiguration.getPassword(),
+            oidcAdminConfiguration.getSecret(),
             oidcAdminConfiguration.getScope(),
             "4",
             ""
         );
-        log.info("oidcAdminConfiguration.getPassword() :::::{}", oidcAdminConfiguration.getPassword());
+        log.info("oidcAdminConfiguration.getSecret() :::::{}", oidcAdminConfiguration.getSecret());
         TokenResponse tokenResponse = idamApi.generateOpenIdToken(tokenRequest);
         log.info("tokenResponse :::::{}", tokenResponse);
         return tokenResponse.accessToken;

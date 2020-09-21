@@ -6,11 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class OIdcAdminConfigurationTest {
 
-    OIdcAdminConfiguration sut = new OIdcAdminConfiguration("userId",  "scope");
+    OIdcAdminConfiguration sut = new OIdcAdminConfiguration("userId", "pass", "scope");
 
     @Test
     void getUserId() {
         assertNotNull(sut.getUserId());
+    }
+
+    @Test
+    void getSecret() {
+        assertNotNull(sut.getSecret());
     }
 
     @Test

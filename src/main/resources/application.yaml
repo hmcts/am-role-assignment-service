@@ -95,7 +95,7 @@ idam:
     redirect_uri: ${ROLE_ASSIGNMENT_IDAM_REDIRECT_URI:http://localhost:4096/oauth2redirect}
     admin:
       userId: ${ROLE_ASSIGNMENT_IDAM_ADMIN_USERID:befta.caseworker.2.solicitor.2@gmail.com}
-      password: ${ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD}
+      secret: ${ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:Pa55word11}
       scope: ${ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE:search-user}
 
 
