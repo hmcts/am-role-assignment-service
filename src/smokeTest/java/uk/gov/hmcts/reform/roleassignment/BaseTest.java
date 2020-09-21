@@ -91,7 +91,7 @@ public abstract class BaseTest {
                 request.getUsername(),
                 request.getPassword()
             );
-            log.info("URL :   {}", url);
+
             headers.setContentType(MediaType.parseMediaType(MediaType.APPLICATION_FORM_URLENCODED_VALUE));
             HttpEntity<?> entity = new HttpEntity<>(headers);
             response = restTemplate.exchange(

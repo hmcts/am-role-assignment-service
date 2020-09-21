@@ -87,7 +87,7 @@ public class IdamRepository {
             "password",
             "",
             oidcAdminConfiguration.getUserId(),
-            oidcAdminConfiguration.getPassword(),
+            oidcAdminConfiguration.getSecret(),
             oidcAdminConfiguration.getScope(),
             "4",
             ""
