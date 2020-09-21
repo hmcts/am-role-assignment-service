@@ -94,7 +94,7 @@ Feature: F-001 : Create Role Assignments
     Then a negative response is received,
     And the response has all other details as expected.
 
-  @S-010
+  @S-010 @FeatureToggle(create-role-assignments)
   Scenario: must receive an error response when EndTime is less than BeginTime
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
