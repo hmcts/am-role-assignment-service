@@ -90,7 +90,7 @@ class IdamRepositoryTest {
         when(oauth2Configuration.getClientId()).thenReturn("clientId");
         when(oauth2Configuration.getClientSecret()).thenReturn("secret");
         when(oidcAdminConfiguration.getUserId()).thenReturn("userid");
-        when(oidcAdminConfiguration.getPassword()).thenReturn("password");
+        when(oidcAdminConfiguration.getSecret()).thenReturn("password");
         when(oidcAdminConfiguration.getScope()).thenReturn("scope");
         TokenResponse tokenResponse = new
             TokenResponse("a", "1", "1", "a", "v", "v");
