@@ -4,7 +4,7 @@ Feature: F-006 : Get Role Assignments by Query Params
   Background:
     Given an appropriate test context as detailed in the test data source
 
-  @S-061
+  @S-061 @FeatureToggle(get-assignments-by-query-params) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive single Role Assignment by Role Type and Actor Id
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
@@ -16,7 +16,7 @@ Feature: F-006 : Get Role Assignments by Query Params
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [F-006_DeleteRoleAssignmentsByActorId].
 
-  @S-062
+  @S-062 @FeatureToggle(get-assignments-by-query-params) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive single Role Assignment by Role Type and Case Id
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [F-006_CreationDataForRoleAssignment],
@@ -28,7 +28,7 @@ Feature: F-006 : Get Role Assignments by Query Params
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [S-062_DeleteRoleAssignmentsByCaseId].
 
-  @S-063
+  @S-063 @FeatureToggle(get-assignments-by-query-params)
   Scenario: must receive an error response for Role Type other than Case
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -37,7 +37,7 @@ Feature: F-006 : Get Role Assignments by Query Params
     Then a negative response is received,
     And the response has all other details as expected.
 
-  @S-064
+  @S-064 @FeatureToggle(get-assignments-by-query-params) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive multiple Role Assignments by Role Type and Actor Id
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create multiple role assignments for an actor] as in [S-064_CreationDataForRoleAssignment],
@@ -49,7 +49,7 @@ Feature: F-006 : Get Role Assignments by Query Params
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [F-006_DeleteRoleAssignmentsByActorId].
 
-  @S-065
+  @S-065 @FeatureToggle(get-assignments-by-query-params) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive multiple Role Assignments by Role Type and Case Id
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create multiple role assignments having same CaseId] as in [S-065_CreationDataForRoleAssignment],
@@ -61,7 +61,7 @@ Feature: F-006 : Get Role Assignments by Query Params
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [S-065_DeleteRoleAssignmentsByCaseId].
 
-  @S-066
+  @S-066 @FeatureToggle(get-assignments-by-query-params)
   Scenario: must receive an error response for non-existing Actor Id
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -70,7 +70,7 @@ Feature: F-006 : Get Role Assignments by Query Params
     Then a negative response is received,
     And the response has all other details as expected.
 
-  @S-067
+  @S-067 @FeatureToggle(get-assignments-by-query-params)
   Scenario: must receive an error response for non-existing Case Id
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -79,7 +79,7 @@ Feature: F-006 : Get Role Assignments by Query Params
     Then a negative response is received,
     And the response has all other details as expected.
 
-  @S-068
+  @S-068 @FeatureToggle(get-assignments-by-query-params) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments without X-Correlation-ID Header
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
@@ -90,7 +90,7 @@ Feature: F-006 : Get Role Assignments by Query Params
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [F-006_DeleteRoleAssignmentsByActorId].
 
-  @S-069
+  @S-069 @FeatureToggle(get-assignments-by-query-params) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments by both Actor Id and Case Id
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [F-006_CreationDataForRoleAssignment],
