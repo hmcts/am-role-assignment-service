@@ -10,17 +10,17 @@ import org.springframework.stereotype.Component;
 public class OIdcAdminConfiguration {
 
     private String userId;
-    private String password;
+    private String secret;
     private String scope;
 
     @Autowired
     public OIdcAdminConfiguration(
         @Value("${idam.client.admin.userId:}") String userId,
-        @Value("${idam.client.admin.password:}") String password,
+        @Value("${idam.client.admin.secret:}") String secret,
         @Value("${idam.client.admin.scope:}") String scope
     ) {
         this.userId = userId;
-        this.password = password;
+        this.secret = secret;
         this.scope = scope;
     }
 
