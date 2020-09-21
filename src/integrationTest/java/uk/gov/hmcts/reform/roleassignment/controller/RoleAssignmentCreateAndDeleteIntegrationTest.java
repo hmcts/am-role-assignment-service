@@ -26,6 +26,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
 
 import javax.inject.Inject;
@@ -35,6 +36,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -70,13 +72,11 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @Inject
     private JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter;
 
-
     @Autowired
     private DataSource ds;
 
     @Mock
     private Authentication authentication;
-
 
     @Mock
     private SecurityContext securityContext;
@@ -84,11 +84,11 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @MockBean
     private IdamRoleService idamRoleService;
 
+    @MockBean
+    private FeatureConditionEvaluation featureConditionEvaluation;
 
     @Before
-    public void setUp() {
-
-
+    public void setUp() throws Exception {
         template = new JdbcTemplate(ds);
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         MockitoAnnotations.initMocks(this);
@@ -99,10 +99,9 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             .build();
 
         doReturn(roles).when(idamRoleService).getUserRoles(anyString());
-
         doReturn(authentication).when(securityContext).getAuthentication();
         SecurityContextHolder.setContext(securityContext);
-
+        doReturn(true).when(featureConditionEvaluation).preHandle(any(),any(),any());
         MockUtils.setSecurityAuthorities(authentication, MockUtils.ROLE_CASEWORKER);
         UserInfo userInfo = UserInfo.builder()
             .uid("6b36bfc6-bb21-11ea-b3de-0242ac130006")

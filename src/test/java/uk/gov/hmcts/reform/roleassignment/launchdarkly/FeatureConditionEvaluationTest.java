@@ -40,8 +40,6 @@ public class FeatureConditionEvaluationTest {
     public void initializeMocks() {
         launchDarklyMap = new HashMap<>();
         launchDarklyMap.put("/am/role-assignments/ld/endpoint", "get-ld-flag");
-
-        when(featureToggleService.getLaunchDarklyMap()).thenReturn(launchDarklyMap);
     }
 
     @InjectMocks
@@ -53,6 +51,8 @@ public class FeatureConditionEvaluationTest {
     @Test
     public void getPositiveResponseForFlag() throws Exception {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint");
+        when(request.getMethod()).thenReturn("GET");
+        when(featureToggleService.getLaunchDarklyFlag(any())).thenReturn("get-ld-flag");
         when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(true);
         when(featureToggleService.isValidFlag(any())).thenReturn(true);
         Assertions.assertTrue(featureConditionEvaluation.preHandle(request, response, new Object()));
@@ -79,6 +79,8 @@ public class FeatureConditionEvaluationTest {
     @Test
     public void expectExceptionForInvalidFlagName() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint");
+        when(request.getMethod()).thenReturn("GET");
+        when(featureToggleService.getLaunchDarklyFlag(any())).thenReturn("get-ld-flag");
         when(featureToggleService.isValidFlag(any())).thenReturn(false);
         Assertions.assertThrows(ResourceNotFoundException.class, () ->
             featureConditionEvaluation.preHandle(request, response, object)

@@ -11,7 +11,6 @@ import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 @Component
 @AllArgsConstructor
@@ -27,8 +26,7 @@ public class FeatureConditionEvaluation implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              @NotNull HttpServletResponse response, @NotNull Object arg2) throws Exception {
 
-        Map<String, String> launchDarklyUrlMap = featureToggleService.getLaunchDarklyMap();
-        String flagName = launchDarklyUrlMap.get(request.getRequestURI());
+        String flagName = featureToggleService.getLaunchDarklyFlag(request);
 
         if (flagName == null) {
             throw new ForbiddenException("The endpoint is not configured in Launch Darkly");
@@ -39,8 +37,7 @@ public class FeatureConditionEvaluation implements HandlerInterceptor {
                 "The flag %s is not configured in Launch Darkly", flagName));
         }
 
-        boolean flagStatus = featureToggleService.isFlagEnabled(securityUtils.getServiceName(),
-                                                                launchDarklyUrlMap.get(request.getRequestURI()));
+        boolean flagStatus = featureToggleService.isFlagEnabled(securityUtils.getServiceName(), flagName);
         if (!flagStatus) {
             throw new ForbiddenException(String.format("Launch Darkly flag is not enabled for the endpoint %s",
                                                        request.getRequestURI()));
