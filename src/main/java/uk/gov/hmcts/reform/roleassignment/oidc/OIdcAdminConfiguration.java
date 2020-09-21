@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 public class OIdcAdminConfiguration {
 
     public static final String ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD = "ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD";
-    private String userId;
-    private String password;
-    private String scope;
+    private final String userId;
+    private final String password = System.getenv(ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD);
+    private final String scope;
 
     @Autowired
     public OIdcAdminConfiguration(
@@ -26,7 +26,7 @@ public class OIdcAdminConfiguration {
                                + System.getenv(ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD));
         log.error("should_receive_response_for_add_role_assignment ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD is"
                       + System.getenv(ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD));
-        this.password = System.getenv(ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD);
+        log.error("password is :" + password);
         this.scope = scope;
     }
 }
