@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AuditLogFormatterTest {
 
-    private final AuditLogFormatter logFormatter = new AuditLogFormatter();
+    private AuditLogFormatter logFormatter = new AuditLogFormatter();
 
     @Test
     void shouldHaveCorrectLabels() {
