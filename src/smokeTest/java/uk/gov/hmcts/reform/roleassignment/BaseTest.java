@@ -34,7 +34,6 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNo
 import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -55,11 +54,6 @@ public abstract class BaseTest {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
-    protected static final MediaType JSON_CONTENT_TYPE = new MediaType(
-        MediaType.APPLICATION_JSON.getType(),
-        MediaType.APPLICATION_JSON.getSubtype(),
-        StandardCharsets.UTF_8);
-
     public ServiceAuthorisationApi generateServiceAuthorisationApi(final String s2sUrl) {
         return Feign.builder()
                     .encoder(new JacksonEncoder())
@@ -77,7 +71,8 @@ public abstract class BaseTest {
 
     public String searchUserByUserId(UserTokenProviderConfig config) {
         TokenRequest request = config.prepareTokenRequest();
-        ResponseEntity<TokenResponse> response = new ResponseEntity<>(HttpStatus.OK);
+        new ResponseEntity<>(HttpStatus.OK);
+        ResponseEntity<TokenResponse> response;
         HttpHeaders headers = new HttpHeaders();
         try {
             String url = String.format(
@@ -134,7 +129,7 @@ public abstract class BaseTest {
             final Properties props = new Properties();
             // Instruct JDBC to accept JSON string for JSONB
             props.setProperty("stringtype", "unspecified");
-            Connection connection = DriverManager.getConnection(pg.getJdbcUrl("postgres", "postgres"), props);
+            connection = DriverManager.getConnection(pg.getJdbcUrl("postgres", "postgres"), props);
             return new SingleConnectionDataSource(connection, true);
         }
 

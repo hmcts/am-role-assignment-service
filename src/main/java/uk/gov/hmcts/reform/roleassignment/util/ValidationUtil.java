@@ -44,10 +44,10 @@ public class ValidationUtil {
                 strDate
             ));
         }
-        SimpleDateFormat sdfrmt = new SimpleDateFormat(Constants.DATE_PATTERN);
-        sdfrmt.setLenient(false);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+        simpleDateFormat.setLenient(false);
         try {
-            Date javaDate = sdfrmt.parse(strDate);
+            Date javaDate = simpleDateFormat.parse(strDate);
             if (LOG.isInfoEnabled() && javaDate != null) {
                 LOG.info(javaDate.toString());
             }

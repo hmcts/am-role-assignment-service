@@ -69,7 +69,7 @@ public class JacksonUtils {
     //Find Subset for Incoming Records
     public static Set<RoleAssignmentSubset> convertRequestedRolesIntoSubSet(AssignmentRequest assignmentRequest)
         throws InvocationTargetException, IllegalAccessException {
-        RoleAssignmentSubset subset = null;
+        RoleAssignmentSubset subset;
         Set<RoleAssignmentSubset> roleAssignmentSubsets = new HashSet<>();
         for (RoleAssignment roleAssignment : assignmentRequest.getRequestedRoles()) {
             subset = RoleAssignmentSubset.builder().build();
@@ -84,7 +84,7 @@ public class JacksonUtils {
     //Find Subset for Existing  Records
     public static Map<UUID, RoleAssignmentSubset> convertExistingRolesIntoSubSet(AssignmentRequest assignmentRequest)
         throws InvocationTargetException, IllegalAccessException {
-        RoleAssignmentSubset subset = null;
+        RoleAssignmentSubset subset;
         Map<UUID, RoleAssignmentSubset> roleAssignmentSubsets = new HashMap<>();
         for (RoleAssignment roleAssignment : assignmentRequest.getRequestedRoles()) {
             subset = RoleAssignmentSubset.builder().build();

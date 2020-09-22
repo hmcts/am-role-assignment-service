@@ -45,7 +45,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
     public ResponseEntity<Object> deleteRoleAssignmentByProcessAndReference(String process,
                                                                             String reference) {
-        List<RoleAssignment> requestedRoles = null;
+        List<RoleAssignment> requestedRoles;
 
         //1. create the request Object
         if (process != null && reference != null) {
@@ -74,7 +74,7 @@ public class DeleteRoleAssignmentOrchestrator {
     }
 
     public ResponseEntity<Object> deleteRoleAssignmentByAssignmentId(String assignmentId) {
-        List<RoleAssignment> requestedRoles = null;
+        List<RoleAssignment> requestedRoles;
 
         //1. create the request Object
         if (assignmentId != null) {
