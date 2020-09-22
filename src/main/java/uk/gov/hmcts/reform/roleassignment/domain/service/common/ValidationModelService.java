@@ -45,10 +45,9 @@ public class ValidationModelService {
 
     private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) {
         // Package up the request and the assignments
-        Set<Object> facts = new HashSet<>();
         //Pre defined role configuration
         List<Role> role = JacksonUtils.getConfiguredRoles().get("roles");
-        facts.addAll(role);
+        Set<Object> facts = new HashSet<>(role);
         facts.add(assignmentRequest.getRequest());
         facts.addAll(assignmentRequest.getRequestedRoles());
         if (assignmentRequest.getRequest().getRequestType() == RequestType.CREATE) {
@@ -59,7 +58,6 @@ public class ValidationModelService {
         // Run the rules
         kieSession.execute(facts);
 
-
     }
 
     public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, Set<Object> facts) {
@@ -69,10 +67,10 @@ public class ValidationModelService {
             assignmentRequest.getRequest().getAuthenticatedUserId())) {
             userIds.add(String.valueOf(assignmentRequest.getRequest().getAssignerId()));
         }
-        assignmentRequest.getRequestedRoles().stream().forEach(requestedRole ->
+        assignmentRequest.getRequestedRoles().forEach(requestedRole ->
                                           userIds.add(String.valueOf(requestedRole.getActorId()))
         );
-        userIds.stream().forEach(userId -> {
+        userIds.forEach(userId -> {
             if (userId != null) {
                 log.info("Getting user Roles");
                 facts.add(idamRoleService.getUserRoles(userId));

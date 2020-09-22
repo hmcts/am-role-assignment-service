@@ -171,13 +171,11 @@ public class DeleteRoleAssignmentOrchestrator {
             updateRequestStatus(validatedAssignmentRequest, Status.APPROVED);
 
         } else {
-
             //Insert requested roles  into history table with status deleted-Rejected
             insertRequestedRole(validatedAssignmentRequest, Status.DELETE_REJECTED);
 
             // Update request status to REJECTED
             updateRequestStatus(validatedAssignmentRequest, Status.REJECTED);
-
         }
     }
 
@@ -205,8 +203,6 @@ public class DeleteRoleAssignmentOrchestrator {
                 requestedRole,
                 parsedAssignmentRequest.getRequest()
             ));
-
-
         }
 
         //Persist request to update relationship with history entities

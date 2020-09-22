@@ -33,7 +33,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-
 @Data
 @Slf4j
 public class CreateRoleAssignmentService {
