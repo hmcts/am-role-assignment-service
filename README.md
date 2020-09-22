@@ -66,7 +66,7 @@ you can run it by executing following command:
 ```bash
 docker-compose up
 ```
-####Note: This setup requires both IDAM and serviceAuth application to be running in Local docker network 'am-docker'. Please follow the am-docker project to setup these dependencies.
+Note: This setup requires both IDAM and serviceAuth application to be running in Local docker network 'am-docker'. Please follow the am-docker project to setup these dependencies.
 
 As a result the following containers will get created and started:
 
