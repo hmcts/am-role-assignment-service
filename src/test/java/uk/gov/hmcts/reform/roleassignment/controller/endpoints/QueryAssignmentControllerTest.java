@@ -91,7 +91,7 @@ class QueryAssignmentControllerTest {
 
     @Test
     void shouldGetIdLdDemo() {
-        ResponseEntity<Object> response = sut.getIdLdDemo();
+        ResponseEntity<Object> response = sut.getIdLdDemo("123e4567-e89b-42d3-a456-556642445555");
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Launch Darkly flag check is successful for the endpoint", response.getBody().toString());
 
