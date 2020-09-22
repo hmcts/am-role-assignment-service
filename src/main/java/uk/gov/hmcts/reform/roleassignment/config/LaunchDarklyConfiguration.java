@@ -22,6 +22,10 @@ public class LaunchDarklyConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(featureConditionEvaluation).addPathPatterns("/am/role-assignments");
+        registry.addInterceptor(featureConditionEvaluation).addPathPatterns("/am/role-assignments/**");
+        registry.addInterceptor(featureConditionEvaluation).addPathPatterns("/am/role-assignments/actors/**");
+        registry.addInterceptor(featureConditionEvaluation).addPathPatterns("/am/role-assignments/roles");
         registry.addInterceptor(featureConditionEvaluation).addPathPatterns("/am/role-assignments/ld/endpoint");
     }
 }
