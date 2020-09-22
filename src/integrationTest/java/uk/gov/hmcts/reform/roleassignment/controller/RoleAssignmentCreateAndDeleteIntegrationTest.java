@@ -39,7 +39,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -83,10 +82,10 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     private SecurityContext securityContext;
 
     @MockBean
-    private final IdamRoleService idamRoleService = mock(IdamRoleService.class);
+    private IdamRoleService idamRoleService;
 
     @MockBean
-    private final FeatureConditionEvaluation featureConditionEvaluation = mock(FeatureConditionEvaluation.class);
+    private FeatureConditionEvaluation featureConditionEvaluation;
 
     @Before
     public void setUp() throws Exception {
