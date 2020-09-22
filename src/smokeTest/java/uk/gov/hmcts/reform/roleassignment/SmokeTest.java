@@ -191,6 +191,7 @@ public class SmokeTest extends BaseTest {
         RestAssured.useRelaxedHTTPSValidation();
 
         InputStream input = SmokeTest.class.getClassLoader().getResourceAsStream("create_request_body.json");
+        assert input != null;
         String requestBody = IOUtils.toString(input, StandardCharsets.UTF_8.name());
 
         Response response = SerenityRest

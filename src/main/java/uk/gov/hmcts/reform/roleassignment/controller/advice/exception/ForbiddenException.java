@@ -4,8 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
-import java.util.UUID;
-
 @ResponseStatus(value = HttpStatus.FORBIDDEN)
 public class ForbiddenException  extends RuntimeException {
 
@@ -15,7 +13,4 @@ public class ForbiddenException  extends RuntimeException {
         super(String.format(Constants.FORBIDDEN + ": %s", message));
     }
 
-    public ForbiddenException(UUID message) {
-        super(message.toString());
-    }
 }

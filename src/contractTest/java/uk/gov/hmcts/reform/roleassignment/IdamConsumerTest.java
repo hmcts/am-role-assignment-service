@@ -37,13 +37,15 @@ public class IdamConsumerTest {
     public static final String PASSWORD_VALUE = "Pa55word11";
     public static final String PASSWORD = "password";
     public static final String ROLES = "roles";
+    public static final String SCOPE = "scope";
+    public static final String SCOPES = "openid profile roles";
 
 
     private PactDslJsonBody createAuthResponse() {
         return new PactDslJsonBody()
             .stringType("access_token", "eyJ0eXAiOiJKV1QiLCJ6aXAiOiJOT05FI")
             .stringType("refresh_token", "eyJ0eXAiOiJKV1QiLCJ6aXAiOiJOT05FIiwia2lkIjoiYi9PNk92V")
-            .stringType("scope", "openid profile roles")
+            .stringType(SCOPE, SCOPES)
             .stringType("id_token", "eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre")
             .stringType("token_type", "Bearer")
             .stringType("expires_in", "28799");
@@ -97,8 +99,8 @@ public class IdamConsumerTest {
                 .formParam(PASSWORD, PASSWORD_VALUE)
                 .formParam("client_secret", "pactsecret")
                 .formParam(
-                    "scope",
-                    "openid profile roles"
+                    SCOPE,
+                    SCOPES
                 )
                 .post(mockServer.getUrl() + IDAM_OPEN_ID_TOKEN_URL)
                 .then()
@@ -118,7 +120,7 @@ public class IdamConsumerTest {
         Map<String, Object> params = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         params.put("client_id", "pact");
         params.put("client_secret", "pactsecret");
-        params.put("scope", "openid profile roles");
+        params.put(SCOPE, SCOPES);
         params.put("username", EMAIL_ID);
         params.put(PASSWORD, PASSWORD_VALUE);
 
@@ -141,7 +143,7 @@ public class IdamConsumerTest {
 
     @Test
     @PactTestFor(pactMethod = "executeGetUserInfoDetailsAndGet200")
-    public void should_get_user_info_details_with_access_token(MockServer mockServer) throws JSONException {
+    public void should_get_user_info_details_with_access_token(MockServer mockServer) {
 
         Map<String, String> headers = Maps.newHashMap();
         headers.put(HttpHeaders.AUTHORIZATION, "Bearer eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre");
