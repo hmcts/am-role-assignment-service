@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
@@ -27,7 +28,8 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+    public void afterCompletion(@NotNull HttpServletRequest request,
+                                @NotNull HttpServletResponse response, @NotNull Object handler,
                                 @Nullable Exception ex) {
         if (applicationParams.isAuditLogEnabled() && hasAuditAnnotation(handler)) {
             if (!applicationParams.getAuditLogIgnoreStatuses().contains(response.getStatus())) {

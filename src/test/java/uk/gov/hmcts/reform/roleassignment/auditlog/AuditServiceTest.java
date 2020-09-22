@@ -25,13 +25,11 @@ import static org.mockito.Mockito.verify;
 @DisplayName("audit log specific calls")
 class AuditServiceTest {
 
-    private static final String EMAIL = "ssss@mail.com";
     private static final String TARGET_IDAM_ID = "target@mail.com";
     private static final String SERVICE_NAME = "ccd_api_gateway";
     private static final String REQUEST_ID_VALUE = "30f14c6c1fc85cba12bfd093aa8f90e3";
     private static final String PATH = "/someUri";
     private static final String HTTP_METHOD = "POST";
-    private static final String CASE_ID = "123456";
     private static final String JURISDICTION = "AUTOTEST1";
     private static final String CASE_TYPE = "CaseType1";
     private static final String EVENT_NAME = "CreateCase";
@@ -46,7 +44,7 @@ class AuditServiceTest {
     @Captor
     ArgumentCaptor<AuditEntry> captor;
 
-    private Clock fixedClock = Clock.fixed(Instant.parse("2018-08-19T16:02:42.01Z"), ZoneOffset.UTC);
+    private final Clock fixedClock = Clock.fixed(Instant.parse("2018-08-19T16:02:42.01Z"), ZoneOffset.UTC);
 
     private AuditService auditService;
 
