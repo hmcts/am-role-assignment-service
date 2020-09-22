@@ -20,7 +20,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
-import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
@@ -45,9 +44,6 @@ class ParseRequestServiceTest {
     private SecurityUtils securityUtilsMock = mock(SecurityUtils.class);
 
     @Mock
-    private ValidationUtil validationUtil = mock(ValidationUtil.class);
-
-    @Mock
     private CorrelationInterceptorUtil correlationInterceptorUtilMock = mock(CorrelationInterceptorUtil.class);
 
     private static final String ROLE_TYPE = "CASE";
@@ -57,11 +53,9 @@ class ParseRequestServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-
-
     @Test
     @DisplayName("should throw 400 exception for a syntactically bad Assignment id")
-    void shouldThrowBadRequestForMalformedAssignmentId() throws Exception {
+    void shouldThrowBadRequestForMalformedAssignmentId() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
@@ -74,7 +68,7 @@ class ParseRequestServiceTest {
     }
 
     @Test
-    void shouldReturn400IfRoleTypeIsNotCaseForGetRoleAssignmentByActorIdAndCaseId() throws Exception {
+    void shouldReturn400IfRoleTypeIsNotCaseForGetRoleAssignmentByActorIdAndCaseId() {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         String roleType = "SomeFakeCaseType";
         Assertions.assertThrows(BadRequestException.class, () ->
@@ -83,7 +77,7 @@ class ParseRequestServiceTest {
     }
 
     @Test
-    void getRoleAssignmentByActorAndCaseId_shouldThrowBadRequestWhenActorAndCaseIdIsEmpty() throws Exception {
+    void getRoleAssignmentByActorAndCaseId_shouldThrowBadRequestWhenActorAndCaseIdIsEmpty() {
 
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.validateGetAssignmentsByActorIdAndCaseId(null, null, ROLE_TYPE)
@@ -91,7 +85,7 @@ class ParseRequestServiceTest {
     }
 
     @Test
-    void getRoleAssignmentByActorAndCaseId_shouldThrowBadRequestWhenActorIsNotUUID() throws Exception {
+    void getRoleAssignmentByActorAndCaseId_shouldThrowBadRequestWhenActorIsNotUUID() {
 
         String actorId = "a_bad_uuid";
         Assertions.assertThrows(BadRequestException.class, () ->
@@ -100,7 +94,7 @@ class ParseRequestServiceTest {
     }
 
     @Test
-    void getCorrelationId() throws Exception {
+    void getCorrelationId() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         when(correlationInterceptorUtilMock.preHandle(
@@ -111,7 +105,7 @@ class ParseRequestServiceTest {
     }
 
     @Test
-    void prepareDeleteRequest() throws Exception {
+    void prepareDeleteRequest() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         String clientId = "copied client id";
@@ -140,7 +134,7 @@ class ParseRequestServiceTest {
     }
 
     @Test
-    void prepareDeleteRequest_AssignerIdHeader() throws Exception {
+    void prepareDeleteRequest_AssignerIdHeader() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("assignerId", "21334a2b-79ce-44eb-9168-2d49a744be9c");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
@@ -169,7 +163,7 @@ class ParseRequestServiceTest {
     }
 
     @Test
-    void prepareDeleteRequest_InvalidAssignerIdHeader() throws Exception {
+    void prepareDeleteRequest_InvalidAssignerIdHeader() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("assignerId", "21334a2b-79ce-44eb-9168-2d49a744be9");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
@@ -188,7 +182,7 @@ class ParseRequestServiceTest {
     }
 
     @Test
-    void prepareDeleteRequest_InvalidUuid() throws Exception {
+    void prepareDeleteRequest_InvalidUuid() {
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.prepareDeleteRequest("p2", "p2",
                                      "21334a2b-79ce-44eb-9168-2d49a744be9",

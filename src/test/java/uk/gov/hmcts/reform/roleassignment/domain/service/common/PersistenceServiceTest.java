@@ -18,7 +18,6 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -176,7 +175,7 @@ class PersistenceServiceTest {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.createObjectNode();
         ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.getActorId(),1234, rootNode);
-        ActorCache actorCache = TestDataBuilder.prepareActorCache(roleAssignment);
+        TestDataBuilder.prepareActorCache(roleAssignment);
         when(persistenceUtil.convertActorCacheToEntity(any())).thenReturn(entity);
         when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(entity);
         when(actorCacheRepository.save(entity)).thenReturn(entity);
@@ -197,7 +196,7 @@ class PersistenceServiceTest {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.createObjectNode();
         ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.getActorId(),1234, rootNode);
-        ActorCache actorCache = TestDataBuilder.prepareActorCache(roleAssignment);
+        TestDataBuilder.prepareActorCache(roleAssignment);
         when(persistenceUtil.convertActorCacheToEntity(any())).thenReturn(entity);
         when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(null);
         when(actorCacheRepository.save(entity)).thenReturn(entity);
@@ -384,7 +383,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getAssignmentById_NPE() throws IOException {
+    void getAssignmentById_NPE() {
         UUID id = UUID.randomUUID();
         when(roleAssignmentRepository.findById(id)).thenReturn(null);
         Assertions.assertThrows(NullPointerException.class, () ->
