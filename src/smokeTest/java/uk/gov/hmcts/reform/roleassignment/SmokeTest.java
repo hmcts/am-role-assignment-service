@@ -104,7 +104,7 @@ public class SmokeTest extends BaseTest {
     }
 
     @Test
-    @FeatureFlagToggle("get-assignments-by-case-actor-id")
+    @FeatureFlagToggle("get-assignments-by-query-params")
     public void should_receive_response_for_get_by_query_params_actor_id() {
 
         String targetInstance = config.getRoleAssignmentUrl()
@@ -125,7 +125,7 @@ public class SmokeTest extends BaseTest {
     }
 
     @Test
-    @FeatureFlagToggle("get-assignments-by-case-actor-id")
+    @FeatureFlagToggle("get-role-assignments-by-actor-id")
     public void should_receive_response_for_get_by_actor_id() {
 
         String targetInstance = config.getRoleAssignmentUrl()
