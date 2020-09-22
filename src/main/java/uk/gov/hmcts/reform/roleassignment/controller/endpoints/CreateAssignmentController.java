@@ -78,6 +78,4 @@ public class CreateAssignmentController {
         LOG.info("CreateAssignmentController : {}", createRoleAssignmentOrchestrator);
         return createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
     }
-
-
 }
