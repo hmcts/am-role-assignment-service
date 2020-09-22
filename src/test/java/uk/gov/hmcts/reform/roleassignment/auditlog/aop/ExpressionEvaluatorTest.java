@@ -11,7 +11,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ExpressionEvaluatorTest {
 
@@ -33,9 +35,9 @@ public class ExpressionEvaluatorTest {
         assertThat(context.lookupVariable("p0")).isEqualTo("test");
         assertThat(context.lookupVariable("foo")).isEqualTo("test");
 
-        assertThat(context.lookupVariable("a1")).isEqualTo(true);
-        assertThat(context.lookupVariable("p1")).isEqualTo(true);
-        assertThat(context.lookupVariable("flag")).isEqualTo(true);
+        assertEquals(true, context.lookupVariable("a1"));
+        assertEquals(true, context.lookupVariable("p1"));
+        assertEquals(true, context.lookupVariable("flag"));
 
         assertThat(context.lookupVariable("a2")).isNull();
         assertThat(context.lookupVariable("p2")).isNull();
@@ -97,8 +99,7 @@ public class ExpressionEvaluatorTest {
             evaluator.condition("#roleAssignment.unknownProperty", elementKey, context, String.class)
         );
 
-        assertThat(exception.getMessage().contains("EL1008E: Property or field 'unknownProperty' cannot be found"))
-            .toString();
+        assertTrue(exception.getMessage().contains("EL1008E: Property or field 'unknownProperty' cannot be found"));
 
 
     }

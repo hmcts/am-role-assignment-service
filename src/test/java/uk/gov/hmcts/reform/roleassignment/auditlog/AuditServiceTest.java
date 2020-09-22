@@ -44,7 +44,7 @@ class AuditServiceTest {
     @Captor
     ArgumentCaptor<AuditEntry> captor;
 
-    private Clock fixedClock = Clock.fixed(Instant.parse("2018-08-19T16:02:42.01Z"), ZoneOffset.UTC);
+    private final Clock fixedClock = Clock.fixed(Instant.parse("2018-08-19T16:02:42.01Z"), ZoneOffset.UTC);
 
     private AuditService auditService;
 
