@@ -16,7 +16,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -75,7 +74,7 @@ public class PrepareResponseService {
         roleAssignmentRequest.setRequestedRoles(requestedRoles);
     }
 
-    public void addHateoasLinks(Optional<?> payload, UUID roleAssignmentRequestId) {
+    /*public void addHateoasLinks(Optional<?> payload, UUID roleAssignmentRequestId) {
         if (payload.isPresent()) {
             Object obj = payload.get();
             if (obj instanceof RoleAssignmentRequestResource) {
@@ -84,5 +83,5 @@ public class PrepareResponseService {
 
         }
 
-    }
+    }*/
 }

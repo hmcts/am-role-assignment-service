@@ -33,7 +33,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-
 @Data
 @Slf4j
 public class CreateRoleAssignmentService {
@@ -335,7 +334,7 @@ public class CreateRoleAssignmentService {
                                                                 Map<UUID, RoleAssignmentSubset> commonRecords) {
 
         Set<RoleAssignmentSubset> needToCreateRoleAssignment = new HashSet<>();
-        Set<RoleAssignmentSubset> commonRecordsSet = commonRecords.values().stream().collect(Collectors.toSet());
+        Set<RoleAssignmentSubset> commonRecordsSet = new HashSet<>(commonRecords.values());
 
         incomingRecords.forEach(key -> {
             if (!commonRecordsSet.contains(key)) {

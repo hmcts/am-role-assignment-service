@@ -7,17 +7,14 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.WithTag;
 import net.thucydides.core.annotations.WithTags;
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.apache.commons.io.IOUtils;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import uk.gov.hmcts.reform.roleassignment.config.UserTokenProviderConfig;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.io.IOException;
@@ -29,7 +26,6 @@ import java.nio.charset.StandardCharsets;
 @WithTags({@WithTag("testType:Smoke")})
 public class SmokeTest extends BaseTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(SmokeTest.class);
     public static final String ERROR_DESCRIPTION = "errorDescription";
     public static final String AUTHORIZATION = "Authorization";
     public static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
@@ -195,6 +191,7 @@ public class SmokeTest extends BaseTest {
         RestAssured.useRelaxedHTTPSValidation();
 
         InputStream input = SmokeTest.class.getClassLoader().getResourceAsStream("create_request_body.json");
+        assert input != null;
         String requestBody = IOUtils.toString(input, StandardCharsets.UTF_8.name());
 
         Response response = SerenityRest
@@ -208,9 +205,7 @@ public class SmokeTest extends BaseTest {
             .post(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
-        if (input != null) {
-            input.close();
-        }
+        input.close();
     }
 
     public String getEnvironment() {

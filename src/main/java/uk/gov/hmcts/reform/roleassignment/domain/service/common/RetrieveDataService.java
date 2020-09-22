@@ -15,16 +15,12 @@ public class RetrieveDataService {
 
     private final DataStoreFeignClient dataStoreFeignClient;
 
-
     public RetrieveDataService(DataStoreFeignClient dataStoreFeignClient) {
         this.dataStoreFeignClient = dataStoreFeignClient;
     }
 
 
     public Case getCaseById(String caseId) {
-
         return dataStoreFeignClient.getCaseDataV2(caseId);
-
-
     }
 }

@@ -40,10 +40,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Order(1)
     private final ServiceAuthFilter serviceAuthFilter;
+
     @Order(2)
     private final SecurityEndpointFilter securityEndpointFilter;
-    List<String> anonymousPaths;
 
+    List<String> anonymousPaths;
     private final JwtAuthenticationConverter jwtAuthenticationConverter;
 
     public List<String> getAnonymousPaths() {
@@ -111,8 +112,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     JwtDecoder jwtDecoder() {
 
         NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder) JwtDecoders.fromOidcIssuerLocation(issuerUri);
-
-        // We are using issuerOverride instead of issuerUri as SIDAM has the wrong issuer at the moment
         OAuth2TokenValidator<Jwt> withTimestamp = new JwtTimestampValidator();
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(withTimestamp);
         jwtDecoder.setJwtValidator(validator);
