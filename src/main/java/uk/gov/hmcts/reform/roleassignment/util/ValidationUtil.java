@@ -122,12 +122,12 @@ public class ValidationUtil {
 
     public static void validateRoleRequest(Request roleRequest) {
         if (roleRequest.isReplaceExisting()
-            && ((RoleAssignmentUtil.isEmpty(roleRequest.getProcess())
-            && (RoleAssignmentUtil.isEmpty(roleRequest.getReference())))
-            || (!RoleAssignmentUtil.isEmpty(roleRequest.getProcess())
-            && RoleAssignmentUtil.isEmpty(roleRequest.getReference()))
-            || (RoleAssignmentUtil.isEmpty(roleRequest.getProcess())
-            && !RoleAssignmentUtil.isEmpty(roleRequest.getReference()))
+            && ((StringUtils.isEmpty(roleRequest.getProcess())
+            && (StringUtils.isEmpty(roleRequest.getReference())))
+            || (!StringUtils.isEmpty(roleRequest.getProcess())
+            && StringUtils.isEmpty(roleRequest.getReference()))
+            || (StringUtils.isEmpty(roleRequest.getProcess())
+            && !StringUtils.isEmpty(roleRequest.getReference()))
             )) {
             throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
         }

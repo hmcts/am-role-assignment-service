@@ -23,7 +23,7 @@ public class FeatureConditionEvaluation implements HandlerInterceptor {
     private final SecurityUtils securityUtils;
 
     @Override
-    public boolean preHandle(HttpServletRequest request,
+    public boolean preHandle(@NotNull HttpServletRequest request,
                              @NotNull HttpServletResponse response, @NotNull Object arg2) throws Exception {
 
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
