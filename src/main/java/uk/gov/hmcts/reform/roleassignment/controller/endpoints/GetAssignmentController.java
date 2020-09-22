@@ -95,7 +95,8 @@ public class GetAssignmentController {
             response = Object.class
         )
     })
-    public ResponseEntity<Object> getListOfRoles() throws IOException {
+    public ResponseEntity<Object> getListOfRoles(@RequestHeader(value = "x-correlation-id",
+        required = false) String correlationId) throws IOException {
         JsonNode rootNode = retrieveRoleAssignmentService.getListOfRoles();
         return ResponseEntity.status(HttpStatus.OK).body(rootNode);
     }
