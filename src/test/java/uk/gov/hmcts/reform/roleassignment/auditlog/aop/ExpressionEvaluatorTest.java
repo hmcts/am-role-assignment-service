@@ -47,6 +47,7 @@ public class ExpressionEvaluatorTest {
         Method method = ReflectionUtils.findMethod(EvaluateMethods.class, "evaluate", String.class, Boolean.class);
         EvaluationContext context = evaluator.createEvaluationContext(this, EvaluateMethods.class, method, new Object[]{
             "test", true});
+        assert method != null;
         AnnotatedElementKey elementKey = new AnnotatedElementKey(method, EvaluateMethods.class);
 
         assertThat(evaluator.condition("#foo", elementKey, context, String.class)).isEqualTo("test");
@@ -66,6 +67,7 @@ public class ExpressionEvaluatorTest {
         roleAssignment.setRoleName("judge");
         EvaluationContext context = evaluator.createEvaluationContext(this, EvaluateMethods.class, method, new Object[]{
             "test", roleAssignment});
+        assert method != null;
         AnnotatedElementKey elementKey = new AnnotatedElementKey(method, EvaluateMethods.class);
 
         assertThat(evaluator.condition("#roleAssignment.roleName",
@@ -88,6 +90,7 @@ public class ExpressionEvaluatorTest {
         roleAssignment.setRoleName("judge");
         EvaluationContext context = evaluator.createEvaluationContext(this, EvaluateMethods.class, method, new Object[]{
             "test", roleAssignment});
+        assert method != null;
         AnnotatedElementKey elementKey = new AnnotatedElementKey(method, EvaluateMethods.class);
 
         Exception exception = assertThrows(SpelEvaluationException.class, () ->
