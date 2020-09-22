@@ -35,6 +35,7 @@ The following environment variables are required:
       |ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE|search-user|
       |CCD_DATA_STORE_URL|http://localhost:4452|
       |LAUNCH_DARKLY_ENV|local|
+      |LD_SDK_KEY|"Please contact the AM team for getting this key"|
 
 ## Building the application
 
@@ -65,6 +66,7 @@ you can run it by executing following command:
 ```bash
 docker-compose up
 ```
+####Note: This setup requires both IDAM and serviceAuth application to be running in Local docker network 'am-docker'. Please follow the am-docker project to setup these dependencies.
 
 As a result the following containers will get created and started:
 
