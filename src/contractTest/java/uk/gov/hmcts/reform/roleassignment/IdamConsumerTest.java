@@ -33,6 +33,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class IdamConsumerTest {
     private static final String IDAM_OPEN_ID_TOKEN_URL = "/o/token";
     private static final String IDAM_USERINFO_URL = "/o/userinfo";
+    public static final String EMAIL_ID = "am_pact_user@mailtest.gov.uk";
+    public static final String PASSWORD_VALUE = "Pa55word11";
+    public static final String PASSWORD = "password";
+    public static final String ROLES = "roles";
 
 
     private PactDslJsonBody createAuthResponse() {
@@ -52,11 +56,11 @@ public class IdamConsumerTest {
         Map<String, String> responseHeaders = Maps.newHashMap();
         responseHeaders.put("Content-Type", "application/json");
         Map<String, Object> params = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        params.put("email", "am_pact_user@mailtest.gov.uk");
-        params.put("password", "Pa55word11");
+        params.put("email", EMAIL_ID);
+        params.put(PASSWORD, PASSWORD_VALUE);
         params.put("forename", "testfirstname");
         params.put("surname", "testsurname");
-        params.put("roles", rolesArray);
+        params.put(ROLES, rolesArray);
         return builder
             .given("a user exists", params)
             .uponReceiving("Provider takes user/pwd and returns Access Token to AM "
@@ -88,9 +92,9 @@ public class IdamConsumerTest {
                 .given()
                 .contentType(ContentType.URLENC)
                 .formParam("client_id", "pact")
-                .formParam("grant_type", "password")
-                .formParam("username", "am_pact_user@mailtest.gov.uk")
-                .formParam("password", "Pa55word11")
+                .formParam("grant_type", PASSWORD)
+                .formParam("username", EMAIL_ID)
+                .formParam(PASSWORD, PASSWORD_VALUE)
                 .formParam("client_secret", "pactsecret")
                 .formParam(
                     "scope",
@@ -115,8 +119,8 @@ public class IdamConsumerTest {
         params.put("client_id", "pact");
         params.put("client_secret", "pactsecret");
         params.put("scope", "openid profile roles");
-        params.put("username", "am_pact_user@mailtest.gov.uk");
-        params.put("password", "Pa55word11");
+        params.put("username", EMAIL_ID);
+        params.put(PASSWORD, PASSWORD_VALUE);
 
         Map<String, String> responseheaders = Maps.newHashMap();
         responseheaders.put("Content-Type", "application/json");
@@ -163,7 +167,7 @@ public class IdamConsumerTest {
         assertThat(response.getString("uid")).isNotBlank();
         assertThat(response.getString("given_name")).isNotBlank();
         assertThat(response.getString("family_name")).isNotBlank();
-        JSONArray rolesArr = response.getJSONArray("roles");
+        JSONArray rolesArr = response.getJSONArray(ROLES);
         assertThat(rolesArr).isNotNull();
         assertThat(rolesArr.length()).isNotZero();
         assertThat(rolesArr.get(0).toString()).isNotBlank();
@@ -175,7 +179,7 @@ public class IdamConsumerTest {
             .stringType("uid", "1181-1249-4206-9527")
             .stringType("given_name", "am_pact_user")
             .stringType("family_name", "Jar")
-            .array("roles")
+            .array(ROLES)
             .stringType("caseworker")
             .closeArray();
 

@@ -11,12 +11,11 @@ import java.util.UUID;
 
 public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAdapter {
 
-    private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentTestAutomationAdapter.class);
-
     private TestDataLoaderToDefinitionStore loader = new TestDataLoaderToDefinitionStore(this);
 
     @Override
     public void doLoadTestData() {
+        //Needed for the BEFTA implementation
     }
 
     @Override
@@ -33,8 +32,8 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
     }
 
     private Object generateCaseId() {
-        Long currentTime = new Date().getTime();
-        String time = currentTime.toString();
+        long currentTime = new Date().getTime();
+        String time = Long.toString(currentTime);
         return time + ("0000000000000000".substring(time.length()));
     }
 }
