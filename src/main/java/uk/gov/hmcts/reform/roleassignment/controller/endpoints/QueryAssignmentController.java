@@ -90,7 +90,8 @@ public class QueryAssignmentController {
     }
 
     @GetMapping(path = "/am/role-assignments/ld/endpoint")
-    public ResponseEntity<Object> getIdLdDemo() {
+    public ResponseEntity<Object> getIdLdDemo(@RequestHeader(value = "x-correlation-id",
+        required = false) String correlationId) {
         return ResponseEntity.status(HttpStatus.OK).body("Launch Darkly flag check is successful for the endpoint");
     }
 }
