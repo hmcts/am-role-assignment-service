@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class WelcomeControllerTest {
 
     @InjectMocks
-    private final WelcomeController sut = new WelcomeController();
+    private WelcomeController sut = new WelcomeController();
 
     @Test
     void index() {

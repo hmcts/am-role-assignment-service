@@ -191,7 +191,6 @@ public class SmokeTest extends BaseTest {
         RestAssured.useRelaxedHTTPSValidation();
 
         InputStream input = SmokeTest.class.getClassLoader().getResourceAsStream("create_request_body.json");
-        assert input != null;
         String requestBody = IOUtils.toString(input, StandardCharsets.UTF_8.name());
 
         Response response = SerenityRest
@@ -205,7 +204,7 @@ public class SmokeTest extends BaseTest {
             .post(targetInstance)
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
-            input.close();
+        input.close();
     }
 
     public String getEnvironment() {
