@@ -61,7 +61,7 @@ public class SmokeTest extends BaseTest {
     public FeatureFlagToggleEvaluator featureFlagToggleEvaluator = new FeatureFlagToggleEvaluator(this);
 
     @Test
-    @FeatureFlagToggle("get-ld-flag")
+    @FeatureFlagToggle("get-assignments-by-query-params")
     public void should_receive_response_for_get_by_query_params_case_id() {
 
         String targetInstance = config.getRoleAssignmentUrl()
