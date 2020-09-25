@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
+import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
@@ -54,10 +55,13 @@ class PersistenceServiceTest {
     private PersistenceUtil persistenceUtil;
     @Mock
     private ActorCacheRepository actorCacheRepository;
+    @Mock
+    private DatabseChangelogLockRepository databseChangelogLockRepository;
 
     @InjectMocks
     private PersistenceService sut = new PersistenceService(
-        historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository, databseChangelogLockRepository);
+        historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository,
+        databseChangelogLockRepository);
 
     @BeforeEach
     public void setUp() {

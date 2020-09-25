@@ -9,7 +9,7 @@ public interface DatabseChangelogLockRepository extends CrudRepository<DatabaseC
     public DatabaseChangelogLockEntity getById(int id);
 
     @Modifying
-    @Query("update databasechangeloglock d set d.locked = false ," +
-        " d.lockedby = null , d.lockgranted = null where id = :id")
+    @Query("update databasechangeloglock d set d.locked = false ,"
+        + " d.lockedby = null , d.lockgranted = null where id = :id")
     public void releaseLock(int id);
 }

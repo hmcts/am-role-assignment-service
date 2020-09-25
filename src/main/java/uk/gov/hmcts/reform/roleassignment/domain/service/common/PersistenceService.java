@@ -46,7 +46,8 @@ public class PersistenceService {
 
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
                               RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
-                              ActorCacheRepository actorCacheRepository, DatabseChangelogLockRepository databseChangelogLockRepository) {
+                              ActorCacheRepository actorCacheRepository,
+                              DatabseChangelogLockRepository databseChangelogLockRepository) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
