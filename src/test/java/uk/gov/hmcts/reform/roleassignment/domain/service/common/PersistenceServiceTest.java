@@ -57,7 +57,7 @@ class PersistenceServiceTest {
 
     @InjectMocks
     private PersistenceService sut = new PersistenceService(
-        historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository);
+        historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository, databseChangelogLockRepository);
 
     @BeforeEach
     public void setUp() {
