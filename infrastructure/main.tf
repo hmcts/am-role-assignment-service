@@ -1,28 +1,22 @@
 provider "azurerm" {
-  version = "=1.44.0"
+  features {}
 }
 
 locals {
   app_full_name = "${var.product}-${var.component}"
 
-  aseName = "core-compute-${var.env}"
-  local_env = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
-  local_ase = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "core-compute-aat" : "core-compute-saat" : local.aseName}"
-  env_ase_url = "${local.local_env}.service.${local.local_ase}.internal"
+  local_env = (var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env
 
   // Vault name
   previewVaultName = "${var.raw_product}-aat"
   nonPreviewVaultName = "${var.raw_product}-${var.env}"
-  vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
+  vaultName = (var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName
 
   // Shared Resource Group
   previewResourceGroup = "${var.raw_product}-shared-infrastructure-aat"
   nonPreviewResourceGroup = "${var.raw_product}-shared-infrastructure-${var.env}"
-  sharedResourceGroup = "${(var.env == "preview" || var.env == "spreview") ? local.previewResourceGroup : local.nonPreviewResourceGroup}"
+  sharedResourceGroup = (var.env == "preview" || var.env == "spreview") ? local.previewResourceGroup : local.nonPreviewResourceGroup
 
-  sharedAppServicePlan = "${var.raw_product}-${var.env}"
-  sharedASPResourceGroup = "${var.raw_product}-shared-${var.env}"
-  definition_store_host = "http://ccd-definition-store-api-${local.env_ase_url}"
   }
 
 data "azurerm_key_vault" "am_key_vault" {
