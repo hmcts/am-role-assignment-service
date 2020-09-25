@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
+import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryRepository;
@@ -393,5 +394,15 @@ class PersistenceServiceTest {
         Assertions.assertThrows(NullPointerException.class, () ->
             sut.getAssignmentById(id)
         );
+    }
+
+    @Test
+    void releaseDBChangeLock() {
+        DatabaseChangelogLockEntity databaseChangelogLockEntity = DatabaseChangelogLockEntity.builder().id(1).locked(
+            false).lockedby(null).build();
+        when(databseChangelogLockRepository.getById(1)).thenReturn(databaseChangelogLockEntity);
+        DatabaseChangelogLockEntity entity = sut.releaseDatabaseLock(1);
+        assertFalse(entity.isLocked());
+
     }
 }
