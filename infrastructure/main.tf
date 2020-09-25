@@ -5,7 +5,6 @@ provider "azurerm" {
 locals {
   app_full_name = "${var.product}-${var.component}"
 
-  aseName = "core-compute-${var.env}"
   local_env = (var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env
 
   // Vault name
