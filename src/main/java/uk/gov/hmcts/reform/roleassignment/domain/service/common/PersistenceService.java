@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
+import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
+import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
@@ -40,15 +42,17 @@ public class PersistenceService {
     private RoleAssignmentRepository roleAssignmentRepository;
     private PersistenceUtil persistenceUtil;
     private ActorCacheRepository actorCacheRepository;
+    private DatabseChangelogLockRepository databseChangelogLockRepository;
 
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
                               RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
-                              ActorCacheRepository actorCacheRepository) {
+                              ActorCacheRepository actorCacheRepository, DatabseChangelogLockRepository databseChangelogLockRepository) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
         this.persistenceUtil = persistenceUtil;
         this.actorCacheRepository = actorCacheRepository;
+        this.databseChangelogLockRepository = databseChangelogLockRepository;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -142,6 +146,12 @@ public class PersistenceService {
     public void deleteRoleAssignmentByActorId(UUID actorId) {
 
         roleAssignmentRepository.deleteByActorId(actorId);
+    }
+
+    @Transactional
+    public DatabaseChangelogLockEntity releaseDatabaseLock(int id) {
+        databseChangelogLockRepository.releaseLock(id);
+        return databseChangelogLockRepository.getById(id);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
