@@ -38,4 +38,9 @@ public class WelcomeController {
     public String welcome() {
         return "welcome to role assignment service";
     }
+
+    @GetMapping("/db/releaselock")
+    public void dbReleaseLock() {
+
+    }
 }
