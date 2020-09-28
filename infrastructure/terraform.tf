@@ -12,14 +12,5 @@ terraform {
       source = "hashicorp/azurerm"
       version = "~> 2.25"
     }
-    random = {
-      source = "hashicorp/random"
-    }
-    null = {
-      source = "hashicorp/null"
-    }
-    external = {
-      source = "hashicorp/external"
-    }
   }
 }
