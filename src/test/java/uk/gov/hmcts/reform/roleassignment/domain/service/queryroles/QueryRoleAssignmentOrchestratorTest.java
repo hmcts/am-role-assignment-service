@@ -79,4 +79,29 @@ class QueryRoleAssignmentOrchestratorTest {
             sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, "Case")
         );
     }
+
+    @Test
+    void should_PostRoleAssignmentsQueryByRequest() throws IOException {
+
+        String actorId = "003352d0-e699-48bc-b6f5-5810411e60af";
+        String caseId = "1234567890123456";
+        QueryRequest queryRequest;
+        when(persistenceServiceMock.postRoleAssignmentsQueryByRequest(queryRequest))
+            .thenReturn((List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection(Status.LIVE));
+        ResponseEntity<Object> result = sut.postRoleAssignmentsQueryByRequest(queryRequest);
+        assertNotNull(result);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getBody());
+    }
+
+    @Test
+    void shouldThrow_BadRequestForPostRoleAssignmentsQueryByRequest() throws IOException {
+        String actorId = "003352d0-e699-48bc-b6f5-5810411e60af";
+        String caseId = "123456789012";
+        QueryRequest queryRequest;
+
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.postRoleAssignmentsQueryByRequest(queryRequest)
+        );
+    }
 }
