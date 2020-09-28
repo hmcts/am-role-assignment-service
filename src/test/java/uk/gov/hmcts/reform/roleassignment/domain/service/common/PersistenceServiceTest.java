@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.jpa.domain.Specification;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
@@ -403,6 +404,50 @@ class PersistenceServiceTest {
         when(databseChangelogLockRepository.getById(1)).thenReturn(databaseChangelogLockEntity);
         DatabaseChangelogLockEntity entity = sut.releaseDatabaseLock(1);
         assertFalse(entity.isLocked());
+
+    }
+
+    @Test
+    void postRoleAssignmentsByQueryRequest() throws IOException {
+        UUID id = UUID.randomUUID();
+        Set<RoleAssignmentEntity> roleAssignmentEntitySet = new HashSet<>();
+        roleAssignmentEntitySet.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
+                                                                                  .buildRoleAssignment(Status.LIVE)));
+        QueryRequest queryRequest;
+        Specification<RoleAssignmentEntity> specification;
+        when(roleAssignmentRepository.findAll(specification))
+            .thenReturn(roleAssignmentEntitySet);
+        when(persistenceUtil.convertEntityToRoleAssignment(roleAssignmentEntitySet.iterator().next()))
+            .thenReturn(TestDataBuilder.buildRoleAssignment(Status.LIVE));
+        List<RoleAssignment> roleAssignmentList = sut.postRoleAssignmentsByQueryRequest(queryRequest);
+        assertNotNull(roleAssignmentList);
+
+        assertNotNull(roleAssignmentList);
+        assertFalse(roleAssignmentList.isEmpty());
+
+        verify(persistenceUtil, times(1))
+            .convertEntityToRoleAssignment(roleAssignmentEntitySet.iterator().next());
+        verify(roleAssignmentRepository, times(1))
+            .findAll(specification);
+    }
+
+    @Test
+    void postRoleAssignmentsByQueryRequest_ThrowsException() {
+        Set<RoleAssignmentEntity> roleAssignmentEntities = new HashSet<>();
+
+        String actorId = "003352d0-e699-48bc-b6f5-5810411e60af";
+        String caseId = "1234567890123457";
+
+        QueryRequest queryRequest;
+        Specification<RoleAssignmentEntity> specification;
+        when(roleAssignmentRepository.findAll(specification))
+            .thenReturn(roleAssignmentEntities);
+
+
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () ->
+            sut.postRoleAssignmentsByQueryRequest(queryRequest)
+        );
 
     }
 }
