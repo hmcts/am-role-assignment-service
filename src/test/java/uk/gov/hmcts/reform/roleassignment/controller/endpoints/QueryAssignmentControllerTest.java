@@ -97,4 +97,49 @@ class QueryAssignmentControllerTest {
         assertEquals("Launch Darkly flag check is successful for the endpoint", response.getBody().toString());
 
     }
+
+    @Test
+    void shouldPostRoleAssignmentQueryByRequest() throws Exception {
+        String actorId = "123e4567-e89b-42d3-a456-556642445678";
+        QueryRequest queryRequest;
+        ResponseEntity<Object> expectedResponse
+            = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
+        doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
+            .retrieveRoleAssignmentsByPostingQueryRequest(queryRequest);
+        ResponseEntity<Object> response = sut
+            .retrieveRoleAssignmentsByActorIdAndCaseId(queryRequest);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResponse.getBody(), response.getBody());
+    }
+
+    @Test
+    void shouldReturnBadRequestForInvalidRequestBody() {
+        String actorId = "123e4567-e89b-42d3-a456-556642445678";
+        String caseId = "1234567890123456";
+        QueryRequest queryRequest;
+        ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
+            .retrieveRoleAssignmentsByPostingQueryRequest(queryRequest);
+
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByPostingQueryRequest(queryRequest);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+    }
+
+    @Test
+    void shouldReturnEmptyResultIfNoRecordsFound() {
+        String actorId = "123e4567-e89b-42d3-a456-556642445678";
+        String caseId = "1234567890123456";
+        QueryRequest queryRequest;
+        ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
+            .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, ROLE_TYPE);
+
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("",actorId, caseId, ROLE_TYPE);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+    }
+
+
 }
