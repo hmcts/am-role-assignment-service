@@ -36,19 +36,18 @@ class DeleteAssignmentControllerTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445673";
     private static final String PROCESS = "S-50";
     private static final String REFERENCE = "S-1000";
 
 
     @Test
     @DisplayName("should get 204 when role assignment records delete  successful")
-    void shouldDeleteRoleAssignmentByProcessAndReference() throws Exception {
+    void shouldDeleteRoleAssignmentByProcessAndReference() {
 
         when(deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE))
             .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
 
-        ResponseEntity response = sut.deleteRoleAssignment(null,  PROCESS, REFERENCE);
+        ResponseEntity<Object> response = sut.deleteRoleAssignment(null,  PROCESS, REFERENCE);
 
         assertAll(
             () -> assertNotNull(response),
@@ -58,13 +57,13 @@ class DeleteAssignmentControllerTest {
 
     @Test
     @DisplayName("should get 204 when role assignment records delete by Id successful")
-    void shouldDeleteRoleAssignmentById() throws Exception {
+    void shouldDeleteRoleAssignmentById() {
 
         when(deleteRoleAssignmentOrchestrator
                  .deleteRoleAssignmentByAssignmentId("003352d0-e699-48bc-b6f5-5810411e68af"))
             .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
 
-        ResponseEntity response = sut.deleteRoleAssignmentById("003352d0-e699-48bc-b6f5-5810411e68af",
+        ResponseEntity<Object> response = sut.deleteRoleAssignmentById("003352d0-e699-48bc-b6f5-5810411e68af",
                                                                "003352d0-e699-48bc-b6f5-5810411e68af");
 
         assertAll(
@@ -75,7 +74,7 @@ class DeleteAssignmentControllerTest {
 
     @Test
     @DisplayName("should throw 404 Resource Not Found  when reference is null")
-    void shouldThrowResourceNotFoundWhenReferenceNull() throws Exception {
+    void shouldThrowResourceNotFoundWhenReferenceNull() {
 
         when(deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByProcessAndReference(PROCESS, null))
             .thenThrow(new ResourceNotFoundException(BAD_REQUEST_MISSING_PARAMETERS));

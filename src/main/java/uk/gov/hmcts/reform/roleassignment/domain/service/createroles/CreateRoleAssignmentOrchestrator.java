@@ -51,7 +51,7 @@ public class CreateRoleAssignmentOrchestrator {
 
     public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) throws ParseException {
         try {
-            AssignmentRequest existingAssignmentRequest = null;
+            AssignmentRequest existingAssignmentRequest;
             createRoleAssignmentService = new CreateRoleAssignmentService(
                 parseRequestService,
                 persistenceService,

@@ -14,6 +14,7 @@ public class AuditConfig implements WebMvcConfigurer {
 
     @Autowired
     private AuditService auditService;
+
     @Autowired
     private ApplicationParams applicationParams;
 

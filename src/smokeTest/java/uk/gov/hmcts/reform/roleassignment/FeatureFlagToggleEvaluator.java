@@ -2,9 +2,9 @@ package uk.gov.hmcts.reform.roleassignment;
 
 import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.LDClient;
-import liquibase.util.StringUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Assume;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
