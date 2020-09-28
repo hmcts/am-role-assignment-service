@@ -28,12 +28,9 @@ public class AuditAspect {
     private static final Logger LOG = LoggerFactory.getLogger(AuditAspect.class);
 
     private static final String RESULT_VARIABLE = "result";
-
     private ExpressionEvaluator evaluator = new ExpressionEvaluator();
 
-
     List<Integer> statusCodes = Arrays.asList(409, 422);
-
 
     @Around("@annotation(logAudit)")
     public Object audit(ProceedingJoinPoint joinPoint, LogAudit logAudit) throws Throwable {

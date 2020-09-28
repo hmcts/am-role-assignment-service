@@ -6,7 +6,6 @@ public class AuditContextHolder {
 
     private static final InheritableThreadLocal<AuditContext> threadLocal = new InheritableThreadLocal<>();
 
-
     public static void setAuditContext(AuditContext auditContext) {
         threadLocal.set(auditContext);
     }

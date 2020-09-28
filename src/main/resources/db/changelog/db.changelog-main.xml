@@ -1,6 +1,8 @@
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
   <changeSet id="1" author="nitin.sahu@hmcts.net">
     <createTable tableName="role_assignment_request">
@@ -52,7 +54,9 @@
         <constraints nullable="false" primaryKey="true" primaryKeyName="pk_role_assignment_history"/>
       </column>
       <column name="request_id" type="uuid">
-        <constraints nullable="false" foreignKeyName="fk_role_assignment_history_role_assignment_request" references="role_assignment_request(id)" primaryKey="true" primaryKeyName="pk_role_assignment_history"/>
+        <constraints nullable="false" foreignKeyName="fk_role_assignment_history_role_assignment_request"
+                     references="role_assignment_request(id)" primaryKey="true"
+                     primaryKeyName="pk_role_assignment_history"/>
       </column>
       <column name="actor_id_type" type="text">
         <constraints nullable="false"/>

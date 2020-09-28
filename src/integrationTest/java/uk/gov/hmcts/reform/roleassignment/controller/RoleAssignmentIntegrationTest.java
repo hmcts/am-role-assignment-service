@@ -44,7 +44,6 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
 
     @Rule
     public FeatureFlagToggleEvaluator featureFlagToggleEvaluator = new FeatureFlagToggleEvaluator();
-
     private JdbcTemplate template;
 
     @Inject
