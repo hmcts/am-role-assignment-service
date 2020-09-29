@@ -58,6 +58,7 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+    show-sql: true
   liquibase:
     enabled: ${ENABLE_DB_MIGRATE:true}
     change-log: classpath:/db/changelog/db.changelog-master.xml

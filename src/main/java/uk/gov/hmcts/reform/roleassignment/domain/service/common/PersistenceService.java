@@ -205,7 +205,7 @@ public class PersistenceService {
 
         Page<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findAll(where((searchRequest.getActorId()==null || searchRequest.getActorId().isEmpty()) ? null : searchByActorIds(
             searchRequest.getActorId())) .and((searchRequest.getGrantType()==null ||searchRequest.getGrantType().isEmpty()) ? null : searchByGrantType(searchRequest.getGrantType()))
-                                         .and(searchRequest.getVaildAt() == null ? null : searchByValidDate(searchRequest.getVaildAt()))
+                                         .and(searchRequest.getValidAt() == null ? null : searchByValidDate(searchRequest.getValidAt()))
                                          .and((searchRequest.getAttributes()==null||searchRequest.getAttributes().isEmpty()) ? null : searchByAttributes(searchRequest.getAttributes()))
                                          .and((searchRequest.getRoleType()==null||searchRequest.getRoleType().isEmpty())?null:searchByRoleType(searchRequest.getRoleType()))
                                          .and((searchRequest.getRoleName()==null||searchRequest.getRoleName().isEmpty())?null:searchByRoleName(searchRequest.getRoleName()))
