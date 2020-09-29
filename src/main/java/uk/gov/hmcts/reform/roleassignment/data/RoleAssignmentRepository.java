@@ -4,12 +4,16 @@ package uk.gov.hmcts.reform.roleassignment.data;
 import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEntity, UUID> {
+public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEntity, UUID>, JpaSpecificationExecutor<RoleAssignmentEntity> {
 
     Set<RoleAssignmentEntity> findByActorId(UUID actorId);
 

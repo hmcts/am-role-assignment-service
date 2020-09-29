@@ -19,6 +19,8 @@ public final class V1 {
             + ".get-assignments+json;charset=UTF-8;version=1.0";
         public static final String GET_ROLES = SERVICE
             + ".get-roles+json;charset=UTF-8;version=1.0";
+        public static final String POST_ASSIGNMENTS = SERVICE
+            + ".post-assignments+json;charset=UTF-8;version=1.0";
     }
 
     public static final class Error {

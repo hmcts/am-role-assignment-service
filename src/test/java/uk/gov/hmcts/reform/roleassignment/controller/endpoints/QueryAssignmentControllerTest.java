@@ -8,10 +8,15 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -43,7 +48,7 @@ class QueryAssignmentControllerTest {
             = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator).retrieveRoleAssignmentsByActorIdAndCaseId(
             actorId, caseId, ROLE_TYPE);
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("",actorId, caseId, ROLE_TYPE);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("", actorId, caseId, ROLE_TYPE);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());
@@ -55,9 +60,9 @@ class QueryAssignmentControllerTest {
         ResponseEntity<Object> expectedResponse
             = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-                                  .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null, ROLE_TYPE);
+            .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null, ROLE_TYPE);
         ResponseEntity<Object> response = sut
-            .retrieveRoleAssignmentsByActorIdAndCaseId("",actorId, null, RoleType.CASE.name());
+            .retrieveRoleAssignmentsByActorIdAndCaseId("", actorId, null, RoleType.CASE.name());
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());
@@ -69,8 +74,8 @@ class QueryAssignmentControllerTest {
         ResponseEntity<Object> expectedResponse
             = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-                                  .retrieveRoleAssignmentsByActorIdAndCaseId(null, caseId, ROLE_TYPE);
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("",null, caseId, ROLE_TYPE);
+            .retrieveRoleAssignmentsByActorIdAndCaseId(null, caseId, ROLE_TYPE);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("", null, caseId, ROLE_TYPE);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());
@@ -82,9 +87,9 @@ class QueryAssignmentControllerTest {
         String caseId = "1234567890123456";
         ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-                                  .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, ROLE_TYPE);
+            .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, ROLE_TYPE);
 
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("",actorId, caseId, ROLE_TYPE);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("", actorId, caseId, ROLE_TYPE);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
     }
@@ -100,14 +105,19 @@ class QueryAssignmentControllerTest {
 
     @Test
     void shouldPostRoleAssignmentQueryByRequest() throws Exception {
-        String actorId = "123e4567-e89b-42d3-a456-556642445678";
-        QueryRequest queryRequest;
+        List<UUID> actorId = Arrays.asList(
+            UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
+            UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
+        );
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .build();
         ResponseEntity<Object> expectedResponse
             = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-            .retrieveRoleAssignmentsByPostingQueryRequest(queryRequest);
+            .retrieveRoleAssignmentsByQueryRequest(queryRequest);
         ResponseEntity<Object> response = sut
-            .retrieveRoleAssignmentsByActorIdAndCaseId(queryRequest);
+            .retrieveRoleAssignmentsByQueryRequest("", queryRequest);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());
@@ -115,28 +125,35 @@ class QueryAssignmentControllerTest {
 
     @Test
     void shouldReturnBadRequestForInvalidRequestBody() {
-        String actorId = "123e4567-e89b-42d3-a456-556642445678";
-        String caseId = "1234567890123456";
-        QueryRequest queryRequest;
-        ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-            .retrieveRoleAssignmentsByPostingQueryRequest(queryRequest);
+        List<UUID> actorId = Arrays.asList(
+            UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
+            UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
+        );
 
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByPostingQueryRequest(queryRequest);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .build();
+        ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
+            .retrieveRoleAssignmentsByQueryRequest(queryRequest);
+
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByQueryRequest("", queryRequest);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
     }
 
     @Test
     void shouldReturnEmptyResultIfNoRecordsFound() {
-        String actorId = "123e4567-e89b-42d3-a456-556642445678";
-        String caseId = "1234567890123456";
-        QueryRequest queryRequest;
+        List<String> roleType = Arrays.asList("CASE","ORGANISATION");
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .roleType(roleType)
+            .build();
         ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-            .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, ROLE_TYPE);
+            .retrieveRoleAssignmentsByQueryRequest(queryRequest);
 
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("",actorId, caseId, ROLE_TYPE);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByQueryRequest("", queryRequest);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
     }
