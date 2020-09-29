@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -93,6 +94,26 @@ class ValidationUtilTest {
         Assertions.assertDoesNotThrow(() ->
             ValidationUtil.validateRequestedRoles(TestDataBuilder.buildRequestedRoleCollection(Status.LIVE))
         );
+    }
+
+    @Test
+    void shouldThrowExceptionForCaseNoBeginTime() throws IOException {
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
+        roleAssignment.setBeginTime(null);
+        Collection<RoleAssignment> roleAssignments = new ArrayList<>();
+        roleAssignments.add(roleAssignment);
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateRequestedRoles(roleAssignments));
+    }
+
+    @Test
+    void shouldThrowExceptionForCaseNoEndTime() throws IOException {
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
+        roleAssignment.setEndTime(null);
+        Collection<RoleAssignment> roleAssignments = new ArrayList<>();
+        roleAssignments.add(roleAssignment);
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateRequestedRoles(roleAssignments));
     }
 
     @Test
