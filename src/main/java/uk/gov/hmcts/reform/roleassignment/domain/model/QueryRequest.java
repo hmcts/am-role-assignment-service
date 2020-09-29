@@ -20,7 +20,7 @@ public class QueryRequest {
     private List<String> roleName;
     private List<String> classification;
     private List<String> grantType;
-    private LocalDateTime vaildAt;
+    private LocalDateTime validAt;
     private List<String> roleCategorie;
     private Map<String, List<String>> attributes;
 }
