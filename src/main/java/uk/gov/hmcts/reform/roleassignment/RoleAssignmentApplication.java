@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.roleassignment;
 
 import feign.Feign;
 import feign.jackson.JacksonEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +19,6 @@ import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 
-import javax.sql.DataSource;
 import java.time.Clock;
 
 @SpringBootApplication
@@ -33,12 +31,9 @@ import java.time.Clock;
 
 public class RoleAssignmentApplication {
 
-    @Autowired
-    static DataSource dataSource;
 
-    public static void main(final String[] args) throws Exception {
+    public static void main(final String[] args) {
         SpringApplication.run(RoleAssignmentApplication.class);
-       // new LiquibaseConfig().method(dataSource);
     }
 
     @Bean
