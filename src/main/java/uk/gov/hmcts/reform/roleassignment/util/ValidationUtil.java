@@ -145,6 +145,12 @@ public class ValidationUtil {
 
             validateId(Constants.UUID_PATTERN, requestedRole.getActorId().toString());
             compareRoleType(requestedRole.getRoleType().toString());
+            if (requestedRole.getRoleType().equals(CASE)) {
+                if (requestedRole.getBeginTime() == null || requestedRole.getEndTime() == null) {
+                    throw new BadRequestException("Parameter 'beginTime' and 'endTime' is required for roleType CASE");
+                }
+                validateId(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
+            }
             if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
                 validateDateTime(requestedRole.getBeginTime().toString());
                 validateDateTime(requestedRole.getEndTime().toString());
@@ -152,9 +158,6 @@ public class ValidationUtil {
                     requestedRole.getBeginTime().toString(),
                     requestedRole.getEndTime().toString()
                 );
-            }
-            if (requestedRole.getRoleType().equals(CASE)) {
-                validateId(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
             }
         }
     }
