@@ -39,10 +39,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -455,6 +458,69 @@ class PersistenceServiceTest {
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
             .roleType(roleType)
+            .build();
+
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
+            Pageable.class);
+
+        Specification<RoleAssignmentEntity> spec = Specification.where(any());
+
+        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
+        ))
+            .thenReturn(page);
+
+
+        when(mockSpec.toPredicate(root, query, builder)).thenReturn(predicate);
+
+
+        when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
+            .thenReturn(TestDataBuilder.buildRoleAssignment(Status.LIVE));
+
+        List<RoleAssignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,0);
+        assertNotNull(roleAssignmentList);
+
+        assertNotNull(roleAssignmentList);
+        assertFalse(roleAssignmentList.isEmpty());
+
+        verify(persistenceUtil, times(1))
+            .convertEntityToRoleAssignment(page.iterator().next());
+
+    }
+
+    @Test
+    void postRoleAssignmentsByQueryRequestWithAllParameters() throws IOException {
+
+
+        List<RoleAssignmentEntity> tasks = new ArrayList<>();
+        tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(Status.LIVE)));
+
+        Page<RoleAssignmentEntity> page = new PageImpl<RoleAssignmentEntity>(tasks);
+
+
+        List<UUID> actorId = Arrays.asList(
+            UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
+            UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
+        );
+        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleNmaes = Arrays.asList("judge", "senior judge");
+        List<String> roleCategories = Arrays.asList("JUDICIAL");
+        List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
+        Map<String, List<String>> attributes = new HashMap<>();
+        List<String> regions = Arrays.asList("London", "JAPAN");
+        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        attributes.put("region", regions);
+        attributes.put("contractType", contractTypes);
+        List<String> grantTypes = Arrays.asList("SPECIFIC", "STANDARD");
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleType)
+            .roleCategorie(roleCategories)
+            .roleName(roleNmaes)
+            .classification(classifications)
+            .attributes(attributes)
+            .validAt(LocalDateTime.now())
+            .grantType(grantTypes)
             .build();
 
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
