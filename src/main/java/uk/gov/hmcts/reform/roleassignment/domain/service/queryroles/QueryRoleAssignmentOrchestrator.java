@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.queryroles;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

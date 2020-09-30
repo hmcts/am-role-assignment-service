@@ -83,12 +83,12 @@ public class QueryAssignmentController {
         correlationId = "#correlationId")
     public ResponseEntity<Object> retrieveRoleAssignmentsByActorIdAndCaseId(@RequestHeader(value = "x-correlation-id",
         required = false) String correlationId,
-                                                                            @ApiParam(value = "Actor Id", required = false)
-                                                                            @RequestParam(value = "actorId", required = false) String actorId,
-                                                                            @ApiParam(value = "Case Id", required = false)
-                                                                            @RequestParam(value = "caseId", required = false) String caseId,
-                                                                            @ApiParam(value = "Role Type", required = true)
-                                                                            @RequestParam(value = "roleType", required = true) String roleType) {
+        @ApiParam(value = "Actor Id", required = false)
+        @RequestParam(value = "actorId", required = false) String actorId,
+        @ApiParam(value = "Case Id", required = false)
+        @RequestParam(value = "caseId", required = false) String caseId,
+        @ApiParam(value = "Role Type", required = true)
+        @RequestParam(value = "roleType", required = true) String roleType) {
 
         return queryRoleAssignmentOrchestrator.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, roleType);
     }
@@ -142,12 +142,10 @@ public class QueryAssignmentController {
     @LogAudit(operationType = SEARCH_ASSIGNMENTS,
         id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).searchAssignmentIds(#result)",
         correlationId = "#correlationId")
-    public ResponseEntity<Object> retrieveRoleAssignmentsByQueryRequest(@RequestHeader(value = "x-correlation-id", required = false)
-                                                                            String correlationId,
-                                                                        @RequestHeader(value = "pageNumber", required = false)
-                                                                            Integer pageNumber,
-                                                                        @Validated
-                                                                        @RequestBody(required = true) QueryRequest queryRequest) {
+    public ResponseEntity<Object> retrieveRoleAssignmentsByQueryRequest(@RequestHeader(value = "x-correlation-id",
+                                                    required = false) String correlationId,
+                             @RequestHeader(value = "pageNumber", required = false) Integer pageNumber,
+                    @Validated @RequestBody(required = true) QueryRequest queryRequest) {
 
         return queryRoleAssignmentOrchestrator.retrieveRoleAssignmentsByQueryRequest(queryRequest,pageNumber);
     }
