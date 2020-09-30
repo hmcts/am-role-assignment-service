@@ -8,7 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public  class RoleAssignmentEntitySpecifications {
+public final class RoleAssignmentEntitySpecifications {
+
+    private RoleAssignmentEntitySpecifications() {
+
+    }
 
 
     public static Specification<RoleAssignmentEntity> searchByActorIds(List<UUID> actorIds) {
@@ -44,15 +48,15 @@ public  class RoleAssignmentEntitySpecifications {
                                                          .map(entry -> {
                                                              return builder.or(entry.getValue()
                                                                                    .stream()
-                                                                                   .map(value -> {
-                                                                                       return builder.equal(builder.function(
+                                                         .map(value -> {
+                                                             return builder.equal(builder.function(
                                                                                            "jsonb_extract_path_text",
                                                                                            String.class,
-                                                                                           root.<String>get("attributes"),
-                                                                                           builder.literal(entry.getKey())
+                                                                               root.<String>get("attributes"),
+                                                                               builder.literal(entry.getKey())
                                                                                        ), value);
 
-                                                                                   }).toArray(Predicate[]::new));
+                                                         }).toArray(Predicate[]::new));
                                                          })
                                                          .toArray(Predicate[]::new));
 

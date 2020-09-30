@@ -55,24 +55,24 @@ public class RoleAssignmentEntitySpecificationsTest {
             UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
         );
 
-        Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByActorIds(actorId);
-        specification = specification.and(mockSpec);
-        assertThat(specification).isNotNull();
-        MatcherAssert.assertThat(specification.toPredicate(root, query, builder), is(predicate));
+        Specification<RoleAssignmentEntity> spec = RoleAssignmentEntitySpecifications.searchByActorIds(actorId);
+        spec = spec.and(mockSpec);
+        assertThat(spec).isNotNull();
+        MatcherAssert.assertThat(spec.toPredicate(root, query, builder), is(predicate));
 
 
     }
 
     @Test
-    public void ShouldNotReturnPredicate_WhileSearchByActorIdsWithoutMock() {
+    public void shouldNotReturnPredicate_WhileSearchByActorIdsWithoutMock() {
         List<UUID> actorId = Arrays.asList(
             UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
             UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
         );
 
-        Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByActorIds(actorId);
-        assertThat(specification).isNotNull();
-        MatcherAssert.assertThat(specification.toPredicate(root, query, builder), is(nullValue()));
+        Specification<RoleAssignmentEntity> spec = RoleAssignmentEntitySpecifications.searchByActorIds(actorId);
+        assertThat(spec).isNotNull();
+        MatcherAssert.assertThat(spec.toPredicate(root, query, builder), is(nullValue()));
 
 
     }
@@ -90,7 +90,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void ShouldNotReturnPredicate_WhileSearchByValidDateWithoutMock() {
+    public void shouldNotReturnPredicate_WhileSearchByValidDateWithoutMock() {
 
 
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByValidDate(
