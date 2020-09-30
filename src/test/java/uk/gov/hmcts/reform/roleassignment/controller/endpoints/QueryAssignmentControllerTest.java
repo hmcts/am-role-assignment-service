@@ -115,9 +115,9 @@ class QueryAssignmentControllerTest {
         ResponseEntity<Object> expectedResponse
             = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-            .retrieveRoleAssignmentsByQueryRequest(queryRequest);
+            .retrieveRoleAssignmentsByQueryRequest(queryRequest,0);
         ResponseEntity<Object> response = sut
-            .retrieveRoleAssignmentsByQueryRequest("", queryRequest);
+            .retrieveRoleAssignmentsByQueryRequest("",0, queryRequest);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());
@@ -135,9 +135,9 @@ class QueryAssignmentControllerTest {
             .build();
         ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-            .retrieveRoleAssignmentsByQueryRequest(queryRequest);
+            .retrieveRoleAssignmentsByQueryRequest(queryRequest,0);
 
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByQueryRequest("", queryRequest);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByQueryRequest("", 0,queryRequest);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
     }
@@ -151,9 +151,9 @@ class QueryAssignmentControllerTest {
             .build();
         ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-            .retrieveRoleAssignmentsByQueryRequest(queryRequest);
+            .retrieveRoleAssignmentsByQueryRequest(queryRequest,0);
 
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByQueryRequest("", queryRequest);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByQueryRequest("",0, queryRequest);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
     }
