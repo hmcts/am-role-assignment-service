@@ -31,8 +31,8 @@ public class LiquibaseConfig implements ApplicationRunner {
                                                  new ClassLoaderResourceAccessor(), database
         )) {
             liquibase.update(new Contexts());
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+        } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
         }
     }
 }
