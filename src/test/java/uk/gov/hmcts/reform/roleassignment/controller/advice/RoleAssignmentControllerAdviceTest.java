@@ -12,9 +12,9 @@ import uk.gov.hmcts.reform.roleassignment.controller.WelcomeController;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.ACTORIDTYPE;
@@ -87,6 +87,17 @@ class RoleAssignmentControllerAdviceTest {
     }
 
     @Test
+    void handleUnprocessableEntityException() {
+        UnprocessableEntityException unprocessableEntityException =
+            mock(UnprocessableEntityException.class);
+        ResponseEntity<Object> responseEntity =
+            csda.handleUnProcessableEntityExcepton(servletRequestMock,unprocessableEntityException);
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), responseEntity.getStatusCodeValue());
+    }
+
+
+    @Test
     void handleHttpMessageConversionException() {
         HttpMessageConversionException httpMessageConversionException =
             mock(HttpMessageConversionException.class);
@@ -114,37 +125,30 @@ class RoleAssignmentControllerAdviceTest {
 
     @Test
     void testInvalidRequest() {
-        Assertions.assertThrows(InvalidRequest.class, () -> {
-            welcomeController.getException("invalidRequest");
-        });
-    }
-
-    @Test
-    void testNull() {
-
-        ResponseEntity<String> responseEntity = welcomeController.getException("invalid");
-        assertNull(responseEntity);
+        Assertions.assertThrows(InvalidRequest.class, () ->
+            welcomeController.getException("invalidRequest")
+        );
     }
 
     @Test
     void testResourceNotFoundException() {
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            welcomeController.getException("resourceNotFoundException");
-        });
+        Assertions.assertThrows(ResourceNotFoundException.class, () ->
+            welcomeController.getException("resourceNotFoundException")
+        );
     }
 
     @Test
     void testHttpMessageConversionException() {
-        Assertions.assertThrows(HttpMessageConversionException.class, () -> {
-            welcomeController.getException("httpMessageConversionException");
-        });
+        Assertions.assertThrows(HttpMessageConversionException.class, () ->
+            welcomeController.getException("httpMessageConversionException")
+        );
     }
 
     @Test
     void testBadRequestException() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            welcomeController.getException("badRequestException");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            welcomeController.getException("badRequestException")
+        );
     }
 
     @Test

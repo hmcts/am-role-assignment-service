@@ -1,6 +1,8 @@
 server:
   port: ${PORT:4096}
-
+info:
+  app:
+    name: "am role assignment service"
 management:
   health:
     db:
@@ -11,22 +13,20 @@ management:
       enabled: true
   endpoint:
     health:
+      show-details: "always"
       enabled: true
       cache:
         time-to-live: 5s
-      show-details: "always"
-    env:
-      cache:
-        time-to-live:
-  security:
-    enabled: false
   endpoints:
     health:
       sensitive: false
     web:
       base-path: /
       exposure:
-        include: 'health'
+        include: "*"
+  server:
+    servlet:
+      context-path: /
 
 #If you use a database then uncomment below lines and update db properties accordingly
 
@@ -34,7 +34,6 @@ security:
   anonymousPaths:
     - "/"
     - "/health/**"
-    - "/actuator/**"
     - "/loggers/**"
     - "/swagger-ui.html"
     - "/swagger-resources/**"
@@ -60,7 +59,7 @@ spring:
           lob:
             non_contextual_creation: true
   liquibase:
-    enabled: ${ENABLE_DB_MIGRATE:true}
+    enabled: ${ENABLE_DB_MIGRATE:false}
     change-log: classpath:/db/changelog/db.changelog-master.xml
   datasource:
     url: jdbc:postgresql://${ROLE_ASSIGNMENT_DB_HOST:localhost}:${ROLE_ASSIGNMENT_DB_PORT:5451}/${ROLE_ASSIGNMENT_DB_NAME:role_assignment}${ROLE_ASSIGNMENT_DB_OPTIONS:?stringtype=unspecified}
@@ -96,16 +95,13 @@ idam:
     redirect_uri: ${ROLE_ASSIGNMENT_IDAM_REDIRECT_URI:http://localhost:4096/oauth2redirect}
     admin:
       userId: ${ROLE_ASSIGNMENT_IDAM_ADMIN_USERID:befta.caseworker.2.solicitor.2@gmail.com}
-      password: ${ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:Pa55word11}
+      secret: ${ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:Pa55word11}
       scope: ${ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE:search-user}
 
 
 testS2S:
   api:
     url: "/testS2SAuthorization"
-integrationTest:
-  api:
-    url: "/"
 
 feign:
   client:
@@ -124,5 +120,20 @@ roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
 launchdarkly:
   sdk:
     key: ${LD_SDK_KEY:}
-    environment: ${LAUNCH_DARKLY_ENV:demo}
+    environment: ${LAUNCH_DARKLY_ENV:pr}
     user: am-${LAUNCH_DARKLY_ENV:local}
+
+audit:
+  log:
+    ignore:
+      statues: 404
+    enabled: true
+
+token:
+  cache:
+    ttl:
+      secs: 900000
+
+
+
+

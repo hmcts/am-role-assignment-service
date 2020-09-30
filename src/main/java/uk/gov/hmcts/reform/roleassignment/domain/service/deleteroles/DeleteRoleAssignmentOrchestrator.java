@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -43,12 +45,12 @@ public class DeleteRoleAssignmentOrchestrator {
 
     public ResponseEntity<Object> deleteRoleAssignmentByProcessAndReference(String process,
                                                                             String reference) {
-        List<RoleAssignment> requestedRoles = null;
+        List<RoleAssignment> requestedRoles;
 
         //1. create the request Object
         if (process != null && reference != null) {
             request = parseRequestService.prepareDeleteRequest(process, reference, "", "");
-            assignmentRequest = new AssignmentRequest(new Request(), Collections.emptyList());
+            assignmentRequest = new AssignmentRequest(request, Collections.emptyList());
         } else {
             throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
         }
@@ -72,12 +74,12 @@ public class DeleteRoleAssignmentOrchestrator {
     }
 
     public ResponseEntity<Object> deleteRoleAssignmentByAssignmentId(String assignmentId) {
-        List<RoleAssignment> requestedRoles = null;
+        List<RoleAssignment> requestedRoles;
 
         //1. create the request Object
         if (assignmentId != null) {
             request = parseRequestService.prepareDeleteRequest("", "", "", assignmentId);
-            assignmentRequest = new AssignmentRequest(new Request(), Collections.emptyList());
+            assignmentRequest = new AssignmentRequest(request, Collections.emptyList());
         } else {
             throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
         }
@@ -100,7 +102,7 @@ public class DeleteRoleAssignmentOrchestrator {
     @NotNull
     private ResponseEntity<Object> performOtherStepsForDelete(String actorId, List<RoleAssignment> requestedRoles) {
         //4. call validation rule
-        validationByDrool(request, requestedRoles);
+        validationByDrool(requestedRoles);
 
         //5. persist the  requested roles  and update status
         updateStatusAndPersist(request);
@@ -122,8 +124,7 @@ public class DeleteRoleAssignmentOrchestrator {
         request.setId(requestEntity.getId());
     }
 
-    private void validationByDrool(Request request, List<RoleAssignment> requestedRoles) {
-        assignmentRequest.setRequest(request);
+    private void validationByDrool(List<RoleAssignment> requestedRoles) {
         assignmentRequest.setRequestedRoles(requestedRoles);
 
         //calling drools rules for validation
@@ -134,7 +135,6 @@ public class DeleteRoleAssignmentOrchestrator {
 
     private void updateStatusAndPersist(Request request) {
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            requestedRole.setRequest(request);
             if (!requestedRole.getStatus().equals(Status.APPROVED)) {
                 requestedRole.setStatus(Status.DELETE_REJECTED);
                 requestedRole.setStatusSequence(Status.DELETE_REJECTED.sequence);
@@ -151,6 +151,7 @@ public class DeleteRoleAssignmentOrchestrator {
         persistenceService.updateRequest(requestEntity);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
         // decision block
         List<RoleAssignment> deleteApprovedRoles = validatedAssignmentRequest.getRequestedRoles().stream()
@@ -170,13 +171,11 @@ public class DeleteRoleAssignmentOrchestrator {
             updateRequestStatus(validatedAssignmentRequest, Status.APPROVED);
 
         } else {
-
             //Insert requested roles  into history table with status deleted-Rejected
             insertRequestedRole(validatedAssignmentRequest, Status.DELETE_REJECTED);
 
             // Update request status to REJECTED
             updateRequestStatus(validatedAssignmentRequest, Status.REJECTED);
-
         }
     }
 
@@ -198,15 +197,12 @@ public class DeleteRoleAssignmentOrchestrator {
 
     private void insertRequestedRole(AssignmentRequest parsedAssignmentRequest, Status status) {
         for (RoleAssignment requestedRole : parsedAssignmentRequest.getRequestedRoles()) {
-            requestedRole.setRequest(parsedAssignmentRequest.getRequest());
             requestedRole.setStatus(status);
             // persist history in db
             requestEntity.getHistoryEntities().add(persistenceService.persistHistory(
                 requestedRole,
                 parsedAssignmentRequest.getRequest()
             ));
-
-
         }
 
         //Persist request to update relationship with history entities

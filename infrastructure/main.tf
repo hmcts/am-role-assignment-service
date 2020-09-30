@@ -1,28 +1,22 @@
 provider "azurerm" {
-  version = "=1.44.0"
+  features {}
 }
 
 locals {
   app_full_name = "${var.product}-${var.component}"
 
-  aseName = "core-compute-${var.env}"
-  local_env = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
-  local_ase = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "core-compute-aat" : "core-compute-saat" : local.aseName}"
-  env_ase_url = "${local.local_env}.service.${local.local_ase}.internal"
+  local_env = (var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env
 
   // Vault name
   previewVaultName = "${var.raw_product}-aat"
   nonPreviewVaultName = "${var.raw_product}-${var.env}"
-  vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
+  vaultName = (var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName
 
   // Shared Resource Group
   previewResourceGroup = "${var.raw_product}-shared-infrastructure-aat"
   nonPreviewResourceGroup = "${var.raw_product}-shared-infrastructure-${var.env}"
-  sharedResourceGroup = "${(var.env == "preview" || var.env == "spreview") ? local.previewResourceGroup : local.nonPreviewResourceGroup}"
+  sharedResourceGroup = (var.env == "preview" || var.env == "spreview") ? local.previewResourceGroup : local.nonPreviewResourceGroup
 
-  sharedAppServicePlan = "${var.raw_product}-${var.env}"
-  sharedASPResourceGroup = "${var.raw_product}-shared-${var.env}"
-  definition_store_host = "http://ccd-definition-store-api-${local.env_ase_url}"
   }
 
 data "azurerm_key_vault" "am_key_vault" {
@@ -46,7 +40,7 @@ resource "azurerm_key_vault_secret" "am_role_assignment_service_s2s_secret" {
   key_vault_id = data.azurerm_key_vault.am_key_vault.id
 }
 
-module "role-assignment-db" {
+module "role-assignment-database" {
   source = "git@github.com:hmcts/cnp-module-postgres?ref=master"
   product = "${local.app_full_name}-postgres-db"
   location = "${var.location}"
@@ -66,30 +60,30 @@ module "role-assignment-db" {
 
 resource "azurerm_key_vault_secret" "POSTGRES-USER" {
   name = "${var.component}-POSTGRES-USER"
-  value = "${module.role-assignment-db.user_name}"
+  value = "${module.role-assignment-database.user_name}"
   key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES-PASS" {
   name = "${var.component}-POSTGRES-PASS"
-  value = "${module.role-assignment-db.postgresql_password}"
+  value = "${module.role-assignment-database.postgresql_password}"
   key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_HOST" {
   name = "${var.component}-POSTGRES-HOST"
-  value = "${module.role-assignment-db.host_name}"
+  value = "${module.role-assignment-database.host_name}"
   key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_PORT" {
   name = "${var.component}-POSTGRES-PORT"
-  value = "${module.role-assignment-db.postgresql_listen_port}"
+  value = "${module.role-assignment-database.postgresql_listen_port}"
   key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
   name = "${var.component}-POSTGRES-DATABASE"
-  value = "${module.role-assignment-db.postgresql_database}"
+  value = "${module.role-assignment-database.postgresql_database}"
   key_vault_id = "${data.azurerm_key_vault.am_key_vault.id}"
 }

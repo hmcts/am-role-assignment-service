@@ -9,8 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ServiceException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -18,13 +18,18 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
+@Slf4j
 @Named
 @Singleton
 public class JacksonUtils {
@@ -56,15 +61,16 @@ public class JacksonUtils {
         return MAPPER.convertValue(from, JsonNode.class);
     }
 
-    public static final TypeReference<HashMap<String, JsonNode>> getHashMapTypeReference() {
+    public static TypeReference<HashMap<String, JsonNode>> getHashMapTypeReference() {
         return new TypeReference<HashMap<String, JsonNode>>() {
         };
     }
 
-    public static List<RoleAssignmentSubset> convertRequestedRolesIntoSubSet(AssignmentRequest assignmentRequest)
+    //Find Subset for Incoming Records
+    public static Set<RoleAssignmentSubset> convertRequestedRolesIntoSubSet(AssignmentRequest assignmentRequest)
         throws InvocationTargetException, IllegalAccessException {
-        RoleAssignmentSubset subset = null;
-        List<RoleAssignmentSubset> roleAssignmentSubsets = new ArrayList<>();
+        RoleAssignmentSubset subset;
+        Set<RoleAssignmentSubset> roleAssignmentSubsets = new HashSet<>();
         for (RoleAssignment roleAssignment : assignmentRequest.getRequestedRoles()) {
             subset = RoleAssignmentSubset.builder().build();
             BeanUtils.copyProperties(subset, roleAssignment);
@@ -75,19 +81,36 @@ public class JacksonUtils {
 
     }
 
+    //Find Subset for Existing  Records
+    public static Map<UUID, RoleAssignmentSubset> convertExistingRolesIntoSubSet(AssignmentRequest assignmentRequest)
+        throws InvocationTargetException, IllegalAccessException {
+        RoleAssignmentSubset subset;
+        Map<UUID, RoleAssignmentSubset> roleAssignmentSubsets = new HashMap<>();
+        for (RoleAssignment roleAssignment : assignmentRequest.getRequestedRoles()) {
+            subset = RoleAssignmentSubset.builder().build();
+            BeanUtils.copyProperties(subset, roleAssignment);
+            roleAssignmentSubsets.put(roleAssignment.getId(), subset);
+        }
+
+        return roleAssignmentSubsets;
+
+    }
+
     static {
 
-        try (InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream("role.json")) {
-            CollectionType listType = MAPPER.getTypeFactory().constructCollectionType(
-                ArrayList.class,
-                Role.class
-            );
-            List<Role> allRoles = MAPPER.readValue(input, listType);
-            configuredRoles.put("roles", allRoles);
-
-        } catch (Exception e) {
-            throw new ServiceException("Service Exception", e);
+        InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream("role.json");
+        CollectionType listType = MAPPER.getTypeFactory().constructCollectionType(
+            ArrayList.class,
+            Role.class
+        );
+        List<Role> allRoles = null;
+        try {
+            allRoles = MAPPER.readValue(input, listType);
+        } catch (IOException e) {
+            log.error(e.getMessage());
         }
+        configuredRoles.put("roles", allRoles);
+
 
     }
 }

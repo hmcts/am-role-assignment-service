@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -25,6 +26,12 @@ class JsonBConverterTest {
     }
 
     @Test
+    void convertToDatabaseColumn_Null() throws IOException {
+        String result = sut.convertToDatabaseColumn(null);
+        Assertions.assertNull(result);
+    }
+
+    @Test
     void convertToEntityAttribute() throws IOException {
         JsonNode result = sut.convertToEntityAttribute("[{\"userId\":\"S-042\",\"time\":\"2020-01-01T00:00"
                                                            + "\",\"comment\":\"Need Access to case number"
@@ -33,5 +40,6 @@ class JsonBConverterTest {
                                                            + "\":\"Access granted for 3 months\"}]");
 
         assertEquals(TestDataBuilder.buildNotesFromFile(), result);
+
     }
 }

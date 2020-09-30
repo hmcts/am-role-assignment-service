@@ -1,5 +1,5 @@
 {
-  "title": "must successfully receive Role Assignments by Role Type Case and Actor Id",
+  "title": "must successfully receive Role Assignments without X-Correlation-ID Header",
   "_guid_": "S-068",
   "_extends_": "F-006_Test_Data_Base",
   "specs": [
@@ -18,7 +18,7 @@
       "arrayInMap" : [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${[scenarioContext][testData][request][queryParams][actorId]}"
+          "actorId": "${}${[scenarioContext][testData][request][queryParams][actorId]}"
         }
       ]
     }

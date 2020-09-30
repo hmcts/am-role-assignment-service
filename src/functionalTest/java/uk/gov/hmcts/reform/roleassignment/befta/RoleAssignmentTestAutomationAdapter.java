@@ -17,6 +17,7 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
 
     @Override
     public void doLoadTestData() {
+        //Needed for the BEFTA implementation
     }
 
     @Override
@@ -33,9 +34,8 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
     }
 
     private Object generateCaseId() {
-        Long currentTime = new Date().getTime();
-        String time = currentTime.toString();
-        String caseId = time + ("0000000000000000".substring(time.length()));
-        return caseId;
+        long currentTime = new Date().getTime();
+        String time = Long.toString(currentTime);
+        return time + ("0000000000000000".substring(time.length()));
     }
 }

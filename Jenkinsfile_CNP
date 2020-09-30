@@ -11,6 +11,8 @@ properties(
 
 @Library("Infrastructure")
 
+import uk.gov.hmcts.contino.AppPipelineDsl
+
 def type = "java"
 def product = "am"
 def component = "role-assignment-service"
@@ -29,18 +31,23 @@ def vaultOverrides = [
     'spreview': 'saat'
 ]
 
+//These secrets will be available in the functional tests in the virtual machine where pipeline executes.
 def secrets = [
   'ccd-${env}': [
     secret('ccd-caseworker-autotest-email', 'CCD_CASEWORKER_AUTOTEST_EMAIL'),
     secret('ccd-caseworker-autotest-password', 'CCD_CASEWORKER_AUTOTEST_PASSWORD'),
     secret('ccd-befta-caseworker-2-solicitor-1-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_1_PWD'),
     secret('ccd-befta-caseworker-2-solicitor-2-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD'),
-    secret('ccd-befta-caseworker-2-solicitor-3-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_3_PWD'),
-    secret('ccd-api-gateway-oauth2-client-secret', 'OAUTH2_CLIENT_SECRET')
+    secret('ccd-befta-caseworker-2-solicitor-3-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_3_PWD')
   ],
-    's2s-${env}': [
-        secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
-        secret('microservicekey-am-role-assignment-service', 'AM_ROLE_ASSIGNMENT_SERVICE_SECRET')
+  's2s-${env}': [
+    secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
+    secret('microservicekey-am-role-assignment-service', 'AM_ROLE_ASSIGNMENT_SERVICE_SECRET')
+  ],
+  'am-${env}': [
+      secret('role-assignment-service-IDAM-CLIENT-SECRET', 'ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET'),
+      secret('role-assignment-service-LD-SDK-KEY', 'LD_SDK_KEY'),
+      secret('role-assignment-service-IDAM-CLIENT-SECRET', 'OAUTH2_CLIENT_SECRET')
     ]
 ]
 
@@ -48,30 +55,47 @@ def secrets = [
 env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
 env.IDAM_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 env.DEFINITION_STORE_HOST = "http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal"
-env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-pr-922.service.core-compute-preview.internal"
 env.BEFTA_S2S_CLIENT_ID = "am_role_assignment_service"
-env.OAUTH2_CLIENT_ID = "ccd_gateway"
-env.OAUTH2_REDIRECT_URI = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect"
+env.OAUTH2_CLIENT_ID = "am_role_assignment"
+env.OAUTH2_REDIRECT_URI = "http://am-role-assignment-service-aat.service.core-compute-aat.internal/oauth2redirect"
 env.OAUTH2_ACCESS_TOKEN_TYPE = "OIDC"
 env.BEFTA_RESPONSE_HEADER_CHECK_POLICY = "JUST_WARN"
 env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 env.OAUTH2_SCOPE_VARIABLES = "openid%20profile%20roles%20authorities"
 env.IDAM_CLIENT_ID="am_role_assignment"
-env.IDAM_CLIENT_SECRET="fc5c22dc-335a-415f-be13-68c26da08fc0"
 env.OPENID_SCOPE_VARIABLES = "openid+profile+roles+authorities"
+env.MICROSERVICE_NAME = "am_role_assignment_service"
+
 withPipeline(type, product, component) {
   onMaster {
     enableSlackNotifications('#am-role-assignment-service-builds')
   }
+  if (env.BRANCH_NAME.startsWith("PR")) {
+      env.LAUNCH_DARKLY_ENV = "pr"
+  }
+  else if(env.BRANCH_NAME == 'master') {
+      env.LAUNCH_DARKLY_ENV = "aat"
+  }
+  else {
+      env.LAUNCH_DARKLY_ENV = env.BRANCH_NAME
+  }
+
   onPR {
     enableSlackNotifications('#am-role-assignment-service-builds')
   }
-
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
   enableAksStagingDeployment()
   disableLegacyDeploymentOnAAT()
   disableLegacyDeployment()
+
+  before('functionalTest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
+  }
+
+  before('functionalTest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
+  }
 
   after('functionalTest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/cucumber/**/*'
@@ -88,4 +112,8 @@ withPipeline(type, product, component) {
   after('smoketest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/site/serenity/**'
   }
+
+  enablePactAs([
+          AppPipelineDsl.PactRoles.CONSUMER
+  ])
 }

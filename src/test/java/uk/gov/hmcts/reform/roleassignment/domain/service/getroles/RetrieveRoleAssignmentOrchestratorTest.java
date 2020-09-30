@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +33,6 @@ import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -82,9 +82,9 @@ class RetrieveRoleAssignmentOrchestratorTest {
         List<RoleAssignment> roleAssignments
             = (List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection(Status.LIVE);
         String actorId = "";
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.getAssignmentsByActor(actorId);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.getAssignmentsByActor(actorId)
+        );
     }
 
     @Test
@@ -93,9 +93,9 @@ class RetrieveRoleAssignmentOrchestratorTest {
         List<RoleAssignment> roleAssignments
             = (List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection(Status.LIVE);
         String actorId = "123e4567-e89b-42d3-a456-^&%$£%";
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            sut.getAssignmentsByActor(actorId);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.getAssignmentsByActor(actorId)
+        );
     }
 
     @Test
@@ -105,9 +105,9 @@ class RetrieveRoleAssignmentOrchestratorTest {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         ResponseEntity<Object> roles = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         when(persistenceService.getAssignmentsByActor(UUID.fromString(actorId))).thenReturn(roleAssignments);
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            sut.getAssignmentsByActor(actorId);
-        });
+        Assertions.assertThrows(ResourceNotFoundException.class, () ->
+            sut.getAssignmentsByActor(actorId)
+        );
         verify(persistenceService, times(1)).getAssignmentsByActor(any(UUID.class));
     }
 
@@ -124,7 +124,7 @@ class RetrieveRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    void getListOfRoles() {
+    void getListOfRoles() throws IOException {
         JsonNode roles = sut.getListOfRoles();
         assertNotNull(roles);
         assertEquals(2, roles.size());

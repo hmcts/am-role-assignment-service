@@ -19,8 +19,8 @@ services:
        ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service
        IDAM_USER_URL: http://idam-api:5000
        IDAM_S2S_URL: http://service-auth-provider-api:8080
-       OPEN_ID_API_BASE_URI: http://localhost:5000/o
-       OIDC_ISSUER_URL: http://localhost:8080/openam/oauth2/hmcts
+       OPEN_ID_API_BASE_URI: http://idam-api:5000/o
+       OIDC_ISSUER_URL: http://idam-api:8080/openam/oauth2/hmcts
        ROLE_ASSIGNMENT_IDAM_CLIENT_ID: am_docker
        ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET: am_docker_secret
        ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: befta.caseworker.2.solicitor.2@gmail.com

@@ -12,13 +12,14 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
+import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
+import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -35,7 +36,9 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -53,10 +56,13 @@ class PersistenceServiceTest {
     private PersistenceUtil persistenceUtil;
     @Mock
     private ActorCacheRepository actorCacheRepository;
+    @Mock
+    private DatabseChangelogLockRepository databseChangelogLockRepository;
 
     @InjectMocks
     private PersistenceService sut = new PersistenceService(
-        historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository);
+        historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository,
+        databseChangelogLockRepository);
 
     @BeforeEach
     public void setUp() {
@@ -109,8 +115,10 @@ class PersistenceServiceTest {
 
         assertNotNull(historyEntityResult);
         assertNotNull(assignmentRequest.getRequest().getId());
+        assertNotNull(historyEntityResult.getRequestEntity().getId());
 
         assertEquals(assignmentRequest.getRequest().getId(), historyEntityResult.getRequestEntity().getId());
+        assertEquals(assignmentRequest.getRequestedRoles().iterator().next().getId(), historyEntityResult.getId());
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
             assertEquals(requestedRole.getId(), historyEntityResult.getId());
         }
@@ -126,24 +134,24 @@ class PersistenceServiceTest {
         AssignmentRequest assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
         assignmentRequest.getRequest().setId(null);
+        assignmentRequest.getRequestedRoles().iterator().next().setId(null);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
 
         when(persistenceUtil.convertRequestToEntity(assignmentRequest.getRequest())).thenReturn(requestEntity);
-        when(persistenceUtil.convertRoleAssignmentToHistoryEntity(
-            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity)).thenReturn(historyEntity);
+        when(persistenceUtil.convertRoleAssignmentToHistoryEntity(any(), any())).thenReturn(historyEntity);
         when(historyRepository.save(historyEntity)).thenReturn(historyEntity);
 
         HistoryEntity historyEntityResult = sut.persistHistory(
             assignmentRequest.getRequestedRoles().iterator().next(), assignmentRequest.getRequest());
 
         assertNotNull(historyEntityResult);
+        assertNotNull(historyEntityResult.getId());
+        assertNull(historyEntityResult.getRequestEntity().getId());
 
-        assertEquals(assignmentRequest.getRequest().getId(), historyEntityResult.getRequestEntity().getId());
-        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            assertEquals(requestedRole.getId(), historyEntityResult.getId());
-        }
+        assertEquals(assignmentRequest.getRequestedRoles().iterator().next().getId(),
+            historyEntityResult.getRequestEntity().getId());
 
         verify(persistenceUtil, times(1)).convertRequestToEntity(any(Request.class));
         verify(persistenceUtil, times(1)).convertRoleAssignmentToHistoryEntity(
@@ -172,7 +180,7 @@ class PersistenceServiceTest {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.createObjectNode();
         ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.getActorId(),1234, rootNode);
-        ActorCache actorCache = TestDataBuilder.prepareActorCache(roleAssignment);
+        TestDataBuilder.prepareActorCache(roleAssignment);
         when(persistenceUtil.convertActorCacheToEntity(any())).thenReturn(entity);
         when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(entity);
         when(actorCacheRepository.save(entity)).thenReturn(entity);
@@ -181,6 +189,28 @@ class PersistenceServiceTest {
 
         assertNotNull(result);
         assertNotNull(result.getActorId());
+        assertEquals(entity.getEtag(), result.getEtag());
+
+        verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
+        verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
+    }
+
+    @Test
+    void persistActorCache_nullEntity() throws IOException {
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.createObjectNode();
+        ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.getActorId(),1234, rootNode);
+        TestDataBuilder.prepareActorCache(roleAssignment);
+        when(persistenceUtil.convertActorCacheToEntity(any())).thenReturn(entity);
+        when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(null);
+        when(actorCacheRepository.save(entity)).thenReturn(entity);
+
+        ActorCacheEntity result = sut.persistActorCache(roleAssignment);
+
+        assertNotNull(result);
+        assertNotNull(result.getActorId());
+        assertEquals(entity.getEtag(), result.getEtag());
 
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
         verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
@@ -212,7 +242,10 @@ class PersistenceServiceTest {
             "process", "reference", "status")).thenReturn(historyEntities);
         when(persistenceUtil.convertHistoryEntityToRoleAssignment(historyEntity)).thenReturn(requestedRole);
 
-        sut.getAssignmentsByProcess("process", "reference", "status");
+        List<RoleAssignment> result = sut.getAssignmentsByProcess("process", "reference", "status");
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
 
         verify(historyRepository, times(1)).findByReference(
             "process", "reference", "status");
@@ -233,6 +266,17 @@ class PersistenceServiceTest {
 
         verify(persistenceUtil, times(1))
             .convertRoleAssignmentToEntity(any(RoleAssignment.class));
+        verify(roleAssignmentRepository, times(1)).delete(any(RoleAssignmentEntity.class));
+    }
+
+    @Test
+    void deleteRoleAssignmentById() throws IOException {
+        AssignmentRequest assignmentRequest = TestDataBuilder
+            .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
+
+        sut.deleteRoleAssignmentByActorId(assignmentRequest.getRequest().getId());
+
+        verify(roleAssignmentRepository, times(1)).deleteByActorId(any(UUID.class));
     }
 
     @Test
@@ -248,8 +292,28 @@ class PersistenceServiceTest {
         List<RoleAssignment> roleAssignmentList = sut.getAssignmentsByActor(id);
         assertNotNull(roleAssignmentList);
 
+        assertNotNull(roleAssignmentList);
+        assertFalse(roleAssignmentList.isEmpty());
+
         verify(persistenceUtil, times(1))
             .convertEntityToRoleAssignment(roleAssignmentEntitySet.iterator().next());
+        verify(roleAssignmentRepository, times(1))
+            .findByActorId(id);
+    }
+
+    @Test
+    void getAssignmentsByActor_NPE() throws IOException {
+        UUID id = UUID.randomUUID();
+        Set<RoleAssignmentEntity> roleAssignmentEntitySet = new HashSet<>();
+        roleAssignmentEntitySet.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
+                                                                                  .buildRoleAssignment(Status.LIVE)));
+        when(roleAssignmentRepository.findByActorId(id))
+            .thenReturn(null);
+
+        Assertions.assertThrows(NullPointerException.class, () ->
+            sut.getAssignmentsByActor(id)
+        );
+
         verify(roleAssignmentRepository, times(1))
             .findByActorId(id);
     }
@@ -276,14 +340,17 @@ class PersistenceServiceTest {
         List<RoleAssignment> roleAssignmentList
             = sut.getAssignmentsByActorAndCaseId(actorId, caseId, RoleType.CASE.toString());
         assertNotNull(roleAssignmentList);
+        assertFalse(roleAssignmentList.isEmpty());
 
         List<RoleAssignment> roleAssignmentListScenario2
             = sut.getAssignmentsByActorAndCaseId(actorId, "", RoleType.CASE.toString());
         assertNotNull(roleAssignmentListScenario2);
+        assertFalse(roleAssignmentListScenario2.isEmpty());
 
         List<RoleAssignment> roleAssignmentListScenario3
             = sut.getAssignmentsByActorAndCaseId("", caseId, RoleType.CASE.toString());
         assertNotNull(roleAssignmentListScenario3);
+        assertFalse(roleAssignmentListScenario3.isEmpty());
 
     }
 
@@ -304,9 +371,9 @@ class PersistenceServiceTest {
             .thenReturn(roleAssignmentEntities);
 
         String roleType = RoleType.CASE.toString();
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            sut.getAssignmentsByActorAndCaseId(actorId, caseId, roleType);
-        });
+        Assertions.assertThrows(ResourceNotFoundException.class, () ->
+            sut.getAssignmentsByActorAndCaseId(actorId, caseId, roleType)
+        );
 
     }
 
@@ -318,5 +385,24 @@ class PersistenceServiceTest {
         when(roleAssignmentRepository.findById(id)).thenReturn(roleAssignmentOptional);
         List<RoleAssignment> roleAssignmentList = sut.getAssignmentById(id);
         assertNotNull(roleAssignmentList);
+    }
+
+    @Test
+    void getAssignmentById_NPE() {
+        UUID id = UUID.randomUUID();
+        when(roleAssignmentRepository.findById(id)).thenReturn(null);
+        Assertions.assertThrows(NullPointerException.class, () ->
+            sut.getAssignmentById(id)
+        );
+    }
+
+    @Test
+    void releaseDBChangeLock() {
+        DatabaseChangelogLockEntity databaseChangelogLockEntity = DatabaseChangelogLockEntity.builder().id(1).locked(
+            false).lockedby(null).build();
+        when(databseChangelogLockRepository.getById(1)).thenReturn(databaseChangelogLockEntity);
+        DatabaseChangelogLockEntity entity = sut.releaseDatabaseLock(1);
+        assertFalse(entity.isLocked());
+
     }
 }

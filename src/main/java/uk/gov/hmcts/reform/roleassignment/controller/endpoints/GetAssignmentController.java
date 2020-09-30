@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
+import java.io.IOException;
 import java.util.UUID;
+
+import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.GET_ASSIGNMENTS_BY_ACTOR;
 
 @Slf4j
 @Api(value = "roles")
@@ -53,18 +57,21 @@ public class GetAssignmentController {
             message = V1.Error.NO_RECORDS_FOUND_BY_ACTOR
         )
     })
-    public ResponseEntity<Object> retrieveRoleAssignmentsByActorId(
-
-        @RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch,
-
-        @ApiParam(value = "Actor Id ", required = true)
-        @PathVariable("actorId") String actorId) {
+    @LogAudit(operationType = GET_ASSIGNMENTS_BY_ACTOR,
+        id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).getAssignmentIds(#result)",
+        actorId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).getActorIds(#result)",
+        correlationId = "#correlationId")
+    public ResponseEntity<Object> retrieveRoleAssignmentsByActorId(@RequestHeader(value = "x-correlation-id",
+                                                             required = false) String correlationId,
+                        @RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch,
+                        @ApiParam(value = "Actor Id ", required = true)
+                       @PathVariable("actorId") String actorId) {
 
         ResponseEntity<?> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
             actorId
         );
         long etag = retrieveRoleAssignmentService.retrieveETag(UUID.fromString(actorId));
-        String weakEtag = "W/\"" + etag  + "\"";
+        String weakEtag = "W/\"" + etag + "\"";
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setETag(weakEtag);
         return ResponseEntity
@@ -88,7 +95,8 @@ public class GetAssignmentController {
             response = Object.class
         )
     })
-    public ResponseEntity<Object> getListOfRoles() {
+    public ResponseEntity<Object> getListOfRoles(@RequestHeader(value = "x-correlation-id",
+        required = false) String correlationId) throws IOException {
         JsonNode rootNode = retrieveRoleAssignmentService.getListOfRoles();
         return ResponseEntity.status(HttpStatus.OK).body(rootNode);
     }

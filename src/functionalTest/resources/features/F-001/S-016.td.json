@@ -23,25 +23,25 @@
     }
   },
   "expectedResponse": {
-    "responseCode": 409,
-    "responseMessage": "Conflict",
+    "_extends_": "Common_201_Response",
     "headers": {
       "Content-Length": "[[ANYTHING_PRESENT]]",
       "Content-Type": "application/json"
     },
     "body": {
-      "id": "[[ANYTHING_PRESENT]]",
-      "clientId": "[[ANYTHING_PRESENT]]",
-      "authenticatedUserId": "[[ANYTHING_PRESENT]]",
-      "correlationId": "[[ANYTHING_PRESENT]]",
-      "assignerId": "[[ANYTHING_PRESENT]]",
-      "requestType": "CREATE",
-      "process": "businessProcess1",
-      "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-      "replaceExisting": true,
-      "status": "REJECTED",
-      "created": "[[ANYTHING_PRESENT]]",
-      "log": "The request could not be completed due to a conflict(duplicate) with the current state of the resource."
+      "links": [],
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest",
+          "replaceExisting" : true,
+          "log" : "Duplicate Request: Requested Assignments are already live."
+        },
+        "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRole"
+          }
+        ]
+      }
     }
   }
 }

@@ -1,10 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +12,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 class QueryAssignmentControllerTest {
@@ -43,7 +43,7 @@ class QueryAssignmentControllerTest {
             = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator).retrieveRoleAssignmentsByActorIdAndCaseId(
             actorId, caseId, ROLE_TYPE);
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, ROLE_TYPE);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("",actorId, caseId, ROLE_TYPE);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());
@@ -57,7 +57,7 @@ class QueryAssignmentControllerTest {
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
                                   .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null, ROLE_TYPE);
         ResponseEntity<Object> response = sut
-            .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, null, RoleType.CASE.name());
+            .retrieveRoleAssignmentsByActorIdAndCaseId("",actorId, null, RoleType.CASE.name());
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());
@@ -70,23 +70,31 @@ class QueryAssignmentControllerTest {
             = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
                                   .retrieveRoleAssignmentsByActorIdAndCaseId(null, caseId, ROLE_TYPE);
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId(null, caseId, ROLE_TYPE);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("",null, caseId, ROLE_TYPE);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());
     }
 
     @Test
-    void shouldReturn404IfNoAssignmentFoundForGetRoleAssignmentByActorIdAndCaseId() throws Exception {
+    void shouldReturn404IfNoAssignmentFoundForGetRoleAssignmentByActorIdAndCaseId() {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         String caseId = "1234567890123456";
         ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
                                   .retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, ROLE_TYPE);
 
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, ROLE_TYPE);
+        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorIdAndCaseId("",actorId, caseId, ROLE_TYPE);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
     }
 
+    @Test
+    void shouldGetIdLdDemo() {
+        ResponseEntity<Object> response = sut.getIdLdDemo("123e4567-e89b-42d3-a456-556642445555");
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assert response.getBody() != null;
+        assertEquals("Launch Darkly flag check is successful for the endpoint", response.getBody().toString());
+
+    }
 }

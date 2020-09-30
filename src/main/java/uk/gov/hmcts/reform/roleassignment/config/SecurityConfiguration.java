@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -36,11 +38,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
     private String issuerUri;
 
-
-
+    @Order(1)
     private final ServiceAuthFilter serviceAuthFilter;
-    List<String> anonymousPaths;
 
+    @Order(2)
+    private final SecurityEndpointFilter securityEndpointFilter;
+
+    List<String> anonymousPaths;
     private final JwtAuthenticationConverter jwtAuthenticationConverter;
 
     public List<String> getAnonymousPaths() {
@@ -56,21 +60,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/webjars/springfox-swagger-ui/**",
         "/swagger-resources/**",
         "/v2/**",
-        "/actuator/**",
+        "/status/health",
+        "/welcome",
         "/health/**",
         "/health/liveness",
-        "/status/health",
         "/loggers/**",
-        "/welcome",
         "/"
     };
 
 
     @Inject
     public SecurityConfiguration(final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter,
-                                 final ServiceAuthFilter serviceAuthFilter) {
+                                 final ServiceAuthFilter serviceAuthFilter,
+                                 SecurityEndpointFilter securityEndpointFilter) {
 
         this.serviceAuthFilter = serviceAuthFilter;
+        this.securityEndpointFilter = securityEndpointFilter;
         jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
 
@@ -85,6 +90,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http
             .addFilterBefore(serviceAuthFilter, BearerTokenAuthenticationFilter.class)
+            .addFilterAfter(securityEndpointFilter, OAuth2AuthorizationRequestRedirectFilter.class)
             .sessionManagement().sessionCreationPolicy(STATELESS).and()
             .csrf().disable()
             .formLogin().disable()
@@ -106,8 +112,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     JwtDecoder jwtDecoder() {
 
         NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder) JwtDecoders.fromOidcIssuerLocation(issuerUri);
-
-        // We are using issuerOverride instead of issuerUri as SIDAM has the wrong issuer at the moment
         OAuth2TokenValidator<Jwt> withTimestamp = new JwtTimestampValidator();
         OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(withTimestamp);
         jwtDecoder.setJwtValidator(validator);

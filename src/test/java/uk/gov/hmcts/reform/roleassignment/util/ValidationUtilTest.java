@@ -14,11 +14,9 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_TEXT_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_HYPHEN_PATTERN;
@@ -26,97 +24,83 @@ import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_PATTERN;
 
 class ValidationUtilTest {
 
-    UUID uuid = UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c");
-
     @Test
     void shouldValidate() {
-        try {
-            ValidationUtil.validateInputParams(NUMBER_PATTERN, "1212121212121213");
-        } catch (Exception e) {
-            fail("failed");
-        }
+        Assertions.assertDoesNotThrow(() ->
+            ValidationUtil.validateId(NUMBER_PATTERN, "1212121212121213")
+        );
+
     }
 
     @Test
     void shouldThrow() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateInputParams(NUMBER_PATTERN, "2323232323");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateId(NUMBER_PATTERN, "2323232323")
+        );
     }
 
     @Test
     void validateTextField() {
-        try {
-            ValidationUtil.validateInputParams(TEXT_PATTERN, "CREATE");
-        } catch (Exception e) {
-            fail("failed");
-        }
+        Assertions.assertDoesNotThrow(() ->
+            ValidationUtil.validateId(TEXT_PATTERN, "CREATE")
+        );
     }
 
     @Test
     void throw_validateTextField() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateInputParams(NUMBER_PATTERN,"1234");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateId(NUMBER_PATTERN, "1234")
+        );
     }
-
 
     @Test
     void validateNumberTextField() {
-        try {
-            ValidationUtil.validateInputParams(NUMBER_TEXT_PATTERN,"request1");
-        } catch (Exception e) {
-            fail("failed");
-        }
+        Assertions.assertDoesNotThrow(() ->
+            ValidationUtil.validateId(NUMBER_TEXT_PATTERN, "request1")
+        );
     }
 
     @Test
     void throw_validateNumberTextField() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateInputParams(NUMBER_TEXT_PATTERN,"requ-est1");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateId(NUMBER_TEXT_PATTERN, "requ-est1")
+        );
     }
 
     @Test
     void shouldValidateHyphenTextField() {
-        try {
-            ValidationUtil.validateInputParams(TEXT_HYPHEN_PATTERN,"north-west");
-        } catch (Exception e) {
-            fail("failed");
-        }
+        Assertions.assertDoesNotThrow(() ->
+            ValidationUtil.validateId(TEXT_HYPHEN_PATTERN, "north-west")
+        );
     }
 
     @Test
     void should_ValidateHyphenTextField() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateInputParams(TEXT_HYPHEN_PATTERN,"north-west1");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateId(TEXT_HYPHEN_PATTERN, "north-west1")
+        );
     }
 
     @Test
     void validateRoleRequest() {
-        try {
-            ValidationUtil.validateRoleRequest(TestDataBuilder.buildRequest(Status.APPROVED, false));
-        } catch (Exception e) {
-            fail("failed");
-        }
+        Assertions.assertDoesNotThrow(() ->
+            ValidationUtil.validateRoleRequest(TestDataBuilder.buildRequest(Status.APPROVED, false))
+        );
     }
 
     @Test
     void validateRequestedRoles() {
-        try {
-            ValidationUtil.validateRequestedRoles(TestDataBuilder.buildRequestedRoleCollection(Status.LIVE));
-        } catch (Exception e) {
-            fail("failed");
-        }
+        Assertions.assertDoesNotThrow(() ->
+            ValidationUtil.validateRequestedRoles(TestDataBuilder.buildRequestedRoleCollection(Status.LIVE))
+        );
     }
 
     @Test
     void shouldThrowInvalidRequestException_ValidateLists() {
-        List list = new ArrayList();
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateLists(list);
-        });
+        List<String> list = new ArrayList<>();
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.isRequestedRolesEmpty(list)
+        );
     }
 
     @Test
@@ -128,35 +112,41 @@ class ValidationUtilTest {
 
     @Test
     void should_validateDateTime() {
-        ValidationUtil.validateDateTime(LocalDateTime.now().toString());
+        Assertions.assertDoesNotThrow(() ->
+            ValidationUtil.validateDateTime(LocalDateTime.now().toString())
+        );
     }
 
     @Test
     void validateDateTime_ThrowLessThanLimit() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateDateTime("2050-09-01T00:");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateDateTime("2050-09-01T00:")
+        );
     }
 
     @Test
     void validateDateTime_ThrowParseException() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateDateTime("2050-090000000000000");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateDateTime("2050-090000000000000")
+        );
     }
 
     @Test
     void shouldValidateAssignmentRequest_clf() throws IOException, ParseException {
-        ValidationUtil.validateAssignmentRequest(TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
-                                                                                        false));
-
+        Assertions.assertDoesNotThrow(() ->
+            ValidationUtil.validateAssignmentRequest(TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
+                                                                                            false
+            ))
+        );
     }
 
     @Test
     void shouldValidateAssignmentRequest_clt() throws IOException, ParseException {
-        ValidationUtil.validateAssignmentRequest(TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
-                                                                                        true));
-
+        Assertions.assertDoesNotThrow(() ->
+            ValidationUtil.validateAssignmentRequest(TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
+                                                                                            true
+            ))
+        );
     }
 
     @Test
@@ -165,9 +155,9 @@ class ValidationUtilTest {
                                                                                      false);
         assignmentRequest.getRequestedRoles().clear();
 
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateAssignmentRequest(assignmentRequest);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateAssignmentRequest(assignmentRequest)
+        );
     }
 
     @Test
@@ -178,9 +168,9 @@ class ValidationUtilTest {
             requestedRole.setRoleName("commander");
         }
 
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateAssignmentRequest(assignmentRequest);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateAssignmentRequest(assignmentRequest)
+        );
     }
 
     @Test
@@ -191,9 +181,9 @@ class ValidationUtilTest {
             requestedRole.setBeginTime(LocalDateTime.now().minusDays(1L));
         }
 
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateAssignmentRequest(assignmentRequest);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateAssignmentRequest(assignmentRequest)
+        );
     }
 
     @Test
@@ -204,9 +194,9 @@ class ValidationUtilTest {
             requestedRole.setEndTime(LocalDateTime.now().minusDays(1L));
         }
 
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateAssignmentRequest(assignmentRequest);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateAssignmentRequest(assignmentRequest)
+        );
     }
 
     @Test
@@ -217,9 +207,9 @@ class ValidationUtilTest {
             requestedRole.setEndTime(LocalDateTime.now().minusDays(1L));
         }
 
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateAssignmentRequest(assignmentRequest);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateAssignmentRequest(assignmentRequest)
+        );
     }
 
     @Test
@@ -269,69 +259,73 @@ class ValidationUtilTest {
 
     @Test
     void shouldThrow_ValidateCaseId() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateCaseId("1234567890123");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateCaseId("1234567890123")
+        );
     }
 
     @Test
     void shouldValidateDateOrder() throws ParseException {
         String beginTime = LocalDateTime.now().plusDays(1).toString();
         String endTime = LocalDateTime.now().plusDays(14).toString();
-        ValidationUtil.validateDateOrder(beginTime,endTime);
+        Assertions.assertDoesNotThrow(() ->
+            ValidationUtil.compareDateOrder(beginTime, endTime)
+        );
     }
 
     @Test
     void shouldThrow_ValidateDateOrder_BeginTimeBeforeCurrent() {
         String beginTime = LocalDateTime.now().minusDays(1).toString();
         String endTime = LocalDateTime.now().plusDays(14).toString();
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateDateOrder(beginTime,endTime);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.compareDateOrder(beginTime,endTime)
+        );
     }
 
     @Test
     void shouldThrow_ValidateDateOrder_EndTimeBeforeCurrent() {
         String beginTime = LocalDateTime.now().plusDays(14).toString();
         String endTime = LocalDateTime.now().minusDays(1).toString();
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateDateOrder(beginTime,endTime);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.compareDateOrder(beginTime,endTime)
+        );
     }
 
     @Test
     void shouldThrow_ValidateDateOrder_EndTimeBeforeBegin() {
         String beginTime = LocalDateTime.now().plusDays(14).toString();
         String endTime = LocalDateTime.now().plusDays(10).toString();
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateDateOrder(beginTime,endTime);
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.compareDateOrder(beginTime,endTime)
+        );
     }
 
     @Test
     void shouldThrowBad_ValidateEnumField() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateEnumRoleType("SecretAgent");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.compareRoleType("SecretAgent")
+        );
     }
 
     @Test
     void shouldValidateEnumField() {
-        ValidationUtil.validateEnumRoleType("Case");
-        ValidationUtil.validateEnumRoleType("Organisation");
+        Assertions.assertDoesNotThrow(() -> {
+            ValidationUtil.compareRoleType("Case");
+            ValidationUtil.compareRoleType("Organisation");
+        });
     }
 
     @Test
     void shouldThrowBadReq_invalidCaseId() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateCaseId("123456789012345A");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateCaseId("123456789012345A")
+        );
     }
 
     @Test
     void shouldThrowBadReq_invalidCaseIdLength() {
-        Assertions.assertThrows(BadRequestException.class, () -> {
-            ValidationUtil.validateCaseId("123456789012345");
-        });
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateCaseId("123456789012345")
+        );
     }
 }

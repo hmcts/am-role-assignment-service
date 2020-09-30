@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
+
+import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DELETE_ASSIGNMENTS_BY_ID;
+import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DELETE_ASSIGNMENTS_BY_PROCESS;
 
 
 @Api(value = "roles")
@@ -52,8 +56,12 @@ public class DeleteAssignmentController {
             message = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
         )
     })
-    public ResponseEntity<Object> deleteRoleAssignment(@RequestHeader(value = "assignerId", required = false)
-                                                           String assignerId,
+    @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_PROCESS,
+        process = "#process",
+        reference = "#reference",
+        correlationId = "#correlationId")
+    public ResponseEntity<Object> deleteRoleAssignment(@RequestHeader(value = "x-correlation-id", required = false)
+                                                           String correlationId,
                                                        @RequestParam(value = "process", required = false)
                                                            String process,
                                                        @RequestParam(value = "reference", required = false)
@@ -85,11 +93,14 @@ public class DeleteAssignmentController {
             message = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
         )
     })
-    public ResponseEntity<Object> deleteRoleAssignmentById(
-        @RequestHeader(value = "assignerId", required = false)
-            String assignerId,
-        @ApiParam(value = "assignmentId", required = true)
-        @PathVariable String assignmentId) {
+    @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_ID,
+        assignmentId = "#assignmentId",
+        correlationId = "#correlationId"
+    )
+    public ResponseEntity<Object> deleteRoleAssignmentById(@RequestHeader(value = "x-correlation-id", required = false)
+                                                               String correlationId,
+                                                           @ApiParam(value = "assignmentId", required = true)
+                                                           @PathVariable String assignmentId) {
         return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByAssignmentId(assignmentId);
     }
 }

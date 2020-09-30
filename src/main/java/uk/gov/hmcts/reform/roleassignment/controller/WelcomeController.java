@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,9 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
+import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 
 @RestController
 public class WelcomeController {
+
+    @Autowired
+    PersistenceService persistenceService;
 
     @GetMapping(value = "/swagger")
     public String index() {
@@ -19,21 +25,29 @@ public class WelcomeController {
 
     @GetMapping("/exception/{type}")
     public ResponseEntity<String> getException(@PathVariable String type) {
-        if (type.equals("invalidRequest")) {
-            throw new InvalidRequest("Invalid Request");
-        } else if (type.equals("resourceNotFoundException")) {
-            throw new ResourceNotFoundException("Resource Not Found Exception");
-        } else if (type.equals("httpMessageConversionException")) {
-            throw new HttpMessageConversionException("Http Message Conversion Exception");
-        } else if (type.equals("badRequestException")) {
-            throw new BadRequestException("Bad Request Exception");
+        switch (type) {
+            case "invalidRequest":
+                throw new InvalidRequest("Invalid Request");
+            case "resourceNotFoundException":
+                throw new ResourceNotFoundException("Resource Not Found Exception");
+            case "httpMessageConversionException":
+                throw new HttpMessageConversionException("Http Message Conversion Exception");
+            case "badRequestException":
+                throw new BadRequestException("Bad Request Exception");
+            default:
+                return null;
         }
 
-        return null;
     }
 
     @GetMapping(value = "/welcome")
     public String welcome() {
         return "welcome to role assignment service";
+    }
+
+    @GetMapping("/db/releaselock")
+    public ResponseEntity<DatabaseChangelogLockEntity> dbReleaseLock() {
+        DatabaseChangelogLockEntity entity = persistenceService.releaseDatabaseLock(1);
+        return ResponseEntity.ok(entity);
     }
 }
