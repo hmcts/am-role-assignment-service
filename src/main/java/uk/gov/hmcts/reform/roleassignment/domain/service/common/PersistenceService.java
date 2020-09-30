@@ -218,7 +218,7 @@ public class PersistenceService {
             searchByClassification(searchRequest.getClassification()))
             .and((searchRequest.getRoleCategorie() == null || searchRequest.getRoleCategorie().isEmpty()) ? null :
             searchByRoleCategories(searchRequest.getRoleCategorie())),PageRequest.of((pageNumber != null
-            && pageNumber > 0) ? pageNumber - 1 : 0, 20, Sort.by(Sort.DEFAULT_DIRECTION, "id")));
+            && pageNumber > 0) ? pageNumber : 0, 20, Sort.by(Sort.DEFAULT_DIRECTION, "id")));
 
 
         return roleAssignmentEntities.stream()
