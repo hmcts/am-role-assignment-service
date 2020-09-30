@@ -33,10 +33,10 @@ public class QueryRoleAssignmentOrchestrator {
         return ResponseEntity.status(HttpStatus.OK).body(assignmentList);
     }
 
-    public ResponseEntity<Object> retrieveRoleAssignmentsByQueryRequest(QueryRequest queryRequest) {
+    public ResponseEntity<Object> retrieveRoleAssignmentsByQueryRequest(QueryRequest queryRequest,Integer pageNumber) {
 
         List<RoleAssignment> assignmentList =
-            persistenceService.retrieveRoleAssignmentsByQueryRequest(queryRequest);
+            persistenceService.retrieveRoleAssignmentsByQueryRequest(queryRequest,pageNumber);
         return ResponseEntity.status(HttpStatus.OK).body(assignmentList);
     }
 }

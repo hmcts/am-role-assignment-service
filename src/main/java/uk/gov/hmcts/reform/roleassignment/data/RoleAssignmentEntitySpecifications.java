@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public final class RoleAssignmentEntitySpecifications {
+public  class RoleAssignmentEntitySpecifications {
 
 
     public static Specification<RoleAssignmentEntity> searchByActorIds(List<UUID> actorIds) {

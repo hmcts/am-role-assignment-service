@@ -24,7 +24,6 @@ import uk.gov.hmcts.reform.roleassignment.data.HistoryRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
-import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
@@ -35,7 +34,10 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
-
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,10 +52,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 
 class PersistenceServiceTest {
 
@@ -75,6 +77,19 @@ class PersistenceServiceTest {
         historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository,
         databseChangelogLockRepository
     );
+
+
+    @Mock
+    Specification<RoleAssignmentEntity> mockSpec;
+
+    @Mock
+    Root<RoleAssignmentEntity> root;
+    @Mock
+    CriteriaQuery<RoleAssignmentEntity> query;
+    @Mock
+    CriteriaBuilder builder;
+    @Mock
+    Predicate predicate;
 
 
     @BeforeEach
@@ -421,12 +436,15 @@ class PersistenceServiceTest {
 
     }
 
-   /* @Test
+    @Test
     void postRoleAssignmentsByQueryRequest() throws IOException {
+
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(Status.LIVE)));
-        Page<RoleAssignmentEntity> pagedTasks = new PageImpl<RoleAssignmentEntity>(tasks);
+
+        Page<RoleAssignmentEntity> page = new PageImpl<RoleAssignmentEntity>(tasks);
+
 
         List<UUID> actorId = Arrays.asList(
             UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
@@ -442,46 +460,56 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
+        Specification<RoleAssignmentEntity> spec = Specification.where(any());
 
-
-        *//*List<Specification<RoleAssignmentEntity>> specificationList = new ArrayList<>();
-        specificationList.add(RoleAssignmentEntitySpecifications.searchByActorIds(actorId));
-        specificationList.add(RoleAssignmentEntitySpecifications.searchByRoleType(roleType));*//*
-        when(roleAssignmentRepository.findAll(Specification.where(any(Specification.class)),
-                                              eq(pageableCaptor.capture())
+        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
         ))
-            .thenReturn(pagedTasks);
-        when(persistenceUtil.convertEntityToRoleAssignment(pagedTasks.iterator().next()))
+            .thenReturn(page);
+
+
+        when(mockSpec.toPredicate(root, query, builder)).thenReturn(predicate);
+
+
+        when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
             .thenReturn(TestDataBuilder.buildRoleAssignment(Status.LIVE));
-        List<RoleAssignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest);
+
+        List<RoleAssignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,0);
         assertNotNull(roleAssignmentList);
 
         assertNotNull(roleAssignmentList);
         assertFalse(roleAssignmentList.isEmpty());
 
         verify(persistenceUtil, times(1))
-            .convertEntityToRoleAssignment(pagedTasks.iterator().next());
-        *//*verify(roleAssignmentRepository, times(1))
-            .findAll(any(Specification.class),any(Pageable.class));*//*
-    }*/
+            .convertEntityToRoleAssignment(page.iterator().next());
 
-    /*@Test
+    }
+
+    @Test
     void postRoleAssignmentsByQueryRequest_ThrowsException() {
-        Set<RoleAssignmentEntity> roleAssignmentEntities = new HashSet<>();
 
-        String actorId = "003352d0-e699-48bc-b6f5-5810411e60af";
-        String caseId = "1234567890123457";
+        List<UUID> actorId = Arrays.asList(
+            UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
+            UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
+        );
+        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleType)
+            .build();
 
-        QueryRequest queryRequest;
-        Specification<RoleAssignmentEntity> specification;
-        when(roleAssignmentRepository.findAll(specification))
-            .thenReturn(roleAssignmentEntities);
+        Specification<RoleAssignmentEntity> spec = Specification.where(any());
 
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
+            Pageable.class);
+
+        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
+        ))
+            .thenThrow(ResourceNotFoundException.class);
 
 
         Assertions.assertThrows(ResourceNotFoundException.class, () ->
-            sut.postRoleAssignmentsByQueryRequest(queryRequest)
+            sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,0)
         );
 
-    }*/
+    }
 }

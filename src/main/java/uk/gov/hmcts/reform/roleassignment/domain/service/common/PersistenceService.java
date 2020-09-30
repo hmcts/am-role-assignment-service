@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
@@ -99,8 +98,10 @@ public class PersistenceService {
             requestEntity.setId(requestId);
         }
 
-        HistoryEntity historyEntity = persistenceUtil.convertRoleAssignmentToHistoryEntity(roleAssignment,
-                                                                                           requestEntity);
+        HistoryEntity historyEntity = persistenceUtil.convertRoleAssignmentToHistoryEntity(
+            roleAssignment,
+            requestEntity
+        );
         historyEntity.setId(Objects.requireNonNullElseGet(roleAssignmentId, UUID::randomUUID));
         //Persist the history entity
         return historyRepository.save(historyEntity);
@@ -197,22 +198,29 @@ public class PersistenceService {
         }
 
         return roleAssignmentEntities.stream()
-                                     .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
-                                     .collect(Collectors.toList());
+            .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+            .collect(Collectors.toList());
     }
 
-    public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest)  {
+    public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest,Integer pageNumber) {
 
-        Page<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findAll(where((searchRequest.getActorId()==null || searchRequest.getActorId().isEmpty()) ? null : searchByActorIds(
-            searchRequest.getActorId())) .and((searchRequest.getGrantType()==null ||searchRequest.getGrantType().isEmpty()) ? null : searchByGrantType(searchRequest.getGrantType()))
-                                         .and(searchRequest.getValidAt() == null ? null : searchByValidDate(searchRequest.getValidAt()))
-                                         .and((searchRequest.getAttributes()==null||searchRequest.getAttributes().isEmpty()) ? null : searchByAttributes(searchRequest.getAttributes()))
-                                         .and((searchRequest.getRoleType()==null||searchRequest.getRoleType().isEmpty())?null:searchByRoleType(searchRequest.getRoleType()))
-                                         .and((searchRequest.getRoleName()==null||searchRequest.getRoleName().isEmpty())?null:searchByRoleName(searchRequest.getRoleName()))
-                                         .and((searchRequest.getClassification()==null||searchRequest.getClassification().isEmpty())?null:searchByClassification(searchRequest.getClassification()))
-                                         .and((searchRequest.getRoleCategorie()==null||searchRequest.getRoleCategorie().isEmpty())?null:searchByRoleCategories(searchRequest.getRoleCategorie()))
-                                         ,PageRequest.of(0, 10, Sort.by(Sort.DEFAULT_DIRECTION, "id")));
-
+        Page<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findAll(where((searchRequest.getActorId() == null || searchRequest.getActorId().isEmpty()) ? null : searchByActorIds(
+            searchRequest.getActorId()))
+                                                                                                 .and((searchRequest.getGrantType() == null || searchRequest.getGrantType().isEmpty()) ? null : searchByGrantType(
+                                                                                                     searchRequest.getGrantType()))
+                                                                                                 .and(searchRequest.getValidAt() == null ? null : searchByValidDate(
+                                                                                                     searchRequest.getValidAt()))
+                                                                                                 .and((searchRequest.getAttributes() == null || searchRequest.getAttributes().isEmpty()) ? null : searchByAttributes(
+                                                                                                     searchRequest.getAttributes()))
+                                                                                                 .and((searchRequest.getRoleType() == null || searchRequest.getRoleType().isEmpty()) ? null : searchByRoleType(
+                                                                                                     searchRequest.getRoleType()))
+                                                                                                 .and((searchRequest.getRoleName() == null || searchRequest.getRoleName().isEmpty()) ? null : searchByRoleName(
+                                                                                                     searchRequest.getRoleName()))
+                                                                                                 .and((searchRequest.getClassification() == null || searchRequest.getClassification().isEmpty()) ? null : searchByClassification(
+                                                                                                     searchRequest.getClassification()))
+                                                                                                 .and((searchRequest.getRoleCategorie() == null || searchRequest.getRoleCategorie().isEmpty()) ? null : searchByRoleCategories(
+                                                                                                     searchRequest.getRoleCategorie()))
+            , PageRequest.of((pageNumber!=null && pageNumber > 0)?pageNumber-1:0, 20, Sort.by(Sort.DEFAULT_DIRECTION, "id")));
 
 
         return roleAssignmentEntities.stream()
@@ -224,8 +232,8 @@ public class PersistenceService {
         Optional<RoleAssignmentEntity> roleAssignmentEntityOptional = roleAssignmentRepository.findById(assignmentId);
         if (roleAssignmentEntityOptional.isPresent()) {
             return roleAssignmentEntityOptional.stream()
-                                               .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
-                                               .collect(Collectors.toList());
+                .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+                .collect(Collectors.toList());
         }
         return Collections.emptyList();
     }
