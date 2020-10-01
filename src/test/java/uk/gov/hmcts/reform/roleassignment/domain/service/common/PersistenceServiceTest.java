@@ -445,9 +445,9 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<RoleAssignmentEntity>(tasks);
 
 
-        List<UUID> actorId = Arrays.asList(
-            UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
-            UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
         List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
 
@@ -494,9 +494,9 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<RoleAssignmentEntity>(tasks);
 
 
-        List<UUID> actorId = Arrays.asList(
-            UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
-            UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
         List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
         List<String> roleNmaes = Arrays.asList("judge", "senior judge");
@@ -551,9 +551,9 @@ class PersistenceServiceTest {
     @Test
     void postRoleAssignmentsByQueryRequest_ThrowsException() {
 
-        List<UUID> actorId = Arrays.asList(
-            UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
-            UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
         List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
         QueryRequest queryRequest = QueryRequest.builder()

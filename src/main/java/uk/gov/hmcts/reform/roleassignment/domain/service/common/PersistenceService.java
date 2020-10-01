@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -57,6 +58,12 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private ActorCacheRepository actorCacheRepository;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
+
+    @Value("${roleassignment.query.sortcolumn}")
+    private String sortColumn;
+
+    @Value("${roleassignment.query.size}")
+    private Integer defaultSize;
 
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
                               RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
@@ -225,10 +232,10 @@ public class PersistenceService {
                 (pageNumber != null
                     && pageNumber > 0) ? pageNumber : 0,
                 (size != null
-                    && size > 0) ? size : 20,
+                    && size > 0) ? size : defaultSize,
                 Sort.by(
                     (direction != null) ? Sort.Direction.fromString(direction) : Sort.DEFAULT_DIRECTION,
-                    (sort != null) ? sort : "roleName"
+                    (sort != null) ? sort : sortColumn
                 )
             )
         );
