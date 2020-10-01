@@ -1,4 +1,4 @@
-# App infrastructure
+# Application infrastructure
 <Need to Update>
 Add any application specific infrastructure to the terraform files in this folder
 

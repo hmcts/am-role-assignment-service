@@ -5,7 +5,6 @@ import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
@@ -50,9 +49,9 @@ public class ValidationModelService {
         Set<Object> facts = new HashSet<>(role);
         facts.add(assignmentRequest.getRequest());
         facts.addAll(assignmentRequest.getRequestedRoles());
-        if (assignmentRequest.getRequest().getRequestType() == RequestType.CREATE) {
-            addExistingRoleAssignments(assignmentRequest, facts);
-        }
+        //if (assignmentRequest.getRequest().getRequestType() == RequestType.CREATE) {
+        //    addExistingRoleAssignments(assignmentRequest, facts);
+        //}
         kieSession.setGlobal("retrieveDataService", retrieveDataService);
 
         // Run the rules
