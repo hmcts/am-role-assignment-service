@@ -205,19 +205,14 @@ public class PersistenceService {
     public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest,Integer pageNumber) {
 
         Page<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findAll(where(
-            (searchRequest.getActorId() == null || searchRequest.getActorId().isEmpty()) ? null : searchByActorIds(
-            searchRequest.getActorId()))
-            .and((searchRequest.getGrantType() == null || searchRequest.getGrantType().isEmpty()) ? null :
-            searchByGrantType(searchRequest.getGrantType())).and(searchRequest.getValidAt() == null
-            ? null : searchByValidDate(searchRequest.getValidAt())).and((searchRequest.getAttributes() == null
-            || searchRequest.getAttributes().isEmpty()) ? null : searchByAttributes(searchRequest.getAttributes())).and(
-            (searchRequest.getRoleType() == null || searchRequest.getRoleType().isEmpty()) ? null : searchByRoleType(
-            searchRequest.getRoleType())).and((searchRequest.getRoleName() == null || searchRequest.getRoleName()
-            .isEmpty()) ? null : searchByRoleName(searchRequest.getRoleName())).and((searchRequest
-            .getClassification() == null || searchRequest.getClassification().isEmpty()) ? null :
-            searchByClassification(searchRequest.getClassification()))
-            .and((searchRequest.getRoleCategorie() == null || searchRequest.getRoleCategorie().isEmpty()) ? null :
-            searchByRoleCategories(searchRequest.getRoleCategorie())),PageRequest.of((pageNumber != null
+            searchByActorIds(searchRequest.getActorId()))
+            .and(searchByGrantType(searchRequest.getGrantType()))
+            .and(searchByValidDate(searchRequest.getValidAt()))
+            .and(searchByAttributes(searchRequest.getAttributes()))
+            .and(searchByRoleType(searchRequest.getRoleType()))
+            .and(searchByRoleName(searchRequest.getRoleName()))
+            .and(searchByClassification(searchRequest.getClassification()))
+            .and(searchByRoleCategories(searchRequest.getRoleCategorie())),PageRequest.of((pageNumber != null
             && pageNumber > 0) ? pageNumber : 0, 20, Sort.by(Sort.DEFAULT_DIRECTION, "id")));
 
 
