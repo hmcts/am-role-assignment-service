@@ -210,8 +210,9 @@ public class PersistenceService {
                     Objects.requireNonNull(
                         Objects.requireNonNull(
                             Objects.requireNonNull(
+                                Objects.requireNonNull(
                                 where(
-                                    searchByActorIds(searchRequest.getActorId()))
+                                    searchByActorIds(searchRequest.getActorId())))
                                     .and(searchByGrantType(searchRequest.getGrantType())))
                                 .and(searchByValidDate(searchRequest.getValidAt())))
                             .and(searchByAttributes(searchRequest.getAttributes())))
