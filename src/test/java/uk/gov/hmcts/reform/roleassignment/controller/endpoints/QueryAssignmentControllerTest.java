@@ -115,7 +115,7 @@ class QueryAssignmentControllerTest {
         ResponseEntity<Object> expectedResponse
             = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-            .retrieveRoleAssignmentsByQueryRequest(queryRequest,0);
+            .retrieveRoleAssignmentsByQueryRequest(queryRequest,0,20,"","");
         ResponseEntity<Object> response = sut
             .retrieveRoleAssignmentsByQueryRequest("",0,20,"","", queryRequest);
         assertNotNull(response);
@@ -135,7 +135,7 @@ class QueryAssignmentControllerTest {
             .build();
         ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-            .retrieveRoleAssignmentsByQueryRequest(queryRequest,0);
+            .retrieveRoleAssignmentsByQueryRequest(queryRequest,0,20,"","");
 
         ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByQueryRequest("", 0,20,"","",queryRequest);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -151,7 +151,7 @@ class QueryAssignmentControllerTest {
             .build();
         ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-            .retrieveRoleAssignmentsByQueryRequest(queryRequest,0);
+            .retrieveRoleAssignmentsByQueryRequest(queryRequest,0,20,"","");
 
         ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByQueryRequest("",0,20,"","", queryRequest);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());

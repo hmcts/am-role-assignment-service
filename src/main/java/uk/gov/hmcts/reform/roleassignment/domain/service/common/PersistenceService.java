@@ -202,25 +202,37 @@ public class PersistenceService {
             .collect(Collectors.toList());
     }
 
-    public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest,Integer pageNumber) {
+    public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest, Integer pageNumber,
+                                                                      Integer size, String sort, String direction) {
 
-        Page<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findAll(Objects.requireNonNull(
+        Page<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(
                 Objects.requireNonNull(
                     Objects.requireNonNull(
                         Objects.requireNonNull(
                             Objects.requireNonNull(
                                 Objects.requireNonNull(
-                                where(
-                                    searchByActorIds(searchRequest.getActorId())))
-                                    .and(searchByGrantType(searchRequest.getGrantType())))
-                                .and(searchByValidDate(searchRequest.getValidAt())))
-                            .and(searchByAttributes(searchRequest.getAttributes())))
-                        .and(searchByRoleType(searchRequest.getRoleType())))
-                    .and(searchByRoleName(searchRequest.getRoleName())))
-                .and(searchByClassification(searchRequest.getClassification())))
-            .and(searchByRoleCategories(searchRequest.getRoleCategorie())), PageRequest.of((pageNumber != null
-            && pageNumber > 0) ? pageNumber : 0, 20, Sort.by(Sort.DEFAULT_DIRECTION, "id")));
+                                    Objects.requireNonNull(
+                                        where(
+                                            searchByActorIds(searchRequest.getActorId())))
+                                        .and(searchByGrantType(searchRequest.getGrantType())))
+                                    .and(searchByValidDate(searchRequest.getValidAt())))
+                                .and(searchByAttributes(searchRequest.getAttributes())))
+                            .and(searchByRoleType(searchRequest.getRoleType())))
+                        .and(searchByRoleName(searchRequest.getRoleName())))
+                    .and(searchByClassification(searchRequest.getClassification())))
+                .and(searchByRoleCategories(searchRequest.getRoleCategorie())),
+            PageRequest.of(
+                (pageNumber != null
+                    && pageNumber > 0) ? pageNumber : 0,
+                (size != null
+                    && size > 0) ? size : 20,
+                Sort.by(
+                    (direction != null) ? Sort.Direction.fromString(direction) : Sort.DEFAULT_DIRECTION,
+                    (sort != null) ? sort : "roleName"
+                )
+            )
+        );
 
 
         return roleAssignmentEntities.stream()

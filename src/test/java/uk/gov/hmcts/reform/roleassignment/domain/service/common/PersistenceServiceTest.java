@@ -476,7 +476,8 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
             .thenReturn(TestDataBuilder.buildRoleAssignment(Status.LIVE));
 
-        List<RoleAssignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,0);
+        List<RoleAssignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,1,1,"id",
+                                                                                            "desc");
         assertNotNull(roleAssignmentList);
 
         assertNotNull(roleAssignmentList);
@@ -539,7 +540,8 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
             .thenReturn(TestDataBuilder.buildRoleAssignment(Status.LIVE));
 
-        List<RoleAssignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,0);
+        List<RoleAssignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,1,1,"id",
+                                                                                            "desc");
         assertNotNull(roleAssignmentList);
 
         assertNotNull(roleAssignmentList);
@@ -574,7 +576,7 @@ class PersistenceServiceTest {
 
 
         Assertions.assertThrows(ResourceNotFoundException.class, () ->
-            sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,0)
+            sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,1,1,"id","desc")
         );
 
     }

@@ -150,6 +150,7 @@ public class QueryAssignmentController {
                              @RequestHeader(value = "direction", required = false) String direction,
                     @Validated @RequestBody(required = true) QueryRequest queryRequest) {
 
-        return queryRoleAssignmentOrchestrator.retrieveRoleAssignmentsByQueryRequest(queryRequest,pageNumber);
+        return queryRoleAssignmentOrchestrator.retrieveRoleAssignmentsByQueryRequest(queryRequest,pageNumber,size,
+                                                                                     sort,direction);
     }
 }
