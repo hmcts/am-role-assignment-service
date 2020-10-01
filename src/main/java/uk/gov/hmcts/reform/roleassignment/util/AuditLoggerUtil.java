@@ -31,7 +31,7 @@ public class AuditLoggerUtil {
         return List.of();
     }
 
-    public static List<UUID> buildActorIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
+    public static List<String> buildActorIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
         if (roleAssignmentRequestResource != null) {
             return roleAssignmentRequestResource.getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
@@ -75,7 +75,7 @@ public class AuditLoggerUtil {
         return List.of();
     }
 
-    public static List<UUID> getActorIds(final ResponseEntity<RoleAssignmentResource> response) {
+    public static List<String> getActorIds(final ResponseEntity<RoleAssignmentResource> response) {
         RoleAssignmentResource roleAssignmentResource = response.getBody();
         if (roleAssignmentResource != null) {
             return roleAssignmentResource.getRoleAssignmentResponse().stream().limit(10)
