@@ -15,6 +15,10 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PersistenceUtil {
 
@@ -40,6 +44,7 @@ public class PersistenceUtil {
             .notes(roleAssignment.getNotes())
             .sequence(roleAssignment.getStatusSequence())
             .log(roleAssignment.getLog())
+            .authorisations(String.join(",",roleAssignment.getAuthorisations()))
             .build();
     }
 
@@ -76,6 +81,7 @@ public class PersistenceUtil {
             .roleType(roleAssignment.getRoleType().toString())
             .readOnly(roleAssignment.isReadOnly())
             .roleCategory(roleAssignment.getRoleCategory().toString())
+            .authorisations(roleAssignment.getAuthorisations())
             .build();
     }
 
@@ -109,6 +115,7 @@ public class PersistenceUtil {
             .log(historyEntity.getLog())
             .attributes(JacksonUtils.convertValue(historyEntity.getAttributes()))
             .notes(historyEntity.getNotes())
+            .authorisations((Arrays.stream(historyEntity.getAuthorisations().split(",")).collect(Collectors.toList())))
             .build();
     }
 
@@ -128,6 +135,7 @@ public class PersistenceUtil {
             .endTime(roleAssignmentEntity.getEndTime())
             .created(roleAssignmentEntity.getCreated())
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
+            .authorisations(roleAssignmentEntity.getAuthorisations())
             .build();
     }
 

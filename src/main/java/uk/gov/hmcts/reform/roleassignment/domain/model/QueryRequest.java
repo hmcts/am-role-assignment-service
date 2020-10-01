@@ -23,4 +23,6 @@ public class QueryRequest {
     private LocalDateTime validAt;
     private List<String> roleCategorie;
     private Map<String, List<String>> attributes;
+    private List<String> authorisations;
+
 }

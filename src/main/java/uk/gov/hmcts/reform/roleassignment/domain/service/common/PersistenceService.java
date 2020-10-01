@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
 import static org.springframework.data.jpa.domain.Specification.where;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByActorIds;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByAttributes;
+import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByAuthorisations;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByClassification;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByGrantType;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByRoleCategories;
@@ -206,7 +207,7 @@ public class PersistenceService {
                                                                       Integer size, String sort, String direction) {
 
         Page<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findAll(
-            Objects.requireNonNull(
+            Objects.requireNonNull(Objects.requireNonNull(
                 Objects.requireNonNull(
                     Objects.requireNonNull(
                         Objects.requireNonNull(
@@ -221,7 +222,8 @@ public class PersistenceService {
                             .and(searchByRoleType(searchRequest.getRoleType())))
                         .and(searchByRoleName(searchRequest.getRoleName())))
                     .and(searchByClassification(searchRequest.getClassification())))
-                .and(searchByRoleCategories(searchRequest.getRoleCategorie())),
+                                       .and(searchByRoleCategories(searchRequest.getRoleCategorie())))
+                .and(searchByAuthorisations(searchRequest.getAuthorisations())),
             PageRequest.of(
                 (pageNumber != null
                     && pageNumber > 0) ? pageNumber : 0,

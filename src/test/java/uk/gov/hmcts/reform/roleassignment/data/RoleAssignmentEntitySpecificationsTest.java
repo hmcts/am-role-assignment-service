@@ -237,7 +237,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     }
 
-    @Test
+    /*@Test
     public void shouldReturnPredicate_WhileSearchByAuthorisations() {
         List<String> authorisations = Arrays.asList("dev",
                                                     "tester"
@@ -249,9 +249,9 @@ public class RoleAssignmentEntitySpecificationsTest {
         assertThat(specification).isNotNull();
         MatcherAssert.assertThat(specification.toPredicate(root, query, builder), is(predicate));
 
-    }
+    }*/
 
-    @Test
+   /* @Test
     public void shouldNotReturnPredicate_WhileSearchByAuthorisationsWithoutMock() {
         List<String> authorisations = Arrays.asList("dev",
                                                     "tester"
@@ -263,7 +263,7 @@ public class RoleAssignmentEntitySpecificationsTest {
         assertThat(specification).isNotNull();
         MatcherAssert.assertThat(specification.toPredicate(root, query, builder), is(nullValue()));
 
-    }
+    }*/
 
 
 }
