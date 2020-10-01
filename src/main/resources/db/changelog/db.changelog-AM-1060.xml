@@ -10,6 +10,5 @@
     <modifyDataType tableName="role_assignment_history" columnName="actor_id" newDataType="text"/>
     <modifyDataType tableName="role_assignment_request" columnName="authenticated_user_id" newDataType="text"/>
     <modifyDataType tableName="role_assignment_request" columnName="assigner_id" newDataType="text"/>
-    <modifyDataType tableName="role_assignment_request" columnName="role_assignment_id" newDataType="text"/>
   </changeSet>
 </databaseChangeLog>
