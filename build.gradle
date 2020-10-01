@@ -187,8 +187,8 @@ runAndPublishConsumerPactTests.finalizedBy pactPublish
 pact {
   publish {
     pactDirectory = 'pacts'
-    //pactBrokerUrl = 'http://localhost:9292'
-    pactBrokerUrl = 'https://pact-broker.platform.hmcts.net'
+    pactBrokerUrl = 'http://localhost:9292'
+    //pactBrokerUrl = 'https://pact-broker.platform.hmcts.net'
     tags = ['Dev']
     version = "1.0"
   }
@@ -388,6 +388,7 @@ dependencies {
   compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.19.Final'
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.8.RELEASE'
 
+  compile group: 'au.com.dius.pact.provider', name: 'junit', version: '4.1.7'
 
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
