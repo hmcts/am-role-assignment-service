@@ -32,10 +32,11 @@ public class QueryRoleAssignmentOrchestrator {
         return ResponseEntity.status(HttpStatus.OK).body(assignmentList);
     }
 
-    public ResponseEntity<Object> retrieveRoleAssignmentsByQueryRequest(QueryRequest queryRequest,Integer pageNumber) {
+    public ResponseEntity<Object> retrieveRoleAssignmentsByQueryRequest(QueryRequest queryRequest,Integer pageNumber,
+                                                                        Integer size, String sort, String direction) {
 
         List<RoleAssignment> assignmentList =
-            persistenceService.retrieveRoleAssignmentsByQueryRequest(queryRequest,pageNumber);
+            persistenceService.retrieveRoleAssignmentsByQueryRequest(queryRequest,pageNumber,size,sort,direction);
         return ResponseEntity.status(HttpStatus.OK).body(assignmentList);
     }
 }
