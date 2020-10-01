@@ -204,15 +204,21 @@ public class PersistenceService {
 
     public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest,Integer pageNumber) {
 
-        Page<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findAll(where(
-            searchByActorIds(searchRequest.getActorId()))
-            .and(searchByGrantType(searchRequest.getGrantType()))
-            .and(searchByValidDate(searchRequest.getValidAt()))
-            .and(searchByAttributes(searchRequest.getAttributes()))
-            .and(searchByRoleType(searchRequest.getRoleType()))
-            .and(searchByRoleName(searchRequest.getRoleName()))
-            .and(searchByClassification(searchRequest.getClassification()))
-            .and(searchByRoleCategories(searchRequest.getRoleCategorie())),PageRequest.of((pageNumber != null
+        Page<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findAll(Objects.requireNonNull(
+            Objects.requireNonNull(
+                Objects.requireNonNull(
+                    Objects.requireNonNull(
+                        Objects.requireNonNull(
+                            Objects.requireNonNull(
+                                where(
+                                    searchByActorIds(searchRequest.getActorId()))
+                                    .and(searchByGrantType(searchRequest.getGrantType())))
+                                .and(searchByValidDate(searchRequest.getValidAt())))
+                            .and(searchByAttributes(searchRequest.getAttributes())))
+                        .and(searchByRoleType(searchRequest.getRoleType())))
+                    .and(searchByRoleName(searchRequest.getRoleName())))
+                .and(searchByClassification(searchRequest.getClassification())))
+            .and(searchByRoleCategories(searchRequest.getRoleCategorie())), PageRequest.of((pageNumber != null
             && pageNumber > 0) ? pageNumber : 0, 20, Sort.by(Sort.DEFAULT_DIRECTION, "id")));
 
 
