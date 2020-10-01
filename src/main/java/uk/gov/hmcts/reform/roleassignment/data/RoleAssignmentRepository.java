@@ -1,21 +1,21 @@
 
 package uk.gov.hmcts.reform.roleassignment.data;
 
-import java.util.Set;
-import java.util.UUID;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Set;
+import java.util.UUID;
+
 @Repository
 public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEntity, UUID> {
 
-    Set<RoleAssignmentEntity> findByActorId(UUID actorId);
+    Set<RoleAssignmentEntity> findByActorId(String actorId);
 
-    Set<RoleAssignmentEntity> findByActorIdAndRoleTypeIgnoreCase(UUID actorId, String roleType);
+    Set<RoleAssignmentEntity> findByActorIdAndRoleTypeIgnoreCase(String actorId, String roleType);
 
-    void deleteByActorId(UUID actorId);
+    void deleteByActorId(String actorId);
 
     @Query(value = "select ra.* from role_assignment ra where ra.actor_id  = :actorId "
                    + "and ra.attributes ->> 'caseId' = :caseId "

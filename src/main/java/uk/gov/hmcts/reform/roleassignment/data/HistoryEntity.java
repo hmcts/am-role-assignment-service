@@ -42,7 +42,7 @@ public class HistoryEntity {
     private String process;
 
     @Column(name = "actor_id", nullable = false)
-    private UUID actorId;
+    private String actorId;
 
     @Column(name = "reference")
     private String reference;
