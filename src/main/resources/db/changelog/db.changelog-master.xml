@@ -6,4 +6,6 @@
 
   <include file="db/changelog/db.changelog-main.xml"/>
   <include file="db/changelog/db.changelog-AM-823.xml"/>
+  <include file="db/changelog/db.changelog-AM-1060.xml"/>
+
 </databaseChangeLog>
