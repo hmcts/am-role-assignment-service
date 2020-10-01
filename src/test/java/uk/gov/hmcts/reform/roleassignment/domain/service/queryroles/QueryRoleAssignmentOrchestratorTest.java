@@ -10,20 +10,22 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.drools.compiler.lang.DroolsSoftKeywords.CASE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 class QueryRoleAssignmentOrchestratorTest {
@@ -79,4 +81,28 @@ class QueryRoleAssignmentOrchestratorTest {
             sut.retrieveRoleAssignmentsByActorIdAndCaseId(actorId, caseId, "Case")
         );
     }
+
+    @Test
+    void should_PostRoleAssignmentsQueryByRequest() throws IOException {
+
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleType = Arrays.asList("CASE","ORGANISATION");
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleType)
+            .build();
+
+        when(persistenceServiceMock.retrieveRoleAssignmentsByQueryRequest(queryRequest,0,0,"",""))
+            .thenReturn((List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection(Status.LIVE));
+        ResponseEntity<Object> result = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,0,0,"","");
+        assertNotNull(result);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getBody());
+    }
+
+
 }
