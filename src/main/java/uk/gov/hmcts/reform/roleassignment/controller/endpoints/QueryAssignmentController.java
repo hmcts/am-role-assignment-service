@@ -145,6 +145,9 @@ public class QueryAssignmentController {
     public ResponseEntity<Object> retrieveRoleAssignmentsByQueryRequest(@RequestHeader(value = "x-correlation-id",
                                                     required = false) String correlationId,
                              @RequestHeader(value = "pageNumber", required = false) Integer pageNumber,
+                             @RequestHeader(value = "size", required = false) Integer size,
+                             @RequestHeader(value = "sort", required = false) String sort,
+                             @RequestHeader(value = "direction", required = false) String direction,
                     @Validated @RequestBody(required = true) QueryRequest queryRequest) {
 
         return queryRoleAssignmentOrchestrator.retrieveRoleAssignmentsByQueryRequest(queryRequest,pageNumber);
