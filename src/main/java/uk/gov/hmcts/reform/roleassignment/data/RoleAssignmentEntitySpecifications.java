@@ -16,6 +16,9 @@ public final class RoleAssignmentEntitySpecifications {
 
 
     public static Specification<RoleAssignmentEntity> searchByActorIds(List<UUID> actorIds) {
+        if (actorIds == null || actorIds.isEmpty()) {
+            return null;
+        }
         return (root, query, builder) -> builder.or(actorIds
                                                         .stream()
                                                         .map(value -> builder.equal(root.get("actorId"), value))
@@ -23,8 +26,11 @@ public final class RoleAssignmentEntitySpecifications {
 
     }
 
-    public static Specification<RoleAssignmentEntity> searchByGrantType(List<String> gtantTypes) {
-        return (root, query, builder) -> builder.or(gtantTypes
+    public static Specification<RoleAssignmentEntity> searchByGrantType(List<String> grantTypes) {
+        if (grantTypes == null || grantTypes.isEmpty()) {
+            return null;
+        }
+        return (root, query, builder) -> builder.or(grantTypes
                                                         .stream()
                                                         .map(value -> builder.equal(root.get("grantType"), value))
                                                         .toArray(Predicate[]::new));
@@ -32,7 +38,9 @@ public final class RoleAssignmentEntitySpecifications {
     }
 
     public static Specification<RoleAssignmentEntity> searchByValidDate(LocalDateTime date) {
-
+        if (date == null) {
+            return null;
+        }
         return (root, query, builder) -> builder.and(
             builder.lessThanOrEqualTo(root.get("beginTime"), date),
             builder.greaterThanOrEqualTo(root.get("endTime"), date)
@@ -42,7 +50,10 @@ public final class RoleAssignmentEntitySpecifications {
 
     public static Specification<RoleAssignmentEntity> searchByAttributes(Map<String, List<String>> attributes) {
 
+        if (attributes == null || attributes.isEmpty()) {
 
+            return null;
+        }
         return (root, query, builder) -> builder.and(attributes.entrySet()
                                                          .stream()
                                                          .map(entry -> {
@@ -63,6 +74,11 @@ public final class RoleAssignmentEntitySpecifications {
     }
 
     public static Specification<RoleAssignmentEntity> searchByRoleType(List<String> roleTypes) {
+
+        if (roleTypes == null || roleTypes.isEmpty()) {
+            return null;
+        }
+
         return (root, query, builder) -> builder.or(roleTypes
                                                         .stream()
                                                         .map(value -> builder.equal(root.get("roleType"), value))
@@ -71,6 +87,10 @@ public final class RoleAssignmentEntitySpecifications {
     }
 
     public static Specification<RoleAssignmentEntity> searchByRoleName(List<String> roleNames) {
+
+        if (roleNames == null || roleNames.isEmpty()) {
+            return null;
+        }
         return (root, query, builder) -> builder.or(roleNames
                                                         .stream()
                                                         .map(value -> builder.equal(root.get("roleName"), value))
@@ -79,6 +99,11 @@ public final class RoleAssignmentEntitySpecifications {
     }
 
     public static Specification<RoleAssignmentEntity> searchByClassification(List<String> classifications) {
+
+        if (classifications == null || classifications.isEmpty()) {
+            return null;
+
+        }
         return (root, query, builder) -> builder.or(classifications
                                                         .stream()
                                                         .map(value -> builder.equal(root.get("classification"), value))
@@ -87,6 +112,10 @@ public final class RoleAssignmentEntitySpecifications {
     }
 
     public static Specification<RoleAssignmentEntity> searchByRoleCategories(List<String> roleCategories) {
+        if (roleCategories == null || roleCategories.isEmpty()) {
+            return null;
+
+        }
         return (root, query, builder) -> builder.or(roleCategories
                                                         .stream()
                                                         .map(value -> builder.equal(root.get("roleCategory"), value))
