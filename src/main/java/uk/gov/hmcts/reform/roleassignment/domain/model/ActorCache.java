@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 
 import java.util.Set;
-import java.util.UUID;
 
 
 @Builder
@@ -16,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public  class ActorCache {
 
-    private UUID actorId;
+    private String actorId;
     private long etag;
     private Set<RoleAssignmentEntity> roleAssignments;
 }
