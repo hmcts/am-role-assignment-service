@@ -42,8 +42,8 @@ public final class RoleAssignmentEntitySpecifications {
             return null;
         }
         return (root, query, builder) -> builder.and(
-            builder.lessThanOrEqualTo(root.get("beginTime"), date),
-            builder.greaterThanOrEqualTo(root.get("endTime"), date)
+            builder.or( builder.lessThanOrEqualTo(root.get("beginTime"), date),root.get("beginTime").isNull()),
+            builder.or(builder.greaterThanOrEqualTo(root.get("endTime"), date),root.get("endTime").isNull())
         );
 
     }
