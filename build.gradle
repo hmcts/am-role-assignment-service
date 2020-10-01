@@ -452,6 +452,12 @@ dependencies {
   compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.19.Final'
   compile group: 'org.springframework', name: 'spring-tx', version: '5.2.9.RELEASE'
 
+  compile(group: 'org.springframework', name: 'spring-jdbc', version: '5.2.9.RELEASE')
+  compile(group: 'org.springframework', name: 'spring-beans', version: '5.2.9.RELEASE')
+  compile(group: 'org.springframework', name: 'spring-context', version: '5.2.9.RELEASE')
+  compile(group: 'org.springframework', name: 'spring-core', version: '5.2.9.RELEASE')
+  compile(group: 'org.springframework', name: 'spring-test', version: '5.2.9.RELEASE')
+  compile(group: 'org.springframework', name: 'spring-tx', version: '5.2.9.RELEASE')
 
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
