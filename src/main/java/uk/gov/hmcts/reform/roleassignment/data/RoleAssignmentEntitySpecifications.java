@@ -123,5 +123,19 @@ public final class RoleAssignmentEntitySpecifications {
 
     }
 
+    public static Specification<RoleAssignmentEntity> searchByAuthorisations(List<String> authorisations) {
+
+        if (authorisations == null || authorisations.isEmpty()) {
+            return null;
+
+        }
+
+        return (root, query, builder) -> builder.or(authorisations.stream().map(value-> {
+            return builder.isMember(value,root.get("authorisations"));
+
+        }).toArray(Predicate[]::new));
+
+    }
+
 
 }
