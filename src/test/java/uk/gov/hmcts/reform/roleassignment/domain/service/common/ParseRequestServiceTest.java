@@ -196,7 +196,7 @@ class ParseRequestServiceTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         String clientId = "copied client id";
-        UUID userId = UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c");
+        String userId = "21334a2b-79ce-44eb-9168-2d49a744be9c";
         when(securityUtilsMock.getServiceName()).thenReturn(clientId);
         when(securityUtilsMock.getUserId()).thenReturn(userId.toString());
         when(correlationInterceptorUtilMock.preHandle(
