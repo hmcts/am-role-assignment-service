@@ -580,4 +580,77 @@ class PersistenceServiceTest {
         );
 
     }
+
+    @Test
+    void postRoleAssignmentsByAuthorisations_ThrowsException() {
+
+        List<String> authorisations = Arrays.asList("dev",
+            "ops"
+        );
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .authorisations(authorisations)
+            .build();
+
+        Specification<RoleAssignmentEntity> spec = Specification.where(any());
+
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
+            Pageable.class);
+
+        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
+        ))
+            .thenThrow(ResourceNotFoundException.class);
+
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () ->
+            sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,1,1,"id","desc")
+        );
+
+    }
+
+    @Test
+    void postRoleAssignmentsByAuthorisation() throws IOException {
+
+
+        List<RoleAssignmentEntity> tasks = new ArrayList<>();
+        tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(Status.LIVE)));
+
+        Page<RoleAssignmentEntity> page = new PageImpl<RoleAssignmentEntity>(tasks);
+
+
+        List<String> authorisations = Arrays.asList("dev",
+                                                    "tester"
+        );
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .authorisations(authorisations)
+            .build();
+
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
+            Pageable.class);
+
+        Specification<RoleAssignmentEntity> spec = Specification.where(any());
+
+        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
+        ))
+            .thenReturn(page);
+
+
+        when(mockSpec.toPredicate(root, query, builder)).thenReturn(predicate);
+
+
+        when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
+            .thenReturn(TestDataBuilder.buildRoleAssignment(Status.LIVE));
+
+        List<RoleAssignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,1,1,"id",
+                                                                                            "desc");
+        assertNotNull(roleAssignmentList);
+
+        assertNotNull(roleAssignmentList);
+        assertFalse(roleAssignmentList.isEmpty());
+
+        verify(persistenceUtil, times(1))
+            .convertEntityToRoleAssignment(page.iterator().next());
+
+    }
 }
