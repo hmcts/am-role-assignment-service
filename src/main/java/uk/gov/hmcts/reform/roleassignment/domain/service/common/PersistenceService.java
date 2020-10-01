@@ -122,7 +122,7 @@ public class PersistenceService {
 
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ActorCacheEntity getActorCacheEntity(UUID actorId) {
+    public ActorCacheEntity getActorCacheEntity(String actorId) {
 
         return actorCacheRepository.findByActorId(actorId);
     }
@@ -144,8 +144,7 @@ public class PersistenceService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void deleteRoleAssignmentByActorId(UUID actorId) {
-
+    public void deleteRoleAssignmentByActorId(String actorId) {
         roleAssignmentRepository.deleteByActorId(actorId);
     }
 
@@ -156,7 +155,7 @@ public class PersistenceService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public List<RoleAssignment> getAssignmentsByActor(UUID actorId) {
+    public List<RoleAssignment> getAssignmentsByActor(String actorId) {
 
         Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
         //convert into model class
@@ -172,7 +171,7 @@ public class PersistenceService {
             roleAssignmentEntities = roleAssignmentRepository.findByActorIdAndCaseId(actorId, caseId, roleType);
         } else if (StringUtils.isNotEmpty(actorId)) {
             roleAssignmentEntities =
-                roleAssignmentRepository.findByActorIdAndRoleTypeIgnoreCase(UUID.fromString(actorId), roleType);
+                roleAssignmentRepository.findByActorIdAndRoleTypeIgnoreCase(actorId, roleType);
         } else if (StringUtils.isNotEmpty(caseId)) {
             roleAssignmentEntities = roleAssignmentRepository.getAssignmentByCaseId(caseId, roleType);
         }

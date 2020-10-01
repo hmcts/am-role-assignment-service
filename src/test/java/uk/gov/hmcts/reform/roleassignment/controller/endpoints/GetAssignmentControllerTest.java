@@ -10,15 +10,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
-
-import static org.mockito.Mockito.doReturn;
+import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.UUID;
+import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
 class GetAssignmentControllerTest {
@@ -48,7 +45,7 @@ class GetAssignmentControllerTest {
             .buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(retrieveRoleAssignmentServiceMock).getAssignmentsByActor(actorId);
         long etag = 1;
-        doReturn(etag).when(retrieveRoleAssignmentServiceMock).retrieveETag(UUID.fromString(actorId));
+        doReturn(etag).when(retrieveRoleAssignmentServiceMock).retrieveETag(actorId);
         ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByActorId("","", actorId);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
