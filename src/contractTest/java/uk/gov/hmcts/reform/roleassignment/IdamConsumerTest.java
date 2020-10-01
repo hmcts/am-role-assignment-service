@@ -143,7 +143,7 @@ public class IdamConsumerTest {
 
     @Test
     @PactTestFor(pactMethod = "executeGetUserInfoDetailsAndGet200")
-    public void should_get_user_info_details_with_access_token(MockServer mockServer) {
+    public void should_get_user_info_details_with_access_token(MockServer mockServer) throws JSONException {
 
         Map<String, String> headers = Maps.newHashMap();
         headers.put(HttpHeaders.AUTHORIZATION, "Bearer eyJ0eXAiOiJKV1QiLCJraWQiOiJiL082T3ZWdjEre");
