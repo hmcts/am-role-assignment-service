@@ -13,7 +13,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.UUID;
 
 @Builder
 @Data
@@ -22,7 +21,7 @@ import java.util.UUID;
 public class RoleAssignmentSubset {
 
     private ActorIdType actorIdType;
-    private UUID actorId;
+    private String actorId;
     private RoleType roleType;
     private String roleName;
     private Classification classification;

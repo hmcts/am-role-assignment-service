@@ -134,6 +134,9 @@ token:
     ttl:
       secs: 900000
 
-
+roleassignment:
+   query:
+     size: 20
+     sortcolumn: roleName
 
 

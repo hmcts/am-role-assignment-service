@@ -33,7 +33,7 @@ public class RoleAssignmentEntity {
     private String actorIdType;
 
     @Column(name = "actor_id", nullable = false)
-    private UUID actorId;
+    private String actorId;
 
     @Column(name = "role_type", nullable = false)
     private String roleType;
