@@ -6,6 +6,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
@@ -93,6 +94,16 @@ class ValidationUtilTest {
     void validateRequestedRoles() {
         Assertions.assertDoesNotThrow(() ->
             ValidationUtil.validateRequestedRoles(TestDataBuilder.buildRequestedRoleCollection(Status.LIVE))
+        );
+    }
+
+    @Test
+    void validateRequestedRolesForCase() throws IOException {
+        Collection<RoleAssignment> roleAssignments = new ArrayList<>();
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
+        roleAssignment.setRoleType(RoleType.ORGANISATION);
+        roleAssignments.add(roleAssignment);
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateRequestedRoles(roleAssignments)
         );
     }
 
