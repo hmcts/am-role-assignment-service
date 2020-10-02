@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -9,7 +8,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -25,7 +23,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
-import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.util.Collections;
 import java.util.List;
@@ -188,26 +185,7 @@ public class PersistenceService {
 
     }
 
-    public List<RoleAssignment> getAssignmentsByActorAndCaseId(String actorId, String caseId, String roleType) {
-        Set<RoleAssignmentEntity> roleAssignmentEntities = null;
 
-        if (StringUtils.isNotEmpty(actorId) && StringUtils.isNotEmpty(caseId)) {
-            roleAssignmentEntities = roleAssignmentRepository.findByActorIdAndCaseId(actorId, caseId, roleType);
-        } else if (StringUtils.isNotEmpty(actorId)) {
-            roleAssignmentEntities =
-                roleAssignmentRepository.findByActorIdAndRoleTypeIgnoreCase(actorId, roleType);
-        } else if (StringUtils.isNotEmpty(caseId)) {
-            roleAssignmentEntities = roleAssignmentRepository.getAssignmentByCaseId(caseId, roleType);
-        }
-
-        if (roleAssignmentEntities == null || roleAssignmentEntities.isEmpty()) {
-            throw new ResourceNotFoundException(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND);
-        }
-
-        return roleAssignmentEntities.stream()
-            .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
-            .collect(Collectors.toList());
-    }
 
     public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest, Integer pageNumber,
                                                                       Integer size, String sort, String direction) {
