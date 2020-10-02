@@ -6,7 +6,6 @@ import javax.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public final class RoleAssignmentEntitySpecifications {
 
@@ -15,7 +14,7 @@ public final class RoleAssignmentEntitySpecifications {
     }
 
 
-    public static Specification<RoleAssignmentEntity> searchByActorIds(List<UUID> actorIds) {
+    public static Specification<RoleAssignmentEntity> searchByActorIds(List<String> actorIds) {
         if (actorIds == null || actorIds.isEmpty()) {
             return null;
         }

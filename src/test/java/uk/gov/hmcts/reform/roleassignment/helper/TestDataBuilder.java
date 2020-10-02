@@ -58,9 +58,9 @@ public class TestDataBuilder {
     public static Request buildRequest(Status status, Boolean replaceExisting) {
         return Request.builder()
             .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
-            .authenticatedUserId(UUID.fromString("4772dc44-268f-4d0c-8f83-f0fb662aac84"))
+            .authenticatedUserId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
             .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
-            .assignerId(UUID.fromString("123e4567-e89b-42d3-a456-556642445678"))
+            .assignerId("123e4567-e89b-42d3-a456-556642445678")
             .requestType(RequestType.CREATE)
             .reference("p2")
             .process(("p2"))
@@ -74,7 +74,7 @@ public class TestDataBuilder {
         LocalDateTime timeStamp = LocalDateTime.now();
         return RoleAssignment.builder()
             .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
-            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .actorIdType(ActorIdType.IDAM)
             .roleType(RoleType.CASE)
             .roleName("judge")
@@ -98,7 +98,7 @@ public class TestDataBuilder {
         LocalDateTime timeStamp = LocalDateTime.now();
         return RoleAssignment.builder()
             .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
-            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .actorIdType(ActorIdType.IDAM)
             .roleType(RoleType.CASE)
             .roleName("top dog")
@@ -254,7 +254,7 @@ public class TestDataBuilder {
     public static ActorCacheEntity buildActorCacheEntity() throws IOException {
         JsonNode attributes = buildAttributesFromFile();
         return ActorCacheEntity.builder()
-            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .etag(1)
             .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(attributes))
             .build();
@@ -264,7 +264,7 @@ public class TestDataBuilder {
         HashSet<RoleAssignmentEntity> mySet = new HashSet<>();
         mySet.add(TestDataBuilder.buildRoleAssignmentEntitySet());
         return ActorCache.builder()
-            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .etag(1)
             .roleAssignments(mySet)
             .build();
@@ -273,7 +273,7 @@ public class TestDataBuilder {
     private static RoleAssignmentEntity buildRoleAssignmentEntitySet() throws IOException {
         LocalDateTime timeStamp = LocalDateTime.now();
         return RoleAssignmentEntity.builder()
-            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .actorIdType(ActorIdType.IDAM.name())
             .roleType(RoleType.CASE.name())
             .roleName("judge")
@@ -373,7 +373,7 @@ public class TestDataBuilder {
 
     public static Request buildRequestForRoleAssignment(boolean replaceExisting) {
         return Request.builder()
-            .assignerId(UUID.fromString("123e4567-e89b-42d3-a456-556642445678"))
+            .assignerId("123e4567-e89b-42d3-a456-556642445678")
             .reference("S-052")
             .process(("S-052"))
             .replaceExisting(replaceExisting)
@@ -389,7 +389,7 @@ public class TestDataBuilder {
     public static RoleAssignment buildRoleAssignments(boolean readOnly) throws IOException {
         LocalDateTime timeStamp = LocalDateTime.now();
         return RoleAssignment.builder()
-            .actorId(UUID.fromString("123e4567-e89b-42d3-a456-556642445612"))
+            .actorId("123e4567-e89b-42d3-a456-556642445612")
             .actorIdType(ActorIdType.IDAM)
             .roleType(RoleType.CASE)
             .roleName("judge")

@@ -251,7 +251,7 @@ class PersistenceServiceTest {
 
     @Test
     void getActorCacheEntity() throws IOException {
-        UUID id = UUID.randomUUID();
+        String id = UUID.randomUUID().toString();
         ActorCacheEntity actorCacheEntity = TestDataBuilder.buildActorCacheEntity();
         when(actorCacheRepository.findByActorId(id)).thenReturn(actorCacheEntity);
         ActorCacheEntity result = sut.getActorCacheEntity(id);
@@ -304,17 +304,13 @@ class PersistenceServiceTest {
 
     @Test
     void deleteRoleAssignmentById() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder
-            .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
-
-        sut.deleteRoleAssignmentByActorId(assignmentRequest.getRequest().getId());
-
-        verify(roleAssignmentRepository, times(1)).deleteByActorId(any(UUID.class));
+        sut.deleteRoleAssignmentByActorId(UUID.randomUUID().toString());
+        verify(roleAssignmentRepository, times(1)).deleteByActorId(any(String.class));
     }
 
     @Test
     void getAssignmentsByActor() throws IOException {
-        UUID id = UUID.randomUUID();
+        String id = UUID.randomUUID().toString();
         Set<RoleAssignmentEntity> roleAssignmentEntitySet = new HashSet<>();
         roleAssignmentEntitySet.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
                                                                                   .buildRoleAssignment(Status.LIVE)));
@@ -336,7 +332,7 @@ class PersistenceServiceTest {
 
     @Test
     void getAssignmentsByActor_NPE() throws IOException {
-        UUID id = UUID.randomUUID();
+        String id = UUID.randomUUID().toString();
         Set<RoleAssignmentEntity> roleAssignmentEntitySet = new HashSet<>();
         roleAssignmentEntitySet.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
                                                                                   .buildRoleAssignment(Status.LIVE)));
@@ -365,7 +361,7 @@ class PersistenceServiceTest {
                  .findByActorIdAndCaseId(actorId, caseId, RoleType.CASE.toString()))
             .thenReturn(roleAssignmentEntities);
         when(roleAssignmentRepository
-                 .findByActorIdAndRoleTypeIgnoreCase(UUID.fromString(actorId), RoleType.CASE.toString()))
+                 .findByActorIdAndRoleTypeIgnoreCase(actorId, RoleType.CASE.toString()))
             .thenReturn(roleAssignmentEntities);
         when(roleAssignmentRepository.getAssignmentByCaseId(caseId, RoleType.CASE.toString()))
             .thenReturn(roleAssignmentEntities);
@@ -398,7 +394,7 @@ class PersistenceServiceTest {
                  .findByActorIdAndCaseId(actorId, caseId, RoleType.CASE.toString()))
             .thenReturn(roleAssignmentEntities);
         when(roleAssignmentRepository
-                 .findByActorIdAndRoleTypeIgnoreCase(UUID.fromString(actorId), RoleType.CASE.toString()))
+                 .findByActorIdAndRoleTypeIgnoreCase(actorId, RoleType.CASE.toString()))
             .thenReturn(roleAssignmentEntities);
         when(roleAssignmentRepository.getAssignmentByCaseId(caseId, RoleType.CASE.toString()))
             .thenReturn(roleAssignmentEntities);
@@ -449,9 +445,9 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<RoleAssignmentEntity>(tasks);
 
 
-        List<UUID> actorId = Arrays.asList(
-            UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
-            UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
         List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
 
@@ -498,9 +494,9 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<RoleAssignmentEntity>(tasks);
 
 
-        List<UUID> actorId = Arrays.asList(
-            UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
-            UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
         List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
         List<String> roleNmaes = Arrays.asList("judge", "senior judge");
@@ -555,9 +551,9 @@ class PersistenceServiceTest {
     @Test
     void postRoleAssignmentsByQueryRequest_ThrowsException() {
 
-        List<UUID> actorId = Arrays.asList(
-            UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
-            UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
         List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
         QueryRequest queryRequest = QueryRequest.builder()

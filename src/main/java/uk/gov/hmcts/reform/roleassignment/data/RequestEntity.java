@@ -39,10 +39,10 @@ public class RequestEntity {
     private String clientId;
 
     @Column(name = "authenticated_user_id", nullable = false)
-    private UUID authenticatedUserId;
+    private String authenticatedUserId;
 
     @Column(name = "assigner_id", nullable = false)
-    private UUID assignerId;
+    private String assignerId;
 
     @Column(name = "request_type", nullable = false)
     private String requestType;
