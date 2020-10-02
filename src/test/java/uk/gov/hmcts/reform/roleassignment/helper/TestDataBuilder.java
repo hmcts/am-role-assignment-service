@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -91,6 +92,7 @@ public class TestDataBuilder {
             .created(timeStamp)
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
             .notes(buildNotesFromFile())
+            .authorisations(Collections.emptyList())
             .build();
     }
 
@@ -321,6 +323,7 @@ public class TestDataBuilder {
             .notes(roleAssignment.getNotes())
             .sequence(roleAssignment.getStatusSequence())
             .log(roleAssignment.getLog())
+            .authorisations("dev,tester")
             .build();
     }
 

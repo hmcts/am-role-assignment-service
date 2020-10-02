@@ -41,7 +41,7 @@ public final class RoleAssignmentEntitySpecifications {
             return null;
         }
         return (root, query, builder) -> builder.and(
-            builder.or( builder.lessThanOrEqualTo(root.get("beginTime"), date),root.get("beginTime").isNull()),
+            builder.or(builder.lessThanOrEqualTo(root.get("beginTime"), date),root.get("beginTime").isNull()),
             builder.or(builder.greaterThanOrEqualTo(root.get("endTime"), date),root.get("endTime").isNull())
         );
 
@@ -129,7 +129,7 @@ public final class RoleAssignmentEntitySpecifications {
 
         }
 
-        return (root, query, builder) -> builder.or(authorisations.stream().map(value-> {
+        return (root, query, builder) -> builder.or(authorisations.stream().map(value -> {
             return builder.isMember(value,root.get("authorisations"));
 
         }).toArray(Predicate[]::new));

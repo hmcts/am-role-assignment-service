@@ -76,17 +76,6 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     }
 
-    @Test
-    public void shouldReturnPredicate_WhileSearchByValidDate() {
-
-
-        Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByValidDate(
-            LocalDateTime.now());
-        specification = specification.and(mockSpec);
-        assertThat(specification).isNotNull();
-        MatcherAssert.assertThat(specification.toPredicate(root, query, builder), is(predicate));
-
-    }
 
     @Test
     public void shouldNotReturnPredicate_WhileSearchByValidDateWithoutMock() {
@@ -94,17 +83,16 @@ public class RoleAssignmentEntitySpecificationsTest {
 
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByValidDate(
             LocalDateTime.now());
-
         assertThat(specification).isNotNull();
-        MatcherAssert.assertThat(specification.toPredicate(root, query, builder), is(nullValue()));
+
 
     }
 
     @Test
     public void shouldReturnPredicate_WhileSearchByRoleName() {
-        List<String> roleNmaes = Arrays.asList("judge", "senior judge");
+        List<String> roleNames = Arrays.asList("judge", "senior judge");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleName(
-            roleNmaes);
+            roleNames);
         specification = specification.and(mockSpec);
         assertThat(specification).isNotNull();
         MatcherAssert.assertThat(specification.toPredicate(root, query, builder), is(predicate));
@@ -236,10 +224,11 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     }
 
-    /*@Test
+    @Test
     public void shouldReturnPredicate_WhileSearchByAuthorisations() {
-        List<String> authorisations = Arrays.asList("dev",
-                                                    "tester"
+        List<String> authorisations = Arrays.asList(
+            "dev",
+            "tester"
         );
 
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByAuthorisations(
@@ -248,21 +237,21 @@ public class RoleAssignmentEntitySpecificationsTest {
         assertThat(specification).isNotNull();
         MatcherAssert.assertThat(specification.toPredicate(root, query, builder), is(predicate));
 
-    }*/
+    }
 
-   /* @Test
+    @Test
     public void shouldNotReturnPredicate_WhileSearchByAuthorisationsWithoutMock() {
-        List<String> authorisations = Arrays.asList("dev",
-                                                    "tester"
+        List<String> authorisations = Arrays.asList(
+            "dev",
+            "tester"
         );
 
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByAuthorisations(
             authorisations);
-        specification = specification.and(mockSpec);
         assertThat(specification).isNotNull();
         MatcherAssert.assertThat(specification.toPredicate(root, query, builder), is(nullValue()));
 
-    }*/
+    }
 
 
 }

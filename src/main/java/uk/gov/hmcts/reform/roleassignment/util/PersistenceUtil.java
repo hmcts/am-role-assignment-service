@@ -16,7 +16,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
