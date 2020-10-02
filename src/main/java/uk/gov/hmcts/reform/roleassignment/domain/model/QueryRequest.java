@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class QueryRequest {
-    private List<UUID> actorId;
+    private List<String> actorId;
     private List<String> roleType;
     private List<String> roleName;
     private List<String> classification;

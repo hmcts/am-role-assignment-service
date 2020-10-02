@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
@@ -50,9 +49,9 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldReturnPredicate_WhileSearchByActorIds() {
-        List<UUID> actorId = Arrays.asList(
-            UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
-            UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
 
         Specification<RoleAssignmentEntity> spec = RoleAssignmentEntitySpecifications.searchByActorIds(actorId);
@@ -65,9 +64,9 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldNotReturnPredicate_WhileSearchByActorIdsWithoutMock() {
-        List<UUID> actorId = Arrays.asList(
-            UUID.fromString("123e4567-e89b-42d3-a456-556642445678"),
-            UUID.fromString("4dc7dd3c-3fb5-4611-bbde-5101a97681e1")
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
 
         Specification<RoleAssignmentEntity> spec = RoleAssignmentEntitySpecifications.searchByActorIds(actorId);
