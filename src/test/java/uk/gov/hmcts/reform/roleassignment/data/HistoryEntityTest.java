@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.data.roleassignment;
+package uk.gov.hmcts.reform.roleassignment.data;
 
 
 import org.junit.jupiter.api.BeforeEach;

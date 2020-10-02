@@ -66,19 +66,19 @@ public class AuditLoggerUtilTest {
     @Test
     public void checkActorIds() {
 
-        List<UUID> expectedIds = Arrays.asList(
-            UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"),
-            UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")
+        List<String> expectedIds = Arrays.asList(
+            "21334a2b-79ce-44eb-9168-2d49a744be9c",
+            "21334a2b-79ce-44eb-9168-2d49a744be9c"
         );
 
-        List<UUID> actorIds = AuditLoggerUtil.buildActorIds(responseEntity);
+        List<String> actorIds = AuditLoggerUtil.buildActorIds(responseEntity);
         assertNotNull(actorIds);
         assertThat(actorIds).isEqualTo(expectedIds);
     }
 
     @Test
     public void checkActorIdsNullResponse() {
-        List<UUID> actorIds = AuditLoggerUtil.buildActorIds(ResponseEntity.ok().build());
+        List<String> actorIds = AuditLoggerUtil.buildActorIds(ResponseEntity.ok().build());
         assertEquals(0, actorIds.size());
     }
 
@@ -140,19 +140,18 @@ public class AuditLoggerUtilTest {
     @Test
     public void shouldReturnActorIds() {
 
-        List<UUID> expectedActorIds = Arrays.asList(
-            UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"),
-            UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c")
-        );
+        List<String> expectedActorIds = Arrays.asList(
+            "21334a2b-79ce-44eb-9168-2d49a744be9c",
+            "21334a2b-79ce-44eb-9168-2d49a744be9c");
 
-        List<UUID> actorIds = AuditLoggerUtil.getActorIds(roleAssignmentResponseEntity);
+        List<String> actorIds = AuditLoggerUtil.getActorIds(roleAssignmentResponseEntity);
         assertNotNull(actorIds);
         assertThat(actorIds).isEqualTo(expectedActorIds);
     }
 
     @Test
     public void shouldReturnEmptyActorIds() {
-        List<UUID> actorIds = AuditLoggerUtil.getActorIds(ResponseEntity.ok().build());
+        List<String> actorIds = AuditLoggerUtil.getActorIds(ResponseEntity.ok().build());
         assertEquals(0, actorIds.size());
     }
 
