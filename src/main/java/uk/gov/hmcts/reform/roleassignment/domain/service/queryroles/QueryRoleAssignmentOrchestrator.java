@@ -25,7 +25,7 @@ public class QueryRoleAssignmentOrchestrator {
             persistenceService.retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Total-Records",
-                            Long.toString(persistenceService.roleAssignmentEntities.getTotalElements()));
+                            Long.toString(persistenceService.getTotalRecords()));
 
         return new ResponseEntity<>(assignmentList, responseHeaders, HttpStatus.OK);
 
