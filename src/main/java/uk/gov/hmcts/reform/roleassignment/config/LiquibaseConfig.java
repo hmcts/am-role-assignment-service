@@ -40,8 +40,10 @@ public class LiquibaseConfig implements ApplicationRunner {
             if (liquibase != null && liquibase.listLocks() != null) {
                 DatabaseChangeLogLock lock = liquibase.listLocks()[0];
                 if (StringUtils.isNotEmpty(lock.getLockedBy())) {
+                    LOGGER.error("Force releasing the database lock after 10 seconds.");
                     Thread.sleep(10000);
                     liquibase.forceReleaseLocks();
+                    LOGGER.error("Lock release is completed.");
                 }
                 liquibase.close();
             }
