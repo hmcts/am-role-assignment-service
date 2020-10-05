@@ -76,6 +76,8 @@ public class PersistenceUtil {
             .roleType(roleAssignment.getRoleType().toString())
             .readOnly(roleAssignment.isReadOnly())
             .roleCategory(roleAssignment.getRoleCategory().toString())
+            .process(roleAssignment.getProcess())
+            .reference(roleAssignment.getReference())
             .build();
     }
 

@@ -90,6 +90,7 @@ public class CreateRoleAssignmentOrchestrator {
                         existingAssignmentRequest,
                         parsedAssignmentRequest
                     )) {
+                        //Persist in the live table
                         identifyAssignmentsToBeUpdated(existingAssignmentRequest, parsedAssignmentRequest);
 
                     } else {
@@ -116,6 +117,7 @@ public class CreateRoleAssignmentOrchestrator {
             } else {
                 //Save requested role in history table with CREATED and Approved Status
                 createRoleAssignmentService.createNewAssignmentRecords(parsedAssignmentRequest);
+                //Persist in live table
                 createRoleAssignmentService.checkAllApproved(parsedAssignmentRequest);
 
             }
