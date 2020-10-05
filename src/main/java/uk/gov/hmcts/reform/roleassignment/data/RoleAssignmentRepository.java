@@ -28,5 +28,6 @@ public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEn
         + "ra.role_type = UPPER(:roleType) and ra.attributes ->> 'caseId' = :caseId ;", nativeQuery = true)
     Set<RoleAssignmentEntity> getAssignmentByCaseId(String caseId, String roleType);
 
+    Set<RoleAssignmentEntity> findByProcessAndReference(String process, String reference);
 }
 

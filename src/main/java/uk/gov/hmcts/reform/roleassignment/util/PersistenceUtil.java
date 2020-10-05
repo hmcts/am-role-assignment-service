@@ -76,8 +76,8 @@ public class PersistenceUtil {
             .roleType(roleAssignment.getRoleType().toString())
             .readOnly(roleAssignment.isReadOnly())
             .roleCategory(roleAssignment.getRoleCategory().toString())
-            .process(roleAssignment.getProcess())
-            .reference(roleAssignment.getReference())
+            .process(roleAssignment.getProcess().toUpperCase())
+            .reference(roleAssignment.getReference().toUpperCase())
             .build();
     }
 
@@ -130,6 +130,8 @@ public class PersistenceUtil {
             .endTime(roleAssignmentEntity.getEndTime())
             .created(roleAssignmentEntity.getCreated())
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
+            .process(roleAssignmentEntity.getProcess())
+            .reference(roleAssignmentEntity.getReference())
             .build();
     }
 

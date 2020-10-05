@@ -24,6 +24,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
@@ -151,11 +152,22 @@ public class PersistenceService {
     }
 
     public List<RoleAssignment> getAssignmentsByProcess(String process, String reference, String status) {
-        Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
+       /* Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
         //convert into model class
         return historyEntities.stream().map(historyEntity -> persistenceUtil
             .convertHistoryEntityToRoleAssignment(historyEntity)).collect(
-            Collectors.toList());
+            Collectors.toList());*/
+        Set<RoleAssignmentEntity> roleAssignmentEntitySet =
+            roleAssignmentRepository.findByProcessAndReference(process.toUpperCase(), reference.toUpperCase());
+        List<RoleAssignment> roleAssignmentList = roleAssignmentEntitySet.stream().map(entity -> persistenceUtil.convertEntityToRoleAssignment(entity))
+            .collect(Collectors.toList());
+
+        for(RoleAssignment assignment: roleAssignmentList) {
+            assignment.setStatus(Status.LIVE);
+        }
+        return roleAssignmentList;
+
+
 
     }
 
