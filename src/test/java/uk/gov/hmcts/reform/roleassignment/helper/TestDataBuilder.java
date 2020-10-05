@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -33,10 +34,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -404,6 +409,30 @@ public class TestDataBuilder {
             .endTime(timeStamp.plusMonths(1))
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
             .notes(buildNotesFromFile())
+            .authorisations(Collections.emptyList())
             .build();
+    }
+
+    public static QueryRequest createQueryRequest(){
+        Map<String, List<String>> attributes = new HashMap<>();
+        List<String> regions = Arrays.asList("London", "JAPAN");
+        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        attributes.put("region", regions);
+        attributes.put("contractType", contractTypes);
+
+        return QueryRequest.builder()
+            .actorId(Arrays.asList("123e4567-e89b-42d3-a456-556642445612"))
+
+            .roleType(Arrays.asList(RoleType.CASE.toString()))
+            .roleName(Arrays.asList("judge"))
+            .classification(Arrays.asList(Classification.PUBLIC.toString()))
+            .grantType(Arrays.asList(GrantType.SPECIFIC.toString()))
+            .roleCategory(Arrays.asList(RoleCategory.JUDICIAL.toString()))
+            .validAt(LocalDateTime.now())
+            .attributes(attributes)
+            .authorisations(Arrays.asList("dev"))
+            .build();
+
+
     }
 }

@@ -56,6 +56,7 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private ActorCacheRepository actorCacheRepository;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
+    public static Page<RoleAssignmentEntity> roleAssignmentEntities;
 
     @Value("${roleassignment.query.sortcolumn}")
     private String sortColumn;
@@ -190,7 +191,7 @@ public class PersistenceService {
     public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest, Integer pageNumber,
                                                                       Integer size, String sort, String direction) {
 
-        Page<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findAll(
+         roleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(Objects.requireNonNull(
                 Objects.requireNonNull(
                     Objects.requireNonNull(
@@ -206,7 +207,7 @@ public class PersistenceService {
                             .and(searchByRoleType(searchRequest.getRoleType())))
                         .and(searchByRoleName(searchRequest.getRoleName())))
                     .and(searchByClassification(searchRequest.getClassification())))
-                                       .and(searchByRoleCategories(searchRequest.getRoleCategorie())))
+                                       .and(searchByRoleCategories(searchRequest.getRoleCategory())))
                 .and(searchByAuthorisations(searchRequest.getAuthorisations())),
             PageRequest.of(
                 (pageNumber != null
@@ -228,7 +229,7 @@ public class PersistenceService {
 
     public List<RoleAssignment> getAssignmentById(UUID assignmentId) {
         Optional<RoleAssignmentEntity> roleAssignmentEntityOptional = roleAssignmentRepository.findById(assignmentId);
-        if (roleAssignmentEntityOptional.isPresent()) {
+        if (roleAssignmentEntityOptional.isEmpty()) {
             return roleAssignmentEntityOptional.stream()
                 .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
                 .collect(Collectors.toList());

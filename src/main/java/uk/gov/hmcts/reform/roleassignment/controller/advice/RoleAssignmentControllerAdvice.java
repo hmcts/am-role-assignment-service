@@ -43,7 +43,7 @@ public class RoleAssignmentControllerAdvice {
     private static final String LOG_STRING = "handling exception: {}";
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentControllerAdvice.class);
 
-    private static final String[] DESERIALIZEITEMTYPES = {Constants.ROLETYPE, Constants.CLASSIFICATION, Constants.UUID,
+    private static final String[] DESERIALIZEITEMTYPES = {Constants.REQUEST_BODY,Constants.ROLETYPE, Constants.CLASSIFICATION, Constants.UUID,
         Constants.ACTORIDTYPE, Constants.GRANTTYPE,
         Constants.ROLECATEGORY, Constants.BOOLEAN,
         Constants.LOCALDATETIME, Constants.STATUS, Constants.INTEGER};

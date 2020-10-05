@@ -454,7 +454,7 @@ class PersistenceServiceTest {
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
             .roleType(roleType)
-            .roleCategorie(roleCategories)
+            .roleCategory(roleCategories)
             .roleName(roleNmaes)
             .classification(classifications)
             .attributes(attributes)
