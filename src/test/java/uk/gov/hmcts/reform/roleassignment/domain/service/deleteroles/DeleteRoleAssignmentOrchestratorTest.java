@@ -1,24 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -116,8 +98,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         mockRequest();
         when(persistenceService.getAssignmentsByProcess(
             PROCESS,
-            REFERENCE,
-            Status.LIVE.toString()
+            REFERENCE
         )).thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
         mockHistoryEntity();
 
@@ -206,8 +187,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         setApprovedStatusByDrool();
         mockRequest();
         when(persistenceService.getAssignmentsByProcess(PROCESS,
-                                                        REFERENCE,
-                                                        Status.LIVE.toString()))
+                                                        REFERENCE))
             .thenReturn(new ArrayList<>() {
                 {
                     add(RoleAssignment.builder().status(DELETE_APPROVED).build());

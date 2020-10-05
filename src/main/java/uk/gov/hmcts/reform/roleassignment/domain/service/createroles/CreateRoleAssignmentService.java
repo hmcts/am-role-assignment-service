@@ -438,8 +438,7 @@ public class CreateRoleAssignmentService {
         Request request = parsedAssignmentRequest.getRequest();
         List<RoleAssignment> existingAssignments = persistenceService.getAssignmentsByProcess(
             request.getProcess(),
-            request.getReference(),
-            Status.LIVE.toString()
+            request.getReference()
         );
         createdTimeComparator = new CreatedTimeComparator();
         existingAssignments.sort(createdTimeComparator);

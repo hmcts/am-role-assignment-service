@@ -98,7 +98,7 @@ class CreateRoleAssignmentServiceTest {
         sut.setNeedToCreateRoleAssignments(needToCreateRoleAssignments);
 
 
-        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
+        when(persistenceService.getAssignmentsByProcess(anyString(), anyString()))
             .thenReturn((List<RoleAssignment>) existingAssignmentRequest.getRequestedRoles());
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
@@ -149,7 +149,7 @@ class CreateRoleAssignmentServiceTest {
         sut.setNeedToDeleteRoleAssignments(needToDeleteRoleAssignments);
         sut.setNeedToCreateRoleAssignments(needToCreateRoleAssignments);
 
-        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
+        when(persistenceService.getAssignmentsByProcess(anyString(), anyString()))
             .thenReturn((List<RoleAssignment>) existingAssignmentRequest.getRequestedRoles());
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
@@ -198,7 +198,7 @@ class CreateRoleAssignmentServiceTest {
         sut.setNeedToDeleteRoleAssignments(needToDeleteRoleAssignments);
         sut.setNeedToCreateRoleAssignments(needToCreateRoleAssignments);
 
-        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
+        when(persistenceService.getAssignmentsByProcess(anyString(), anyString()))
             .thenReturn((List<RoleAssignment>) existingAssignmentRequest.getRequestedRoles());
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(

@@ -271,17 +271,13 @@ class PersistenceServiceTest {
 
         RoleAssignment requestedRole = TestDataBuilder.convertHistoryEntityInModel(historyEntity);
 
-        when(historyRepository.findByReference(
-            "process", "reference", "status")).thenReturn(historyEntities);
         when(persistenceUtil.convertHistoryEntityToRoleAssignment(historyEntity)).thenReturn(requestedRole);
 
-        List<RoleAssignment> result = sut.getAssignmentsByProcess("process", "reference", "status");
+        List<RoleAssignment> result = sut.getAssignmentsByProcess("process", "reference");
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
 
-        verify(historyRepository, times(1)).findByReference(
-            "process", "reference", "status");
         verify(persistenceUtil, times(1)).convertHistoryEntityToRoleAssignment(historyEntity);
     }
 

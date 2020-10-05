@@ -59,11 +59,8 @@ public class DeleteRoleAssignmentOrchestrator {
         persistInitialRequestForDelete();
 
         //3. retrieve all assignment records based on actorId/process+reference
-        requestedRoles = persistenceService.getAssignmentsByProcess(
-            process,
-            reference,
-            Status.LIVE.toString()
-        );
+        requestedRoles = persistenceService.getAssignmentsByProcess(process, reference);
+
         if (requestedRoles.isEmpty()) {
             requestEntity.setStatus(Status.APPROVED.toString());
             persistenceService.updateRequest(requestEntity);

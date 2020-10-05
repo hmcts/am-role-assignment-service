@@ -131,7 +131,7 @@ public class ValidationUtil {
             )) {
             throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
         }
-        validateId(Constants.UUID_PATTERN, roleRequest.getAssignerId().toString());
+        validateId(Constants.UUID_PATTERN, roleRequest.getAssignerId());
     }
 
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
@@ -143,7 +143,7 @@ public class ValidationUtil {
                                                   + requestedRole.getRoleName());
             }
 
-            validateId(Constants.UUID_PATTERN, requestedRole.getActorId().toString());
+            validateId(Constants.UUID_PATTERN, requestedRole.getActorId());
             compareRoleType(requestedRole.getRoleType().toString());
             if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
                 validateDateTime(requestedRole.getBeginTime().toString());
