@@ -16,7 +16,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 

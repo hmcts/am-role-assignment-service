@@ -41,7 +41,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -413,7 +412,7 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static QueryRequest createQueryRequest(){
+    public static QueryRequest createQueryRequest() {
         Map<String, List<String>> attributes = new HashMap<>();
         List<String> regions = Arrays.asList("London", "JAPAN");
         List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");

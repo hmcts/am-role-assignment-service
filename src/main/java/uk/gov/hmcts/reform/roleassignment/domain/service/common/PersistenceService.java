@@ -191,7 +191,7 @@ public class PersistenceService {
     public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest, Integer pageNumber,
                                                                       Integer size, String sort, String direction) {
 
-         roleAssignmentEntities = roleAssignmentRepository.findAll(
+        roleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(Objects.requireNonNull(
                 Objects.requireNonNull(
                     Objects.requireNonNull(
@@ -229,7 +229,7 @@ public class PersistenceService {
 
     public List<RoleAssignment> getAssignmentById(UUID assignmentId) {
         Optional<RoleAssignmentEntity> roleAssignmentEntityOptional = roleAssignmentRepository.findById(assignmentId);
-        if (roleAssignmentEntityOptional.isEmpty()) {
+        if (roleAssignmentEntityOptional.isPresent()) {
             return roleAssignmentEntityOptional.stream()
                 .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
                 .collect(Collectors.toList());
