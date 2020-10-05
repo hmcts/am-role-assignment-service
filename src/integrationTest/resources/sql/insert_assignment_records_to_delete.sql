@@ -3,7 +3,6 @@ DELETE FROM role_assignment_request;
 DELETE FROM role_assignment_authorisations;
 DELETE FROM role_assignment;
 DELETE FROM actor_cache_control;
-DELETE FROM role_assignment_authorisations;
 
 
 INSERT INTO public.role_assignment_request
