@@ -46,7 +46,6 @@ public class RoleAssignment {
     private String log; //this will be set app based on drool validation rule name on individual assignments.
     private Map<String, JsonNode> attributes;
     private JsonNode notes;
-    @JsonProperty
     private List<String> authorisations;
 
 }
