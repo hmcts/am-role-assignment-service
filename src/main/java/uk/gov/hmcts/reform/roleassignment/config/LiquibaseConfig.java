@@ -38,13 +38,15 @@ public class LiquibaseConfig implements ApplicationRunner {
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
         } finally {
-            if (liquibase != null && liquibase.listLocks() != null && liquibase.listLocks().length == 1) {
-                DatabaseChangeLogLock lock = liquibase.listLocks()[0];
-                if (lock != null && StringUtils.isNotEmpty(lock.getLockedBy())) {
-                    LOGGER.error("Force releasing the database lock after 10 seconds.");
-                    Thread.sleep(10000);
-                    liquibase.forceReleaseLocks();
-                    LOGGER.error("Lock release is completed.");
+            if (liquibase != null) {
+                if (liquibase.listLocks() != null && liquibase.listLocks().length == 1) {
+                    DatabaseChangeLogLock lock = liquibase.listLocks()[0];
+                    if (lock != null && StringUtils.isNotEmpty(lock.getLockedBy())) {
+                        LOGGER.error("Force releasing the database lock after 10 seconds.");
+                        Thread.sleep(10000);
+                        liquibase.forceReleaseLocks();
+                        LOGGER.error("Lock release is completed.");
+                    }
                 }
                 liquibase.close();
             }
