@@ -154,6 +154,9 @@ public class ValidationUtil {
             validateId(Constants.UUID_PATTERN, requestedRole.getActorId());
             compareRoleType(requestedRole.getRoleType().toString());
             if (requestedRole.getRoleType().equals(CASE)) {
+                if (requestedRole.getBeginTime() == null && requestedRole.getEndTime() == null) {
+                    throw new BadRequestException("Parameter 'beginTime' and 'endTime' is required for roleType CASE");
+                }
                 if (requestedRole.getBeginTime() == null) {
                     throw new BadRequestException("Parameter 'beginTime' is required for roleType CASE");
                 }
