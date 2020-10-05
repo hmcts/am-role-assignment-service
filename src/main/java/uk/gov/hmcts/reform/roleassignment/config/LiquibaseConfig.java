@@ -32,14 +32,15 @@ public class LiquibaseConfig implements ApplicationRunner {
         Liquibase liquibase = null;
         try {
             liquibase = new Liquibase("db/changelog/db.changelog-master.xml",
-                                      new ClassLoaderResourceAccessor(), database);
+                                      new ClassLoaderResourceAccessor(), database
+            );
             liquibase.update(new Contexts());
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
         } finally {
-            if (liquibase != null && liquibase.listLocks() != null) {
+            if (liquibase != null && liquibase.listLocks() != null && liquibase.listLocks().length == 1) {
                 DatabaseChangeLogLock lock = liquibase.listLocks()[0];
-                if (StringUtils.isNotEmpty(lock.getLockedBy())) {
+                if (lock != null && StringUtils.isNotEmpty(lock.getLockedBy())) {
                     LOGGER.error("Force releasing the database lock after 10 seconds.");
                     Thread.sleep(10000);
                     liquibase.forceReleaseLocks();
