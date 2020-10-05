@@ -59,6 +59,12 @@ public class RoleAssignmentEntity {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
+    @Column(name = "process")
+    private String process;
+
+    @Column(name = "reference")
+    private String reference;
+
     @CreationTimestamp
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
