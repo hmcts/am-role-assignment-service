@@ -5,10 +5,10 @@
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
   <changeSet id="12" author="aashish.aggarwal@hmcts.net">
-    <sql dbms="postgresql">
-      CREATE INDEX CONCURRENTLY
-      IF NOT EXISTS idx_actor_id
-      ON role_assignment(actor_id)
-    </sql>
+    <createIndex indexName="idx_actor_id"
+                 schemaName="public"
+                 tableName="role_assignment">
+      <column name="actor_id" type="text"/>
+    </createIndex>
   </changeSet>
 </databaseChangeLog>
