@@ -5,7 +5,9 @@ import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
+import liquibase.lockservice.DatabaseChangeLogLock;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +29,22 @@ public class LiquibaseConfig implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(
             new JdbcConnection(dataSource.getConnection()));
-        try (Liquibase liquibase = new Liquibase("db/changelog/db.changelog-master.xml",
-                                                 new ClassLoaderResourceAccessor(), database
-        )) {
+        Liquibase liquibase = null;
+        try {
+            liquibase = new Liquibase("db/changelog/db.changelog-master.xml",
+                                      new ClassLoaderResourceAccessor(), database);
             liquibase.update(new Contexts());
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
+        } finally {
+            if (liquibase != null && liquibase.listLocks() != null) {
+                DatabaseChangeLogLock lock = liquibase.listLocks()[0];
+                if (StringUtils.isNotEmpty(lock.getLockedBy())) {
+                    Thread.sleep(10000);
+                    liquibase.forceReleaseLocks();
+                }
+                liquibase.close();
+            }
         }
     }
 }
