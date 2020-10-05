@@ -56,7 +56,7 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private ActorCacheRepository actorCacheRepository;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
-    public  Page<RoleAssignmentEntity> roleAssignmentEntities ;
+    public  Page<RoleAssignmentEntity> roleAssignmentEntities;
 
     @Value("${roleassignment.query.sortcolumn}")
     private String sortColumn;
@@ -237,8 +237,8 @@ public class PersistenceService {
         return Collections.emptyList();
     }
 
-    public long getTotalRecords(){
-        return roleAssignmentEntities != null? roleAssignmentEntities.getTotalElements():Long.valueOf(0);
+    public long getTotalRecords() {
+        return roleAssignmentEntities != null ? roleAssignmentEntities.getTotalElements() : Long.valueOf(0);
 
     }
 
