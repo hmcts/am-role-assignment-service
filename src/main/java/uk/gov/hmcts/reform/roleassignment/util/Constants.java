@@ -34,5 +34,7 @@ public final class Constants {
     public static final String LOCALDATETIME = "LocalDateTime";
     public static final String STATUS = "Status";
     public static final String INTEGER = "Integer";
+    public static final String REQUEST_BODY = "Request body";
+
 
 }

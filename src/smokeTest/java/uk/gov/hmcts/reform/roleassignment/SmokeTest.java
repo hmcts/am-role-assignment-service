@@ -60,26 +60,7 @@ public class SmokeTest extends BaseTest {
     @Rule
     public FeatureFlagToggleEvaluator featureFlagToggleEvaluator = new FeatureFlagToggleEvaluator(this);
 
-    @Test
-    @FeatureFlagToggle("get-assignments-by-query-params")
-    public void should_receive_response_for_get_by_query_params_case_id() {
 
-        String targetInstance = config.getRoleAssignmentUrl()
-            + "/am/role-assignments?roleType=case&caseId=1234567890000000";
-        RestAssured.useRelaxedHTTPSValidation();
-
-        Response response = SerenityRest
-            .given()
-            .relaxedHTTPSValidation()
-            .header(SERVICE_AUTHORIZATION, BEARER + serviceAuth)
-            .header(AUTHORIZATION, BEARER + accessToken)
-            .when()
-            .get(targetInstance)
-            .andReturn();
-        response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
-            .body(ERROR_DESCRIPTION, Matchers.equalTo(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND));
-        response.then().assertThat().body(ERROR_MESSAGE, Matchers.equalTo(RESOURCE_NOT_FOUND));
-    }
 
     @Test
     @FeatureFlagToggle("get-list-of-roles")

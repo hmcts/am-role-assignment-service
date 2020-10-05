@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -45,6 +47,7 @@ public class RoleAssignment {
     private String log; //this will be set app based on drool validation rule name on individual assignments.
     private Map<String, JsonNode> attributes;
     private JsonNode notes;
+    @JsonProperty
     private List<String> authorisations;
 
 }

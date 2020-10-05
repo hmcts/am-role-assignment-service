@@ -51,10 +51,6 @@ public class QueryAssignmentController {
         ),
         @ApiResponse(
             code = 400,
-            message = V1.Error.INVALID_REQUEST
-        ),
-        @ApiResponse(
-            code = 400,
             message = V1.Error.BAD_REQUEST_INVALID_PARAMETER
         ),
 

@@ -5,7 +5,7 @@
   <changeSet id="11" author="dharmendra.singh@hmcts.net">
     <createTable tableName="role_assignment_authorisations">
       <column name="authorisations" type="text">
-        <constraints nullable="false"/>
+        <constraints nullable="true"/>
       </column>
       <column name="id" type="uuid">
         <constraints nullable="false" foreignKeyName="fk_role_assignment_authorisations_role_assignment" references="role_assignment(id)"/>
@@ -24,6 +24,8 @@
     <update tableName="role_assignment_history">
       <column name="authorisations"  />
     </update>
+
+
 
   </changeSet>
 </databaseChangeLog>

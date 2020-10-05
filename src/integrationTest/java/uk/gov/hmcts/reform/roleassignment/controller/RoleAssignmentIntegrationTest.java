@@ -3,7 +3,9 @@ package uk.gov.hmcts.reform.roleassignment.controller;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.createQueryRequest;
 
 import java.util.List;
 import javax.inject.Inject;
@@ -214,6 +216,28 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         );
     }
 
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void shouldGetRoleAssignmentsBasedOnDynamicQuery() throws Exception {
+
+        final String url = "/am/role-assignments/query";
+
+        final MvcResult result =  mockMvc.perform(post(url)
+                                                      .contentType(JSON_CONTENT_TYPE)
+                                                      .headers(getHttpHeaders())
+                                                      .content(mapper.writeValueAsBytes(createQueryRequest()))
+        ).andExpect(status().is(200)).andReturn();
+
+
+        String responseAsString = result.getResponse().getContentAsString();
+
+        List<RoleAssignment> response = mapper.readValue(responseAsString, new TypeReference<>() {
+        });
+
+        assertNotNull(response);
+
+    }
+
     private void assertRoleAssignmentRecordSize() {
         final Object[] assignmentId = new Object[] {
             ROLE_ASSIGNMENT_ID
@@ -231,4 +255,6 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         headers.add("Authorization", "Bearer " + "2345");
         return headers;
     }
+
+
 }
