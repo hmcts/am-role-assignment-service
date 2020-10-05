@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,14 +17,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -46,7 +43,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.createQueryRequest;
 
 public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
