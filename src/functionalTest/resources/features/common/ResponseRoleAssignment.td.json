@@ -12,6 +12,7 @@
   "beginTime": "[[ANYTHING_PRESENT]]",
   "endTime": "[[ANYTHING_PRESENT]]",
   "created": "[[ANYTHING_PRESENT]]",
+  "authorisations" : [ ],
   "attributes": {
     "contractType": "SALARIED",
     "caseId": "1234567890123456",

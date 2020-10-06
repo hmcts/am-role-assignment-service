@@ -1,0 +1,34 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet id="11" author="dharmendra.singh@hmcts.net">
+    <createTable tableName="role_assignment_authorisations">
+      <column name="authorisations" type="text">
+        <constraints nullable="true"/>
+      </column>
+      <column name="id" type="uuid">
+        <constraints nullable="false" foreignKeyName="fk_role_assignment_authorisations_role_assignment" references="role_assignment(id)"/>
+      </column>
+    </createTable>
+
+
+
+
+
+    <addColumn tableName="role_assignment_history">
+      <column name="authorisations" type="text">
+        <constraints nullable="true" />
+      </column>
+    </addColumn>
+    <update tableName="role_assignment_history">
+      <column name="authorisations"  />
+    </update>
+
+
+
+  </changeSet>
+</databaseChangeLog>
+
+
+
