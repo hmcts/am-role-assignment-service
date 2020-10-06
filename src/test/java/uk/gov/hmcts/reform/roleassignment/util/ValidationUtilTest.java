@@ -108,26 +108,6 @@ class ValidationUtilTest {
     }
 
     @Test
-    void shouldThrowExceptionForCaseNoBeginTime() throws IOException {
-        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
-        roleAssignment.setBeginTime(null);
-        Collection<RoleAssignment> roleAssignments = new ArrayList<>();
-        roleAssignments.add(roleAssignment);
-        Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateRequestedRoles(roleAssignments));
-    }
-
-    @Test
-    void shouldThrowExceptionForCaseNoEndTime() throws IOException {
-        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
-        roleAssignment.setEndTime(null);
-        Collection<RoleAssignment> roleAssignments = new ArrayList<>();
-        roleAssignments.add(roleAssignment);
-        Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateRequestedRoles(roleAssignments));
-    }
-
-    @Test
     void shouldThrowInvalidRequestException_ValidateLists() {
         List<String> list = new ArrayList<>();
         Assertions.assertThrows(BadRequestException.class, () ->

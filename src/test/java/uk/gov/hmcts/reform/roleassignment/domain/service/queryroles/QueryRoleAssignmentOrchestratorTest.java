@@ -64,7 +64,7 @@ class QueryRoleAssignmentOrchestratorTest {
 
     @Test
     void shouldThrow_retrieveRoleAssignments_InvalidActorId() throws IOException {
-        String actorId = "003352d0-e699-48bc-b6f5-5810411e60a";
+        String actorId = "003352d0-e699-48bc-b6f$$5-5810411e60a";
         String caseId = "1234567890123456";
 
         Assertions.assertThrows(BadRequestException.class, () ->
