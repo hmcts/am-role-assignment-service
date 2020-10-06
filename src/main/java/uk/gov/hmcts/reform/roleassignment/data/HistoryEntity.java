@@ -94,6 +94,10 @@ public class HistoryEntity {
     @JoinColumn(name = "request_id")
     private RequestEntity requestEntity;
 
+    @Column(name = "authorisations")
+    private String authorisations;
+
+
     //getter method to retrieve the parent id in the child entity
     public UUID getRequestId() {
         return requestEntity.getId();

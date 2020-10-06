@@ -10,6 +10,7 @@
   "readOnly": false,
   "beginTime" : "2021-01-01T00:00",
   "endTime" : "2023-01-01T00:00",
+  "authorisations" : [ ],
   "attributes":
   {
     "jurisdiction": "divorce",
