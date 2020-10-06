@@ -6,6 +6,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -96,6 +98,16 @@ class ValidationUtilTest {
     }
 
     @Test
+    void validateRequestedRolesForCase() throws IOException {
+        Collection<RoleAssignment> roleAssignments = new ArrayList<>();
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
+        roleAssignment.setRoleType(RoleType.ORGANISATION);
+        roleAssignments.add(roleAssignment);
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateRequestedRoles(roleAssignments)
+        );
+    }
+
+    @Test
     void shouldThrowInvalidRequestException_ValidateLists() {
         List<String> list = new ArrayList<>();
         Assertions.assertThrows(BadRequestException.class, () ->
@@ -113,21 +125,21 @@ class ValidationUtilTest {
     @Test
     void should_validateDateTime() {
         Assertions.assertDoesNotThrow(() ->
-            ValidationUtil.validateDateTime(LocalDateTime.now().toString())
+            ValidationUtil.validateDateTime(LocalDateTime.now().plusMinutes(1).toString(), "beginTime")
         );
     }
 
     @Test
     void validateDateTime_ThrowLessThanLimit() {
         Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateDateTime("2050-09-01T00:")
+            ValidationUtil.validateDateTime("2050-09-01T00:", "beginTime")
         );
     }
 
     @Test
     void validateDateTime_ThrowParseException() {
         Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateDateTime("2050-090000000000000")
+            ValidationUtil.validateDateTime("2050-090000000000000","endTime")
         );
     }
 
