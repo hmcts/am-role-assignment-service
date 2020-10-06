@@ -74,6 +74,11 @@ class PersistenceServiceTest {
     @Mock
     private DatabseChangelogLockRepository databseChangelogLockRepository;
 
+    @Mock
+    private Page<RoleAssignmentEntity> pageable;
+
+
+
     @InjectMocks
     private PersistenceService sut = new PersistenceService(
         historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository,
@@ -594,5 +599,38 @@ class PersistenceServiceTest {
         verify(persistenceUtil, times(1))
             .convertEntityToRoleAssignment(page.iterator().next());
 
+    }
+
+    @Test
+    void shouldReturnTheTotalRecords()  {
+
+        when(pageable.getTotalElements()).thenReturn(Long.valueOf(10));
+        Long count = sut.getTotalRecords();
+        assertNotNull(count);
+        assertEquals(count,Long.valueOf(10));
+        verify(pageable, times(1))
+            .getTotalElements();
+
+    }
+
+    @Test
+    void shouldNotReturnTheTotalRecords()  {
+        Long count = sut.getTotalRecords();
+        assertNotNull(count);
+        assertEquals(count,Long.valueOf(0));
+        verify(pageable, times(1))
+            .getTotalElements();
+
+    }
+
+    @Test
+    void shouldReturnEmptyListOfRoleAssignmentRecords()  {
+        UUID id = UUID.randomUUID();
+        Optional<RoleAssignmentEntity> roleAssignmentOptional = Optional.empty();
+
+        when(roleAssignmentRepository.findById(id)).thenReturn(roleAssignmentOptional);
+        List<RoleAssignment> roleAssignmentList = sut.getAssignmentById(id);
+        assertNotNull(roleAssignmentList);
+        assertEquals(roleAssignmentList.size(),Integer.valueOf(0));
     }
 }
