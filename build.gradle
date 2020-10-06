@@ -29,6 +29,7 @@ apply plugin: 'net.serenity-bdd.aggregator'
 apply plugin: 'project-report'
 apply plugin: 'idea'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'au.com.dius.pact'
 apply from: 'liquibase.gradle'
 
 def versions = [
@@ -459,7 +460,7 @@ dependencies {
   compile(group: 'org.springframework', name: 'spring-core', version: '5.2.9.RELEASE')
   compile(group: 'org.springframework', name: 'spring-test', version: '5.2.9.RELEASE')
   compile(group: 'org.springframework', name: 'spring-tx', version: '5.2.9.RELEASE')
-  
+
   compile group: 'au.com.dius.pact.provider', name: 'junit', version: '4.1.7'
 
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'

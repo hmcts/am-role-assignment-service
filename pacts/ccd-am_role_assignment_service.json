@@ -1,0 +1,61 @@
+{
+    "provider": {
+        "name": "am_role_assignment_service"
+    },
+    "consumer": {
+        "name": "ccd"
+    },
+    "interactions": [
+        {
+            "description": "RAS takes s2s/auth token and returns list of roles to CCD API",
+            "request": {
+                "method": "GET",
+                "path": "/am/role-assignments/roles",
+                "headers": {
+                    "ServiceAuthorization": "Bearer1234",
+                    "Authorization": "Bearer1234"
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": {
+                    "roles": [
+                      "caseworker"
+                    ]
+                },
+                "matchingRules": {
+                    "body": {
+                        "$.roles[0]": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "providerStates": [
+                {
+                    "name": "a list of roles are available in role assignment service",
+                    "params": {
+                        "roles": [
+                          "caseworker"
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "pactSpecification": {
+            "version": "3.0.0"
+        },
+        "pact-jvm": {
+            "version": "3.5.24"
+        }
+    }
+}
