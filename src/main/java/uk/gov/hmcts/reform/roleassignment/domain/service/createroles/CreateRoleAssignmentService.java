@@ -264,6 +264,8 @@ public class CreateRoleAssignmentService {
                                          AssignmentRequest parsedAssignmentRequest)
         throws InvocationTargetException, IllegalAccessException {
 
+        //true: there is some change
+        //false: duplicate
         needToRetainRoleAssignments = new HashSet<>();
         // convert existing assignment records into role assignment subset
         Map<UUID, RoleAssignmentSubset> existingRecords = JacksonUtils.convertExistingRolesIntoSubSet(

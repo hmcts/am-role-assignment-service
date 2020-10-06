@@ -29,7 +29,7 @@ public class RoleAssignmentSubset {
     private RoleCategory roleCategory;
     private boolean readOnly;
     private Map<String, JsonNode> attributes;
-    private JsonNode notes;
+    //private JsonNode notes;
     private LocalDateTime beginTime;
     private LocalDateTime endTime;
 }
