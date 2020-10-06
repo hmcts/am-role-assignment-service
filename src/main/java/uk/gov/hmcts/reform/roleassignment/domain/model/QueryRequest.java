@@ -21,6 +21,8 @@ public class QueryRequest {
     private List<String> classification;
     private List<String> grantType;
     private LocalDateTime validAt;
-    private List<String> roleCategorie;
+    private List<String> roleCategory;
     private Map<String, List<String>> attributes;
+    private List<String> authorisations;
+
 }
