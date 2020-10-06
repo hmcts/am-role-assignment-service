@@ -346,6 +346,7 @@ public class TestDataBuilder {
             .roleType(roleAssignment.getRoleType().toString())
             .readOnly(roleAssignment.isReadOnly())
             .roleCategory(roleAssignment.getRoleCategory().toString())
+            .authorisations(roleAssignment.getAuthorisations())
             .build();
     }
 
