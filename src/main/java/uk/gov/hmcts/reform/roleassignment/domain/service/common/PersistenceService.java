@@ -151,19 +151,17 @@ public class PersistenceService {
         return actorCacheRepository.findByActorId(actorId);
     }
 
-    public List<RoleAssignment> getAssignmentsByProcess(String process, String reference) {
+    public List<RoleAssignment> getAssignmentsByProcessAndReference(String process, String reference) {
         Set<RoleAssignmentEntity> roleAssignmentEntitySet =
             roleAssignmentRepository.findByProcessAndReference(process.toUpperCase(), reference.toUpperCase());
-        List<RoleAssignment> roleAssignmentList = roleAssignmentEntitySet.stream().map(entity -> persistenceUtil.convertEntityToRoleAssignment(entity))
+        List<RoleAssignment> roleAssignmentList = roleAssignmentEntitySet.stream()
+            .map(entity -> persistenceUtil.convertEntityToRoleAssignment(entity))
             .collect(Collectors.toList());
 
-        for(RoleAssignment assignment: roleAssignmentList) {
+        for (RoleAssignment assignment : roleAssignmentList) {
             assignment.setStatus(Status.LIVE);
         }
         return roleAssignmentList;
-
-
-
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)

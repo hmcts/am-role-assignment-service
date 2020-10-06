@@ -436,7 +436,7 @@ public class CreateRoleAssignmentService {
     public AssignmentRequest retrieveExistingAssignments(AssignmentRequest parsedAssignmentRequest) {
         AssignmentRequest existingAssignmentRequest;
         Request request = parsedAssignmentRequest.getRequest();
-        List<RoleAssignment> existingAssignments = persistenceService.getAssignmentsByProcess(
+        List<RoleAssignment> existingAssignments = persistenceService.getAssignmentsByProcessAndReference(
             request.getProcess(),
             request.getReference()
         );

@@ -155,7 +155,7 @@ class CreateRoleAssignmentOrchestratorTest {
         historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
 
-        when(persistenceService.getAssignmentsByProcess(anyString(), anyString()))
+        when(persistenceService.getAssignmentsByProcessAndReference(anyString(), anyString()))
             .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
@@ -181,7 +181,7 @@ class CreateRoleAssignmentOrchestratorTest {
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
         verify(persistenceService, times(1))
-            .getAssignmentsByProcess(anyString(), anyString());
+            .getAssignmentsByProcessAndReference(anyString(), anyString());
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
@@ -193,7 +193,7 @@ class CreateRoleAssignmentOrchestratorTest {
         historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             TestDataBuilder.buildRoleAssignment(Status.APPROVED), requestEntity);
 
-        when(persistenceService.getAssignmentsByProcess(anyString(), anyString()))
+        when(persistenceService.getAssignmentsByProcessAndReference(anyString(), anyString()))
             .thenReturn((List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection_Updated(Status.APPROVED));
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
@@ -236,7 +236,7 @@ class CreateRoleAssignmentOrchestratorTest {
         historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             TestDataBuilder.buildRoleAssignment(Status.LIVE), requestEntity);
 
-        when(persistenceService.getAssignmentsByProcess(anyString(), anyString()))
+        when(persistenceService.getAssignmentsByProcessAndReference(anyString(), anyString()))
             .thenReturn((List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection_Updated(Status.LIVE));
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
@@ -270,7 +270,7 @@ class CreateRoleAssignmentOrchestratorTest {
         historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             TestDataBuilder.buildRoleAssignment(Status.APPROVED), requestEntity);
 
-        when(persistenceService.getAssignmentsByProcess(anyString(), anyString()))
+        when(persistenceService.getAssignmentsByProcessAndReference(anyString(), anyString()))
             .thenReturn((List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection_Updated(Status.APPROVED));
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
@@ -317,7 +317,7 @@ class CreateRoleAssignmentOrchestratorTest {
         historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             TestDataBuilder.buildRoleAssignment(Status.APPROVED), requestEntity);
 
-        when(persistenceService.getAssignmentsByProcess(anyString(), anyString()))
+        when(persistenceService.getAssignmentsByProcessAndReference(anyString(), anyString()))
             .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
@@ -356,7 +356,7 @@ class CreateRoleAssignmentOrchestratorTest {
 
         requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
 
-        when(persistenceService.getAssignmentsByProcess(anyString(), anyString()))
+        when(persistenceService.getAssignmentsByProcessAndReference(anyString(), anyString()))
             .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))

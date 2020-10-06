@@ -228,6 +228,8 @@ public class TestDataBuilder {
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
             .readOnly(model.isReadOnly())
+            .process(model.getProcess())
+            .reference(model.getReference())
             .build();
     }
 

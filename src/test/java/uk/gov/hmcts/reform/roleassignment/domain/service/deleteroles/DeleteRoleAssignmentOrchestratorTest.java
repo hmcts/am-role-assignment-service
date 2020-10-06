@@ -96,7 +96,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         //Set the status approved of all requested role manually for drool validation process
         setApprovedStatusByDrool();
         mockRequest();
-        when(persistenceService.getAssignmentsByProcess(
+        when(persistenceService.getAssignmentsByProcessAndReference(
             PROCESS,
             REFERENCE
         )).thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
@@ -186,8 +186,8 @@ class DeleteRoleAssignmentOrchestratorTest {
         //Set the status approved of all requested role manually for drool validation process
         setApprovedStatusByDrool();
         mockRequest();
-        when(persistenceService.getAssignmentsByProcess(PROCESS,
-                                                        REFERENCE))
+        when(persistenceService.getAssignmentsByProcessAndReference(PROCESS,
+                                                                    REFERENCE))
             .thenReturn(new ArrayList<>() {
                 {
                     add(RoleAssignment.builder().status(DELETE_APPROVED).build());

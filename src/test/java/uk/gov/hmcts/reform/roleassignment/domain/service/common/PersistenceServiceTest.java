@@ -55,6 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -263,22 +264,24 @@ class PersistenceServiceTest {
     void getExistingRoleByProcessAndReference() throws IOException {
         AssignmentRequest assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
-        RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
-        HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
-            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
-        Set<HistoryEntity> historyEntities = new HashSet<>();
-        historyEntities.add(historyEntity);
 
-        RoleAssignment requestedRole = TestDataBuilder.convertHistoryEntityInModel(historyEntity);
+        RoleAssignment assignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
 
-        when(persistenceUtil.convertHistoryEntityToRoleAssignment(historyEntity)).thenReturn(requestedRole);
+        RoleAssignmentEntity entity = TestDataBuilder.buildRoleAssignmentEntity(assignment);
+        Set<RoleAssignmentEntity> roleAssignmentEntities = new HashSet<>();
+        roleAssignmentEntities.add(entity);
 
-        List<RoleAssignment> result = sut.getAssignmentsByProcess("process", "reference");
+        when(roleAssignmentRepository.findByProcessAndReference(anyString(), anyString())).thenReturn(
+            roleAssignmentEntities);
+        when(persistenceUtil.convertEntityToRoleAssignment(entity)).thenReturn(assignment);
+
+        List<RoleAssignment> result = sut.getAssignmentsByProcessAndReference("process", "reference");
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
 
-        verify(persistenceUtil, times(1)).convertHistoryEntityToRoleAssignment(historyEntity);
+        verify(roleAssignmentRepository, times(1)).findByProcessAndReference(
+            anyString(), anyString());
     }
 
     @Test

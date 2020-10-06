@@ -12,6 +12,8 @@
   "beginTime": "[[ANYTHING_PRESENT]]",
   "endTime": "[[ANYTHING_PRESENT]]",
   "created": "[[ANYTHING_PRESENT]]",
+  "process" : "[[ANYTHING_PRESENT]]",
+  "reference" : "[[ANYTHING_PRESENT]]",
   "attributes": {
     "contractType": "SALARIED",
     "caseId": "1234567890123456",
