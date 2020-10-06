@@ -138,7 +138,7 @@ public class ValidationUtil {
             )) {
             throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
         }
-        validateId(Constants.UUID_PATTERN, roleRequest.getAssignerId());
+        validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, roleRequest.getAssignerId());
     }
 
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
@@ -151,18 +151,9 @@ public class ValidationUtil {
                                                   + requestedRole.getRoleName());
             }
 
-            validateId(Constants.UUID_PATTERN, requestedRole.getActorId());
+            validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, requestedRole.getActorId());
             compareRoleType(requestedRole.getRoleType().toString());
             if (requestedRole.getRoleType().equals(CASE)) {
-                if (requestedRole.getBeginTime() == null && requestedRole.getEndTime() == null) {
-                    throw new BadRequestException("Parameter 'beginTime' and 'endTime' is required for roleType CASE");
-                }
-                if (requestedRole.getBeginTime() == null) {
-                    throw new BadRequestException("Parameter 'beginTime' is required for roleType CASE");
-                }
-                if (requestedRole.getEndTime() == null) {
-                    throw new BadRequestException("Parameter 'endTime' is required for roleType CASE");
-                }
                 validateId(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
             }
             validateBeginAndEndDates(requestedRole);
