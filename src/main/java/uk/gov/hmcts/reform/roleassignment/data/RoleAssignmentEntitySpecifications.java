@@ -129,10 +129,9 @@ public final class RoleAssignmentEntitySpecifications {
 
         }
 
-        return (root, query, builder) -> builder.or(authorisations.stream().map(value -> {
-            return builder.isMember(value,root.get("authorisations"));
-
-        }).toArray(Predicate[]::new));
+        return (root, query, builder) -> builder.or(authorisations.stream().map(value -> builder.isMember(value,root
+            .get("authorisations"))
+        ).toArray(Predicate[]::new));
 
     }
 
