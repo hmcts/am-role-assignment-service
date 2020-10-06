@@ -41,8 +41,8 @@ public final class RoleAssignmentEntitySpecifications {
             return null;
         }
         return (root, query, builder) -> builder.and(
-            builder.lessThanOrEqualTo(root.get("beginTime"), date),
-            builder.greaterThanOrEqualTo(root.get("endTime"), date)
+            builder.or(builder.lessThanOrEqualTo(root.get("beginTime"), date),root.get("beginTime").isNull()),
+            builder.or(builder.greaterThanOrEqualTo(root.get("endTime"), date),root.get("endTime").isNull())
         );
 
     }
@@ -119,6 +119,19 @@ public final class RoleAssignmentEntitySpecifications {
                                                         .stream()
                                                         .map(value -> builder.equal(root.get("roleCategory"), value))
                                                         .toArray(Predicate[]::new));
+
+    }
+
+    public static Specification<RoleAssignmentEntity> searchByAuthorisations(List<String> authorisations) {
+
+        if (authorisations == null || authorisations.isEmpty()) {
+            return null;
+
+        }
+
+        return (root, query, builder) -> builder.or(authorisations.stream().map(value -> builder.isMember(value,root
+            .get("authorisations"))
+        ).toArray(Predicate[]::new));
 
     }
 
