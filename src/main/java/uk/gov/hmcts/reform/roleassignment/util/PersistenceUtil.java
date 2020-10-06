@@ -136,7 +136,8 @@ public class PersistenceUtil {
             .readOnly(roleAssignmentEntity.isReadOnly())
             .roleName(roleAssignmentEntity.getRoleName())
             .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
-            .roleCategory(RoleCategory.valueOf(roleAssignmentEntity.getRoleCategory()))
+            .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(roleAssignmentEntity
+                                                                                  .getRoleCategory()) : null)
             .beginTime(roleAssignmentEntity.getBeginTime())
             .endTime(roleAssignmentEntity.getEndTime())
             .created(roleAssignmentEntity.getCreated())
