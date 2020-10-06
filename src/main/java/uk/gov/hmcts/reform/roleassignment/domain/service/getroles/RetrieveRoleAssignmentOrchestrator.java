@@ -39,7 +39,7 @@ public class RetrieveRoleAssignmentOrchestrator {
     //5. Call prepare response to make HATEOUS based response.
 
     public ResponseEntity<Object> getAssignmentsByActor(String actorId) {
-        ValidationUtil.validateId(Constants.UUID_PATTERN, actorId);
+        ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, actorId);
         List<RoleAssignment> assignments = persistenceService.getAssignmentsByActor(actorId);
         if (CollectionUtils.isEmpty(assignments)) {
             throw new ResourceNotFoundException(String.format(
