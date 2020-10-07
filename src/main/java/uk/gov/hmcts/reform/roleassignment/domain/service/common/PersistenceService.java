@@ -152,7 +152,7 @@ public class PersistenceService {
 
     public List<RoleAssignment> getAssignmentsByProcessAndReference(String process, String reference) {
         Set<RoleAssignmentEntity> roleAssignmentEntitySet =
-            roleAssignmentRepository.findByProcessAndReference(process.toUpperCase(), reference.toUpperCase());
+            roleAssignmentRepository.findByProcessIgnoreCaseAndReferenceIgnoreCase(process, reference);
         List<RoleAssignment> roleAssignmentList = roleAssignmentEntitySet.stream()
             .map(entity -> persistenceUtil.convertEntityToRoleAssignment(entity))
             .collect(Collectors.toList());

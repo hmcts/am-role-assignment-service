@@ -275,7 +275,7 @@ class PersistenceServiceTest {
         Set<RoleAssignmentEntity> roleAssignmentEntities = new HashSet<>();
         roleAssignmentEntities.add(entity);
 
-        when(roleAssignmentRepository.findByProcessAndReference(anyString(), anyString())).thenReturn(
+        when(roleAssignmentRepository.findByProcessIgnoreCaseAndReferenceIgnoreCase(anyString(), anyString())).thenReturn(
             roleAssignmentEntities);
         when(persistenceUtil.convertEntityToRoleAssignment(entity)).thenReturn(assignment);
 
@@ -284,7 +284,7 @@ class PersistenceServiceTest {
         assertNotNull(result);
         assertFalse(result.isEmpty());
 
-        verify(roleAssignmentRepository, times(1)).findByProcessAndReference(
+        verify(roleAssignmentRepository, times(1)).findByProcessIgnoreCaseAndReferenceIgnoreCase(
             anyString(), anyString());
     }
 

@@ -86,8 +86,8 @@ public class PersistenceUtil {
             .roleCategory(roleAssignment.getRoleCategory().toString())
             .authorisations(roleAssignment.getAuthorisations() != null && !roleAssignment.getAuthorisations().isEmpty()
                                 ? roleAssignment.getAuthorisations() : Collections.emptyList())
-            .process(roleAssignment.getProcess().toUpperCase())
-            .reference(roleAssignment.getReference().toUpperCase())
+            .process(roleAssignment.getProcess())
+            .reference(roleAssignment.getReference())
             .build();
     }
 

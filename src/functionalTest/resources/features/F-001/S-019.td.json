@@ -50,14 +50,54 @@
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
           },
           {
-            "_extends_": "ResponseRequestedRole",
             "actorId": "[[ANYTHING_PRESENT]]",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "id" : "[[ANYTHING_PRESENT]]",
+            "actorIdType" : "IDAM",
+            "roleType": "CASE",
+            "roleName" : "judge",
+            "classification" : "PUBLIC",
+            "grantType": "SPECIFIC",
+            "roleCategory":"JUDICIAL",
+            "readOnly" : false,
+            "beginTime" : "[[ANYTHING_PRESENT]]",
+            "endTime" : "[[ANYTHING_PRESENT]]",
+            "process": "businessProcess1",
+            "status":"LIVE",
+            "created":"[[ANYTHING_PRESENT]]",
+            "authorisations" : [ ],
+            "attributes" : {
+              "jurisdiction" : "divorce",
+              "region" : "south-east",
+              "contractType": "SALARIED",
+              "caseId": "1234567890123456"
+            },
+            "notes": null
           },
           {
-            "_extends_": "ResponseRequestedRole",
+            "id" : "[[ANYTHING_PRESENT]]",
+            "actorIdType" : "IDAM",
             "actorId": "[[ANYTHING_PRESENT]]",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "roleType": "CASE",
+            "roleName" : "judge",
+            "classification" : "PUBLIC",
+            "grantType": "SPECIFIC",
+            "roleCategory":"JUDICIAL",
+            "readOnly" : false,
+            "beginTime" : "[[ANYTHING_PRESENT]]",
+            "endTime" : "[[ANYTHING_PRESENT]]",
+            "process": "businessProcess1",
+            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "status":"LIVE",
+            "created":"[[ANYTHING_PRESENT]]",
+            "authorisations" : [ ],
+            "attributes" : {
+              "jurisdiction" : "divorce",
+              "region" : "south-east",
+              "contractType": "SALARIED",
+              "caseId": "1234567890123456"
+            },
+            "notes": null
           }
         ]
       }

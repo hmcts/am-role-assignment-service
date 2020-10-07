@@ -16,7 +16,6 @@ public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEn
 
     void deleteByActorId(String actorId);
 
-
-    Set<RoleAssignmentEntity> findByProcessAndReference(String process, String reference);
+    Set<RoleAssignmentEntity> findByProcessIgnoreCaseAndReferenceIgnoreCase(String process, String reference);
 }
 
