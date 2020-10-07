@@ -14,7 +14,6 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Version;
-import java.util.UUID;
 
 @Builder(toBuilder = true)
 @Getter
@@ -26,7 +25,7 @@ public class ActorCacheEntity {
 
     @Id
     @Column(name = "actor_id", nullable = false)
-    private UUID actorId;
+    private String actorId;
 
     @Version
     @Column(name = "etag", nullable = false)

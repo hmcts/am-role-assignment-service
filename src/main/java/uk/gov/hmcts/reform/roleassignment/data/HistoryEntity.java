@@ -42,7 +42,7 @@ public class HistoryEntity {
     private String process;
 
     @Column(name = "actor_id", nullable = false)
-    private UUID actorId;
+    private String actorId;
 
     @Column(name = "reference")
     private String reference;
@@ -93,6 +93,10 @@ public class HistoryEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id")
     private RequestEntity requestEntity;
+
+    @Column(name = "authorisations")
+    private String authorisations;
+
 
     //getter method to retrieve the parent id in the child entity
     public UUID getRequestId() {

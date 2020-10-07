@@ -35,6 +35,7 @@ public class FeatureToggleService {
     private static final HashMap<String, String> deleteRequestMap = new HashMap<>();
 
     public static final String AM_ROLE_ASSIGNMENTS = "/am/role-assignments";
+    public static final String QUERY_REQUEST_ROLE_ASSIGNMENTS = "/am/role-assignments/query";
 
     static {
         //Get Map
@@ -42,6 +43,7 @@ public class FeatureToggleService {
         getRequestMap.put("/am/role-assignments/roles","get-list-of-roles");
         //Post Map
         postRequestMap.put(AM_ROLE_ASSIGNMENTS, "create-role-assignments");
+        postRequestMap.put(QUERY_REQUEST_ROLE_ASSIGNMENTS, "search-by-query");
         //Delete Map
         deleteRequestMap.put(AM_ROLE_ASSIGNMENTS, "delete-role-assignments");
     }

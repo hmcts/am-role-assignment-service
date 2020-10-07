@@ -22,7 +22,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAs
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.GET_ASSIGNMENTS_BY_ACTOR;
 
@@ -70,7 +69,7 @@ public class GetAssignmentController {
         ResponseEntity<?> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
             actorId
         );
-        long etag = retrieveRoleAssignmentService.retrieveETag(UUID.fromString(actorId));
+        long etag = retrieveRoleAssignmentService.retrieveETag(actorId);
         String weakEtag = "W/\"" + etag + "\"";
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setETag(weakEtag);
