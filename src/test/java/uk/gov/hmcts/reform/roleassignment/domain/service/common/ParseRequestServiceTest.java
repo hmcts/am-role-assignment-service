@@ -165,7 +165,7 @@ class ParseRequestServiceTest {
     @Test
     void prepareDeleteRequest_InvalidAssignerIdHeader() {
         MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader("assignerId", "21334a2b-79ce-44eb-9168-2d49a744be9");
+        request.addHeader("assignerId", "21334a2b-79ce-44eb-916!£$%£8-2d49a744be9");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         String clientId = "copied client id";
         String userId = "21334a2b-79ce-44eb-9168-2d49a744be9";
@@ -176,7 +176,7 @@ class ParseRequestServiceTest {
 
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.prepareDeleteRequest("p2", "p2",
-                                     "21334a2b-79ce-44eb-9168-2d49a744be9d",
+                                     "21334a2b-79ce-44eb-9168-2d49a744$$$be9d",
                                      "21334a2b-79ce-44eb-9168-2d49a744be9d")
         );
     }
@@ -185,7 +185,7 @@ class ParseRequestServiceTest {
     void prepareDeleteRequest_InvalidUuid() {
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.prepareDeleteRequest("p2", "p2",
-                                     "21334a2b-79ce-44eb-9168-2d49a744be9",
+                                     "21334a2b-79ce-44e$$b-9168-2d49a744be9",
                                      "21334a2b-79ce-44eb-9168-2d49a744be9d")
         );
     }
