@@ -94,7 +94,7 @@ public class ParseRequestService {
 
     public Request prepareDeleteRequest(String process, String reference, String actorId, String assignmentId) {
         if (!StringUtils.isEmpty(actorId)) {
-            ValidationUtil.validateId(Constants.UUID_PATTERN, actorId);
+            ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, actorId);
         }
 
         Request request = Request.builder()
@@ -125,7 +125,7 @@ public class ParseRequestService {
         if (StringUtils.isBlank(assignerId)) {
             request.setAssignerId(request.getAuthenticatedUserId());
         } else {
-            ValidationUtil.validateId(Constants.UUID_PATTERN, assignerId);
+            ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, assignerId);
             request.setAssignerId(assignerId);
         }
     }
@@ -140,7 +140,7 @@ public class ParseRequestService {
         }
 
         if (StringUtils.isNotEmpty(actorId)) {
-            ValidationUtil.validateId(Constants.UUID_PATTERN, actorId);
+            ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, actorId);
         }
         if (StringUtils.isNotEmpty(caseId)) {
             ValidationUtil.validateCaseId(caseId);

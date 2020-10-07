@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
@@ -14,6 +15,10 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Service
 public class PersistenceUtil {
@@ -40,6 +45,9 @@ public class PersistenceUtil {
             .notes(roleAssignment.getNotes())
             .sequence(roleAssignment.getStatusSequence())
             .log(roleAssignment.getLog())
+            .authorisations(String.join(",",
+             (roleAssignment.getAuthorisations() != null && !roleAssignment.getAuthorisations().isEmpty()
+                 ? roleAssignment.getAuthorisations() : Collections.emptyList())))
             .build();
     }
 
@@ -76,6 +84,8 @@ public class PersistenceUtil {
             .roleType(roleAssignment.getRoleType().toString())
             .readOnly(roleAssignment.isReadOnly())
             .roleCategory(roleAssignment.getRoleCategory().toString())
+            .authorisations(roleAssignment.getAuthorisations() != null && !roleAssignment.getAuthorisations().isEmpty()
+                                ? roleAssignment.getAuthorisations() : Collections.emptyList())
             .process(roleAssignment.getProcess().toUpperCase())
             .reference(roleAssignment.getReference().toUpperCase())
             .build();
@@ -111,6 +121,9 @@ public class PersistenceUtil {
             .log(historyEntity.getLog())
             .attributes(JacksonUtils.convertValue(historyEntity.getAttributes()))
             .notes(historyEntity.getNotes())
+            .authorisations(StringUtils.isNotEmpty(historyEntity.getAuthorisations()) ? (Arrays.stream(historyEntity
+                                                                         .getAuthorisations().split(
+                ",")).collect(Collectors.toList())) : Collections.emptyList())
             .build();
     }
 
@@ -125,13 +138,16 @@ public class PersistenceUtil {
             .readOnly(roleAssignmentEntity.isReadOnly())
             .roleName(roleAssignmentEntity.getRoleName())
             .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
-            .roleCategory(RoleCategory.valueOf(roleAssignmentEntity.getRoleCategory()))
+            .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(roleAssignmentEntity
+                                                                                  .getRoleCategory()) : null)
             .beginTime(roleAssignmentEntity.getBeginTime())
             .endTime(roleAssignmentEntity.getEndTime())
             .created(roleAssignmentEntity.getCreated())
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
             .process(roleAssignmentEntity.getProcess())
             .reference(roleAssignmentEntity.getReference())
+            .authorisations(roleAssignmentEntity.getAuthorisations() != null && !roleAssignmentEntity
+                .getAuthorisations().isEmpty() ? roleAssignmentEntity.getAuthorisations() : Collections.emptyList())
             .build();
     }
 

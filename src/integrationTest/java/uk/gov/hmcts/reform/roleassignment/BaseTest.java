@@ -12,6 +12,7 @@ import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -59,8 +60,7 @@ public abstract class BaseTest {
         }
 
         @Bean
-        public DataSource dataSource() throws Exception {
-            final EmbeddedPostgres pg = embeddedPostgres();
+        public DataSource dataSource(@Autowired EmbeddedPostgres pg) throws Exception {
 
             final Properties props = new Properties();
             // Instruct JDBC to accept JSON string for JSONB
@@ -78,11 +78,10 @@ public abstract class BaseTest {
         }
 
         @PreDestroy
-        public void contextDestroyed() throws IOException, SQLException {
+        public void contextDestroyed() throws SQLException {
             if (connection != null) {
                 connection.close();
             }
-            embeddedPostgres().close();
         }
     }
 }

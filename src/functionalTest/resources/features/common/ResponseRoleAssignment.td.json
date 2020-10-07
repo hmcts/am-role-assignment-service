@@ -12,6 +12,7 @@
   "beginTime": "[[ANYTHING_PRESENT]]",
   "endTime": "[[ANYTHING_PRESENT]]",
   "created": "[[ANYTHING_PRESENT]]",
+  "authorisations" : [ ],
   "process" : "[[ANYTHING_PRESENT]]",
   "reference" : "[[ANYTHING_PRESENT]]",
   "attributes": {

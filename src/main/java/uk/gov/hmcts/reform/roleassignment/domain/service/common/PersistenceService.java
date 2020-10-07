@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -9,7 +8,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -26,7 +24,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
-import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,6 +36,7 @@ import java.util.stream.Collectors;
 import static org.springframework.data.jpa.domain.Specification.where;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByActorIds;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByAttributes;
+import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByAuthorisations;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByClassification;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByGrantType;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByRoleCategories;
@@ -59,6 +57,7 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private ActorCacheRepository actorCacheRepository;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
+    private  Page<RoleAssignmentEntity> pageRoleAssignmentEntities;
 
     @Value("${roleassignment.query.sortcolumn}")
     private String sortColumn;
@@ -192,32 +191,13 @@ public class PersistenceService {
 
     }
 
-    public List<RoleAssignment> getAssignmentsByActorAndCaseId(String actorId, String caseId, String roleType) {
-        Set<RoleAssignmentEntity> roleAssignmentEntities = null;
 
-        if (StringUtils.isNotEmpty(actorId) && StringUtils.isNotEmpty(caseId)) {
-            roleAssignmentEntities = roleAssignmentRepository.findByActorIdAndCaseId(actorId, caseId, roleType);
-        } else if (StringUtils.isNotEmpty(actorId)) {
-            roleAssignmentEntities =
-                roleAssignmentRepository.findByActorIdAndRoleTypeIgnoreCase(actorId, roleType);
-        } else if (StringUtils.isNotEmpty(caseId)) {
-            roleAssignmentEntities = roleAssignmentRepository.getAssignmentByCaseId(caseId, roleType);
-        }
-
-        if (roleAssignmentEntities == null || roleAssignmentEntities.isEmpty()) {
-            throw new ResourceNotFoundException(V1.Error.ASSIGNMENT_RECORDS_NOT_FOUND);
-        }
-
-        return roleAssignmentEntities.stream()
-            .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
-            .collect(Collectors.toList());
-    }
 
     public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest, Integer pageNumber,
                                                                       Integer size, String sort, String direction) {
 
-        Page<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findAll(
-            Objects.requireNonNull(
+        pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
+            Objects.requireNonNull(Objects.requireNonNull(
                 Objects.requireNonNull(
                     Objects.requireNonNull(
                         Objects.requireNonNull(
@@ -232,7 +212,8 @@ public class PersistenceService {
                             .and(searchByRoleType(searchRequest.getRoleType())))
                         .and(searchByRoleName(searchRequest.getRoleName())))
                     .and(searchByClassification(searchRequest.getClassification())))
-                .and(searchByRoleCategories(searchRequest.getRoleCategorie())),
+                                       .and(searchByRoleCategories(searchRequest.getRoleCategory())))
+                .and(searchByAuthorisations(searchRequest.getAuthorisations())),
             PageRequest.of(
                 (pageNumber != null
                     && pageNumber > 0) ? pageNumber : 0,
@@ -246,7 +227,7 @@ public class PersistenceService {
         );
 
 
-        return roleAssignmentEntities.stream()
+        return pageRoleAssignmentEntities.stream()
             .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
             .collect(Collectors.toList());
     }
@@ -259,6 +240,11 @@ public class PersistenceService {
                 .collect(Collectors.toList());
         }
         return Collections.emptyList();
+    }
+
+    public long getTotalRecords() {
+        return pageRoleAssignmentEntities != null ? pageRoleAssignmentEntities.getTotalElements() : Long.valueOf(0);
+
     }
 
 }

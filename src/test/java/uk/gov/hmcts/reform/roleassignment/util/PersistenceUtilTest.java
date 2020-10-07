@@ -6,12 +6,15 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 class PersistenceUtilTest {
@@ -59,5 +62,18 @@ class PersistenceUtilTest {
     void convertEntityToRoleAssignment() throws IOException {
         assertNotNull(persistenceUtil.convertEntityToRoleAssignment(
             TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(Status.LIVE))));
+    }
+
+    @Test
+    void convertEntityToRoleAssignmentWithAutorisations() throws IOException {
+        List<String> authorisations = Arrays.asList(
+            "dev",
+            "tester"
+        );
+        RoleAssignmentEntity entity =  TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
+                                                            .buildRoleAssignment(Status.LIVE));
+        entity.setAuthorisations(authorisations);
+        assertNotNull(persistenceUtil.convertEntityToRoleAssignment(
+            entity));
     }
 }
