@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -33,9 +34,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -58,9 +63,9 @@ public class TestDataBuilder {
     public static Request buildRequest(Status status, Boolean replaceExisting) {
         return Request.builder()
             .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
-            .authenticatedUserId(UUID.fromString("4772dc44-268f-4d0c-8f83-f0fb662aac84"))
+            .authenticatedUserId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
             .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
-            .assignerId(UUID.fromString("123e4567-e89b-42d3-a456-556642445678"))
+            .assignerId("123e4567-e89b-42d3-a456-556642445678")
             .requestType(RequestType.CREATE)
             .reference("p2")
             .process(("p2"))
@@ -74,7 +79,7 @@ public class TestDataBuilder {
         LocalDateTime timeStamp = LocalDateTime.now();
         return RoleAssignment.builder()
             .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
-            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .actorIdType(ActorIdType.IDAM)
             .roleType(RoleType.CASE)
             .roleName("judge")
@@ -91,6 +96,7 @@ public class TestDataBuilder {
             .created(timeStamp)
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
             .notes(buildNotesFromFile())
+            .authorisations(Collections.emptyList())
             .build();
     }
 
@@ -98,7 +104,7 @@ public class TestDataBuilder {
         LocalDateTime timeStamp = LocalDateTime.now();
         return RoleAssignment.builder()
             .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
-            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .actorIdType(ActorIdType.IDAM)
             .roleType(RoleType.CASE)
             .roleName("top dog")
@@ -254,7 +260,7 @@ public class TestDataBuilder {
     public static ActorCacheEntity buildActorCacheEntity() throws IOException {
         JsonNode attributes = buildAttributesFromFile();
         return ActorCacheEntity.builder()
-            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .etag(1)
             .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(attributes))
             .build();
@@ -264,7 +270,7 @@ public class TestDataBuilder {
         HashSet<RoleAssignmentEntity> mySet = new HashSet<>();
         mySet.add(TestDataBuilder.buildRoleAssignmentEntitySet());
         return ActorCache.builder()
-            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .etag(1)
             .roleAssignments(mySet)
             .build();
@@ -273,7 +279,7 @@ public class TestDataBuilder {
     private static RoleAssignmentEntity buildRoleAssignmentEntitySet() throws IOException {
         LocalDateTime timeStamp = LocalDateTime.now();
         return RoleAssignmentEntity.builder()
-            .actorId(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+            .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .actorIdType(ActorIdType.IDAM.name())
             .roleType(RoleType.CASE.name())
             .roleName("judge")
@@ -321,6 +327,7 @@ public class TestDataBuilder {
             .notes(roleAssignment.getNotes())
             .sequence(roleAssignment.getStatusSequence())
             .log(roleAssignment.getLog())
+            .authorisations("dev,tester")
             .build();
     }
 
@@ -339,6 +346,7 @@ public class TestDataBuilder {
             .roleType(roleAssignment.getRoleType().toString())
             .readOnly(roleAssignment.isReadOnly())
             .roleCategory(roleAssignment.getRoleCategory().toString())
+            .authorisations(roleAssignment.getAuthorisations())
             .build();
     }
 
@@ -373,7 +381,7 @@ public class TestDataBuilder {
 
     public static Request buildRequestForRoleAssignment(boolean replaceExisting) {
         return Request.builder()
-            .assignerId(UUID.fromString("123e4567-e89b-42d3-a456-556642445678"))
+            .assignerId("123e4567-e89b-42d3-a456-556642445678")
             .reference("S-052")
             .process(("S-052"))
             .replaceExisting(replaceExisting)
@@ -389,7 +397,7 @@ public class TestDataBuilder {
     public static RoleAssignment buildRoleAssignments(boolean readOnly) throws IOException {
         LocalDateTime timeStamp = LocalDateTime.now();
         return RoleAssignment.builder()
-            .actorId(UUID.fromString("123e4567-e89b-42d3-a456-556642445612"))
+            .actorId("123e4567-e89b-42d3-a456-556642445612")
             .actorIdType(ActorIdType.IDAM)
             .roleType(RoleType.CASE)
             .roleName("judge")
@@ -401,6 +409,30 @@ public class TestDataBuilder {
             .endTime(timeStamp.plusMonths(1))
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
             .notes(buildNotesFromFile())
+            .authorisations(Collections.emptyList())
             .build();
+    }
+
+    public static QueryRequest createQueryRequest() {
+        Map<String, List<String>> attributes = new HashMap<>();
+        List<String> regions = Arrays.asList("London", "JAPAN");
+        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        attributes.put("region", regions);
+        attributes.put("contractType", contractTypes);
+
+        return QueryRequest.builder()
+            .actorId(Arrays.asList("123e4567-e89b-42d3-a456-556642445612"))
+
+            .roleType(Arrays.asList(RoleType.CASE.toString()))
+            .roleName(Arrays.asList("judge"))
+            .classification(Arrays.asList(Classification.PUBLIC.toString()))
+            .grantType(Arrays.asList(GrantType.SPECIFIC.toString()))
+            .roleCategory(Arrays.asList(RoleCategory.JUDICIAL.toString()))
+            .validAt(LocalDateTime.now())
+            .attributes(attributes)
+            .authorisations(Arrays.asList("dev"))
+            .build();
+
+
     }
 }

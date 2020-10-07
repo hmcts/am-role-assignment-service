@@ -10,11 +10,15 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Builder(toBuilder = true)
@@ -33,7 +37,7 @@ public class RoleAssignmentEntity {
     private String actorIdType;
 
     @Column(name = "actor_id", nullable = false)
-    private UUID actorId;
+    private String actorId;
 
     @Column(name = "role_type", nullable = false)
     private String roleType;
@@ -66,6 +70,13 @@ public class RoleAssignmentEntity {
     @Column(name = "attributes", nullable = false, columnDefinition = "jsonb")
     @Convert(converter = JsonBConverter.class)
     private JsonNode attributes;
+
+
+    @ElementCollection
+    @CollectionTable(name = "role_assignment_authorisations", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "authorisations")
+    private List<String> authorisations;
+
 
 }
 

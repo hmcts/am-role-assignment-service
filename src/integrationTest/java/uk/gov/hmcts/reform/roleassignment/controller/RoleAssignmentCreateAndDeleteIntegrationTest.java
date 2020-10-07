@@ -224,6 +224,8 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         assertAssignmentRecords();
     }
 
+
+
     private void assertAssignmentRecords() {
         logger.info(" History record count after create assignment request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count after create assignment request : {}", getAssignmentRecordsCount());

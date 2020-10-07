@@ -46,7 +46,7 @@ public class ParseRequestService {
         //a. Extract client Id and place in the request
         request.setClientId(securityUtils.getServiceName());
         //b. Extract AuthenticatedUser Id from the User token and place in the request.
-        request.setAuthenticatedUserId(UUID.fromString(securityUtils.getUserId()));
+        request.setAuthenticatedUserId(securityUtils.getUserId());
         //c. Set Status=Created and created Time = now
         request.setStatus(Status.CREATED);
         request.setRequestType(requestType);
@@ -94,12 +94,12 @@ public class ParseRequestService {
 
     public Request prepareDeleteRequest(String process, String reference, String actorId, String assignmentId) {
         if (!StringUtils.isEmpty(actorId)) {
-            ValidationUtil.validateId(Constants.UUID_PATTERN, actorId);
+            ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, actorId);
         }
 
         Request request = Request.builder()
             .clientId(securityUtils.getServiceName())
-            .authenticatedUserId(UUID.fromString(securityUtils.getUserId()))
+            .authenticatedUserId(securityUtils.getUserId())
             .status(Status.CREATED)
             .requestType(RequestType.DELETE)
             .created(LocalDateTime.now())
@@ -125,8 +125,8 @@ public class ParseRequestService {
         if (StringUtils.isBlank(assignerId)) {
             request.setAssignerId(request.getAuthenticatedUserId());
         } else {
-            ValidationUtil.validateId(Constants.UUID_PATTERN, assignerId);
-            request.setAssignerId(UUID.fromString(assignerId));
+            ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, assignerId);
+            request.setAssignerId(assignerId);
         }
     }
 
@@ -140,7 +140,7 @@ public class ParseRequestService {
         }
 
         if (StringUtils.isNotEmpty(actorId)) {
-            ValidationUtil.validateId(Constants.UUID_PATTERN, actorId);
+            ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, actorId);
         }
         if (StringUtils.isNotEmpty(caseId)) {
             ValidationUtil.validateCaseId(caseId);
