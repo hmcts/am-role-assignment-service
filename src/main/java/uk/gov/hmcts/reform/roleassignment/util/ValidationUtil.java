@@ -36,7 +36,7 @@ public class ValidationUtil {
     private ValidationUtil() {
     }
 
-    public static void validateDateTime(String strDate) {
+    public static void validateDateTime(String strDate, String timeParam) {
         LOG.info("validateDateTime");
         if (strDate.length() < 16) {
             throw new BadRequestException(String.format(
@@ -46,8 +46,9 @@ public class ValidationUtil {
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
         simpleDateFormat.setLenient(false);
+        Date javaDate;
         try {
-            Date javaDate = simpleDateFormat.parse(strDate);
+            javaDate = simpleDateFormat.parse(strDate);
             if (LOG.isInfoEnabled() && javaDate != null) {
                 LOG.info(javaDate.toString());
             }
@@ -55,6 +56,12 @@ public class ValidationUtil {
             throw new BadRequestException(String.format(
                 "Incorrect date format %s",
                 strDate
+            ));
+        }
+        assert javaDate != null;
+        if (javaDate.before(new Date())) {
+            throw new BadRequestException(String.format(
+                "The parameter '%s' cannot be prior to current date", timeParam
             ));
         }
     }
@@ -131,31 +138,40 @@ public class ValidationUtil {
             )) {
             throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
         }
-        validateId(Constants.UUID_PATTERN, roleRequest.getAssignerId().toString());
+        validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, roleRequest.getAssignerId());
     }
 
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
         List<String> rolesName = JacksonUtils.getConfiguredRoles().get("roles").stream().map(Role::getName).collect(
             Collectors.toList());
+
         for (RoleAssignment requestedRole : requestedRoles) {
             if (!rolesName.contains(requestedRole.getRoleName())) {
                 throw new BadRequestException(V1.Error.BAD_REQUEST_INVALID_PARAMETER + " roleName :"
                                                   + requestedRole.getRoleName());
             }
 
-            validateId(Constants.UUID_PATTERN, requestedRole.getActorId().toString());
+            validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, requestedRole.getActorId());
             compareRoleType(requestedRole.getRoleType().toString());
-            if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
-                validateDateTime(requestedRole.getBeginTime().toString());
-                validateDateTime(requestedRole.getEndTime().toString());
-                compareDateOrder(
-                    requestedRole.getBeginTime().toString(),
-                    requestedRole.getEndTime().toString()
-                );
-            }
             if (requestedRole.getRoleType().equals(CASE)) {
                 validateId(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
             }
+            validateBeginAndEndDates(requestedRole);
+        }
+    }
+
+    private static void validateBeginAndEndDates(RoleAssignment requestedRole) throws ParseException {
+        if (requestedRole.getBeginTime() != null) {
+            validateDateTime(requestedRole.getBeginTime().toString(), "beginTime");
+        }
+        if (requestedRole.getEndTime() != null) {
+            validateDateTime(requestedRole.getEndTime().toString(), "endTime");
+        }
+        if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
+            compareDateOrder(
+                requestedRole.getBeginTime().toString(),
+                requestedRole.getEndTime().toString()
+            );
         }
     }
 
