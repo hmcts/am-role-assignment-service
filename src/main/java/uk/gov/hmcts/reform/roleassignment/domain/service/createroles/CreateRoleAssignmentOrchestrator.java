@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
@@ -25,6 +28,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPRO
 @Slf4j
 @Service
 public class CreateRoleAssignmentOrchestrator {
+    private static final Logger logger = LoggerFactory.getLogger(CreateRoleAssignmentOrchestrator.class);
 
     private ParseRequestService parseRequestService;
     private PrepareResponseService prepareResponseService;
@@ -35,6 +39,7 @@ public class CreateRoleAssignmentOrchestrator {
 
     Request request;
     RequestEntity requestEntity;
+
 
     public CreateRoleAssignmentOrchestrator(ParseRequestService parseRequestService,
                                             PrepareResponseService prepareResponseService,
@@ -50,6 +55,8 @@ public class CreateRoleAssignmentOrchestrator {
     }
 
     public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) throws ParseException {
+        long startTime = new Date().getTime();
+        logger.info(String.format("createRoleAssignment execution started at %s", startTime));
         try {
             AssignmentRequest existingAssignmentRequest;
             createRoleAssignmentService = new CreateRoleAssignmentService(
@@ -61,6 +68,8 @@ public class CreateRoleAssignmentOrchestrator {
             );
 
             //1. call parse request service
+
+            logger.info(String.format("createRoleAssignment execution started at %s", startTime));
             AssignmentRequest parsedAssignmentRequest = parseRequestService
                 .parseRequest(roleAssignmentRequest, RequestType.CREATE);
             //2. Call persistence service to store only the request
@@ -73,7 +82,8 @@ public class CreateRoleAssignmentOrchestrator {
 
             //Check replace existing true/false
             if (request.isReplaceExisting()) {
-
+                long replaceExisting = new Date().getTime();
+                logger.info(String.format("replaceExisting execution started at %s", replaceExisting));
                 //retrieve existing assignments and prepared temp request
                 existingAssignmentRequest = createRoleAssignmentService
                     .retrieveExistingAssignments(parsedAssignmentRequest);
@@ -112,12 +122,23 @@ public class CreateRoleAssignmentOrchestrator {
                     // Don't throw the exception, as we need to build the response as Http:201
                     log.error("context", e);
                 }
+                logger.info(String.format(
+                    "replaceExisting execution finished at %s . Time taken = %s milliseconds",
+                    new Date().getTime(),
+                    new Date().getTime() - replaceExisting
+                ));
 
             } else {
+                long newAssignment = new Date().getTime();
+                logger.info(String.format("newAssignment execution started at %s", newAssignment));
                 //Save requested role in history table with CREATED and Approved Status
                 createRoleAssignmentService.createNewAssignmentRecords(parsedAssignmentRequest);
                 createRoleAssignmentService.checkAllApproved(parsedAssignmentRequest);
-
+                logger.info(String.format(
+                    "replaceExisting execution finished at %s . Time taken = %s milliseconds",
+                    new Date().getTime(),
+                    new Date().getTime() - newAssignment
+                ));
             }
 
             ResponseEntity<Object> result = prepareResponseService.prepareCreateRoleResponse(parsedAssignmentRequest);
@@ -126,7 +147,11 @@ public class CreateRoleAssignmentOrchestrator {
             return result;
         } finally {
             flushGlobalVariables();
-
+            logger.info(String.format(
+                "createRoleAssignment execution finished at %s . Time taken = %s milliseconds",
+                new Date().getTime(),
+                new Date().getTime() - startTime
+            ));
 
         }
 
