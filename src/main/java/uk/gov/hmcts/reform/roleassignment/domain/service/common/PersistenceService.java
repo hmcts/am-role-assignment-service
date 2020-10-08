@@ -156,11 +156,20 @@ public class PersistenceService {
     }
 
     public List<RoleAssignment> getAssignmentsByProcess(String process, String reference, String status) {
+        long startTime = new Date().getTime();
+        logger.info(String.format("getAssignmentsByProcess execution started at %s", startTime));
+
         Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
         //convert into model class
-        return historyEntities.stream().map(historyEntity -> persistenceUtil
+        List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(historyEntity -> persistenceUtil
             .convertHistoryEntityToRoleAssignment(historyEntity)).collect(
             Collectors.toList());
+        logger.info(String.format(
+            "getAssignmentsByProcess execution finished at %s . Time taken = %s milliseconds",
+            new Date().getTime(),
+            new Date().getTime() - startTime
+        ));
+        return roleAssignmentList;
 
     }
 
