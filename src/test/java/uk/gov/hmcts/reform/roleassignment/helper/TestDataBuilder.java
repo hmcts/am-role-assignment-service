@@ -33,6 +33,7 @@ import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -195,7 +196,7 @@ public class TestDataBuilder {
             .assignerId(request.getAssignerId())
             .replaceExisting(request.isReplaceExisting())
             .requestType(request.getRequestType().toString())
-            .created(request.getCreated())
+            .created(request.getCreated().atZone(ZoneOffset.UTC))
             .log(request.getLog())
             .build();
     }
@@ -204,9 +205,9 @@ public class TestDataBuilder {
         return HistoryEntity.builder().id(model.getId()).actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
-            .beginTime(model.getBeginTime())
+            .beginTime(model.getBeginTime().atZone(ZoneOffset.UTC))
             .classification(model.getClassification().toString())
-            .endTime(model.getEndTime())
+            .endTime(model.getEndTime().atZone(ZoneOffset.UTC))
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
@@ -215,7 +216,7 @@ public class TestDataBuilder {
             .requestEntity(requestEntity)
             .process(model.getProcess())
             .reference(model.getReference())
-            .created(model.getCreated())
+            .created(model.getCreated().atZone(ZoneOffset.UTC))
             .notes(model.getNotes())
             .build();
     }
@@ -226,10 +227,10 @@ public class TestDataBuilder {
             .actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
-            .beginTime(model.getBeginTime())
+            .beginTime(model.getBeginTime().atZone(ZoneOffset.UTC))
             .classification(model.getClassification().toString())
-            .endTime(model.getEndTime())
-            .created(model.getCreated())
+            .endTime(model.getEndTime().atZone(ZoneOffset.UTC))
+            .created(model.getCreated().atZone(ZoneOffset.UTC))
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
@@ -244,9 +245,9 @@ public class TestDataBuilder {
         requestedrole.setActorId(historyEntity.getActorId());
         requestedrole.setActorIdType(ActorIdType.valueOf(historyEntity.getActorIdType()));
         requestedrole.setAttributes(JacksonUtils.convertValue(historyEntity.getAttributes()));
-        requestedrole.setBeginTime(historyEntity.getBeginTime());
-        requestedrole.setEndTime(historyEntity.getEndTime());
-        requestedrole.setCreated(historyEntity.getCreated());
+        requestedrole.setBeginTime(historyEntity.getBeginTime().toLocalDateTime());
+        requestedrole.setEndTime(historyEntity.getEndTime().toLocalDateTime());
+        requestedrole.setCreated(historyEntity.getCreated().toLocalDateTime());
         requestedrole.setClassification(Classification.valueOf(historyEntity.getClassification()));
         requestedrole.setGrantType(GrantType.valueOf(historyEntity.getGrantType()));
         requestedrole.setReadOnly(historyEntity.isReadOnly());
@@ -287,9 +288,9 @@ public class TestDataBuilder {
             .grantType(GrantType.STANDARD.name())
             .roleCategory(RoleCategory.JUDICIAL.name())
             .readOnly(true)
-            .beginTime(timeStamp.plusDays(1))
-            .endTime(timeStamp.plusMonths(1))
-            .created(timeStamp)
+            .beginTime(timeStamp.plusDays(1).atZone(ZoneOffset.UTC))
+            .endTime(timeStamp.plusMonths(1).atZone(ZoneOffset.UTC))
+            .created(timeStamp.atZone(ZoneOffset.UTC))
             .attributes(buildAttributesFromFile())
             .build();
     }
@@ -320,9 +321,9 @@ public class TestDataBuilder {
             .requestEntity(requestEntity)
             .process(roleAssignment.getProcess())
             .reference(roleAssignment.getReference())
-            .created(roleAssignment.getCreated())
-            .beginTime(roleAssignment.getBeginTime())
-            .endTime(roleAssignment.getEndTime())
+            .created(roleAssignment.getCreated().atZone(ZoneOffset.UTC))
+            .beginTime(roleAssignment.getBeginTime().atZone(ZoneOffset.UTC))
+            .endTime(roleAssignment.getEndTime().atZone(ZoneOffset.UTC))
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
             .notes(roleAssignment.getNotes())
             .sequence(roleAssignment.getStatusSequence())
@@ -337,10 +338,10 @@ public class TestDataBuilder {
             .actorId(roleAssignment.getActorId())
             .actorIdType(roleAssignment.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
-            .beginTime(roleAssignment.getBeginTime())
+            .beginTime(roleAssignment.getBeginTime().atZone(ZoneOffset.UTC))
             .classification(roleAssignment.getClassification().toString())
-            .endTime(roleAssignment.getEndTime())
-            .created(roleAssignment.getCreated())
+            .endTime(roleAssignment.getEndTime().atZone(ZoneOffset.UTC))
+            .created(roleAssignment.getCreated().atZone(ZoneOffset.UTC))
             .grantType(roleAssignment.getGrantType().toString())
             .roleName(roleAssignment.getRoleName())
             .roleType(roleAssignment.getRoleType().toString())

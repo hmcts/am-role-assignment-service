@@ -19,6 +19,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Builder(toBuilder = true)
@@ -77,17 +78,17 @@ public class HistoryEntity {
 
     @CreationTimestamp
     @Column(name = "created", nullable = false)
-    private LocalDateTime created;
+    private ZonedDateTime created;
 
     @Column(name = "begin_time")
-    private LocalDateTime beginTime;
+    private ZonedDateTime beginTime;
 
     @Column(name = "attributes", nullable = false, columnDefinition = "jsonb")
     @Convert(converter = JsonBConverter.class)
     private JsonNode attributes;
 
     @Column(name = "end_time")
-    private LocalDateTime endTime;
+    private ZonedDateTime endTime;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
