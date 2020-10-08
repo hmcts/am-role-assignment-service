@@ -5,6 +5,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +21,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleA
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.text.ParseException;
+import java.util.Date;
 
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CREATE_ASSIGNMENTS;
 
@@ -27,6 +30,7 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CRE
 public class CreateAssignmentController {
 
     private final CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
+    private static final Logger logger = LoggerFactory.getLogger(CreateAssignmentController.class);
 
     public CreateAssignmentController(CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator) {
         this.createRoleAssignmentOrchestrator = createRoleAssignmentOrchestrator;
@@ -70,7 +74,14 @@ public class CreateAssignmentController {
                                                                String correlationId,
         @Validated
         @RequestBody AssignmentRequest assignmentRequest) throws ParseException {
-
-        return createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
+        long startTime = new Date().getTime();
+        logger.info(String.format("createRoleAssignment execution started at %s", startTime));
+        ResponseEntity<Object> response = createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
+        logger.info(String.format(
+            "createRoleAssignment execution finished at %s . Time taken = %s milliseconds",
+            new Date().getTime(),
+            new Date().getTime() - startTime
+        ));
+        return response;
     }
 }
