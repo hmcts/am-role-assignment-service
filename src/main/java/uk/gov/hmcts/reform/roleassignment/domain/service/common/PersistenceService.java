@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +27,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,6 +48,9 @@ import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecif
 
 @Service
 public class PersistenceService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PersistenceService.class);
+
     //1. StoreRequest which will insert records in request and history table with log,
     //2. Insert new Assignment record with updated Status in historyTable
     //3. Update Request Status
@@ -191,6 +197,9 @@ public class PersistenceService {
     public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest, Integer pageNumber,
                                                                       Integer size, String sort, String direction) {
 
+        long startTime = new Date().getTime();
+        logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
+
         pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(Objects.requireNonNull(
                 Objects.requireNonNull(
@@ -221,10 +230,16 @@ public class PersistenceService {
             )
         );
 
-
-        return pageRoleAssignmentEntities.stream()
+        List<RoleAssignment> roleAssignmentList =  pageRoleAssignmentEntities.stream()
             .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
             .collect(Collectors.toList());
+
+        logger.info(String.format(
+            "retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
+            new Date().getTime(),
+            new Date().getTime() - startTime
+        ));
+        return roleAssignmentList;
     }
 
     public List<RoleAssignment> getAssignmentById(UUID assignmentId) {
