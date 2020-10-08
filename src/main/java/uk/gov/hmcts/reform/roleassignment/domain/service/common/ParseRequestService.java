@@ -23,7 +23,6 @@ import uk.gov.hmcts.reform.roleassignment.v1.V1;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -51,7 +50,7 @@ public class ParseRequestService {
         //c. Set Status=Created and created Time = now
         request.setStatus(Status.CREATED);
         request.setRequestType(requestType);
-        request.setCreated(LocalDateTime.now(ZoneOffset.UTC));
+        request.setCreated(LocalDateTime.now());
         //d. correlationId if it is empty then generate a new value and set.
         setCorrelationId(request);
         //3. RoleAssignment Parsing
@@ -65,7 +64,7 @@ public class ParseRequestService {
             requestedAssignment.setReference(request.getReference());
             requestedAssignment.setStatus(Status.CREATED);
             requestedAssignment.setStatusSequence(Status.CREATED.sequence);
-            requestedAssignment.setCreated(LocalDateTime.now(ZoneOffset.UTC));
+            requestedAssignment.setCreated(LocalDateTime.now());
         });
         requestedAssignments.sort(new CreatedTimeComparator());
         AssignmentRequest parsedRequest = new AssignmentRequest(new Request(), Collections.emptyList());
@@ -103,7 +102,7 @@ public class ParseRequestService {
             .authenticatedUserId(securityUtils.getUserId())
             .status(Status.CREATED)
             .requestType(RequestType.DELETE)
-            .created(LocalDateTime.now(ZoneOffset.UTC))
+            .created(LocalDateTime.now())
             .process(process)
             .reference(reference)
             .build();
