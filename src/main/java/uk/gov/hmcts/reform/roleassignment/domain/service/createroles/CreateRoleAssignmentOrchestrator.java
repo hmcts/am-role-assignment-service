@@ -190,6 +190,10 @@ public class CreateRoleAssignmentOrchestrator {
     private void identifyAssignmentsToBeUpdated(AssignmentRequest existingAssignmentRequest,
                                                 AssignmentRequest parsedAssignmentRequest)
         throws IllegalAccessException, InvocationTargetException {
+        long startTime = new Date().getTime();
+        logger.info(String.format("identifyAssignmentsToBeUpdated execution started at %s", startTime));
+
+
         //update the existingAssignmentRequest with Only need to be removed record
         if (!createRoleAssignmentService.needToDeleteRoleAssignments.isEmpty()) {
             createRoleAssignmentService.updateExistingAssignments(
@@ -209,5 +213,11 @@ public class CreateRoleAssignmentOrchestrator {
 
         //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
         createRoleAssignmentService.checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
+        logger.info(String.format(
+            "identifyAssignmentsToBeUpdated execution finished at %s . Time taken = %s milliseconds",
+            new Date().getTime(),
+            new Date().getTime() - startTime
+        ));
+
     }
 }

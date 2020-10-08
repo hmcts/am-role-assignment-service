@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -36,6 +39,7 @@ import java.util.stream.Collectors;
 @Data
 @Slf4j
 public class CreateRoleAssignmentService {
+    private static final Logger logger = LoggerFactory.getLogger(CreateRoleAssignmentService.class);
 
     private ParseRequestService parseRequestService;
     private PersistenceService persistenceService;
@@ -69,6 +73,9 @@ public class CreateRoleAssignmentService {
     public void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
                                        AssignmentRequest parsedAssignmentRequest) {
         // decision block
+        long startTime = new Date().getTime();
+        logger.info(String.format("checkAllDeleteApproved execution started at %s", startTime));
+
         if (!needToDeleteRoleAssignments.isEmpty()) {
             List<RoleAssignment> deleteApprovedAssignments = existingAssignmentRequest.getRequestedRoles().stream()
                 .filter(role -> role.getStatus().equals(
@@ -123,11 +130,20 @@ public class CreateRoleAssignmentService {
             createNewAssignmentRecords(parsedAssignmentRequest);
             checkAllApproved(parsedAssignmentRequest);
         }
+        logger.info(String.format(
+            "checkAllDeleteApproved execution finished at %s . Time taken = %s milliseconds",
+            new Date().getTime(),
+            new Date().getTime() - startTime
+        ));
+
     }
 
     private void rejectDeleteRequest(AssignmentRequest existingAssignmentRequest,
                                      List<UUID> rejectedAssignmentIds,
                                      AssignmentRequest parsedAssignmentRequest) {
+        long startTime = new Date().getTime();
+        logger.info(String.format("rejectDeleteRequest execution started at %s", startTime));
+
         Request request = parsedAssignmentRequest.getRequest();
         //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
         insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED, rejectedAssignmentIds);
@@ -143,6 +159,11 @@ public class CreateRoleAssignmentService {
         }
 
         persistenceService.updateRequest(requestEntity);
+        logger.info(String.format(
+            "rejectDeleteRequest execution finished at %s . Time taken = %s milliseconds",
+            new Date().getTime(),
+            new Date().getTime() - startTime
+        ));
     }
 
 
@@ -186,6 +207,8 @@ public class CreateRoleAssignmentService {
     //Create New Assignment Records
     public void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest) {
         //Save new requested role in history table with CREATED Status
+        long startTime = new Date().getTime();
+        logger.info(String.format("checkAllDeleteApproved execution started at %s", startTime));
 
         insertRequestedRole(parsedAssignmentRequest, Status.CREATED, emptyUUIds);
 
@@ -201,6 +224,11 @@ public class CreateRoleAssignmentService {
 
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
+        logger.info(String.format(
+            "checkAllDeleteApproved execution finished at %s . Time taken = %s milliseconds",
+            new Date().getTime(),
+            new Date().getTime() - startTime
+        ));
     }
 
     private void moveHistoryRecordsToLiveTable(RequestEntity requestEntity) {
@@ -223,19 +251,40 @@ public class CreateRoleAssignmentService {
 
 
     public RequestEntity persistInitialRequest(Request request) {
-        return persistenceService.persistRequest(request);
+        long startTime = new Date().getTime();
+        logger.info(String.format("persistInitialRequest execution started at %s", startTime));
+
+        RequestEntity requestEntity = persistenceService.persistRequest(request);
+        logger.info(String.format(
+            "persistInitialRequest execution finished at %s . Time taken = %s milliseconds",
+            new Date().getTime(),
+            new Date().getTime() - startTime
+        ));
+
+        return requestEntity;
     }
 
     private void deleteLiveAssignments(Collection<RoleAssignment> existingAssignments) {
+        long startTime = new Date().getTime();
+        logger.info(String.format("deleteLiveAssignments execution started at %s", startTime));
+
         for (RoleAssignment requestedRole : existingAssignments) {
             persistenceService.deleteRoleAssignment(requestedRole);
             persistenceService.persistActorCache(requestedRole);
         }
+        logger.info(String.format(
+            "deleteLiveAssignments execution finished at %s . Time taken = %s milliseconds",
+            new Date().getTime(),
+            new Date().getTime() - startTime
+        ));
     }
 
     private void insertRequestedRole(AssignmentRequest assignmentRequest,
                                      Status status,
                                      List<UUID> rejectedAssignmentIds) {
+        long startTime = new Date().getTime();
+        logger.info(String.format("insertRequestedRole execution started at %s", startTime));
+
         for (RoleAssignment requestedAssignment : assignmentRequest.getRequestedRoles()) {
             if (!rejectedAssignmentIds.isEmpty()
                 && (status.equals(Status.REJECTED) || status.equals(Status.DELETE_REJECTED))
@@ -258,11 +307,18 @@ public class CreateRoleAssignmentService {
         }
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
+        logger.info(String.format(
+            "insertRequestedRole execution finished at %s . Time taken = %s milliseconds",
+            new Date().getTime(),
+            new Date().getTime() - startTime
+        ));
     }
 
     public boolean hasAssignmentsUpdated(AssignmentRequest existingAssignmentRequest,
                                          AssignmentRequest parsedAssignmentRequest)
         throws InvocationTargetException, IllegalAccessException {
+        long startTime = new Date().getTime();
+        logger.info(String.format("hasAssignmentsUpdated execution started at %s", startTime));
 
         needToRetainRoleAssignments = new HashSet<>();
         // convert existing assignment records into role assignment subset
@@ -283,6 +339,11 @@ public class CreateRoleAssignmentService {
             incomingRecords,
             commonRecords
         );
+        logger.info(String.format(
+            "hasAssignmentsUpdated execution finished at %s . Time taken = %s milliseconds",
+            new Date().getTime(),
+            new Date().getTime() - startTime
+        ));
 
         // prepare tempList from incoming requested roles
         return !needToDeleteRoleAssignments.isEmpty() || !needToCreateRoleAssignments.isEmpty();
@@ -361,16 +422,28 @@ public class CreateRoleAssignmentService {
     }
 
     private void deleteRecords(AssignmentRequest existingAssignmentRequest) {
+        long startTime = new Date().getTime();
+        logger.info(String.format("deleteRecords execution started at %s", startTime));
+
         //delete existingAssignmentRequest.getRequestedRoles() records from live table--Hard delete
         deleteLiveAssignments(existingAssignmentRequest.getRequestedRoles());
 
         //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-soft
         // delete
         insertRequestedRole(existingAssignmentRequest, Status.DELETED, emptyUUIds);
+        logger.info(String.format(
+            "deleteRecords execution finished at %s . Time taken = %s milliseconds",
+            new Date().getTime(),
+            new Date().getTime() - startTime
+        ));
+
     }
 
     public ResponseEntity<Object> duplicateRequest(AssignmentRequest existingAssignmentRequest,
                                                    AssignmentRequest parsedAssignmentRequest) {
+        long startTime = new Date().getTime();
+        logger.info(String.format("duplicateRequest execution started at %s", startTime));
+
         parsedAssignmentRequest.getRequest().setStatus(Status.APPROVED);
         requestEntity.setStatus(Status.APPROVED.toString());
         requestEntity.setLog(
@@ -387,6 +460,11 @@ public class CreateRoleAssignmentService {
         ResponseEntity<Object> result = prepareResponseService.prepareCreateRoleResponse(
             parsedAssignmentRequest);
         parseRequestService.removeCorrelationLog();
+        logger.info(String.format(
+            "duplicateRequest execution finished at %s . Time taken = %s milliseconds",
+            new Date().getTime(),
+            new Date().getTime() - startTime
+        ));
         return result;
     }
 
