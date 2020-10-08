@@ -21,8 +21,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestReso
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
-import java.util.Date;
-
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.SEARCH_ASSIGNMENTS;
 
 @Api(value = "roles")
@@ -70,14 +68,14 @@ public class QueryAssignmentController {
                                   @RequestHeader(value = "sort", required = false) String sort,
                                   @RequestHeader(value = "direction", required = false) String direction,
                                   @Validated @RequestBody(required = true) QueryRequest queryRequest) {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
         ResponseEntity<Object> response = queryRoleAssignmentOrchestrator
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
         logger.info(String.format(
             "retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
         return response;
     }

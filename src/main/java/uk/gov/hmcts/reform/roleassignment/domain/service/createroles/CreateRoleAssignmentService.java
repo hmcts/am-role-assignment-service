@@ -27,7 +27,6 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -73,7 +72,7 @@ public class CreateRoleAssignmentService {
     public void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
                                        AssignmentRequest parsedAssignmentRequest) {
         // decision block
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("checkAllDeleteApproved execution started at %s", startTime));
 
         if (!needToDeleteRoleAssignments.isEmpty()) {
@@ -132,8 +131,8 @@ public class CreateRoleAssignmentService {
         }
         logger.info(String.format(
             "checkAllDeleteApproved execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
 
     }
@@ -141,7 +140,7 @@ public class CreateRoleAssignmentService {
     private void rejectDeleteRequest(AssignmentRequest existingAssignmentRequest,
                                      List<UUID> rejectedAssignmentIds,
                                      AssignmentRequest parsedAssignmentRequest) {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("rejectDeleteRequest execution started at %s", startTime));
 
         Request request = parsedAssignmentRequest.getRequest();
@@ -161,8 +160,8 @@ public class CreateRoleAssignmentService {
         persistenceService.updateRequest(requestEntity);
         logger.info(String.format(
             "rejectDeleteRequest execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
     }
 
@@ -207,7 +206,7 @@ public class CreateRoleAssignmentService {
     //Create New Assignment Records
     public void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest) {
         //Save new requested role in history table with CREATED Status
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("checkAllDeleteApproved execution started at %s", startTime));
 
         insertRequestedRole(parsedAssignmentRequest, Status.CREATED, emptyUUIds);
@@ -226,8 +225,8 @@ public class CreateRoleAssignmentService {
         persistenceService.updateRequest(requestEntity);
         logger.info(String.format(
             "checkAllDeleteApproved execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
     }
 
@@ -251,21 +250,21 @@ public class CreateRoleAssignmentService {
 
 
     public RequestEntity persistInitialRequest(Request request) {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("persistInitialRequest execution started at %s", startTime));
 
         RequestEntity requestEntity = persistenceService.persistRequest(request);
         logger.info(String.format(
             "persistInitialRequest execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
 
         return requestEntity;
     }
 
     private void deleteLiveAssignments(Collection<RoleAssignment> existingAssignments) {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("deleteLiveAssignments execution started at %s", startTime));
 
         for (RoleAssignment requestedRole : existingAssignments) {
@@ -274,15 +273,15 @@ public class CreateRoleAssignmentService {
         }
         logger.info(String.format(
             "deleteLiveAssignments execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
     }
 
     private void insertRequestedRole(AssignmentRequest assignmentRequest,
                                      Status status,
                                      List<UUID> rejectedAssignmentIds) {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("insertRequestedRole execution started at %s", startTime));
 
         for (RoleAssignment requestedAssignment : assignmentRequest.getRequestedRoles()) {
@@ -309,15 +308,15 @@ public class CreateRoleAssignmentService {
         persistenceService.updateRequest(requestEntity);
         logger.info(String.format(
             "insertRequestedRole execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
     }
 
     public boolean hasAssignmentsUpdated(AssignmentRequest existingAssignmentRequest,
                                          AssignmentRequest parsedAssignmentRequest)
         throws InvocationTargetException, IllegalAccessException {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("hasAssignmentsUpdated execution started at %s", startTime));
 
         needToRetainRoleAssignments = new HashSet<>();
@@ -341,8 +340,8 @@ public class CreateRoleAssignmentService {
         );
         logger.info(String.format(
             "hasAssignmentsUpdated execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
 
         // prepare tempList from incoming requested roles
@@ -422,7 +421,7 @@ public class CreateRoleAssignmentService {
     }
 
     private void deleteRecords(AssignmentRequest existingAssignmentRequest) {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("deleteRecords execution started at %s", startTime));
 
         //delete existingAssignmentRequest.getRequestedRoles() records from live table--Hard delete
@@ -433,15 +432,15 @@ public class CreateRoleAssignmentService {
         insertRequestedRole(existingAssignmentRequest, Status.DELETED, emptyUUIds);
         logger.info(String.format(
             "deleteRecords execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
 
     }
 
     public ResponseEntity<Object> duplicateRequest(AssignmentRequest existingAssignmentRequest,
                                                    AssignmentRequest parsedAssignmentRequest) {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("duplicateRequest execution started at %s", startTime));
 
         parsedAssignmentRequest.getRequest().setStatus(Status.APPROVED);
@@ -462,8 +461,8 @@ public class CreateRoleAssignmentService {
         parseRequestService.removeCorrelationLog();
         logger.info(String.format(
             "duplicateRequest execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
         return result;
     }

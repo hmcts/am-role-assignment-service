@@ -27,7 +27,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -156,7 +155,7 @@ public class PersistenceService {
     }
 
     public List<RoleAssignment> getAssignmentsByProcess(String process, String reference, String status) {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("getAssignmentsByProcess execution started at %s", startTime));
 
         Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
@@ -166,8 +165,8 @@ public class PersistenceService {
             Collectors.toList());
         logger.info(String.format(
             "getAssignmentsByProcess execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
         return roleAssignmentList;
 
@@ -206,7 +205,7 @@ public class PersistenceService {
     public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest, Integer pageNumber,
                                                                       Integer size, String sort, String direction) {
 
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
 
         pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
@@ -245,8 +244,8 @@ public class PersistenceService {
 
         logger.info(String.format(
             "retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
         return roleAssignmentList;
     }

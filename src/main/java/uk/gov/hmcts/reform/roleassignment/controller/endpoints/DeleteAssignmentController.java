@@ -20,8 +20,6 @@ import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
-import java.util.Date;
-
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DELETE_ASSIGNMENTS_BY_ID;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DELETE_ASSIGNMENTS_BY_PROCESS;
 
@@ -71,14 +69,14 @@ public class DeleteAssignmentController {
                                                            String process,
                                                        @RequestParam(value = "reference", required = false)
                                                            String reference) {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("deleteRoleAssignmentByProcessAndReference execution started at %s", startTime));
         ResponseEntity<Object> responseEntity = deleteRoleAssignmentOrchestrator
             .deleteRoleAssignmentByProcessAndReference(process, reference);
         logger.info(String.format(
             "deleteRoleAssignmentByProcessAndReference execution finished at %s .Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
         return responseEntity;
     }

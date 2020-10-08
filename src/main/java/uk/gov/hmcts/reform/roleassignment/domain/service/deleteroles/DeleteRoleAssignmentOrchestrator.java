@@ -21,7 +21,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelS
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -50,7 +49,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
     public ResponseEntity<Object> deleteRoleAssignmentByProcessAndReference(String process,
                                                                             String reference) {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("deleteRoleAssignmentByProcessAndReference execution started at %s", startTime));
 
         List<RoleAssignment> requestedRoles;
@@ -81,8 +80,8 @@ public class DeleteRoleAssignmentOrchestrator {
         ResponseEntity<Object> responseEntity = performOtherStepsForDelete("", requestedRoles);
         logger.info(String.format(
             "deleteRoleAssignmentByProcessAndReference execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
         return responseEntity;
     }
@@ -115,7 +114,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
     @NotNull
     private ResponseEntity<Object> performOtherStepsForDelete(String actorId, List<RoleAssignment> requestedRoles) {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("performOtherStepsForDelete execution started at %s", startTime));
 
 
@@ -129,8 +128,8 @@ public class DeleteRoleAssignmentOrchestrator {
         checkAllDeleteApproved(assignmentRequest, actorId);
         logger.info(String.format(
             "performOtherStepsForDelete execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
         if (assignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(assignmentRequest.getRequest());
@@ -148,7 +147,7 @@ public class DeleteRoleAssignmentOrchestrator {
     }
 
     private void validationByDrool(List<RoleAssignment> requestedRoles) {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("validationByDrool execution started at %s", startTime));
 
         assignmentRequest.setRequestedRoles(requestedRoles);
@@ -157,8 +156,8 @@ public class DeleteRoleAssignmentOrchestrator {
         validationModelService.validateRequest(assignmentRequest);
         logger.info(String.format(
             "validationByDrool execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
 
     }
@@ -184,7 +183,7 @@ public class DeleteRoleAssignmentOrchestrator {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
         // decision block
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("checkAllDeleteApproved execution started at %s", startTime));
 
         List<RoleAssignment> deleteApprovedRoles = validatedAssignmentRequest.getRequestedRoles().stream()
@@ -212,8 +211,8 @@ public class DeleteRoleAssignmentOrchestrator {
         }
         logger.info(String.format(
             "checkAllDeleteApproved execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
     }
 
