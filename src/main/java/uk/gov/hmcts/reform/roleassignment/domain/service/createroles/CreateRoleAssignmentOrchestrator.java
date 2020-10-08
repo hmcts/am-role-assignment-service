@@ -82,7 +82,7 @@ public class CreateRoleAssignmentOrchestrator {
             //Check replace existing true/false
             if (request.isReplaceExisting()) {
                 long replaceExisting = System.currentTimeMillis();
-                logger.info(String.format("replaceExisting execution started at %s", replaceExisting));
+                logger.info(String.format("replaceExisting Inner Method execution started at %s", replaceExisting));
                 //retrieve existing assignments and prepared temp request
                 existingAssignmentRequest = createRoleAssignmentService
                     .retrieveExistingAssignments(parsedAssignmentRequest);
@@ -122,7 +122,7 @@ public class CreateRoleAssignmentOrchestrator {
                     log.error("context", e);
                 }
                 logger.info(String.format(
-                    "replaceExisting execution finished at %s . Time taken = %s milliseconds",
+                    "replaceExisting Inner Method execution finished at %s . Time taken = %s milliseconds",
                     System.currentTimeMillis(),
                     System.currentTimeMillis() - replaceExisting
                 ));
@@ -134,7 +134,7 @@ public class CreateRoleAssignmentOrchestrator {
                 createRoleAssignmentService.createNewAssignmentRecords(parsedAssignmentRequest);
                 createRoleAssignmentService.checkAllApproved(parsedAssignmentRequest);
                 logger.info(String.format(
-                    "replaceExisting execution finished at %s . Time taken = %s milliseconds",
+                    "newAssignment execution finished at %s . Time taken = %s milliseconds",
                     System.currentTimeMillis(),
                     System.currentTimeMillis() - newAssignment
                 ));

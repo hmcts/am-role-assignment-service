@@ -527,7 +527,7 @@ public class CreateRoleAssignmentService {
     @NotNull
     public AssignmentRequest retrieveExistingAssignments(AssignmentRequest parsedAssignmentRequest) {
         long replaceExisting = System.currentTimeMillis();
-        logger.info(String.format("replaceExisting execution started at %s", replaceExisting));
+        logger.info(String.format("retrieveExistingAssignments execution started at %s", replaceExisting));
 
         AssignmentRequest existingAssignmentRequest;
         Request request = parsedAssignmentRequest.getRequest();
@@ -541,7 +541,7 @@ public class CreateRoleAssignmentService {
         //create a new existing assignment request for delete records
         existingAssignmentRequest = new AssignmentRequest(parsedAssignmentRequest.getRequest(), existingAssignments);
         logger.info(String.format(
-            "replaceExisting execution finished at %s . Time taken = %s milliseconds",
+            "retrieveExistingAssignments execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - replaceExisting
         ));
