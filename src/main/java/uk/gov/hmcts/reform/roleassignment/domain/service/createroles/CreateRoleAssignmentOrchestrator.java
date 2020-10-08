@@ -20,7 +20,6 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
@@ -55,7 +54,7 @@ public class CreateRoleAssignmentOrchestrator {
     }
 
     public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) throws ParseException {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("createRoleAssignment execution started at %s", startTime));
         try {
             AssignmentRequest existingAssignmentRequest;
@@ -82,7 +81,7 @@ public class CreateRoleAssignmentOrchestrator {
 
             //Check replace existing true/false
             if (request.isReplaceExisting()) {
-                long replaceExisting = new Date().getTime();
+                long replaceExisting = System.currentTimeMillis();
                 logger.info(String.format("replaceExisting execution started at %s", replaceExisting));
                 //retrieve existing assignments and prepared temp request
                 existingAssignmentRequest = createRoleAssignmentService
@@ -124,20 +123,20 @@ public class CreateRoleAssignmentOrchestrator {
                 }
                 logger.info(String.format(
                     "replaceExisting execution finished at %s . Time taken = %s milliseconds",
-                    new Date().getTime(),
-                    new Date().getTime() - replaceExisting
+                    System.currentTimeMillis(),
+                    System.currentTimeMillis() - replaceExisting
                 ));
 
             } else {
-                long newAssignment = new Date().getTime();
+                long newAssignment = System.currentTimeMillis();
                 logger.info(String.format("newAssignment execution started at %s", newAssignment));
                 //Save requested role in history table with CREATED and Approved Status
                 createRoleAssignmentService.createNewAssignmentRecords(parsedAssignmentRequest);
                 createRoleAssignmentService.checkAllApproved(parsedAssignmentRequest);
                 logger.info(String.format(
                     "replaceExisting execution finished at %s . Time taken = %s milliseconds",
-                    new Date().getTime(),
-                    new Date().getTime() - newAssignment
+                    System.currentTimeMillis(),
+                    System.currentTimeMillis() - newAssignment
                 ));
             }
 
@@ -149,8 +148,8 @@ public class CreateRoleAssignmentOrchestrator {
             flushGlobalVariables();
             logger.info(String.format(
                 "createRoleAssignment execution finished at %s . Time taken = %s milliseconds",
-                new Date().getTime(),
-                new Date().getTime() - startTime
+                System.currentTimeMillis(),
+                System.currentTimeMillis() - startTime
             ));
 
         }
@@ -190,7 +189,7 @@ public class CreateRoleAssignmentOrchestrator {
     private void identifyAssignmentsToBeUpdated(AssignmentRequest existingAssignmentRequest,
                                                 AssignmentRequest parsedAssignmentRequest)
         throws IllegalAccessException, InvocationTargetException {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("identifyAssignmentsToBeUpdated execution started at %s", startTime));
 
 
@@ -215,8 +214,8 @@ public class CreateRoleAssignmentOrchestrator {
         createRoleAssignmentService.checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
         logger.info(String.format(
             "identifyAssignmentsToBeUpdated execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
 
     }

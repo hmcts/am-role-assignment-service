@@ -21,7 +21,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleA
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.text.ParseException;
-import java.util.Date;
 
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CREATE_ASSIGNMENTS;
 
@@ -74,13 +73,13 @@ public class CreateAssignmentController {
                                                                String correlationId,
         @Validated
         @RequestBody AssignmentRequest assignmentRequest) throws ParseException {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("createRoleAssignment execution started at %s", startTime));
         ResponseEntity<Object> response = createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
         logger.info(String.format(
             "createRoleAssignment execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
         return response;
     }

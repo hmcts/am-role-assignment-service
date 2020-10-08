@@ -11,7 +11,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,7 +24,7 @@ public class QueryRoleAssignmentOrchestrator {
     public ResponseEntity<Object> retrieveRoleAssignmentsByQueryRequest(QueryRequest queryRequest, Integer pageNumber,
                                                                         Integer size, String sort, String direction) {
 
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
 
         List<RoleAssignment> assignmentList =
@@ -35,8 +34,8 @@ public class QueryRoleAssignmentOrchestrator {
                             Long.toString(persistenceService.getTotalRecords()));
         logger.info(String.format(
             "retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
         return new ResponseEntity<>(assignmentList, responseHeaders, HttpStatus.OK);
 

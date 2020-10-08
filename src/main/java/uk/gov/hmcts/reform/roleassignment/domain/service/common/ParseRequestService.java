@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +42,7 @@ public class ParseRequestService {
 
     public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType)
         throws ParseException {
-        long startTime = new Date().getTime();
+        long startTime = System.currentTimeMillis();
         logger.info(String.format("parseRequest execution started at %s", startTime));
         Request request = assignmentRequest.getRequest();
         //1. validates request and assignment record
@@ -79,8 +78,8 @@ public class ParseRequestService {
         parsedRequest.setRequestedRoles(requestedAssignments);
         logger.info(String.format(
             "parseRequest execution finished at %s . Time taken = %s milliseconds",
-            new Date().getTime(),
-            new Date().getTime() - startTime
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
         ));
         return parsedRequest;
     }
