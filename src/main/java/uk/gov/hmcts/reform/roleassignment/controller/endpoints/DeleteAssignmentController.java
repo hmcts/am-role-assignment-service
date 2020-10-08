@@ -76,7 +76,7 @@ public class DeleteAssignmentController {
         ResponseEntity<Object> responseEntity = deleteRoleAssignmentOrchestrator
             .deleteRoleAssignmentByProcessAndReference(process, reference);
         logger.info(String.format(
-            "deleteRoleAssignmentByProcessAndReference execution finished at %s . Time taken = %s milliseconds",
+            "deleteRoleAssignmentByProcessAndReference execution finished at %s .Time taken = %s milliseconds",
             new Date().getTime(),
             new Date().getTime() - startTime
         ));
