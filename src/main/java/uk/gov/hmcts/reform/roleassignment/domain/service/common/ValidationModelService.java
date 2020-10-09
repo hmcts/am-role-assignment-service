@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.kie.api.runtime.StatelessKieSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
@@ -20,7 +22,7 @@ public class ValidationModelService {
     //2. retrieve existingRoleAssignment records for Requester
     //3. retrieve AuthorisedRoleAssignment records for Requester/Assignee(??)
     //Note: These are aggregation records from Assignment_history table.
-
+    private static final Logger logger = LoggerFactory.getLogger(ValidationModelService.class);
     private StatelessKieSession kieSession;
     private IdamRoleService idamRoleService;
     private RetrieveDataService retrieveDataService;
@@ -43,6 +45,9 @@ public class ValidationModelService {
     }
 
     private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) {
+        long startTime = System.currentTimeMillis();
+        logger.info(String.format("runRulesOnAllRequestedAssignments execution started at %s", startTime));
+
         // Package up the request and the assignments
         //Pre defined role configuration
         List<Role> role = JacksonUtils.getConfiguredRoles().get("roles");
@@ -56,6 +61,11 @@ public class ValidationModelService {
 
         // Run the rules
         kieSession.execute(facts);
+        logger.info(String.format(
+            "runRulesOnAllRequestedAssignments execution finished at %s . Time taken = %s milliseconds",
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
+        ));
 
     }
 
