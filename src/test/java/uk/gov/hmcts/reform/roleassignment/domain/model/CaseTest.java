@@ -12,13 +12,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 @RunWith(MockitoJUnitRunner.class)
 class CaseTest {
 
 
     private Case caseData = new Case("1234", (long)1, 1, "", "",
-                                     LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),"",
+                                     ZonedDateTime.now(ZoneOffset.UTC), ZonedDateTime.now(ZoneOffset.UTC),
+                                     ZonedDateTime.now(ZoneOffset.UTC),"",
                                      null,null,null,
                                      null,null, null);
 

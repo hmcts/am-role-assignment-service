@@ -13,6 +13,8 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -190,7 +192,7 @@ class ValidationUtilTest {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
                                                                                      false);
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            requestedRole.setBeginTime(LocalDateTime.now().minusDays(1L));
+            requestedRole.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC).minusDays(1L));
         }
 
         Assertions.assertThrows(BadRequestException.class, () ->
@@ -203,7 +205,7 @@ class ValidationUtilTest {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
                                                                                      false);
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            requestedRole.setEndTime(LocalDateTime.now().minusDays(1L));
+            requestedRole.setEndTime(ZonedDateTime.now(ZoneOffset.UTC).minusDays(1L));
         }
 
         Assertions.assertThrows(BadRequestException.class, () ->
@@ -216,7 +218,7 @@ class ValidationUtilTest {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
                                                                                      false);
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            requestedRole.setEndTime(LocalDateTime.now().minusDays(1L));
+            requestedRole.setEndTime(ZonedDateTime.now(ZoneOffset.UTC).minusDays(1L));
         }
 
         Assertions.assertThrows(BadRequestException.class, () ->
