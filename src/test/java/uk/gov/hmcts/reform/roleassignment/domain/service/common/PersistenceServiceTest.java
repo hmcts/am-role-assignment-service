@@ -39,6 +39,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -463,7 +465,7 @@ class PersistenceServiceTest {
             .roleName(roleNmaes)
             .classification(classifications)
             .attributes(attributes)
-            .validAt(LocalDateTime.now())
+            .validAt(ZonedDateTime.now(ZoneOffset.UTC))
             .grantType(grantTypes)
             .build();
 

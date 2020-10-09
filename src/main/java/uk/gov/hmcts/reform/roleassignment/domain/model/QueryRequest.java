@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +20,7 @@ public class QueryRequest {
     private List<String> roleName;
     private List<String> classification;
     private List<String> grantType;
-    private LocalDateTime validAt;
+    private ZonedDateTime validAt;
     private List<String> roleCategory;
     private Map<String, List<String>> attributes;
     private List<String> authorisations;

@@ -15,6 +15,8 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -112,7 +114,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
 
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByValidDate(
-            LocalDateTime.now());
+            ZonedDateTime.now(ZoneOffset.UTC));
         assertThat(specification).isNotNull();
 
 
@@ -424,7 +426,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
 
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByValidDate(
-            LocalDateTime.now());
+            ZonedDateTime.now(ZoneOffset.UTC));
         specification = specification.and(mockSpec);
         assertThat(specification).isNotNull();
         MatcherAssert.assertThat(specification.toPredicate(root, query, builder), is(predicate));

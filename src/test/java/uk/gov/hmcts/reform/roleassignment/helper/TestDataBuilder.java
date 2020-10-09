@@ -33,7 +33,9 @@ import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -72,12 +74,12 @@ public class TestDataBuilder {
             .process(("p2"))
             .replaceExisting(replaceExisting)
             .status(status)
-            .created(LocalDateTime.now())
+            .created(ZonedDateTime.now(ZoneOffset.UTC))
             .build();
     }
 
     public static RoleAssignment buildRoleAssignment(Status status) throws IOException {
-        LocalDateTime timeStamp = LocalDateTime.now();
+        ZonedDateTime timeStamp = ZonedDateTime.now(ZoneOffset.UTC);
         return RoleAssignment.builder()
             .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
             .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
@@ -102,7 +104,7 @@ public class TestDataBuilder {
     }
 
     public static RoleAssignment buildRoleAssignmentUpdated(Status status) throws IOException {
-        LocalDateTime timeStamp = LocalDateTime.now();
+        ZonedDateTime timeStamp = ZonedDateTime.now(ZoneOffset.UTC);
         return RoleAssignment.builder()
             .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
             .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
@@ -196,7 +198,7 @@ public class TestDataBuilder {
             .assignerId(request.getAssignerId())
             .replaceExisting(request.isReplaceExisting())
             .requestType(request.getRequestType().toString())
-            .created(request.getCreated().atZone(ZoneOffset.UTC))
+            .created(request.getCreated())
             .log(request.getLog())
             .build();
     }
@@ -205,9 +207,9 @@ public class TestDataBuilder {
         return HistoryEntity.builder().id(model.getId()).actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
-            .beginTime(model.getBeginTime().atZone(ZoneOffset.UTC))
+            .beginTime(model.getBeginTime())
             .classification(model.getClassification().toString())
-            .endTime(model.getEndTime().atZone(ZoneOffset.UTC))
+            .endTime(model.getEndTime())
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
@@ -216,7 +218,7 @@ public class TestDataBuilder {
             .requestEntity(requestEntity)
             .process(model.getProcess())
             .reference(model.getReference())
-            .created(model.getCreated().atZone(ZoneOffset.UTC))
+            .created(model.getCreated())
             .notes(model.getNotes())
             .build();
     }
@@ -227,10 +229,10 @@ public class TestDataBuilder {
             .actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
-            .beginTime(model.getBeginTime().atZone(ZoneOffset.UTC))
+            .beginTime(model.getBeginTime())
             .classification(model.getClassification().toString())
-            .endTime(model.getEndTime().atZone(ZoneOffset.UTC))
-            .created(model.getCreated().atZone(ZoneOffset.UTC))
+            .endTime(model.getEndTime())
+            .created(model.getCreated())
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
@@ -245,9 +247,9 @@ public class TestDataBuilder {
         requestedrole.setActorId(historyEntity.getActorId());
         requestedrole.setActorIdType(ActorIdType.valueOf(historyEntity.getActorIdType()));
         requestedrole.setAttributes(JacksonUtils.convertValue(historyEntity.getAttributes()));
-        requestedrole.setBeginTime(historyEntity.getBeginTime().toLocalDateTime());
-        requestedrole.setEndTime(historyEntity.getEndTime().toLocalDateTime());
-        requestedrole.setCreated(historyEntity.getCreated().toLocalDateTime());
+        requestedrole.setBeginTime(historyEntity.getBeginTime());
+        requestedrole.setEndTime(historyEntity.getEndTime());
+        requestedrole.setCreated(historyEntity.getCreated());
         requestedrole.setClassification(Classification.valueOf(historyEntity.getClassification()));
         requestedrole.setGrantType(GrantType.valueOf(historyEntity.getGrantType()));
         requestedrole.setReadOnly(historyEntity.isReadOnly());
@@ -278,7 +280,7 @@ public class TestDataBuilder {
     }
 
     private static RoleAssignmentEntity buildRoleAssignmentEntitySet() throws IOException {
-        LocalDateTime timeStamp = LocalDateTime.now();
+        ZonedDateTime timeStamp = ZonedDateTime.now(ZoneOffset.UTC);
         return RoleAssignmentEntity.builder()
             .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .actorIdType(ActorIdType.IDAM.name())
@@ -288,9 +290,9 @@ public class TestDataBuilder {
             .grantType(GrantType.STANDARD.name())
             .roleCategory(RoleCategory.JUDICIAL.name())
             .readOnly(true)
-            .beginTime(timeStamp.plusDays(1).atZone(ZoneOffset.UTC))
-            .endTime(timeStamp.plusMonths(1).atZone(ZoneOffset.UTC))
-            .created(timeStamp.atZone(ZoneOffset.UTC))
+            .beginTime(timeStamp.plusDays(1))
+            .endTime(timeStamp.plusMonths(1))
+            .created(timeStamp)
             .attributes(buildAttributesFromFile())
             .build();
     }
@@ -321,9 +323,9 @@ public class TestDataBuilder {
             .requestEntity(requestEntity)
             .process(roleAssignment.getProcess())
             .reference(roleAssignment.getReference())
-            .created(roleAssignment.getCreated().atZone(ZoneOffset.UTC))
-            .beginTime(roleAssignment.getBeginTime().atZone(ZoneOffset.UTC))
-            .endTime(roleAssignment.getEndTime().atZone(ZoneOffset.UTC))
+            .created(roleAssignment.getCreated())
+            .beginTime(roleAssignment.getBeginTime())
+            .endTime(roleAssignment.getEndTime())
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
             .notes(roleAssignment.getNotes())
             .sequence(roleAssignment.getStatusSequence())
@@ -338,10 +340,10 @@ public class TestDataBuilder {
             .actorId(roleAssignment.getActorId())
             .actorIdType(roleAssignment.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
-            .beginTime(roleAssignment.getBeginTime().atZone(ZoneOffset.UTC))
+            .beginTime(roleAssignment.getBeginTime())
             .classification(roleAssignment.getClassification().toString())
-            .endTime(roleAssignment.getEndTime().atZone(ZoneOffset.UTC))
-            .created(roleAssignment.getCreated().atZone(ZoneOffset.UTC))
+            .endTime(roleAssignment.getEndTime())
+            .created(roleAssignment.getCreated())
             .grantType(roleAssignment.getGrantType().toString())
             .roleName(roleAssignment.getRoleName())
             .roleType(roleAssignment.getRoleType().toString())
@@ -371,7 +373,7 @@ public class TestDataBuilder {
             .version(1)
             .state("state")
             .reference(1L)
-            .lastStateModifiedDate(LocalDateTime.now().minusMonths(1L)).id("1234").build();
+            .lastStateModifiedDate(ZonedDateTime.now().minusMonths(1L)).id("1234").build();
     }
 
     public static AssignmentRequest createRoleAssignmentRequest(
@@ -396,7 +398,7 @@ public class TestDataBuilder {
     }
 
     public static RoleAssignment buildRoleAssignments(boolean readOnly) throws IOException {
-        LocalDateTime timeStamp = LocalDateTime.now();
+        ZonedDateTime timeStamp = ZonedDateTime.now(ZoneOffset.UTC);
         return RoleAssignment.builder()
             .actorId("123e4567-e89b-42d3-a456-556642445612")
             .actorIdType(ActorIdType.IDAM)
@@ -429,7 +431,7 @@ public class TestDataBuilder {
             .classification(Arrays.asList(Classification.PUBLIC.toString()))
             .grantType(Arrays.asList(GrantType.SPECIFIC.toString()))
             .roleCategory(Arrays.asList(RoleCategory.JUDICIAL.toString()))
-            .validAt(LocalDateTime.now())
+            .validAt(ZonedDateTime.now(ZoneOffset.UTC))
             .attributes(attributes)
             .authorisations(Arrays.asList("dev"))
             .build();

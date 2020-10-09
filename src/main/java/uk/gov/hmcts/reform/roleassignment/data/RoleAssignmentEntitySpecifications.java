@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.data;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +36,7 @@ public final class RoleAssignmentEntitySpecifications {
 
     }
 
-    public static Specification<RoleAssignmentEntity> searchByValidDate(LocalDateTime date) {
+    public static Specification<RoleAssignmentEntity> searchByValidDate(ZonedDateTime date) {
         if (date == null) {
             return null;
         }
