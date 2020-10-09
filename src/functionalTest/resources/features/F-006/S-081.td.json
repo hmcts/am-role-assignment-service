@@ -1,6 +1,6 @@
 {
   "title": "must successfully receive multiple Role Assignments with one query param",
-  "_guid_": "S-061",
+  "_guid_": "S-081",
   "_extends_": "F-006_Test_Data_Base",
   "specs": [
     "contains multiple Role Assignments with one query param"
@@ -17,7 +17,7 @@
       "arrayInMap" : [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${[scenarioContext][testData][request][body][actorId][0]}"
+          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}"
         }
       ]
     }
