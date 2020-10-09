@@ -14,8 +14,8 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "beginTime" : "2023-01-01T00:00",
-          "endTime" : "2020-01-01T00:00"
+          "beginTime" : "2023-01-01T00:00Z",
+          "endTime" : "2020-01-01T00:00Z"
         }
       ]
     }
