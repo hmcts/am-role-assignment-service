@@ -2,10 +2,10 @@
   "_guid_": "F-006_Test_Data_Base",
   "_extends_": "F-006-Base-Root",
   "productName": "Role Assignment Service",
-  "operationName": "Get Role Assignments by Query Params",
+  "operationName": "Post Role Assignments Query Request",
   "specs": [
     "an active IDAM profile with full permissions"
   ],
-  "method": "GET",
-  "uri": "/am/role-assignments?roleType=CASE"
+  "method": "POST",
+  "uri": "/am/role-assignments/query"
 }

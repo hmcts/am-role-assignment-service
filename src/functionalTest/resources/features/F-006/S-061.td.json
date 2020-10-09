@@ -1,16 +1,14 @@
 {
-  "title": "must successfully receive single Role Assignment by Role Type and Actor Id",
+  "title": "must successfully receive multiple Role Assignments with one query param",
   "_guid_": "S-061",
   "_extends_": "F-006_Test_Data_Base",
   "specs": [
-    "contains an Actor Id having only single Role Assignment",
-    "contains Role Type as Case and an existing Actor Id"
+    "contains multiple Role Assignments with one query param"
   ],
 
-
   "request": {
-    "queryParams": {
-      "actorId": "${[scenarioContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
+    "body": {
+      "actorId": ["${[scenarioContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"]
     }
   },
   "expectedResponse": {
@@ -19,7 +17,7 @@
       "arrayInMap" : [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][queryParams][actorId]}"
+          "actorId": "${[scenarioContext][testData][request][body][actorId][0]}"
         }
       ]
     }
