@@ -32,8 +32,6 @@ import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
