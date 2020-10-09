@@ -207,7 +207,7 @@ public class CreateRoleAssignmentService {
     public void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest) {
         //Save new requested role in history table with CREATED Status
         long startTime = System.currentTimeMillis();
-        logger.info(String.format("checkAllDeleteApproved execution started at %s", startTime));
+        logger.info(String.format("createNewAssignmentRecords execution started at %s", startTime));
 
         insertRequestedRole(parsedAssignmentRequest, Status.CREATED, emptyUUIds);
 
@@ -224,7 +224,7 @@ public class CreateRoleAssignmentService {
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
         logger.info(String.format(
-            "checkAllDeleteApproved execution finished at %s . Time taken = %s milliseconds",
+            "createNewAssignmentRecords execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
