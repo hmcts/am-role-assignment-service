@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +27,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
+import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -69,6 +71,9 @@ public class PersistenceService {
     @Value("${roleassignment.query.size}")
     private Integer defaultSize;
 
+    @Autowired
+    EntityManager entityManager;
+
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
                               RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
                               ActorCacheRepository actorCacheRepository,
@@ -100,6 +105,7 @@ public class PersistenceService {
     }
 
 
+    @Transactional
     public HistoryEntity persistHistory(RoleAssignment roleAssignment, Request request) {
         UUID roleAssignmentId = roleAssignment.getId();
         UUID requestId = request.getId();
@@ -115,7 +121,9 @@ public class PersistenceService {
         );
         historyEntity.setId(Objects.requireNonNullElseGet(roleAssignmentId, UUID::randomUUID));
         //Persist the history entity
-        return historyRepository.save(historyEntity);
+        //return historyRepository.save(historyEntity)
+        entityManager.persist(historyEntity);
+        return historyEntity;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
