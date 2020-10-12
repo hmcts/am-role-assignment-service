@@ -5,6 +5,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +27,7 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.SEA
 @RestController
 public class QueryAssignmentController {
 
+    private static final Logger logger = LoggerFactory.getLogger(QueryAssignmentController.class);
     private final QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator;
 
     public QueryAssignmentController(QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator) {
@@ -65,9 +68,15 @@ public class QueryAssignmentController {
                                   @RequestHeader(value = "sort", required = false) String sort,
                                   @RequestHeader(value = "direction", required = false) String direction,
                                   @Validated @RequestBody(required = true) QueryRequest queryRequest) {
-
-        return queryRoleAssignmentOrchestrator.retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size,
-                                                                                     sort, direction
-        );
+        long startTime = System.currentTimeMillis();
+        logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
+        ResponseEntity<Object> response = queryRoleAssignmentOrchestrator
+            .retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
+        logger.info(String.format(
+            "retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
+        ));
+        return response;
     }
 }
