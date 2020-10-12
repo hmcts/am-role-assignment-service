@@ -113,10 +113,7 @@ public class PersistenceService {
             roleAssignment,
             requestEntity
         );
-        if(roleAssignment != null) {
-            historyEntity.setId(roleAssignmentId);
-        }
-        //historyEntity.setId(Objects.requireNonNullElseGet(roleAssignmentId, UUID::randomUUID));
+        historyEntity.setId(Objects.requireNonNullElseGet(roleAssignmentId, UUID::randomUUID));
         //Persist the history entity
         return historyRepository.save(historyEntity);
     }
