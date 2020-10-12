@@ -8,12 +8,10 @@ import java.util.Set;
 
 public interface HistoryRepository extends CrudRepository<HistoryEntity, RoleAssignmentIdentity> {
 
-    @Query("select p from role_assignment_history as p "
-        + " where p.status= ?3 "
-        + "and upper(p.reference) = upper(?2) and upper(p.process) = upper(?1) "
-        + "and p.id IN (select id from role_assignment)")
+    @Query("select rah from role_assignment_history as rah , role_assignment ra"
+        + " where rah.status=?3 "
+        + " and upper(rah.reference) = upper(?2) and upper(rah.process) = upper(?1) "
+        + " and rah.id=ra.id")
     Set<HistoryEntity> findByReference(String process, String reference, String status);
 
-
 }
-
