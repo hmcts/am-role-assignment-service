@@ -11,10 +11,13 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 
 rule "R05_validate_existing_requester_details" salience 70
 	when
-	   $roleAssignment: RoleAssignment()
-	                    RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED_BY_PATTERN)
-	   $request: Request()
-	   ExistingRoleAssignment(actorId == $request.getAssignerId())
+
+     $request: Request()
+      $roleAssignment: RoleAssignment()
+	     RoleAssignment(roleType == RoleType.CASE, roleName == "tribunal-caseworker"
+	     $roleAssignment.getStatus() == Status.ROLE_VALIDATED_BY_PATTERN)
+
+	    ExistingRoleAssignment(actorId == $request.getAssignerId())
 
 	then
 	  System.out.println("R05_validate_existing_requester_details::: ");
@@ -23,10 +26,28 @@ rule "R05_validate_existing_requester_details" salience 70
 
 end
 
+rule "R0123_validate_non_existing_requester_details" salience 70
+	when
+
+     $request: Request()
+      $roleAssignment: RoleAssignment(roleName == "judge")
+	     RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED_BY_PATTERN)
+
+
+	then
+	  System.out.println("R0123_validate_non_existing_requester_details::: ");
+	 	$request.setStatus(Status.REQUEST_VALIDATED);
+	 	$roleAssignment.setStatus(Status.ROLE_VALIDATED);
+		$request.setLog(String.format("Existing Requester & Assignee details has been validated by the rule : %s ","R0123_validate_non_existing_requester_details"));
+
+end
+
+
+
 rule "R06_validate_existing_assignee_details" salience 65
 	when
 	   $roleAssignment: RoleAssignment()
-	                    RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED_BY_PATTERN)
+	                    RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED_BY_PATTERN,roleName == "tribunal-caseworker")
 
 	   $request: Request()
 	             Request($request.getStatus() == Status.REQUEST_VALIDATED)

@@ -29,12 +29,13 @@ end
 
 rule "R09_case_validation" salience 50
 	when
+	  $request: Request()
+    	            Request($request.getStatus() == Status.REQUEST_VALIDATED)
 	   $roleAssignment: RoleAssignment()
 	                   RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED)
-	   $request: Request()
-	            Request($request.getStatus() == Status.REQUEST_VALIDATED)
+	                   RoleAssignment(getGrantType == GrantType.SPECIFIC, classification == Classification.PUBLIC)
 	   Case(caseTypeId == "ASYLUM",jurisdiction == "IA")
-	   RoleAssignment(getGrantType == GrantType.SPECIFIC, classification == Classification.PUBLIC)
+
 
 	then
 	 System.out.println("Rule Name : R09_case_validation::");
