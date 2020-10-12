@@ -44,7 +44,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
 
     public ResponseEntity<Object> deleteRoleAssignmentByProcessAndReference(String process,
-                                                                            String reference) {
+                                                                            String reference)  {
         List<RoleAssignment> requestedRoles;
 
         //1. create the request Object
@@ -73,7 +73,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
     }
 
-    public ResponseEntity<Object> deleteRoleAssignmentByAssignmentId(String assignmentId) {
+    public ResponseEntity<Object> deleteRoleAssignmentByAssignmentId(String assignmentId)  {
         List<RoleAssignment> requestedRoles;
 
         //1. create the request Object
@@ -100,7 +100,7 @@ public class DeleteRoleAssignmentOrchestrator {
     }
 
     @NotNull
-    private ResponseEntity<Object> performOtherStepsForDelete(String actorId, List<RoleAssignment> requestedRoles) {
+    private ResponseEntity<Object> performOtherStepsForDelete(String actorId, List<RoleAssignment> requestedRoles)  {
         //4. call validation rule
         validationByDrool(requestedRoles);
 
@@ -124,7 +124,7 @@ public class DeleteRoleAssignmentOrchestrator {
         request.setId(requestEntity.getId());
     }
 
-    private void validationByDrool(List<RoleAssignment> requestedRoles) {
+    private void validationByDrool(List<RoleAssignment> requestedRoles)  {
         assignmentRequest.setRequestedRoles(requestedRoles);
 
         //calling drools rules for validation

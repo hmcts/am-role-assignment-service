@@ -1,0 +1,56 @@
+package validationrules
+
+global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService retrieveDataService
+
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+
+rule "R08_retrieve_case_detail" salience 55
+	when
+	   $request: Request()
+    	            Request($request.getStatus() == Status.REQUEST_VALIDATED)
+	   $roleAssignment: RoleAssignment()
+	                   RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED)
+	                   RoleAssignment(attributes["caseId"]!=null, $caseId : attributes["caseId"])
+
+	   not Case (id == $caseId.asText() )
+
+	then
+	  System.out.println("Rule Name : R08_retrieve_case_detail::");
+   	insert (retrieveDataService.getCaseById($caseId.asText()));
+		$request.setLog(String.format("Case has been inserted by the rule : %s ","R08_retrieve_case_detail"));
+
+end
+
+rule "R09_case_validation" salience 50
+	when
+	   $roleAssignment: RoleAssignment()
+	                   RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED)
+	   $request: Request()
+	            Request($request.getStatus() == Status.REQUEST_VALIDATED)
+	   Case(caseTypeId == "ASYLUM",jurisdiction == "IA")
+	   RoleAssignment(getGrantType == GrantType.SPECIFIC, classification == Classification.PUBLIC)
+
+	then
+	 System.out.println("Rule Name : R09_case_validation::");
+   	$roleAssignment.setStatus(Status.APPROVED);
+		$roleAssignment.setLog(String.format("Requested role has been approved by the rule : %s ","R09_case_validation"));
+		$request.setLog(String.format("Request has been approved by the rule : %s ","R09_case_validation"));
+
+end
+
+rule "R10_case_validation_fail" salience 45
+when
+$roleAssignment: RoleAssignment(roleType == RoleType.CASE)
+                   RoleAssignment($roleAssignment.getStatus()!=Status.APPROVED)
+
+then
+System.out.println("Rule Name : R10_case_validation_fail::");
+$roleAssignment.setLog(String.format("Requested role has not been approved by the rule R10_case_validation_fail "));
+$roleAssignment.setStatus(Status.REJECTED);
+end;
