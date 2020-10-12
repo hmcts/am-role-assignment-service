@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,6 +48,9 @@ import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecif
 
 @Service
 public class PersistenceService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PersistenceService.class);
+
     //1. StoreRequest which will insert records in request and history table with log,
     //2. Insert new Assignment record with updated Status in historyTable
     //3. Update Request Status
@@ -151,11 +156,20 @@ public class PersistenceService {
     }
 
     public List<RoleAssignment> getAssignmentsByProcess(String process, String reference, String status) {
+        long startTime = System.currentTimeMillis();
+        logger.info(String.format("getAssignmentsByProcess execution started at %s", startTime));
+
         Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
         //convert into model class
-        return historyEntities.stream().map(historyEntity -> persistenceUtil
+        List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(historyEntity -> persistenceUtil
             .convertHistoryEntityToRoleAssignment(historyEntity)).collect(
             Collectors.toList());
+        logger.info(String.format(
+            "getAssignmentsByProcess execution finished at %s . Time taken = %s milliseconds",
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
+        ));
+        return roleAssignmentList;
 
     }
 
@@ -192,6 +206,9 @@ public class PersistenceService {
     public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest, Integer pageNumber,
                                                                       Integer size, String sort, String direction) {
 
+        long startTime = System.currentTimeMillis();
+        logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
+
         pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(Objects.requireNonNull(
                 Objects.requireNonNull(
@@ -222,10 +239,16 @@ public class PersistenceService {
             )
         );
 
-
-        return pageRoleAssignmentEntities.stream()
+        List<RoleAssignment> roleAssignmentList =  pageRoleAssignmentEntities.stream()
             .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
             .collect(Collectors.toList());
+
+        logger.info(String.format(
+            "retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
+        ));
+        return roleAssignmentList;
     }
 
     public List<RoleAssignment> getAssignmentById(UUID assignmentId) {

@@ -5,6 +5,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,6 +29,7 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CRE
 public class CreateAssignmentController {
 
     private final CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
+    private static final Logger logger = LoggerFactory.getLogger(CreateAssignmentController.class);
 
     public CreateAssignmentController(CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator) {
         this.createRoleAssignmentOrchestrator = createRoleAssignmentOrchestrator;
@@ -70,7 +73,14 @@ public class CreateAssignmentController {
                                                                String correlationId,
         @Validated
         @RequestBody AssignmentRequest assignmentRequest) throws ParseException {
-
-        return createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
+        long startTime = System.currentTimeMillis();
+        logger.info(String.format("createRoleAssignment execution started at %s", startTime));
+        ResponseEntity<Object> response = createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
+        logger.info(String.format(
+            "createRoleAssignment execution finished at %s . Time taken = %s milliseconds",
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
+        ));
+        return response;
     }
 }

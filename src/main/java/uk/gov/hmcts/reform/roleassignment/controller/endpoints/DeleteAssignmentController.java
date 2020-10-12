@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +27,7 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DEL
 @Api(value = "roles")
 @RestController
 public class DeleteAssignmentController {
+    private static final Logger logger = LoggerFactory.getLogger(DeleteAssignmentController.class);
     private DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator;
 
     public DeleteAssignmentController(DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator) {
@@ -36,7 +39,7 @@ public class DeleteAssignmentController {
         produces = V1.MediaType.DELETE_ASSIGNMENTS
     )
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    @ApiOperation("Deletes multiple role assignments  based on query parameters.")
+    @ApiOperation("Deletes multiple role assignments based on query parameters.")
 
     @ApiResponses({
         @ApiResponse(
@@ -65,8 +68,17 @@ public class DeleteAssignmentController {
                                                        @RequestParam(value = "process", required = false)
                                                            String process,
                                                        @RequestParam(value = "reference", required = false)
-                                                           String reference)  {
-        return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByProcessAndReference(process, reference);
+                                                           String reference) {
+        long startTime = System.currentTimeMillis();
+        logger.info(String.format("deleteRoleAssignmentByProcessAndReference execution started at %s", startTime));
+        ResponseEntity<Object> responseEntity = deleteRoleAssignmentOrchestrator
+            .deleteRoleAssignmentByProcessAndReference(process, reference);
+        logger.info(String.format(
+            "deleteRoleAssignmentByProcessAndReference execution finished at %s .Time taken = %s milliseconds",
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
+        ));
+        return responseEntity;
     }
 
     @DeleteMapping(
