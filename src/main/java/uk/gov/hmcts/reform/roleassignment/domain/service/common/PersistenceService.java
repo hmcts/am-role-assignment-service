@@ -120,7 +120,7 @@ public class PersistenceService {
         historyEntity.setId(Objects.requireNonNullElseGet(roleAssignmentId, UUID::randomUUID));
         //Persist the history entity
          entityManager.persist(historyEntity);
-         entityManager.flush();
+         //entityManager.flush();
          return historyEntity;
     }
 

@@ -222,7 +222,7 @@ public class CreateRoleAssignmentService {
         }
 
         //Persist request to update relationship with history entities
-        persistenceService.updateRequest(requestEntity);
+        //persistenceService.updateRequest(requestEntity);
         logger.info(String.format(
             "createNewAssignmentRecords execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
@@ -302,7 +302,8 @@ public class CreateRoleAssignmentService {
                 assignmentRequest.getRequest()
             );
             requestedAssignment.setId(entity.getId());
-            requestEntity.getHistoryEntities().add(entity);
+            //We don't need this
+            //requestEntity.getHistoryEntities().add(entity);
         }
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
@@ -572,6 +573,7 @@ public class CreateRoleAssignmentService {
             .filter(role -> role.getStatus().equals(Status.APPROVED)).collect(Collectors.toList());
 
         if (createApprovedAssignments.size() == parsedAssignmentRequest.getRequestedRoles().size()) {
+            //make records live
             executeCreateRequest(parsedAssignmentRequest);
         } else {
             List<UUID> rejectedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()

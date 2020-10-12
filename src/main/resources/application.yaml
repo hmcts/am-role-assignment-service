@@ -43,6 +43,12 @@ security:
     - "/csrf"
     - "/error"
     - "/favicon.ico"
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
+      SQL: DEBUG
 
 spring:
   application:
@@ -58,6 +64,9 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
   liquibase:
     enabled: ${ENABLE_DB_MIGRATE:false}
     change-log: classpath:/db/changelog/db.changelog-master.xml
