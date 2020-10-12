@@ -20,7 +20,7 @@
           "_extends_": "S-101_Role_Request_without_time",
           "actorId": "${[scenarioContext][customValues][generateUUID]}",
           "roleType": "CASE",
-          "grantType": "CHALLENGED",
+          "grantType": "SPECIFIC",
           "attributes":
           {
             "caseId": "1234567890999999"

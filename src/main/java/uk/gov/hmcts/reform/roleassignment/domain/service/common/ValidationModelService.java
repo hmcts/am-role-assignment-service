@@ -69,7 +69,6 @@ public class ValidationModelService {
 
         // Package up the request and the assignments
         //Pre defined role configuration
-        final long startTime = System.currentTimeMillis();
         List<Role> role = JacksonUtils.getConfiguredRoles().get("roles");
         Set<Object> facts = new HashSet<>(role);
         facts.add(assignmentRequest.getRequest());
@@ -77,8 +76,9 @@ public class ValidationModelService {
         if (assignmentRequest.getRequest().getRequestType() == RequestType.CREATE) {
 
             addExistingRecordsByQueryParam(assignmentRequest, facts);
+            kieSession.setGlobal("retrieveDataService", retrieveDataService);
         }
-        kieSession.setGlobal("retrieveDataService", retrieveDataService);
+
 
 
         // Run the rules
@@ -89,8 +89,6 @@ public class ValidationModelService {
             System.currentTimeMillis() - startTime
         ));
 
-        long endTime = System.currentTimeMillis();
-        log.info("Execution time of runRulesOnAllRequestedAssignments() : {} in milli seconds", (endTime - startTime));
 
     }
 
