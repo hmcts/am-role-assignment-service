@@ -67,7 +67,7 @@ public class CreateRoleAssignmentService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
-                                       AssignmentRequest parsedAssignmentRequest) {
+                                       AssignmentRequest parsedAssignmentRequest)  {
         // decision block
         if (!needToDeleteRoleAssignments.isEmpty()) {
             List<RoleAssignment> deleteApprovedAssignments = existingAssignmentRequest.getRequestedRoles().stream()
@@ -184,7 +184,7 @@ public class CreateRoleAssignmentService {
     }
 
     //Create New Assignment Records
-    public void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest) {
+    public void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest)  {
         //Save new requested role in history table with CREATED Status
 
         insertRequestedRole(parsedAssignmentRequest, Status.CREATED, emptyUUIds);

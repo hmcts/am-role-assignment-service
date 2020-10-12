@@ -65,7 +65,7 @@ public class DeleteAssignmentController {
                                                        @RequestParam(value = "process", required = false)
                                                            String process,
                                                        @RequestParam(value = "reference", required = false)
-                                                           String reference) {
+                                                           String reference)  {
         return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByProcessAndReference(process, reference);
     }
 
@@ -100,7 +100,7 @@ public class DeleteAssignmentController {
     public ResponseEntity<Object> deleteRoleAssignmentById(@RequestHeader(value = "x-correlation-id", required = false)
                                                                String correlationId,
                                                            @ApiParam(value = "assignmentId", required = true)
-                                                           @PathVariable String assignmentId) {
+                                                           @PathVariable String assignmentId)  {
         return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByAssignmentId(assignmentId);
     }
 }

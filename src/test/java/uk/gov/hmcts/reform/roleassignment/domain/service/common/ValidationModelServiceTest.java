@@ -35,12 +35,17 @@ class ValidationModelServiceTest {
 
     AssignmentRequest assignmentRequest;
 
+    PersistenceService persistenceService = mock(PersistenceService.class);
+
     @Getter
     private static final Map<String, List<Role>> configuredRoles = new HashMap<>();
 
     @InjectMocks
-    ValidationModelService sut = new ValidationModelService(kieSessionMock,idamRoleServiceMock,
-                                                            retrieveDataServiceMock,securityUtilsMock);
+    ValidationModelService sut = new ValidationModelService(kieSessionMock, idamRoleServiceMock,
+                                                            retrieveDataServiceMock,
+                                                            securityUtilsMock,
+                                                            persistenceService
+    );
 
     @BeforeEach
     void setUp() {

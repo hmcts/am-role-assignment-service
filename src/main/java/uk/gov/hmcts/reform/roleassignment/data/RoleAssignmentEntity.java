@@ -15,6 +15,7 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import java.time.LocalDateTime;
@@ -72,7 +73,7 @@ public class RoleAssignmentEntity {
     private JsonNode attributes;
 
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "role_assignment_authorisations", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "authorisations")
     private List<String> authorisations;
