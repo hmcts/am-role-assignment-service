@@ -330,8 +330,6 @@ public class CreateRoleAssignmentService {
                     "Requested Role has been rejected due to following new/existing assignment Ids :"
                         + rejectedAssignmentIds.toString());
             }
-            //requestedAssignment.setStatus(status);
-            // persist history in db
 
             if (requestedAssignment.getStatus() == Status.APPROVED) {
                 requestedAssignment.setStatus(Status.REJECTED);
@@ -341,6 +339,7 @@ public class CreateRoleAssignmentService {
                 );
                 requestedAssignment.setId(entity.getId());
             }
+            requestedAssignment.setStatus(status);
             //requestEntity.getHistoryEntities().add(entity);
         }
         //Persist request to update relationship with history entities
