@@ -1,4 +1,3 @@
-/*
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 
@@ -34,6 +33,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -74,6 +74,8 @@ class PersistenceServiceTest {
     private ActorCacheRepository actorCacheRepository;
     @Mock
     private DatabseChangelogLockRepository databseChangelogLockRepository;
+    @Mock
+    EntityManager entityManager;
 
     @Mock
     private Page<RoleAssignmentEntity> pageable;
@@ -133,8 +135,7 @@ class PersistenceServiceTest {
     }
 
 
-    */
-/*@Test
+    @Test
     void persistHistory() throws IOException {
         AssignmentRequest assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
@@ -145,7 +146,7 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertRequestToEntity(assignmentRequest.getRequest())).thenReturn(requestEntity);
         when(persistenceUtil.convertRoleAssignmentToHistoryEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity)).thenReturn(historyEntity);
-        when(historyRepository.save(historyEntity)).thenReturn(historyEntity);
+        //when(historyRepository.save(historyEntity)).thenReturn(historyEntity);
 
         HistoryEntity historyEntityResult = sut.persistHistory(
             assignmentRequest.getRequestedRoles().iterator().next(), assignmentRequest.getRequest());
@@ -163,9 +164,8 @@ class PersistenceServiceTest {
         verify(persistenceUtil, times(1)).convertRequestToEntity(any(Request.class));
         verify(persistenceUtil, times(1)).convertRoleAssignmentToHistoryEntity(
             any(RoleAssignment.class), any(RequestEntity.class));
-        verify(historyRepository, times(1)).save(any(HistoryEntity.class));
-    }*//*
-
+        verify(entityManager, times(1)).persist(any(HistoryEntity.class));
+    }
 
     @Test
     void persistHistory_NullRequestId() throws IOException {
@@ -196,7 +196,7 @@ class PersistenceServiceTest {
         verify(persistenceUtil, times(1)).convertRequestToEntity(any(Request.class));
         verify(persistenceUtil, times(1)).convertRoleAssignmentToHistoryEntity(
             any(RoleAssignment.class), any(RequestEntity.class));
-        verify(historyRepository, times(1)).save(any(HistoryEntity.class));
+        verify(entityManager, times(1)).persist(any(HistoryEntity.class));
     }
 
     @Test
@@ -637,4 +637,3 @@ class PersistenceServiceTest {
         assertEquals(roleAssignmentList.size(),Integer.valueOf(0));
     }
 }
-*/
