@@ -13,9 +13,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
-import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,21 +33,19 @@ public class ValidationModelService {
     //Note: These are aggregation records from Assignment_history table.
     private static final Logger logger = LoggerFactory.getLogger(ValidationModelService.class);
     private StatelessKieSession kieSession;
-    private IdamRoleService idamRoleService;
+
     private RetrieveDataService retrieveDataService;
-    private SecurityUtils securityUtils;
+
     private PersistenceService persistenceService;
 
 
     public ValidationModelService(StatelessKieSession kieSession,
-                                  IdamRoleService idamRoleService,
                                   RetrieveDataService retrieveDataService,
-                                  SecurityUtils securityUtils,
                                   PersistenceService persistenceService) {
         this.kieSession = kieSession;
-        this.idamRoleService = idamRoleService;
+
         this.retrieveDataService = retrieveDataService;
-        this.securityUtils = securityUtils;
+
         this.persistenceService = persistenceService;
 
     }
@@ -78,7 +74,6 @@ public class ValidationModelService {
             addExistingRecordsByQueryParam(assignmentRequest, facts);
             kieSession.setGlobal("retrieveDataService", retrieveDataService);
         }
-
 
 
         // Run the rules

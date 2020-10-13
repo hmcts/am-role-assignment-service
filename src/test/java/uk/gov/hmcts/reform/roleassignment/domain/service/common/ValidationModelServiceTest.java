@@ -11,9 +11,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,11 +32,9 @@ class ValidationModelServiceTest {
 
     StatelessKieSession kieSessionMock = mock(StatelessKieSession.class);
 
-    IdamRoleService idamRoleServiceMock = mock(IdamRoleService.class);
-
+    
     RetrieveDataService retrieveDataServiceMock = mock(RetrieveDataService.class);
 
-    SecurityUtils securityUtilsMock = mock(SecurityUtils.class);
 
     AssignmentRequest assignmentRequest;
 
@@ -48,10 +44,10 @@ class ValidationModelServiceTest {
     private static final Map<String, List<Role>> configuredRoles = new HashMap<>();
 
     @InjectMocks
-    ValidationModelService sut = new ValidationModelService(kieSessionMock, idamRoleServiceMock,
-                                                            retrieveDataServiceMock,
-                                                            securityUtilsMock,
-                                                            persistenceService
+    ValidationModelService sut = new ValidationModelService(
+        kieSessionMock,
+        retrieveDataServiceMock,
+        persistenceService
     );
 
     @BeforeEach
@@ -87,7 +83,7 @@ class ValidationModelServiceTest {
         Set<Object> facts = new HashSet<>();
         sut.executeQueryParamForCaseRole(facts, actorIds, requestActorIds);
         assertNotNull(facts);
-        assertEquals(facts.size(),2);
+        assertEquals(facts.size(), 2);
 
 
     }
