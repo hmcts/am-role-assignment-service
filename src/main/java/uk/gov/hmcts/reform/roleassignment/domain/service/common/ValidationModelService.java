@@ -107,7 +107,8 @@ public class ValidationModelService {
         }
 
         assignmentRequest.getRequestedRoles().forEach(requestedRole -> {
-            if (requestedRole.getRoleType() == RoleType.CASE) {
+            if (requestedRole.getRoleType() == RoleType.CASE && requestedRole.getRoleName()
+                .equals("tribunal-caseworker")) {
                 actorIds.add(requestedRole.getActorId());
             }
         });

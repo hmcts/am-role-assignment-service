@@ -32,7 +32,6 @@ $request        : Request(requestType == RequestType.CREATE)
 
 
 then
-System.out.println("Rule Name : R01_role_validation_for_organization_pattern");
 $requestedRole.setStatus(Status.APPROVED);
 $request.setLog(String.format("Requested Role has been approved by rule : R01_role_validation_for_organization_pattern "));
 $requestedRole.setLog(String.format("Requested Role has been approved by rule : R01_role_validation_for_organization_pattern "));
@@ -46,7 +45,6 @@ $roleAssignment  :  RoleAssignment(roleType == RoleType.ORGANISATION)
                    RoleAssignment($roleAssignment.getStatus()!=Status.APPROVED)
 
 then
-System.out.println("Rule Name : R02_organisation_assignment_validation_fail");
 $roleAssignment.setLog(String.format("Requested Role pattern validation for organisations fail by the rule R02_organisation_assignment_validation_fail "));
 $roleAssignment.setStatus(Status.REJECTED);
 end;
@@ -74,7 +72,6 @@ $request:         Request(requestType == RequestType.CREATE)
 
 
 then
-System.out.println("Rule Name : R03_role_validation_for_case_pattern");
 $roleAssignment.setStatus(Status.ROLE_VALIDATED_BY_PATTERN);
 $roleAssignment.setLog(String.format("Requested Role for case has been validated by the rule : R03_role_validation_for_case_pattern "));
 
