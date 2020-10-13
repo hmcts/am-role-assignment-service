@@ -32,7 +32,7 @@ class ValidationModelServiceTest {
 
     StatelessKieSession kieSessionMock = mock(StatelessKieSession.class);
 
-    
+
     RetrieveDataService retrieveDataServiceMock = mock(RetrieveDataService.class);
 
 
@@ -83,7 +83,7 @@ class ValidationModelServiceTest {
         Set<Object> facts = new HashSet<>();
         sut.executeQueryParamForCaseRole(facts, actorIds, requestActorIds);
         assertNotNull(facts);
-        assertEquals(facts.size(), 2);
+        assertEquals(2,facts.size());
 
 
     }
