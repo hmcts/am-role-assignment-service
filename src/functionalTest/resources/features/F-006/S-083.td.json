@@ -1,0 +1,45 @@
+{
+  "title": "must successfully receive multiple Role Assignments without specific page number",
+  "_guid_": "S-083",
+  "_extends_": "F-006_Test_Data_Base",
+  "specs": [
+    "contains multiple Role Assignments without specific page number"
+  ],
+
+  "request": {
+    "headers": {
+      "size": 5,
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "actorId": ["${[scenarioContext][childContexts][S-083_CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"]
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_200_Response",
+    "body": {
+      "arrayInMap" : [
+        {
+          "_extends_": "ResponseRoleAssignment",
+          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}"
+        },
+        {
+          "_extends_": "ResponseRoleAssignment",
+          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}"
+        },
+        {
+          "_extends_": "ResponseRoleAssignment",
+          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}"
+        },
+        {
+          "_extends_": "ResponseRoleAssignment",
+          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}"
+        },
+        {
+          "_extends_": "ResponseRoleAssignment",
+          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}"
+        }
+      ]
+    }
+  }
+}
