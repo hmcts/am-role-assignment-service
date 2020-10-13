@@ -1,5 +1,4 @@
 package validationrules
-global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService retrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -9,7 +8,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
 import uk.gov.hmcts.reform.roleassignment.domain.model.Pattern;
 import com.fasterxml.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role
-import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+
 
 
 rule "R01_role_validation_for_organization_pattern" salience 100

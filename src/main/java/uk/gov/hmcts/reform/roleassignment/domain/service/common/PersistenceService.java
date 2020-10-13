@@ -21,7 +21,6 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -266,14 +265,6 @@ public class PersistenceService {
 
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public List<ExistingRoleAssignment> getExistingAssignmentsByActor(String actorId) {
 
-        Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
-        //convert into model class
-        return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToExistingRoleAssignment(role))
-            .collect(Collectors.toList());
-
-    }
 
 }
