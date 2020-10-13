@@ -616,9 +616,6 @@ public class CreateRoleAssignmentService {
             List<UUID> rejectedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()
                 .filter(role -> role.getStatus().equals(Status.REJECTED)).map(RoleAssignment::getId).collect(
                     Collectors.toList());
-            List<UUID> approvedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()
-                .filter(role -> role.getStatus().equals(Status.APPROVED)).map(RoleAssignment::getId).collect(
-                    Collectors.toList());
             rejectCreateRequest(parsedAssignmentRequest, rejectedAssignmentIds);
         }
     }
