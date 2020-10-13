@@ -146,7 +146,6 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertRequestToEntity(assignmentRequest.getRequest())).thenReturn(requestEntity);
         when(persistenceUtil.convertRoleAssignmentToHistoryEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity)).thenReturn(historyEntity);
-        //when(historyRepository.save(historyEntity)).thenReturn(historyEntity);
 
         HistoryEntity historyEntityResult = sut.persistHistory(
             assignmentRequest.getRequestedRoles().iterator().next(), assignmentRequest.getRequest());
