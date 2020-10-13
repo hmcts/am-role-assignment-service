@@ -15,14 +15,13 @@ rule "R08_retrieve_case_detail" salience 55
 	   $request: Request()
     	            Request($request.getStatus() == Status.REQUEST_VALIDATED)
 	   $roleAssignment: RoleAssignment()
-	                   RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED)
+	                   RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED,roleName == "tribunal-caseworker")
 	                   RoleAssignment(attributes["caseId"]!=null, $caseId : attributes["caseId"])
 
 	   not Case (id == $caseId.asText() )
 
 	then
-	  System.out.println("Rule Name : R08_retrieve_case_detail::");
-   	insert (retrieveDataService.getCaseById($caseId.asText()));
+	 	insert (retrieveDataService.getCaseById($caseId.asText()));
 		$request.setLog(String.format("Case has been inserted by the rule : %s ","R08_retrieve_case_detail"));
 
 end
@@ -32,16 +31,29 @@ rule "R09_case_validation" salience 50
 	  $request: Request()
     	            Request($request.getStatus() == Status.REQUEST_VALIDATED)
 	   $roleAssignment: RoleAssignment()
-	                   RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED)
+	                   RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED,roleName == "tribunal-caseworker")
 	                   RoleAssignment(getGrantType == GrantType.SPECIFIC, classification == Classification.PUBLIC)
 	   Case(caseTypeId == "ASYLUM",jurisdiction == "IA")
 
 
 	then
-	 System.out.println("Rule Name : R09_case_validation::");
-   	$roleAssignment.setStatus(Status.APPROVED);
+	 	$roleAssignment.setStatus(Status.APPROVED);
 		$roleAssignment.setLog(String.format("Requested role has been approved by the rule : %s ","R09_case_validation"));
 		$request.setLog(String.format("Request has been approved by the rule : %s ","R09_case_validation"));
+
+end
+
+
+rule "R233_non_tc_role_validation" salience 48
+	when
+	  $request: Request()
+    	            Request($request.getStatus() == Status.REQUEST_VALIDATED)
+	   $roleAssignment: RoleAssignment()
+	                   RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED,roleName != "tribunal-caseworker")
+	then
+	 	$roleAssignment.setStatus(Status.APPROVED);
+		$roleAssignment.setLog(String.format("Requested role has been approved by the rule : %s ","R233_non_tc_role_validation"));
+		$request.setLog(String.format("Request has been approved by the rule : %s ","R233_non_tc_role_validation"));
 
 end
 
@@ -51,7 +63,6 @@ $roleAssignment: RoleAssignment(roleType == RoleType.CASE)
                    RoleAssignment($roleAssignment.getStatus()!=Status.APPROVED)
 
 then
-System.out.println("Rule Name : R10_case_validation_fail::");
 $roleAssignment.setLog(String.format("Requested role has not been approved by the rule R10_case_validation_fail "));
 $roleAssignment.setStatus(Status.REJECTED);
 end;
