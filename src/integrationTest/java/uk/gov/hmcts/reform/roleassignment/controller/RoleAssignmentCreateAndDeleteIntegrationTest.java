@@ -1,4 +1,3 @@
-/*
 package uk.gov.hmcts.reform.roleassignment.controller;
 
 import org.jetbrains.annotations.NotNull;
@@ -264,4 +263,3 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         return template.queryForObject(GET_ACTOR_FROM_ASSIGNMENT_QUERY, new Object[]{ACTOR_ID}, String.class);
     }
 }
-*/
