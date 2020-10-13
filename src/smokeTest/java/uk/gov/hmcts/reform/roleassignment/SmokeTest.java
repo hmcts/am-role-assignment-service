@@ -7,6 +7,7 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.WithTag;
 import net.thucydides.core.annotations.WithTags;
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
@@ -14,6 +15,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 @NoArgsConstructor
@@ -139,7 +144,7 @@ public class SmokeTest extends BaseTest {
         response.then().assertThat().statusCode(HttpStatus.NO_CONTENT.value());
     }
 
-    /*@Test
+    @Test
     @FeatureFlagToggle("create-role-assignments")
     public void should_receive_response_for_add_role_assignment() throws IOException {
 
@@ -162,7 +167,7 @@ public class SmokeTest extends BaseTest {
             .andReturn();
         response.then().assertThat().statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
         input.close();
-    }*/
+    }
 
     public String getEnvironment() {
         return environment;

@@ -313,6 +313,45 @@ public class CreateRoleAssignmentService {
         ));
     }
 
+    private void rejectPreviouslyApprovedAssignments(AssignmentRequest assignmentRequest,
+                                                     Status status,
+                                                     List<UUID> rejectedAssignmentIds) {
+        long startTime = System.currentTimeMillis();
+        logger.info(String.format("rejectPreviouslyApprovedAssignments execution started at %s", startTime));
+
+        for (RoleAssignment requestedAssignment : assignmentRequest.getRequestedRoles()) {
+            if (!rejectedAssignmentIds.isEmpty()
+                && (status.equals(Status.REJECTED) || status.equals(Status.DELETE_REJECTED))
+                &&
+                (requestedAssignment.getStatus().equals(Status.APPROVED)
+                    || requestedAssignment.getStatus().equals(Status.CREATED)
+                    || requestedAssignment.getStatus().equals(Status.DELETE_APPROVED))) {
+                requestedAssignment.setLog(
+                    "Requested Role has been rejected due to following new/existing assignment Ids :"
+                        + rejectedAssignmentIds.toString());
+            }
+            //requestedAssignment.setStatus(status);
+            // persist history in db
+
+            if (requestedAssignment.getStatus() == Status.APPROVED) {
+                requestedAssignment.setStatus(Status.REJECTED);
+                HistoryEntity entity = persistenceService.persistHistory(
+                    requestedAssignment,
+                    assignmentRequest.getRequest()
+                );
+                requestedAssignment.setId(entity.getId());
+            }
+            //requestEntity.getHistoryEntities().add(entity);
+        }
+        //Persist request to update relationship with history entities
+        persistenceService.updateRequest(requestEntity);
+        logger.info(String.format(
+            "rejectPreviouslyApprovedAssignments execution finished at %s . Time taken = %s milliseconds",
+            System.currentTimeMillis(),
+            System.currentTimeMillis() - startTime
+        ));
+    }
+
     public boolean hasAssignmentsUpdated(AssignmentRequest existingAssignmentRequest,
                                          AssignmentRequest parsedAssignmentRequest)
         throws InvocationTargetException, IllegalAccessException {
@@ -577,13 +616,17 @@ public class CreateRoleAssignmentService {
             List<UUID> rejectedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()
                 .filter(role -> role.getStatus().equals(Status.REJECTED)).map(RoleAssignment::getId).collect(
                     Collectors.toList());
+            List<UUID> approvedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()
+                .filter(role -> role.getStatus().equals(Status.APPROVED)).map(RoleAssignment::getId).collect(
+                    Collectors.toList());
             rejectCreateRequest(parsedAssignmentRequest, rejectedAssignmentIds);
         }
     }
 
-    private void rejectCreateRequest(AssignmentRequest parsedAssignmentRequest, List<UUID> rejectedAssignmentIds) {
+    private void rejectCreateRequest(AssignmentRequest parsedAssignmentRequest,
+                                     List<UUID> rejectedAssignmentIds) {
         // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status REJECTED
-        insertRequestedRole(parsedAssignmentRequest, Status.REJECTED, rejectedAssignmentIds);
+        rejectPreviouslyApprovedAssignments(parsedAssignmentRequest, Status.REJECTED, rejectedAssignmentIds);
 
         // Update request status to REJECTED
         parsedAssignmentRequest.getRequest().setStatus(Status.REJECTED);
