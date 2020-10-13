@@ -120,7 +120,7 @@ public class ValidationModelService {
 
     }
 
-    private void executeQueryParamForCaseRole(Set<Object> facts, Set<String> requestActorIds, Set<String> actorIds) {
+    public void executeQueryParamForCaseRole(Set<Object> facts, Set<String> requestActorIds, Set<String> actorIds) {
         if (!actorIds.isEmpty()) {
 
             HashMap<String, List<String>> attributes = new HashMap<>();
@@ -162,25 +162,6 @@ public class ValidationModelService {
             }
         }
         return existingRecords;
-    }
-
-    public void addExistingRoleAssignments(AssignmentRequest assignmentRequest, Set<Object> facts) {
-        facts.add(securityUtils.getUserRoles());
-        Set<String> userIds = new HashSet<>();
-        if (!assignmentRequest.getRequest().getAssignerId().equals(
-            assignmentRequest.getRequest().getAuthenticatedUserId())) {
-            userIds.add(String.valueOf(assignmentRequest.getRequest().getAssignerId()));
-        }
-        assignmentRequest.getRequestedRoles().forEach(requestedRole ->
-                                                          userIds.add(String.valueOf(requestedRole.getActorId()))
-        );
-        userIds.forEach(userId -> {
-            if (userId != null) {
-                log.info("Getting user Roles");
-                facts.add(idamRoleService.getUserRoles(userId));
-            }
-        });
-
     }
 
 
