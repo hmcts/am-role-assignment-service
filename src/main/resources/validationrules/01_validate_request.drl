@@ -31,6 +31,7 @@ $request        : Request(requestType == RequestType.CREATE)
 
 
 then
+System.out.println("R01_role_validation_for_organization_pattern ::");
 $requestedRole.setStatus(Status.APPROVED);
 $request.setLog(String.format("Requested Role has been approved by rule : R01_role_validation_for_organization_pattern "));
 $requestedRole.setLog(String.format("Requested Role has been approved by rule : R01_role_validation_for_organization_pattern "));
@@ -44,6 +45,7 @@ $roleAssignment  :  RoleAssignment(roleType == RoleType.ORGANISATION)
                    RoleAssignment($roleAssignment.getStatus()!=Status.APPROVED)
 
 then
+System.out.println("R02_organisation_assignment_validation_fail::");
 $roleAssignment.setLog(String.format("Requested Role pattern validation for organisations fail by the rule R02_organisation_assignment_validation_fail "));
 $roleAssignment.setStatus(Status.REJECTED);
 end;
@@ -53,25 +55,27 @@ end;
 rule "R03_role_validation_for_case_pattern" salience 90
 
 when
-$roleAssignment :  RoleAssignment()
+
 
 $request:         Request(requestType == RequestType.CREATE)
-                  RoleAssignment(roleType == RoleType.CASE)
-                  Role($patterns : patterns)
-                  Pattern($data : data) from $patterns
-                  $classificationEntry : JsonNode() from $data["Classification"]
-                  $classificationObj : JsonNode() from $classificationEntry
-                  RoleAssignment($roleAssignment.getClassification().toString() == $classificationObj.asText() )
-                  $grantTypeEntry : JsonNode() from $data["GrantType"]
-                  $grantTypeObj : JsonNode() from $grantTypeEntry
-                  RoleAssignment($roleAssignment.getGrantType().toString() == $grantTypeObj.asText() )
-                  $roleTypeObj : JsonNode() from $data["RoleType"]
-                  RoleAssignment($roleAssignment.getRoleType().toString() == $roleTypeObj.asText() )
-                  RoleAssignment(attributes["caseId"]!=null)
+ $roleAssignment : RoleAssignment(roleType == RoleType.CASE)
+//                  Role($patterns : patterns)
+//                  Pattern($data : data) from $patterns
+//                  $classificationEntry : JsonNode() from $data["Classification"]
+//                  $classificationObj : JsonNode() from $classificationEntry
+//                  RoleAssignment($roleAssignment.getClassification().toString() == $classificationObj.asText() )
+//                  $grantTypeEntry : JsonNode() from $data["GrantType"]
+//                  $grantTypeObj : JsonNode() from $grantTypeEntry
+//                  RoleAssignment($roleAssignment.getGrantType().toString() == $grantTypeObj.asText() )
+//                  $roleTypeObj : JsonNode() from $data["RoleType"]
+//                  RoleAssignment($roleAssignment.getRoleType().toString() == $roleTypeObj.asText() )
+//                  RoleAssignment(attributes["caseId"]!=null)
 
 
 then
+System.out.println("R03_role_validation_for_case_pattern::");
 $roleAssignment.setStatus(Status.ROLE_VALIDATED_BY_PATTERN);
+update($roleAssignment)
 $roleAssignment.setLog(String.format("Requested Role for case has been validated by the rule : R03_role_validation_for_case_pattern "));
 
 end;
@@ -80,8 +84,7 @@ end;
 
 rule "R04_case_assignment_validation_fail" salience 85
 when
-$roleAssignment  :  RoleAssignment(roleType == RoleType.CASE)
-                    RoleAssignment($roleAssignment.getStatus()!=Status.ROLE_VALIDATED_BY_PATTERN)
+$roleAssignment  :  RoleAssignment(status!=Status.ROLE_VALIDATED_BY_PATTERN,roleType == RoleType.CASE)
 
 then
 System.out.println("Rule Name : R04_case_assignment_validation_fail");
