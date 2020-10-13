@@ -8,8 +8,7 @@
 
   "request": {
     "headers": {
-      "size": 5,
-      "Content-Type": "application/json"
+      "size": 5
     },
     "body": {
       "actorId": ["${[scenarioContext][childContexts][S-083_CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"]
