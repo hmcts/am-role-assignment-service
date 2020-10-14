@@ -130,7 +130,8 @@ public class PersistenceService {
     public void persistRoleAssignment(RoleAssignment roleAssignment) {
         //Persist the role assignment entity
         RoleAssignmentEntity entity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment);
-        roleAssignmentRepository.save(entity);
+        //roleAssignmentRepository.save(entity)
+        entityManager.persist(entity);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
