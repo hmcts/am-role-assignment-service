@@ -147,7 +147,6 @@ public class PersistenceService {
         return actorCache;
     }
 
-
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ActorCacheEntity getActorCacheEntity(String actorId) {
 
