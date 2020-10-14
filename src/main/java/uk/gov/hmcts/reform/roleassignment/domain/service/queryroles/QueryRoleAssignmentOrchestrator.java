@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
+import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
 import java.util.List;
 
@@ -29,6 +30,9 @@ public class QueryRoleAssignmentOrchestrator {
 
         long startTime = System.currentTimeMillis();
         logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
+
+        ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN,
+                                  parseRequestService.getCorrelationId());
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Total-Records",

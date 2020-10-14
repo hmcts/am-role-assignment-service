@@ -12,6 +12,8 @@ public class CorrelationInterceptorUtil  {
     private static final String CORRELATION_ID_LOG_VAR_NAME = "correlationId";
 
     public String preHandle(final HttpServletRequest request) {
+        ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN,
+                                  request.getHeader(Constants.CORRELATION_ID_HEADER_NAME));
         final String correlationId = getCorrelationIdFromHeader(request);
         MDC.put(CORRELATION_ID_LOG_VAR_NAME, correlationId);
         return correlationId;
@@ -23,11 +25,9 @@ public class CorrelationInterceptorUtil  {
 
     private String getCorrelationIdFromHeader(final HttpServletRequest request) {
         String correlationId = request.getHeader(Constants.CORRELATION_ID_HEADER_NAME);
-
         if (StringUtils.isBlank(correlationId)) {
             correlationId = generateUniqueCorrelationId();
         }
-        ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, correlationId);
         return correlationId;
     }
 
