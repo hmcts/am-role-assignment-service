@@ -23,9 +23,11 @@ public class CorrelationInterceptorUtil  {
 
     private String getCorrelationIdFromHeader(final HttpServletRequest request) {
         String correlationId = request.getHeader(Constants.CORRELATION_ID_HEADER_NAME);
+
         if (StringUtils.isBlank(correlationId)) {
             correlationId = generateUniqueCorrelationId();
         }
+        ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, correlationId);
         return correlationId;
     }
 
