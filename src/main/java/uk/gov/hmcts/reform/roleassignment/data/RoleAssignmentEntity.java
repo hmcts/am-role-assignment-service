@@ -18,6 +18,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -78,10 +79,13 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
     @Column(name = "authorisations")
     private List<String> authorisations;
 
+    @Builder.Default
+    @Transient
+    private boolean isNewFlag = true;
 
     @Override
     public boolean isNew() {
-        return true;
+        return isNewFlag;
     }
 }
 

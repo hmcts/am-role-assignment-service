@@ -129,7 +129,7 @@ public class PersistenceService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void persistRoleAssignment(RoleAssignment roleAssignment) {
         //Persist the role assignment entity
-        RoleAssignmentEntity entity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment);
+        RoleAssignmentEntity entity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment, true);
         //roleAssignmentRepository.save(entity)
         entityManager.persist(entity);
     }
@@ -184,7 +184,7 @@ public class PersistenceService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteRoleAssignment(RoleAssignment roleAssignment) {
         //Persist the role assignment entity
-        RoleAssignmentEntity entity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment);
+        RoleAssignmentEntity entity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment, false);
         roleAssignmentRepository.delete(entity);
     }
 
