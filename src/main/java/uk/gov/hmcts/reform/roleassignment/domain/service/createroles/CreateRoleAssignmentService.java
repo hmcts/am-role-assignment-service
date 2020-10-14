@@ -145,7 +145,7 @@ public class CreateRoleAssignmentService {
 
         Request request = parsedAssignmentRequest.getRequest();
         //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
-        insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED, rejectedAssignmentIds);
+        rejectPreviouslyApprovedAssignments(existingAssignmentRequest, Status.DELETE_REJECTED, rejectedAssignmentIds);
 
         // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status REJECTED
         insertRequestedRole(parsedAssignmentRequest, Status.REJECTED, rejectedAssignmentIds);
@@ -331,8 +331,9 @@ public class CreateRoleAssignmentService {
                         + rejectedAssignmentIds.toString());
             }
 
-            if (requestedAssignment.getStatus() == Status.APPROVED) {
-                requestedAssignment.setStatus(Status.REJECTED);
+            if (requestedAssignment.getStatus() == Status.APPROVED
+                || requestedAssignment.getStatus() == Status.DELETE_APPROVED) {
+                requestedAssignment.setStatus(status);
                 HistoryEntity entity = persistenceService.persistHistory(
                     requestedAssignment,
                     assignmentRequest.getRequest()
@@ -593,7 +594,7 @@ public class CreateRoleAssignmentService {
         //calling drools rules for validation
         validationModelService.validateRequest(existingAssignmentRequest);
 
-        // we are mocking delete rejected status
+        // we are mocking delete rejected statusx
         checkDeleteApproved(existingAssignmentRequest);
         logger.info(String.format(
             "replaceExisting execution finished at %s . Time taken = %s milliseconds",
