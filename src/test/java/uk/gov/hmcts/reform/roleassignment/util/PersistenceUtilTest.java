@@ -10,11 +10,11 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(MockitoJUnitRunner.class)
 class PersistenceUtilTest {
@@ -42,7 +42,10 @@ class PersistenceUtilTest {
 
     @Test
     void convertRoleAssignmentToEntity() throws IOException {
-        assertNotNull(persistenceUtil.convertRoleAssignmentToEntity(TestDataBuilder.buildRoleAssignment(Status.LIVE)));
+        assertNotNull(persistenceUtil.convertRoleAssignmentToEntity(
+            TestDataBuilder.buildRoleAssignment(Status.LIVE),
+            true
+        ));
     }
 
     @Test

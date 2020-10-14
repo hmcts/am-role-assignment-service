@@ -205,12 +205,12 @@ class PersistenceServiceTest {
         RoleAssignmentEntity roleAssignmentEntity = TestDataBuilder.convertRoleAssignmentToEntity(
             assignmentRequest.getRequestedRoles().iterator().next());
         when(persistenceUtil.convertRoleAssignmentToEntity(
-            assignmentRequest.getRequestedRoles().iterator().next())).thenReturn(roleAssignmentEntity);
+            assignmentRequest.getRequestedRoles().iterator().next(), true)).thenReturn(roleAssignmentEntity);
 
         sut.persistRoleAssignment(assignmentRequest.getRequestedRoles().iterator().next());
 
         verify(persistenceUtil, times(1))
-            .convertRoleAssignmentToEntity(any(RoleAssignment.class));
+            .convertRoleAssignmentToEntity(any(RoleAssignment.class), any(boolean.class));
     }
 
     @Test
@@ -299,12 +299,12 @@ class PersistenceServiceTest {
             assignmentRequest.getRequestedRoles().iterator().next());
 
         when(persistenceUtil.convertRoleAssignmentToEntity(
-            assignmentRequest.getRequestedRoles().iterator().next())).thenReturn(roleAssignmentEntity);
+            assignmentRequest.getRequestedRoles().iterator().next(), false)).thenReturn(roleAssignmentEntity);
 
         sut.deleteRoleAssignment(assignmentRequest.getRequestedRoles().iterator().next());
 
         verify(persistenceUtil, times(1))
-            .convertRoleAssignmentToEntity(any(RoleAssignment.class));
+            .convertRoleAssignmentToEntity(any(RoleAssignment.class), any(boolean.class));
         verify(roleAssignmentRepository, times(1)).delete(any(RoleAssignmentEntity.class));
     }
 
