@@ -11,7 +11,9 @@
   "request": {
     "headers": {
       "size": 3,
-      "pageNumber": 0
+      "pageNumber": 0,
+      "sort": "grantType",
+      "direction": "DESC"
     },
     "body": {
       "actorId": ["${[scenarioContext][childContexts][S-087_CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"]
@@ -23,15 +25,19 @@
       "arrayInMap" : [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}"
+          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}",
+          "roleType" : "ORGANISATION",
+          "grantType" : "STANDARD"
         },
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}"
+          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}",
+          "grantType" : "SPECIFIC"
         },
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}"
+          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}",
+          "grantType" : "CHALLENGED"
         }
       ]
     }

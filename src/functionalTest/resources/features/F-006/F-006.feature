@@ -75,7 +75,7 @@ Feature: F-006 : Post Role Assignments Query Request
   @S-087 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments with optional headers
     Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create a role assignment for an actor] as in [S-083_CreationDataForRoleAssignment],
+    And a successful call [to create a role assignment for an actor] as in [S-087_CreationDataForRoleAssignment],
     When a request is prepared with appropriate values,
     And the request [has size header],
     And the request [has sort header],

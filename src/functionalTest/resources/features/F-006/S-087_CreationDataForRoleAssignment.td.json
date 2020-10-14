@@ -1,38 +1,20 @@
 {
-  "_guid_": "S-083_CreationDataForRoleAssignment",
+  "_guid_": "S-087_CreationDataForRoleAssignment",
   "_extends_": "CreationDataForRoleAssignment",
   "request": {
     "body": {
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "grantType": "CHALLENGED"
         },
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
-        },
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
-        },
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
-        },
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
-        },
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
-        },
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "roleType": "ORGANISATION",
+          "grantType": "STANDARD"
         }
-
       ]
     }
   },
@@ -43,37 +25,15 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "grantType": "CHALLENGED"
           },
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD"
           }
         ]
       }
