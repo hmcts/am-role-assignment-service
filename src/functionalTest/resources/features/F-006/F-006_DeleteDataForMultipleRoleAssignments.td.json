@@ -3,8 +3,7 @@
   "_extends_": "DeleteDataForRoleAssignments",
   "request": {
     "pathVariables": {
-      "process": "businessProcess1",
-      "reference": "${[scenarioContext][childContexts][F-006_CreationDataForRoleAssignment][testData][request][body][requestedRoles][0][actorId]}"
+      "reference": "${[scenarioContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
     }
   }
 }

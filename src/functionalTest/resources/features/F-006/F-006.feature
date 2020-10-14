@@ -13,7 +13,7 @@ Feature: F-006 : Post Role Assignments Query Request
     And it is submitted to call the [Post Role Assignments Query Request] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected,
-#    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
+    And a successful call [to delete role assignments just created above] as in [F-006_DeleteDataForMultipleRoleAssignments].
 
   @S-082 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive multiple Role Assignments with more than one query params
