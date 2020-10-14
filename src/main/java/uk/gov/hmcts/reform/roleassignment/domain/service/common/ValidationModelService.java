@@ -144,10 +144,10 @@ public class ValidationModelService {
         List<RoleAssignment> roleAssignments) {
         List<ExistingRoleAssignment> existingRecords = new ArrayList<>();
 
-        for (RoleAssignment element : roleAssignments) {
+        for (RoleAssignment roleAssignment : roleAssignments) {
             ExistingRoleAssignment existingRoleAssignment = ExistingRoleAssignment.builder().build();
             try {
-                copyProperties(existingRoleAssignment, element);
+                copyProperties(existingRoleAssignment, roleAssignment);
                 existingRecords.add(existingRoleAssignment);
             } catch (Exception e) {
                 log.error(
