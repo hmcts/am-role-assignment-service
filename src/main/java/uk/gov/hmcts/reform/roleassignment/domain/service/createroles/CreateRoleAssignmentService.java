@@ -594,7 +594,7 @@ public class CreateRoleAssignmentService {
         //calling drools rules for validation
         validationModelService.validateRequest(existingAssignmentRequest);
 
-        // we are mocking delete rejected statusx
+        // we are mocking delete rejected status
         checkDeleteApproved(existingAssignmentRequest);
         logger.info(String.format(
             "replaceExisting execution finished at %s . Time taken = %s milliseconds",
