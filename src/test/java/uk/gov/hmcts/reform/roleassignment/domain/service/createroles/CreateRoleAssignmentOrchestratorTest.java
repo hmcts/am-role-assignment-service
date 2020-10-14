@@ -259,7 +259,7 @@ class CreateRoleAssignmentOrchestratorTest {
         //assert values
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        verifyNUmberOfInvocations();
+        verifyNUmberOfInvocationsForRejectedRequest();
         verify(validationModelService, times(1)).validateRequest(any(AssignmentRequest.class));
     }
 
