@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.getroles;
 
-
-import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNo
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -44,12 +43,14 @@ class RetrieveRoleAssignmentOrchestratorTest {
     @Mock
     private PrepareResponseService prepareResponseService = mock(PrepareResponseService.class);
 
-    private static final String ROLE_TYPE = "CASE";
+    @Mock
+    private ParseRequestService parseRequestService = mock(ParseRequestService.class);
 
     @InjectMocks
     private RetrieveRoleAssignmentOrchestrator sut = new RetrieveRoleAssignmentOrchestrator(
         persistenceService,
-        prepareResponseService
+        prepareResponseService,
+        parseRequestService
     );
 
     @BeforeEach
@@ -125,8 +126,8 @@ class RetrieveRoleAssignmentOrchestratorTest {
 
     @Test
     void getListOfRoles() throws IOException {
-        JsonNode roles = sut.getListOfRoles();
-        assertNotNull(roles);
-        assertEquals(2, roles.size());
+        ResponseEntity<Object> result = sut.getListOfRoles();
+        assertNotNull(result);
+        assertNotNull(result.getBody());
     }
 }

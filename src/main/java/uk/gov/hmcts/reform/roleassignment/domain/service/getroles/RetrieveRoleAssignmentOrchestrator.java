@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
@@ -25,11 +27,14 @@ public class RetrieveRoleAssignmentOrchestrator {
 
     private PersistenceService persistenceService;
     private PrepareResponseService prepareResponseService;
+    private ParseRequestService parseRequestService;
 
     public RetrieveRoleAssignmentOrchestrator(PersistenceService persistenceService,
-                                              PrepareResponseService prepareResponseService) {
+                                              PrepareResponseService prepareResponseService,
+                                              ParseRequestService parseRequestService) {
         this.persistenceService = persistenceService;
         this.prepareResponseService = prepareResponseService;
+        this.parseRequestService = parseRequestService;
     }
 
     //1. call parse request service
@@ -53,7 +58,7 @@ public class RetrieveRoleAssignmentOrchestrator {
         );
     }
 
-    public JsonNode getListOfRoles() throws IOException {
+    public ResponseEntity<Object> getListOfRoles() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode;
         InputStream input = RetrieveRoleAssignmentOrchestrator.class.getClassLoader()
@@ -65,7 +70,9 @@ public class RetrieveRoleAssignmentOrchestrator {
             obj.remove(Constants.ROLE_JSON_PATTERNS_FIELD);
         }
 
-        return rootNode;
+        return ResponseEntity.status(HttpStatus.OK)
+            .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getCorrelationId())
+            .body(rootNode);
     }
 
     public long retrieveETag(String actorId) {

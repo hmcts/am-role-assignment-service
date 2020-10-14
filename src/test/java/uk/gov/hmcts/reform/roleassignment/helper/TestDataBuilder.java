@@ -28,6 +28,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.io.IOException;
@@ -128,6 +129,7 @@ public class TestDataBuilder {
                                                                      Status roleStatus,
                                                                      Boolean replaceExisting) throws Exception {
         return ResponseEntity.status(HttpStatus.OK)
+            .header(Constants.CORRELATION_ID_HEADER_NAME, "123e4567-e89b-42d3-a456-5566")
             .body(buildAssignmentRequest(requestStatus, roleStatus, replaceExisting));
     }
 

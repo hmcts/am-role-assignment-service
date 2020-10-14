@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,18 +23,25 @@ import java.util.UUID;
 @Service
 public class PrepareResponseService {
 
+    private ParseRequestService parseRequestService;
+
+    public PrepareResponseService(ParseRequestService parseRequestService) {
+        this.parseRequestService = parseRequestService;
+    }
+
     public ResponseEntity<Object> prepareCreateRoleResponse(AssignmentRequest roleAssignmentRequest) {
 
         updateRoleRequestResponse(roleAssignmentRequest);
         updateRequestedRolesResponse(roleAssignmentRequest);
 
-
         if (roleAssignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                roleAssignmentRequest);
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getCorrelationId())
+                .body(roleAssignmentRequest);
         } else {
-            return ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(
-                roleAssignmentRequest));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getCorrelationId())
+                .body(new RoleAssignmentRequestResource(roleAssignmentRequest));
         }
 
     }
@@ -53,7 +61,9 @@ public class PrepareResponseService {
 
     public ResponseEntity<Object> prepareRetrieveRoleResponse(List<RoleAssignment> roleAssignmentResponse,
                                                               UUID actorId)  {
-        return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(roleAssignmentResponse, actorId));
+        return ResponseEntity.status(HttpStatus.OK)
+            .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getCorrelationId())
+            .body(new RoleAssignmentResource(roleAssignmentResponse, actorId));
     }
 
     private void updateRequestedRolesResponse(AssignmentRequest roleAssignmentRequest) {

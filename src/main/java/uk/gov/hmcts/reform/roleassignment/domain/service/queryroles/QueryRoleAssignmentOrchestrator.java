@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class QueryRoleAssignmentOrchestrator {
 
     private static final Logger logger = LoggerFactory.getLogger(QueryRoleAssignmentOrchestrator.class);
     private final PersistenceService persistenceService;
+    private final ParseRequestService parseRequestService;
 
 
     public ResponseEntity<Object> retrieveRoleAssignmentsByQueryRequest(QueryRequest queryRequest, Integer pageNumber,
@@ -27,16 +30,17 @@ public class QueryRoleAssignmentOrchestrator {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
 
-        List<RoleAssignment> assignmentList =
-            persistenceService.retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Total-Records",
                             Long.toString(persistenceService.getTotalRecords()));
+        responseHeaders.add(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getCorrelationId());
         logger.info(String.format(
             "retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
+        List<RoleAssignment> assignmentList =
+            persistenceService.retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
         return new ResponseEntity<>(assignmentList, responseHeaders, HttpStatus.OK);
 
     }

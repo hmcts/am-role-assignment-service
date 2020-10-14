@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.util.Collections;
@@ -132,7 +133,9 @@ public class DeleteRoleAssignmentOrchestrator {
             System.currentTimeMillis() - startTime
         ));
         if (assignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(assignmentRequest.getRequest());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getCorrelationId())
+                .body(assignmentRequest.getRequest());
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

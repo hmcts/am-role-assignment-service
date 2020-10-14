@@ -20,12 +20,15 @@ import java.util.UUID;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 class PrepareResponseServiceTest {
 
+    ParseRequestService parseRequestService = mock(ParseRequestService.class);
+
     @InjectMocks
-    PrepareResponseService prepareResponseService = new PrepareResponseService();
+    PrepareResponseService prepareResponseService = new PrepareResponseService(parseRequestService);
 
     @BeforeEach
     public void setUp() {

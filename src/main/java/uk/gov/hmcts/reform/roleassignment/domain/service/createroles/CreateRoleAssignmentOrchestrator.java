@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.lang.reflect.InvocationTargetException;
@@ -90,7 +91,10 @@ public class CreateRoleAssignmentOrchestrator {
                 // return 201 when there is no existing records in db and incoming request also have
                 // empty requested roles.
                 if (isExistingAndIncomingRecordsEmpty(existingAssignmentRequest, parsedAssignmentRequest)) {
-                    return ResponseEntity.status(HttpStatus.CREATED).body(parsedAssignmentRequest);
+                    return ResponseEntity.status(HttpStatus.CREATED)
+                        .header(Constants.CORRELATION_ID_HEADER_NAME,
+                                parseRequestService.getCorrelationId())
+                        .body(parsedAssignmentRequest);
                 }
 
                 // compare identical existing and incoming requested roles based on some attributes
