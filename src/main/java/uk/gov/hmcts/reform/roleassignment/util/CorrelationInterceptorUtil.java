@@ -12,10 +12,10 @@ public class CorrelationInterceptorUtil  {
     private static final String CORRELATION_ID_LOG_VAR_NAME = "correlationId";
 
     public String preHandle(final HttpServletRequest request) {
-        final String correlationId = getCorrelationIdFromHeader(request);
-        ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, correlationId);
+        ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, getCorrelationIdFromHeader(request));
+        String correlationId = getCorrelationIdFromHeader(request);
         MDC.put(CORRELATION_ID_LOG_VAR_NAME, correlationId);
-        return correlationId;
+        return getCorrelationIdFromHeader(request);
     }
 
     public void afterCompletion() {

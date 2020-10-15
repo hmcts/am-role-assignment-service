@@ -31,9 +31,10 @@ public class QueryRoleAssignmentOrchestrator {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
 
-        String correlationId = parseRequestService.getCorrelationId();
+
         ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN,
-                                  correlationId);
+                                  parseRequestService.getCorrelationId());
+        String correlationId = parseRequestService.getCorrelationId();
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Total-Records",
