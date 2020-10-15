@@ -24,7 +24,7 @@ Feature: F-006 : Post Role Assignments Query Request
     And it is submitted to call the [Post Role Assignments Query Request] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected,
-#    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
+    And a successful call [to delete role assignments just created above] as in [F-006_DeleteDataForMultipleRoleAssignments].
 
   @S-083 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive multiple Role Assignments without specific page number
@@ -35,7 +35,7 @@ Feature: F-006 : Post Role Assignments Query Request
     And it is submitted to call the [Post Role Assignments Query Request] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected,
-#    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
+    And a successful call [to delete role assignments just created above] as in [S-083_DeleteDataForMultipleRoleAssignments].
 
   @S-084 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive multiple Role Assignments with specific page number
@@ -46,7 +46,7 @@ Feature: F-006 : Post Role Assignments Query Request
     And it is submitted to call the [Post Role Assignments Query Request] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected,
-#    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
+    And a successful call [to delete role assignments just created above] as in [S-083_DeleteDataForMultipleRoleAssignments].
 
   @S-085 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments without X-Correlation-ID Header
@@ -57,7 +57,7 @@ Feature: F-006 : Post Role Assignments Query Request
     And it is submitted to call the [Post Role Assignments Query Request] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected,
-#    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
+    And a successful call [to delete role assignments just created above] as in [S-083_DeleteDataForMultipleRoleAssignments].
 
   @S-086 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments without optional headers
@@ -70,7 +70,7 @@ Feature: F-006 : Post Role Assignments Query Request
     And it is submitted to call the [Post Role Assignments Query Request] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected,
-#    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
+    And a successful call [to delete role assignments just created above] as in [F-006_DeleteDataForMultipleRoleAssignments].
 
   @S-087 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments with optional headers
@@ -83,4 +83,4 @@ Feature: F-006 : Post Role Assignments Query Request
     And it is submitted to call the [Post Role Assignments Query Request] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected,
-#    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
+    And a successful call [to delete role assignments just created above] as in [S-087_DeleteDataForMultipleRoleAssignments].
