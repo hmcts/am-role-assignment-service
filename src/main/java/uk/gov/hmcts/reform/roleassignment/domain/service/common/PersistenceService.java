@@ -143,8 +143,7 @@ public class PersistenceService {
         if (existingActorCache != null) {
             entity.setEtag(existingActorCache.getEtag());
             entityManager.merge(entity);
-        }
-        else {
+        } else {
             entityManager.persist(entity);
         }
         return entity;
