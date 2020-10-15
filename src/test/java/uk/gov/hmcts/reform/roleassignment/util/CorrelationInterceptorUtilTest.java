@@ -43,7 +43,6 @@ class CorrelationInterceptorUtilTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader(Constants.CORRELATION_ID_HEADER_NAME, "");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-
         String result = sut.preHandle(request);
         UUID validUuid = UUID.fromString(result);
         assertNotNull(validUuid);
