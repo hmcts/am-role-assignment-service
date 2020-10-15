@@ -40,7 +40,7 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.createQu
 public class RoleAssignmentIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentIntegrationTest.class);
-    private static final String COUNT_HISTORY_RECORDS_QUERY = "SELECT  count(1) as n FROM role_assignment_history";
+    private static final String COUNT_HISTORY_RECORDS_QUERY = "SELECT count(1) as n FROM role_assignment_history";
 
     private static final String GET_ASSIGNMENT_STATUS_QUERY = "SELECT actor_id FROM role_assignment where id = ?";
     private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445612";
