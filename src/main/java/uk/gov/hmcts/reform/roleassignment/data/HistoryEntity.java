@@ -29,7 +29,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity(name = "role_assignment_history")
 @IdClass(RoleAssignmentIdentity.class)
-public class HistoryEntity implements Persistable {
+public class HistoryEntity implements Persistable<UUID> {
 
     @Id
     private UUID id;

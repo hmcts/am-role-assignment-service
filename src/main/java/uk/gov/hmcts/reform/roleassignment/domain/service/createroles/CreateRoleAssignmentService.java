@@ -316,9 +316,6 @@ public class CreateRoleAssignmentService {
     private void rejectPreviouslyApprovedAssignments(AssignmentRequest assignmentRequest,
                                                      Status status,
                                                      List<UUID> rejectedAssignmentIds) {
-        long startTime = System.currentTimeMillis();
-        logger.info(String.format("rejectPreviouslyApprovedAssignments execution started at %s", startTime));
-
         for (RoleAssignment requestedAssignment : assignmentRequest.getRequestedRoles()) {
             if (!rejectedAssignmentIds.isEmpty()
                 && (status.equals(Status.REJECTED) || status.equals(Status.DELETE_REJECTED))
@@ -341,15 +338,9 @@ public class CreateRoleAssignmentService {
                 requestedAssignment.setId(entity.getId());
             }
             requestedAssignment.setStatus(status);
-            //requestEntity.getHistoryEntities().add(entity);
         }
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
-        logger.info(String.format(
-            "rejectPreviouslyApprovedAssignments execution finished at %s . Time taken = %s milliseconds",
-            System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
-        ));
     }
 
     public boolean hasAssignmentsUpdated(AssignmentRequest existingAssignmentRequest,
