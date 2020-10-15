@@ -5,6 +5,7 @@ import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.LiquibaseException;
 import liquibase.lockservice.DatabaseChangeLogLock;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.apache.commons.lang.StringUtils;
@@ -34,21 +35,26 @@ public class LiquibaseConfig implements ApplicationRunner {
             liquibase = new Liquibase("db/changelog/db.changelog-master.xml",
                                       new ClassLoaderResourceAccessor(), database
             );
+            liquibaseForceRelase(liquibase);
             liquibase.update(new Contexts());
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
         } finally {
             if (liquibase != null) {
-                if (liquibase.listLocks() != null && liquibase.listLocks().length == 1) {
-                    DatabaseChangeLogLock lock = liquibase.listLocks()[0];
-                    if (lock != null && StringUtils.isNotEmpty(lock.getLockedBy())) {
-                        LOGGER.error("Force releasing the database lock after 10 seconds.");
-                        Thread.sleep(10000);
-                        liquibase.forceReleaseLocks();
-                        LOGGER.error("Lock release is completed.");
-                    }
-                }
+                liquibaseForceRelase(liquibase);
                 liquibase.close();
+            }
+        }
+    }
+
+    private void liquibaseForceRelase(Liquibase liquibase) throws LiquibaseException, InterruptedException {
+        if (liquibase.listLocks() != null && liquibase.listLocks().length == 1) {
+            DatabaseChangeLogLock lock = liquibase.listLocks()[0];
+            if (lock != null && StringUtils.isNotEmpty(lock.getLockedBy())) {
+                LOGGER.error("Force releasing the database lock after 10 seconds.");
+                Thread.sleep(10000);
+                liquibase.forceReleaseLocks();
+                LOGGER.error("Lock release is completed.");
             }
         }
     }
