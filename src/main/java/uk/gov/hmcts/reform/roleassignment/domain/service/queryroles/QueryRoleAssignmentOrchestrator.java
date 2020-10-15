@@ -31,13 +31,14 @@ public class QueryRoleAssignmentOrchestrator {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
 
+        String correlationId = parseRequestService.getCorrelationId();
         ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN,
-                                  parseRequestService.getCorrelationId());
+                                  correlationId);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Total-Records",
                             Long.toString(persistenceService.getTotalRecords()));
-        responseHeaders.add(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getCorrelationId());
+        responseHeaders.add(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
         logger.info(String.format(
             "retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),

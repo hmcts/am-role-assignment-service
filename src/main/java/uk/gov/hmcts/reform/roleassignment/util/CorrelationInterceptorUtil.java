@@ -13,6 +13,7 @@ public class CorrelationInterceptorUtil  {
 
     public String preHandle(final HttpServletRequest request) {
         final String correlationId = getCorrelationIdFromHeader(request);
+        ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, correlationId);
         MDC.put(CORRELATION_ID_LOG_VAR_NAME, correlationId);
         return correlationId;
     }
