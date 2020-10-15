@@ -121,7 +121,6 @@ public class PersistenceService {
         );
         historyEntity.setId(Objects.requireNonNullElseGet(roleAssignmentId, UUID::randomUUID));
         //Persist the history entity
-        //return historyRepository.save(historyEntity)
         entityManager.persist(historyEntity);
         return historyEntity;
     }
@@ -130,7 +129,6 @@ public class PersistenceService {
     public void persistRoleAssignment(RoleAssignment roleAssignment) {
         //Persist the role assignment entity
         RoleAssignmentEntity entity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment, true);
-        //roleAssignmentRepository.save(entity)
         entityManager.persist(entity);
     }
 
