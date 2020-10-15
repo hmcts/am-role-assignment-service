@@ -95,6 +95,14 @@ public class ValidationUtil {
         }
     }
 
+    public static String sanitiseCorrelationId(String inputString) {
+        if (!Pattern.matches(Constants.UUID_PATTERN, inputString)) {
+            throw new BadRequestException(
+                String.format("The input parameter: \"%s\", does not comply with the required pattern", inputString));
+        }
+        return inputString;
+    }
+
     public static void compareRoleType(String roleType) {
         boolean valid = false;
         for (RoleType realRole : RoleType.values()) {

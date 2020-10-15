@@ -30,12 +30,12 @@ class CorrelationInterceptorUtilTest {
     @Test
     void preHandle() {
         MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader(Constants.CORRELATION_ID_HEADER_NAME, "uniqueid");
+        request.addHeader(Constants.CORRELATION_ID_HEADER_NAME, "077dc12a-02ba-4238-87c3-803ca26b515f");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
         String result = sut.preHandle(request);
         assertNotNull(result);
-        assertEquals("uniqueid", result);
+        assertEquals("077dc12a-02ba-4238-87c3-803ca26b515f", result);
     }
 
     @Test
