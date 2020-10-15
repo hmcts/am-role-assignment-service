@@ -16,10 +16,6 @@ public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEn
 
     void deleteByActorId(String actorId);
 
-    /*@Transactional
-    @Modifying
-    @Query("delete from role_assignment where id =?1")
-    void deleteById(@NotNull UUID id);*/
 
 }
 
