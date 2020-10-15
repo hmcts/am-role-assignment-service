@@ -313,7 +313,7 @@ class CreateRoleAssignmentServiceTest {
         incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, REJECTED,
                                                                            false
         );
-        existingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, APPROVED,
+        existingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, REJECTED,
                                                                            false
         );
         //prepare request entity
