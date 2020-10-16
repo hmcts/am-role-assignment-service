@@ -36,11 +36,11 @@ public class PrepareResponseService {
 
         if (roleAssignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-                .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getContextCorrelationId())
+                .header(Constants.CORRELATION_ID_HEADER_NAME, roleAssignmentRequest.getRequest().getCorrelationId())
                 .body(roleAssignmentRequest);
         } else {
             return ResponseEntity.status(HttpStatus.CREATED)
-                .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getContextCorrelationId())
+                .header(Constants.CORRELATION_ID_HEADER_NAME, roleAssignmentRequest.getRequest().getCorrelationId())
                 .body(new RoleAssignmentRequestResource(roleAssignmentRequest));
         }
 

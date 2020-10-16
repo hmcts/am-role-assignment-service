@@ -20,7 +20,7 @@ public final class Constants {
                                               + "[089ab][0-9a-f]{3}-[0-9a-f]{12}$";
     public static final String DATE_PATTERN = "yyyy-MM-dd'T'HH:mm";
 
-    public static final String CORRELATION_ID_HEADER_NAME = "x-correlation-id";
+    public static final String CORRELATION_ID_HEADER_NAME = "X-Correlation-ID";
 
     public static final String ROLES_JSON = "role.json";
     public static final String ROLE_JSON_PATTERNS_FIELD = "patterns";

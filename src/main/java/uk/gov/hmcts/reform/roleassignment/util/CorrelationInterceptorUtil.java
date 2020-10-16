@@ -17,14 +17,6 @@ public class CorrelationInterceptorUtil  {
         return getCorrelationIdFromHeader(request);
     }
 
-    public String getContextCorrelationId() {
-        String correlationId = MDC.get(Constants.CORRELATION_ID_HEADER_NAME);
-        if (StringUtils.isBlank(correlationId)) {
-            correlationId = generateUniqueCorrelationId();
-        }
-        return correlationId;
-    }
-
     public void afterCompletion() {
         MDC.remove(Constants.CORRELATION_ID_HEADER_NAME);
     }
