@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,7 @@ public class ValidationModelService {
     //Note: These are aggregation records from Assignment_history table.
     private static final Logger logger = LoggerFactory.getLogger(ValidationModelService.class);
     private StatelessKieSession kieSession;
+    private  static final String TRIBUNAL_CASEWORKER = "tribunal-caseworker";
 
     private RetrieveDataService retrieveDataService;
 
@@ -82,7 +84,7 @@ public class ValidationModelService {
 
 
         // fetch List<Pattern> from List<Role>
-        List<List<Pattern>> patterns = filterRole.stream().map(obj -> obj.getPatterns()).collect(Collectors.toList());
+        List<List<Pattern>> patterns = filterRole.stream().map(Role::getPatterns).collect(Collectors.toList());
 
         List<Pattern> pattern = patterns.stream().flatMap(List::stream).map(element -> element)
             .collect(Collectors.toList());
@@ -134,17 +136,19 @@ public class ValidationModelService {
 
         assignmentRequest.getRequestedRoles().forEach(requestedRole -> {
             if (requestedRole.getRoleType() == RoleType.CASE && requestedRole.getRoleName()
-                .equals("tribunal-caseworker")) {
+                .equals(TRIBUNAL_CASEWORKER)) {
                 actorIds.add(requestedRole.getActorId());
 
             }
         });
 
         // to insert the case once roleType = case & roleName = tribunal-caseworker
-        RoleAssignment roleAssignment = assignmentRequest.getRequestedRoles().stream().findFirst().get();
-        if (roleAssignment.getRoleType() == RoleType.CASE && roleAssignment.getRoleName()
-            .equals("tribunal-caseworker")) {
-            String caseId = roleAssignment.getAttributes().get("caseId").asText();
+        Optional<RoleAssignment> roleAssignment = assignmentRequest.getRequestedRoles().stream().findFirst();
+
+        if (roleAssignment.isPresent() && roleAssignment.get().getRoleType() == RoleType.CASE
+            && roleAssignment.get().getRoleName()
+            .equals(TRIBUNAL_CASEWORKER)) {
+            String caseId = roleAssignment.get().getAttributes().get("caseId").asText();
             facts.add(retrieveDataService.getCaseById(caseId));
         }
 
@@ -164,7 +168,7 @@ public class ValidationModelService {
 
             QueryRequest queryRequest = QueryRequest.builder()
                 .actorId(List.copyOf(Sets.union(actorIds, requestActorIds)))
-                .roleName(Arrays.asList("senior-tribunal-caseworker", "tribunal-caseworker"))
+                .roleName(Arrays.asList("senior-tribunal-caseworker", TRIBUNAL_CASEWORKER))
                 .roleType(Arrays.asList("ORGANISATION"))
                 .attributes(attributes)
                 .build();
