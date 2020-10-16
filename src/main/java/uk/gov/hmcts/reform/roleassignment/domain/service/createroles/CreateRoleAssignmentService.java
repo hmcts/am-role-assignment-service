@@ -70,7 +70,7 @@ public class CreateRoleAssignmentService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
-                                       AssignmentRequest parsedAssignmentRequest) {
+                                       AssignmentRequest parsedAssignmentRequest)  {
         // decision block
         long startTime = System.currentTimeMillis();
         logger.info(String.format("checkAllDeleteApproved execution started at %s", startTime));
@@ -204,7 +204,7 @@ public class CreateRoleAssignmentService {
     }
 
     //Create New Assignment Records
-    public void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest) {
+    public void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest)  {
         //Save new requested role in history table with CREATED Status
         long startTime = System.currentTimeMillis();
         logger.info(String.format("createNewAssignmentRecords execution started at %s", startTime));

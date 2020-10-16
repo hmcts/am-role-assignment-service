@@ -17,6 +17,12 @@
           "label": "Judicial Management",
           "description": "This role is required to manage other judicial roles.",
           "category": "JUDICIAL"
+        },
+        {
+          "name": "tribunal-caseworker",
+          "label": "tribunal-caseworker",
+          "description": "This role is required to manage IA Service.",
+          "category": "JUDICIAL"
         }
       ]
     }
