@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +37,7 @@ public class QueryAssignmentController {
     @GetMapping(path = "/am/role-assignments/ld/endpoint")
     public ResponseEntity<Object> getIdLdDemo(@RequestHeader(value = "x-correlation-id",
         required = false) String correlationId) {
-        return ResponseEntity.status(HttpStatus.OK).body("Launch Darkly flag check is successful for the endpoint");
+        return queryRoleAssignmentOrchestrator.createLaunchDarklyResponse();
     }
 
     @PostMapping(

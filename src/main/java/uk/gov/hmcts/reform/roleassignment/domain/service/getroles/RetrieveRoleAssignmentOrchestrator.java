@@ -71,7 +71,7 @@ public class RetrieveRoleAssignmentOrchestrator {
         }
 
         return ResponseEntity.status(HttpStatus.OK)
-            .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getCorrelationId())
+            .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getRequestCorrelationId())
             .body(rootNode);
     }
 

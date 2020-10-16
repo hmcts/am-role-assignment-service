@@ -9,17 +9,24 @@ import java.util.UUID;
 
 @Component
 public class CorrelationInterceptorUtil  {
-    private static final String CORRELATION_ID_LOG_VAR_NAME = "correlationId";
 
     public String preHandle(final HttpServletRequest request) {
         ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, getCorrelationIdFromHeader(request));
         String correlationId = getCorrelationIdFromHeader(request);
-        MDC.put(CORRELATION_ID_LOG_VAR_NAME, correlationId);
+        MDC.put(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
         return getCorrelationIdFromHeader(request);
     }
 
+    public String getContextCorrelationId() {
+        String correlationId = MDC.get(Constants.CORRELATION_ID_HEADER_NAME);
+        if (StringUtils.isBlank(correlationId)) {
+            correlationId = generateUniqueCorrelationId();
+        }
+        return correlationId;
+    }
+
     public void afterCompletion() {
-        MDC.remove(CORRELATION_ID_LOG_VAR_NAME);
+        MDC.remove(Constants.CORRELATION_ID_HEADER_NAME);
     }
 
     private String getCorrelationIdFromHeader(final HttpServletRequest request) {
@@ -36,4 +43,6 @@ public class CorrelationInterceptorUtil  {
     private String generateUniqueCorrelationId() {
         return UUID.randomUUID().toString();
     }
+
+
 }

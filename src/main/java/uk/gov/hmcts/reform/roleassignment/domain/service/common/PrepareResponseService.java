@@ -36,11 +36,11 @@ public class PrepareResponseService {
 
         if (roleAssignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-                .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getCorrelationId())
+                .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getContextCorrelationId())
                 .body(roleAssignmentRequest);
         } else {
             return ResponseEntity.status(HttpStatus.CREATED)
-                .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getCorrelationId())
+                .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getContextCorrelationId())
                 .body(new RoleAssignmentRequestResource(roleAssignmentRequest));
         }
 
@@ -62,7 +62,7 @@ public class PrepareResponseService {
     public ResponseEntity<Object> prepareRetrieveRoleResponse(List<RoleAssignment> roleAssignmentResponse,
                                                               UUID actorId)  {
         return ResponseEntity.status(HttpStatus.OK)
-            .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getCorrelationId())
+            .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getRequestCorrelationId())
             .body(new RoleAssignmentResource(roleAssignmentResponse, actorId));
     }
 

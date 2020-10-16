@@ -30,12 +30,10 @@ public class QueryRoleAssignmentOrchestrator {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
 
-        String correlationId = parseRequestService.getCorrelationId();
-
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Total-Records",
                             Long.toString(persistenceService.getTotalRecords()));
-        responseHeaders.add(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
+        responseHeaders.add(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getRequestCorrelationId());
         logger.info(String.format(
             "retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
@@ -45,5 +43,11 @@ public class QueryRoleAssignmentOrchestrator {
             persistenceService.retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
         return new ResponseEntity<>(assignmentList, responseHeaders, HttpStatus.OK);
 
+    }
+
+    public ResponseEntity<Object> createLaunchDarklyResponse() {
+        return ResponseEntity.status(HttpStatus.OK)
+            .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getRequestCorrelationId())
+            .body("Launch Darkly flag check is " + "successful for " + "the" + " " + "endpoint");
     }
 }

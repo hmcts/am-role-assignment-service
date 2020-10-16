@@ -57,7 +57,7 @@ class QueryRoleAssignmentOrchestratorTest {
         when(persistenceServiceMock.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1, 2, "id", "asc"))
             .thenReturn((List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection(Status.LIVE));
         when(persistenceServiceMock.getTotalRecords()).thenReturn(Long.valueOf(10));
-        when(parseRequestService.getCorrelationId()).thenReturn("1234");
+        when(parseRequestService.getRequestCorrelationId()).thenReturn("1234");
         ResponseEntity<Object> result = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1, 2, "id", "asc");
         assertNotNull(result);
         assertEquals(HttpStatus.OK, result.getStatusCode());

@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
+import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -75,7 +77,10 @@ public class DeleteRoleAssignmentOrchestrator {
         if (requestedRoles.isEmpty()) {
             requestEntity.setStatus(Status.APPROVED.toString());
             persistenceService.updateRequest(requestEntity);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            MultiMap correlationIdHeader = new MultiValueMap();
+            correlationIdHeader.put(Constants.CORRELATION_ID_HEADER_NAME,
+                                    parseRequestService.getRequestCorrelationId());
+            return new ResponseEntity<>(correlationIdHeader, HttpStatus.NO_CONTENT);
         }
 
         ResponseEntity<Object> responseEntity = performOtherStepsForDelete("", requestedRoles);
@@ -106,7 +111,10 @@ public class DeleteRoleAssignmentOrchestrator {
         if (requestedRoles.isEmpty()) {
             requestEntity.setStatus(Status.APPROVED.toString());
             persistenceService.updateRequest(requestEntity);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            MultiMap correlationIdHeader = new MultiValueMap();
+            correlationIdHeader.put(Constants.CORRELATION_ID_HEADER_NAME,
+                                    parseRequestService.getRequestCorrelationId());
+            return new ResponseEntity<>(correlationIdHeader, HttpStatus.NO_CONTENT);
         }
 
         return performOtherStepsForDelete("", requestedRoles);
@@ -134,10 +142,13 @@ public class DeleteRoleAssignmentOrchestrator {
         ));
         if (assignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-                .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getCorrelationId())
+                .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getRequestCorrelationId())
                 .body(assignmentRequest.getRequest());
         } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            MultiMap correlationIdHeader = new MultiValueMap();
+            correlationIdHeader.put(Constants.CORRELATION_ID_HEADER_NAME,
+                                    parseRequestService.getRequestCorrelationId());
+            return new ResponseEntity<>(correlationIdHeader, HttpStatus.NO_CONTENT);
         }
 
     }

@@ -92,8 +92,7 @@ public class CreateRoleAssignmentOrchestrator {
                 // empty requested roles.
                 if (isExistingAndIncomingRecordsEmpty(existingAssignmentRequest, parsedAssignmentRequest)) {
                     return ResponseEntity.status(HttpStatus.CREATED)
-                        .header(Constants.CORRELATION_ID_HEADER_NAME,
-                                parseRequestService.getCorrelationId())
+                        .header(Constants.CORRELATION_ID_HEADER_NAME, parseRequestService.getContextCorrelationId())
                         .body(parsedAssignmentRequest);
                 }
 
