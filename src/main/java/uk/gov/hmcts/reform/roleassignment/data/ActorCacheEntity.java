@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
 import javax.persistence.Column;
@@ -21,7 +22,7 @@ import javax.persistence.Version;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "actor_cache_control")
-public class ActorCacheEntity {
+public class ActorCacheEntity implements Persistable<String> {
 
     @Id
     @Column(name = "actor_id", nullable = false)
@@ -35,5 +36,14 @@ public class ActorCacheEntity {
     @Convert(converter = JsonBConverter.class)
     private JsonNode roleAssignmentResponse;
 
+    @Override
+    public String getId() {
+        return actorId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }
 
