@@ -1,0 +1,59 @@
+package validationrules
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.Pattern;
+import com.fasterxml.jackson.databind.JsonNode;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+
+
+rule "R04_judge_rule_for_case" salience 85
+when
+     $request:           Request(requestType == RequestType.CREATE)
+                         Pattern($data : data)
+                         $classificationEntry : JsonNode() from $data["Classification"]
+                         $classificationObj : JsonNode() from $classificationEntry
+                         $grantTypeEntry : JsonNode() from $data["GrantType"]
+                         $grantTypeObj : JsonNode() from $grantTypeEntry
+    $roleAssignment:     RoleAssignment(roleName == "judge",roleType == RoleType.CASE,
+                         roleCategory == RoleCategory.JUDICIAL,
+                         classification.toString() == $classificationObj.asText(),
+                         grantType.toString() == $grantTypeObj.asText())
+
+
+then
+    System.out.println("R04_judge_rule_for_case");
+ 	  $roleAssignment.setStatus(Status.APPROVED);
+ 	 	$roleAssignment.setLog(String.format("Requested role has been approved by the rule : %s ","R04_judge_rule_for_case"));
+ 		$request.setLog(String.format("Request has been approved by the rule : %s ","R04_judge_rule_for_case"));
+ 		update($roleAssignment)
+
+end;
+
+
+rule "R05_judge_rule_for_org" salience 80
+when
+
+       $request:           Request(requestType == RequestType.CREATE)
+                           Pattern($data : data)
+                           $classificationEntry : JsonNode() from $data["Classification"]
+                           $classificationObj : JsonNode() from $classificationEntry
+                           $grantTypeEntry : JsonNode() from $data["GrantType"]
+                           $grantTypeObj : JsonNode() from $grantTypeEntry
+     $roleAssignment:      RoleAssignment(roleName == "judge",roleType == RoleType.ORGANISATION,
+                           roleCategory == RoleCategory.JUDICIAL,
+                           classification.toString() == $classificationObj.asText(),
+                           grantType.toString() == $grantTypeObj.asText())
+
+
+then
+      System.out.println("R05_judge_rule_for_org");
+   	  $roleAssignment.setStatus(Status.APPROVED);
+   		$roleAssignment.setLog(String.format("Requested role has been approved by the rule : %s ","R05_judge_rule_for_org"));
+   		$request.setLog(String.format("Request has been approved by the rule : %s ","R05_judge_rule_for_org"));
+   		update($roleAssignment)
+
+ end;

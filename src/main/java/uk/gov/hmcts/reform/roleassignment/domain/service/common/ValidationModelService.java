@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Pattern;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -20,7 +21,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.beanutils.BeanUtils.copyProperties;
 
@@ -33,6 +36,7 @@ public class ValidationModelService {
     //Note: These are aggregation records from Assignment_history table.
     private static final Logger logger = LoggerFactory.getLogger(ValidationModelService.class);
     private StatelessKieSession kieSession;
+    private  static final String TRIBUNAL_CASEWORKER = "tribunal-caseworker";
 
     private RetrieveDataService retrieveDataService;
 
@@ -54,8 +58,10 @@ public class ValidationModelService {
         long startTime = System.currentTimeMillis();
         // Force the status and timestamp on all new request
         runRulesOnAllRequestedAssignments(assignmentRequest);
-        long endTime = System.currentTimeMillis();
-        log.info("Execution time of validateRequest() : {} in milli seconds ", (endTime - startTime));
+        log.info(
+            "Execution time of validateRequest() : {} in milli seconds ",
+            (System.currentTimeMillis() - startTime)
+        );
 
     }
 
@@ -66,13 +72,40 @@ public class ValidationModelService {
         // Package up the request and the assignments
         //Pre defined role configuration
         List<Role> role = JacksonUtils.getConfiguredRoles().get("roles");
-        Set<Object> facts = new HashSet<>(role);
+
+        //Filter List<Role> based on incoming role names
+        Set<String> roleNames = assignmentRequest.getRequestedRoles().stream()
+            .map(RoleAssignment::getRoleName)
+            .collect(Collectors.toSet());
+
+        List<Role> filterRole = role.stream()
+            .filter(e -> roleNames.contains(e.getName()))
+            .collect(Collectors.toList());
+
+
+        // fetch List<Pattern> from List<Role>
+        List<List<Pattern>> patterns = filterRole.stream().map(Role::getPatterns).collect(Collectors.toList());
+
+        List<Pattern> pattern = patterns.stream().flatMap(List::stream).map(element -> element)
+            .collect(Collectors.toList());
+
+
+        //filter List<Pattern> based on incoming roleTypes
+        Set<String> roleTypes = assignmentRequest.getRequestedRoles().stream()
+            .map(roleAssignment -> roleAssignment.getRoleType().toString())
+            .collect(Collectors.toSet());
+
+        List<Pattern> filterPatten = pattern.stream()
+            .filter(p -> roleTypes.contains(p.getData().get("RoleType").get("values").asText()))
+            .collect(Collectors.toList());
+
+
+        Set<Object> facts = new HashSet<>();
+        facts.addAll(filterPatten);
         facts.add(assignmentRequest.getRequest());
         facts.addAll(assignmentRequest.getRequestedRoles());
         if (assignmentRequest.getRequest().getRequestType() == RequestType.CREATE) {
-
             addExistingRecordsByQueryParam(assignmentRequest, facts);
-            kieSession.setGlobal("retrieveDataService", retrieveDataService);
         }
 
 
@@ -103,10 +136,22 @@ public class ValidationModelService {
 
         assignmentRequest.getRequestedRoles().forEach(requestedRole -> {
             if (requestedRole.getRoleType() == RoleType.CASE && requestedRole.getRoleName()
-                .equals("tribunal-caseworker")) {
+                .equals(TRIBUNAL_CASEWORKER)) {
                 actorIds.add(requestedRole.getActorId());
+
             }
         });
+
+        // to insert the case once roleType = case & roleName = tribunal-caseworker
+        Optional<RoleAssignment> roleAssignment = assignmentRequest.getRequestedRoles().stream().findFirst();
+
+        if (roleAssignment.isPresent() && roleAssignment.get().getRoleType() == RoleType.CASE
+            && roleAssignment.get().getRoleName()
+            .equals(TRIBUNAL_CASEWORKER)) {
+            String caseId = roleAssignment.get().getAttributes().get("caseId").asText();
+            facts.add(retrieveDataService.getCaseById(caseId));
+        }
+
 
         executeQueryParamForCaseRole(facts, requestActorIds, actorIds);
 
@@ -123,7 +168,7 @@ public class ValidationModelService {
 
             QueryRequest queryRequest = QueryRequest.builder()
                 .actorId(List.copyOf(Sets.union(actorIds, requestActorIds)))
-                .roleName(Arrays.asList("senior-tribunal-caseworker", "tribunal-caseworker"))
+                .roleName(Arrays.asList("senior-tribunal-caseworker", TRIBUNAL_CASEWORKER))
                 .roleType(Arrays.asList("ORGANISATION"))
                 .attributes(attributes)
                 .build();
