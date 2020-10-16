@@ -250,7 +250,8 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             () -> assertEquals(element.getActorId(), "123e4567-e89b-42d3-a456-556642445614"),
             () -> assertEquals(element.getGrantType().toString(), "STANDARD"),
             () -> assertEquals(element.getClassification().toString(), "PUBLIC"),
-            () -> assertEquals(element.getAuthorisations().size(), 1)
+            () -> assertEquals(element.getAuthorisations().size(), 1),
+            () -> assertEquals(element.getAuthorisations().get(0), "dev")
         ));
     }
 
