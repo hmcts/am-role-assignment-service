@@ -1,3 +1,4 @@
+/*
 package validationrules
 
 
@@ -12,79 +13,82 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 rule "R05_validate_existing_requester_details" salience 70
 	when
 
-     $request: Request()
-      $roleAssignment: RoleAssignment()
-	     RoleAssignment(roleType == RoleType.CASE, roleName == "tribunal-caseworker",
-	     $roleAssignment.getStatus() == Status.ROLE_VALIDATED_BY_PATTERN)
+       $request: Request()
+	     RoleAssignment(roleName == "tribunal-caseworker",
+	     status == Status.ROLE_VALIDATED_BY_PATTERN,roleType == RoleType.CASE)
 
 	    ExistingRoleAssignment(actorId == $request.getAssignerId())
 
 	then
+	  System.out.println("R05_validate_existing_requester_details::");
 	  $request.setStatus(Status.REQUEST_VALIDATED);
+	  update($request)
 		$request.setLog(String.format("Existing Requester & Assignee details has been validated by the rule : %s ","R05_validate_existing_requester_details"));
 
 end
 
 rule "R06_validate_existing_assignee_details" salience 68
 	when
-	   $roleAssignment: RoleAssignment()
-	                    RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED_BY_PATTERN,roleName == "tribunal-caseworker")
-
-	   $request: Request()
-	             Request($request.getStatus() == Status.REQUEST_VALIDATED)
+	   $roleAssignment: RoleAssignment(roleName == "tribunal-caseworker",status == Status.ROLE_VALIDATED_BY_PATTERN,roleType == RoleType.CASE)
+	   $request:Request(status == Status.REQUEST_VALIDATED)
 
     ExistingRoleAssignment(actorId == $roleAssignment.getActorId())
 
 	then
+	  System.out.println("R06_validate_existing_assignee_details::");
 	  $roleAssignment.setStatus(Status.ROLE_VALIDATED);
 	 	$request.setLog(String.format("Existing Requester & Assignee details has been validated by the rule : %s ","R06_validate_existing_assignee_details"));
 
 end
 
-rule "R07_validate_existing_details_fails" salience 65
+rule "R07_validate_tc_details_fails" salience 65
 	when
 	   $roleAssignment: RoleAssignment()
-	                    RoleAssignment(roleType == RoleType.CASE, $roleAssignment.getStatus() != Status.ROLE_VALIDATED,roleName == "tribunal-caseworker")
-	   $request: Request()
-	            Request($request.getStatus() != Status.REQUEST_VALIDATED)
+	                  RoleAssignment(roleName == "tribunal-caseworker", $roleAssignment.getStatus() != Status.ROLE_VALIDATED,roleType == RoleType.CASE)
+	   $request: Request(status != Status.REQUEST_VALIDATED)
 	           not ExistingRoleAssignment()
 
 	then
+	  System.out.println("R07_validate_tc_details_fails::");
 	 	$request.setStatus(Status.REJECTED);
 	 	$roleAssignment.setStatus(Status.REJECTED);
-		$request.setLog(String.format("Existing Requester & Assignee details has been failed by the rule : %s ","R07_validate_existing_details_fails"));
+
+		$request.setLog(String.format("Existing Requester & Assignee details has been failed by the rule : %s ","R07_validate_tc_details_fails"));
 
 end
 
 
 //Rues for without tribunal-caseworker role for case
-rule "R0123_validate_non_existing_details" salience 60
+rule "R0123_validate_non_tc_details" salience 60
 	when
 
      $request: Request()
-      $roleAssignment: RoleAssignment(roleName != "tribunal-caseworker")
-	     RoleAssignment(roleType == RoleType.CASE,$roleAssignment.getStatus() == Status.ROLE_VALIDATED_BY_PATTERN)
+      $roleAssignment: RoleAssignment(roleName != "tribunal-caseworker",status == Status.ROLE_VALIDATED_BY_PATTERN,roleType == RoleType.CASE)
 
 
 	then
+	 System.out.println("R0123_validate_non_tc_details::");
 	 	$request.setStatus(Status.REQUEST_VALIDATED);
 	 	$roleAssignment.setStatus(Status.ROLE_VALIDATED);
-		$request.setLog(String.format("Existing Requester & Assignee details has been validated by the rule : %s ","R0123_validate_non_existing_details"));
+	 	update($request)
+   	$request.setLog(String.format("Existing Requester & Assignee details has been validated by the rule : %s ","R0123_validate_non_tc_details"));
 
 end
 
 
-rule "R08_validate_non_existing_details_fails" salience 58
+rule "R0124_validate_non_tc_details_fails" salience 58
 	when
 	   $roleAssignment: RoleAssignment()
-	                    RoleAssignment(roleType == RoleType.CASE, $roleAssignment.getStatus() != Status.ROLE_VALIDATED,roleName != "tribunal-caseworker")
-	   $request: Request()
-	            Request($request.getStatus() != Status.REQUEST_VALIDATED)
+	                   RoleAssignment( roleName != "tribunal-caseworker",$roleAssignment.getStatus() != Status.ROLE_VALIDATED,roleType == RoleType.CASE)
+	   $request: Request(status != Status.REQUEST_VALIDATED)
 
 
 	then
+	System.out.println("R0124_validate_non_tc_details_fails::");
 	  $request.setStatus(Status.REJECTED);
 	 	$roleAssignment.setStatus(Status.REJECTED);
-		$request.setLog(String.format("Existing Requester & Assignee details has been failed by the rule : %s ","R08_validate_non_existing_details_fails"));
+
+		$request.setLog(String.format("Existing Requester & Assignee details has been failed by the rule : %s ","R0124_validate_non_tc_details_fails"));
 
 end
+*/

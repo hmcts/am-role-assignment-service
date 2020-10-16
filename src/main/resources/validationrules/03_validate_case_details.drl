@@ -1,3 +1,4 @@
+/*
 package validationrules
 
 global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService retrieveDataService
@@ -66,3 +67,4 @@ then
 $roleAssignment.setLog(String.format("Requested role has not been approved by the rule R10_case_validation_fail "));
 $roleAssignment.setStatus(Status.REJECTED);
 end;
+*/
