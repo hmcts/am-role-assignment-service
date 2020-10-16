@@ -93,5 +93,23 @@
         }
       }
     ]
+  },
+  {
+    "name": "tribunal-caseworker",
+    "label": "tribunal-caseworker",
+    "description": "This role is required to manage IA Service.",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+        "data": {
+          "RoleType": {
+            "mandatory": true,
+            "values": [
+              "CASE"
+            ]
+          }
+        }
+      }
+    ]
   }
 ]
