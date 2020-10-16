@@ -89,11 +89,12 @@ public class ValidationModelService {
 
 
         //filter List<Pattern> based on incoming roleTypes
-        RoleType roleType = assignmentRequest.getRequestedRoles().stream().findFirst().get().getRoleType();
-
+        Set<String> roleTypes = assignmentRequest.getRequestedRoles().stream()
+            .map(roleAssignment -> roleAssignment.getRoleType().toString())
+            .collect(Collectors.toSet());
 
         List<Pattern> filterPatten = pattern.stream()
-            .filter(p -> roleType.toString().equals(p.getData().get("RoleType").get("values").asText()))
+            .filter(p -> roleTypes.contains(p.getData().get("RoleType").get("values").asText()))
             .collect(Collectors.toList());
 
 
