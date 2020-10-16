@@ -69,7 +69,7 @@ public class PersistenceUtil {
 
     }
 
-    public RoleAssignmentEntity convertRoleAssignmentToEntity(RoleAssignment roleAssignment) {
+    public RoleAssignmentEntity convertRoleAssignmentToEntity(RoleAssignment roleAssignment, boolean isNewFlag) {
         return RoleAssignmentEntity.builder()
             .id(roleAssignment.getId())
             .actorId(roleAssignment.getActorId())
@@ -86,6 +86,7 @@ public class PersistenceUtil {
             .roleCategory(roleAssignment.getRoleCategory().toString())
             .authorisations(roleAssignment.getAuthorisations() != null && !roleAssignment.getAuthorisations().isEmpty()
                                 ? roleAssignment.getAuthorisations() : Collections.emptyList())
+            .isNewFlag(isNewFlag)
             .build();
     }
 
