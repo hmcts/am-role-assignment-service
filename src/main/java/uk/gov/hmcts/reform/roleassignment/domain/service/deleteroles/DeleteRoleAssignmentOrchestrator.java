@@ -92,7 +92,7 @@ public class DeleteRoleAssignmentOrchestrator {
         return responseEntity;
     }
 
-    public ResponseEntity<Object> deleteRoleAssignmentByAssignmentId(String assignmentId) {
+    public ResponseEntity<Object> deleteRoleAssignmentByAssignmentId(String assignmentId)  {
         List<RoleAssignment> requestedRoles;
 
         //1. create the request Object

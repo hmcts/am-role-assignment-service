@@ -7,7 +7,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 
-
+/*
 rule "R05_assignment_validation" salience 75
 
 when
@@ -22,9 +22,9 @@ $request        : Request()
 then
 $roleAssignment.setLog(String.format("Requested Role has been validated by rule : R05_assignment_validation "));
 $roleAssignment.setStatus(Status.ROLE_VALIDATED);
-end;
+end;*/
 
-
+/*
 rule "R06_assignment_validation_fail" salience 70
 when
 $roleAssignment  : RoleAssignment()
@@ -34,7 +34,7 @@ $roleAssignment  : RoleAssignment()
 then
 $roleAssignment.setLog(String.format("Requested Role  validation fail by rule : %s","R05_assignment_validation"));
 $roleAssignment.setStatus(Status.ROLE_NOT_VALIDATED);
-end;
+end;*/
 
 
 
