@@ -33,11 +33,6 @@ def vaultOverrides = [
 
 //These secrets will be available in the functional tests in the virtual machine where pipeline executes.
 def secrets = [
-  'ccd-${env}': [
-    secret('ccd-befta-caseworker-2-solicitor-1-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_1_PWD'),
-    secret('ccd-befta-caseworker-2-solicitor-2-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD'),
-    secret('ccd-befta-caseworker-2-solicitor-3-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_3_PWD')
-  ],
   's2s-${env}': [
     secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
     secret('microservicekey-am-role-assignment-service', 'AM_ROLE_ASSIGNMENT_SERVICE_SECRET')
@@ -45,8 +40,11 @@ def secrets = [
   'am-${env}': [
       secret('role-assignment-service-IDAM-CLIENT-SECRET', 'ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET'),
       secret('role-assignment-service-LD-SDK-KEY', 'LD_SDK_KEY'),
+      secret('ccd-befta-caseworker-2-solicitor-1-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_1_PWD'),
+      secret('ccd-befta-caseworker-2-solicitor-2-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD'),
+      secret('ccd-befta-caseworker-2-solicitor-3-pwd', 'CCD_BEFTA_CASEWORKER_2_SOLICITOR_3_PWD'),
       secret('role-assignment-service-IDAM-CLIENT-SECRET', 'OAUTH2_CLIENT_SECRET')
-    ]
+  ]
 ]
 
 // Vars needed for functional and smoke tests to run against AKS
