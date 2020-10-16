@@ -1,3 +1,4 @@
+/*
 package validationrules
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -7,42 +8,35 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
 import uk.gov.hmcts.reform.roleassignment.domain.model.Pattern;
 import com.fasterxml.jackson.databind.JsonNode;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role
+
 
 
 
 rule "R01_role_validation_for_organization_pattern" salience 100
 
 when
-$requestedRole :  RoleAssignment()
-
-$request        : Request(requestType == RequestType.CREATE)
-                  RoleAssignment(roleType == RoleType.ORGANISATION)
-                  Role($patterns : patterns)
-                  Pattern($data : data) from $patterns
-                  $classificationEntry : JsonNode() from $data["Classification"]
-                  $classificationObj : JsonNode() from $classificationEntry
-                  RoleAssignment($requestedRole.getClassification().toString() == $classificationObj.asText() )
-                  $grantTypeEntry : JsonNode() from $data["GrantType"]
-                  $grantTypeObj : JsonNode() from $grantTypeEntry
-                  RoleAssignment($requestedRole.getGrantType().toString() == $grantTypeObj.asText() )
-                  $roleTypeObj : JsonNode() from $data["RoleType"]
-                  RoleAssignment($requestedRole.getRoleType().toString() == $roleTypeObj.asText() )
+       $request:      Request(requestType == RequestType.CREATE)
+                      Pattern($data : data)
+                      $classificationEntry : JsonNode() from $data["Classification"]
+                      $classificationObj : JsonNode() from $classificationEntry
+                      $grantTypeEntry : JsonNode() from $data["GrantType"]
+                      $grantTypeObj : JsonNode() from $grantTypeEntry
+                      $roleAssignment:   RoleAssignment(roleType == RoleType.ORGANISATION,classification.toString() == $classificationObj.asText(), grantType.toString() == $grantTypeObj.asText())
 
 
 then
 System.out.println("R01_role_validation_for_organization_pattern ::");
-$requestedRole.setStatus(Status.APPROVED);
+$roleAssignment.setStatus(Status.APPROVED);
+update($roleAssignment)
 $request.setLog(String.format("Requested Role has been approved by rule : R01_role_validation_for_organization_pattern "));
-$requestedRole.setLog(String.format("Requested Role has been approved by rule : R01_role_validation_for_organization_pattern "));
+$roleAssignment.setLog(String.format("Requested Role has been approved by rule : R01_role_validation_for_organization_pattern "));
 end;
 
 
 
 rule "R02_organisation_assignment_validation_fail" salience 95
 when
-$roleAssignment  :  RoleAssignment(roleType == RoleType.ORGANISATION)
-                   RoleAssignment($roleAssignment.getStatus()!=Status.APPROVED)
+$roleAssignment  :  RoleAssignment(roleType == RoleType.ORGANISATION,status!=Status.APPROVED)
 
 then
 System.out.println("R02_organisation_assignment_validation_fail::");
@@ -58,25 +52,19 @@ when
 
 
 $request:         Request(requestType == RequestType.CREATE)
- $roleAssignment : RoleAssignment(roleType == RoleType.CASE)
-//                  Role($patterns : patterns)
-//                  Pattern($data : data) from $patterns
-//                  $classificationEntry : JsonNode() from $data["Classification"]
-//                  $classificationObj : JsonNode() from $classificationEntry
-//                  RoleAssignment($roleAssignment.getClassification().toString() == $classificationObj.asText() )
-//                  $grantTypeEntry : JsonNode() from $data["GrantType"]
-//                  $grantTypeObj : JsonNode() from $grantTypeEntry
-//                  RoleAssignment($roleAssignment.getGrantType().toString() == $grantTypeObj.asText() )
-//                  $roleTypeObj : JsonNode() from $data["RoleType"]
-//                  RoleAssignment($roleAssignment.getRoleType().toString() == $roleTypeObj.asText() )
-//                  RoleAssignment(attributes["caseId"]!=null)
+                   Pattern($data : data)
+                   $classificationEntry : JsonNode() from $data["Classification"]
+                    $classificationObj : JsonNode() from $classificationEntry
+                    $grantTypeEntry : JsonNode() from $data["GrantType"]
+                    $grantTypeObj : JsonNode() from $grantTypeEntry
+                  $roleAssignment:   RoleAssignment(roleType == RoleType.CASE,classification.toString() == $classificationObj.asText(), grantType.toString() == $grantTypeObj.asText(),attributes["caseId"]!=null)
 
 
 then
-System.out.println("R03_role_validation_for_case_pattern::");
+System.out.println("R03_role_validation_for_case_pattern::"+$classificationEntry);
 $roleAssignment.setStatus(Status.ROLE_VALIDATED_BY_PATTERN);
 update($roleAssignment)
-$roleAssignment.setLog(String.format("Requested Role for case has been validated by the rule : R03_role_validation_for_case_pattern "));
+//$roleAssignment.setLog(String.format("Requested Role for case has been validated by the rule : R03_role_validation_for_case_pattern "));
 
 end;
 
@@ -92,7 +80,8 @@ $roleAssignment.setLog(String.format("Requested Role pattern validation for case
 $roleAssignment.setStatus(Status.REJECTED);
 end;
 
-//**** rules for delete ****
+/*/
+/**** rules for delete ****
 rule "R10_delete_validation" salience 80
 
 when
@@ -102,14 +91,15 @@ then
 $request.setLog(String.format("Request has been approved by rule :R10_delete_validation "));
 $request.setStatus(Status.REQUEST_VALIDATED);
 roleAssignment.setStatus(Status.APPROVED);
+update(roleAssignment)
 end;
 
 rule "R11_delete_validation_fail" salience 75
 
 when
-$request  : Request(id!= null,requestType == RequestType.DELETE,status == Status.CREATED)
-$roleAssignment  : RoleAssignment()
-                   RoleAssignment($roleAssignment.getStatus()!= Status.APPROVED)
+$request  : Request(id!= null,requestType == RequestType.DELETE)
+$roleAssignment  : RoleAssignment(status!= Status.APPROVED)
+
 
 then
 $request.setLog(String.format("Request has been rejected by rule :R11_delete_validation_fail "));
@@ -118,3 +108,4 @@ end;
 
 
 
+*/

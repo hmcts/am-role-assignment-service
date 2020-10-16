@@ -63,10 +63,7 @@ class ValidationModelServiceTest {
 
         sut.validateRequest(assignmentRequest);
 
-        Mockito.verify(kieSessionMock, times(1)).setGlobal(
-            "retrieveDataService",
-            retrieveDataServiceMock
-        );
+
         Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
     }
 
