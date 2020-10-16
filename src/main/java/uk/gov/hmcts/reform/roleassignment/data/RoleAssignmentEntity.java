@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
 import javax.persistence.CollectionTable;
@@ -15,8 +16,10 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +31,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity(name = "role_assignment")
 
-public class RoleAssignmentEntity {
+public class RoleAssignmentEntity implements Persistable<UUID> {
 
     @Id
     private UUID id;
@@ -72,11 +75,18 @@ public class RoleAssignmentEntity {
     private JsonNode attributes;
 
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "role_assignment_authorisations", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "authorisations")
     private List<String> authorisations;
 
+    @Builder.Default
+    @Transient
+    private boolean isNewFlag = true;
 
+    @Override
+    public boolean isNew() {
+        return isNewFlag;
+    }
 }
 

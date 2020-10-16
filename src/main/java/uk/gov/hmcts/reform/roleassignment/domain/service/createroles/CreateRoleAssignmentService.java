@@ -70,7 +70,7 @@ public class CreateRoleAssignmentService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
-                                       AssignmentRequest parsedAssignmentRequest) {
+                                       AssignmentRequest parsedAssignmentRequest)  {
         // decision block
         long startTime = System.currentTimeMillis();
         logger.info(String.format("checkAllDeleteApproved execution started at %s", startTime));
@@ -145,7 +145,7 @@ public class CreateRoleAssignmentService {
 
         Request request = parsedAssignmentRequest.getRequest();
         //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
-        insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED, rejectedAssignmentIds);
+        rejectPreviouslyApprovedAssignments(existingAssignmentRequest, Status.DELETE_REJECTED, rejectedAssignmentIds);
 
         // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status REJECTED
         insertRequestedRole(parsedAssignmentRequest, Status.REJECTED, rejectedAssignmentIds);
@@ -204,7 +204,7 @@ public class CreateRoleAssignmentService {
     }
 
     //Create New Assignment Records
-    public void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest) {
+    public void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest)  {
         //Save new requested role in history table with CREATED Status
         long startTime = System.currentTimeMillis();
         logger.info(String.format("createNewAssignmentRecords execution started at %s", startTime));
@@ -311,6 +311,36 @@ public class CreateRoleAssignmentService {
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
+    }
+
+    private void rejectPreviouslyApprovedAssignments(AssignmentRequest assignmentRequest,
+                                                     Status status,
+                                                     List<UUID> rejectedAssignmentIds) {
+        for (RoleAssignment requestedAssignment : assignmentRequest.getRequestedRoles()) {
+            if (!rejectedAssignmentIds.isEmpty()
+                && (status.equals(Status.REJECTED) || status.equals(Status.DELETE_REJECTED))
+                &&
+                (requestedAssignment.getStatus().equals(Status.APPROVED)
+                    || requestedAssignment.getStatus().equals(Status.CREATED)
+                    || requestedAssignment.getStatus().equals(Status.DELETE_APPROVED))) {
+                requestedAssignment.setLog(
+                    "Requested Role has been rejected due to following new/existing assignment Ids :"
+                        + rejectedAssignmentIds.toString());
+            }
+
+            if (requestedAssignment.getStatus() == Status.APPROVED
+                || requestedAssignment.getStatus() == Status.DELETE_APPROVED) {
+                requestedAssignment.setStatus(status);
+                HistoryEntity entity = persistenceService.persistHistory(
+                    requestedAssignment,
+                    assignmentRequest.getRequest()
+                );
+                requestedAssignment.setId(entity.getId());
+            }
+            requestedAssignment.setStatus(status);
+        }
+        //Persist request to update relationship with history entities
+        persistenceService.updateRequest(requestEntity);
     }
 
     public boolean hasAssignmentsUpdated(AssignmentRequest existingAssignmentRequest,
@@ -581,9 +611,10 @@ public class CreateRoleAssignmentService {
         }
     }
 
-    private void rejectCreateRequest(AssignmentRequest parsedAssignmentRequest, List<UUID> rejectedAssignmentIds) {
+    private void rejectCreateRequest(AssignmentRequest parsedAssignmentRequest,
+                                     List<UUID> rejectedAssignmentIds) {
         // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status REJECTED
-        insertRequestedRole(parsedAssignmentRequest, Status.REJECTED, rejectedAssignmentIds);
+        rejectPreviouslyApprovedAssignments(parsedAssignmentRequest, Status.REJECTED, rejectedAssignmentIds);
 
         // Update request status to REJECTED
         parsedAssignmentRequest.getRequest().setStatus(Status.REJECTED);
