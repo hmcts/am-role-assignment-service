@@ -103,10 +103,11 @@ class CreateRoleAssignmentOrchestratorTest {
 
 
         //assert values
+        assert result != null;
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(result.getRequest().getId());
-        verifyNUmberOfInvocations();
+        verifyNUmberOfInvocationsForRejectedRequest();
         verify(parseRequestService, times(1)).removeCorrelationLog();
     }
 
@@ -139,7 +140,7 @@ class CreateRoleAssignmentOrchestratorTest {
         for (RoleAssignment requestedRole : result.getRequestedRoles()) {
             assertEquals(REJECTED, requestedRole.getStatus());
         }
-        verifyNUmberOfInvocations();
+        verifyNUmberOfInvocationsForRejectedRequest();
     }
 
 
@@ -258,7 +259,7 @@ class CreateRoleAssignmentOrchestratorTest {
         //assert values
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        verifyNUmberOfInvocations();
+        verifyNUmberOfInvocationsForRejectedRequest();
         verify(validationModelService, times(1)).validateRequest(any(AssignmentRequest.class));
     }
 
@@ -393,6 +394,17 @@ class CreateRoleAssignmentOrchestratorTest {
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
         verify(persistenceService, times(6))
+            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(prepareResponseService, times(1))
+            .prepareCreateRoleResponse(any(AssignmentRequest.class));
+    }
+
+    private void verifyNUmberOfInvocationsForRejectedRequest() throws ParseException {
+        verify(parseRequestService, times(1))
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
+        verify(persistenceService, times(1))
+            .persistRequest(any(Request.class));
+        verify(persistenceService, times(4))
             .persistHistory(any(RoleAssignment.class), any(Request.class));
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
