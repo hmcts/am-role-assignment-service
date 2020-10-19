@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -129,6 +130,39 @@ class ValidationModelServiceTest {
         sut.addExistingRecordsForDelete(assignmentRequest, facts);
         assertNotNull(facts);
         assertEquals(1, facts.size());
+
+
+    }
+
+    @Test
+    void shouldExecuteForDeleteRequest() throws IOException {
+
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(
+            DELETED, LIVE, false);
+        assignmentRequest.getRequest().setRequestType(RequestType.DELETE);
+
+        sut.validateRequest(assignmentRequest);
+        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
+
+
+    }
+
+    @Test
+    void shouldExecuteQueryParamForDelete() throws IOException {
+
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(
+            DELETED, LIVE, false);
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          roleAssignment.setRoleName("tribunal-caseworker")
+
+        );
+
+        when(persistenceService.retrieveRoleAssignmentsByQueryRequest(any(), anyInt(), anyInt(), any(), any()))
+            .thenReturn((List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection(LIVE));
+        Set<Object> facts = new HashSet<>();
+        sut.addExistingRecordsForDelete(assignmentRequest, facts);
+        assertNotNull(facts);
+        assertEquals(2, facts.size());
 
 
     }
