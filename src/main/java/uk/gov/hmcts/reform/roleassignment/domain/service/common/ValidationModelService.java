@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ValidationModelService {
     //Note: These are aggregation records from Assignment_history table.
     private static final Logger logger = LoggerFactory.getLogger(ValidationModelService.class);
     private StatelessKieSession kieSession;
-    private  static final String TRIBUNAL_CASEWORKER = "tribunal-caseworker";
+    private static final String TRIBUNAL_CASEWORKER = "tribunal-caseworker";
 
     private RetrieveDataService retrieveDataService;
 
@@ -69,43 +70,49 @@ public class ValidationModelService {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("runRulesOnAllRequestedAssignments execution started at %s", startTime));
 
-        // Package up the request and the assignments
-        //Pre defined role configuration
-        List<Role> role = JacksonUtils.getConfiguredRoles().get("roles");
-
-        //Filter List<Role> based on incoming role names
-        Set<String> roleNames = assignmentRequest.getRequestedRoles().stream()
-            .map(RoleAssignment::getRoleName)
-            .collect(Collectors.toSet());
-
-        List<Role> filterRole = role.stream()
-            .filter(e -> roleNames.contains(e.getName()))
-            .collect(Collectors.toList());
-
-
-        // fetch List<Pattern> from List<Role>
-        List<List<Pattern>> patterns = filterRole.stream().map(Role::getPatterns).collect(Collectors.toList());
-
-        List<Pattern> pattern = patterns.stream().flatMap(List::stream).map(element -> element)
-            .collect(Collectors.toList());
-
-
-        //filter List<Pattern> based on incoming roleTypes
-        Set<String> roleTypes = assignmentRequest.getRequestedRoles().stream()
-            .map(roleAssignment -> roleAssignment.getRoleType().toString())
-            .collect(Collectors.toSet());
-
-        List<Pattern> filterPatten = pattern.stream()
-            .filter(p -> roleTypes.contains(p.getData().get("RoleType").get("values").asText()))
-            .collect(Collectors.toList());
-
-
         Set<Object> facts = new HashSet<>();
-        facts.addAll(filterPatten);
-        facts.add(assignmentRequest.getRequest());
-        facts.addAll(assignmentRequest.getRequestedRoles());
+
         if (assignmentRequest.getRequest().getRequestType() == RequestType.CREATE) {
+            // Package up the request and the assignments
+            //Pre defined role configuration
+            List<Role> role = JacksonUtils.getConfiguredRoles().get("roles");
+
+            //Filter List<Role> based on incoming role names
+            Set<String> roleNames = assignmentRequest.getRequestedRoles().stream()
+                .map(RoleAssignment::getRoleName)
+                .collect(Collectors.toSet());
+
+            List<Role> filterRole = role.stream()
+                .filter(e -> roleNames.contains(e.getName()))
+                .collect(Collectors.toList());
+
+
+            // fetch List<Pattern> from List<Role>
+            List<List<Pattern>> patterns = filterRole.stream().map(Role::getPatterns).collect(Collectors.toList());
+
+            List<Pattern> pattern = patterns.stream().flatMap(List::stream).map(element -> element)
+                .collect(Collectors.toList());
+
+
+            //filter List<Pattern> based on incoming roleTypes
+            Set<String> roleTypes = assignmentRequest.getRequestedRoles().stream()
+                .map(roleAssignment -> roleAssignment.getRoleType().toString())
+                .collect(Collectors.toSet());
+
+            List<Pattern> filterPatten = pattern.stream()
+                .filter(p -> roleTypes.contains(p.getData().get("RoleType").get("values").asText()))
+                .collect(Collectors.toList());
+
+            facts.addAll(filterPatten);
+            facts.add(assignmentRequest.getRequest());
+            facts.addAll(assignmentRequest.getRequestedRoles());
+
             addExistingRecordsByQueryParam(assignmentRequest, facts);
+        }
+        if (assignmentRequest.getRequest().getRequestType() == RequestType.DELETE) {
+            facts.add(assignmentRequest.getRequest());
+            facts.addAll(assignmentRequest.getRequestedRoles());
+            addExistingRecordsForDelete(assignmentRequest, facts);
         }
 
 
@@ -190,9 +197,11 @@ public class ValidationModelService {
         List<ExistingRoleAssignment> existingRecords = new ArrayList<>();
 
         for (RoleAssignment element : roleAssignments) {
-            ExistingRoleAssignment existingRoleAssignment = ExistingRoleAssignment.builder().build();
+            ExistingRoleAssignment existingRoleAssignment = ExistingRoleAssignment.builder()
+                .build();
             try {
                 copyProperties(existingRoleAssignment, element);
+                existingRoleAssignment.setLog("Existing Records");
                 existingRecords.add(existingRoleAssignment);
             } catch (Exception e) {
                 log.error(
@@ -202,6 +211,37 @@ public class ValidationModelService {
             }
         }
         return existingRecords;
+    }
+
+    public void addExistingRecordsForDelete(AssignmentRequest assignmentRequest, Set<Object> facts) {
+
+        Set<String> actorId = new HashSet<>();
+        actorId.add(assignmentRequest.getRequest().getAuthenticatedUserId());
+        Set<RoleAssignment> assignments = assignmentRequest.getRequestedRoles().stream().filter(role ->
+                                                           role.getActorId().equals(
+                                                           assignmentRequest.getRequest().getAuthenticatedUserId())
+                                                            && (role.getRoleName().equals(TRIBUNAL_CASEWORKER)
+                                                      || role.getRoleName().equals("senior-tribunal-caseworker"))
+                                                      && role.getRoleType() == RoleType.ORGANISATION
+                                                       && role.getAttributes().get("jurisdiction").asText()
+                                                               .equals("IA")).collect(Collectors.toSet());
+
+        Set<RoleAssignment> judgeAssignments = assignmentRequest.getRequestedRoles().stream().filter(role ->
+                                                                  role.getRoleName().equals("judge")
+
+
+        ).collect(Collectors.toSet());
+        Optional<RoleAssignment> roleAssignmentOptional = assignments.stream().findFirst();
+        if (!assignments.isEmpty()) {
+            List<ExistingRoleAssignment> existingRecords = convertRoleAssignmentIntoExistingRecords(
+                roleAssignmentOptional.isPresent() ? Arrays.asList(roleAssignmentOptional.get()) :
+                Collections.emptyList());
+            facts.addAll(existingRecords);
+        } else if (judgeAssignments.isEmpty()) {
+            executeQueryParamForCaseRole(facts, new HashSet<>(), actorId);
+        }
+
+
     }
 
 
