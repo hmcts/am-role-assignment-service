@@ -8,8 +8,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
 import uk.gov.hmcts.reform.roleassignment.domain.model.Pattern;
 import com.fasterxml.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
-
 
 
 rule "R03_stcw_rule_for_org" salience 90
@@ -36,7 +34,6 @@ end;
 rule "R11_stcw_delete_validation" salience 65
 when
     $request  : Request(id!= null,requestType == RequestType.DELETE,status == Status.CREATED)
-    ExistingRoleAssignment(actorId == $request.getAuthenticatedUserId())
     roleAssignment  : RoleAssignment(id!= null,roleName == "senior-tribunal-caseworker")
 
 then

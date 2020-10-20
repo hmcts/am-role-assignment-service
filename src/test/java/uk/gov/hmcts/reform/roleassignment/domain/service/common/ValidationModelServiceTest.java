@@ -129,7 +129,7 @@ class ValidationModelServiceTest {
         Set<Object> facts = new HashSet<>();
         sut.addExistingRecordsForDelete(assignmentRequest, facts);
         assertNotNull(facts);
-        assertEquals(1, facts.size());
+        assertEquals(0, facts.size());
 
 
     }
