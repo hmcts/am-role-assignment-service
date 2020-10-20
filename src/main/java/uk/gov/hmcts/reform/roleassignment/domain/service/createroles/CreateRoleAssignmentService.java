@@ -308,7 +308,6 @@ public class CreateRoleAssignmentService {
                 requestedAssignment.setId(entity.getId());
             }
 
-            //requestEntity.getHistoryEntities().add(entity);
         }
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
