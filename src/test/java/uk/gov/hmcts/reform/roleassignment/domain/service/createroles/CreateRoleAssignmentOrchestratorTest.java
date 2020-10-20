@@ -138,7 +138,7 @@ class CreateRoleAssignmentOrchestratorTest {
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         for (RoleAssignment requestedRole : result.getRequestedRoles()) {
-            assertEquals(REJECTED, requestedRole.getStatus());
+            assertEquals(LIVE, requestedRole.getStatus());
         }
         verifyNUmberOfInvocationsForRejectedRequest();
     }
@@ -404,8 +404,6 @@ class CreateRoleAssignmentOrchestratorTest {
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
-        verify(persistenceService, times(4))
-            .persistHistory(any(RoleAssignment.class), any(Request.class));
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
