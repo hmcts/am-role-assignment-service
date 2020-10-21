@@ -1,9 +1,0 @@
-{
-  "_guid_": "S-065_DeleteRoleAssignmentsByCaseId",
-  "_extends_": "DeleteDataForRoleAssignments",
-  "request": {
-    "pathVariables": {
-      "reference": "${[scenarioContext][parentContext][childContexts][S-065_CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
-    }
-  }
-}
