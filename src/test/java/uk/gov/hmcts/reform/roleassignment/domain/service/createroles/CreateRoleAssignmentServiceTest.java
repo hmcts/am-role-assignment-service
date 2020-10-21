@@ -223,7 +223,7 @@ class CreateRoleAssignmentServiceTest {
             .deleteRoleAssignment(any(RoleAssignment.class));
         verify(persistenceService, times(2))
             .persistActorCache(any(RoleAssignment.class));
-        verify(persistenceService, times(4))
+        verify(persistenceService, times(2))
             .persistHistory(any(RoleAssignment.class), any(Request.class));
 
     }
