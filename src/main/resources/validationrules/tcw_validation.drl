@@ -60,27 +60,38 @@ end;
 
 
 //**** rules for delete ****
-rule "R10_delete_validation" salience 70
+rule "R10_tcw_delete_validation_for_case" salience 70
 when
     $request  : Request(id!= null,requestType == RequestType.DELETE,status == Status.CREATED)
-    roleAssignment  : RoleAssignment(id!= null)
+    ExistingRoleAssignment(actorId == $request.getAuthenticatedUserId()) or ExistingRoleAssignment(actorId == $request.getAssignerId())
+    roleAssignment  : RoleAssignment(id!= null,roleName == "tribunal-caseworker",roleType == RoleType.CASE)
+
 then
-    $request.setLog(String.format("Request has been approved by rule :R10_delete_validation "));
+    $request.setLog(String.format("Request has been approved by rule :R10_tcw_delete_validation "));
+    roleAssignment.setLog("Requested Role has been approved for delete by the rule R10_tcw_delete_validation");
     $request.setStatus(Status.REQUEST_VALIDATED);
     roleAssignment.setStatus(Status.APPROVED);
     update(roleAssignment)
 end;
 
 
-rule "R11_delete_validation_fail" salience 65
+rule "R11_tcw_delete_validation_for_org" salience 70
 when
-    $request  : Request(id!= null,requestType == RequestType.DELETE)
-    $roleAssignment  : RoleAssignment(status!= Status.APPROVED)
+    $request  : Request(id!= null,requestType == RequestType.DELETE,status == Status.CREATED)
+    roleAssignment  : RoleAssignment(id!= null,roleName == "tribunal-caseworker",roleType == RoleType.ORGANISATION)
 
 then
-    $request.setLog(String.format("Request has been rejected by rule :R11_delete_validation_fail "));
-    $roleAssignment.setStatus(Status.REJECTED);
+    $request.setLog(String.format("Request has been approved by rule :R10_tcw_delete_validation "));
+    roleAssignment.setLog("Requested Role has been approved for delete by the rule R10_tcw_delete_validation");
+    $request.setStatus(Status.REQUEST_VALIDATED);
+    roleAssignment.setStatus(Status.APPROVED);
+    update(roleAssignment)
 end;
+
+
+
+
+
 
 
 
