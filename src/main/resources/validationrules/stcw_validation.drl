@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 
 
-
 rule "R03_stcw_rule_for_org" salience 90
  when
         $request:        Request(requestType == RequestType.CREATE)
@@ -29,4 +28,18 @@ then
    $roleAssignment.setLog(String.format("Requested role has been approved by the rule : %s ","R03_stcw_rule_for_org"));
    $request.setLog(String.format("Request has been approved by the rule : %s ","R03_stcw_rule_for_org"));
    update($roleAssignment)
+end;
+
+//**** rules for delete ****
+rule "R11_stcw_delete_validation" salience 65
+when
+    $request  : Request(id!= null,requestType == RequestType.DELETE,status == Status.CREATED)
+    roleAssignment  : RoleAssignment(id!= null,roleName == "senior-tribunal-caseworker")
+
+then
+    $request.setLog(String.format("Request has been approved by rule :R11_stcw_delete_validation "));
+    roleAssignment.setLog("Requested Role has been approved for delete by the rule R11_stcw_delete_validation");
+    $request.setStatus(Status.REQUEST_VALIDATED);
+    roleAssignment.setStatus(Status.APPROVED);
+    update(roleAssignment)
 end;
