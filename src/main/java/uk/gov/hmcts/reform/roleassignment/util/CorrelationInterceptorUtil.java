@@ -11,9 +11,9 @@ import java.util.UUID;
 public class CorrelationInterceptorUtil  {
 
     public String preHandle(final HttpServletRequest request) {
-        MDC.put(Constants.CORRELATION_ID_HEADER_NAME, ValidationUtil.sanitiseCorrelationId(
-            request.getHeader(Constants.CORRELATION_ID_HEADER_NAME)));
-        return getCorrelationIdFromHeader(request);
+        String correlationId = getCorrelationIdFromHeader(request);
+        MDC.put(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
+        return correlationId;
     }
 
     public void afterCompletion() {
@@ -25,8 +25,7 @@ public class CorrelationInterceptorUtil  {
         if (StringUtils.isBlank(request.getHeader(Constants.CORRELATION_ID_HEADER_NAME))) {
             correlationId = generateUniqueCorrelationId();
         } else {
-            correlationId = ValidationUtil.sanitiseCorrelationId(
-                request.getHeader(Constants.CORRELATION_ID_HEADER_NAME));
+            correlationId = request.getHeader(Constants.CORRELATION_ID_HEADER_NAME);
         }
         return correlationId;
     }
