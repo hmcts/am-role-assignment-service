@@ -107,7 +107,7 @@ public class ValidationModelService {
             facts.add(assignmentRequest.getRequest());
             facts.addAll(assignmentRequest.getRequestedRoles());
 
-            addExistingRecordsByQueryParam(assignmentRequest, facts);
+            addExistingOrgRolesForCreateValidation(assignmentRequest, facts);
         } else if (assignmentRequest.getRequest().getRequestType() == RequestType.DELETE) {
             List<RoleAssignment> roleAssignments = assignmentRequest.getRequestedRoles().stream()
                 .filter(roleAssignment -> roleAssignment.getRoleType() == RoleType.CASE && roleAssignment.getRoleName()
@@ -115,7 +115,7 @@ public class ValidationModelService {
 
 
             if (!roleAssignments.isEmpty()) {
-                addExistingRecordsForDelete(assignmentRequest, facts);
+                addExistingOrgRolesForDeleteValidation(assignmentRequest, facts);
             }
             facts.addAll(assignmentRequest.getRequestedRoles());
 
@@ -134,7 +134,7 @@ public class ValidationModelService {
 
     }
 
-    public void addExistingRecordsByQueryParam(AssignmentRequest assignmentRequest, Set<Object> facts) {
+    public void addExistingOrgRolesForCreateValidation(AssignmentRequest assignmentRequest, Set<Object> facts) {
 
         final long startTime = System.currentTimeMillis();
 
@@ -167,14 +167,14 @@ public class ValidationModelService {
         }
 
 
-        executeQueryParamForCaseRole(facts, requestActorIds, actorIds);
+        fetchExistingOrgRolesByQuery(facts, requestActorIds, actorIds);
 
         long endTime = System.currentTimeMillis();
         log.info("Execution time of addExistingRecordsByQueryParam() : {} in milli seconds ", (endTime - startTime));
 
     }
 
-    public void executeQueryParamForCaseRole(Set<Object> facts, Set<String> requestActorIds, Set<String> actorIds) {
+    public void fetchExistingOrgRolesByQuery(Set<Object> facts, Set<String> requestActorIds, Set<String> actorIds) {
         if (!actorIds.isEmpty()) {
 
             HashMap<String, List<String>> attributes = new HashMap<>();
@@ -219,7 +219,7 @@ public class ValidationModelService {
         return existingRecords;
     }
 
-    public void addExistingRecordsForDelete(AssignmentRequest assignmentRequest, Set<Object> facts) {
+    public void addExistingOrgRolesForDeleteValidation(AssignmentRequest assignmentRequest, Set<Object> facts) {
 
         Set<String> actorIds = new HashSet<>();
         actorIds.add(assignmentRequest.getRequest().getAuthenticatedUserId());
@@ -227,7 +227,7 @@ public class ValidationModelService {
             assignmentRequest.getRequest().getAuthenticatedUserId())) {
             actorIds.add(assignmentRequest.getRequest().getAssignerId());
         }
-        executeQueryParamForCaseRole(facts, new HashSet<>(), actorIds);
+        fetchExistingOrgRolesByQuery(facts, new HashSet<>(), actorIds);
     }
 
 

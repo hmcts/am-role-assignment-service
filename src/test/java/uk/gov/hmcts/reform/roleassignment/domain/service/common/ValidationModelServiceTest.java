@@ -83,7 +83,7 @@ class ValidationModelServiceTest {
         when(persistenceService.retrieveRoleAssignmentsByQueryRequest(any(), anyInt(), anyInt(), any(), any()))
             .thenReturn((List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection(LIVE));
         Set<Object> facts = new HashSet<>();
-        sut.executeQueryParamForCaseRole(facts, actorIds, requestActorIds);
+        sut.fetchExistingOrgRolesByQuery(facts, actorIds, requestActorIds);
         assertNotNull(facts);
         assertEquals(2, facts.size());
 
@@ -102,7 +102,7 @@ class ValidationModelServiceTest {
 
 
         Set<Object> facts = new HashSet<>();
-        sut.addExistingRecordsForDelete(assignmentRequest, facts);
+        sut.addExistingOrgRolesForDeleteValidation(assignmentRequest, facts);
         assertNotNull(facts);
         assertEquals(0, facts.size());
 
@@ -127,7 +127,7 @@ class ValidationModelServiceTest {
 
 
         Set<Object> facts = new HashSet<>();
-        sut.addExistingRecordsForDelete(assignmentRequest, facts);
+        sut.addExistingOrgRolesForDeleteValidation(assignmentRequest, facts);
         assertNotNull(facts);
         assertEquals(0, facts.size());
 
@@ -160,7 +160,7 @@ class ValidationModelServiceTest {
         when(persistenceService.retrieveRoleAssignmentsByQueryRequest(any(), anyInt(), anyInt(), any(), any()))
             .thenReturn((List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection(LIVE));
         Set<Object> facts = new HashSet<>();
-        sut.addExistingRecordsForDelete(assignmentRequest, facts);
+        sut.addExistingOrgRolesForDeleteValidation(assignmentRequest, facts);
         assertNotNull(facts);
         assertEquals(2, facts.size());
 
