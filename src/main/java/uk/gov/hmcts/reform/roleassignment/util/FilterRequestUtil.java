@@ -23,8 +23,9 @@ public class FilterRequestUtil extends OncePerRequestFilter {
                                     HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
 
-        final String correlationId =
-            ValidationUtil.sanitiseCorrelationId(correlationInterceptorUtil.preHandle(request));
+        ValidationUtil.sanitiseCorrelationId(request.getHeader(Constants.CORRELATION_ID_HEADER_NAME));
+        final String correlationId = correlationInterceptorUtil.preHandle(request);
+
         MutableHttpServletRequest mutableRequest = new MutableHttpServletRequest(request);
 
         //adding the id to the request header so subsequent calls do not generate new unique id's

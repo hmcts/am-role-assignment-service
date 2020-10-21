@@ -95,7 +95,7 @@ public class ValidationUtil {
         }
     }
 
-    public static String sanitiseCorrelationId(String inputString) {
+    public static void sanitiseCorrelationId(String inputString) {
         if (inputString != null && !inputString.isEmpty() && !Pattern.matches(Constants.UUID_PATTERN, inputString)) {
             throw new BadRequestException(
                 String.format(
@@ -103,7 +103,6 @@ public class ValidationUtil {
                     inputString
                 ));
         }
-        return inputString;
     }
 
     public static void compareRoleType(String roleType) {
