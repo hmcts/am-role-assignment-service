@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +22,8 @@ public class FilterRequestUtil extends OncePerRequestFilter {
     protected void doFilterInternal(@NotNull HttpServletRequest request,
                                     HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
-        final String correlationId = correlationInterceptorUtil.preHandle(request);
+        final String correlationId =
+            ValidationUtil.sanitiseCorrelationId(correlationInterceptorUtil.preHandle(request));
         MutableHttpServletRequest mutableRequest = new MutableHttpServletRequest(request);
         mutableRequest.putHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
         //adding the id to the request header so subsequent calls do not generate new unique id's
