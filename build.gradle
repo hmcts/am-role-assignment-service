@@ -215,6 +215,7 @@ pitest {
   excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
                      'uk.gov.hmcts.reform.roleassignment.config.*',
                      'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot',
+                     'uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest',
                      'uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType']
   excludedMethods = ['getListOfRoles', 'removeCorrelationLog', 'getExitCode', 'validateDateTime', 'requestInterceptor']
   threads = 15
@@ -239,6 +240,7 @@ sonarqube {
     property "sonar.exclusions", "build/generated-sources/**/*.java," +
       "**/SecurityConfiguration.java," +
       "**/SwaggerConfiguration.java," +
+      "**/MutableHttpServletRequest.java," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/*Application.java," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/config/**"
     property "sonar.pitest.mode", "reuseReport"
