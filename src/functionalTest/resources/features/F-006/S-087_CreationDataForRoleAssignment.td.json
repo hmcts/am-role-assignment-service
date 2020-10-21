@@ -1,27 +1,19 @@
 {
-  "_guid_": "S-065_CreationDataForRoleAssignment",
+  "_guid_": "S-087_CreationDataForRoleAssignment",
   "_extends_": "CreationDataForRoleAssignment",
-  "specs": [
-    "to create multiple role assignments having same CaseId"
-  ],
   "request": {
     "body": {
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "grantType": "CHALLENGED",
-          "attributes": {
-            "caseId": "${[scenarioContext][customValues][generateCaseId]}"
-          }
+          "grantType": "CHALLENGED"
         },
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "grantType": "CHALLENGED",
-          "attributes": {
-            "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
-          }
+          "roleType": "ORGANISATION",
+          "grantType": "STANDARD"
         }
       ]
     }
@@ -34,19 +26,14 @@
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "grantType": "CHALLENGED",
-            "attributes": {
-              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
-            }
+            "grantType": "CHALLENGED"
           },
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "grantType": "CHALLENGED",
-            "attributes": {
-              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
-            }
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD"
           }
         ]
       }
