@@ -22,12 +22,15 @@ public class FilterRequestUtil extends OncePerRequestFilter {
     protected void doFilterInternal(@NotNull HttpServletRequest request,
                                     HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
+
         final String correlationId =
             ValidationUtil.sanitiseCorrelationId(correlationInterceptorUtil.preHandle(request));
         MutableHttpServletRequest mutableRequest = new MutableHttpServletRequest(request);
-        mutableRequest.putHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
+
         //adding the id to the request header so subsequent calls do not generate new unique id's
-        response.addHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationInterceptorUtil.preHandle(mutableRequest));
+        mutableRequest.putHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
+        response.addHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
+
         filterChain.doFilter(mutableRequest, response);
     }
 }
