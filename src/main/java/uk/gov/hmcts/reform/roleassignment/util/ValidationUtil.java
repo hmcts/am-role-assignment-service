@@ -96,7 +96,7 @@ public class ValidationUtil {
     }
 
     public static String sanitiseCorrelationId(String inputString) {
-        if (!inputString.isEmpty() && !Pattern.matches(Constants.UUID_PATTERN, inputString)) {
+        if (inputString != null && !inputString.isEmpty() && !Pattern.matches(Constants.UUID_PATTERN, inputString)) {
             throw new BadRequestException(
                 String.format(
                     "The input parameter: \"%s\", does not comply with the required pattern",
