@@ -43,8 +43,9 @@ when
                            $classificationObj : JsonNode() from $classificationEntry
                            $grantTypeEntry : JsonNode() from $data["GrantType"]
                            $grantTypeObj : JsonNode() from $grantTypeEntry
-     $roleAssignment:      RoleAssignment(roleName == "judge",roleType == RoleType.ORGANISATION,
+     $roleAssignment:      RoleAssignment(roleName == "judge",
                            roleCategory == RoleCategory.JUDICIAL,
+                           roleType == RoleType.ORGANISATION,
                            classification.toString() == $classificationObj.asText(),
                            grantType.toString() == $grantTypeObj.asText())
 
@@ -56,4 +57,18 @@ then
    		$request.setLog(String.format("Request has been approved by the rule : %s ","R05_judge_rule_for_org"));
    		update($roleAssignment)
 
+ end;
+
+//**** rules for delete ****
+ rule "R12_judge_delete_validation" salience 65
+ when
+     $request  : Request(id!= null,requestType == RequestType.DELETE,status == Status.CREATED)
+     roleAssignment  : RoleAssignment(id!= null,roleName == "judge")
+
+ then
+     $request.setLog(String.format("Request has been approved by rule :R12_judge_delete_validation "));
+     roleAssignment.setLog("Requested Role has been approved for delete by the rule R12_judge_delete_validation");
+     $request.setStatus(Status.REQUEST_VALIDATED);
+     roleAssignment.setStatus(Status.APPROVED);
+     update(roleAssignment)
  end;
