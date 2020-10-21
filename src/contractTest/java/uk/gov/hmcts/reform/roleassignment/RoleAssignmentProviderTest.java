@@ -15,11 +15,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import org.springframework.context.annotation.Import;
+
 import java.io.IOException;
 
 @ExtendWith(SpringExtension.class)
 @Provider("am_role_assignment_service")
-@PactBroker(scheme = "http", host = "localhost", port = "9292")
+@PactBroker(scheme = "${PACT_BROKER_SCHEME:http}", host = "${PACT_BROKER_URL:localhost}",
+    port = "${PACT_BROKER_PORT:9292}")
 @Import(RoleAssignmentProviderTestConfiguration.class)
 public class RoleAssignmentProviderTest {
 
@@ -35,7 +37,7 @@ public class RoleAssignmentProviderTest {
     @BeforeEach
     void before(PactVerificationContext context) {
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
-
+        System.getProperties().setProperty("pact.verifier.publishResults", "true");
         testTarget.setControllers(new GetAssignmentController(
             retrieveRoleAssignmentServiceMock
         ));
