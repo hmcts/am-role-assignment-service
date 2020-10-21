@@ -115,11 +115,10 @@ public class ValidationModelService {
 
 
             if (!roleAssignments.isEmpty()) {
-                facts.addAll(roleAssignments);
                 addExistingRecordsForDelete(assignmentRequest, facts);
-            } else {
-                facts.addAll(assignmentRequest.getRequestedRoles());
             }
+            facts.addAll(assignmentRequest.getRequestedRoles());
+
             facts.add(assignmentRequest.getRequest());
         }
 
@@ -209,7 +208,6 @@ public class ValidationModelService {
                 .build();
             try {
                 copyProperties(existingRoleAssignment, element);
-                existingRoleAssignment.setLog("Existing Records");
                 existingRecords.add(existingRoleAssignment);
             } catch (Exception e) {
                 log.error(
