@@ -10,12 +10,12 @@ public final class MutableHttpServletRequest extends HttpServletRequestWrapper {
     // holds custom header and value mapping
     private final Map<String, String> customHeaders;
 
-    public MutableHttpServletRequest(HttpServletRequest request){
+    public MutableHttpServletRequest(HttpServletRequest request) {
         super(request);
         this.customHeaders = new HashMap<>();
     }
 
-    public void putHeader(String name, String value){
+    public void putHeader(String name, String value) {
         this.customHeaders.put(name, value);
     }
 
@@ -24,7 +24,7 @@ public final class MutableHttpServletRequest extends HttpServletRequestWrapper {
         // check the custom headers first
         String headerValue = customHeaders.get(name);
 
-        if (headerValue != null){
+        if (headerValue != null) {
             return headerValue;
         }
         // else return from into the original wrapped object
