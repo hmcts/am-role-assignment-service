@@ -11,7 +11,6 @@ import java.util.UUID;
 public class CorrelationInterceptorUtil  {
 
     public String preHandle(final HttpServletRequest request) {
-
         String correlationId = ValidationUtil.sanitiseCorrelationId(getCorrelationIdFromHeader(request));
         MDC.put(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
         return correlationId;
