@@ -98,10 +98,6 @@ public class ParseRequestService {
         return correlationInterceptorUtil.preHandle(httpServletRequest);
     }
 
-    public String getContextCorrelationId() {
-        return correlationInterceptorUtil.getContextCorrelation();
-    }
-
     public void removeCorrelationLog() {
         correlationInterceptorUtil.afterCompletion();
     }
