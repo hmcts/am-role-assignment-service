@@ -265,3 +265,17 @@ Feature: F-001 : Create Role Assignments
     Then a positive response is received,
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
+
+  @S-020 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
+  Scenario: must retain existing records when creation of any Role Assignment is not successful where ReplaceExisting is Trues
+    Given a user with [an active IDAM profile with full permissions],
+    And a successful call [to create a role assignment for an actor] as in [S-017_Multiple_Role_Creation],
+    When a request is prepared with appropriate values,
+    And the request [contains ReplaceExisting is true and have process and Reference values],
+    And the request [contains multiple Role Assignments just created and couple of new role assignments],
+    And the request [has invalid data for one of the new role assignment],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a negative response is received,
+    And the response has all other details as expected,
+    And a successful call [to get role assignments which created initially above] as in [GetRoleAssignmentsQueryRequest],
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
