@@ -5,10 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.io.IOException;
 import javax.servlet.FilterChain;
@@ -41,6 +43,7 @@ class FilterRequestUtilTest {
 
     @Test
     void doFilterInternal() throws ServletException, IOException {
+        Mockito.when(correlationInterceptorUtil.preHandle(any())).thenReturn("a5cff648-84b6-404d-83d6-f86b526cc59b");
         sut.doFilterInternal(httpServletRequest, httpServletResponse, filterChain);
         assertEquals(1, 1);
     }
