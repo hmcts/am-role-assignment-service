@@ -70,6 +70,7 @@ public class PersistenceUtil {
     }
 
     public RoleAssignmentEntity convertRoleAssignmentToEntity(RoleAssignment roleAssignment, boolean isNewFlag) {
+        String[] strArray1 = new String[]{"ddd"};
         return RoleAssignmentEntity.builder()
             .id(roleAssignment.getId())
             .actorId(roleAssignment.getActorId())
@@ -85,7 +86,7 @@ public class PersistenceUtil {
             .readOnly(roleAssignment.isReadOnly())
             .roleCategory(roleAssignment.getRoleCategory().toString())
             .authorisations(roleAssignment.getAuthorisations() != null && !roleAssignment.getAuthorisations().isEmpty()
-                                ? roleAssignment.getAuthorisations() : Collections.emptyList())
+                                ? roleAssignment.getAuthorisations().toArray(String[]::new) : new String[0])
             .isNewFlag(isNewFlag)
             .build();
     }
@@ -143,8 +144,9 @@ public class PersistenceUtil {
             .endTime(roleAssignmentEntity.getEndTime())
             .created(roleAssignmentEntity.getCreated())
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
-            .authorisations(roleAssignmentEntity.getAuthorisations() != null && !roleAssignmentEntity
-                .getAuthorisations().isEmpty() ? roleAssignmentEntity.getAuthorisations() : Collections.emptyList())
+            .authorisations(roleAssignmentEntity.getAuthorisations() != null && roleAssignmentEntity
+                .getAuthorisations().length > 0 ? Arrays.asList(roleAssignmentEntity.getAuthorisations().clone()) :
+                                Collections.emptyList())
             .build();
     }
 

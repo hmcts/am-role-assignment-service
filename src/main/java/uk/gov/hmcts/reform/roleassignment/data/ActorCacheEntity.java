@@ -32,7 +32,7 @@ public class ActorCacheEntity implements Persistable<String> {
     @Column(name = "etag", nullable = false)
     private long etag;
 
-    @Column(name = "json_response", nullable = false, columnDefinition = "jsonb")
+    @Column(name = "json_response", nullable = true, columnDefinition = "jsonb")
     @Convert(converter = JsonBConverter.class)
     private JsonNode roleAssignmentResponse;
 
