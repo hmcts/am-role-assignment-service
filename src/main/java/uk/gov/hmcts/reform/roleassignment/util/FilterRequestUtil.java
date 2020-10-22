@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-@java.lang.SuppressWarnings("squid:S5167")
+@SuppressWarnings("squid:S5167")
 @Component
 public class FilterRequestUtil extends OncePerRequestFilter {
 
