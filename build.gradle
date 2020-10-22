@@ -249,7 +249,6 @@ sonarqube {
   }
 }
 
-project.tasks['sonarqube'].dependsOn test, integration, jacocoTestReport
 project.tasks['sonarqube'].group = "Verification"
 
 dependencyUpdates.resolutionStrategy {

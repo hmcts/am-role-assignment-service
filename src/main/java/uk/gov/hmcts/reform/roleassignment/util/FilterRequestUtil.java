@@ -34,7 +34,6 @@ public class FilterRequestUtil extends OncePerRequestFilter {
             response.addHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
         }
 
-
         filterChain.doFilter(mutableRequest, response);
     }
 }
