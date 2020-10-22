@@ -1,42 +1,32 @@
 [
   {
     "name": "judge",
-    "label": "Judge",
+    "label": "Judge - Sample role (Only for Testing)",
     "description": "Judicial office holder able to do judicial case work",
     "category": "JUDICIAL",
     "patterns": [
       {
         "data": {
           "RoleType": {
-            "values":
-              "ORGANISATION",
-            "mandatory": true
-          },
-          "Classification": {
             "mandatory": true,
-            "values": [
-              "PUBLIC",
-              "PRIVATE"
-            ]
+            "values": "ORGANISATION"
           },
           "GrantType": {
             "mandatory": true,
-            "values": [
-              "STANDARD"
-            ]
+            "values": ["STANDARD"]
+          },
+          "Classification": {
+            "mandatory": true,
+            "values": ["PUBLIC","PRIVATE"]
           },
           "Attributes": {
             "Region": {
               "mandatory": true,
-              "values": [
-                "north-east","south-east"
-              ]
+              "values": ["north-east","south-east"]
             },
             "Jurisdiction": {
               "mandatory": true,
-              "values": [
-                "divorce","child-abused"
-              ]
+              "values": ["divorce","IA"]
             }
           }
         }
@@ -45,22 +35,15 @@
         "data": {
           "RoleType": {
             "mandatory": true,
-            "values":
-              "CASE"
-
-          },
-          "Classification": {
-            "mandatory": true,
-            "values": [
-              "PUBLIC"
-            ]
+            "values": "CASE"
           },
           "GrantType": {
             "mandatory": true,
-            "values": [
-              "SPECIFIC",
-              "CHALLENGED"
-            ]
+            "values": ["SPECIFIC","CHALLENGED"]
+          },
+          "Classification": {
+            "mandatory": true,
+            "values": ["PUBLIC"]
           },
           "Begin": {
             "mandatory": true
@@ -68,7 +51,6 @@
           "Attributes": {
             "CaseId": {
               "mandatory": true
-
             }
           }
         }
@@ -76,19 +58,87 @@
     ]
   },
   {
-    "name": "judicial_management",
-    "label": "Judicial Management",
-    "description": "This role is required to manage other judicial roles.",
-    "category": "JUDICIAL",
+    "name": "tribunal-caseworker",
+    "label": "Tribunal Caseworker",
+    "description": "Tribunal caseworker",
+    "category": "STAFF",
     "patterns": [
       {
         "data": {
           "RoleType": {
             "mandatory": true,
-            "values": [
-              "ORGANISATION",
-              "CASE"
-            ]
+            "values": "ORGANISATION"
+          },
+          "GrantType": {
+            "mandatory": true,
+            "values": ["STANDARD"]
+          },
+          "Classification": {
+            "mandatory": true,
+            "values": ["PUBLIC", "PRIVATE"]
+          },
+          "Attributes": {
+            "jurisdiction": {
+              "mandatory": true,
+              "values": ["IA"]
+            },
+            "primaryLocation": {
+              "mandatory": true
+            }
+          }
+        }
+      },
+      {
+        "data": {
+          "RoleType": {
+            "mandatory": true,
+            "values": "CASE"
+          },
+          "GrantType": {
+            "mandatory": true,
+            "values": ["SPECIFIC"]
+          },
+          "Classification": {
+            "mandatory": true,
+            "values": ["PUBLIC"]
+          },
+          "Attributes": {
+            "CaseId": {
+              "mandatory": true
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "senior-tribunal-caseworker",
+    "label": "Senior Tribunal Caseworker",
+    "description": "Senior Tribunal caseworker",
+    "category": "STAFF",
+    "patterns": [
+      {
+        "data": {
+          "RoleType": {
+            "mandatory": true,
+            "values": "ORGANISATION"
+          },
+          "GrantType": {
+            "mandatory": true,
+            "values": ["STANDARD"]
+          },
+          "Classification": {
+            "mandatory": true,
+            "values": ["PUBLIC", "PRIVATE"]
+          },
+          "Attributes": {
+            "jurisdiction": {
+              "mandatory": true,
+              "values": ["IA"]
+            },
+            "primaryLocation": {
+              "mandatory": true
+            }
           }
         }
       }

@@ -1,9 +1,11 @@
 {
-  "title": "must successfully receive multiple Role Assignments with one query param",
-  "_guid_": "S-081",
+  "title": "must successfully receive Role Assignments without optional headers",
+  "_guid_": "S-086",
   "_extends_": "F-006_Test_Data_Base",
   "specs": [
-    "contains one search query param"
+    "does not have size header",
+    "does not have sort header",
+    "does not have direction header"
   ],
 
   "request": {

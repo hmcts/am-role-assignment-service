@@ -15,7 +15,9 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "roleType": "ORGANISATION",
+          "grantType": "STANDARD"
         },
         {
           "_extends_": "RequestedRole",
@@ -43,7 +45,9 @@
       "requestedRoles": [
         {
           "_extends_": "ResponseRequestedRole",
-          "status":"REJECTED"
+          "status":"REJECTED",
+          "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
+          "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}"
         },
         {
           "_extends_": "ResponseRequestedRole",

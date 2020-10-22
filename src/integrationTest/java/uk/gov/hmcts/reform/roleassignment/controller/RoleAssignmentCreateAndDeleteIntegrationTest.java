@@ -116,7 +116,9 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
-        {"classpath:sql/role_assignment_clean_up.sql"})
+        {"classpath:sql/role_assignment_clean_up.sql",
+            "classpath:sql/insert_organisation_role_assignment.sql"
+            })
     public void shouldCreateRoleAssignmentsWithReplaceExistingTrue() throws Exception {
         logger.info(" History record count before create assignment request {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count before create assignment request {}", getAssignmentRecordsCount());
@@ -139,7 +141,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         assertEquals(CREATED, statusList.get(0));
         assertEquals(APPROVED, statusList.get(1));
         assertEquals(LIVE, statusList.get(2));
-        assertEquals(1, getAssignmentRecordsCount().longValue());
+        assertEquals(3, getAssignmentRecordsCount().longValue());
         assertEquals(ACTOR_ID, getActorFromAssignmentTable());
         logger.info(" History record count after create request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count after create assignment request: {}", getAssignmentRecordsCount());
@@ -172,7 +174,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         assertEquals(APPROVED, newStatusList.get(5));
         assertEquals(DELETED, newStatusList.get(6));
         assertEquals(LIVE, newStatusList.get(7));
-        assertEquals(1, getAssignmentRecordsCount().longValue());
+        assertEquals(3, getAssignmentRecordsCount().longValue());
         assertEquals(ACTOR_ID, getActorFromAssignmentTable());
         logger.info(" History record count after create request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count after create assignment request : {}", getAssignmentRecordsCount());
