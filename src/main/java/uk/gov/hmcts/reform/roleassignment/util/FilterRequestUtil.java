@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest;
 
 import javax.servlet.FilterChain;
@@ -35,7 +36,14 @@ public class FilterRequestUtil extends OncePerRequestFilter {
         String whiteList = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-"
             + "[089ab][0-9a-f]{3}-[0-9a-f]{12}$";
         boolean match = Pattern.matches(whiteList, correlationId);
-        if (match) {
+        if (!match) {
+            throw new BadRequestException(
+                String.format(
+                    "The input parameter: \"%s\", does not comply with the required pattern",
+                    correlationId
+                ));
+
+        } else {
             mutableRequest.putHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
             response.addHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
         }
