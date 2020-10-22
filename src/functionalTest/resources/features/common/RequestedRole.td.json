@@ -8,8 +8,8 @@
   "classification": "PUBLIC",
   "grantType": "SPECIFIC",
   "readOnly": false,
-  "beginTime" : "2021-01-01T00:00Z",
-  "endTime" : "2023-01-01T00:00Z",
+  "beginTime" : "2021-01-01T00:00:00Z",
+  "endTime" : "2023-01-01T00:00:00Z",
   "authorisations" : [ ],
   "attributes":
   {
