@@ -26,8 +26,8 @@ public class CorrelationInterceptorUtil  {
             correlationId = generateUniqueCorrelationId();
         } else {
             correlationId = request.getHeader(Constants.CORRELATION_ID_HEADER_NAME);
-            ValidationUtil.sanitiseCorrelationId(correlationId);
         }
+        ValidationUtil.sanitiseCorrelationId(correlationId);
         return correlationId;
     }
 
