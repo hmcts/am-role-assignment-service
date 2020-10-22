@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
-@java.lang.SuppressWarnings("squid:S5167")
+@SuppressWarnings("squid:S5167")
 @Component
 public class CorrelationInterceptorUtil  {
 
