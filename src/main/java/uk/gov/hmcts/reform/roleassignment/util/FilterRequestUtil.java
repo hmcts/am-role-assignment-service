@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-import liquibase.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,10 +29,10 @@ public class FilterRequestUtil extends OncePerRequestFilter {
         MutableHttpServletRequest mutableRequest = new MutableHttpServletRequest(request);
 
         //adding the id to the request header so subsequent calls do not generate new unique id's
-        if (StringUtils.isNotEmpty(correlationId)) {
-            mutableRequest.putHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
-            response.addHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
-        }
+        ValidationUtil.sanitiseCorrelationId(correlationId);
+        mutableRequest.putHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
+        response.addHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
+
 
         filterChain.doFilter(mutableRequest, response);
     }
