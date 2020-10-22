@@ -5,14 +5,14 @@
   <changeSet id="15" author="nitish.singla@hmcts.net">
 
     <addColumn tableName="role_assignment">
-      <column name="authorisations" type="text[]" defaultValueComputed="'{None}'::text[]">
+      <column name="authorisations" type="text">
         <constraints nullable="true"/>
       </column>
     </addColumn>
 
-    <!--<dropTable cascadeConstraints="true"-->
-    <!--           schemaName="public"-->
-    <!--           tableName="role_assignment_authorisations"/>-->
+    <dropTable cascadeConstraints="true"
+               schemaName="public"
+               tableName="role_assignment_authorisations"/>
 
   </changeSet>
 </databaseChangeLog>
