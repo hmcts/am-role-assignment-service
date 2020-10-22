@@ -9,11 +9,11 @@
     {
       "actorIdType": "IDAM",
       "actorId": "3168da13-00b3-41e3-81fa-cbc71ac28a0f",
-      "roleType": "CASE",
+      "roleType": "ORGANISATION",
       "roleName": "judge",
       "roleCategory": "JUDICIAL",
       "classification": "PUBLIC",
-      "grantType": "STANDARD",
+      "grantType": "SPECIFIC",
       "readOnly": false,
       "beginTime": "2021-01-01T00:00Z",
       "endTime": "2023-01-01T00:00Z",

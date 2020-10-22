@@ -112,7 +112,7 @@ public class DeleteAssignmentController {
     public ResponseEntity<Object> deleteRoleAssignmentById(@RequestHeader(value = "x-correlation-id", required = false)
                                                                String correlationId,
                                                            @ApiParam(value = "assignmentId", required = true)
-                                                           @PathVariable String assignmentId) {
+                                                           @PathVariable String assignmentId)  {
         return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByAssignmentId(assignmentId);
     }
 }

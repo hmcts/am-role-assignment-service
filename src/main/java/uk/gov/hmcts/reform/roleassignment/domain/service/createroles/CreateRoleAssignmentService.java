@@ -145,7 +145,9 @@ public class CreateRoleAssignmentService {
 
         Request request = parsedAssignmentRequest.getRequest();
         //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
+
         insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED, rejectedAssignmentIds);
+
 
         // Insert parsedAssignmentRequest.getRequestedRoles() records into history table with status REJECTED
         insertRequestedRole(parsedAssignmentRequest, Status.REJECTED, rejectedAssignmentIds);
@@ -295,14 +297,17 @@ public class CreateRoleAssignmentService {
                     "Requested Role has been rejected due to following new/existing assignment Ids :"
                         + rejectedAssignmentIds.toString());
             }
-            requestedAssignment.setStatus(status);
-            // persist history in db
-            HistoryEntity entity = persistenceService.persistHistory(
-                requestedAssignment,
-                assignmentRequest.getRequest()
-            );
-            requestedAssignment.setId(entity.getId());
-            requestEntity.getHistoryEntities().add(entity);
+            if (requestedAssignment.getStatus() == Status.APPROVED
+                || requestedAssignment.getStatus() == Status.DELETE_APPROVED || requestedAssignment.getStatus().equals(
+                Status.CREATED)) {
+                requestedAssignment.setStatus(status);
+                HistoryEntity entity = persistenceService.persistHistory(
+                    requestedAssignment,
+                    assignmentRequest.getRequest()
+                );
+                requestedAssignment.setId(entity.getId());
+            }
+
         }
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
@@ -313,11 +318,10 @@ public class CreateRoleAssignmentService {
         ));
     }
 
+
     public boolean hasAssignmentsUpdated(AssignmentRequest existingAssignmentRequest,
                                          AssignmentRequest parsedAssignmentRequest)
         throws InvocationTargetException, IllegalAccessException {
-        long startTime = System.currentTimeMillis();
-        logger.info(String.format("hasAssignmentsUpdated execution started at %s", startTime));
 
         needToRetainRoleAssignments = new HashSet<>();
         // convert existing assignment records into role assignment subset
@@ -338,11 +342,7 @@ public class CreateRoleAssignmentService {
             incomingRecords,
             commonRecords
         );
-        logger.info(String.format(
-            "hasAssignmentsUpdated execution finished at %s . Time taken = %s milliseconds",
-            System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
-        ));
+
 
         // prepare tempList from incoming requested roles
         return !needToDeleteRoleAssignments.isEmpty() || !needToCreateRoleAssignments.isEmpty();
@@ -363,9 +363,6 @@ public class CreateRoleAssignmentService {
     void identifyRoleAssignments(Map<UUID, RoleAssignmentSubset> existingRecords,
                                  Set<RoleAssignmentSubset> incomingRecords,
                                  Map<UUID, RoleAssignmentSubset> commonRecords) {
-        long replaceExisting = System.currentTimeMillis();
-        logger.info(String.format("identifyRoleAssignments execution started at %s", replaceExisting));
-
         // initialize  needToCreateRoleAssignment & needToDeleteRoleAssignment
         needToCreateRoleAssignments = new HashSet<>();
         needToDeleteRoleAssignments = new HashMap<>();
@@ -391,11 +388,6 @@ public class CreateRoleAssignmentService {
         } else if (commonRecords.isEmpty() && incomingRecords.isEmpty() && !existingRecords.isEmpty()) {
             needToDeleteRoleAssignments = existingRecords;
         }
-        logger.info(String.format(
-            "identifyRoleAssignments execution finished at %s . Time taken = %s milliseconds",
-            System.currentTimeMillis(),
-            System.currentTimeMillis() - replaceExisting
-        ));
     }
 
     private Set<RoleAssignmentSubset> findCreateRoleAssignments(Set<RoleAssignmentSubset> incomingRecords,
@@ -429,28 +421,16 @@ public class CreateRoleAssignmentService {
     }
 
     private void deleteRecords(AssignmentRequest existingAssignmentRequest) {
-        long startTime = System.currentTimeMillis();
-        logger.info(String.format("deleteRecords execution started at %s", startTime));
-
         //delete existingAssignmentRequest.getRequestedRoles() records from live table--Hard delete
         deleteLiveAssignments(existingAssignmentRequest.getRequestedRoles());
 
         //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-soft
         // delete
         insertRequestedRole(existingAssignmentRequest, Status.DELETED, emptyUUIds);
-        logger.info(String.format(
-            "deleteRecords execution finished at %s . Time taken = %s milliseconds",
-            System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
-        ));
-
     }
 
     public ResponseEntity<Object> duplicateRequest(AssignmentRequest existingAssignmentRequest,
                                                    AssignmentRequest parsedAssignmentRequest) {
-        long startTime = System.currentTimeMillis();
-        logger.info(String.format("duplicateRequest execution started at %s", startTime));
-
         parsedAssignmentRequest.getRequest().setStatus(Status.APPROVED);
         requestEntity.setStatus(Status.APPROVED.toString());
         requestEntity.setLog(
@@ -467,11 +447,6 @@ public class CreateRoleAssignmentService {
         ResponseEntity<Object> result = prepareResponseService.prepareCreateRoleResponse(
             parsedAssignmentRequest);
         parseRequestService.removeCorrelationLog();
-        logger.info(String.format(
-            "duplicateRequest execution finished at %s . Time taken = %s milliseconds",
-            System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
-        ));
         return result;
     }
 
@@ -504,8 +479,6 @@ public class CreateRoleAssignmentService {
     }
 
     public void updateExistingAssignments(AssignmentRequest existingAssignmentRequest) {
-        long startTime = System.currentTimeMillis();
-        logger.info(String.format("updateExistingAssignments execution started at %s", startTime));
 
         List<RoleAssignment> roleAssignmentList = existingAssignmentRequest.getRequestedRoles().stream().filter(
             e -> needToDeleteRoleAssignments.containsKey(
@@ -517,18 +490,10 @@ public class CreateRoleAssignmentService {
         existingAssignmentRequest.setRequestedRoles(roleAssignmentList);
         //validation
         evaluateDeleteAssignments(existingAssignmentRequest);
-        logger.info(String.format(
-            "updateExistingAssignments execution finished at %s . Time taken = %s milliseconds",
-            System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
-        ));
     }
 
     @NotNull
     public AssignmentRequest retrieveExistingAssignments(AssignmentRequest parsedAssignmentRequest) {
-        long replaceExisting = System.currentTimeMillis();
-        logger.info(String.format("retrieveExistingAssignments execution started at %s", replaceExisting));
-
         AssignmentRequest existingAssignmentRequest;
         Request request = parsedAssignmentRequest.getRequest();
         List<RoleAssignment> existingAssignments = persistenceService.getAssignmentsByProcess(
@@ -540,29 +505,16 @@ public class CreateRoleAssignmentService {
         existingAssignments.sort(createdTimeComparator);
         //create a new existing assignment request for delete records
         existingAssignmentRequest = new AssignmentRequest(parsedAssignmentRequest.getRequest(), existingAssignments);
-        logger.info(String.format(
-            "retrieveExistingAssignments execution finished at %s . Time taken = %s milliseconds",
-            System.currentTimeMillis(),
-            System.currentTimeMillis() - replaceExisting
-        ));
         return existingAssignmentRequest;
     }
 
     private void evaluateDeleteAssignments(AssignmentRequest existingAssignmentRequest) {
-        long startTime = System.currentTimeMillis();
-        logger.info(String.format("replaceExisting execution started at %s", startTime));
 
         //calling drools rules for validation
         validationModelService.validateRequest(existingAssignmentRequest);
 
         // we are mocking delete rejected status
         checkDeleteApproved(existingAssignmentRequest);
-        logger.info(String.format(
-            "replaceExisting execution finished at %s . Time taken = %s milliseconds",
-            System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
-        ));
-
     }
 
     public void checkAllApproved(AssignmentRequest parsedAssignmentRequest) {

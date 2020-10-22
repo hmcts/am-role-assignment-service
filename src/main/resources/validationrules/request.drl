@@ -1,3 +1,4 @@
+/*
 package validationrules
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -15,7 +16,8 @@ $request.setLog(String.format("Request has been validated by rule : %s","R02_req
 $request.setStatus(Status.REQUEST_VALIDATED);
 end;
 
-//**** rules for delete ****
+/*/
+/**** rules for delete ****
 rule "R03_delete_validation" salience 85
 
 when
@@ -55,3 +57,4 @@ end;
 
 
 
+*/

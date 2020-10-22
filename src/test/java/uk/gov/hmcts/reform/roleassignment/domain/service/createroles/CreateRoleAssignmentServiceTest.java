@@ -41,6 +41,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPRO
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
 
 class CreateRoleAssignmentServiceTest {
 
@@ -222,7 +223,7 @@ class CreateRoleAssignmentServiceTest {
             .deleteRoleAssignment(any(RoleAssignment.class));
         verify(persistenceService, times(2))
             .persistActorCache(any(RoleAssignment.class));
-        verify(persistenceService, times(4))
+        verify(persistenceService, times(2))
             .persistHistory(any(RoleAssignment.class), any(Request.class));
 
     }
@@ -303,6 +304,52 @@ class CreateRoleAssignmentServiceTest {
         verify(persistenceService, times(1))
             .persistRoleAssignment(any(RoleAssignment.class));
 
+
+    }
+
+    @Test
+    void checkAllApproved_ByDrool_Rejected_Scenario() throws IOException {
+
+        incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, REJECTED,
+                                                                           false
+        );
+        existingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, REJECTED,
+                                                                           false
+        );
+        //prepare request entity
+        requestEntity = TestDataBuilder.buildRequestEntity(existingAssignmentRequest.getRequest());
+
+        sut.setRequestEntity(requestEntity);
+
+        //build history entity
+        historyEntity = TestDataBuilder.buildHistoryIntoEntity(
+            existingAssignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
+
+        //set history entity into request entity
+        Set<HistoryEntity> historyEntities = new HashSet<>();
+        historyEntities.add(historyEntity);
+        requestEntity.setHistoryEntities(historyEntities);
+
+        when(persistenceUtil.convertHistoryEntityToRoleAssignment(any(HistoryEntity.class)))
+            .thenReturn(existingAssignmentRequest.getRequestedRoles().iterator().next());
+        when(persistenceService.persistHistory(
+            any(RoleAssignment.class),
+            any(Request.class)
+        )).thenReturn(historyEntity);
+
+        //actual method call
+        sut.checkAllApproved(incomingAssignmentRequest);
+
+        //assertion
+        verify(persistenceService, times(2))
+            .updateRequest(any(RequestEntity.class));
+
+        verify(persistenceService, times(0))
+            .persistActorCache(any(RoleAssignment.class));
+        verify(persistenceService, times(0))
+            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(persistenceService, times(0))
+            .persistRoleAssignment(any(RoleAssignment.class));
 
     }
 
