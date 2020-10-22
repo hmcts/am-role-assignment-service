@@ -151,9 +151,11 @@ public class PersistenceService {
     private ActorCache prepareActorCache(RoleAssignment roleAssignment) {
         ActorCache actorCache = new ActorCache();
         actorCache.setActorId(roleAssignment.getActorId());
-        Set<RoleAssignmentEntity> roleAssignmentEntities =
+        //call to live table
+        /* Set<RoleAssignmentEntity> roleAssignmentEntities =
             roleAssignmentRepository.findByActorId(roleAssignment.getActorId());
-        actorCache.setRoleAssignments(roleAssignmentEntities);
+        //feed set of role assignments
+        actorCache.setRoleAssignments(roleAssignmentEntities);*/
         return actorCache;
     }
 
