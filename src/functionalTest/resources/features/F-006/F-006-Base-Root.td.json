@@ -10,7 +10,6 @@
     "headers": {
       "Authorization": "[[DEFAULT_AUTO_VALUE]]",
       "ServiceAuthorization": "[[DEFAULT_AUTO_VALUE]]",
-      "X-Correlation-ID": "003352d0-e699-48bc-b6f5-5810411e60af",
       "Content-Type": "application/json"
     }
   },
