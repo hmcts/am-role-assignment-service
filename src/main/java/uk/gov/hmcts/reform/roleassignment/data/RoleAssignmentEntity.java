@@ -10,7 +10,6 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
-import uk.gov.hmcts.reform.roleassignment.util.StringListConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -18,7 +17,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Builder(toBuilder = true)
@@ -73,8 +71,8 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
 
     @Column(name = "authorisations")
     //@ElementCollection(targetClass = String.class)
-    @Convert(converter = StringListConverter.class)
-    private List<String> authorisations;
+    //@Convert(converter = StringListConverter.class)
+    private String authorisations;
 
     @Builder.Default
     @Transient
