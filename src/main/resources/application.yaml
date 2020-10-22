@@ -52,6 +52,7 @@ spring:
   jackson:
     default-property-inclusion: NON_NULL
   jpa:
+    show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:

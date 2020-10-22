@@ -10,9 +10,9 @@
       </column>
     </addColumn>
 
-    <dropTable cascadeConstraints="true"
+<!--    <dropTable cascadeConstraints="true"
                schemaName="public"
-               tableName="role_assignment_authorisations"/>
+               tableName="role_assignment_authorisations"/>-->
 
   </changeSet>
 </databaseChangeLog>
