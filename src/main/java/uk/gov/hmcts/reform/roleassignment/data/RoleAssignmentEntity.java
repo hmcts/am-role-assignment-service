@@ -11,12 +11,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import java.time.ZonedDateTime;
@@ -74,11 +71,8 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
     @Convert(converter = JsonBConverter.class)
     private JsonNode attributes;
 
-
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "role_assignment_authorisations", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "authorisations")
-    private List<String> authorisations;
+    private String authorisations;
 
     @Builder.Default
     @Transient
@@ -88,5 +82,6 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
     public boolean isNew() {
         return isNewFlag;
     }
+
 }
 
