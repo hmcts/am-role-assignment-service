@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-  <changeSet id="11" author="nitish.singla@hmcts.net">
+  <changeSet id="5" author="nitish.singla@hmcts.net">
     <modifyDataType tableName="actor_cache_control" columnName="actor_id" newDataType="text"/>
     <modifyDataType tableName="role_assignment" columnName="actor_id" newDataType="text"/>
     <modifyDataType tableName="role_assignment_history" columnName="actor_id" newDataType="text"/>
