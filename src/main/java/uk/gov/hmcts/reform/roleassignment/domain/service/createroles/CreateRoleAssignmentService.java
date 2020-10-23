@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -27,8 +26,6 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
