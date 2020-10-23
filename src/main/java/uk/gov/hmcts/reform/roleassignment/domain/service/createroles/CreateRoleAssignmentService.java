@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -25,6 +26,9 @@ import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -505,6 +509,10 @@ public class CreateRoleAssignmentService {
         existingAssignments.sort(createdTimeComparator);
         //create a new existing assignment request for delete records
         existingAssignmentRequest = new AssignmentRequest(parsedAssignmentRequest.getRequest(), existingAssignments);
+        existingAssignmentRequest.getRequestedRoles().forEach(requestedRole -> {
+            requestedRole.setBeginTime(requestedRole.getBeginTime().withZoneSameLocal(ZoneId.of("UTC")));
+            requestedRole.setEndTime(requestedRole.getEndTime().withZoneSameLocal(ZoneId.of("UTC")));
+        });
         return existingAssignmentRequest;
     }
 
