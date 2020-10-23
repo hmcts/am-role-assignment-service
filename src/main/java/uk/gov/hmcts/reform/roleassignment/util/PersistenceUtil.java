@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
@@ -45,9 +46,9 @@ public class PersistenceUtil {
             .notes(roleAssignment.getNotes())
             .sequence(roleAssignment.getStatusSequence())
             .log(roleAssignment.getLog())
-            .authorisations(String.join(",",
-             (roleAssignment.getAuthorisations() != null && !roleAssignment.getAuthorisations().isEmpty()
-                 ? roleAssignment.getAuthorisations() : Collections.emptyList())))
+            .authorisations(
+                !CollectionUtils.isEmpty(roleAssignment.getAuthorisations())
+                 ? (String.join(";",roleAssignment.getAuthorisations())) : null)
             .build();
     }
 
@@ -70,7 +71,6 @@ public class PersistenceUtil {
     }
 
     public RoleAssignmentEntity convertRoleAssignmentToEntity(RoleAssignment roleAssignment, boolean isNewFlag) {
-        String[] strArray1 = new String[]{"ddd"};
         return RoleAssignmentEntity.builder()
             .id(roleAssignment.getId())
             .actorId(roleAssignment.getActorId())
@@ -85,8 +85,8 @@ public class PersistenceUtil {
             .roleType(roleAssignment.getRoleType().toString())
             .readOnly(roleAssignment.isReadOnly())
             .roleCategory(roleAssignment.getRoleCategory().toString())
-            .authorisations(roleAssignment.getAuthorisations() != null && !roleAssignment.getAuthorisations().isEmpty()
-                                ? roleAssignment.getAuthorisations().toString() : "")
+            .authorisations(!CollectionUtils.isEmpty(roleAssignment.getAuthorisations())
+                                ? String.join(";", roleAssignment.getAuthorisations()) : null)
             .isNewFlag(isNewFlag)
             .build();
     }
@@ -146,7 +146,7 @@ public class PersistenceUtil {
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
             .authorisations(roleAssignmentEntity.getAuthorisations() != null && !roleAssignmentEntity
                 .getAuthorisations().isEmpty()
-                                ? Arrays.asList(roleAssignmentEntity.getAuthorisations().split(";").clone()) :
+                                ? Arrays.asList(roleAssignmentEntity.getAuthorisations().split(";")) :
                                 Collections.emptyList())
             .build();
     }
