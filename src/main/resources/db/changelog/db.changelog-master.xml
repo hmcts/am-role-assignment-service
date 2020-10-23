@@ -5,10 +5,10 @@
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
   <include file="db/changelog/db.changelog-main.xml"/>
-  <include file="db/changelog/db.changelog-AM-823.xml"/>
-  <include file="db/changelog/db.changelog-AM-1060.xml"/>
-  <include file="db/changelog/db.changelog-AM-1029.xml"/>
-  <include file="db/changelog/db.changelog-AM-1042.xml"/>
-  <include file="db/changelog/db.changelog-AM-Add-authorisations.xml"/>
+  <include file="db/changelog/db.changelog-AM-823_1.xml"/>
+  <include file="db/changelog/db.changelog-AM-1060_2.xml"/>
+  <include file="db/changelog/db.changelog-AM-1029_3.xml"/>
+  <include file="db/changelog/db.changelog-AM-1042_4.xml"/>
+  <include file="db/changelog/db.changelog-AM-1068_5.xml"/>
 
 </databaseChangeLog>

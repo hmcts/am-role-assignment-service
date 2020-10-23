@@ -145,13 +145,9 @@ public class PersistenceUtil {
             .created(roleAssignmentEntity.getCreated())
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
             .authorisations(roleAssignmentEntity.getAuthorisations() != null && !roleAssignmentEntity
-                .getAuthorisations().isEmpty() ?
-                                Arrays.asList(roleAssignmentEntity.getAuthorisations().split(";").clone()) :
+                .getAuthorisations().isEmpty()
+                                ? Arrays.asList(roleAssignmentEntity.getAuthorisations().split(";").clone()) :
                                 Collections.emptyList())
             .build();
     }
-
-
-
-
 }
