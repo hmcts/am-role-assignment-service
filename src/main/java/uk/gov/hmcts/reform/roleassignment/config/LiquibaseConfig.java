@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.config;
 
-import liquibase.Contexts;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
@@ -30,20 +29,15 @@ public class LiquibaseConfig implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(
             new JdbcConnection(dataSource.getConnection()));
-        Liquibase liquibase = null;
+        Liquibase liquibase;
         try {
             liquibase = new Liquibase("db/changelog/db.changelog-master.xml",
                                       new ClassLoaderResourceAccessor(), database
             );
             liquibaseForceRelase(liquibase);
-            liquibase.update(new Contexts());
+            //liquibase.update(new Contexts())
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
-        } finally {
-            if (liquibase != null) {
-                liquibaseForceRelase(liquibase);
-                liquibase.close();
-            }
         }
     }
 
