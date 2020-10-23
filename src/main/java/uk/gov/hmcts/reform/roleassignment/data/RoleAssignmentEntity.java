@@ -15,10 +15,8 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import java.time.ZonedDateTime;
 import javax.persistence.Transient;
-import java.util.List;
 import java.util.UUID;
 
 @Builder(toBuilder = true)
