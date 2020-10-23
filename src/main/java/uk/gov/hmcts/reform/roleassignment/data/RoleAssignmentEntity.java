@@ -70,8 +70,6 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
     private JsonNode attributes;
 
     @Column(name = "authorisations")
-    //@ElementCollection(targetClass = String.class)
-    //@Convert(converter = StringListConverter.class)
     private String authorisations;
 
     @Builder.Default
@@ -82,19 +80,6 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
     public boolean isNew() {
         return isNewFlag;
     }
-
-    /*public List<String> getAuthorisations() {
-        return Arrays.asList(authorisations);
-    }
-
-    public void setAuthorisations(List<String> authorisations) {
-        this.authorisations = authorisations.toArray(String[]::new);
-    }
-
-    public RoleAssignmentEntity setAuthorisationsBuilder(List<String> authorisations) {
-        this.authorisations = authorisations.toArray(String[]::new);
-        return this;
-    }*/
 
 }
 
