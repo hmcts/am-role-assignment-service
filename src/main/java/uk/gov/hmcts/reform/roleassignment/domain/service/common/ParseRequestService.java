@@ -91,7 +91,7 @@ public class ParseRequestService {
         request.setCorrelationId(correlationInterceptorUtil.preHandle(httpServletRequest));
     }
 
-    public String getCorrelationId() {
+    public String getRequestCorrelationId() {
         HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
             .currentRequestAttributes())
             .getRequest();
