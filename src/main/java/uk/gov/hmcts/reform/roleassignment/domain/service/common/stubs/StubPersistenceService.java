@@ -18,7 +18,7 @@ public class StubPersistenceService {
 	private static final List<RoleAssignment> EMPTY = Collections.unmodifiableList(new ArrayList<>());
 
 	/**
-	 * Load role assignment data from the  "role-assignmenbts.json" resource.
+	 * Load role assignment data from the  "existing-role-assignments.json" resource.
 	 */
 	private static Map<String, List<RoleAssignment>> loadRoleAssignments() {
 		try {

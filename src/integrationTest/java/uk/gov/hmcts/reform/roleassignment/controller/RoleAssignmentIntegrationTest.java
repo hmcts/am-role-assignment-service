@@ -221,8 +221,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     }
 
     @Test
-    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql",
-        "classpath:sql/insert_role_assignment_authorisations.sql"})
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void shouldGetRoleAssignmentsRecordsBasedOnDynamicQuery() throws Exception {
 
         QueryRequest queryRequest = QueryRequest.builder()
@@ -256,8 +255,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     }
 
     @Test
-    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql",
-        "classpath:sql/insert_role_assignment_authorisations.sql"})
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void shouldGetEmptyRoleAssignmentsRecordsBasedOnDynamicQuery() throws Exception {
 
         final String url = "/am/role-assignments/query";
