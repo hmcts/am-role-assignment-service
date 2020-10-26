@@ -197,7 +197,7 @@ private void setRoleAssignmentsStatusToCreated(AssignmentRequest assignmentReque
     }
 
 	/**
-	 * Load case data from the "cases.json" resource.
+	 * Load requests from the assignment-requests.json resource.
 	 */
 	private static List<AssignmentRequest> loadRequests() {
 		try {
