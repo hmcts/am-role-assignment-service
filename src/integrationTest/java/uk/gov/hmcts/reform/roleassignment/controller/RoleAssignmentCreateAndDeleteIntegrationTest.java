@@ -28,6 +28,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleServic
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -254,6 +255,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         headers.add(AUTHORIZATION, "Bearer user1");
         String s2SToken = MockUtils.generateDummyS2SToken(AUTHORISED_SERVICE);
         headers.add("ServiceAuthorization", "Bearer " + s2SToken);
+        headers.add(Constants.CORRELATION_ID_HEADER_NAME, "38a90097-434e-47ee-8ea1-9ea2a267f51d");
         return headers;
     }
 
