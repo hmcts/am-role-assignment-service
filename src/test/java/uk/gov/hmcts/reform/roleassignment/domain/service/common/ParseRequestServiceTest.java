@@ -99,7 +99,7 @@ class ParseRequestServiceTest {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         when(correlationInterceptorUtilMock.preHandle(
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
-        assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9d", sut.getCorrelationId());
+        assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9d", sut.getRequestCorrelationId());
         verify(correlationInterceptorUtilMock, times(1))
             .preHandle(any(HttpServletRequest.class));
     }
