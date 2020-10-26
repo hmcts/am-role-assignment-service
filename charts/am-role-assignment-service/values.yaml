@@ -30,3 +30,7 @@ java:
     LAUNCH_DARKLY_ENV: "{{ .Values.global.environment }}"
     ROLE_ASSIGNMENT_IDAM_CLIENT_ID: am_role_assignment
     MICROSERVICE_NAME: am_role_assignment_service
+    env.PACT_BROKER_FULL_URL: https://pact-broker.platform.hmcts.net
+    env.PACT_BROKER_URL: pact-broker.platform.hmcts.net
+    env.PACT_BROKER_PORT: 443
+    env.PACT_BROKER_SCHEME: https
