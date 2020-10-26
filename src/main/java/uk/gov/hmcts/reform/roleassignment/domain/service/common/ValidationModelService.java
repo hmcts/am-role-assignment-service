@@ -1,31 +1,34 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import com.microsoft.applicationinsights.boot.dependencies.google.common.collect.Sets;
-import lombok.extern.slf4j.Slf4j;
+import static org.apache.commons.beanutils.BeanUtils.copyProperties;
+
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.kie.api.KieServices;
 import org.kie.api.runtime.StatelessKieSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.databind.JavaType;
+
+import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Pattern;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.stubs.StubPersistenceService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.stubs.StubRetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.apache.commons.beanutils.BeanUtils.copyProperties;
 
 @Service
 @Slf4j
@@ -36,16 +39,15 @@ public class ValidationModelService {
     //Note: These are aggregation records from Assignment_history table.
     private static final Logger logger = LoggerFactory.getLogger(ValidationModelService.class);
     private StatelessKieSession kieSession;
-    private static final String TRIBUNAL_CASEWORKER = "tribunal-caseworker";
 
-    private RetrieveDataService retrieveDataService;
+    private StubRetrieveDataService retrieveDataService;
 
-    private PersistenceService persistenceService;
+    private StubPersistenceService persistenceService;
 
 
     public ValidationModelService(StatelessKieSession kieSession,
-                                  RetrieveDataService retrieveDataService,
-                                  PersistenceService persistenceService) {
+                                  StubRetrieveDataService retrieveDataService,
+                                  StubPersistenceService persistenceService) {
         this.kieSession = kieSession;
 
         this.retrieveDataService = retrieveDataService;
@@ -65,63 +67,74 @@ public class ValidationModelService {
 
     }
 
+    /**
+     * May not need to filter the assignments, but not clear whether getAssignmentsByActor does this already.
+     * TODO: this is only protected to allow temporary overriding for testing purposes.
+     */
+    private Collection<RoleAssignment> getCurrentRoleAssignmentsForActor(String actorId) {
+    	LocalDateTime now = LocalDateTime.now();
+    	return
+	    	persistenceService.getAssignmentsByActor(actorId).stream().filter(
+	    			ra -> {
+	    				LocalDateTime begin = ra.getBeginTime();
+	    				LocalDateTime end = ra.getEndTime();
+	    				return (begin == null || !begin.isBefore(now)) && (end == null || end.isAfter(now));
+	    			})
+	    	.collect(Collectors.toList());
+    }
+
+    /**
+     * Get the existing role assignments for the assigner and authenticated user, as well as for all
+     * assignees when the request is a create request (but not for deletes).
+     */
+    private List<ExistingRoleAssignment> getExistingRoleAssignmentsForRequest(AssignmentRequest assignmentRequest) {
+        // facts must contain existing role assignments for assigner and authenticatedUser,
+    	// if these are present in the request.
+        Set<String> userIds = new HashSet<>();
+        String assignerId = assignmentRequest.getRequest().getAssignerId();
+        if (assignerId != null) {
+            userIds.add(assignmentRequest.getRequest().getAssignerId());
+        }
+        String authenticatedUserId = assignmentRequest.getRequest().getAuthenticatedUserId();
+        if (authenticatedUserId != null) {
+        	userIds.add(assignmentRequest.getRequest().getAuthenticatedUserId());
+        }
+        // facts needs assignee roles for creates, not for deletes (?)
+        if (assignmentRequest.getRequest().getRequestType() == RequestType.CREATE) {
+            assignmentRequest.getRequestedRoles().stream().forEach(r -> userIds.add(r.getActorId()));
+        }
+        List<RoleAssignment> roleAssignments = new ArrayList<>();
+        for (String userId : userIds) {
+        	roleAssignments.addAll(getCurrentRoleAssignmentsForActor(userId));
+        }
+        return convertRoleAssignmentIntoExistingRecords(roleAssignments);
+    }
+
+private void setRoleAssignmentsStatusToCreated(AssignmentRequest assignmentRequest) {
+	assignmentRequest.getRequestedRoles().forEach(r -> r.setStatus(Status.CREATED));
+}
+
     private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("runRulesOnAllRequestedAssignments execution started at %s", startTime));
 
+        // Set all the role assignments to CREATED initially.
+        setRoleAssignmentsStatusToCreated(assignmentRequest);
+
         Set<Object> facts = new HashSet<>();
 
-        if (assignmentRequest.getRequest().getRequestType() == RequestType.CREATE) {
-            // Package up the request and the assignments
-            //Pre defined role configuration
-            List<Role> assignableRoles = JacksonUtils.getConfiguredRoles().get("roles");
+        // facts must contain the request
+        facts.add(assignmentRequest.getRequest());
+        // facts must contain all affected role assignments
+        facts.addAll(assignmentRequest.getRequestedRoles());
+        // facts must contain the role config, for access to the patterns
+        facts.add(RoleConfig.getRoleConfig());
+        // facts must conatin existing role assignments for assigner and authenticatedUser, and assignee for create requests
+        facts.addAll(getExistingRoleAssignmentsForRequest(assignmentRequest));
 
-            //Filter List<Role> based on incoming role names
-            Set<String> requestedRoles = assignmentRequest.getRequestedRoles().stream()
-                .map(RoleAssignment::getRoleName)
-                .collect(Collectors.toSet());
-
-            List<Role> filteredAssignableRoles = assignableRoles.stream()
-                .filter(e -> requestedRoles.contains(e.getName()))
-                .collect(Collectors.toList());
-
-
-            // fetch List<Pattern> from List<Role>
-            List<List<Pattern>> patterns = filteredAssignableRoles.stream().map(Role::getPatterns)
-                .collect(Collectors.toList());
-
-            List<Pattern> pattern = patterns.stream().flatMap(List::stream).map(element -> element)
-                .collect(Collectors.toList());
-
-
-            //filter List<Pattern> based on incoming roleTypes
-            Set<String> roleTypes = assignmentRequest.getRequestedRoles().stream()
-                .map(roleAssignment -> roleAssignment.getRoleType().toString())
-                .collect(Collectors.toSet());
-
-            List<Pattern> filteredPattern = pattern.stream()
-                .filter(p -> roleTypes.contains(p.getData().get("RoleType").get("values").asText()))
-                .collect(Collectors.toList());
-
-            facts.addAll(filteredPattern);
-            facts.add(assignmentRequest.getRequest());
-            facts.addAll(assignmentRequest.getRequestedRoles());
-
-            addExistingOrgRolesForCreateValidation(assignmentRequest, facts);
-        } else if (assignmentRequest.getRequest().getRequestType() == RequestType.DELETE) {
-            List<RoleAssignment> roleAssignments = assignmentRequest.getRequestedRoles().stream()
-                .filter(roleAssignment -> roleAssignment.getRoleType() == RoleType.CASE && roleAssignment.getRoleName()
-                    .equals(TRIBUNAL_CASEWORKER)).collect(Collectors.toList());
-
-
-            if (!roleAssignments.isEmpty()) {
-                addExistingOrgRolesForDeleteValidation(assignmentRequest, facts);
-            }
-            facts.addAll(assignmentRequest.getRequestedRoles());
-
-            facts.add(assignmentRequest.getRequest());
-        }
-
+        // Make the retrieve data service available to rules - this allows data - e.g. case data - to be
+        // loaded dynamically when needed by a rule, rather than up-front, when it may never be used.
+        kieSession.setGlobal("DATA_SERVICE", retrieveDataService);
 
         // Run the rules
         kieSession.execute(facts);
@@ -134,71 +147,12 @@ public class ValidationModelService {
 
     }
 
-    public void addExistingOrgRolesForCreateValidation(AssignmentRequest assignmentRequest, Set<Object> facts) {
-
-        final long startTime = System.currentTimeMillis();
-
-        Set<String> requestActorIds = new HashSet<>();
-        Set<String> actorIds = new HashSet<>();
-
-
-        requestActorIds.add(String.valueOf(assignmentRequest.getRequest().getAuthenticatedUserId()));
-        if (!assignmentRequest.getRequest().getAssignerId().equals(
-            assignmentRequest.getRequest().getAuthenticatedUserId())) {
-            requestActorIds.add(assignmentRequest.getRequest().getAssignerId());
-        }
-
-        assignmentRequest.getRequestedRoles().forEach(requestedRole -> {
-            if (requestedRole.getRoleType() == RoleType.CASE && requestedRole.getRoleName()
-                .equals(TRIBUNAL_CASEWORKER)) {
-                actorIds.add(requestedRole.getActorId());
-
-            }
-        });
-
-        // to insert the case once roleType = case & roleName = tribunal-caseworker
-        Optional<RoleAssignment> roleAssignment = assignmentRequest.getRequestedRoles().stream().findFirst();
-
-        if (roleAssignment.isPresent() && roleAssignment.get().getRoleType() == RoleType.CASE
-            && roleAssignment.get().getRoleName()
-            .equals(TRIBUNAL_CASEWORKER)) {
-            String caseId = roleAssignment.get().getAttributes().get("caseId").asText();
-            facts.add(retrieveDataService.getCaseById(caseId));
-        }
-
-
-        fetchExistingOrgRolesByQuery(facts, requestActorIds, actorIds);
-
-        long endTime = System.currentTimeMillis();
-        log.info("Execution time of addExistingRecordsByQueryParam() : {} in milli seconds ", (endTime - startTime));
-
-    }
-
-    public void fetchExistingOrgRolesByQuery(Set<Object> facts, Set<String> requestActorIds, Set<String> actorIds) {
-        if (!actorIds.isEmpty()) {
-
-            HashMap<String, List<String>> attributes = new HashMap<>();
-            attributes.put("jurisdiction", Arrays.asList("IA"));
-
-            QueryRequest queryRequest = QueryRequest.builder()
-                .actorId(List.copyOf(Sets.union(actorIds, requestActorIds)))
-                .roleName(Arrays.asList("senior-tribunal-caseworker", TRIBUNAL_CASEWORKER))
-                .roleType(Arrays.asList("ORGANISATION"))
-                .attributes(attributes)
-                .build();
-
-            List<RoleAssignment> roleAssignments = persistenceService.retrieveRoleAssignmentsByQueryRequest(
-                queryRequest,
-                0,
-                0,
-                null,
-                null
-            );
-            List<ExistingRoleAssignment> existingRecords = convertRoleAssignmentIntoExistingRecords(roleAssignments);
-            facts.addAll(existingRecords);
-        }
-    }
-
+    /*
+     * TODO: Not ideal from a performance point of view to copy every role assignment
+     *       into a shadow class.  The ExistingRoleAssignment class is useful to make
+     *       rules natural.  Can we not use generics somewhere to return the right
+     *       class from the persistence service?
+     */
     private List<ExistingRoleAssignment> convertRoleAssignmentIntoExistingRecords(
         List<RoleAssignment> roleAssignments) {
         List<ExistingRoleAssignment> existingRecords = new ArrayList<>();
@@ -219,16 +173,42 @@ public class ValidationModelService {
         return existingRecords;
     }
 
-    public void addExistingOrgRolesForDeleteValidation(AssignmentRequest assignmentRequest, Set<Object> facts) {
 
-        Set<String> actorIds = new HashSet<>();
-        actorIds.add(assignmentRequest.getRequest().getAuthenticatedUserId());
-        if (!assignmentRequest.getRequest().getAssignerId().equals(
-            assignmentRequest.getRequest().getAuthenticatedUserId())) {
-            actorIds.add(assignmentRequest.getRequest().getAssignerId());
-        }
-        fetchExistingOrgRolesByQuery(facts, new HashSet<>(), actorIds);
+
+
+
+
+
+
+
+    public static void main(String[] args) throws Exception {
+    	ValidationModelService v = new ValidationModelService(kieSession(), new StubRetrieveDataService(), new StubPersistenceService());
+    	List<AssignmentRequest> requests = loadRequests();
+    	for (AssignmentRequest request : requests) {
+        	v.validateRequest(request);
+        	System.out.println("-----------------------------------------------------------------------");
+        	System.out.println("Request " + request.getRequest().getCorrelationId());
+        	System.out.println("Request " + request.getRequest().getStatus());
+    	}
     }
 
+    public static StatelessKieSession kieSession() {
+        return KieServices.Factory.get().getKieClasspathContainer().newStatelessKieSession("role-assignment-validation-session");
+    }
+
+	/**
+	 * Load case data from the "cases.json" resource.
+	 */
+	private static List<AssignmentRequest> loadRequests() {
+		try {
+			try (InputStream input = ValidationModelService.class.getResourceAsStream("assignment-requests.json")) {
+				JavaType type = JacksonUtils.MAPPER.getTypeFactory().constructCollectionType(List.class, AssignmentRequest.class);
+				List<AssignmentRequest> requests = JacksonUtils.MAPPER.readValue(input, type);
+				return requests;
+			}
+		} catch (Throwable t) {
+			throw new RuntimeException("Failed to load stub case data.", t);
+		}
+	}
 
 }
