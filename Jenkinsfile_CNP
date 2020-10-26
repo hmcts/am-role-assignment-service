@@ -123,6 +123,10 @@ withPipeline(type, product, component) {
     enablePactAs([AppPipelineDsl.PactRoles.PROVIDER])
   }
 
+  before('contractTest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/**'
+  }
+
   after('contractTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/**'
   }
