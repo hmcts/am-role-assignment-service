@@ -59,7 +59,7 @@ spring:
           lob:
             non_contextual_creation: true
   liquibase:
-    enabled: ${ENABLE_DB_MIGRATE:false}
+    enabled: ${ENABLE_DB_MIGRATE:true}
     change-log: classpath:/db/changelog/db.changelog-master.xml
   datasource:
     url: jdbc:postgresql://${ROLE_ASSIGNMENT_DB_HOST:localhost}:${ROLE_ASSIGNMENT_DB_PORT:5451}/${ROLE_ASSIGNMENT_DB_NAME:role_assignment}${ROLE_ASSIGNMENT_DB_OPTIONS:?stringtype=unspecified}
@@ -87,7 +87,7 @@ idam:
     microservice: am_role_assignment_service
     url: ${IDAM_S2S_URL:http://localhost:4502}
   s2s-authorised:
-    services: ${ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES:ccd_gw,am_role_assignment_service}
+    services: ${ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES:ccd_gw,am_role_assignment_service,am_org_role_mapping_service}
   api.url: ${IDAM_USER_URL:http://localhost:5000}
   client:
     id: ${ROLE_ASSIGNMENT_IDAM_CLIENT_ID:am_docker}
@@ -115,7 +115,7 @@ feign:
   hystrix:
     enabled: true
 
-swaggerUrl: ${ROLE_ASSIGNMENT_SWAGGER_AM_URL:localhost:4096}
+swaggerUrl: ${TEST_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
 launchdarkly:
   sdk:

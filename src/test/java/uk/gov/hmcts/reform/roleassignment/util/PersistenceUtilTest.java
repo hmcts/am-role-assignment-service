@@ -11,8 +11,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -69,13 +67,10 @@ class PersistenceUtilTest {
 
     @Test
     void convertEntityToRoleAssignmentWithAutorisations() throws IOException {
-        List<String> authorisations = Arrays.asList(
-            "dev",
-            "tester"
-        );
+
         RoleAssignmentEntity entity =  TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
                                                             .buildRoleAssignment(Status.LIVE));
-        entity.setAuthorisations(authorisations);
+        entity.setAuthorisations("dev;tester");
         assertNotNull(persistenceUtil.convertEntityToRoleAssignment(
             entity));
     }
