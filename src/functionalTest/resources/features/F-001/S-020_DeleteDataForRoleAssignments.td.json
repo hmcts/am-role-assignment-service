@@ -21,9 +21,10 @@
     },
     "pathVariables": {
       "process": "businessProcess1",
-      "reference": "ReferenceS-020"
+      "reference":"${[scenarioContext][parentContext][childContexts][S-020_Multiple_Role_Creation][testData][request][body][roleRequest][reference]}"
     }
-  },
+   },
+
   "expectedResponse": {
     "headers": {
       "Content-Length": "[[ANYTHING_PRESENT]]",
