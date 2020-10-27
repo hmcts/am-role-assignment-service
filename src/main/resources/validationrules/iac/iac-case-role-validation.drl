@@ -68,11 +68,13 @@ when
              id == $caseId,
              caseTypeId == "Asylum")
          ExistingRoleAssignment(
+            //we should authen
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
              roleName == "tribunal-caseworker" || roleName == "senior-tribunal-caseworker",
              attributes["jurisdiction"] == "IA")
 then
+    //why should we not approved this request here becuase pattern validation on existing records not making any sense.
     $ra.setStatus(Status.STAGE_1_APPROVED);
     $ra.log("Stage 1 approved : ia_caseworker_delete_case_roles");
     update($ra);
