@@ -16,8 +16,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 rule "staff_organisational_role_mapping_service_create"
 when
     $rq: Request(
-             requestType == RequestType.CREATE,
-             clientId == "ORGANISATIONAL_ROLE_MAPPING_SERVICE")
+             requestType == RequestType.CREATE)
+             //clientId == "ORGANISATIONAL_ROLE_MAPPING_SERVICE")
     $ra: RoleAssignment(
              status == Status.CREATED,
              roleType == RoleType.ORGANISATION,
@@ -26,6 +26,7 @@ then
     $ra.setStatus(Status.STAGE_1_APPROVED);
     $ra.log("Stage 1 approved : staff_organisational_role_mapping_service_create");
     update($ra);
+    System.out.println("Rule : staff_organisational_role_mapping_service_create");
 end;
 
 /*
@@ -36,8 +37,8 @@ end;
 rule "staff_organisational_role_mapping_service_delete"
 when
     $rq: Request(
-             requestType == RequestType.DELETE,
-             clientId == "ORGANISATIONAL_ROLE_MAPPING_SERVICE")
+             requestType == RequestType.DELETE)
+             //clientId == "ORGANISATIONAL_ROLE_MAPPING_SERVICE")
     $ra: RoleAssignment(
              roleType == RoleType.ORGANISATION,
              roleCategory == RoleCategory.STAFF)
@@ -45,4 +46,5 @@ then
     $ra.setStatus(Status.STAGE_1_APPROVED);
     $ra.log("Stage 1 approved : staff_organisational_role_mapping_service_delete");
     update($ra);
+    System.out.println("Rule :: staff_organisational_role_mapping_service_delete");
 end;

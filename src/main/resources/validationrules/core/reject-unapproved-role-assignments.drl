@@ -12,7 +12,9 @@ salience -1000
 when
     $ra: RoleAssignment(status != Status.APPROVED && status != Status.REJECTED)
 then
+    System.out.println("Rule : reject_unapproved_role_assignments");
     $ra.setStatus(Status.REJECTED);
     $ra.log("Not approved by any rule.");
     update($ra);
+
 end;

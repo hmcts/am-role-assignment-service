@@ -25,6 +25,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.stubs.StubPersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.stubs.StubRetrieveDataService;
@@ -81,7 +82,10 @@ public class ValidationModelService {
 	    			ra -> {
 	    				LocalDateTime begin = ra.getBeginTime();
 	    				LocalDateTime end = ra.getEndTime();
-	    				return (begin == null || !begin.isBefore(now)) && (end == null || end.isAfter(now));
+
+	    				//We have added condition on roleType to fetch only Organisation records
+	    				return (begin == null || !begin.isBefore(now)) && (end == null || end.isAfter(now)
+                            && ra.getRoleType() == RoleType.ORGANISATION);
 	    			})
 	    	.collect(Collectors.toList());
     }

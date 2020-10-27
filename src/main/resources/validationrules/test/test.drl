@@ -1,3 +1,4 @@
+/*
 package validationrules.test;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
@@ -5,6 +6,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigPattern;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigConstraint;
 
 rule "request"
 salience 1000
@@ -54,3 +56,12 @@ when
 then
 	System.err.println("We have a pattern for " + $p.getRoleName() + " : " + $p);
 end;
+
+rule "config_role_constraint"
+salience 1000
+when
+	$rcc: RoleConfigConstraint()
+then
+	System.err.println("We have a Config Constraint for "  + $rcc);
+end;
+*/
