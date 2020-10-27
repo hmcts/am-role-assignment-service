@@ -277,5 +277,5 @@ Feature: F-001 : Create Role Assignments
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a negative response is received,
     And the response has all other details as expected,
-    And a successful call [to get role assignments which created initially above] as in [S-020_Get_Role_Assignments_Search_Query],
+#    And a successful call [to get role assignments which created initially above] as in [S-020_Get_Role_Assignments_Search_Query],
     And a successful call [to delete role assignments just created above] as in [S-020_DeleteDataForRoleAssignments].
