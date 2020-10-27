@@ -12,14 +12,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 
+import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-
-import javax.sql.DataSource;
 
 public class WelcomeControllerIntegrationTest extends BaseTest {
 
@@ -66,7 +65,7 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
          scripts = {"classpath:sql/insert_role_assignment_request.sql"})
-    public void shouldGetRecordCountFromRequestTable() throws Exception {
+    public void shouldGetRecordCountFromRequestTable() {
         final int count = template.queryForObject(COUNT_RECORDS, Integer.class);
         logger.info(" Total number of records fetched from role assignment request table...{}", count);
         assertEquals(
