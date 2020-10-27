@@ -1,5 +1,5 @@
 {
-  "_guid_": "S-020_Get_Role_Assignments_Search_Query",
+  "_guid_": "S-020_Get_Role_Assignments_Search_Query_Second_ActorId",
   "productName": "Role Assignment Service",
   "operationName": "Get Role Assignments By Query Request",
   "method": "POST",
@@ -22,7 +22,7 @@
       "Content-Type": "application/json"
     },
     "body": {
-      "actorId": ["${[scenarioContext][parentContext][childContexts][S-020_Multiple_Role_Creation][testData][request][body][requestedRoles][0][actorId]}"]
+      "actorId": ["${[scenarioContext][parentContext][childContexts][S-020_Multiple_Role_Creation][testData][request][body][requestedRoles][1][actorId]}"]
     }
   },
 
@@ -32,7 +32,7 @@
       "arrayInMap" : [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][parentContext][childContexts][S-020_Multiple_Role_Creation][testData][request][body][requestedRoles][0][actorId]}"
+          "actorId": "${}${[scenarioContext][parentContext][childContexts][S-020_Multiple_Role_Creation][testData][request][body][requestedRoles][1][actorId]}"
         }
       ]
     }
