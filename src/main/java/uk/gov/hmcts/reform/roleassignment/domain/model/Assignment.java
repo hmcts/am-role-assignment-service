@@ -44,4 +44,8 @@ public abstract class Assignment {
     private Map<String, JsonNode> attributes;
     private JsonNode notes;
     private List<String> authorisations;
+
+    public void log(String message) {
+    	log = (log == null ? "" : log + "\n") + message;
+    }
 }

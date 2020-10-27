@@ -1,0 +1,71 @@
+package validationrules.iac;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+
+/*
+ * IAC case worker case roles can be created by any existing tribunal casworker
+ * or senior tribunal case worker, and can also only be assigned to users with
+ * one of those two roles (this includes self-assignment).
+ */
+rule "ia_caseworker_create_case_roles"
+when
+    $rq: Request(
+             requestType == RequestType.CREATE, 
+             assignerId == authenticatedUserId)
+    $ra: RoleAssignment(
+             status == Status.CREATED,
+             roleType == RoleType.CASE,
+             roleName == "tribunal-caseworker",
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+         Case(
+             id == $caseId,
+             caseTypeId == "Asylum")
+         ExistingRoleAssignment(
+             actorId == $ra.actorId,
+             roleType == RoleType.ORGANISATION,
+             roleName == "tribunal-caseworker" || roleName == "senior-tribunal-caseworker",
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+         ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName == "tribunal-caseworker" || roleName == "senior-tribunal-caseworker",
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+then
+    $ra.setStatus(Status.STAGE_1_APPROVED);
+    $ra.log("Stage 1 approved : ia_caseworker_create_case_roles");
+    update($ra);
+end;
+
+/*
+ * IAC case worker case roles can be deleted by any existing tribunal casworker
+ * or senior tribunal case worker.
+ */
+rule "ia_caseworker_delete_case_roles"
+when
+    $rq: Request(
+             requestType == RequestType.DELETE, 
+             assignerId == authenticatedUserId)
+    $ra: RoleAssignment(
+             roleType == RoleType.CASE,
+             roleName == "tribunal-caseworker",
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+         Case(
+             id == $caseId,
+             caseTypeId == "Asylum")
+         ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName == "tribunal-caseworker" || roleName == "senior-tribunal-caseworker",
+             attributes["jurisdiction"] == "IA")
+then
+    $ra.setStatus(Status.STAGE_1_APPROVED);
+    $ra.log("Stage 1 approved : ia_caseworker_delete_case_roles");
+    update($ra);
+end;
