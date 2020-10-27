@@ -1,0 +1,58 @@
+package validationrules.core;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigData;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigPattern;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+
+
+
+/*
+ * When creating role assignments, make sure that the patterns needed
+ * to validate each role assignment are loaded into working memory.
+ * Purely for efficiency, we do not insert every pattern up-front,
+ * but just the overarching RoleConfig instance containing them all.
+ * This rule explicitly extracts and inserts all the patterns needed
+ * to validate the role assignments which are currently in working memory.
+ *
+ * (It is not clear why the role configuration contains the extra
+ * layer defined by the "data" attribute.  Maybe this should be
+ * removed at some point.)
+ */
+rule "load_role_config_patterns"
+when
+         Request(requestType == RequestType.CREATE)
+         RoleAssignment(
+             status == Status.STAGE_1_APPROVED,
+             $roleName : roleName)
+    $rc: RoleConfig(get($roleName) != null)
+         not RoleConfigPattern(roleName == $roleName)
+then
+    for (RoleConfigData data : $rc.get($roleName).getPatterns()) {
+        insert(data.getData());
+    }
+end;
+
+/*
+ * Validate that each role assignment to be created matches at least
+ * one of the defined role patterns.
+ */
+rule "validate_role_assignment_against_patterns"
+when
+         Request(requestType == RequestType.CREATE)
+    $ra: RoleAssignment(status == Status.STAGE_1_APPROVED)
+         RoleConfigPattern(
+             roleName == $ra.roleName,
+             roleCategory == $ra.roleCategory,
+             roleType == null || roleType.matches($ra.roleType),
+             grantType == null || grantType.matches($ra.grantType),
+             classification == null || classification.matches($ra.classification),
+             beginTime == null || beginTime.matches($ra.beginTime),
+             endTime == null || endTime.matches($ra.endTime),
+             attributesMatch($ra.attributes))
+then
+    $ra.setStatus(Status.APPROVED);
+    $ra.log("Approved : validate_role_assignment_against_patterns");
+    update($ra);
+end;
