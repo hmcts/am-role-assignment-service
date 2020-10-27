@@ -40,14 +40,17 @@ public class ValidationModelService {
     private static final Logger logger = LoggerFactory.getLogger(ValidationModelService.class);
     private StatelessKieSession kieSession;
 
-    private StubRetrieveDataService retrieveDataService;
+    /*private StubRetrieveDataService retrieveDataService;
 
-    private StubPersistenceService persistenceService;
+    private StubPersistenceService persistenceService;*/
+
+    private RetrieveDataService retrieveDataService;
+    private PersistenceService persistenceService;
 
 
     public ValidationModelService(StatelessKieSession kieSession,
-                                  StubRetrieveDataService retrieveDataService,
-                                  StubPersistenceService persistenceService) {
+                                  RetrieveDataService retrieveDataService,
+                                  PersistenceService persistenceService) {
         this.kieSession = kieSession;
 
         this.retrieveDataService = retrieveDataService;
@@ -110,16 +113,16 @@ public class ValidationModelService {
         return convertRoleAssignmentIntoExistingRecords(roleAssignments);
     }
 
-private void setRoleAssignmentsStatusToCreated(AssignmentRequest assignmentRequest) {
+/*private void setRoleAssignmentsStatusToCreated(AssignmentRequest assignmentRequest) {
 	assignmentRequest.getRequestedRoles().forEach(r -> r.setStatus(Status.CREATED));
-}
+}*/
 
     private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("runRulesOnAllRequestedAssignments execution started at %s", startTime));
 
-        // Set all the role assignments to CREATED initially.
-        setRoleAssignmentsStatusToCreated(assignmentRequest);
+        /*// Set all the role assignments to CREATED initially.
+        setRoleAssignmentsStatusToCreated(assignmentRequest);*/
 
         Set<Object> facts = new HashSet<>();
 
@@ -129,7 +132,7 @@ private void setRoleAssignmentsStatusToCreated(AssignmentRequest assignmentReque
         facts.addAll(assignmentRequest.getRequestedRoles());
         // facts must contain the role config, for access to the patterns
         facts.add(RoleConfig.getRoleConfig());
-        // facts must conatin existing role assignments for assigner and authenticatedUser, and assignee for create requests
+        // facts must contain existing role assignments for assigner and authenticatedUser, and assignee for create requests
         facts.addAll(getExistingRoleAssignmentsForRequest(assignmentRequest));
 
         // Make the retrieve data service available to rules - this allows data - e.g. case data - to be
@@ -181,7 +184,7 @@ private void setRoleAssignmentsStatusToCreated(AssignmentRequest assignmentReque
 
 
 
-    public static void main(String[] args) throws Exception {
+   /* public static void main(String[] args) throws Exception {
     	ValidationModelService v = new ValidationModelService(kieSession(), new StubRetrieveDataService(), new StubPersistenceService());
     	List<AssignmentRequest> requests = loadRequests();
     	for (AssignmentRequest request : requests) {
@@ -190,15 +193,15 @@ private void setRoleAssignmentsStatusToCreated(AssignmentRequest assignmentReque
         	System.out.println("Request " + request.getRequest().getCorrelationId());
         	System.out.println("Request " + request.getRequest().getStatus());
     	}
-    }
+    }*/
 
-    public static StatelessKieSession kieSession() {
+    /*public static StatelessKieSession kieSession() {
         return KieServices.Factory.get().getKieClasspathContainer().newStatelessKieSession("role-assignment-validation-session");
-    }
+    }*/
 
 	/**
 	 * Load requests from the assignment-requests.json resource.
-	 */
+	 *//*
 	private static List<AssignmentRequest> loadRequests() {
 		try {
 			try (InputStream input = ValidationModelService.class.getResourceAsStream("assignment-requests.json")) {
@@ -209,6 +212,6 @@ private void setRoleAssignmentsStatusToCreated(AssignmentRequest assignmentReque
 		} catch (Throwable t) {
 			throw new RuntimeException("Failed to load stub case data.", t);
 		}
-	}
+	}*/
 
 }
