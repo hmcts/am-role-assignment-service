@@ -17,7 +17,7 @@
           },
           "Classification": {
             "mandatory": true,
-            "values": ["PUBLIC","RESTRICTED", "PRIVATE"]
+            "values": ["PUBLIC","RESTRICTED","PRIVATE"]
           },
           "Attributes": {
             "Region": {
@@ -43,7 +43,7 @@
           },
           "Classification": {
             "mandatory": true,
-            "values": ["PUBLIC"]
+            "values": ["PUBLIC","RESTRICTED","PRIVATE"]
           },
           "Begin": {
             "mandatory": true
@@ -75,7 +75,7 @@
           },
           "Classification": {
             "mandatory": true,
-            "values": ["PUBLIC", "PRIVATE"]
+            "values": ["PUBLIC","RESTRICTED","PRIVATE"]
           },
           "Attributes": {
             "jurisdiction": {
@@ -100,7 +100,7 @@
           },
           "Classification": {
             "mandatory": true,
-            "values": ["PUBLIC","RESTRICTED", "PRIVATE"]
+            "values": ["PUBLIC","RESTRICTED","PRIVATE"]
           },
           "Attributes": {
             "CaseId": {
