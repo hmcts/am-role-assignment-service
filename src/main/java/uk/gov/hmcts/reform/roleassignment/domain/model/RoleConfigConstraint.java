@@ -19,6 +19,7 @@ public class RoleConfigConstraint<T> {
 			return
 					value == null || values == null || values.contains(value);
 		}
+
 	}
 
 	// ----------------------------------------------------- TEST CODE -------------------------------------------------------

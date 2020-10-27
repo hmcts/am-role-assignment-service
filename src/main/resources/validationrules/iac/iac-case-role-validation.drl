@@ -17,30 +17,38 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 rule "ia_caseworker_create_case_roles"
 when
     $rq: Request(
-             requestType == RequestType.CREATE, 
+             requestType == RequestType.CREATE,
+             //  shall we  remove this condition
+             //shall we have condition on clientId
              assignerId == authenticatedUserId)
+
     $ra: RoleAssignment(
              status == Status.CREATED,
              roleType == RoleType.CASE,
              roleName == "tribunal-caseworker",
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+          //do we need to check on case jurisdiction = "IA"
          Case(
              id == $caseId,
              caseTypeId == "Asylum")
+
          ExistingRoleAssignment(
              actorId == $ra.actorId,
              roleType == RoleType.ORGANISATION,
              roleName == "tribunal-caseworker" || roleName == "senior-tribunal-caseworker",
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
          ExistingRoleAssignment(
+          // what if assignerId is != authenticatedUserId, shall we consider both with in operator
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
+             // we can use here in operator
              roleName == "tribunal-caseworker" || roleName == "senior-tribunal-caseworker",
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 then
     $ra.setStatus(Status.STAGE_1_APPROVED);
     $ra.log("Stage 1 approved : ia_caseworker_create_case_roles");
     update($ra);
+    System.out.println("Rule : ia_caseworker_create_case_roles");
 end;
 
 /*
@@ -50,7 +58,7 @@ end;
 rule "ia_caseworker_delete_case_roles"
 when
     $rq: Request(
-             requestType == RequestType.DELETE, 
+             requestType == RequestType.DELETE,
              assignerId == authenticatedUserId)
     $ra: RoleAssignment(
              roleType == RoleType.CASE,
@@ -68,4 +76,5 @@ then
     $ra.setStatus(Status.STAGE_1_APPROVED);
     $ra.log("Stage 1 approved : ia_caseworker_delete_case_roles");
     update($ra);
+    System.out.println("Rule : ia_caseworker_delete_case_roles");
 end;
