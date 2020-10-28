@@ -30,6 +30,8 @@ then
     System.out.println("Rule : staff_organisational_role_mapping_service_create");
 end;
 
+// need to create new rule for replace existing =true;
+
 /*
  * Generic rule for validation of roles deleted by the staff organisational
  * role mapping service.  The mapping service can delete any organisational
