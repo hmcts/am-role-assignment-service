@@ -101,7 +101,7 @@ public class PersistenceService {
 
     public void updateRequest(RequestEntity requestEntity) {
         //Persist the request entity
-        requestRepository.save(requestEntity);
+//        requestRepository.save(requestEntity);
     }
 
 
@@ -121,8 +121,18 @@ public class PersistenceService {
         );
         historyEntity.setId(Objects.requireNonNullElseGet(roleAssignmentId, UUID::randomUUID));
         //Persist the history entity
-        entityManager.persist(historyEntity);
+        //entityManager.persist(historyEntity);
         return historyEntity;
+    }
+
+    @Transactional
+    public void persistHistoryList(List<HistoryEntity> historyEntityList) {
+        //historyRepository.saveAll(historyEntityList);
+        historyEntityList.forEach(historyEntity ->{
+                                      entityManager.persist(historyEntity);
+        }
+        );
+        entityManager.flush();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
