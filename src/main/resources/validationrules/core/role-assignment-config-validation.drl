@@ -22,9 +22,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
  */
 rule "load_role_config_patterns"
 when
-         Request(requestType == RequestType.CREATE)
          RoleAssignment(
-             status == Status.STAGE_1_APPROVED,
+             status == Status.CREATE_APPROVED,
              $roleName : roleName)
     $rc: RoleConfig(get($roleName) != null)
          not RoleConfigPattern(roleName == $roleName)
@@ -42,8 +41,7 @@ end;
  */
 rule "validate_role_assignment_against_patterns"
 when
-     $rq:    Request(requestType == RequestType.CREATE)
-    $ra: RoleAssignment(status == Status.STAGE_1_APPROVED)
+    $ra: RoleAssignment(status == Status.CREATE_APPROVED)
          RoleConfigPattern(
              roleName == $ra.roleName,
              roleCategory == $ra.roleCategory,
