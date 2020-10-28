@@ -13,21 +13,21 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
  * that validation against standard role patterns will still be applied in
  * a later stage of validation.
  */
-rule "staff_organisational_role_mapping_service_create"
+rule "judicial_case_role_mapping_service_create"
 when
     $rq: Request(
-             requestType == RequestType.CREATE)
-             //clientId == "ORGANISATIONAL_ROLE_MAPPING_SERVICE")
+             requestType == RequestType.CREATE )
+
     $ra: RoleAssignment(
-             //Need to check Status Live when replaceExiting=true
-             status in(Status.CREATED,Status.LIVE),
-             roleType == RoleType.ORGANISATION,
-             roleCategory == RoleCategory.STAFF)
+            //Need to check Status Live when replaceExiting=true
+             status in (Status.CREATED,Status.LIVE),
+             roleType == RoleType.CASE,
+             roleCategory == RoleCategory.JUDICIAL)
 then
     $ra.setStatus(Status.STAGE_1_APPROVED);
-    $ra.log("Stage 1 approved : staff_organisational_role_mapping_service_create");
+    $ra.log("Stage 1 approved : judicial_case_role_mapping_service_create");
     update($ra);
-    System.out.println("Rule : staff_organisational_role_mapping_service_create");
+    System.out.println("Rule : judicial_case_role_mapping_service_create");
 end;
 
 /*
@@ -35,19 +35,19 @@ end;
  * role mapping service.  The mapping service can delete any organisational
  * staff roles.
  */
-rule "staff_organisational_role_mapping_service_delete"
+rule "judicial_case_role_mapping_service_delete"
 when
     $rq: Request(
              requestType == RequestType.DELETE)
              //clientId == "ORGANISATIONAL_ROLE_MAPPING_SERVICE")
     $ra: RoleAssignment(
-             roleType == RoleType.ORGANISATION,
-             roleCategory == RoleCategory.STAFF)
+             roleType == RoleType.CASE,
+             roleCategory == RoleCategory.JUDICIAL)
 then
-    //why should we not approved this request here becuase pattern validation on existing records not making any sense.
+    //why should we not approved this request here because pattern validation on existing records not making any sense.
     $ra.setStatus(Status.APPROVED);
-    $ra.log("Stage 1 approved : staff_organisational_role_mapping_service_delete");
+    $ra.log("Stage 1 approved : judicial_case_role_mapping_service_delete");
     // update was causing for infinite loop
-    //update($ra);
-    System.out.println("Rule :: staff_organisational_role_mapping_service_delete");
+     //update($ra);
+    System.out.println("Rule :: judicial_case_role_mapping_service_delete");
 end;
