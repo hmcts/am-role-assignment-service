@@ -163,7 +163,7 @@ class PersistenceServiceTest {
         verify(persistenceUtil, times(1)).convertRequestToEntity(any(Request.class));
         verify(persistenceUtil, times(1)).convertRoleAssignmentToHistoryEntity(
             any(RoleAssignment.class), any(RequestEntity.class));
-        verify(entityManager, times(1)).persist(any(HistoryEntity.class));
+        //verify(entityManager, times(1)).persist(any(HistoryEntity.class));
     }
 
     @Test
@@ -195,7 +195,7 @@ class PersistenceServiceTest {
         verify(persistenceUtil, times(1)).convertRequestToEntity(any(Request.class));
         verify(persistenceUtil, times(1)).convertRoleAssignmentToHistoryEntity(
             any(RoleAssignment.class), any(RequestEntity.class));
-        verify(entityManager, times(1)).persist(any(HistoryEntity.class));
+        //verify(entityManager, times(1)).persist(any(HistoryEntity.class));
     }
 
     @Test

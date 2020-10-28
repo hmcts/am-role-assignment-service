@@ -222,9 +222,9 @@ public class CreateRoleAssignmentService {
                 parsedAssignmentRequest.getRequest()
             ));
         }
-
+        persistenceService.persistHistoryList(requestEntity.getHistoryEntities());
         //Persist request to update relationship with history entities
-//        persistenceService.updateRequest(requestEntity);
+        persistenceService.updateRequest(requestEntity);
         logger.info(String.format(
             "createNewAssignmentRecords execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
