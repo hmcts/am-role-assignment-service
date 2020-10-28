@@ -18,8 +18,6 @@ rule "ia_caseworker_create_case_roles"
 when
     $rq: Request(
              requestType == RequestType.CREATE,
-             //  shall we  remove this condition
-             //shall we have condition on clientId
              assignerId == authenticatedUserId)
 
     $ra: RoleAssignment(
@@ -28,7 +26,7 @@ when
              roleType == RoleType.CASE,
              roleName == "tribunal-caseworker",
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-          //do we need to check on case jurisdiction = "IA"
+          //do we need to check on case jurisdiction = "IA" we need to put
          Case(
              id == $caseId,
              caseTypeId == "Asylum")
@@ -39,7 +37,6 @@ when
              roleName == "tribunal-caseworker" || roleName == "senior-tribunal-caseworker",
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
          ExistingRoleAssignment(
-          // what if assignerId is != authenticatedUserId, shall we consider both with in operator
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
              // we can use here in operator
@@ -76,8 +73,8 @@ when
              attributes["jurisdiction"] == "IA")
 then
     //why should we not approved this request here becuase pattern validation on existing records not making any sense.
-    $ra.setStatus(Status.STAGE_1_APPROVED);
+    $ra.setStatus(Status.APPROVED);
     $ra.log("Stage 1 approved : ia_caseworker_delete_case_roles");
-    update($ra);
+    //update($ra);
     System.out.println("Rule : ia_caseworker_delete_case_roles");
 end;

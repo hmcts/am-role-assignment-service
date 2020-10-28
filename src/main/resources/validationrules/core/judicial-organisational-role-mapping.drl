@@ -7,11 +7,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 /*
- * Generic rule for validation of roles created by the staff organisational
- * role mapping service.  The mapping service can create any organisational
- * staff roles, and is trusted to get the role attributes right, but note
- * that validation against standard role patterns will still be applied in
- * a later stage of validation.
+ * mapping for judicial case flow
+
  */
 rule "judicial_organisational_role_mapping_service_create"
 when
