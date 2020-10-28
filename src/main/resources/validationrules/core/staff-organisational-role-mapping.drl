@@ -46,10 +46,10 @@ when
              roleType == RoleType.ORGANISATION,
              roleCategory == RoleCategory.STAFF)
 then
-    //why should we not approved this request here becuase pattern validation on existing records not making any sense.
+    //why should we not approved this request here because pattern validation on existing records not making any sense.
     $ra.setStatus(Status.APPROVED);
     $ra.log("Stage 1 approved : staff_organisational_role_mapping_service_delete");
-    // update was causing for infinite loop
+    // update was causing to run in  infinite loop
     //update($ra);
     System.out.println("Rule :: staff_organisational_role_mapping_service_delete");
 end;
