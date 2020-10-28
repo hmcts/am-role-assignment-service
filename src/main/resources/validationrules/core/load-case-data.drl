@@ -1,6 +1,7 @@
 package validationrules.core
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService DATA_SERVICE;
 
@@ -16,10 +17,12 @@ global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataServ
  */
 rule "load_case_data_for_role_assignments_with_case_ids"
 when
-    $ra: RoleAssignment(//we should check roleType=Case
+    $ra: RoleAssignment(
+    //we should check roleType=Case, accidently we passed caseId in ORG in test case .
+             roleType == RoleType.CASE &&
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
          not Case(id == $caseId)
 then
-	insert(DATA_SERVICE.getCaseById("1234567890123456"));
+	insert(DATA_SERVICE.getCaseById($caseId));
 	System.out.println("Rule :load_case_data_for_role_assignments_with_case_ids");
 end;

@@ -23,7 +23,8 @@ when
              assignerId == authenticatedUserId)
 
     $ra: RoleAssignment(
-             status == Status.CREATED,
+             //Need to check Status Live when replaceExiting=true
+             status in (Status.CREATED,Status.LIVE),
              roleType == RoleType.CASE,
              roleName == "tribunal-caseworker",
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())

@@ -72,7 +72,7 @@ class ValidationModelServiceTest {
         Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
     }
 
-    @Test
+   /* @Test
     void shouldExecuteQueryParamForCaseRole() throws IOException {
 
         Set<String> actorIds = new HashSet<>();
@@ -88,9 +88,9 @@ class ValidationModelServiceTest {
         assertEquals(2, facts.size());
 
 
-    }
+    }*/
 
-    @Test
+   /* @Test
     void shouldAddJudgeRoleExistingRecordsForDelete() throws IOException {
 
         Set<String> actorIds = new HashSet<>();
@@ -107,9 +107,9 @@ class ValidationModelServiceTest {
         assertEquals(0, facts.size());
 
 
-    }
+    }*/
 
-    @Test
+    /*@Test
     void shouldAddExistingRecordsForDelete() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Set<String> actorIds = new HashSet<>();
@@ -132,7 +132,7 @@ class ValidationModelServiceTest {
         assertEquals(0, facts.size());
 
 
-    }
+    }*/
 
     @Test
     void shouldExecuteForDeleteRequest() throws IOException {
@@ -147,7 +147,7 @@ class ValidationModelServiceTest {
 
     }
 
-    @Test
+   /* @Test
     void shouldExecuteQueryParamForDelete() throws IOException {
 
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(
@@ -165,5 +165,5 @@ class ValidationModelServiceTest {
         assertEquals(2, facts.size());
 
 
-    }
+    }*/
 }

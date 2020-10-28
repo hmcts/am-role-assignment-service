@@ -42,7 +42,7 @@ end;
  */
 rule "validate_role_assignment_against_patterns"
 when
-         Request(requestType == RequestType.CREATE)
+     $rq:    Request(requestType == RequestType.CREATE)
     $ra: RoleAssignment(status == Status.STAGE_1_APPROVED)
          RoleConfigPattern(
              roleName == $ra.roleName,
@@ -58,4 +58,5 @@ then
     $ra.log("Approved : validate_role_assignment_against_patterns");
     update($ra);
     System.out.println("Rule : validate_role_assignment_against_patterns");
+    $rq.setLog("Approved : validate_role_assignment_against_patterns");
 end;
