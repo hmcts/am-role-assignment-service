@@ -106,29 +106,9 @@ public class PersistenceService {
     }
 
 
-    @Transactional
-    public HistoryEntity persistHistory(RoleAssignment roleAssignment, Request request) {
-        UUID roleAssignmentId = roleAssignment.getId();
-        UUID requestId = request.getId();
-
-        RequestEntity requestEntity = persistenceUtil.convertRequestToEntity(request);
-        if (requestId != null) {
-            requestEntity.setId(requestId);
-        }
-
-        HistoryEntity historyEntity = persistenceUtil.convertRoleAssignmentToHistoryEntity(
-            roleAssignment,
-            requestEntity
-        );
-        historyEntity.setId(Objects.requireNonNullElseGet(roleAssignmentId, UUID::randomUUID));
-        //Persist the history entity
-        //entityManager.persist(historyEntity)
-        return historyEntity;
-    }
 
     @Transactional
-    public void persistHistoryList(Collection<HistoryEntity> historyEntityList) {
-        //historyRepository.saveAll(historyEntityList)
+    public void persistHistoryEntities(Collection<HistoryEntity> historyEntityList) {
         historyEntityList.forEach(historyEntity -> entityManager.persist(historyEntity));
         entityManager.flush();
     }
