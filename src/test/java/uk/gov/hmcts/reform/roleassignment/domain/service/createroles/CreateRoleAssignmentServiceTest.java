@@ -32,6 +32,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -302,9 +303,7 @@ class CreateRoleAssignmentServiceTest {
         verify(persistenceUtil, times(2))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(persistenceService, times(1))
-            .persistRoleAssignment(any(RoleAssignment.class));
-
-
+            .persistRoleAssignments(anyList());
     }
 
     @Test
@@ -349,8 +348,7 @@ class CreateRoleAssignmentServiceTest {
         verify(persistenceUtil, times(0))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(persistenceService, times(0))
-            .persistRoleAssignment(any(RoleAssignment.class));
-
+            .persistRoleAssignments(anyList());
     }
 
     @Test
