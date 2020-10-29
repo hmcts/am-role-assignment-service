@@ -19,7 +19,7 @@ public class UserTokenProviderConfig {
     private final String password;
     private final String scope;
     private static final String MICRO_SERVICE_NAME = "am_role_assignment_service";
-    private static final String USER_NAME = "befta.caseworker.2.solicitor.2@gmail.com";
+    private static final String USER_NAME = "TEST_AM_USER2_BEFTA@test.local";
 
     public UserTokenProviderConfig() {
 
