@@ -16,21 +16,19 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 rule "staff_organisational_role_mapping_service_create"
 when
     $rq: Request(
-             requestType == RequestType.CREATE)
+             //requestType == RequestType.CREATE)
              //clientId == "ORGANISATIONAL_ROLE_MAPPING_SERVICE")
     $ra: RoleAssignment(
              //Need to check Status Live when replaceExiting=true
-             status in(Status.CREATED,Status.LIVE),
+             status == Status.CREATE_REQUESTED,
              roleType == RoleType.ORGANISATION,
              roleCategory == RoleCategory.STAFF)
 then
-    $ra.setStatus(Status.STAGE_1_APPROVED);
-    $ra.log("Stage 1 approved : staff_organisational_role_mapping_service_create");
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Create approved : staff_organisational_role_mapping_service_create");
     update($ra);
     System.out.println("Rule : staff_organisational_role_mapping_service_create");
 end;
-
-// need to create new rule for replace existing =true;
 
 /*
  * Generic rule for validation of roles deleted by the staff organisational
@@ -40,16 +38,17 @@ end;
 rule "staff_organisational_role_mapping_service_delete"
 when
     $rq: Request(
-             requestType == RequestType.DELETE)
+             //requestType == RequestType.DELETE)
              //clientId == "ORGANISATIONAL_ROLE_MAPPING_SERVICE")
     $ra: RoleAssignment(
+             status = Status.DELETE_REQUESTED,
              roleType == RoleType.ORGANISATION,
              roleCategory == RoleCategory.STAFF)
 then
     //why should we not approved this request here because pattern validation on existing records not making any sense.
-    $ra.setStatus(Status.APPROVED);
+    $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Stage 1 approved : staff_organisational_role_mapping_service_delete");
     // update was causing to run in  infinite loop
-    //update($ra);
+    update($ra);
     System.out.println("Rule :: staff_organisational_role_mapping_service_delete");
 end;
