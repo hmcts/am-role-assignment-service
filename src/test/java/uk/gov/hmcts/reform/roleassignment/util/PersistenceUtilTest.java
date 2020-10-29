@@ -6,12 +6,17 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -75,19 +80,13 @@ class PersistenceUtilTest {
             entity));
     }
 
-    /*@Test
+    @Test
     void persistHistory() throws IOException {
         AssignmentRequest assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
         RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
-        HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
-            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
 
-        when(persistenceUtil.convertRequestToEntity(assignmentRequest.getRequest())).thenReturn(requestEntity);
-        when(persistenceUtil.convertRoleAssignmentToHistoryEntity(
-            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity)).thenReturn(historyEntity);
-
-        HistoryEntity historyEntityResult = sut.prepareHistoryEntityForPersistance(
+        HistoryEntity historyEntityResult = persistenceUtil.prepareHistoryEntityForPersistance(
             assignmentRequest.getRequestedRoles().iterator().next(), assignmentRequest.getRequest());
 
         assertNotNull(historyEntityResult);
@@ -99,42 +98,5 @@ class PersistenceUtilTest {
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
             assertEquals(requestedRole.getId(), historyEntityResult.getId());
         }
-
-        verify(persistenceUtil, times(1)).convertRequestToEntity(any(Request.class));
-        verify(persistenceUtil, times(1)).convertRoleAssignmentToHistoryEntity(
-            any(RoleAssignment.class), any(RequestEntity.class));
-        verify(entityManager, times(1)).persist(any(HistoryEntity.class));
     }
-
-    @Test
-    void persistHistory_NullRequestId() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder
-            .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
-        assignmentRequest.getRequest().setId(null);
-        assignmentRequest.getRequestedRoles().iterator().next().setId(null);
-        RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
-        HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
-            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
-
-        when(persistenceUtil.convertRequestToEntity(assignmentRequest.getRequest())).thenReturn(requestEntity);
-        when(persistenceUtil.convertRoleAssignmentToHistoryEntity(any(), any())).thenReturn(historyEntity);
-        when(historyRepository.save(historyEntity)).thenReturn(historyEntity);
-
-        HistoryEntity historyEntityResult = sut.prepareHistoryEntityForPersistance(
-            assignmentRequest.getRequestedRoles().iterator().next(), assignmentRequest.getRequest());
-
-        assertNotNull(historyEntityResult);
-        assertNotNull(historyEntityResult.getId());
-        assertNull(historyEntityResult.getRequestEntity().getId());
-
-        assertEquals(
-            assignmentRequest.getRequestedRoles().iterator().next().getId(),
-            historyEntityResult.getRequestEntity().getId()
-        );
-
-        verify(persistenceUtil, times(1)).convertRequestToEntity(any(Request.class));
-        verify(persistenceUtil, times(1)).convertRoleAssignmentToHistoryEntity(
-            any(RoleAssignment.class), any(RequestEntity.class));
-        verify(entityManager, times(1)).persist(any(HistoryEntity.class));
-    }*/
 }

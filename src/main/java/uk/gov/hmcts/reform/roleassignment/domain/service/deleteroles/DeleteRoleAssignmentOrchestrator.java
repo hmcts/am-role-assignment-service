@@ -175,10 +175,11 @@ public class DeleteRoleAssignmentOrchestrator {
                 requestedRole.setStatus(Status.DELETE_APPROVED);
                 requestedRole.setStatusSequence(Status.DELETE_APPROVED.sequence);
             }
-            // persist history in db
-            requestEntity.getHistoryEntities().add(persistenceUtil.prepareHistoryEntityForPersistance(requestedRole, request));
+            requestEntity.getHistoryEntities()
+                .add(persistenceUtil.prepareHistoryEntityForPersistance(requestedRole, request));
 
         }
+        // persist history in db
         persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
