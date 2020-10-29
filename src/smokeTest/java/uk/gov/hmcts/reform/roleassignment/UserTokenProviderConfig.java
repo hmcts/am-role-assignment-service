@@ -31,7 +31,7 @@ public class UserTokenProviderConfig {
         clientSecret = EnvironmentVariableUtils.getRequiredVariable("ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET");
         clientId = EnvironmentVariableUtils.getRequiredVariable("IDAM_CLIENT_ID");
         username = USER_NAME;
-        password = EnvironmentVariableUtils.getRequiredVariable("CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD");
+        password = EnvironmentVariableUtils.getRequiredVariable("TEST_AM_USER2_BEFTA_PWD");
         scope = EnvironmentVariableUtils.getRequiredVariable("OPENID_SCOPE_VARIABLES");
     }
 
