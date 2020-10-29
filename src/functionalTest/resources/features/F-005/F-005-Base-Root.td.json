@@ -3,7 +3,7 @@
   "users": {
     "invokingUser": {
       "username": "TEST_AM_USER2_BEFTA@test.local",
-      "password": "[[$CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD]]"
+      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
     }
   },
   "request": {

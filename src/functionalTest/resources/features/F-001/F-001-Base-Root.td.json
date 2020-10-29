@@ -3,15 +3,15 @@
   "users": {
       "invokingUser": {
         "username": "TEST_AM_USER2_BEFTA@test.local",
-        "password": "[[$CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD]]"
+        "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
       },
       "befta1": {
         "username": "TEST_AM_USER1_BEFTA@test.local",
-        "password": "[[$CCD_BEFTA_CASEWORKER_2_SOLICITOR_1_PWD]]"
+        "password": "[[$TEST_AM_USER1_BEFTA_PWD]]"
       },
       "befta3": {
         "username": "TEST_AM_USER3_BEFTA@test.local",
-        "password": "[[$CCD_BEFTA_CASEWORKER_2_SOLICITOR_3_PWD]]"
+        "password": "[[$TEST_AM_USER3_BEFTA_PWD]]"
       }
   },
   "request": {

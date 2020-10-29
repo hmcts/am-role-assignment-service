@@ -215,9 +215,9 @@ export OAUTH2_SCOPE_VARIABLES=openid%20profile%20roles%20authorities
 export OAUTH2_REDIRECT_URI=http://localhost:4096/oauth2redirect
 export IDAM_CLIENT_ID=am_role_assignment
 export OPENID_SCOPE_VARIABLES =openid+profile+roles+authorities
-export CCD_BEFTA_CASEWORKER_2_SOLICITOR_1_PWD=Pa55word11
-export CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD=Pa55word11
-export CCD_BEFTA_CASEWORKER_2_SOLICITOR_3_PWD=Pa55word11
+export TEST_AM_USER1_BEFTA_PWD=Pa55word11
+export TEST_AM_USER2_BEFTA_PWD=Pa55word11
+export TEST_AM_USER3_BEFTA_PWD=Pa55word11
 
 ```
 
