@@ -30,7 +30,7 @@ The following environment variables are required:
       |ROLE_ASSIGNMENT_IDAM_CLIENT_ID|am_docker|
       |ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET|am_docker_secret|
       |ROLE_ASSIGNMENT_IDAM_REDIRECT_URI|http://localhost:4096/oauth2redirect|
-      |ROLE_ASSIGNMENT_IDAM_ADMIN_USERID|befta.caseworker.2.solicitor.2@gmail.com|
+      |ROLE_ASSIGNMENT_IDAM_ADMIN_USERID|TEST_AM_USER2_BEFTA@test.local|
       |ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD|Pa55word11|
       |ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE|search-user|
       |CCD_DATA_STORE_URL|http://localhost:4452|
