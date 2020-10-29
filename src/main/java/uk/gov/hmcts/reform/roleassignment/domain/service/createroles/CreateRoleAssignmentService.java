@@ -244,9 +244,9 @@ public class CreateRoleAssignmentService {
             Collectors.toList());
         for (RoleAssignment requestedAssignment : roleAssignments) {
             requestedAssignment.setStatus(Status.LIVE);
-            persistenceService.persistRoleAssignment(requestedAssignment);
             persistenceService.persistActorCache(requestedAssignment);
         }
+        persistenceService.persistRoleAssignments(roleAssignments);
     }
 
 

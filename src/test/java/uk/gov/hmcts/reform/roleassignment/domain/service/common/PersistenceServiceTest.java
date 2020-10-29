@@ -145,9 +145,9 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertRoleAssignmentToEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), true)).thenReturn(roleAssignmentEntity);
 
-        sut.persistRoleAssignment(assignmentRequest.getRequestedRoles().iterator().next());
+        sut.persistRoleAssignments(assignmentRequest.getRequestedRoles());
 
-        verify(persistenceUtil, times(1))
+        verify(persistenceUtil, times(2))
             .convertRoleAssignmentToEntity(any(RoleAssignment.class), any(boolean.class));
     }
 
