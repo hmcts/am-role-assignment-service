@@ -53,24 +53,7 @@ public class ValidationModelService {
 
     }
 
-    /**
-     * May not need to filter the assignments, but not clear whether getAssignmentsByActor does this already.
-     * TODO: this is only protected to allow temporary overriding for testing purposes.
-     */
-    private Collection<RoleAssignment> getCurrentRoleAssignmentsForActor(String actorId) {
-    	LocalDateTime now = LocalDateTime.now();
-    	return
-	    	persistenceService.getAssignmentsByActor(actorId).stream().filter(
-	    			ra -> {
-	    				LocalDateTime begin = ra.getBeginTime();
-	    				LocalDateTime end = ra.getEndTime();
 
-	    				//We have added condition on roleType to fetch only Organisation records
-	    				return (begin == null || !begin.isBefore(now)) && (end == null || end.isAfter(now)
-                            && ra.getRoleType() == RoleType.ORGANISATION);
-	    			})
-	    	.collect(Collectors.toList());
-    }
 
     /**
      * Get the existing role assignments for the assigner and authenticated user, as well as for all
@@ -96,18 +79,14 @@ public class ValidationModelService {
         //replacing the logic to make single db call using dynamic search api.
         return getCurrentRoleAssignmentsForActors(userIds);
 
-       /* for (String userId : userIds) {
-        	roleAssignments.addAll(getCurrentRoleAssignmentsForActors(userId));
-        }*/
-        //return convertRoleAssignmentIntoExistingRecords(roleAssignments);
     }
 
 
     public List<ExistingRoleAssignment> getCurrentRoleAssignmentsForActors(Set<String> actorIds) {
         LocalDateTime now = LocalDateTime.now();
         QueryRequest queryRequest = QueryRequest.builder()
-            .actorId(List.copyOf(actorIds))
-            .roleType(Arrays.asList("ORGANISATION"))
+            .actorId(actorIds)
+            .roleType("ORGANISATION")
             .validAt(now)
             .build();
 
