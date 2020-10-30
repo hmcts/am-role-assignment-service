@@ -18,7 +18,6 @@ global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataServ
 rule "load_case_data_for_role_assignments_with_case_ids"
 when
     $ra: RoleAssignment(
-    //we should check roleType=Case, if  we pass caseId accidently in roleTypr = ORG in test case  and also to fix FT.
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
              not Case(id == $caseId)
 then

@@ -60,7 +60,6 @@ when
              roleType == RoleType.CASE,
              roleName == "tribunal-caseworker",
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-         //we don't need to re-evaluate Case for deletion.
          Case(
              id == $caseId,
              jurisdiction == "IA",
@@ -70,9 +69,7 @@ when
              roleType == RoleType.ORGANISATION,
              roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
              attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
-              //validity of case role must be equal or within the validaty of existing role
-              /*beginTime == null || beginTime <= $ra.beginTime,
-              endTime == null || endTime >= $ra.endTime)*/
+
 then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : ia_caseworker_delete_case_roles");
