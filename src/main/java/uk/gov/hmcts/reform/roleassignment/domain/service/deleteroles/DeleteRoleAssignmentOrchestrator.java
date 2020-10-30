@@ -86,7 +86,7 @@ public class DeleteRoleAssignmentOrchestrator {
         return responseEntity;
     }
 
-    public ResponseEntity<Object> deleteRoleAssignmentByAssignmentId(String assignmentId)  {
+    public ResponseEntity<Object> deleteRoleAssignmentByAssignmentId(String assignmentId) {
         List<RoleAssignment> requestedRoles;
 
         //1. create the request Object
@@ -204,6 +204,10 @@ public class DeleteRoleAssignmentOrchestrator {
 
         } else {
             //Insert requested roles  into history table with status deleted-Rejected
+            List<RoleAssignment> deleteApprovedRecords = validatedAssignmentRequest.getRequestedRoles().stream()
+                .filter(role -> role.getStatus() == Status.APPROVED).collect(
+                Collectors.toList());
+            validatedAssignmentRequest.setRequestedRoles(deleteApprovedRecords);
             insertRequestedRole(validatedAssignmentRequest, Status.DELETE_REJECTED);
 
             // Update request status to REJECTED
