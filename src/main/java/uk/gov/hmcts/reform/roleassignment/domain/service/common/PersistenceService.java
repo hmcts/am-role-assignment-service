@@ -114,9 +114,9 @@ public class PersistenceService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void persistRoleAssignments(Collection<RoleAssignment> roleAssignments) {
         //Persist the role assignment entity
-        List<RoleAssignmentEntity> roleAssignmentEntities = roleAssignments.stream().map(
+        Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignments.stream().map(
             roleAssignment -> persistenceUtil.convertRoleAssignmentToEntity(roleAssignment, true)
-        ).collect(Collectors.toList());
+        ).collect(Collectors.toSet());
         roleAssignmentEntities.forEach(roleAssignmentEntity -> entityManager.persist(roleAssignmentEntity));
         entityManager.flush();
     }
