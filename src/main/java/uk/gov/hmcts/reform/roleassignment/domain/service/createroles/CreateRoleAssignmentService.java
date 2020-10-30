@@ -562,7 +562,8 @@ public class CreateRoleAssignmentService {
 
         // Update request status to approved
         parsedAssignmentRequest.getRequest().setStatus(Status.APPROVED);
-        requestEntity.setLog(parsedAssignmentRequest.getRequest().getLog());
+        parsedAssignmentRequest.getRequest().setLog(REQUEST_APPROVAL_MSG);
+        requestEntity.setLog(REQUEST_APPROVAL_MSG);
         requestEntity.setStatus(Status.APPROVED.toString());
         persistenceService.updateRequest(requestEntity);
     }
