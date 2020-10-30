@@ -49,7 +49,6 @@ when
              roleType == null || roleType.matches($ra.roleType),
              grantType == null || grantType.matches($ra.grantType),
              classification == null || classification.matches($ra.classification),
-             //we have to remove null check as it's contradictic with mandatory clause in role.json
              beginTime == null || beginTime.matches($ra.beginTime),
              endTime == null || endTime.matches($ra.endTime),
              attributesMatch($ra.attributes))

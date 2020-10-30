@@ -41,7 +41,6 @@ when
              roleType == RoleType.CASE,
              roleCategory == RoleCategory.JUDICIAL)
 then
-    //why should we not approved this request here because pattern validation on existing records not making any sense.
     $ra.setStatus(Status.APPROVED);
     $ra.log("Stage 1 approved : judicial_case_role_mapping_service_delete");
     // update was causing for infinite loop
