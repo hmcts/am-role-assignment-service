@@ -17,7 +17,7 @@
           },
           "Classification": {
             "mandatory": true,
-            "values": ["PUBLIC","RESTRICTED","PRIVATE"]
+            "values": ["PUBLIC","PRIVATE"]
           },
           "Attributes": {
             "Region": {
@@ -75,7 +75,7 @@
           },
           "Classification": {
             "mandatory": true,
-            "values": ["PUBLIC","RESTRICTED","PRIVATE"]
+            "values": ["PUBLIC","PRIVATE"]
           },
           "Attributes": {
             "jurisdiction": {
