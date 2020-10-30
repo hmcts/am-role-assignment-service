@@ -19,9 +19,8 @@ rule "load_case_data_for_role_assignments_with_case_ids"
 when
     $ra: RoleAssignment(
     //we should check roleType=Case, if  we pass caseId accidently in roleTypr = ORG in test case  and also to fix FT.
-             //roleType == RoleType.CASE &&
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-         not Case(id == $caseId)
+             not Case(id == $caseId)
 then
 	insert(DATA_SERVICE.getCaseById($caseId));
 	System.out.println("Rule :load_case_data_for_role_assignments_with_case_ids");

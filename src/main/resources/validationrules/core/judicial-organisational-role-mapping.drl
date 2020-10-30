@@ -21,7 +21,7 @@ when
              roleType == RoleType.ORGANISATION,
              roleCategory == RoleCategory.JUDICIAL)
 then
-    $ra.setStatus(Status.STAGE_1_APPROVED);
+    //$ra.setStatus(Status.STAGE_1_APPROVED);
     $ra.log("Stage 1 approved : judicial_organisational_role_mapping_service_create");
     update($ra);
     System.out.println("Rule : judicial_organisational_role_mapping_service_create");

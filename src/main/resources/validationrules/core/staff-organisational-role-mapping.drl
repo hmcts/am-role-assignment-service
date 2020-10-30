@@ -15,11 +15,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
  */
 rule "staff_organisational_role_mapping_service_create"
 when
-    $rq: Request(
-             //requestType == RequestType.CREATE)
+    $rq: Request()
              //clientId == "ORGANISATIONAL_ROLE_MAPPING_SERVICE")
     $ra: RoleAssignment(
-             //Need to check Status Live when replaceExiting=true
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.ORGANISATION,
              roleCategory == RoleCategory.STAFF)
@@ -37,17 +35,16 @@ end;
  */
 rule "staff_organisational_role_mapping_service_delete"
 when
-    $rq: Request(
-             //requestType == RequestType.DELETE)
+    $rq: Request()
+
              //clientId == "ORGANISATIONAL_ROLE_MAPPING_SERVICE")
     $ra: RoleAssignment(
-             status = Status.DELETE_REQUESTED,
+             status == Status.DELETE_REQUESTED,
              roleType == RoleType.ORGANISATION,
              roleCategory == RoleCategory.STAFF)
 then
-    //why should we not approved this request here because pattern validation on existing records not making any sense.
     $ra.setStatus(Status.DELETE_APPROVED);
-    $ra.log("Stage 1 approved : staff_organisational_role_mapping_service_delete");
+    $ra.log("Delete approved : staff_organisational_role_mapping_service_delete");
     // update was causing to run in  infinite loop
     update($ra);
     System.out.println("Rule :: staff_organisational_role_mapping_service_delete");

@@ -44,7 +44,6 @@ public class PersistenceUtil {
             .endTime(roleAssignment.getEndTime())
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
             .notes(roleAssignment.getNotes())
-            .sequence(roleAssignment.getStatusSequence())
             .log(roleAssignment.getLog())
             .authorisations(
                 !CollectionUtils.isEmpty(roleAssignment.getAuthorisations())
@@ -112,7 +111,6 @@ public class PersistenceUtil {
             .roleType(RoleType.valueOf(historyEntity.getRoleType()))
             .roleCategory(RoleCategory.valueOf(historyEntity.getRoleCategory()))
             .status(Status.valueOf(historyEntity.getStatus()))
-            .statusSequence(historyEntity.getSequence())
             .process(historyEntity.getProcess())
             .reference(historyEntity.getReference())
             .beginTime(historyEntity.getBeginTime())
