@@ -1,3 +1,4 @@
+/*
 package validationrules.dev;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -6,9 +7,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
+*/
 /*
  *
- */
+ *//*
+
 rule "development_superuser_create"
 when
     $rq: Request(
@@ -22,9 +25,11 @@ then
     System.out.println("Rule :development_superuser");
 end;
 
+*/
 /*
  *
- */
+ *//*
+
 rule "development_superuser_delete"
 when
     $rq: Request(
@@ -57,3 +62,4 @@ then
     System.err.println("*************************************************************************************************");
     System.err.println("*************************************************************************************************");
 end;
+*/

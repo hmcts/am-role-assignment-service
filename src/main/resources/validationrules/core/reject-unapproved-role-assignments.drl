@@ -14,7 +14,7 @@ when
 then
     System.out.println("Rule : reject_unapproved_create_role_assignments");
     $ra.setStatus(Status.REJECTED);
-    $ra.log("Create not approved by any rule.");
+    $ra.log("Create not approved by any rule, hence rejected  : reject_unapproved_create_role_assignments");
     update($ra);
 end;
 
@@ -30,6 +30,6 @@ when
 then
     System.out.println("Rule : reject_unapproved_delete_role_assignments");
     $ra.setStatus(Status.DELETE_REJECTED);
-    $ra.log("Delete not approved by any rule.");
+    $ra.log("Delete not approved by any rule, hence ejected  : reject_unapproved_delete_role_assignments");
     update($ra);
 end;

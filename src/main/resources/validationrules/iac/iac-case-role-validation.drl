@@ -17,16 +17,13 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 rule "ia_caseworker_create_case_roles"
 when
     $rq: Request(
-             //requestType == RequestType.CREATE,
              assignerId == authenticatedUserId)
 
     $ra: RoleAssignment(
-             //Need to check Status Live when replaceExiting=true
               status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              roleName == "tribunal-caseworker",
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-          //do we need to check on case jurisdiction = "IA" we need to put
          Case(
              id == $caseId,
              jurisdiction == "IA",
@@ -36,11 +33,13 @@ when
              roleType == RoleType.ORGANISATION,
              roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+
          ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
              roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+
 then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Stage 1 approved : ia_caseworker_create_case_roles");
@@ -55,28 +54,28 @@ end;
 rule "ia_caseworker_delete_case_roles"
 when
     $rq: Request(
-             //requestType == RequestType.DELETE,
              assignerId == authenticatedUserId)
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
              roleName == "tribunal-caseworker",
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-         //we don't need to reevaluate Case for deletion.
+         //we don't need to re-evaluate Case for deletion.
          Case(
              id == $caseId,
              jurisdiction == "IA",
              caseTypeId == "Asylum")
-         ExistingRoleAssignment(
-            //we should authen
+        ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
              roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
-             attributes["jurisdiction"] == "IA")
+             attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
+              //validity of case role must be equal or within the validaty of existing role
+              /*beginTime == null || beginTime <= $ra.beginTime,
+              endTime == null || endTime >= $ra.endTime)*/
 then
-    //why should we not approved this request here becuase pattern validation on existing records not making any sense.
     $ra.setStatus(Status.DELETE_APPROVED);
-    $ra.log("Stage 1 approved : ia_caseworker_delete_case_roles");
+    $ra.log("Delete approved : ia_caseworker_delete_case_roles");
     update($ra);
     System.out.println("Rule : ia_caseworker_delete_case_roles");
 end;

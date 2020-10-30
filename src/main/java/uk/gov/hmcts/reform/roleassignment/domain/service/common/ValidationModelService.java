@@ -1,50 +1,32 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import static org.apache.commons.beanutils.BeanUtils.copyProperties;
+import lombok.extern.slf4j.Slf4j;
+import org.kie.api.runtime.StatelessKieSession;
+import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.kie.api.KieServices;
-import org.kie.api.runtime.StatelessKieSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.databind.JavaType;
-
-import lombok.extern.slf4j.Slf4j;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.stubs.StubPersistenceService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.stubs.StubRetrieveDataService;
-import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
+import static org.apache.commons.beanutils.BeanUtils.copyProperties;
 
 @Service
 @Slf4j
 public class ValidationModelService {
-    //1. retrieve existingRoleAssignment records for Assignee
-    //2. retrieve existingRoleAssignment records for Requester
-    //3. retrieve AuthorisedRoleAssignment records for Requester/Assignee(??)
-    //Note: These are aggregation records from Assignment_history table.
-    private static final Logger logger = LoggerFactory.getLogger(ValidationModelService.class);
+
     private StatelessKieSession kieSession;
-
-    /*private StubRetrieveDataService retrieveDataService;
-
-    private StubPersistenceService persistenceService;*/
-
     private RetrieveDataService retrieveDataService;
     private PersistenceService persistenceService;
 
@@ -62,7 +44,7 @@ public class ValidationModelService {
 
     public void validateRequest(AssignmentRequest assignmentRequest) {
         long startTime = System.currentTimeMillis();
-        // Force the status and timestamp on all new request
+
         runRulesOnAllRequestedAssignments(assignmentRequest);
         log.info(
             "Execution time of validateRequest() : {} in milli seconds ",
@@ -96,7 +78,7 @@ public class ValidationModelService {
      */
     private List<ExistingRoleAssignment> getExistingRoleAssignmentsForRequest(AssignmentRequest assignmentRequest) {
         // facts must contain existing role assignments for assigner and authenticatedUser,
-    	// if these are present in the request.
+        // if these are present in the request.
         Set<String> userIds = new HashSet<>();
         String assignerId = assignmentRequest.getRequest().getAssignerId();
         if (assignerId != null) {
@@ -104,29 +86,48 @@ public class ValidationModelService {
         }
         String authenticatedUserId = assignmentRequest.getRequest().getAuthenticatedUserId();
         if (authenticatedUserId != null) {
-        	userIds.add(assignmentRequest.getRequest().getAuthenticatedUserId());
+            userIds.add(assignmentRequest.getRequest().getAuthenticatedUserId());
         }
         // facts needs assignee roles for creates, not for deletes (?)
         if (assignmentRequest.getRequest().getRequestType() == RequestType.CREATE) {
             assignmentRequest.getRequestedRoles().stream().forEach(r -> userIds.add(r.getActorId()));
         }
-        List<RoleAssignment> roleAssignments = new ArrayList<>();
-        for (String userId : userIds) {
-        	roleAssignments.addAll(getCurrentRoleAssignmentsForActor(userId));
-        }
+
+        //replacing the logic to make single db call using dynamic search api.
+        return getCurrentRoleAssignmentsForActors(userIds);
+
+       /* for (String userId : userIds) {
+        	roleAssignments.addAll(getCurrentRoleAssignmentsForActors(userId));
+        }*/
+        //return convertRoleAssignmentIntoExistingRecords(roleAssignments);
+    }
+
+
+    public List<ExistingRoleAssignment> getCurrentRoleAssignmentsForActors(Set<String> actorIds) {
+        LocalDateTime now = LocalDateTime.now();
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(List.copyOf(actorIds))
+            .roleType(Arrays.asList("ORGANISATION"))
+            .validAt(now)
+            .build();
+
+        List<RoleAssignment> roleAssignments = persistenceService.retrieveRoleAssignmentsByQueryRequest(
+            queryRequest,
+            0,
+            0,
+            null,
+            null
+        );
+
+
+
         return convertRoleAssignmentIntoExistingRecords(roleAssignments);
     }
 
-/*private void setRoleAssignmentsStatusToCreated(AssignmentRequest assignmentRequest) {
-	assignmentRequest.getRequestedRoles().forEach(r -> r.setStatus(Status.CREATED));
-}*/
-
     private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) {
         long startTime = System.currentTimeMillis();
-        logger.info(String.format("runRulesOnAllRequestedAssignments execution started at %s", startTime));
+        log.info(String.format("runRulesOnAllRequestedAssignments execution started at %s", startTime));
 
-        /*// Set all the role assignments to CREATED initially.
-        setRoleAssignmentsStatusToCreated(assignmentRequest);*/
 
         Set<Object> facts = new HashSet<>();
 
@@ -145,7 +146,7 @@ public class ValidationModelService {
 
         // Run the rules
         kieSession.execute(facts);
-        logger.info(String.format(
+        log.info(String.format(
             "runRulesOnAllRequestedAssignments execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
@@ -164,11 +165,11 @@ public class ValidationModelService {
         List<RoleAssignment> roleAssignments) {
         List<ExistingRoleAssignment> existingRecords = new ArrayList<>();
 
-        for (RoleAssignment element : roleAssignments) {
+        for (RoleAssignment roleAssignment : roleAssignments) {
             ExistingRoleAssignment existingRoleAssignment = ExistingRoleAssignment.builder()
                 .build();
             try {
-                copyProperties(existingRoleAssignment, element);
+                copyProperties(existingRoleAssignment, roleAssignment);
                 existingRecords.add(existingRoleAssignment);
             } catch (Exception e) {
                 log.error(
@@ -180,42 +181,5 @@ public class ValidationModelService {
         return existingRecords;
     }
 
-
-
-
-
-
-
-
-
-   /* public static void main(String[] args) throws Exception {
-    	ValidationModelService v = new ValidationModelService(kieSession(), new StubRetrieveDataService(), new StubPersistenceService());
-    	List<AssignmentRequest> requests = loadRequests();
-    	for (AssignmentRequest request : requests) {
-        	v.validateRequest(request);
-        	System.out.println("-----------------------------------------------------------------------");
-        	System.out.println("Request " + request.getRequest().getCorrelationId());
-        	System.out.println("Request " + request.getRequest().getStatus());
-    	}
-    }*/
-
-    /*public static StatelessKieSession kieSession() {
-        return KieServices.Factory.get().getKieClasspathContainer().newStatelessKieSession("role-assignment-validation-session");
-    }*/
-
-	/**
-	 * Load requests from the assignment-requests.json resource.
-	 *//*
-	private static List<AssignmentRequest> loadRequests() {
-		try {
-			try (InputStream input = ValidationModelService.class.getResourceAsStream("assignment-requests.json")) {
-				JavaType type = JacksonUtils.MAPPER.getTypeFactory().constructCollectionType(List.class, AssignmentRequest.class);
-				List<AssignmentRequest> requests = JacksonUtils.MAPPER.readValue(input, type);
-				return requests;
-			}
-		} catch (Throwable t) {
-			throw new RuntimeException("Failed to load stub case data.", t);
-		}
-	}*/
 
 }

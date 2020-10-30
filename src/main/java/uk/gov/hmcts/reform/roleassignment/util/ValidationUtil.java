@@ -17,6 +17,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ValidationUtil {
     private ValidationUtil() {
     }
 
-    public static void validateDateTime(String strDate, String timeParam) {
+    public static void validateDateTime(String strDate, String timeParam) throws ParseException {
         LOG.info("validateDateTime");
         if (strDate.length() < 16) {
             throw new BadRequestException(String.format(
@@ -59,7 +60,12 @@ public class ValidationUtil {
             ));
         }
         assert javaDate != null;
-        if (javaDate.before(new Date())) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        String formatted = format1.format(cal.getTime());
+        Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(formatted);
+        System.out.print("New Date::" + date1);
+        if (javaDate.before(date1)) {
             throw new BadRequestException(String.format(
                 "The parameter '%s' cannot be prior to current date", timeParam
             ));
@@ -70,9 +76,9 @@ public class ValidationUtil {
         SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_PATTERN);
         Date beginTimeP = sdf.parse(beginTime);
         Date endTimeP = sdf.parse(endTime);
-        Date createTimeP = new Date();
+        //Date createTimeP = new Date();
 
-        if (beginTimeP.before(createTimeP)) {
+        /*if (beginTimeP.before(createTimeP)) {
             throw new BadRequestException(
                 String.format("The begin time: %s takes place before the current time: %s",
                               beginTime, createTimeP
@@ -80,7 +86,8 @@ public class ValidationUtil {
         } else if (endTimeP.before(createTimeP)) {
             throw new BadRequestException(
                 String.format("The end time: %s takes place before the current time: %s", endTime, createTimeP));
-        } else if (endTimeP.before(beginTimeP)) {
+        } else*/
+        if (endTimeP.before(beginTimeP)) {
             throw new BadRequestException(
                 String.format("The end time: %s takes place before the begin time: %s", endTime, beginTime));
         }
@@ -172,6 +179,7 @@ public class ValidationUtil {
     }
 
     private static void validateBeginAndEndDates(RoleAssignment requestedRole) throws ParseException {
+
         if (requestedRole.getBeginTime() != null) {
             validateDateTime(requestedRole.getBeginTime().toString(), "beginTime");
         }
