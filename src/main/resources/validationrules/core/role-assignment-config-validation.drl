@@ -29,9 +29,9 @@ when
     $rc: RoleConfig(get($roleName) != null)
          not RoleConfigPattern(roleName == $roleName)
 then
-    for (RoleConfigData data : $rc.get($roleName).getPatterns()) {
-        insert(data.getData());
-        System.out.println("Rule : load_role_config_patterns" + data.getData());
+    for (RoleConfigPattern pattern : $rc.get($roleName).getPatterns()) {
+        insert(pattern);
+        System.out.println("Rule : load_role_config_patterns" + pattern);
     }
 
 end;
