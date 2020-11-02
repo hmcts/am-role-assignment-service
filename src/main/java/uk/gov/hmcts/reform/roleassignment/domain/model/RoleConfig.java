@@ -40,8 +40,8 @@ public class RoleConfig {
         RoleCategory roleCategory = role.getCategory();
         role.getPatterns().forEach(
             p -> {
-                p.getData().setRoleName(roleName);
-                p.getData().setRoleCategory(roleCategory);
+                p.setRoleName(roleName);
+                p.setRoleCategory(roleCategory);
             });
     }
 

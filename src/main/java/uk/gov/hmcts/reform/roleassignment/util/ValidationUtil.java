@@ -10,6 +10,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
@@ -142,7 +143,7 @@ public class ValidationUtil {
     }
 
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
-        List<String> rolesName = JacksonUtils.getConfiguredRoles().get("roles").stream().map(Role::getName).collect(
+        List<String> rolesName = JacksonUtils.getConfiguredRoles().get("roles").stream().map(RoleConfigRole::getName).collect(
             Collectors.toList());
 
         for (RoleAssignment requestedRole : requestedRoles) {
