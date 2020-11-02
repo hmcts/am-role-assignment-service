@@ -90,7 +90,7 @@ public class ValidationModelService {
             .validAt(now)
             .build();
 
-        List<ExistingRoleAssignment> roleAssignments = persistenceService.retrieveRoleAssignmentsByQueryRequest(
+        List<RoleAssignment> roleAssignments = persistenceService.retrieveRoleAssignmentsByQueryRequest(
             queryRequest,
             0,
             0,
@@ -98,10 +98,9 @@ public class ValidationModelService {
             null
         );
 
-        return roleAssignments;
 
 
-        //return convertRoleAssignmentIntoExistingRecords(roleAssignments);
+        return convertRoleAssignmentIntoExistingRecords(roleAssignments);
     }
 
     private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) {
