@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
+import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.util.Collections;
@@ -34,16 +35,19 @@ public class DeleteRoleAssignmentOrchestrator {
     private PersistenceService persistenceService;
     private ParseRequestService parseRequestService;
     private ValidationModelService validationModelService;
+    private PersistenceUtil persistenceUtil;
     RequestEntity requestEntity;
     AssignmentRequest assignmentRequest;
     Request request;
 
     public DeleteRoleAssignmentOrchestrator(PersistenceService persistenceService,
                                             ParseRequestService parseRequestService,
-                                            ValidationModelService validationModelService) {
+                                            ValidationModelService validationModelService,
+                                            PersistenceUtil persistenceUtil) {
         this.persistenceService = persistenceService;
         this.parseRequestService = parseRequestService;
         this.validationModelService = validationModelService;
+        this.persistenceUtil = persistenceUtil;
     }
 
 
@@ -171,11 +175,12 @@ public class DeleteRoleAssignmentOrchestrator {
                 requestedRole.setStatus(Status.DELETE_APPROVED);
                 requestedRole.setStatusSequence(Status.DELETE_APPROVED.sequence);
             }
-            // persist history in db
-            requestEntity.getHistoryEntities().add(persistenceService.persistHistory(requestedRole, request));
+            requestEntity.getHistoryEntities()
+                .add(persistenceUtil.prepareHistoryEntityForPersistance(requestedRole, request));
 
         }
-
+        // persist history in db
+        persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
     }
@@ -240,12 +245,12 @@ public class DeleteRoleAssignmentOrchestrator {
         for (RoleAssignment requestedRole : parsedAssignmentRequest.getRequestedRoles()) {
             requestedRole.setStatus(status);
             // persist history in db
-            requestEntity.getHistoryEntities().add(persistenceService.persistHistory(
+            requestEntity.getHistoryEntities().add(persistenceUtil.prepareHistoryEntityForPersistance(
                 requestedRole,
                 parsedAssignmentRequest.getRequest()
             ));
         }
-
+        persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
 

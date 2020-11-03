@@ -6,12 +6,17 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -73,5 +78,25 @@ class PersistenceUtilTest {
         entity.setAuthorisations("dev;tester");
         assertNotNull(persistenceUtil.convertEntityToRoleAssignment(
             entity));
+    }
+
+    @Test
+    void persistHistory() throws IOException {
+        AssignmentRequest assignmentRequest = TestDataBuilder
+            .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
+        RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
+
+        HistoryEntity historyEntityResult = persistenceUtil.prepareHistoryEntityForPersistance(
+            assignmentRequest.getRequestedRoles().iterator().next(), assignmentRequest.getRequest());
+
+        assertNotNull(historyEntityResult);
+        assertNotNull(assignmentRequest.getRequest().getId());
+        assertNotNull(historyEntityResult.getRequestEntity().getId());
+
+        assertEquals(assignmentRequest.getRequest().getId(), historyEntityResult.getRequestEntity().getId());
+        assertEquals(assignmentRequest.getRequestedRoles().iterator().next().getId(), historyEntityResult.getId());
+        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
+            assertEquals(requestedRole.getId(), historyEntityResult.getId());
+        }
     }
 }
