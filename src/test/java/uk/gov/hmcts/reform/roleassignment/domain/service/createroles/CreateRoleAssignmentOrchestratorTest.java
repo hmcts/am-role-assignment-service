@@ -87,7 +87,7 @@ class CreateRoleAssignmentOrchestratorTest {
             .thenReturn(
                 assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
-        when(persistenceService.persistHistory(
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
             any(RoleAssignment.class),
             any(Request.class)
         )).thenReturn(historyEntity);
@@ -122,7 +122,7 @@ class CreateRoleAssignmentOrchestratorTest {
             .thenReturn(
                 assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
-        when(persistenceService.persistHistory(
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
             any(RoleAssignment.class),
             any(Request.class)
         )).thenReturn(historyEntity);
@@ -162,7 +162,7 @@ class CreateRoleAssignmentOrchestratorTest {
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
             assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
-        when(persistenceService.persistHistory(
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
             any(RoleAssignment.class),
             any(Request.class)
         )).thenReturn(historyEntity);
@@ -201,7 +201,7 @@ class CreateRoleAssignmentOrchestratorTest {
             .thenReturn(
                 assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
-        when(persistenceService.persistHistory(
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
             any(RoleAssignment.class),
             any(Request.class)
         )).thenReturn(historyEntity);
@@ -221,8 +221,8 @@ class CreateRoleAssignmentOrchestratorTest {
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
-        verify(persistenceService, times(10))
-            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(persistenceUtil, times(10))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
@@ -244,7 +244,7 @@ class CreateRoleAssignmentOrchestratorTest {
             .thenReturn(
                 assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
-        when(persistenceService.persistHistory(
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
             any(RoleAssignment.class),
             any(Request.class)
         )).thenReturn(historyEntity);
@@ -278,7 +278,7 @@ class CreateRoleAssignmentOrchestratorTest {
             .thenReturn(
                 assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
-        when(persistenceService.persistHistory(
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
             any(RoleAssignment.class),
             any(Request.class)
         )).thenReturn(historyEntity);
@@ -298,8 +298,8 @@ class CreateRoleAssignmentOrchestratorTest {
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
-        verify(persistenceService, times(4))
-            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(persistenceUtil, times(4))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
@@ -325,7 +325,7 @@ class CreateRoleAssignmentOrchestratorTest {
             .thenReturn(
                 assignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
-        when(persistenceService.persistHistory(
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
             any(RoleAssignment.class),
             any(Request.class)
         )).thenReturn(historyEntity);
@@ -393,8 +393,8 @@ class CreateRoleAssignmentOrchestratorTest {
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
-        verify(persistenceService, times(6))
-            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(persistenceUtil, times(6))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
