@@ -13,37 +13,29 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 rule "judicial_case_role_mapping_service_create"
 when
     $rq: Request(
-             requestType == RequestType.CREATE )
-
-    $ra: RoleAssignment(
-            //Need to check Status Live when replaceExiting=true
-             status in (Status.CREATED,Status.LIVE),
-             roleType == RoleType.CASE,
-             roleCategory == RoleCategory.JUDICIAL)
+                 assignerId == authenticatedUserId)
+    $ra: RoleAssignment(status == Status.CREATE_REQUESTED,
+                          roleType == RoleType.CASE,
+                          roleCategory == RoleCategory.JUDICIAL)
 then
-    //$ra.setStatus(Status.STAGE_1_APPROVED);
-    $ra.log("Stage 1 approved : judicial_case_role_mapping_service_create");
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Create approved : judicial_case_role_mapping_service_create");
     update($ra);
     System.out.println("Rule : judicial_case_role_mapping_service_create");
 end;
 
-/*
- * Generic rule for validation of roles deleted by the staff organisational
- * role mapping service.  The mapping service can delete any organisational
- * staff roles.
- */
+
 rule "judicial_case_role_mapping_service_delete"
 when
-    $rq: Request(
-             requestType == RequestType.DELETE)
-             //clientId == "ORGANISATIONAL_ROLE_MAPPING_SERVICE")
+    $rq: Request(assignerId == authenticatedUserId)
+
     $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
              roleCategory == RoleCategory.JUDICIAL)
 then
-    $ra.setStatus(Status.APPROVED);
-    $ra.log("Stage 1 approved : judicial_case_role_mapping_service_delete");
-    // update was causing for infinite loop
-     //update($ra);
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : judicial_case_role_mapping_service_delete");
+     update($ra);
     System.out.println("Rule :: judicial_case_role_mapping_service_delete");
 end;
