@@ -8,6 +8,7 @@ import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
@@ -138,6 +139,30 @@ public class PersistenceUtil {
             .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
             .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(roleAssignmentEntity
                                                                                   .getRoleCategory()) : null)
+            .beginTime(roleAssignmentEntity.getBeginTime())
+            .endTime(roleAssignmentEntity.getEndTime())
+            .created(roleAssignmentEntity.getCreated())
+            .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
+            .authorisations(roleAssignmentEntity.getAuthorisations() != null && !roleAssignmentEntity
+                .getAuthorisations().isEmpty()
+                                ? Arrays.asList(roleAssignmentEntity.getAuthorisations().split(";")) :
+                                Collections.emptyList())
+            .build();
+    }
+
+    public ExistingRoleAssignment convertEntityToExistingRoleAssignment(RoleAssignmentEntity roleAssignmentEntity) {
+
+        return ExistingRoleAssignment.builder()
+            .id(roleAssignmentEntity.getId())
+            .actorIdType(ActorIdType.valueOf(roleAssignmentEntity.getActorIdType()))
+            .actorId(roleAssignmentEntity.getActorId())
+            .classification(Classification.valueOf(roleAssignmentEntity.getClassification()))
+            .grantType(GrantType.valueOf(roleAssignmentEntity.getGrantType()))
+            .readOnly(roleAssignmentEntity.isReadOnly())
+            .roleName(roleAssignmentEntity.getRoleName())
+            .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
+            .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(roleAssignmentEntity
+                                                                                                    .getRoleCategory()) : null)
             .beginTime(roleAssignmentEntity.getBeginTime())
             .endTime(roleAssignmentEntity.getEndTime())
             .created(roleAssignmentEntity.getCreated())
