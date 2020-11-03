@@ -15,13 +15,13 @@ import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -170,11 +170,11 @@ public class TestDataBuilder {
         }
     }
 
-    public static List<Role> buildRolesFromFile() throws IOException {
+    public static List<RoleConfigRole> buildRolesFromFile() throws IOException {
         try (InputStream input = TestDataBuilder.class.getClassLoader().getResourceAsStream(ROLES_JSON)) {
             CollectionType listType = new ObjectMapper().getTypeFactory().constructCollectionType(
                 ArrayList.class,
-                Role.class
+                RoleConfigRole.class
             );
             assert input != null;
             return new ObjectMapper().readValue(input, listType);
@@ -353,8 +353,8 @@ public class TestDataBuilder {
 
     public static UserInfo buildUserInfo(String uuid) throws IOException {
         List<String> list = new ArrayList<>();
-        List<Role> roles = TestDataBuilder.buildRolesFromFile();
-        for (Role role : roles) {
+        List<RoleConfigRole> roles = TestDataBuilder.buildRolesFromFile();
+        for (RoleConfigRole role : roles) {
             list.add(role.toString());
         }
         return UserInfo.builder().sub("sub").uid(uuid)

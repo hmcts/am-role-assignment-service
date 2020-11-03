@@ -1,96 +1,145 @@
 [
   {
     "name": "judge",
-    "label": "Judge",
+    "label": "Judge - Sample role (Only for Testing)",
     "description": "Judicial office holder able to do judicial case work",
     "category": "JUDICIAL",
     "patterns": [
       {
-        "data": {
-          "RoleType": {
-            "values":
-            "ORGANISATION",
-            "mandatory": true
-          },
-          "Classification": {
+
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "attributes": {
+          "region": {
             "mandatory": true,
-            "values": [
-              "PUBLIC",
-              "PRIVATE"
-            ]
+            "values": ["north-east","south-east"]
           },
-          "GrantType": {
+          "jurisdiction": {
             "mandatory": true,
-            "values": [
-              "STANDARD"
-            ]
-          },
-          "Attributes": {
-            "Region": {
-              "mandatory": true,
-              "values": [
-                "north-east","south-east"
-              ]
-            },
-            "Jurisdiction": {
-              "mandatory": true,
-              "values": [
-                "divorce","child-abused"
-              ]
-            }
+            "values": ["divorce","IA"]
           }
         }
+
       },
       {
-        "data": {
-          "RoleType": {
-            "mandatory": true,
-            "values":
-            "CASE"
 
-          },
-          "Classification": {
-            "mandatory": true,
-            "values": [
-              "PUBLIC"
-            ]
-          },
-          "GrantType": {
-            "mandatory": true,
-            "values": [
-              "SPECIFIC",
-              "CHALLENGED"
-            ]
-          },
-          "Begin": {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC","CHALLENGED"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "beginTime": {
+          "mandatory": true
+        },
+        "attributes": {
+          "caseId": {
             "mandatory": true
-          },
-          "Attributes": {
-            "CaseId": {
-              "mandatory": true
-
-            }
           }
         }
+
       }
     ]
   },
   {
-    "name": "judicial_management",
-    "label": "Judicial Management",
-    "description": "This role is required to manage other judicial roles.",
-    "category": "JUDICIAL",
+    "name": "tribunal-caseworker",
+    "label": "Tribunal Caseworker",
+    "description": "Tribunal caseworker",
+    "category": "STAFF",
     "patterns": [
       {
-        "data": {
-          "RoleType": {
+
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
             "mandatory": true,
-            "values": [
-              "ORGANISATION",
-              "CASE"
-            ]
+            "values": ["IA"]
+          },
+          "primaryLocation": {
+            "mandatory": true
           }
         }
+
+      },
+      {
+
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "caseId": {
+            "mandatory": true
+          }
+        }
+
+      }
+    ]
+  },
+  {
+    "name": "senior-tribunal-caseworker",
+    "label": "Senior Tribunal Caseworker",
+    "description": "Senior Tribunal caseworker",
+    "category": "STAFF",
+    "patterns": [
+      {
+
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+
       }
     ]
   }

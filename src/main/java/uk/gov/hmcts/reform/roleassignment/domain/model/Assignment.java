@@ -46,6 +46,6 @@ public abstract class Assignment {
     private List<String> authorisations;
 
     public void log(String message) {
-    	log = (log == null ? "" : log + "\n") + message;
+        log = (log == null ? "" : log + "\n") + message;
     }
 }

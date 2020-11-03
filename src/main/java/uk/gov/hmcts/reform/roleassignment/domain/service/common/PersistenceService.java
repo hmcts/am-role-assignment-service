@@ -23,7 +23,6 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -65,7 +64,7 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private ActorCacheRepository actorCacheRepository;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
-    private  Page<RoleAssignmentEntity> pageRoleAssignmentEntities;
+    private Page<RoleAssignmentEntity> pageRoleAssignmentEntities;
 
     @Value("${roleassignment.query.sortcolumn}")
     private String sortColumn;
@@ -209,10 +208,11 @@ public class PersistenceService {
     }
 
 
-
-    public List<? extends Assignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest, Integer pageNumber,
-                                                                  Integer size, String sort, String direction,
-                                                                  boolean existingFlag) {
+    public List<? extends Assignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest,
+                                                                            Integer pageNumber,
+                                                                            Integer size, String sort,
+                                                                            String direction,
+                                                                            boolean existingFlag) {
 
         long startTime = System.currentTimeMillis();
         List<? extends Assignment> roleAssignmentList;
@@ -249,12 +249,12 @@ public class PersistenceService {
             )
         );
 
-        if(!existingFlag) {
-             roleAssignmentList = pageRoleAssignmentEntities.stream()
+        if (!existingFlag) {
+            roleAssignmentList = pageRoleAssignmentEntities.stream()
                 .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
                 .collect(Collectors.toList());
 
-        } else{
+        } else {
             roleAssignmentList = pageRoleAssignmentEntities.stream()
                 .map(role -> persistenceUtil.convertEntityToExistingRoleAssignment(role))
                 .collect(Collectors.toList());
@@ -283,7 +283,6 @@ public class PersistenceService {
         return pageRoleAssignmentEntities != null ? pageRoleAssignmentEntities.getTotalElements() : Long.valueOf(0);
 
     }
-
 
 
 }

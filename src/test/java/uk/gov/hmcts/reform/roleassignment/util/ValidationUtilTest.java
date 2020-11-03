@@ -6,6 +6,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -117,7 +118,7 @@ class ValidationUtilTest {
 
     @Test
     void testBuildRole() throws IOException {
-        List<Role> roles = TestDataBuilder.buildRolesFromFile();
+        List<RoleConfigRole> roles = TestDataBuilder.buildRolesFromFile();
         assertNotNull(roles);
         assertTrue(roles.size() > 1);
     }
@@ -191,7 +192,9 @@ class ValidationUtilTest {
                                                                                      false);
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
             requestedRole.setBeginTime(LocalDateTime.now().minusDays(1L));
+            requestedRole.setRoleName("solicitor");
         }
+
 
         Assertions.assertThrows(BadRequestException.class, () ->
             ValidationUtil.validateAssignmentRequest(assignmentRequest)
@@ -288,7 +291,7 @@ class ValidationUtilTest {
     @Test
     void shouldThrow_ValidateDateOrder_BeginTimeBeforeCurrent() {
         String beginTime = LocalDateTime.now().minusDays(1).toString();
-        String endTime = LocalDateTime.now().plusDays(14).toString();
+        String endTime = LocalDateTime.now().minusDays(2).toString();
         Assertions.assertThrows(BadRequestException.class, () ->
             ValidationUtil.compareDateOrder(beginTime,endTime)
         );

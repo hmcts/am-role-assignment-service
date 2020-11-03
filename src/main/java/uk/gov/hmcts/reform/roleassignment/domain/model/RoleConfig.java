@@ -61,9 +61,5 @@ public class RoleConfig {
         return new RoleConfig(allRoles);
     }
 
-    // ----------------------------------------------------- TEST CODE -------------------------------------------------------
 
-    public static void main(String[] args) {
-        System.out.println(getRoleConfig().get("judge"));
-    }
 }

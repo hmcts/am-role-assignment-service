@@ -488,7 +488,8 @@ public class CreateRoleAssignmentService {
         existingAssignmentRequest.setRequestedRoles(roleAssignmentList);
 
         //update the records status from Live to Delete_requested for drool to approve it.
-        existingAssignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> roleAssignment.setStatus(Status.DELETE_REQUESTED));
+        existingAssignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> roleAssignment
+            .setStatus(Status.DELETE_REQUESTED));
         //validation
         evaluateDeleteAssignments(existingAssignmentRequest);
     }
