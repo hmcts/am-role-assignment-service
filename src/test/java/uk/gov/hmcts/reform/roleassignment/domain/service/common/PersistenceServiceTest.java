@@ -25,6 +25,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -420,8 +421,8 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
             .thenReturn(TestDataBuilder.buildRoleAssignment(Status.LIVE));
 
-        List<RoleAssignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1, 1, "id",
-                                                                                            "desc"
+        List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1, 1, "id",
+                                                                                                  "desc", false
         );
         assertNotNull(roleAssignmentList);
 
@@ -485,8 +486,8 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
             .thenReturn(TestDataBuilder.buildRoleAssignment(Status.LIVE));
 
-        List<RoleAssignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1, 1, "id",
-                                                                                            "desc"
+        List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1, 1, "id",
+                                                                                            "desc",false
         );
         assertNotNull(roleAssignmentList);
 
@@ -522,7 +523,7 @@ class PersistenceServiceTest {
 
 
         Assertions.assertThrows(ResourceNotFoundException.class, () ->
-            sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1, 1, "id", "desc")
+            sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1, 1, "id", "desc",false)
         );
 
     }
@@ -550,7 +551,7 @@ class PersistenceServiceTest {
 
 
         Assertions.assertThrows(ResourceNotFoundException.class, () ->
-            sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1, 1, "id", "desc")
+            sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1, 1, "id", "desc",false)
         );
 
     }
@@ -590,8 +591,8 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
             .thenReturn(TestDataBuilder.buildRoleAssignment(Status.LIVE));
 
-        List<RoleAssignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1, 1, "id",
-                                                                                            "desc"
+        List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1, 1, "id",
+                                                                                            "desc",false
         );
         assertNotNull(roleAssignmentList);
 
