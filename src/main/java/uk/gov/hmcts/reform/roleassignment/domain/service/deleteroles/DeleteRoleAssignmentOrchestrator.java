@@ -75,7 +75,7 @@ public class DeleteRoleAssignmentOrchestrator {
             requestEntity.setStatus(Status.APPROVED.toString());
             persistenceService.updateRequest(requestEntity);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else {
+        } else {
             //update the records status from Live to Delete_requested for drool to approve it.
             requestedRoles.stream().forEach(roleAssignment -> roleAssignment.setStatus(Status.DELETE_REQUESTED));
         }
@@ -109,7 +109,7 @@ public class DeleteRoleAssignmentOrchestrator {
             requestEntity.setStatus(Status.APPROVED.toString());
             persistenceService.updateRequest(requestEntity);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else {
+        } else {
             //update the records status from Live to Delete_requested for drool to approve it.
             requestedRoles.stream().forEach(roleAssignment -> roleAssignment.setStatus(Status.DELETE_REQUESTED));
         }
@@ -206,7 +206,7 @@ public class DeleteRoleAssignmentOrchestrator {
             //Insert requested roles  into history table with status deleted-Rejected
             List<RoleAssignment> deleteApprovedRecords = validatedAssignmentRequest.getRequestedRoles().stream()
                 .filter(role -> role.getStatus() == Status.DELETE_APPROVED).collect(
-                Collectors.toList());
+                    Collectors.toList());
             validatedAssignmentRequest.setRequestedRoles(deleteApprovedRecords);
             insertRequestedRole(validatedAssignmentRequest, Status.DELETE_REJECTED);
 

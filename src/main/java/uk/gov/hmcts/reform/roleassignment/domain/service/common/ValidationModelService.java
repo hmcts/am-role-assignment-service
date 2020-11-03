@@ -81,7 +81,7 @@ public class ValidationModelService {
             .validAt(now)
             .build();
 
-       return persistenceService.retrieveRoleAssignmentsByQueryRequest(
+        return persistenceService.retrieveRoleAssignmentsByQueryRequest(
             queryRequest,
             0,
             0,
@@ -108,7 +108,8 @@ public class ValidationModelService {
         facts.addAll(assignmentRequest.getRequestedRoles());
         // facts must contain the role config, for access to the patterns
         facts.add(RoleConfig.getRoleConfig());
-        // facts must contain existing role assignments for assigner and authenticatedUser, and assignee for create requests
+        // facts must contain existing role assignments for assigner and authenticatedUser,
+        // and assignee for create requests
         facts.addAll(getExistingRoleAssignmentsForRequest(assignmentRequest));
 
         // Make the retrieve data service available to rules - this allows data - e.g. case data - to be

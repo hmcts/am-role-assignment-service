@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -18,7 +17,6 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -143,7 +141,8 @@ public class ValidationUtil {
     }
 
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
-        List<String> rolesName = JacksonUtils.getConfiguredRoles().get("roles").stream().map(RoleConfigRole::getName).collect(
+        List<String> rolesName = JacksonUtils.getConfiguredRoles().get("roles").stream()
+            .map(RoleConfigRole::getName).collect(
             Collectors.toList());
 
         for (RoleAssignment requestedRole : requestedRoles) {

@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 
 import java.util.List;
@@ -29,10 +28,19 @@ public class QueryRoleAssignmentOrchestrator {
         logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
 
         List<? extends Assignment> assignmentList =
-            persistenceService.retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction,false);
+            persistenceService.retrieveRoleAssignmentsByQueryRequest(
+                queryRequest,
+                pageNumber,
+                size,
+                sort,
+                direction,
+                false
+            );
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add("Total-Records",
-                            Long.toString(persistenceService.getTotalRecords()));
+        responseHeaders.add(
+            "Total-Records",
+            Long.toString(persistenceService.getTotalRecords())
+        );
         logger.info(String.format(
             "retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),

@@ -2,9 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Singular;
 import lombok.Value;
 
@@ -33,7 +31,7 @@ public class QueryRequest {
     @Singular("roleCategory")
     private final List<String> roleCategory;
 
-    private  Map<String, List<String>> attributes;
+    private Map<String, List<String>> attributes;
     @Singular("authorisations")
     private final List<String> authorisations;
 

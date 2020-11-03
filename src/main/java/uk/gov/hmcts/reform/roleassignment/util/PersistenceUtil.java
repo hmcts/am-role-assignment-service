@@ -162,7 +162,7 @@ public class PersistenceUtil {
             .roleName(roleAssignmentEntity.getRoleName())
             .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
             .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(roleAssignmentEntity
-                                                                                                    .getRoleCategory()) : null)
+                                                                         .getRoleCategory()) : null)
             .beginTime(roleAssignmentEntity.getBeginTime())
             .endTime(roleAssignmentEntity.getEndTime())
             .created(roleAssignmentEntity.getCreated())

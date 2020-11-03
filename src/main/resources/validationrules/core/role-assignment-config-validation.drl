@@ -2,7 +2,6 @@ package validationrules.core;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigData;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigPattern;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 
