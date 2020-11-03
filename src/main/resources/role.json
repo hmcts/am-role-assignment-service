@@ -7,52 +7,52 @@
     "patterns": [
       {
 
-          "roleType": {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "attributes": {
+          "region": {
             "mandatory": true,
-            "values": ["ORGANISATION"]
+            "values": ["north-east","south-east"]
           },
-          "grantType": {
+          "jurisdiction": {
             "mandatory": true,
-            "values": ["STANDARD"]
-          },
-          "classification": {
-            "mandatory": true,
-            "values": ["PUBLIC","PRIVATE"]
-          },
-          "attributes": {
-            "region": {
-              "mandatory": true,
-              "values": ["north-east","south-east"]
-            },
-            "jurisdiction": {
-              "mandatory": true,
-              "values": ["divorce","IA"]
-            }
+            "values": ["divorce","IA"]
           }
+        }
 
       },
       {
 
-          "roleType": {
-            "mandatory": true,
-            "values": ["CASE"]
-          },
-          "grantType": {
-            "mandatory": true,
-            "values": ["SPECIFIC","CHALLENGED"]
-          },
-          "classification": {
-            "mandatory": true,
-            "values": ["PUBLIC"]
-          },
-          "beginTime": {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC","CHALLENGED"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "beginTime": {
+          "mandatory": true
+        },
+        "attributes": {
+          "caseId": {
             "mandatory": true
-          },
-          "attributes": {
-            "caseId": {
-              "mandatory": true
-            }
           }
+        }
 
       }
     ]
@@ -65,47 +65,47 @@
     "patterns": [
       {
 
-          "roleType": {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
             "mandatory": true,
-            "values": ["ORGANISATION"]
+            "values": ["IA"]
           },
-          "grantType": {
-            "mandatory": true,
-            "values": ["STANDARD"]
-          },
-          "classification": {
-            "mandatory": true,
-            "values": ["PUBLIC", "PRIVATE"]
-          },
-          "attributes": {
-            "jurisdiction": {
-              "mandatory": true,
-              "values": ["IA"]
-            },
-            "primaryLocation": {
-              "mandatory": true
-            }
+          "primaryLocation": {
+            "mandatory": true
           }
+        }
 
       },
       {
 
-          "roleType": {
-            "mandatory": true,
-            "values": ["CASE"]
-          },
-          "grantType": {
-            "mandatory": true,
-            "values": ["SPECIFIC"]
-          },
-          "classification": {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "caseId": {
             "mandatory": true
-          },
-          "attributes": {
-            "caseId": {
-              "mandatory": true
-            }
           }
+        }
 
       }
     ]
@@ -118,27 +118,27 @@
     "patterns": [
       {
 
-          "roleType": {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
             "mandatory": true,
-            "values": ["ORGANISATION"]
+            "values": ["IA"]
           },
-          "grantType": {
-            "mandatory": true,
-            "values": ["STANDARD"]
-          },
-          "classification": {
-            "mandatory": true,
-            "values": ["PUBLIC", "PRIVATE"]
-          },
-          "attributes": {
-            "jurisdiction": {
-              "mandatory": true,
-              "values": ["IA"]
-            },
-            "primaryLocation": {
-              "mandatory": true
-            }
+          "primaryLocation": {
+            "mandatory": true
           }
+        }
 
       }
     ]
