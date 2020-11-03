@@ -98,6 +98,7 @@ public final class RoleAssignmentEntitySpecifications {
 
     }
 
+
     public static Specification<RoleAssignmentEntity> searchByClassification(List<String> classifications) {
 
         if (classifications == null || classifications.isEmpty()) {

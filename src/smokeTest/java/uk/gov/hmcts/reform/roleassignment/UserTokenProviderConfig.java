@@ -19,7 +19,7 @@ public class UserTokenProviderConfig {
     private final String password;
     private final String scope;
     private static final String MICRO_SERVICE_NAME = "am_role_assignment_service";
-    private static final String USER_NAME = "befta.caseworker.2.solicitor.2@gmail.com";
+    private static final String USER_NAME = "TEST_AM_USER2_BEFTA@test.local";
 
     public UserTokenProviderConfig() {
 
@@ -31,7 +31,7 @@ public class UserTokenProviderConfig {
         clientSecret = EnvironmentVariableUtils.getRequiredVariable("ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET");
         clientId = EnvironmentVariableUtils.getRequiredVariable("IDAM_CLIENT_ID");
         username = USER_NAME;
-        password = EnvironmentVariableUtils.getRequiredVariable("CCD_BEFTA_CASEWORKER_2_SOLICITOR_2_PWD");
+        password = EnvironmentVariableUtils.getRequiredVariable("TEST_AM_USER2_BEFTA_PWD");
         scope = EnvironmentVariableUtils.getRequiredVariable("OPENID_SCOPE_VARIABLES");
     }
 

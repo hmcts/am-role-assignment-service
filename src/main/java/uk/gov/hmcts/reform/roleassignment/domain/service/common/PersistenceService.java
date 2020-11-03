@@ -29,6 +29,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -105,32 +106,20 @@ public class PersistenceService {
         requestRepository.save(requestEntity);
     }
 
-
     @Transactional
-    public HistoryEntity persistHistory(RoleAssignment roleAssignment, Request request) {
-        UUID roleAssignmentId = roleAssignment.getId();
-        UUID requestId = request.getId();
-
-        RequestEntity requestEntity = persistenceUtil.convertRequestToEntity(request);
-        if (requestId != null) {
-            requestEntity.setId(requestId);
-        }
-
-        HistoryEntity historyEntity = persistenceUtil.convertRoleAssignmentToHistoryEntity(
-            roleAssignment,
-            requestEntity
-        );
-        historyEntity.setId(Objects.requireNonNullElseGet(roleAssignmentId, UUID::randomUUID));
-        //Persist the history entity
-        entityManager.persist(historyEntity);
-        return historyEntity;
+    public void persistHistoryEntities(Collection<HistoryEntity> historyEntityList) {
+        historyEntityList.forEach(historyEntity -> entityManager.persist(historyEntity));
+        entityManager.flush();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void persistRoleAssignment(RoleAssignment roleAssignment) {
+    public void persistRoleAssignments(Collection<RoleAssignment> roleAssignments) {
         //Persist the role assignment entity
-        RoleAssignmentEntity entity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment, true);
-        entityManager.persist(entity);
+        Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignments.stream().map(
+            roleAssignment -> persistenceUtil.convertRoleAssignmentToEntity(roleAssignment, true)
+        ).collect(Collectors.toSet());
+        roleAssignmentEntities.forEach(roleAssignmentEntity -> entityManager.persist(roleAssignmentEntity));
+        entityManager.flush();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)

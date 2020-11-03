@@ -1,5 +1,5 @@
 {
-  "_guid_": "F-006_DeleteDataForMultipleRoleAssignments",
+  "_guid_": "S-020_DeleteDataForRoleAssignments",
   "productName": "Role Assignment Service",
   "operationName": "Delete Role Assignments by Process",
   "method": "DELETE",
@@ -21,9 +21,10 @@
     },
     "pathVariables": {
       "process": "businessProcess1",
-      "reference": "${[scenarioContext][parentContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
+      "reference":"${[scenarioContext][parentContext][childContexts][S-020_Multiple_Role_Creation][testData][request][body][roleRequest][reference]}"
     }
-  },
+   },
+
   "expectedResponse": {
     "headers": {
       "Content-Length": "[[ANYTHING_PRESENT]]",
