@@ -31,7 +31,7 @@ public class AuditLoggerUtil {
     }
 
     public static List<String> buildActorIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
-        if(response.getBody() instanceof RoleAssignmentRequestResource ) {
+        if(response.getBody()!=null && response.getBody() instanceof RoleAssignmentRequestResource ) {
             RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
             if (roleAssignmentRequestResource != null) {
                 return roleAssignmentRequestResource.getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)

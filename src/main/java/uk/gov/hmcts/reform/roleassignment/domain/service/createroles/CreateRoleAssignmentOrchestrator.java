@@ -90,7 +90,8 @@ public class CreateRoleAssignmentOrchestrator {
                 // return 201 when there is no existing records in db and incoming request also have
                 // empty requested roles.
                 if (isExistingAndIncomingRecordsEmpty(existingAssignmentRequest, parsedAssignmentRequest)) {
-                    return ResponseEntity.status(HttpStatus.CREATED).body(parsedAssignmentRequest);
+                    return prepareResponseService.prepareCreateRoleResponse(parsedAssignmentRequest);
+
                 }
 
                 // compare identical existing and incoming requested roles based on some attributes

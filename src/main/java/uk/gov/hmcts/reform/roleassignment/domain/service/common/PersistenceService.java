@@ -22,6 +22,8 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -208,10 +210,13 @@ public class PersistenceService {
 
 
 
-    public List<RoleAssignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest, Integer pageNumber,
-                                                                      Integer size, String sort, String direction) {
+    public List<? extends Assignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest, Integer pageNumber,
+                                                                  Integer size, String sort, String direction,
+                                                                  boolean existingFlag) {
 
         long startTime = System.currentTimeMillis();
+        List<? extends Assignment> roleAssignmentList;
+
         logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
 
         pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
@@ -244,9 +249,17 @@ public class PersistenceService {
             )
         );
 
-        List<RoleAssignment> roleAssignmentList =  pageRoleAssignmentEntities.stream()
-            .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
-            .collect(Collectors.toList());
+        if(!existingFlag) {
+             roleAssignmentList = pageRoleAssignmentEntities.stream()
+                .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+                .collect(Collectors.toList());
+
+        } else{
+            roleAssignmentList = pageRoleAssignmentEntities.stream()
+                .map(role -> persistenceUtil.convertEntityToExistingRoleAssignment(role))
+                .collect(Collectors.toList());
+
+        }
 
         logger.info(String.format(
             "retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",

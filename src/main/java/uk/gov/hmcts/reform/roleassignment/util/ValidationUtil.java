@@ -61,33 +61,14 @@ public class ValidationUtil {
             ));
         }
         assert javaDate != null;
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        String formatted = format1.format(cal.getTime());
-        Date date1=new SimpleDateFormat("yyyy-MM-dd").parse(formatted);
-        System.out.print("New Date::" + date1);
-        if (javaDate.before(date1)) {
-            throw new BadRequestException(String.format(
-                "The parameter '%s' cannot be prior to current date", timeParam
-            ));
-        }
+        //we have to check valid date format
+
     }
 
     public static void compareDateOrder(String beginTime, String endTime) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_PATTERN);
         Date beginTimeP = sdf.parse(beginTime);
         Date endTimeP = sdf.parse(endTime);
-        //Date createTimeP = new Date();
-
-        /*if (beginTimeP.before(createTimeP)) {
-            throw new BadRequestException(
-                String.format("The begin time: %s takes place before the current time: %s",
-                              beginTime, createTimeP
-                ));
-        } else if (endTimeP.before(createTimeP)) {
-            throw new BadRequestException(
-                String.format("The end time: %s takes place before the current time: %s", endTime, createTimeP));
-        } else*/
         if (endTimeP.before(beginTimeP)) {
             throw new BadRequestException(
                 String.format("The end time: %s takes place before the begin time: %s", endTime, beginTime));
