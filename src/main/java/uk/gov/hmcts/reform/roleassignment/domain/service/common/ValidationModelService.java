@@ -5,19 +5,14 @@ import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.apache.commons.beanutils.BeanUtils.copyProperties;
 
 @Service
 @Slf4j
@@ -51,7 +46,6 @@ public class ValidationModelService {
     }
 
 
-
     /**
      * Get the existing role assignments for the assigner and authenticated user, as well as for all
      * assignees when the request is a create request (but not for deletes).
@@ -79,7 +73,7 @@ public class ValidationModelService {
     }
 
 
-    public List<?  extends Assignment> getCurrentRoleAssignmentsForActors(Set<String> actorIds) {
+    public List<? extends Assignment> getCurrentRoleAssignmentsForActors(Set<String> actorIds) {
         LocalDateTime now = LocalDateTime.now();
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorIds)
@@ -87,7 +81,7 @@ public class ValidationModelService {
             .validAt(now)
             .build();
 
-        List<? extends Assignment> roleAssignments = persistenceService.retrieveRoleAssignmentsByQueryRequest(
+       return persistenceService.retrieveRoleAssignmentsByQueryRequest(
             queryRequest,
             0,
             0,
@@ -97,9 +91,8 @@ public class ValidationModelService {
 
         );
 
-       return roleAssignments;
 
-        //return convertRoleAssignmentIntoExistingRecords(roleAssignments);
+
     }
 
     private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) {
@@ -132,8 +125,6 @@ public class ValidationModelService {
 
 
     }
-
-
 
 
 }
