@@ -20,7 +20,6 @@ import java.util.Arrays;
 @EnableSwagger2WebMvc
 public class SwaggerConfiguration {
 
-
     @Value("${swaggerUrl}")
     private String host;
     private static final String VALUE = "string";
