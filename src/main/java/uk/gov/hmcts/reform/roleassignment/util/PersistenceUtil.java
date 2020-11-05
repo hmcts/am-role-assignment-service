@@ -151,6 +151,7 @@ public class PersistenceUtil {
                                 Collections.emptyList())
             .build();
     }
+
     public HistoryEntity prepareHistoryEntityForPersistance(RoleAssignment roleAssignment, Request request) {
         UUID roleAssignmentId = roleAssignment.getId();
         UUID requestId = request.getId();
@@ -167,6 +168,7 @@ public class PersistenceUtil {
         historyEntity.setId(Objects.requireNonNullElseGet(roleAssignmentId, UUID::randomUUID));
         return historyEntity;
     }
+
     public ExistingRoleAssignment convertEntityToExistingRoleAssignment(RoleAssignmentEntity roleAssignmentEntity) {
 
         return ExistingRoleAssignment.builder()
@@ -179,7 +181,7 @@ public class PersistenceUtil {
             .roleName(roleAssignmentEntity.getRoleName())
             .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
             .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(roleAssignmentEntity
-                                                                                                    .getRoleCategory()) : null)
+                                                                                 .getRoleCategory()) : null)
             .beginTime(roleAssignmentEntity.getBeginTime())
             .endTime(roleAssignmentEntity.getEndTime())
             .created(roleAssignmentEntity.getCreated())

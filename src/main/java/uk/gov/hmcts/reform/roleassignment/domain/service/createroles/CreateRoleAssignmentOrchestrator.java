@@ -3,11 +3,13 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
@@ -89,8 +91,8 @@ public class CreateRoleAssignmentOrchestrator {
                 // return 201 when there is no existing records in db and incoming request also have
                 // empty requested roles.
                 if (isExistingAndIncomingRecordsEmpty(existingAssignmentRequest, parsedAssignmentRequest)) {
-                    return prepareResponseService.prepareCreateRoleResponse(parsedAssignmentRequest);
-
+                    return ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(
+                        parsedAssignmentRequest));
                 }
 
                 // compare identical existing and incoming requested roles based on some attributes

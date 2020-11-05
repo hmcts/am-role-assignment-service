@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
