@@ -30,7 +30,7 @@ when
 then
     for (RoleConfigPattern pattern : $rc.get($roleName).getPatterns()) {
         insert(pattern);
-        System.out.println("Rule : load_role_config_patterns" + pattern);
+        System.out.println("Rule : load_role_config_patterns :: " + pattern);
     }
 
 end;
