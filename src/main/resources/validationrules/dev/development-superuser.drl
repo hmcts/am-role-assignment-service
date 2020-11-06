@@ -38,7 +38,7 @@ then
     System.out.println("Rule :development_superuser");
 end;
 
-rule "development_superuser_warning"
+/*rule "development_superuser_warning"
 when
     $rq: Request()
 then
@@ -56,4 +56,4 @@ then
     System.err.println("*************************************************************************************************");
     System.err.println("*************************************************************************************************");
     System.err.println("*************************************************************************************************");
-end;
+end;*/
