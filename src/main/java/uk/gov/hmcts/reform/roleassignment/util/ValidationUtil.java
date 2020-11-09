@@ -36,7 +36,7 @@ public class ValidationUtil {
     private ValidationUtil() {
     }
 
-    public static void validateDateTime(String strDate, String timeParam) throws ParseException {
+    public static void validateDateTime(String strDate) throws ParseException {
         LOG.info("validateDateTime");
         if (strDate.length() < 16) {
             throw new BadRequestException(String.format(
@@ -163,10 +163,10 @@ public class ValidationUtil {
     private static void validateBeginAndEndDates(RoleAssignment requestedRole) throws ParseException {
 
         if (requestedRole.getBeginTime() != null) {
-            validateDateTime(requestedRole.getBeginTime().toString(), "beginTime");
+            validateDateTime(requestedRole.getBeginTime().toString());
         }
         if (requestedRole.getEndTime() != null) {
-            validateDateTime(requestedRole.getEndTime().toString(), "endTime");
+            validateDateTime(requestedRole.getEndTime().toString());
         }
         if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
             compareDateOrder(
