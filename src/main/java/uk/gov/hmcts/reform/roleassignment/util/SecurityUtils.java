@@ -99,4 +99,8 @@ public class SecurityUtils {
             return token.substring(BEARER.length());
         }
     }
+
+    public String getServiceAuthorizationHeader() {
+        return authTokenGenerator.generate();
+    }
 }
