@@ -99,4 +99,10 @@ class PersistenceUtilTest {
             assertEquals(requestedRole.getId(), historyEntityResult.getId());
         }
     }
+
+    @Test
+    void convertEntityToExistingRoleAssignment() throws IOException {
+        assertNotNull(persistenceUtil.convertEntityToExistingRoleAssignment(
+            TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(Status.LIVE))));
+    }
 }

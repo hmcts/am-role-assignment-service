@@ -197,14 +197,14 @@ public class PersistenceService {
     }
 
 
-    public List<? extends Assignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest,
+    public List<Assignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest,
                                                                             Integer pageNumber,
                                                                             Integer size, String sort,
                                                                             String direction,
                                                                             boolean existingFlag) {
 
         long startTime = System.currentTimeMillis();
-        List<? extends Assignment> roleAssignmentList;
+        List<Assignment> roleAssignmentList;
 
         logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
 
