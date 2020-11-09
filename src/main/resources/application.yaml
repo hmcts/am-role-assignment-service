@@ -117,7 +117,7 @@ feign:
       datastoreclient:
         url: ${CCD_DATA_STORE_URL:http://localhost:4452}
   hystrix:
-    enabled: false
+    enabled: true
 
 swaggerUrl: ${TEST_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
