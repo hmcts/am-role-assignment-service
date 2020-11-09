@@ -15,9 +15,11 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
 
     private TestDataLoaderToDefinitionStore loader = new TestDataLoaderToDefinitionStore(this);
 
+    //Needed for the e2e BEFTA implementation
     @Override
     public void doLoadTestData() {
-        //Needed for the BEFTA implementation
+        loader.addCcdRoles();
+        loader.importDefinitions();
     }
 
     @Override
