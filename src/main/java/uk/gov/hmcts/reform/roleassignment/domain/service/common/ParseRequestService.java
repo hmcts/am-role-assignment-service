@@ -45,10 +45,6 @@ public class ParseRequestService {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("parseRequest execution started at %s", startTime));
         Request request = assignmentRequest.getRequest();
-        //1. validates request and assignment record
-        /*TODO : need to validate the assignmentRequest for unknown fields
-
-         */
         ValidationUtil.validateAssignmentRequest(assignmentRequest);
 
         //2. Request Parsing
