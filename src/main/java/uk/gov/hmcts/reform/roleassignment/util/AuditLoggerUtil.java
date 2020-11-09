@@ -5,6 +5,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 
+import javax.annotation.CheckForNull;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.util.HashSet;
@@ -21,6 +22,7 @@ public class AuditLoggerUtil {
 
     }
 
+    @CheckForNull
     public static List<UUID> buildAssignmentIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
         if (response.getBody() != null && response.getBody() instanceof RoleAssignmentRequestResource) {
             return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
@@ -42,6 +44,7 @@ public class AuditLoggerUtil {
         return List.of();
     }
 
+    @CheckForNull
     public static List<String> buildRoleNames(final ResponseEntity<RoleAssignmentRequestResource> response) {
         if (response.getBody() != null && response.getBody() instanceof RoleAssignmentRequestResource) {
             return response.getBody().getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
@@ -51,6 +54,7 @@ public class AuditLoggerUtil {
         return List.of();
     }
 
+    @CheckForNull
     public static Set<String> buildCaseIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
         Set<String> caseIds = new HashSet<>();
         if (response.getBody() != null && response.getBody() instanceof RoleAssignmentRequestResource) {
