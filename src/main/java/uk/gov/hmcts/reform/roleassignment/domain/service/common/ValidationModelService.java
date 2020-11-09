@@ -73,7 +73,7 @@ public class ValidationModelService {
     }
 
 
-    public List<? extends Assignment> getCurrentRoleAssignmentsForActors(Set<String> actorIds) {
+    public List<Assignment> getCurrentRoleAssignmentsForActors(Set<String> actorIds) {
         LocalDateTime now = LocalDateTime.now();
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorIds)
