@@ -125,21 +125,21 @@ class ValidationUtilTest {
     @Test
     void should_validateDateTime() {
         Assertions.assertDoesNotThrow(() ->
-            ValidationUtil.validateDateTime(LocalDateTime.now().plusMinutes(1).toString(), "beginTime")
+            ValidationUtil.validateDateTime(LocalDateTime.now().plusMinutes(1).toString())
         );
     }
 
     @Test
     void validateDateTime_ThrowLessThanLimit() {
         Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateDateTime("2050-09-01T00:", "beginTime")
+            ValidationUtil.validateDateTime("2050-09-01T00:")
         );
     }
 
     @Test
     void validateDateTime_ThrowParseException() {
         Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateDateTime("2050-090000000000000","endTime")
+            ValidationUtil.validateDateTime("2050-090000000000000")
         );
     }
 
