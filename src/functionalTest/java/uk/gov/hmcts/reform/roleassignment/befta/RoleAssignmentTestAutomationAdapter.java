@@ -2,10 +2,13 @@ package uk.gov.hmcts.reform.roleassignment.befta;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import uk.gov.hmcts.befta.DefaultTestAutomationAdapter;
-import uk.gov.hmcts.befta.dse.ccd.TestDataLoaderToDefinitionStore;
+import uk.gov.hmcts.befta.dse.ccd.CcdRoleConfig;
 import uk.gov.hmcts.befta.player.BackEndFunctionalTestScenarioContext;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -13,13 +16,26 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentTestAutomationAdapter.class);
 
-    private TestDataLoaderToDefinitionStore loader = new TestDataLoaderToDefinitionStore(this);
+    private TestDataLoaderToDefinitionStoreRAS loader = new TestDataLoaderToDefinitionStoreRAS(this);
 
-    //Needed for the e2e BEFTA implementation
     @Override
     public void doLoadTestData() {
-        loader.addCcdRoles();
-        loader.importDefinitions();
+        //Needed for the BEFTA implementation
+        CcdRoleConfig ccdRoleConfig = new CcdRoleConfig("caseworker-ia", "PUBLIC");
+        loader.addNewCcdRole(ccdRoleConfig);
+        Resource resource = new ClassPathResource("ccd-iac-integration-dev.xlsx");
+        String fileResourcePath = null;
+        try {
+            fileResourcePath = resource.getURL().getPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            loader.importNewDefinition(fileResourcePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
