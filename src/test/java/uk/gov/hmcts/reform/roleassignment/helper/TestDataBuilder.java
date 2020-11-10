@@ -17,10 +17,11 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -46,6 +47,7 @@ import java.util.UUID;
 
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.ROLES_JSON;
+import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @Setter
 public class TestDataBuilder {
@@ -145,7 +147,7 @@ public class TestDataBuilder {
         return requestedRoles;
     }
 
-    private static JsonNode buildAttributesFromFile() {
+    public static JsonNode buildAttributesFromFile() {
         try (InputStream inputStream =
             TestDataBuilder.class.getClassLoader().getResourceAsStream("attributes.json")) {
             assert inputStream != null;
@@ -169,11 +171,11 @@ public class TestDataBuilder {
         }
     }
 
-    public static List<Role> buildRolesFromFile() throws IOException {
+    public static List<RoleConfigRole> buildRolesFromFile() throws IOException {
         try (InputStream input = TestDataBuilder.class.getClassLoader().getResourceAsStream(ROLES_JSON)) {
             CollectionType listType = new ObjectMapper().getTypeFactory().constructCollectionType(
                 ArrayList.class,
-                Role.class
+                RoleConfigRole.class
             );
             assert input != null;
             return new ObjectMapper().readValue(input, listType);
@@ -352,8 +354,8 @@ public class TestDataBuilder {
 
     public static UserInfo buildUserInfo(String uuid) throws IOException {
         List<String> list = new ArrayList<>();
-        List<Role> roles = TestDataBuilder.buildRolesFromFile();
-        for (Role role : roles) {
+        List<RoleConfigRole> roles = TestDataBuilder.buildRolesFromFile();
+        for (RoleConfigRole role : roles) {
             list.add(role.toString());
         }
         return UserInfo.builder().sub("sub").uid(uuid)
@@ -434,4 +436,18 @@ public class TestDataBuilder {
 
 
     }
+
+    public static ExistingRoleAssignment buildExistingRoleForIAC(String actorId, String roleName) {
+        Map<String,JsonNode> attributes = new HashMap<>();
+        attributes.put("jurisdiction",convertValueJsonNode("IA"));
+        return ExistingRoleAssignment.builder()
+            .actorId(actorId)
+            .roleType(RoleType.ORGANISATION)
+            .roleName(roleName)
+            .attributes(attributes)
+            .build();
+
+    }
+
+
 }
