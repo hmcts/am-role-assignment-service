@@ -17,7 +17,7 @@ public class TestDataLoaderToDefinitionStoreRAS extends TestDataLoaderToDefiniti
         super(adapter);
     }
 
-    protected void addNewCcdRole(CcdRoleConfig roleConfig){
+    protected void addNewCcdRole(CcdRoleConfig roleConfig) {
         logger.info("\nAdding the role {}...", roleConfig);
         addCcdRole(roleConfig);
         logger.info("\nAdded the role {}...", roleConfig);
@@ -26,20 +26,5 @@ public class TestDataLoaderToDefinitionStoreRAS extends TestDataLoaderToDefiniti
     protected void importNewDefinition(String fileResourcePath) throws IOException {
         logger.info("\nImporting the file {}...", fileResourcePath);
         importDefinition(fileResourcePath);
-        /*File file = new File(fileResourcePath);
-
-        try {
-            Response response = asAutoTestImporter().given().multiPart(file).when().post("/import");
-            if (response.getStatusCode() != 201) {
-                String message = "Import failed with response body: " + response.body().prettyPrint();
-                message += "\nand http code: " + response.statusCode();
-                throw new FunctionalTestException(message);
-            }
-
-        } finally {
-            file.delete();
-        }
-        logger.info("\nImported the role {}...", fileResourcePath); */
-
     }
 }
