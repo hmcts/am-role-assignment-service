@@ -45,7 +45,6 @@ public class ParseRequestService {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("parseRequest execution started at %s", startTime));
         Request request = assignmentRequest.getRequest();
-        //1. validates request and assignment record
         ValidationUtil.validateAssignmentRequest(assignmentRequest);
 
         //2. Request Parsing
@@ -68,8 +67,7 @@ public class ParseRequestService {
         requestedAssignments.forEach(requestedAssignment -> {
             requestedAssignment.setProcess(request.getProcess());
             requestedAssignment.setReference(request.getReference());
-            requestedAssignment.setStatus(Status.CREATED);
-            requestedAssignment.setStatusSequence(Status.CREATED.sequence);
+            requestedAssignment.setStatus(Status.CREATE_REQUESTED);
             requestedAssignment.setCreated(LocalDateTime.now());
         });
         requestedAssignments.sort(new CreatedTimeComparator());

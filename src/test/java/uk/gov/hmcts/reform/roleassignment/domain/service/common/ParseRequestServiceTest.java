@@ -33,6 +33,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 
 @RunWith(MockitoJUnitRunner.class)
 class ParseRequestServiceTest {
@@ -222,8 +223,7 @@ class ParseRequestServiceTest {
         result.getRequestedRoles().forEach(requestedRole -> {
             assertEquals(result.getRequest().getProcess(), requestedRole.getProcess());
             assertEquals(result.getRequest().getReference(), requestedRole.getReference());
-            assertEquals(CREATED, requestedRole.getStatus());
-            assertEquals(CREATED.sequence, requestedRole.getStatusSequence());
+            assertEquals(CREATE_REQUESTED, requestedRole.getStatus());
             assertNotNull(requestedRole.getCreated());
         });
         verify(securityUtilsMock, times(1)).getServiceName();

@@ -79,6 +79,9 @@ public class DeleteRoleAssignmentOrchestrator {
             requestEntity.setStatus(Status.APPROVED.toString());
             persistenceService.updateRequest(requestEntity);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            //update the records status from Live to Delete_requested for drool to approve it.
+            requestedRoles.stream().forEach(roleAssignment -> roleAssignment.setStatus(Status.DELETE_REQUESTED));
         }
 
         ResponseEntity<Object> responseEntity = performOtherStepsForDelete("", requestedRoles);
@@ -110,6 +113,9 @@ public class DeleteRoleAssignmentOrchestrator {
             requestEntity.setStatus(Status.APPROVED.toString());
             persistenceService.updateRequest(requestEntity);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            //update the records status from Live to Delete_requested for drool to approve it.
+            requestedRoles.stream().forEach(roleAssignment -> roleAssignment.setStatus(Status.DELETE_REQUESTED));
         }
 
         return performOtherStepsForDelete("", requestedRoles);
@@ -168,18 +174,12 @@ public class DeleteRoleAssignmentOrchestrator {
 
     private void updateStatusAndPersist(Request request) {
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            if (!requestedRole.getStatus().equals(Status.APPROVED)) {
-                requestedRole.setStatus(Status.DELETE_REJECTED);
-                requestedRole.setStatusSequence(Status.DELETE_REJECTED.sequence);
-            } else {
-                requestedRole.setStatus(Status.DELETE_APPROVED);
-                requestedRole.setStatusSequence(Status.DELETE_APPROVED.sequence);
-            }
+
+            // persist history in db
             requestEntity.getHistoryEntities()
                 .add(persistenceUtil.prepareHistoryEntityForPersistance(requestedRole, request));
 
         }
-        // persist history in db
         persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
@@ -210,8 +210,8 @@ public class DeleteRoleAssignmentOrchestrator {
         } else {
             //Insert requested roles  into history table with status deleted-Rejected
             List<RoleAssignment> deleteApprovedRecords = validatedAssignmentRequest.getRequestedRoles().stream()
-                .filter(role -> role.getStatus() == Status.APPROVED).collect(
-                Collectors.toList());
+                .filter(role -> role.getStatus() == Status.DELETE_APPROVED).collect(
+                    Collectors.toList());
             validatedAssignmentRequest.setRequestedRoles(deleteApprovedRecords);
             insertRequestedRole(validatedAssignmentRequest, Status.DELETE_REJECTED);
 

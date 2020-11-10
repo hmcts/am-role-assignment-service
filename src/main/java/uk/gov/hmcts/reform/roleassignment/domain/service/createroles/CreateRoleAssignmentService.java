@@ -53,7 +53,8 @@ public class CreateRoleAssignmentService {
     Map<UUID, RoleAssignmentSubset> needToDeleteRoleAssignments;
     Set<RoleAssignmentSubset> needToCreateRoleAssignments;
     Set<RoleAssignment> needToRetainRoleAssignments;
-    private static final String LOG_MESSAGE = "Request has been rejected due to following assignment Ids :";
+    private static final String REQUEST_REJECTION_MSG = "Request has been rejected due to following assignment Ids :";
+    private static final String REQUEST_APPROVAL_MSG = "Request has been Approved";
 
     public CreateRoleAssignmentService(ParseRequestService parseRequestService,
                                        PersistenceService persistenceService,
@@ -155,8 +156,8 @@ public class CreateRoleAssignmentService {
         request.setStatus(Status.REJECTED);
         requestEntity.setStatus(Status.REJECTED.toString());
         if (!rejectedAssignmentIds.isEmpty()) {
-            requestEntity.setLog(LOG_MESSAGE + rejectedAssignmentIds.toString());
-            request.setLog(LOG_MESSAGE + rejectedAssignmentIds.toString());
+            requestEntity.setLog(REQUEST_REJECTION_MSG + rejectedAssignmentIds.toString());
+            request.setLog(REQUEST_REJECTION_MSG + rejectedAssignmentIds.toString());
         }
 
         persistenceService.updateRequest(requestEntity);
@@ -184,15 +185,8 @@ public class CreateRoleAssignmentService {
         updateRequestStatus(parsedAssignmentRequest.getRequest());
     }
 
-    private void checkDeleteApproved(AssignmentRequest existingAssignmentRequest) {
+    private void insertExistingRecordsAfterDroolValidation(AssignmentRequest existingAssignmentRequest) {
         for (RoleAssignment requestedAssignment : existingAssignmentRequest.getRequestedRoles()) {
-            if (!requestedAssignment.getStatus().equals(Status.APPROVED)) {
-                requestedAssignment.setStatus(Status.DELETE_REJECTED);
-                requestedAssignment.setStatusSequence(Status.DELETE_REJECTED.sequence);
-            } else {
-                requestedAssignment.setStatus(Status.DELETE_APPROVED);
-                requestedAssignment.setStatusSequence(Status.DELETE_APPROVED.sequence);
-            }
             // persist history in db
             requestEntity.getHistoryEntities().add(persistenceUtil.prepareHistoryEntityForPersistance(
                 requestedAssignment,
@@ -206,11 +200,11 @@ public class CreateRoleAssignmentService {
 
     //Create New Assignment Records
     public void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest) {
-        //Save new requested role in history table with CREATED Status
+        //Save new requested role in history table with CREATE_REQUESTED Status
         long startTime = System.currentTimeMillis();
         logger.info(String.format("createNewAssignmentRecords execution started at %s", startTime));
 
-        insertRequestedRole(parsedAssignmentRequest, Status.CREATED, emptyUUIds);
+        insertRequestedRole(parsedAssignmentRequest, Status.CREATE_REQUESTED, emptyUUIds);
 
         validationModelService.validateRequest(parsedAssignmentRequest);
 
@@ -290,7 +284,7 @@ public class CreateRoleAssignmentService {
                 && (status.equals(Status.REJECTED) || status.equals(Status.DELETE_REJECTED))
                 &&
                 (requestedAssignment.getStatus().equals(Status.APPROVED)
-                    || requestedAssignment.getStatus().equals(Status.CREATED)
+                    || requestedAssignment.getStatus().equals(Status.CREATE_REQUESTED)
                     || requestedAssignment.getStatus().equals(Status.DELETE_APPROVED))) {
                 requestedAssignment.setLog(
                     "Requested Role has been rejected due to following new/existing assignment Ids :"
@@ -298,7 +292,7 @@ public class CreateRoleAssignmentService {
             }
             if (requestedAssignment.getStatus() == Status.APPROVED
                 || requestedAssignment.getStatus() == Status.DELETE_APPROVED || requestedAssignment.getStatus().equals(
-                Status.CREATED)) {
+                Status.CREATE_REQUESTED)) {
                 requestedAssignment.setStatus(status);
                 HistoryEntity entity = persistenceUtil.prepareHistoryEntityForPersistance(
                     requestedAssignment,
@@ -417,8 +411,12 @@ public class CreateRoleAssignmentService {
 
     private void updateRequestStatus(Request request) {
         request.setStatus(Status.APPROVED);
+        //to fix the FT
+        request.setLog(REQUEST_APPROVAL_MSG);
         requestEntity.setStatus(Status.APPROVED.toString());
         requestEntity.setLog(request.getLog());
+
+
         persistenceService.updateRequest(requestEntity);
     }
 
@@ -490,6 +488,10 @@ public class CreateRoleAssignmentService {
             .filter(e -> !roleAssignmentList.contains(e)).collect(Collectors.toSet());
 
         existingAssignmentRequest.setRequestedRoles(roleAssignmentList);
+
+        //update the records status from Live to Delete_requested for drool to approve it.
+        existingAssignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> roleAssignment
+            .setStatus(Status.DELETE_REQUESTED));
         //validation
         evaluateDeleteAssignments(existingAssignmentRequest);
     }
@@ -503,6 +505,7 @@ public class CreateRoleAssignmentService {
             request.getReference(),
             Status.LIVE.toString()
         );
+
         createdTimeComparator = new CreatedTimeComparator();
         existingAssignments.sort(createdTimeComparator);
         //create a new existing assignment request for delete records
@@ -516,7 +519,7 @@ public class CreateRoleAssignmentService {
         validationModelService.validateRequest(existingAssignmentRequest);
 
         // we are mocking delete rejected status
-        checkDeleteApproved(existingAssignmentRequest);
+        insertExistingRecordsAfterDroolValidation(existingAssignmentRequest);
     }
 
     public void checkAllApproved(AssignmentRequest parsedAssignmentRequest) {
@@ -543,9 +546,9 @@ public class CreateRoleAssignmentService {
         parsedAssignmentRequest.getRequest().setStatus(Status.REJECTED);
         requestEntity.setStatus(Status.REJECTED.toString());
         if (!rejectedAssignmentIds.isEmpty()) {
-            requestEntity.setLog(LOG_MESSAGE
+            requestEntity.setLog(REQUEST_REJECTION_MSG
                                      + rejectedAssignmentIds.toString());
-            parsedAssignmentRequest.getRequest().setLog(LOG_MESSAGE
+            parsedAssignmentRequest.getRequest().setLog(REQUEST_REJECTION_MSG
                                                             + rejectedAssignmentIds.toString());
         }
 
@@ -562,7 +565,8 @@ public class CreateRoleAssignmentService {
 
         // Update request status to approved
         parsedAssignmentRequest.getRequest().setStatus(Status.APPROVED);
-        requestEntity.setLog(parsedAssignmentRequest.getRequest().getLog());
+        parsedAssignmentRequest.getRequest().setLog(REQUEST_APPROVAL_MSG);
+        requestEntity.setLog(REQUEST_APPROVAL_MSG);
         requestEntity.setStatus(Status.APPROVED.toString());
         persistenceService.updateRequest(requestEntity);
     }

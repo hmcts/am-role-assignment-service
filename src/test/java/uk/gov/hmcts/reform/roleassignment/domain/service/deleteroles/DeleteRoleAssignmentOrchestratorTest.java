@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -104,15 +103,11 @@ class DeleteRoleAssignmentOrchestratorTest {
             PROCESS,
             REFERENCE,
             Status.LIVE.toString()
-        )).thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
+        )).thenReturn(Collections.emptyList());
         mockHistoryEntity();
 
         ResponseEntity<Object> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        verify(persistenceService, times(2)).deleteRoleAssignment(any());
-        verify(persistenceService, times(2)).persistActorCache(any());
-        assertion();
-        verify(persistenceService, times(3)).updateRequest(any(RequestEntity.class));
 
     }
 
@@ -125,14 +120,12 @@ class DeleteRoleAssignmentOrchestratorTest {
         setApprovedStatusByDrool();
         mockRequest();
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId)))
-            .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
+            .thenReturn(Collections.emptyList());
         mockHistoryEntity();
         ResponseEntity<Object> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
-        assertion();
-        verify(validationModelService, times(1)).validateRequest(any(AssignmentRequest.class));
-        verify(persistenceService, times(3)).updateRequest(any(RequestEntity.class));
+
     }
 
     @Test
