@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.controller;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
+import org.kie.api.runtime.StatelessKieSession;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
@@ -23,7 +24,11 @@ import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
@@ -67,6 +72,13 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     private MockMvc mockMvc;
     private JdbcTemplate template;
+    private ValidationModelService validationModelService;
+
+    @Autowired
+    private StatelessKieSession kieSession;
+
+    @Autowired
+    private PersistenceService persistenceService;
 
     @Inject
     private WebApplicationContext wac;
@@ -82,6 +94,9 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     @Mock
     private SecurityContext securityContext;
+
+    @MockBean
+    private RetrieveDataService retrieveDataService;
 
     @MockBean
     private IdamRoleService idamRoleService;
@@ -114,6 +129,11 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             "userInfo", userInfo
 
         );
+        Case retrievedCase = Case.builder().id("1234")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .build();
+        doReturn(retrievedCase).when(retrieveDataService).getCaseById(anyString());
     }
 
     @Test
