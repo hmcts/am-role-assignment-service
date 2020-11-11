@@ -9,6 +9,7 @@
   "request": {
     "body": {
       "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
         "reference": "${[scenarioContext][customValues][generateUUID]}"
       },
       "requestedRoles": [
