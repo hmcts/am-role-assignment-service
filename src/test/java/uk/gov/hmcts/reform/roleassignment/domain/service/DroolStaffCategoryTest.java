@@ -962,7 +962,6 @@ class DroolStaffCategoryTest extends DroolBase {
         });
 
         assignmentRequest.setRequestedRoles(roleAssignmentList);
-
         // facts must contain all affected role assignments
         facts.addAll(assignmentRequest.getRequestedRoles());
 
