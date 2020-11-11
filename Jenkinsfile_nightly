@@ -28,6 +28,8 @@ def secrets = [
     secret('test-am-user1-befta-pwd', 'TEST_AM_USER1_BEFTA_PWD'),
     secret('test-am-user2-befta-pwd', 'TEST_AM_USER2_BEFTA_PWD'),
     secret('test-am-user3-befta-pwd', 'TEST_AM_USER3_BEFTA_PWD'),
+    secret('test-am-import-befta-email', 'CCD_IMPORT_AUTOTEST_EMAIL'),
+    secret('test-am-import-befta-pwd', 'CCD_IMPORT_AUTOTEST_PASSWORD'),
     secret('role-assignment-service-IDAM-CLIENT-SECRET', 'OAUTH2_CLIENT_SECRET')
   ]
 ]
@@ -64,7 +66,8 @@ withNightlyPipeline(type, product, component) {
   env.IDAM_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   env.BEFTA_S2S_CLIENT_ID = "am_role_assignment_service"
-  env.DEFINITION_STORE_HOST = "http://ccd-definition-store-api-pr-575.service.core-compute-preview.internal"
+  env.DEFINITION_STORE_HOST = "http://ccd-definition-store-api-aat.service.core-compute-aat.internal"
+  env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
   env.OAUTH2_CLIENT_ID = "am_role_assignment"
   env.OAUTH2_REDIRECT_URI = "http://am-role-assignment-service-aat.service.core-compute-aat.internal/oauth2redirect"
   env.OAUTH2_ACCESS_TOKEN_TYPE = "OIDC"
