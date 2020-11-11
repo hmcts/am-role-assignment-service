@@ -16,14 +16,14 @@ services:
        AM_ROLE_ASSIGNMENT_SERVICE_SECRET:
        ROLE_ASSIGNMENT_IDAM_KEY:
        ROLE_ASSIGNMENT_TOKEN_SECRET:
-       ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service
+       ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api
        IDAM_USER_URL: http://idam-api:5000
        IDAM_S2S_URL: http://service-auth-provider-api:8080
        OPEN_ID_API_BASE_URI: http://idam-api:5000/o
        OIDC_ISSUER_URL: http://idam-api:8080/openam/oauth2/hmcts
        ROLE_ASSIGNMENT_IDAM_CLIENT_ID: am_docker
        ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET: am_docker_secret
-       ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: befta.caseworker.2.solicitor.2@gmail.com
+       ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: ras.admin@hmcts.net
        ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD: Pa55word11
        ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE: search-user
        AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY:
