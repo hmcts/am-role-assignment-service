@@ -48,7 +48,7 @@ public abstract class DroolBase {
             .build();
 
         // facts must contain the request
-        facts.add(assignmentRequest.getRequest());
+//        facts.add(assignmentRequest.getRequest());
 
         // facts must contain the role config, for access to the patterns
         facts.add(RoleConfig.getRoleConfig());
