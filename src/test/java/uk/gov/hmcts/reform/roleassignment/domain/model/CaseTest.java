@@ -6,6 +6,10 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,7 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CaseTest {
 
 
-    private Case caseData = new Case("1234", (long)1, 1, "", "");
+    private Case caseData = new Case("1234", (long)1, 1, "", "",
+                                     LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(),"",
+                                     null,null,null,
+                                     null,null, null);
 
     @BeforeEach
     public void setUp() {
@@ -24,5 +31,17 @@ class CaseTest {
     void testToString() {
         assertNotNull(caseData.toString());
         assertTrue(caseData.toString().contains("1234"));
+    }
+
+    @Test
+    void hasCaseReference() {
+        assertTrue(caseData.hasCaseReference());
+        assertEquals(1L, caseData.getReference());
+    }
+
+    @Test
+    void hasCaseReferenceFalse() {
+        caseData.setReference(null);
+        assertFalse(caseData.hasCaseReference());
     }
 }
