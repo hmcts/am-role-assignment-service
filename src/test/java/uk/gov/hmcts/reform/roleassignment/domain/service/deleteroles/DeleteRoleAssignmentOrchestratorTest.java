@@ -1,24 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,6 +23,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,6 +53,8 @@ class DeleteRoleAssignmentOrchestratorTest {
     private PersistenceService persistenceService = mock(PersistenceService.class);
     @Mock
     private ValidationModelService validationModelService = mock(ValidationModelService.class);
+    @Mock
+    private PersistenceUtil persistenceUtil;
 
     private static final String ACTOR_ID = "21334a2b-79ce-44eb-9168-2d49a744be9c";
     private static final String PROCESS = "process";
@@ -84,7 +69,8 @@ class DeleteRoleAssignmentOrchestratorTest {
     private DeleteRoleAssignmentOrchestrator sut = new DeleteRoleAssignmentOrchestrator(
         persistenceService,
         parseRequestService,
-        validationModelService
+        validationModelService,
+        persistenceUtil
     );
 
     @BeforeEach
@@ -167,7 +153,7 @@ class DeleteRoleAssignmentOrchestratorTest {
     @DisplayName("should not delete any records if delete approved records are zero")
     void shouldNotDeleteRecordsForZeroApprovedItems() throws Exception {
         mockRequest();
-        when(persistenceService.persistHistory(any(), any())).thenReturn(historyEntity);
+        when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
         sut.requestEntity = new RequestEntity();
         sut.checkAllDeleteApproved(new AssignmentRequest(new Request(), Collections.emptyList()), "actorId");
         verify(persistenceService, times(0)).deleteRoleAssignmentByActorId(any());
@@ -179,7 +165,7 @@ class DeleteRoleAssignmentOrchestratorTest {
     @DisplayName("should not delete any records if delete approved records don't match requested items")
     void shouldNotDeleteRecordsForNonMatchingRequestItems() throws Exception {
         mockRequest();
-        when(persistenceService.persistHistory(any(), any())).thenReturn(historyEntity);
+        when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
 
         sut.requestEntity = RequestEntity.builder().historyEntities(new HashSet<>()).build();
         sut.checkAllDeleteApproved(new AssignmentRequest(
@@ -234,8 +220,8 @@ class DeleteRoleAssignmentOrchestratorTest {
     private void assertion() throws Exception {
         verify(parseRequestService, times(1)).prepareDeleteRequest(any(), any(), any(), any());
         verify(persistenceService, times(1)).persistRequest(any(Request.class));
-        verify(persistenceService, times(4))
-            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(persistenceUtil, times(4))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
     }
 
     private void mockRequest() throws Exception {
@@ -253,7 +239,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     private void mockHistoryEntity() throws Exception {
         doNothing().when(validationModelService).validateRequest(assignmentRequest);
-        when(persistenceService.persistHistory(
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
             roleAssignment,
             assignmentRequest.getRequest()
         )).thenReturn(historyEntity);

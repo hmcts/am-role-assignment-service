@@ -32,6 +32,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -105,7 +106,7 @@ class CreateRoleAssignmentServiceTest {
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
             existingAssignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
-        when(persistenceService.persistHistory(
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
             any(RoleAssignment.class),
             any(Request.class)
         )).thenReturn(historyEntity);
@@ -122,8 +123,8 @@ class CreateRoleAssignmentServiceTest {
             .deleteRoleAssignment(any(RoleAssignment.class));
         verify(persistenceService, times(2))
             .persistActorCache(any(RoleAssignment.class));
-        verify(persistenceService, times(2))
-            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(persistenceUtil, times(2))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
 
     }
 
@@ -156,7 +157,7 @@ class CreateRoleAssignmentServiceTest {
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
             existingAssignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
-        when(persistenceService.persistHistory(
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
             any(RoleAssignment.class),
             any(Request.class)
         )).thenReturn(historyEntity);
@@ -169,8 +170,8 @@ class CreateRoleAssignmentServiceTest {
         //assertion
         verify(persistenceService, times(5))
             .updateRequest(any(RequestEntity.class));
-        verify(persistenceService, times(8))
-            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(persistenceUtil, times(8))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(validationModelService, times(1))
             .validateRequest(any(AssignmentRequest.class));
 
@@ -205,7 +206,7 @@ class CreateRoleAssignmentServiceTest {
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
             existingAssignmentRequest);
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
-        when(persistenceService.persistHistory(
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
             any(RoleAssignment.class),
             any(Request.class)
         )).thenReturn(historyEntity);
@@ -223,8 +224,8 @@ class CreateRoleAssignmentServiceTest {
             .deleteRoleAssignment(any(RoleAssignment.class));
         verify(persistenceService, times(2))
             .persistActorCache(any(RoleAssignment.class));
-        verify(persistenceService, times(2))
-            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(persistenceUtil, times(2))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
 
     }
 
@@ -284,7 +285,7 @@ class CreateRoleAssignmentServiceTest {
 
         when(persistenceUtil.convertHistoryEntityToRoleAssignment(any(HistoryEntity.class)))
             .thenReturn(existingAssignmentRequest.getRequestedRoles().iterator().next());
-        when(persistenceService.persistHistory(
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
             any(RoleAssignment.class),
             any(Request.class)
         )).thenReturn(historyEntity);
@@ -299,12 +300,10 @@ class CreateRoleAssignmentServiceTest {
 
         verify(persistenceService, times(1))
             .persistActorCache(any(RoleAssignment.class));
-        verify(persistenceService, times(2))
-            .persistHistory(any(RoleAssignment.class), any(Request.class));
+        verify(persistenceUtil, times(2))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(persistenceService, times(1))
-            .persistRoleAssignment(any(RoleAssignment.class));
-
-
+            .persistRoleAssignments(anyList());
     }
 
     @Test
@@ -332,7 +331,7 @@ class CreateRoleAssignmentServiceTest {
 
         when(persistenceUtil.convertHistoryEntityToRoleAssignment(any(HistoryEntity.class)))
             .thenReturn(existingAssignmentRequest.getRequestedRoles().iterator().next());
-        when(persistenceService.persistHistory(
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
             any(RoleAssignment.class),
             any(Request.class)
         )).thenReturn(historyEntity);
@@ -346,11 +345,10 @@ class CreateRoleAssignmentServiceTest {
 
         verify(persistenceService, times(0))
             .persistActorCache(any(RoleAssignment.class));
+        verify(persistenceUtil, times(0))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(persistenceService, times(0))
-            .persistHistory(any(RoleAssignment.class), any(Request.class));
-        verify(persistenceService, times(0))
-            .persistRoleAssignment(any(RoleAssignment.class));
-
+            .persistRoleAssignments(anyList());
     }
 
     @Test
