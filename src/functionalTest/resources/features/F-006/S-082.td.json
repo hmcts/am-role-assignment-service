@@ -9,8 +9,8 @@
   "request": {
     "body": {
       "actorId": ["${[scenarioContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"],
-      "roleType": ["CASE"],
-      "grantType": ["SPECIFIC"]
+      "roleType": ["ORGANISATION"],
+      "grantType": ["STANDARD"]
     }
   },
   "expectedResponse": {

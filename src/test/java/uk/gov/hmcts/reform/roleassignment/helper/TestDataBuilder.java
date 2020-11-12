@@ -370,9 +370,8 @@ public class TestDataBuilder {
     public static Case buildCase() {
         return Case.builder()
             .version(1)
-            .state("state")
             .reference(1L)
-            .lastStateModifiedDate(LocalDateTime.now().minusMonths(1L)).id("1234").build();
+            .id("1234").build();
     }
 
     public static AssignmentRequest createRoleAssignmentRequest(

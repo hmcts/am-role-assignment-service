@@ -10,7 +10,7 @@
   "request": {
     "body": {
       "roleRequest": {
-        "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
         "process": "businessProcess1",
         "reference": "${[scenarioContext][childContexts][S-020_Multiple_Role_Creation][testData][request][body][roleRequest][reference]}",
         "replaceExisting": true
@@ -24,7 +24,10 @@
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][customValues][generateUUID]}",
           "roleType": "CASE",
-          "grantType": "STANDARD"
+          "grantType": "STANDARD",
+          "attributes" : {
+            "caseId" : "1234567890666666"
+          }
         }
       ]
     }
