@@ -12,7 +12,7 @@
   "request": {
     "body": {
       "roleRequest": {
-        "assignerId": "${[scenarioContext][testData][users][befta3][id]}",
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
         "reference": "${[scenarioContext][testData][users][befta1][id]}"
       },
       "requestedRoles": [

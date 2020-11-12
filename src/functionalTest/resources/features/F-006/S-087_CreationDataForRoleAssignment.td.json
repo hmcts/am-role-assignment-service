@@ -7,13 +7,22 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "grantType": "CHALLENGED"
+          "roleType": "CASE",
+          "grantType": "SPECIFIC",
+          "attributes":
+          {
+            "caseId": "1234567890123456"
+          }
         },
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "roleType": "ORGANISATION",
-          "grantType": "STANDARD"
+          "roleType": "CASE",
+          "grantType": "CHALLENGED",
+          "attributes":
+          {
+            "caseId": "1234567890123456"
+          }
         }
       ]
     }
@@ -26,14 +35,21 @@
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "grantType": "CHALLENGED"
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][1][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
+            "attributes": {
+              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
+            }
           },
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "roleType": "ORGANISATION",
-            "grantType": "STANDARD"
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][2][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][2][grantType]}",
+            "attributes": {
+              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][2][attributes][caseId]}"
+            }
           }
         ]
       }
