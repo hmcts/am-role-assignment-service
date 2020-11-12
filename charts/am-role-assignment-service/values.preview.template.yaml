@@ -27,3 +27,4 @@ java:
     postgresqlPassword: role_assignment
     postgresqlDatabase: role_assignment
     postgresqlPort: 5432
+    ENABLE_FEIGN_HYSTRIX: true
