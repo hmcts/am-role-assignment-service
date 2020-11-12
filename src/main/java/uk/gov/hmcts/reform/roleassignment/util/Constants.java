@@ -36,6 +36,7 @@ public final class Constants {
     public static final String STATUS = "Status";
     public static final String INTEGER = "Integer";
     public static final String REQUEST_BODY = "Request body";
+    public static final String SERVICE_AUTHORIZATION2 = "ServiceAuthorization";
 
 
 }

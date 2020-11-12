@@ -12,9 +12,9 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -38,7 +38,7 @@ public class JacksonUtils {
     }
 
     @Getter
-    private static final Map<String, List<Role>> configuredRoles = new HashMap<>();
+    private static final Map<String, List<RoleConfigRole>> configuredRoles = new HashMap<>();
 
     public static final JsonFactory jsonFactory = JsonFactory.builder()
         // Change per-factory setting to prevent use of `String.intern()` on symbols
@@ -101,9 +101,9 @@ public class JacksonUtils {
         InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream("role.json");
         CollectionType listType = MAPPER.getTypeFactory().constructCollectionType(
             ArrayList.class,
-            Role.class
+            RoleConfigRole.class
         );
-        List<Role> allRoles = null;
+        List<RoleConfigRole> allRoles = null;
         try {
             allRoles = MAPPER.readValue(input, listType);
         } catch (IOException e) {

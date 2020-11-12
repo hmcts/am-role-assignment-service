@@ -14,6 +14,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
@@ -221,7 +222,7 @@ class CreateRoleAssignmentOrchestratorTest {
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
-        verify(persistenceUtil, times(10))
+        verify(persistenceUtil, times(4))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
@@ -298,7 +299,7 @@ class CreateRoleAssignmentOrchestratorTest {
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
-        verify(persistenceUtil, times(4))
+        verify(persistenceUtil, times(2))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
@@ -367,7 +368,9 @@ class CreateRoleAssignmentOrchestratorTest {
 
         //actual method call
         ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
-        AssignmentRequest assignmentRequest = (AssignmentRequest) response.getBody();
+        RoleAssignmentRequestResource roleAssignmentRequestResource  = (RoleAssignmentRequestResource) response
+            .getBody();
+        AssignmentRequest assignmentRequest = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assert values
         assertNotNull(response);

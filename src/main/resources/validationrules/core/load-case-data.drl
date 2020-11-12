@@ -1,0 +1,26 @@
+package validationrules.core
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+
+global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService DATA_SERVICE;
+
+/*
+ * When we have a role assignment with a case ID, then we need to make the case
+ * data available.  This may only be for access to the case type (unfortunately,
+ * there is not a light version of the case retrieval API available to return
+ * only the basic case metadata).
+ *
+ * The "not CASE(...)" clause ensures that case data is only loaded once for any
+ * given case ID - effectively this acts as a cache within the scope of a single
+ * evaluation of rules.
+ */
+rule "load_case_data_for_role_assignments_with_case_ids"
+when
+    $ra: RoleAssignment(
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+             not Case(id == $caseId)
+then
+	insert(DATA_SERVICE.getCaseById($caseId));
+	System.out.println("Rule :load_case_data_for_role_assignments_with_case_ids");
+end;

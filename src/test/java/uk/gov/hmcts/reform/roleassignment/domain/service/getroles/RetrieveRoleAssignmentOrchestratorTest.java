@@ -127,6 +127,6 @@ class RetrieveRoleAssignmentOrchestratorTest {
     void getListOfRoles() throws IOException {
         JsonNode roles = sut.getListOfRoles();
         assertNotNull(roles);
-        assertEquals(2, roles.size());
+        assertEquals(3, roles.size());
     }
 }
