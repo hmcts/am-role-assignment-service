@@ -4,10 +4,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.*;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -15,71 +24,61 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SP
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRoleForIAC;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @RunWith(MockitoJUnitRunner.class)
-class DroolStaffCategoryTest extends DroolBase {
+class StaffCategoryCaseTest extends DroolBase {
+
 
     @Test
-    void shouldApprovedOrgRequestedRoleForTCW() {
+    void shouldApproveCaseRequestedRoles_RequesterOrgRoleTCW() {
 
-//        clientId check not implemented yet
-//        assignmentRequest.getRequest().setClientId("orm");
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF,"tribunal-caseworker",
+                                                              SPECIFIC);
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
 
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-            roleAssignment.setRoleType(RoleType.ORGANISATION);
-            roleAssignment.setRoleName("tribunal-caseworker");
-            roleAssignment.setGrantType(STANDARD);
-            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
-        });
+        RoleAssignment requestedRole2 = getRequestedCaseRole(RoleCategory.STAFF,"tribunal-caseworker",
+                                                              SPECIFIC);
+        requestedRole2.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+        requestedRoles.add(requestedRole2);
+        assignmentRequest.setRequestedRoles(requestedRoles);
+
+        ExistingRoleAssignment existingRoleAssignment1 = buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                                                 "tribunal-caseworker");
+        ExistingRoleAssignment existingRoleAssignment2 = buildExistingRoleForIAC(requestedRole2.getActorId(),
+                                                                                 "tribunal-caseworker");
+        ExistingRoleAssignment existingRoleAssignment3 = buildExistingRoleForIAC(
+            assignmentRequest.getRequest().getAssignerId(),"senior-tribunal-caseworker");
+
+        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
+        existingRoleAssignments.add(existingRoleAssignment1);
+        existingRoleAssignments.add(existingRoleAssignment2);
+        existingRoleAssignments.add(existingRoleAssignment3);
+
+        // facts must contain the request
+        facts.add(assignmentRequest.getRequest());
 
         // facts must contain all affected role assignments
         facts.addAll(assignmentRequest.getRequestedRoles());
+
+        // facts must contain all existing role assignments
+        facts.addAll(existingRoleAssignments);
 
         // Run the rules
         kieSession.execute(facts);
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(Status.APPROVED, roleAssignment.getStatus());
+        assignmentRequest.getRequestedRoles().stream().forEach(ra -> {
+            assertEquals(Status.APPROVED, ra.getStatus());
         });
-
-
     }
 
     @Test
-    void shouldRejectOrgRequestedRoleForTCW_PrimaryLocationMissing() {
-
-//        clientId check not implemented yet
-//        assignmentRequest.getRequest().setClientId("orm");
-
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-            roleAssignment.setRoleType(RoleType.ORGANISATION);
-            roleAssignment.setRoleName("tribunal-caseworker");
-            roleAssignment.setGrantType(STANDARD);
-            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-
-        });
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // Run the rules
-        kieSession.execute(facts);
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertNotEquals(Status.APPROVED, roleAssignment.getStatus());
-        });
-
-
-    }
-
-    @Test
-    void shouldApprovedCaseValidationForTCW() {
+    void shouldRejectCaseRequestedRole_MissingExistingRoleOfAssignee() {
 
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.STAFF);
@@ -90,41 +89,8 @@ class DroolStaffCategoryTest extends DroolBase {
 
         });
 
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        //facts must contain existing role of assigner
-        facts.add(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-             "senior-tribunal-caseworker"));
-
-        //facts must contain existing role of assignees
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                         facts.add(buildExistingRoleForIAC(roleAssignment.getActorId(),
-                                                                 "tribunal-caseworker")));
-
-
-        // Run the rules
-        kieSession.execute(facts);
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(Status.APPROVED, roleAssignment.getStatus());
-        });
-
-
-    }
-
-    @Test
-    void shouldRejectIACValidation_MissingExistingRoleOfAssignee() {
-
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-            roleAssignment.setRoleType(RoleType.CASE);
-            roleAssignment.setRoleName("tribunal-caseworker");
-            roleAssignment.setGrantType(SPECIFIC);
-            roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-
-        });
+        // facts must contain the request
+        facts.add(assignmentRequest.getRequest());
 
         // facts must contain all requested role assignments
         facts.addAll(assignmentRequest.getRequestedRoles());
@@ -133,7 +99,6 @@ class DroolStaffCategoryTest extends DroolBase {
         facts.add(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
              "senior-tribunal-caseworker"));
 
-
         // Run the rules
         kieSession.execute(facts);
 
@@ -141,118 +106,6 @@ class DroolStaffCategoryTest extends DroolBase {
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             assertEquals(Status.REJECTED, roleAssignment.getStatus());
 
-        });
-
-
-    }
-
-    @Test
-    void shouldApprovedOrgRequestedRoleForSTCW() {
-
-//        clientId check not implemented yet
-//        assignmentRequest.getRequest().setClientId("orm");
-
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-            roleAssignment.setRoleType(RoleType.ORGANISATION);
-            roleAssignment.setRoleName("senior-tribunal-caseworker");
-            roleAssignment.setGrantType(STANDARD);
-            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
-        });
-
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // Run the rules
-        kieSession.execute(facts);
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(Status.APPROVED, roleAssignment.getStatus());
-        });
-
-
-    }
-
-    @Test
-    void shouldRejectOrgValidationForSTCW_MissingAttributeJurisdiction() {
-
-//        clientId check not implemented yet
-//        assignmentRequest.getRequest().setClientId("orm");
-
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-            roleAssignment.setRoleType(RoleType.ORGANISATION);
-            roleAssignment.setRoleName("senior-tribunal-caseworker");
-            roleAssignment.setGrantType(STANDARD);
-            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
-        });
-
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // Run the rules
-        kieSession.execute(facts);
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertNotEquals(Status.APPROVED, roleAssignment.getStatus());
-        });
-
-
-    }
-
-
-    @Test
-    void shouldPassDeleteRequestedRoleForOrg() {
-
-//        clientId check not implemented yet
-//        assignmentRequest.getRequest().setClientId("orm");
-
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setStatus(Status.DELETE_REQUESTED);
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-            roleAssignment.setRoleType(RoleType.ORGANISATION);
-
-        });
-
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // Run the rules
-        kieSession.execute(facts);
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus());
-        });
-
-
-    }
-
-    @Test
-    void shouldRejectDeleteRequestedRoleForOrg() {
-
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setStatus(Status.DELETE_REQUESTED);
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-
-        });
-
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // Run the rules
-        kieSession.execute(facts);
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
         });
 
 
@@ -272,13 +125,15 @@ class DroolStaffCategoryTest extends DroolBase {
 
         });
 
+        // facts must contain the request
+        facts.add(assignmentRequest.getRequest());
+
         // facts must contain all affected role assignments
         facts.addAll(assignmentRequest.getRequestedRoles());
 
         //facts must contain existing role of assigner
         facts.add(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
             "senior-tribunal-caseworker"));
-
 
         // Run the rules
         kieSession.execute(facts);
@@ -319,210 +174,12 @@ class DroolStaffCategoryTest extends DroolBase {
 
     }
 
-    @Test
-    void shouldRejectOrgValidationForTCW_WrongValueForAttributeJurisdiction() {
-
-//        clientId check not implemented yet
-//        assignmentRequest.getRequest().setClientId("orm");
-
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-            roleAssignment.setRoleType(RoleType.ORGANISATION);
-            roleAssignment.setRoleName("tribunal-caseworker");
-            roleAssignment.setGrantType(STANDARD);
-            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("CMC"));
-            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
-        });
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // Run the rules
-        kieSession.execute(facts);
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertNotEquals(Status.APPROVED, roleAssignment.getStatus());
-        });
-
-
-    }
-
-    @Test
-    void shouldRejectOrgValidationForTCW_WrongGrantType() {
-
-//        clientId check not implemented yet
-//        assignmentRequest.getRequest().setClientId("orm");
-
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-            roleAssignment.setRoleType(RoleType.ORGANISATION);
-            roleAssignment.setRoleName("tribunal-caseworker");
-            roleAssignment.setGrantType(SPECIFIC);
-            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
-        });
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // Run the rules
-        kieSession.execute(facts);
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertNotEquals(Status.APPROVED, roleAssignment.getStatus());
-        });
-
-
-    }
-
-    @Test
-    void shouldRejectOrgValidationForTCW_WrongRoleCategory() {
-
-//        clientId check not implemented yet
-//        assignmentRequest.getRequest().setClientId("orm");
-
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
-            roleAssignment.setRoleType(RoleType.ORGANISATION);
-            roleAssignment.setRoleName("tribunal-caseworker");
-            roleAssignment.setGrantType(STANDARD);
-            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
-        });
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // Run the rules
-        kieSession.execute(facts);
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertNotEquals(Status.APPROVED, roleAssignment.getStatus());
-        });
-
-
-    }
-
-
-    @Test
-    void shouldRejectOrgValidationForTCW_WrongClassification() {
-
-//        clientId check not implemented yet
-//        assignmentRequest.getRequest().setClientId("orm");
-
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-            roleAssignment.setRoleType(RoleType.ORGANISATION);
-            roleAssignment.setClassification(Classification.RESTRICTED);
-            roleAssignment.setRoleName("tribunal-caseworker");
-            roleAssignment.setGrantType(STANDARD);
-            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
-        });
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // Run the rules
-        kieSession.execute(facts);
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertNotEquals(Status.APPROVED, roleAssignment.getStatus());
-        });
-
-
-    }
-
-    @Test
-    void shouldRejectOrgValidationForTCW_MissingAttributeJurisdiction() {
-
-//        clientId check not implemented yet
-//        assignmentRequest.getRequest().setClientId("orm");
-
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-            roleAssignment.setRoleType(RoleType.ORGANISATION);
-            roleAssignment.setRoleName("tribunal-caseworker");
-            roleAssignment.setGrantType(STANDARD);
-            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
-        });
-
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // Run the rules
-        kieSession.execute(facts);
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertNotEquals(Status.APPROVED, roleAssignment.getStatus());
-        });
-    }
-//    @Test
-//    void shouldRejectOrgRequestedRoleForTCW_WrongClientID() {
-//
-//        assignmentRequest.getRequest().setClientId("ccd-gw");
-//
-//        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-//            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-//            roleAssignment.setRoleType(RoleType.ORGANISATION);
-//            roleAssignment.setRoleName("tribunal-caseworker");
-//            roleAssignment.setGrantType(STANDARD);
-//            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-//            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
-//        });
-//
-//        // facts must contain all affected role assignments
-//        facts.addAll(assignmentRequest.getRequestedRoles());
-//
-//        // Run the rules
-//        kieSession.execute(facts);
-//
-//        //assertion
-//        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-//            assertNotEquals(Status.APPROVED, roleAssignment.getStatus());
-//        });
-//
-//
-//    }
-
-//    @Test
-//    void shouldRejectDeleteRequestedRoleForOrgWrongClientId() {
-//
-//        assignmentRequest.getRequest().setClientId("ccd-gm");
-//
-//        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-//            roleAssignment.setStatus(Status.DELETE_REQUESTED);
-//            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-//            roleAssignment.setRoleType(RoleType.ORGANISATION);
-//
-//        });
-//
-//
-//        // facts must contain all affected role assignments
-//        facts.addAll(assignmentRequest.getRequestedRoles());
-//
-//        // Run the rules
-//        kieSession.execute(facts);
-//
-//        //assertion
-//        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-//            assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
-//        });
-//
-//
-//    }
 
     @Test
     void shouldApprovedCaseValidationForTCW_ForAssignee2STCW_RequesterTCW() {
 
         List<RoleAssignment> roleAssignmentList = new ArrayList<>();
-        Map<String,JsonNode> attributesCase = new HashMap<String, JsonNode>();
+        Map<String, JsonNode> attributesCase = new HashMap<String, JsonNode>();
         attributesCase.put("caseId", convertValueJsonNode("1234567890123456"));
 
         Map<String,JsonNode> attributesOrg = new HashMap<String, JsonNode>();

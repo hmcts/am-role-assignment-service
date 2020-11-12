@@ -46,6 +46,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.ROLES_JSON;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
@@ -449,5 +450,33 @@ public class TestDataBuilder {
 
     }
 
+    public static RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType) {
+        return RoleAssignment.builder()
+                                 .id(UUID.randomUUID())
+                                 .actorId(UUID.randomUUID().toString())
+                                 .actorIdType(ActorIdType.IDAM)
+                                 .roleCategory(roleCategory)
+                                 .roleType(RoleType.CASE)
+                                 .roleName(roleName)
+                                 .grantType(grantType)
+                                 .classification(Classification.PUBLIC)
+                                 .readOnly(true)
+                                 .status(CREATE_REQUESTED)
+                                 .attributes(new HashMap<String, JsonNode>())
+                                 .build();
+    }
+
+
+    public static List<RoleAssignment> getRequestedOrgRole() {
+        return Arrays.asList(RoleAssignment.builder()
+                                 .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
+                                 .actorId("4772dc44-268f-4d0c-8f83-f0fb662aac83")
+                                 .actorIdType(ActorIdType.IDAM)
+                                 .classification(Classification.PUBLIC)
+                                 .readOnly(true)
+                                 .status(CREATE_REQUESTED)
+                                 .attributes(new HashMap<String, JsonNode>())
+                                 .build());
+    }
 
 }
