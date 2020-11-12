@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
@@ -12,8 +10,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
@@ -21,13 +17,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataServ
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 
 public abstract class DroolBase {
 
@@ -81,21 +75,12 @@ public abstract class DroolBase {
                                                        .status(Status.CREATED)
                                                        .created(LocalDateTime.now())
                                                        .build())
-            .requestedRoles(getRequestedRole());
+            //.requestedRoles(getRequestedRoles())
+            ;
     }
 
-    @NotNull
-    private List<RoleAssignment> getRequestedRole() {
-        return Arrays.asList(RoleAssignment.builder()
-                                 .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
-                                 .actorId("4772dc44-268f-4d0c-8f83-f0fb662aac83")
-                                 .actorIdType(ActorIdType.IDAM)
-                                 .classification(Classification.PUBLIC)
-                                 .readOnly(true)
-                                 .status(CREATE_REQUESTED)
-                                 .attributes(new HashMap<String, JsonNode>())
-                                 .build());
+    private List<RoleAssignment> getRequestedRoles() {
+        return Arrays.asList();
     }
-
 
 }
