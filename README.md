@@ -23,7 +23,7 @@ The following environment variables are required:
 
 | Name | Default | Description |
 |------|---------|-------------|
-      |ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES| ccd_gw, xui_webapp|
+      |ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES| ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api|
       |AM_ROLE_ASSIGNMENT_SERVICE_SECRET|
       |IDAM_USER_URL| http://idam-api:5000 |
       |IDAM_S2S_URL| http://service-auth-provider-api:8080|
