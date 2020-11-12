@@ -18,13 +18,14 @@ public class TestDataLoaderToDefinitionStoreRAS extends TestDataLoaderToDefiniti
     }
 
     protected void addNewCcdRole(CcdRoleConfig roleConfig) {
-        logger.info("\nAdding the role {}...", roleConfig);
+        logger.info("\nAdding the role {}", roleConfig);
         addCcdRole(roleConfig);
-        logger.info("\nAdded the role {}...", roleConfig);
+        logger.info("\nAdded the role {}", roleConfig);
     }
 
     protected void importNewDefinition(String fileResourcePath) throws IOException {
-        logger.info("\nImporting the file {}...", fileResourcePath);
+        logger.info("\nImporting the file {}", fileResourcePath);
         importDefinition(fileResourcePath);
+        logger.info("\nFile imported successfully");
     }
 }
