@@ -37,9 +37,9 @@ class DatastoreFeignClientFallbackTest {
     @Test
     void getCaseDataV2() {
         String caseId = "1234";
-        Case myCase = Case.builder().id(caseId)
-            .caseTypeId("ASYLUM")
-            .jurisdiction("IA").build();
-        assertEquals(myCase, datastoreFeignClientFallback.getCaseDataV2(caseId));
+        Case myCase =  datastoreFeignClientFallback.getCaseDataV2(caseId);
+        assertEquals("1234", myCase.getId());
+        assertEquals("Asylum", myCase.getCaseTypeId());
+        assertEquals("IA", myCase.getJurisdiction());
     }
 }

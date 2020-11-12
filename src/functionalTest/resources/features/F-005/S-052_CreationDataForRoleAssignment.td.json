@@ -6,8 +6,7 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "grantType": "CHALLENGED"
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
         }
       ]
     }
@@ -18,9 +17,7 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "grantType": "CHALLENGED"
+            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
           }
         ]
       }

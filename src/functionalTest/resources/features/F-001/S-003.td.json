@@ -9,12 +9,19 @@
   "request": {
     "body": {
       "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
         "reference": "${[scenarioContext][customValues][generateUUID]}"
       },
+
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "roleType": "CASE",
+          "grantType": "SPECIFIC",
+          "attributes": {
+            "caseId": "1234567890123456"
+          }
         }
       ]
     }
@@ -33,7 +40,12 @@
         },
         "requestedRoles": [
           {
-            "_extends_": "ResponseRequestedRole"
+            "_extends_": "ResponseRequestedRole",
+            "roleType" : "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
+            "grantType" : "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "attributes": {
+              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}"
+            }
           }
         ]
       }
