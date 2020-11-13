@@ -17,7 +17,8 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
     @Override
     public void doLoadTestData() {
         //Needed for the BEFTA implementation
-/*        CcdRoleConfig ccdRoleConfig = new CcdRoleConfig("caseworker-ia", "PUBLIC");
+    /*
+        CcdRoleConfig ccdRoleConfig = new CcdRoleConfig("caseworker-ia", "PUBLIC");
         loader.addNewCcdRole(ccdRoleConfig);
         Resource resource = new ClassPathResource("ccd-iac-integration-dev.xlsx");
         String fileResourcePath = null;
@@ -31,7 +32,8 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
             loader.importNewDefinition(fileResourcePath);
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
+    */
     }
 
     @Override
