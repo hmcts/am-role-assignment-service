@@ -28,8 +28,6 @@ def secrets = [
     secret('test-am-user1-befta-pwd', 'TEST_AM_USER1_BEFTA_PWD'),
     secret('test-am-user2-befta-pwd', 'TEST_AM_USER2_BEFTA_PWD'),
     secret('test-am-user3-befta-pwd', 'TEST_AM_USER3_BEFTA_PWD'),
-    secret('test-am-import-befta-email', 'CCD_IMPORT_AUTOTEST_EMAIL'),
-    secret('test-am-import-befta-pwd', 'CCD_IMPORT_AUTOTEST_PASSWORD'),
     secret('role-assignment-service-IDAM-CLIENT-SECRET', 'OAUTH2_CLIENT_SECRET')
   ]
 ]
