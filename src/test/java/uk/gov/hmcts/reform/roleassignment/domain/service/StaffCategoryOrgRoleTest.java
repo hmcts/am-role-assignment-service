@@ -32,7 +32,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
         });
 
-        BuildnExecuteKieSession();
+        buildExecuteKieSession();
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -54,7 +54,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
         });
 
-        BuildnExecuteKieSession();
+        buildExecuteKieSession();
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -75,7 +75,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
             roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
         });
-        BuildnExecuteKieSession();
+        buildExecuteKieSession();
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -96,7 +96,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
             roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
         });
-        BuildnExecuteKieSession();
+        buildExecuteKieSession();
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -117,7 +117,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
             roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
         });
-        BuildnExecuteKieSession();
+        buildExecuteKieSession();
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -139,7 +139,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
             roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
         });
-        BuildnExecuteKieSession();
+        buildExecuteKieSession();
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -159,7 +159,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.setGrantType(STANDARD);
             roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
         });
-        BuildnExecuteKieSession();
+        buildExecuteKieSession();
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -180,7 +180,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("CMC"));
             roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
         });
-        BuildnExecuteKieSession();
+        buildExecuteKieSession();
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -201,7 +201,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
 
         });
-        BuildnExecuteKieSession();
+        buildExecuteKieSession();
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -219,7 +219,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.setRoleCategory(RoleCategory.STAFF);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
         });
-        BuildnExecuteKieSession();
+        buildExecuteKieSession();
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -234,7 +234,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.setStatus(Status.DELETE_REQUESTED);
             roleAssignment.setRoleCategory(RoleCategory.STAFF);
         });
-        BuildnExecuteKieSession();
+        buildExecuteKieSession();
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -256,7 +256,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.setRoleType(RoleType.ORGANISATION);
 
         });
-        BuildnExecuteKieSession();
+        buildExecuteKieSession();
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -264,7 +264,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         });
     }
 
-    private void BuildnExecuteKieSession() {
+    private void buildExecuteKieSession() {
         // facts must contain the request
         facts.add(assignmentRequest.getRequest());
         // facts must contain all affected role assignments
