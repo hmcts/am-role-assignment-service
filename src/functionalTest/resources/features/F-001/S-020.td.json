@@ -23,11 +23,7 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][customValues][generateUUID]}",
-          "roleType": "CASE",
-          "grantType": "STANDARD",
-          "attributes" : {
-            "caseId" : "1234567890666666"
-          }
+          "grantType": "SPECIFIC"
         }
       ]
     }
