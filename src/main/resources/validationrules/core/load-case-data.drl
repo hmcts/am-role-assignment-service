@@ -2,6 +2,8 @@ package validationrules.core
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import java.lang.Throwable
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 
 global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService DATA_SERVICE;
 
@@ -21,6 +23,12 @@ when
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
              not Case(id == $caseId)
 then
-	insert(DATA_SERVICE.getCaseById($caseId));
+  try {
+  	insert(DATA_SERVICE.getCaseById($caseId));
+  }
+  catch(Throwable ex) {
+  System.out.println("Error from the ccd data-store feign client");
+  throw new BadRequestException(ex.getMessage());
+  }
 	System.out.println("Rule :load_case_data_for_role_assignments_with_case_ids");
 end;
