@@ -156,7 +156,7 @@ class StaffCategoryCaseTest extends DroolBase {
         facts.addAll(assignmentRequest.getRequestedRoles());
 
         //facts must contain existing role of requester
-        facts.add(buildExistingRoleForIAC(requestedRole1.getActorId()+"98",
+        facts.add(buildExistingRoleForIAC(requestedRole1.getActorId() + "98",
                                           "senior-tribunal-caseworker"));
 
         // Run the rules
@@ -211,7 +211,8 @@ class StaffCategoryCaseTest extends DroolBase {
         // facts must contain all affected role assignments
         facts.addAll(assignmentRequest.getRequestedRoles());
 
-        ExistingRoleAssignment existingRoleAssignment1 = buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+        ExistingRoleAssignment existingRoleAssignment1 = buildExistingRoleForIAC(assignmentRequest.getRequest()
+                                                                                     .getAssignerId(),
                                 "senior-tribunal-caseworker");
         existingRoleAssignment1.getAttributes().put("jurisdiction",convertValueJsonNode("CMC"));
         //facts must contain existing role of requester
@@ -410,10 +411,10 @@ class StaffCategoryCaseTest extends DroolBase {
         kieSession.execute(facts);
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().
-            filter(roleAssignment -> roleAssignment.getActorId().equals(requestedRole2.getActorId()))
+        assignmentRequest.getRequestedRoles().stream()
+            .filter(roleAssignment -> roleAssignment.getActorId().equals(requestedRole2.getActorId()))
             .forEach(roleAssignment -> {
-            assertNotEquals(Status.APPROVED, roleAssignment.getStatus());
+                assertNotEquals(Status.APPROVED, roleAssignment.getStatus());
             });
     }
 
@@ -446,7 +447,7 @@ class StaffCategoryCaseTest extends DroolBase {
         existingRoleAssignments.add(existingRoleAssignment3);
 
         //assign incorrect assigner id
-        assignmentRequest.getRequest().setAssignerId(requestedRole1.getRoleName()+requestedRole2.getActorId());
+        assignmentRequest.getRequest().setAssignerId(requestedRole1.getRoleName() + requestedRole2.getActorId());
 
         // facts must contain all affected role assignments
         facts.addAll(assignmentRequest.getRequestedRoles());
