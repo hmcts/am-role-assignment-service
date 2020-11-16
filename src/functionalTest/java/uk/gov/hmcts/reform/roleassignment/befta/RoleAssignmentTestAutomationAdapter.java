@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.befta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.befta.DefaultTestAutomationAdapter;
+import uk.gov.hmcts.befta.dse.ccd.TestDataLoaderToDefinitionStore;
 import uk.gov.hmcts.befta.player.BackEndFunctionalTestScenarioContext;
 
 import java.util.Date;
@@ -12,28 +13,11 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentTestAutomationAdapter.class);
 
-    private TestDataLoaderToDefinitionStoreRAS loader = new TestDataLoaderToDefinitionStoreRAS(this);
+    private TestDataLoaderToDefinitionStore loader = new TestDataLoaderToDefinitionStore(this);
 
     @Override
     public void doLoadTestData() {
         //Needed for the BEFTA implementation
-    /*
-        CcdRoleConfig ccdRoleConfig = new CcdRoleConfig("caseworker-ia", "PUBLIC");
-        loader.addNewCcdRole(ccdRoleConfig);
-        Resource resource = new ClassPathResource("ccd-iac-integration-dev.xlsx");
-        String fileResourcePath = null;
-        try {
-            fileResourcePath = resource.getURL().getPath();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            loader.importNewDefinition(fileResourcePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    */
     }
 
     @Override
