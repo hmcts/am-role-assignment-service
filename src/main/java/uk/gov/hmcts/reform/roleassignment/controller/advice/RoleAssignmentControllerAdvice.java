@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.controller.advice;
 
 import lombok.extern.slf4j.Slf4j;
+import org.kie.api.runtime.rule.ConsequenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -62,6 +63,17 @@ public class RoleAssignmentControllerAdvice {
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Object> customValidationBadRequestError(
+        BadRequestException ex) {
+        return errorDetailsResponseEntity(
+            ex,
+            HttpStatus.BAD_REQUEST,
+            BAD_REQUEST.getErrorCode(),
+            BAD_REQUEST.getErrorMessage()
+        );
+    }
+
+    @ExceptionHandler(ConsequenceException.class)
+    public ResponseEntity<Object> customConsequenceBadRequestError(
         BadRequestException ex) {
         return errorDetailsResponseEntity(
             ex,
