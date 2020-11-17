@@ -10,7 +10,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 rule "reject_unapproved_create_role_assignments"
 salience -1000
 when
-    $ra: RoleAssignment(status == Status.CREATE_REQUESTED)
+    $ra: RoleAssignment(status in ( Status.CREATE_REQUESTED, Status.CREATE_APPROVED))
 then
     System.out.println("Rule : reject_unapproved_create_role_assignments");
     $ra.setStatus(Status.REJECTED);
