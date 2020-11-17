@@ -27,7 +27,6 @@
           {
             "caseId" : "1234567890123456",
             "primaryLocation": "dcb"
-
           }
         },
         {
@@ -71,7 +70,6 @@
             {
               "caseId" : "1234567890123456",
               "primaryLocation": "dcb"
-
             }
           },
           {
@@ -85,9 +83,7 @@
             "attributes":
             {
               "caseId" : "1234567890123456"
-
             }
-
           }
         ]
       }
