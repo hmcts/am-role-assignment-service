@@ -1,5 +1,5 @@
-@F-001
-Feature: F-001 : Create Role Assignments
+@F-008
+Feature: F-008 : Create And Replace Staff Role Assignments
 
   Background:
     Given an appropriate test context as detailed in the test data source
@@ -7,6 +7,7 @@ Feature: F-001 : Create Role Assignments
   @S-103 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create multiple Role Assignments for staff org roles
     Given a user with [an active IDAM profile with full permissions],
+    And a user [Befta1 - who is the actor for requested role],
     When a request is prepared with appropriate values,
     And the request [contains multiple Role Assignments with replace existing set to false],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
@@ -18,6 +19,7 @@ Feature: F-001 : Create Role Assignments
   @S-104 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create & replace multiple Role Assignments for staff org roles
     Given a user with [an active IDAM profile with full permissions],
+    And a user [Befta1 - who is the actor for requested role],
     And a successful call [to create some org role assignments for an actor] as in [S-104_Multiple_Role_Creation],
     When a request is prepared with appropriate values,
     And the request [contains ReplaceExisting is true and have same process and Reference values],
@@ -30,6 +32,7 @@ Feature: F-001 : Create Role Assignments
   @S-105 @FeatureToggle(create-role-assignments)
   Scenario: must successfully create multiple Role Assignments for staff org roles
     Given a user with [an active IDAM profile with full permissions],
+    And a user [Befta1 - who is the actor for requested role],
     And a successful call [to create some org role assignments for an actor] as in [S-104_Multiple_Role_Creation],
     When a request is prepared with appropriate values,
     And the request [contains ReplaceExisting is true and have same process and Reference values],
@@ -42,7 +45,8 @@ Feature: F-001 : Create Role Assignments
   @S-106 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create multiple Role Assignments for staff case role.
     Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create org role assignments for actors & requester] as in [S-106_Multiple_Role_Creation],
+    And a user [Befta1 - who is the actor for requested role],
+    And a successful call [to create org role assignments for actors & requester] as in [S-106_Multiple_Org_Role_Creation],
     When a request is prepared with appropriate values,
     And the request [contains ReplaceExisting is false and reference set to caseId],
     And the request [contains multiple case Role Assignments for the same actors],
@@ -57,7 +61,8 @@ Feature: F-001 : Create Role Assignments
   @S-107 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create & replace multiple Role Assignments for staff case role.
     Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create org role assignments for actors & requester] as in [S-107_Multiple_Org_Role_Creation],
+    And a user [Befta1 - who is the actor for requested role],
+    And a successful call [to create org role assignments for actors & requester] as in [S-106_Multiple_Org_Role_Creation],
     And a successful call [to create multiple case role assignments for the same actors] as in [S-107_Multiple_Case_Role_Creation],
     When a request is prepared with appropriate values,
     And the request [contains ReplaceExisting is true and reference set to caseId],
@@ -68,10 +73,12 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
 
-  @S-108 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
+
+  @S-108 @FeatureToggle(create-role-assignments)
   Scenario: must successfully delete all existing Role Assignments for an actor having staff case roles.
     Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create org role assignments for actors & requester] as in [S-107_Multiple_Org_Role_Creation],
+    And a user [Befta1 - who is the actor for requested role],
+    And a successful call [to create org role assignments for actors & requester] as in [S-106_Multiple_Org_Role_Creation],
     And a successful call [to create multiple case role assignments for the same actors] as in [S-107_Multiple_Case_Role_Creation],
     When a request is prepared with appropriate values,
     And the request [contains ReplaceExisting is true and reference set to caseId],
