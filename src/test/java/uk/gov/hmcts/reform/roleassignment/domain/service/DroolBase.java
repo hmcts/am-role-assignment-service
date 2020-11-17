@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
@@ -10,24 +11,31 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 
 public abstract class DroolBase {
 
     StatelessKieSession kieSession;
     AssignmentRequest assignmentRequest;
     List<Object> facts;
+
     @Mock
     private RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
 
@@ -51,6 +59,13 @@ public abstract class DroolBase {
             .build();
         doReturn(caseObj).when(retrieveDataService).getCaseById("1234567890123456");
 
+        //mock the retrieveDataService to fetch the Case Object with incorrect type ID
+        Case caseObj1 = Case.builder().id("1234567890123457")
+            .caseTypeId("Not Asylum")
+            .jurisdiction("IA")
+            .build();
+        doReturn(caseObj1).when(retrieveDataService).getCaseById("1234567890123457");
+
         // Set up the rule engine for validation.
         KieServices ks = KieServices.Factory.get();
         KieContainer kieContainer = ks.getKieClasspathContainer();
@@ -71,13 +86,35 @@ public abstract class DroolBase {
                                                        .replaceExisting(true)
                                                        .status(Status.CREATED)
                                                        .created(LocalDateTime.now())
-                                                       .build())
-            //.requestedRoles(getRequestedRoles())
-            ;
+                                                       .build());
+
+
     }
 
-    private List<RoleAssignment> getRequestedRoles() {
-        return Arrays.asList();
+    RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType) {
+        return RoleAssignment.builder()
+            .id(UUID.randomUUID())
+            .actorId(UUID.randomUUID().toString())
+            .actorIdType(ActorIdType.IDAM)
+            .roleCategory(roleCategory)
+            .roleType(RoleType.CASE)
+            .roleName(roleName)
+            .grantType(grantType)
+            .classification(Classification.PUBLIC)
+            .readOnly(true)
+            .status(CREATE_REQUESTED)
+            .attributes(new HashMap<String, JsonNode>())
+            .build();
     }
+
+    void buildExecuteKieSession() {
+        // facts must contain the request
+        facts.add(assignmentRequest.getRequest());
+        // facts must contain all affected role assignments
+        facts.addAll(assignmentRequest.getRequestedRoles());
+        // Run the rules
+        kieSession.execute(facts);
+    }
+
 
 }

@@ -264,13 +264,6 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         });
     }
 
-    private void buildExecuteKieSession() {
-        // facts must contain the request
-        facts.add(assignmentRequest.getRequest());
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-        // Run the rules
-        kieSession.execute(facts);
-    }
+
 
 }
