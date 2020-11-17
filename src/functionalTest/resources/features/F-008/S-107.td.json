@@ -12,7 +12,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1234567890123456",
+        "reference": "1234567890123456/tribunal-caseworker",
         "replaceExisting": true
       },
       "requestedRoles": [
@@ -40,7 +40,6 @@
           "attributes":
           {
             "caseId" : "1234567890123456"
-
           }
         }
       ]
@@ -57,7 +56,7 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "reference": "1234567890123456",
+          "reference": "1234567890123456/tribunal-caseworker",
           "replaceExisting": true
         },
         "requestedRoles": [
@@ -77,6 +76,7 @@
           },
           {
             "_extends_": "ResponseRequestedRole",
+            "id": "${[scenarioContext][childContexts][S-107_Multiple_Case_Role_Creation][testData][expectedResponse][body][roleAssignmentResponse][requestedRoles][1][id]}",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "roleName": "tribunal-caseworker",
             "roleCategory": "STAFF",

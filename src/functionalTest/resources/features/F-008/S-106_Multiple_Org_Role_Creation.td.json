@@ -10,12 +10,12 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "${[scenarioContext][testData][users][befta1][id]}"
+        "reference": "Org_Role_For_Multiple_Actors"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
           "roleName": "tribunal-caseworker",
           "roleCategory": "STAFF",
           "beginTime" : "2020-09-01T00:00",
@@ -57,6 +57,7 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][testData][users][befta1][id]}",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "STAFF",
@@ -65,7 +66,6 @@
             {
               "jurisdiction": "IA",
               "primaryLocation": "abc"
-
             }
           },
           {
@@ -79,9 +79,7 @@
             {
               "jurisdiction": "IA",
               "primaryLocation": "abc"
-
             }
-
           }
         ]
       }
