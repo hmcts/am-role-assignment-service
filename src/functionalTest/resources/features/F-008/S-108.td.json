@@ -1,0 +1,43 @@
+{
+  "title": "must successfully delete all existing Role Assignments for an actor having staff case roles",
+  "_guid_": "S-108",
+  "_extends_": "F-008_Test_Data_Base",
+  "specs": [
+    "contains ReplaceExisting is true and reference set to caseId",
+    "Befta1 - who is the actor for requested role",
+    "contains empty Role Assignments list"
+
+  ],
+  "request": {
+    "body": {
+      "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1234567890123456/tribunal-caseworker",
+        "replaceExisting": true
+      },
+      "requestedRoles": [
+
+      ]
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "links": [],
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest",
+          "reference": "1234567890123456/tribunal-caseworker",
+          "replaceExisting": true
+        },
+        "requestedRoles": [
+
+        ]
+      }
+    }
+  }
+}
