@@ -450,21 +450,6 @@ public class TestDataBuilder {
 
     }
 
-    public static RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType) {
-        return RoleAssignment.builder()
-                                 .id(UUID.randomUUID())
-                                 .actorId(UUID.randomUUID().toString())
-                                 .actorIdType(ActorIdType.IDAM)
-                                 .roleCategory(roleCategory)
-                                 .roleType(RoleType.CASE)
-                                 .roleName(roleName)
-                                 .grantType(grantType)
-                                 .classification(Classification.PUBLIC)
-                                 .readOnly(true)
-                                 .status(CREATE_REQUESTED)
-                                 .attributes(new HashMap<String, JsonNode>())
-                                 .build();
-    }
 
 
     public static List<RoleAssignment> getRequestedOrgRole() {

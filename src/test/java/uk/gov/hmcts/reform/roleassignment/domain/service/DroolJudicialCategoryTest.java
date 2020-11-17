@@ -16,7 +16,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
-import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
@@ -41,6 +40,7 @@ class DroolJudicialCategoryTest extends DroolBase {
         //Execute Kie session
         buildExecuteKieSession();
 
+        //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
                                                                    assertEquals(
                                                                        Status.APPROVED,
@@ -69,6 +69,8 @@ class DroolJudicialCategoryTest extends DroolBase {
         //Execute Kie session
         buildExecuteKieSession();
 
+
+        //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
                                                                    assertNotEquals(
                                                                        Status.APPROVED,
@@ -131,12 +133,5 @@ class DroolJudicialCategoryTest extends DroolBase {
 
     }
 
-    private void buildExecuteKieSession() {
-        // facts must contain the request
-        facts.add(assignmentRequest.getRequest());
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-        // Run the rules
-        kieSession.execute(facts);
-    }
+
 }
