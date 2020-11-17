@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
@@ -14,13 +13,15 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -34,6 +35,7 @@ public abstract class DroolBase {
     StatelessKieSession kieSession;
     AssignmentRequest assignmentRequest;
     List<Object> facts;
+
     @Mock
     private RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
 
@@ -47,9 +49,6 @@ public abstract class DroolBase {
         assignmentRequest = getAssignmentRequest()
             .build();
 
-        // facts must contain the request
-        facts.add(assignmentRequest.getRequest());
-
         // facts must contain the role config, for access to the patterns
         facts.add(RoleConfig.getRoleConfig());
 
@@ -59,6 +58,13 @@ public abstract class DroolBase {
             .jurisdiction("IA")
             .build();
         doReturn(caseObj).when(retrieveDataService).getCaseById("1234567890123456");
+
+        //mock the retrieveDataService to fetch the Case Object with incorrect type ID
+        Case caseObj1 = Case.builder().id("1234567890123457")
+            .caseTypeId("Not Asylum")
+            .jurisdiction("IA")
+            .build();
+        doReturn(caseObj1).when(retrieveDataService).getCaseById("1234567890123457");
 
         // Set up the rule engine for validation.
         KieServices ks = KieServices.Factory.get();
@@ -80,21 +86,34 @@ public abstract class DroolBase {
                                                        .replaceExisting(true)
                                                        .status(Status.CREATED)
                                                        .created(LocalDateTime.now())
-                                                       .build())
-            .requestedRoles(getRequestedRole());
+                                                       .build());
+
+
     }
 
-    @NotNull
-    private List<RoleAssignment> getRequestedRole() {
-        return Arrays.asList(RoleAssignment.builder()
-                                 .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
-                                 .actorId("4772dc44-268f-4d0c-8f83-f0fb662aac83")
-                                 .actorIdType(ActorIdType.IDAM)
-                                 .classification(Classification.PUBLIC)
-                                 .readOnly(true)
-                                 .status(CREATE_REQUESTED)
-                                 .attributes(new HashMap<String, JsonNode>())
-                                 .build());
+    RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType) {
+        return RoleAssignment.builder()
+            .id(UUID.randomUUID())
+            .actorId(UUID.randomUUID().toString())
+            .actorIdType(ActorIdType.IDAM)
+            .roleCategory(roleCategory)
+            .roleType(RoleType.CASE)
+            .roleName(roleName)
+            .grantType(grantType)
+            .classification(Classification.PUBLIC)
+            .readOnly(true)
+            .status(CREATE_REQUESTED)
+            .attributes(new HashMap<String, JsonNode>())
+            .build();
+    }
+
+    void buildExecuteKieSession() {
+        // facts must contain the request
+        facts.add(assignmentRequest.getRequest());
+        // facts must contain all affected role assignments
+        facts.addAll(assignmentRequest.getRequestedRoles());
+        // Run the rules
+        kieSession.execute(facts);
     }
 
 
