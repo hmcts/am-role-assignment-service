@@ -29,7 +29,7 @@
         },
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleName": "senior-tribunal-caseworker",
           "roleCategory": "STAFF",
           "attributes":
@@ -58,29 +58,22 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
             "roleCategory": "STAFF",
             "roleName": "tribunal-caseworker",
             "attributes":
             {
               "jurisdiction": "IA",
               "primaryLocation": "dcb"
-
             }
           },
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-            "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
             "roleCategory": "STAFF",
             "roleName": "senior-tribunal-caseworker",
             "attributes":
             {
               "jurisdiction": "IA",
               "primaryLocation": "abc"
-
             }
 
           }
