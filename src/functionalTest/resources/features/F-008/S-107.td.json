@@ -1,0 +1,96 @@
+{
+  "title": "must successfully create & replace multiple Role Assignments for staff case role",
+  "_guid_": "S-107",
+  "_extends_": "F-008_Test_Data_Base",
+  "specs": [
+    "contains ReplaceExisting is true and reference set to caseId",
+    "Befta1 - who is the actor for requested role",
+    "contains multiple Role Assignments just created and couple of new role assignments"
+
+  ],
+  "request": {
+    "body": {
+      "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1234567890123456",
+        "replaceExisting": true
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+          "roleName": "tribunal-caseworker",
+          "roleCategory": "STAFF",
+          "roleType": "CASE",
+          "grantType": "SPECIFIC",
+          "attributes":
+          {
+            "caseId" : "1234567890123456",
+            "primaryLocation": "dcb"
+
+          }
+        },
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "roleName": "tribunal-caseworker",
+          "roleCategory": "STAFF",
+          "roleType": "CASE",
+          "grantType": "SPECIFIC",
+          "attributes":
+          {
+            "caseId" : "1234567890123456"
+
+          }
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "links": [],
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest",
+          "reference": "1234567890123456",
+          "replaceExisting": true
+        },
+        "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+            "roleName": "tribunal-caseworker",
+            "roleCategory": "STAFF",
+            "roleType": "CASE",
+            "grantType": "SPECIFIC",
+            "attributes":
+            {
+              "caseId" : "1234567890123456",
+              "primaryLocation": "dcb"
+
+            }
+          },
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "roleName": "tribunal-caseworker",
+            "roleCategory": "STAFF",
+            "roleType": "CASE",
+            "grantType": "SPECIFIC",
+            "attributes":
+            {
+              "caseId" : "1234567890123456"
+
+            }
+
+          }
+        ]
+      }
+    }
+  }
+}
