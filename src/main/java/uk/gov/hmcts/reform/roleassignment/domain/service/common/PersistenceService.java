@@ -108,7 +108,12 @@ public class PersistenceService {
 
     @Transactional
     public void persistHistoryEntities(Collection<HistoryEntity> historyEntityList) {
-        historyEntityList.forEach(historyEntity -> entityManager.persist(historyEntity));
+        historyEntityList.forEach(historyEntity ->{
+            historyEntity.setProcess(historyEntity.getProcess() != null ? historyEntity.getProcess().toUpperCase()
+                                         :historyEntity.getProcess());
+            historyEntity.setReference(historyEntity.getReference() != null ? historyEntity.getReference().toUpperCase()
+                                         :historyEntity.getReference());
+            entityManager.persist(historyEntity);});
         entityManager.flush();
     }
 
@@ -154,7 +159,7 @@ public class PersistenceService {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("getAssignmentsByProcess execution started at %s", startTime));
 
-        Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
+        Set<HistoryEntity> historyEntities = historyRepository.findByReference(process.toUpperCase(), reference.toUpperCase(), status);
         //convert into model class
         List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(historyEntity -> persistenceUtil
             .convertHistoryEntityToRoleAssignment(historyEntity)).collect(
