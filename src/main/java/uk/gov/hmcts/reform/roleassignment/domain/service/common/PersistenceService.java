@@ -29,7 +29,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -126,9 +125,10 @@ public class PersistenceService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void persistActorCache(Collection<RoleAssignment> roleAssignments) {
         roleAssignments.stream().forEach(roleAssignment -> {
-            ActorCacheEntity actorCacheEntity  = persistenceUtil.convertActorCacheToEntity(prepareActorCache(roleAssignment));
+            ActorCacheEntity actorCacheEntity  = persistenceUtil
+                .convertActorCacheToEntity(prepareActorCache(roleAssignment));
             ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
-            if(existingActorCache != null){
+            if (existingActorCache != null) {
                 actorCacheEntity.setEtag(existingActorCache.getEtag());
                 entityManager.merge(actorCacheEntity);
             } else {
