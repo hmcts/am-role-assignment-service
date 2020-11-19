@@ -10,7 +10,7 @@ public interface HistoryRepository extends CrudRepository<HistoryEntity, RoleAss
 
     @Query("select rah from role_assignment_history as rah , role_assignment ra"
         + " where rah.status=?3 "
-        + " and rah.reference =?2 and rah.process =?1"
+        + " and upper(rah.reference) = upper(?2) and upper(rah.process) = upper(?1) "
         + " and rah.id=ra.id")
     Set<HistoryEntity> findByReference(String process, String reference, String status);
 

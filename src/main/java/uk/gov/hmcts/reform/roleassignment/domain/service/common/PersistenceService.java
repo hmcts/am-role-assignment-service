@@ -108,12 +108,7 @@ public class PersistenceService {
 
     @Transactional
     public void persistHistoryEntities(Collection<HistoryEntity> historyEntityList) {
-        historyEntityList.forEach(historyEntity ->{
-            historyEntity.setProcess(historyEntity.getProcess() != null ? historyEntity.getProcess().toUpperCase()
-                                         :historyEntity.getProcess());
-            historyEntity.setReference(historyEntity.getReference() != null ? historyEntity.getReference().toUpperCase()
-                                         :historyEntity.getReference());
-            entityManager.persist(historyEntity);});
+        historyEntityList.forEach(historyEntity -> entityManager.persist(historyEntity));
         entityManager.flush();
     }
 
@@ -128,7 +123,7 @@ public class PersistenceService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public ActorCacheEntity persistActorCache(RoleAssignment roleAssignment) {
+    public void persistActorCache(RoleAssignment roleAssignment) {
 
         ActorCacheEntity entity = persistenceUtil.convertActorCacheToEntity(prepareActorCache(roleAssignment));
         ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
@@ -139,7 +134,7 @@ public class PersistenceService {
         } else {
             entityManager.persist(entity);
         }
-        return entity;
+
     }
 
     @NotNull
@@ -159,17 +154,9 @@ public class PersistenceService {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("getAssignmentsByProcess execution started at %s", startTime));
 
-        Set<HistoryEntity> historyEntities = historyRepository.findByReference(process.toUpperCase(), reference.toUpperCase(), status);
-
-        // set actual process and reference which are coming in request
-        historyEntities.stream().forEach(historyEntity -> {
-            historyEntity.setProcess(process);
-            historyEntity.setReference(reference);
-        });
+        Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
         //convert into model class
-        List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(historyEntity ->
-
-               persistenceUtil
+        List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(historyEntity -> persistenceUtil
             .convertHistoryEntityToRoleAssignment(historyEntity)).collect(
             Collectors.toList());
         logger.info(String.format(
