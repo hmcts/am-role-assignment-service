@@ -4,10 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
-
-import java.time.LocalDateTime;
-import java.util.Set;
 
 
 @Builder
