@@ -29,6 +29,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -123,17 +124,18 @@ public class PersistenceService {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void persistActorCache(RoleAssignment roleAssignment) {
-
-        ActorCacheEntity entity = persistenceUtil.convertActorCacheToEntity(prepareActorCache(roleAssignment));
-        ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
-
-        if (existingActorCache != null) {
-            entity.setEtag(existingActorCache.getEtag());
-            entityManager.merge(entity);
-        } else {
-            entityManager.persist(entity);
-        }
+    public void persistActorCache(Collection<RoleAssignment> roleAssignments) {
+        roleAssignments.stream().forEach(roleAssignment -> {
+            ActorCacheEntity actorCacheEntity  = persistenceUtil.convertActorCacheToEntity(prepareActorCache(roleAssignment));
+            ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
+            if(existingActorCache != null){
+                actorCacheEntity.setEtag(existingActorCache.getEtag());
+                entityManager.merge(actorCacheEntity);
+            } else {
+                entityManager.persist(actorCacheEntity);
+            }
+        });
+        entityManager.flush();
 
     }
 
@@ -198,10 +200,10 @@ public class PersistenceService {
 
 
     public List<Assignment> retrieveRoleAssignmentsByQueryRequest(QueryRequest searchRequest,
-                                                                            Integer pageNumber,
-                                                                            Integer size, String sort,
-                                                                            String direction,
-                                                                            boolean existingFlag) {
+                                                                  Integer pageNumber,
+                                                                  Integer size, String sort,
+                                                                  String direction,
+                                                                  boolean existingFlag) {
 
         long startTime = System.currentTimeMillis();
         List<Assignment> roleAssignmentList;

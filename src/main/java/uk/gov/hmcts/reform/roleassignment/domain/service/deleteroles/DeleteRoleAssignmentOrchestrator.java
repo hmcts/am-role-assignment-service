@@ -229,14 +229,13 @@ public class DeleteRoleAssignmentOrchestrator {
         if (!StringUtils.isEmpty(actorId)) {
             for (RoleAssignment requestedRole : validatedAssignmentRequest.getRequestedRoles()) {
                 persistenceService.deleteRoleAssignmentByActorId(requestedRole.getActorId());
-                persistenceService.persistActorCache(requestedRole);
-
             }
+            persistenceService.persistActorCache(validatedAssignmentRequest.getRequestedRoles());
         } else {
             for (RoleAssignment requestedRole : validatedAssignmentRequest.getRequestedRoles()) {
                 persistenceService.deleteRoleAssignment(requestedRole);
-                persistenceService.persistActorCache(requestedRole);
             }
+            persistenceService.persistActorCache(validatedAssignmentRequest.getRequestedRoles());
         }
     }
 

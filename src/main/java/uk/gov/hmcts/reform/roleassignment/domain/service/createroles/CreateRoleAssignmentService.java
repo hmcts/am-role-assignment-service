@@ -238,8 +238,8 @@ public class CreateRoleAssignmentService {
             Collectors.toList());
         for (RoleAssignment requestedAssignment : roleAssignments) {
             requestedAssignment.setStatus(Status.LIVE);
-            persistenceService.persistActorCache(requestedAssignment);
         }
+        persistenceService.persistActorCache(roleAssignments);
         persistenceService.persistRoleAssignments(roleAssignments);
     }
 
@@ -264,8 +264,9 @@ public class CreateRoleAssignmentService {
 
         for (RoleAssignment requestedRole : existingAssignments) {
             persistenceService.deleteRoleAssignment(requestedRole);
-            persistenceService.persistActorCache(requestedRole);
+
         }
+        persistenceService.persistActorCache(existingAssignments);
         logger.info(String.format(
             "deleteLiveAssignments execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
