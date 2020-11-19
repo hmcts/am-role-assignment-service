@@ -160,8 +160,16 @@ public class PersistenceService {
         logger.info(String.format("getAssignmentsByProcess execution started at %s", startTime));
 
         Set<HistoryEntity> historyEntities = historyRepository.findByReference(process.toUpperCase(), reference.toUpperCase(), status);
+
+        // set actual process and reference which are coming in request
+        historyEntities.stream().forEach(historyEntity -> {
+            historyEntity.setProcess(process);
+            historyEntity.setReference(reference);
+        });
         //convert into model class
-        List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(historyEntity -> persistenceUtil
+        List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(historyEntity ->
+
+               persistenceUtil
             .convertHistoryEntityToRoleAssignment(historyEntity)).collect(
             Collectors.toList());
         logger.info(String.format(
