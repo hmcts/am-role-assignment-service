@@ -18,7 +18,7 @@ public class PrepareResponseService {
 
     public ResponseEntity<Object> prepareCreateRoleResponse(AssignmentRequest roleAssignmentRequest) {
 
-        // set clientId null to avoid the it to expose in response
+        // set clientId null to avoid it to expose in the response
         roleAssignmentRequest.getRequest().setClientId(null);
 
 
