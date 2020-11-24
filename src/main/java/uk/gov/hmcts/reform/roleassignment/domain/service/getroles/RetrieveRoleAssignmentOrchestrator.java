@@ -19,7 +19,6 @@ import uk.gov.hmcts.reform.roleassignment.v1.V1;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class RetrieveRoleAssignmentOrchestrator {
@@ -50,7 +49,7 @@ public class RetrieveRoleAssignmentOrchestrator {
         }
         return prepareResponseService.prepareRetrieveRoleResponse(
             assignments,
-            UUID.fromString(actorId)
+            actorId
         );
     }
 

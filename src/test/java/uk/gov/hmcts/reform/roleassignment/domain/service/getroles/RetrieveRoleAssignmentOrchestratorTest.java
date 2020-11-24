@@ -24,7 +24,6 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -65,7 +64,7 @@ class RetrieveRoleAssignmentOrchestratorTest {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         ResponseEntity<Object> roles = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         when(persistenceService.getAssignmentsByActor(actorId)).thenReturn(roleAssignments);
-        when(prepareResponseService.prepareRetrieveRoleResponse(roleAssignments, UUID.fromString(actorId))).thenReturn(
+        when(prepareResponseService.prepareRetrieveRoleResponse(roleAssignments, actorId)).thenReturn(
             roles);
 
         ResponseEntity<Object> response = sut.getAssignmentsByActor(actorId);
@@ -73,8 +72,8 @@ class RetrieveRoleAssignmentOrchestratorTest {
         assertNotNull(response.getBody());
         verify(persistenceService, times(1)).getAssignmentsByActor(any(String.class));
         verify(prepareResponseService, times(1))
-            .prepareRetrieveRoleResponse(any(),any(UUID.class));
-    }*/
+            .prepareRetrieveRoleResponse(any(),any(String.class));
+    }
 
     @Test
     void getRoleAssignment_shouldThrowBadRequestWhenActorIsEmpty() throws Exception {
