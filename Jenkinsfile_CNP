@@ -154,3 +154,4 @@ withPipeline(type, product, component) {
     }
     sh """ git submodule update --init """
   }
+}
