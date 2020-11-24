@@ -61,10 +61,11 @@ public class GetAssignmentController {
         id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).getAssignmentIds(#result)",
         actorId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).getActorIds(#result)",
         correlationId = "#correlationId")
-    public ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByActorId(@RequestHeader(value = "x-correlation-id",
-                                                             required = false) String correlationId,
-                                                                                   @RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch,
-                                                                                   @ApiParam(value = "Actor Id ", required = true)
+    public ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByActorId(
+                                 @RequestHeader(value = "x-correlation-id",
+                                 required = false) String correlationId,
+                                @RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch,
+                                 @ApiParam(value = "Actor Id ", required = true)
                        @PathVariable("actorId") String actorId) {
 
         ResponseEntity<RoleAssignmentResource> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(

@@ -16,6 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
@@ -56,18 +57,18 @@ class RetrieveRoleAssignmentOrchestratorTest {
         MockitoAnnotations.initMocks(this);
     }
 
-   /* @Test
+   @Test
     void getRoleAssignment_shouldGetAssignmentsByActor() throws Exception {
 
         List<RoleAssignment> roleAssignments
             = (List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection(Status.LIVE);
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
-        ResponseEntity<Object> roles = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
+       ResponseEntity<RoleAssignmentResource> roles = TestDataBuilder.buildResourceRoleAssignmentResponse(Status.LIVE);
         when(persistenceService.getAssignmentsByActor(actorId)).thenReturn(roleAssignments);
         when(prepareResponseService.prepareRetrieveRoleResponse(roleAssignments, actorId)).thenReturn(
             roles);
 
-        ResponseEntity<Object> response = sut.getAssignmentsByActor(actorId);
+       ResponseEntity<RoleAssignmentResource> response = sut.getAssignmentsByActor(actorId);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         verify(persistenceService, times(1)).getAssignmentsByActor(any(String.class));

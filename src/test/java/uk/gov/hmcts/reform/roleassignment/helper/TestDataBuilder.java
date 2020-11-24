@@ -14,14 +14,7 @@ import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.*;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -132,6 +125,18 @@ public class TestDataBuilder {
                                                                      Boolean replaceExisting) throws Exception {
         return ResponseEntity.status(HttpStatus.OK)
             .body(buildAssignmentRequest(requestStatus, roleStatus, replaceExisting));
+    }
+    public static ResponseEntity<RoleAssignmentRequestResource> buildAssignmentRequestResource(Status requestStatus,
+                                                                     Status roleStatus,
+                                                                     Boolean replaceExisting) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new RoleAssignmentRequestResource(buildAssignmentRequest(requestStatus, roleStatus, replaceExisting)));
+    }
+
+    public static ResponseEntity<RoleAssignmentResource> buildResourceRoleAssignmentResponse(
+                                                                                             Status roleStatus) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new RoleAssignmentResource(Arrays.asList(buildRoleAssignment(roleStatus)),""));
     }
 
     public static Collection<RoleAssignment> buildRequestedRoleCollection(Status status) throws IOException {

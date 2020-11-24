@@ -11,7 +11,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.*;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -428,7 +432,7 @@ public class CreateRoleAssignmentService {
     }
 
     public ResponseEntity<RoleAssignmentRequestResource> duplicateRequest(AssignmentRequest existingAssignmentRequest,
-                                                   AssignmentRequest parsedAssignmentRequest) {
+                                                                          AssignmentRequest parsedAssignmentRequest) {
         parsedAssignmentRequest.getRequest().setStatus(Status.APPROVED);
         requestEntity.setStatus(Status.APPROVED.toString());
         requestEntity.setLog(

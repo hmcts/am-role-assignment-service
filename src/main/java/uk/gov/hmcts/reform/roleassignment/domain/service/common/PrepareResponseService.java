@@ -14,7 +14,8 @@ import java.util.List;
 @Service
 public class PrepareResponseService {
 
-    public ResponseEntity<RoleAssignmentRequestResource> prepareCreateRoleResponse(AssignmentRequest roleAssignmentRequest) {
+    public ResponseEntity<RoleAssignmentRequestResource> prepareCreateRoleResponse(
+        AssignmentRequest roleAssignmentRequest) {
 
         // set clientId null to avoid it to expose in the response
         roleAssignmentRequest.getRequest().setClientId(null);
@@ -32,8 +33,8 @@ public class PrepareResponseService {
     }
 
 
-    public ResponseEntity<RoleAssignmentResource> prepareRetrieveRoleResponse(List<RoleAssignment> roleAssignmentResponse,
-                                                                              UUID actorId)  {
+    public ResponseEntity<RoleAssignmentResource> prepareRetrieveRoleResponse(
+        List<RoleAssignment> roleAssignmentResponse,String actorId)  {
         return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(roleAssignmentResponse, actorId));
     }
 
