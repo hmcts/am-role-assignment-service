@@ -16,7 +16,6 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
@@ -60,7 +59,7 @@ class PrepareResponseServiceTest {
             prepareResponseService
                 .prepareRetrieveRoleResponse((List<RoleAssignment>) TestDataBuilder
                     .buildRequestedRoleCollection(Status.LIVE),
-                                             UUID.fromString("6b36bfc6-bb21-11ea-b3de-0242ac140004"));
+                                             "6b36bfc6-bb21-11ea-b3de-0242ac140004");
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
