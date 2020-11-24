@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
@@ -60,13 +61,13 @@ public class GetAssignmentController {
         id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).getAssignmentIds(#result)",
         actorId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).getActorIds(#result)",
         correlationId = "#correlationId")
-    public ResponseEntity<Object> retrieveRoleAssignmentsByActorId(@RequestHeader(value = "x-correlation-id",
+    public ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByActorId(@RequestHeader(value = "x-correlation-id",
                                                              required = false) String correlationId,
-                        @RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch,
-                        @ApiParam(value = "Actor Id ", required = true)
+                                                                                   @RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch,
+                                                                                   @ApiParam(value = "Actor Id ", required = true)
                        @PathVariable("actorId") String actorId) {
 
-        ResponseEntity<?> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
+        ResponseEntity<RoleAssignmentResource> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
             actorId
         );
         long etag = retrieveRoleAssignmentService.retrieveETag(actorId);
@@ -94,7 +95,7 @@ public class GetAssignmentController {
             response = Object.class
         )
     })
-    public ResponseEntity<Object> getListOfRoles(@RequestHeader(value = "x-correlation-id",
+    public ResponseEntity<JsonNode> getListOfRoles(@RequestHeader(value = "x-correlation-id",
         required = false) String correlationId) throws IOException {
         JsonNode rootNode = retrieveRoleAssignmentService.getListOfRoles();
         return ResponseEntity.status(HttpStatus.OK).body(rootNode);
