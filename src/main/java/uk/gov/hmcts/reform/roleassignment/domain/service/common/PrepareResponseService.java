@@ -10,9 +10,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.Map;
-
 
 @Service
 public class PrepareResponseService {
