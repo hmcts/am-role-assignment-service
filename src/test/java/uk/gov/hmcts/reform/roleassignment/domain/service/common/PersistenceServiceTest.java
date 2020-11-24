@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -162,12 +163,9 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertActorCacheToEntity(any())).thenReturn(entity);
         when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(entity);
         when(actorCacheRepository.save(entity)).thenReturn(entity);
-
-        ActorCacheEntity result = sut.persistActorCache(roleAssignment);
-
-        assertNotNull(result);
-        assertNotNull(result.getActorId());
-        assertEquals(entity.getEtag(), result.getEtag());
+        Collection<RoleAssignment> roleAssignmentCollation = new ArrayList<>();
+        roleAssignmentCollation.add(roleAssignment);
+        sut.persistActorCache(roleAssignmentCollation);
 
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
         verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
@@ -183,12 +181,9 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertActorCacheToEntity(any())).thenReturn(entity);
         when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(null);
         when(actorCacheRepository.save(entity)).thenReturn(entity);
-
-        ActorCacheEntity result = sut.persistActorCache(roleAssignment);
-
-        assertNotNull(result);
-        assertNotNull(result.getActorId());
-        assertEquals(entity.getEtag(), result.getEtag());
+        Collection<RoleAssignment> roleAssignmentCollation = new ArrayList<>();
+        roleAssignmentCollation.add(roleAssignment);
+        sut.persistActorCache(roleAssignmentCollation);
 
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
         verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
