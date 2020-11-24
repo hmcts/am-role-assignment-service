@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
+import uk.gov.hmcts.reform.roleassignment.domain.model.*;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -230,7 +227,7 @@ class CreateRoleAssignmentServiceTest {
 
     }
 
-   /* @Test
+    @Test
     void check_DuplicateRequest() throws IOException {
 
         String msg = "Duplicate Request: Requested Assignments are already live.";
@@ -240,12 +237,13 @@ class CreateRoleAssignmentServiceTest {
         incomingAssignmentRequest.getRequest().setLog(msg);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(incomingAssignmentRequest));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(incomingAssignmentRequest)));
         sut.setRequestEntity(requestEntity);
 
         //Call actual Method
-        ResponseEntity<Object> response = sut.duplicateRequest(existingAssignmentRequest, incomingAssignmentRequest);
-        AssignmentRequest result = (AssignmentRequest) response.getBody();
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.duplicateRequest(existingAssignmentRequest, incomingAssignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result =  roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assertion
         assertEquals(incomingAssignmentRequest, result);
@@ -259,7 +257,7 @@ class CreateRoleAssignmentServiceTest {
             .updateRequest(any(RequestEntity.class));
         verify(parseRequestService, times(1))
             .removeCorrelationLog();
-    }*/
+    }
 
     @Test
     void checkAllApproved_ByDrool() throws IOException {

@@ -70,13 +70,15 @@ public class CreateAssignmentController {
         assignerId = "#assignmentRequest.request.assignerId",
         correlationId = "#correlationId")
 
-    public ResponseEntity<RoleAssignmentRequestResource> createRoleAssignment(@RequestHeader(value = "x-correlation-id", required = false)
+    public ResponseEntity<RoleAssignmentRequestResource> createRoleAssignment(
+        @RequestHeader(value = "x-correlation-id", required = false)
                                                                String correlationId,
         @Validated
         @RequestBody AssignmentRequest assignmentRequest) throws ParseException {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("createRoleAssignment execution started at %s", startTime));
-        ResponseEntity<RoleAssignmentRequestResource> response = createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
+        ResponseEntity<RoleAssignmentRequestResource> response = createRoleAssignmentOrchestrator
+            .createRoleAssignment(assignmentRequest);
         logger.info(String.format(
             "createRoleAssignment execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),

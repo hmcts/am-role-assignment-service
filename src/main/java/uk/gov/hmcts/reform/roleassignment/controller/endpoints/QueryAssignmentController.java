@@ -64,8 +64,9 @@ public class QueryAssignmentController {
     @LogAudit(operationType = SEARCH_ASSIGNMENTS,
         id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).searchAssignmentIds(#result)",
         correlationId = "#correlationId")
-    public ResponseEntity<List<Assignment>> retrieveRoleAssignmentsByQueryRequest(@RequestHeader(value = "x-correlation-id",
-        required = false) String correlationId,
+    public ResponseEntity<List<Assignment>> retrieveRoleAssignmentsByQueryRequest(
+                                 @RequestHeader(value = "x-correlation-id",
+                                  required = false) String correlationId,
                                   @RequestHeader(value = "pageNumber", required = false) Integer pageNumber,
                                   @RequestHeader(value = "size", required = false) Integer size,
                                   @RequestHeader(value = "sort", required = false) String sort,

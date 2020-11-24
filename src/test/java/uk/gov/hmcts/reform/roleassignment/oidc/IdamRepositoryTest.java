@@ -96,7 +96,7 @@ class IdamRepositoryTest {
             TokenResponse("a", "1", "1", "a", "v", "v");
         when(idamApi.generateOpenIdToken(any())).thenReturn(tokenResponse);
 
-        String result = idamRepository.getManageUserToken();
+        String result = idamRepository.getManageUserToken("userid");
 
         assertNotNull(result);
         assertFalse(result.isBlank());
