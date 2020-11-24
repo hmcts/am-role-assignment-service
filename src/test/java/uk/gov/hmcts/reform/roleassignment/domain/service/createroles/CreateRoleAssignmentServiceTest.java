@@ -230,7 +230,7 @@ class CreateRoleAssignmentServiceTest {
 
     }
 
-    @Test
+   /* @Test
     void check_DuplicateRequest() throws IOException {
 
         String msg = "Duplicate Request: Requested Assignments are already live.";
@@ -259,7 +259,7 @@ class CreateRoleAssignmentServiceTest {
             .updateRequest(any(RequestEntity.class));
         verify(parseRequestService, times(1))
             .removeCorrelationLog();
-    }
+    }*/
 
     @Test
     void checkAllApproved_ByDrool() throws IOException {

@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -64,7 +65,8 @@ class PrepareResponseServiceTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
-    /*@Test
+    */
+/*@Test
     void addHateosLinks() throws IOException {
         RoleAssignmentRequestResource roleAssignmentRequestResource = new RoleAssignmentRequestResource();
         roleAssignmentRequestResource
@@ -73,5 +75,7 @@ class PrepareResponseServiceTest {
 
         prepareResponseService.addHateoasLinks(java.util.Optional.of(roleAssignmentRequestResource),
                                                UUID.fromString("6b36bfc6-bb21-11ea-b3de-0242ac140004"));
-    }*/
+    }*//*
+
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -42,3 +43,4 @@ class CreateAssignmentControllerTest {
         assertEquals(expectedResponse.getBody(), response.getBody());
     }
 }
+*/

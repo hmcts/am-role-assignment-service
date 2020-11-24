@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
@@ -38,7 +39,7 @@ public class RetrieveRoleAssignmentOrchestrator {
     //4. Call persistence to fetch requested assignment records
     //5. Call prepare response to make HATEOUS based response.
 
-    public ResponseEntity<Object> getAssignmentsByActor(String actorId) {
+    public ResponseEntity<RoleAssignmentResource> getAssignmentsByActor(String actorId) {
         ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, actorId);
         List<RoleAssignment> assignments = persistenceService.getAssignmentsByActor(actorId);
         if (CollectionUtils.isEmpty(assignments)) {

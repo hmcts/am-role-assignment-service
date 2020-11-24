@@ -16,7 +16,7 @@ import java.util.UUID;
 @Service
 public class PrepareResponseService {
 
-    public ResponseEntity<Object> prepareCreateRoleResponse(AssignmentRequest roleAssignmentRequest) {
+    public ResponseEntity<RoleAssignmentRequestResource> prepareCreateRoleResponse(AssignmentRequest roleAssignmentRequest) {
 
         // set clientId null to avoid it to expose in the response
         roleAssignmentRequest.getRequest().setClientId(null);
@@ -24,7 +24,8 @@ public class PrepareResponseService {
 
         if (roleAssignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                roleAssignmentRequest);
+                new RoleAssignmentRequestResource(
+                    roleAssignmentRequest));
         } else {
             return ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(
                 roleAssignmentRequest));
@@ -33,7 +34,7 @@ public class PrepareResponseService {
     }
 
 
-    public ResponseEntity<Object> prepareRetrieveRoleResponse(List<RoleAssignment> roleAssignmentResponse,
+    public ResponseEntity<RoleAssignmentResource> prepareRetrieveRoleResponse(List<RoleAssignment> roleAssignmentResponse,
                                                               UUID actorId)  {
         return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(roleAssignmentResponse, actorId));
     }

@@ -45,6 +45,7 @@ public class IdamRepository {
         this.restTemplate = restTemplate;
     }
 
+    @Cacheable(value = "token")
     public UserInfo getUserInfo(String jwtToken) {
         return idamApi.retrieveUserInfo(BEARER + jwtToken);
     }
