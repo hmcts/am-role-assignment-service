@@ -10,8 +10,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.util.List;
-import java.util.UUID;
-
 
 @Service
 public class PrepareResponseService {
@@ -34,7 +32,7 @@ public class PrepareResponseService {
 
 
     public ResponseEntity<Object> prepareRetrieveRoleResponse(List<RoleAssignment> roleAssignmentResponse,
-                                                              UUID actorId)  {
+                                                              String actorId)  {
         return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(roleAssignmentResponse, actorId));
     }
 
