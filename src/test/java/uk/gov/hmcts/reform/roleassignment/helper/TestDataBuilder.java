@@ -270,12 +270,9 @@ public class TestDataBuilder {
     }
 
     public static ActorCache buildActorCache() throws IOException {
-        HashSet<RoleAssignmentEntity> mySet = new HashSet<>();
-        mySet.add(TestDataBuilder.buildRoleAssignmentEntitySet());
         return ActorCache.builder()
             .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .etag(1)
-            .roleAssignments(mySet)
             .build();
     }
 
@@ -304,7 +301,6 @@ public class TestDataBuilder {
         actorCache.setActorId(roleAssignment.getActorId());
         Set<RoleAssignmentEntity> roleAssignmentEntities = new HashSet<>();
         roleAssignmentEntities.add(convertRoleAssignmentToEntity(roleAssignment));
-        actorCache.setRoleAssignments(roleAssignmentEntities);
         return actorCache;
     }
 
