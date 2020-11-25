@@ -176,7 +176,7 @@ class CreateRoleAssignmentOrchestratorTest {
 
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
-        RoleAssignmentRequestResource roleAssignmentRequestResource= response.getBody();
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
         AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assert values
@@ -218,7 +218,7 @@ class CreateRoleAssignmentOrchestratorTest {
 
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
-        RoleAssignmentRequestResource roleAssignmentRequestResource= response.getBody();
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
         AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assert values
@@ -263,7 +263,7 @@ class CreateRoleAssignmentOrchestratorTest {
 
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
-        RoleAssignmentRequestResource roleAssignmentRequestResource= response.getBody();
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
         AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assert values
@@ -299,7 +299,7 @@ class CreateRoleAssignmentOrchestratorTest {
 
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
-        RoleAssignmentRequestResource roleAssignmentRequestResource= response.getBody();
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
         AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
 
@@ -348,7 +348,7 @@ class CreateRoleAssignmentOrchestratorTest {
 
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
-        RoleAssignmentRequestResource roleAssignmentRequestResource= response.getBody();
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
         AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assert values
