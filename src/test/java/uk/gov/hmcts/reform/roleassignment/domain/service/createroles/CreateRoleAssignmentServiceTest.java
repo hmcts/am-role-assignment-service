@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -32,6 +33,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -121,8 +123,8 @@ class CreateRoleAssignmentServiceTest {
 
         verify(persistenceService, times(2))
             .deleteRoleAssignment(any(RoleAssignment.class));
-        verify(persistenceService, times(2))
-            .persistActorCache(any(RoleAssignment.class));
+        verify(persistenceService, times(1))
+            .persistActorCache(anyCollection());
         verify(persistenceUtil, times(2))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
 
@@ -223,7 +225,7 @@ class CreateRoleAssignmentServiceTest {
         verify(persistenceService, times(2))
             .deleteRoleAssignment(any(RoleAssignment.class));
         verify(persistenceService, times(2))
-            .persistActorCache(any(RoleAssignment.class));
+            .persistActorCache(anyCollection());
         verify(persistenceUtil, times(2))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
 
@@ -239,12 +241,15 @@ class CreateRoleAssignmentServiceTest {
         incomingAssignmentRequest.getRequest().setLog(msg);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(incomingAssignmentRequest));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(incomingAssignmentRequest)));
         sut.setRequestEntity(requestEntity);
 
         //Call actual Method
-        ResponseEntity<Object> response = sut.duplicateRequest(existingAssignmentRequest, incomingAssignmentRequest);
-        AssignmentRequest result = (AssignmentRequest) response.getBody();
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.duplicateRequest(existingAssignmentRequest,
+                                                                                      incomingAssignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result =  roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assertion
         assertEquals(incomingAssignmentRequest, result);
@@ -299,7 +304,7 @@ class CreateRoleAssignmentServiceTest {
             .updateRequest(any(RequestEntity.class));
 
         verify(persistenceService, times(1))
-            .persistActorCache(any(RoleAssignment.class));
+            .persistActorCache(anyCollection());
         verify(persistenceUtil, times(2))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(persistenceService, times(1))
@@ -344,7 +349,7 @@ class CreateRoleAssignmentServiceTest {
             .updateRequest(any(RequestEntity.class));
 
         verify(persistenceService, times(0))
-            .persistActorCache(any(RoleAssignment.class));
+            .persistActorCache(anyCollection());
         verify(persistenceUtil, times(0))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(persistenceService, times(0))

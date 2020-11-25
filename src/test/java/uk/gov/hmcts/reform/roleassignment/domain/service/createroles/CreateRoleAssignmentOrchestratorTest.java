@@ -14,6 +14,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
@@ -93,14 +94,15 @@ class CreateRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(assignmentRequest));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         doNothing().when(validationModelService).validateRequest(any());
 
         //actual method call
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
-        AssignmentRequest result = (AssignmentRequest) response.getBody();
-
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assert values
         assert result != null;
@@ -128,11 +130,13 @@ class CreateRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(assignmentRequest));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         //actual method call
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
-        AssignmentRequest result = (AssignmentRequest) response.getBody();
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assert values
         assertEquals(assignmentRequest, result);
@@ -167,11 +171,13 @@ class CreateRoleAssignmentOrchestratorTest {
             any(Request.class)
         )).thenReturn(historyEntity);
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.FORBIDDEN).body(assignmentRequest));
+            .thenReturn(ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         //actual method call
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
-        AssignmentRequest result = (AssignmentRequest) response.getBody();
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assert values
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
@@ -207,11 +213,13 @@ class CreateRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(assignmentRequest));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         //actual method call
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
-        AssignmentRequest result = (AssignmentRequest) response.getBody();
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assert values
         assertEquals(assignmentRequest, result);
@@ -221,7 +229,7 @@ class CreateRoleAssignmentOrchestratorTest {
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
-        verify(persistenceUtil, times(10))
+        verify(persistenceUtil, times(4))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
@@ -250,11 +258,13 @@ class CreateRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(assignmentRequest));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         //actual method call
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
-        AssignmentRequest result = (AssignmentRequest) response.getBody();
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assert values
         assertEquals(assignmentRequest, result);
@@ -284,11 +294,13 @@ class CreateRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(assignmentRequest));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         //actual method call
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
-        AssignmentRequest result = (AssignmentRequest) response.getBody();
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
 
         //assert values
@@ -298,7 +310,7 @@ class CreateRoleAssignmentOrchestratorTest {
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
-        verify(persistenceUtil, times(4))
+        verify(persistenceUtil, times(2))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
@@ -331,12 +343,13 @@ class CreateRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(assignmentRequest));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         //actual method call
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
-        AssignmentRequest result = (AssignmentRequest) response.getBody();
-
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assert values
         assertEquals(assignmentRequest, result);
@@ -366,8 +379,10 @@ class CreateRoleAssignmentOrchestratorTest {
         when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
 
         //actual method call
-        ResponseEntity<Object> response = sut.createRoleAssignment(assignmentRequest);
-        AssignmentRequest assignmentRequest = (AssignmentRequest) response.getBody();
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource  =  response
+            .getBody();
+        AssignmentRequest assignmentRequest = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assert values
         assertNotNull(response);

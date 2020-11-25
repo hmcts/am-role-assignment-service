@@ -11,7 +11,6 @@ import org.springframework.validation.annotation.Validated;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentController;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -26,13 +25,13 @@ public class RoleAssignmentResource extends RepresentationModel<RoleAssignmentRe
     private List<RoleAssignment> roleAssignmentResponse;
 
 
-    public RoleAssignmentResource(List<RoleAssignment> roleAssignmentResponse, UUID actorId) {
+    public RoleAssignmentResource(List<RoleAssignment> roleAssignmentResponse, String actorId) {
         this.roleAssignmentResponse = roleAssignmentResponse;
         try {
             add(WebMvcLinkBuilder.linkTo(methodOn(GetAssignmentController.class).retrieveRoleAssignmentsByActorId(
                 "",
                 "",
-                actorId.toString())).withRel("binary"));
+                actorId)).withRel("binary"));
         } catch (Exception e) {
             log.error("context", e);
         }

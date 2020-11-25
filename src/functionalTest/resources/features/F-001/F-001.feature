@@ -80,16 +80,6 @@ Feature: F-001 : Create Role Assignments
     Then a negative response is received,
     And the response has all other details as expected.
 
-  @S-008 @FeatureToggle(create-role-assignments)
-  Scenario: must receive an error response when BeginTime is less than current time
-    Given a user with [an active IDAM profile with full permissions],
-    When a request is prepared with appropriate values,
-    And the request [contains a single Role Assignment],
-    And the request [contains BeginTime is less than current time],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
-    Then a negative response is received,
-    And the response has all other details as expected.
-
   @S-009 @FeatureToggle(create-role-assignments)
   Scenario: must receive an error response when EndTime is less than current time
     Given a user with [an active IDAM profile with full permissions],
@@ -245,22 +235,20 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
   @S-101 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
-  Scenario: must successfully create Role Assignments without begin time and end time
+  Scenario: must successfully create Org Role Assignment without begin time and end time
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
     And the request [contains no begin and end time for ORGANISATION role assignment],
-    And the request [contains no begin and end time for CASE role assignment],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
   @S-102 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
-  Scenario: must successfully create Role Assignments with begin time and end time have null values
+  Scenario: must successfully create Org Role Assignment with begin time and end time have null values
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
     And the request [contains begin and end time have null values for ORGANISATION role assignment],
-    And the request [contains begin and end time have null values for CASE role assignment],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
     And the response has all other details as expected,

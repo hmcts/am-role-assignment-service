@@ -8,6 +8,7 @@ import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
@@ -22,6 +23,8 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static java.time.LocalTime.now;
 
 @Service
 public class PersistenceUtil {
@@ -46,7 +49,6 @@ public class PersistenceUtil {
             .endTime(roleAssignment.getEndTime())
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
             .notes(roleAssignment.getNotes())
-            .sequence(roleAssignment.getStatusSequence())
             .log(roleAssignment.getLog())
             .authorisations(
                 !CollectionUtils.isEmpty(roleAssignment.getAuthorisations())
@@ -97,7 +99,7 @@ public class PersistenceUtil {
         return ActorCacheEntity.builder()
             .actorId(actorCache.getActorId())
             .etag(actorCache.getEtag())
-            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(actorCache.getRoleAssignments()))
+            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(now()))
             .build();
 
     }
@@ -114,7 +116,6 @@ public class PersistenceUtil {
             .roleType(RoleType.valueOf(historyEntity.getRoleType()))
             .roleCategory(RoleCategory.valueOf(historyEntity.getRoleCategory()))
             .status(Status.valueOf(historyEntity.getStatus()))
-            .statusSequence(historyEntity.getSequence())
             .process(historyEntity.getProcess())
             .reference(historyEntity.getReference())
             .beginTime(historyEntity.getBeginTime())
@@ -168,5 +169,29 @@ public class PersistenceUtil {
         );
         historyEntity.setId(Objects.requireNonNullElseGet(roleAssignmentId, UUID::randomUUID));
         return historyEntity;
+    }
+
+    public ExistingRoleAssignment convertEntityToExistingRoleAssignment(RoleAssignmentEntity roleAssignmentEntity) {
+
+        return ExistingRoleAssignment.builder()
+            .id(roleAssignmentEntity.getId())
+            .actorIdType(ActorIdType.valueOf(roleAssignmentEntity.getActorIdType()))
+            .actorId(roleAssignmentEntity.getActorId())
+            .classification(Classification.valueOf(roleAssignmentEntity.getClassification()))
+            .grantType(GrantType.valueOf(roleAssignmentEntity.getGrantType()))
+            .readOnly(roleAssignmentEntity.isReadOnly())
+            .roleName(roleAssignmentEntity.getRoleName())
+            .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
+            .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(roleAssignmentEntity
+                                                                                 .getRoleCategory()) : null)
+            .beginTime(roleAssignmentEntity.getBeginTime())
+            .endTime(roleAssignmentEntity.getEndTime())
+            .created(roleAssignmentEntity.getCreated())
+            .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
+            .authorisations(roleAssignmentEntity.getAuthorisations() != null && !roleAssignmentEntity
+                .getAuthorisations().isEmpty()
+                                ? Arrays.asList(roleAssignmentEntity.getAuthorisations().split(";")) :
+                                Collections.emptyList())
+            .build();
     }
 }

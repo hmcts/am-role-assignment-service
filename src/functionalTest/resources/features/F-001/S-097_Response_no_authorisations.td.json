@@ -13,7 +13,6 @@
   "endTime" : "[[ANYTHING_PRESENT]]",
   "process": "businessProcess1",
   "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-  "statusSequence": 10,
   "status":"LIVE",
   "created":"[[ANYTHING_PRESENT]]",
   "log":"[[ANYTHING_PRESENT]]",

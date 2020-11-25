@@ -1,0 +1,50 @@
+package validationrules.core;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+
+/*
+ * Generic rule for validation of roles created by the staff organisational
+ * role mapping service.  The mapping service can create any organisational
+ * staff roles, and is trusted to get the role attributes right, but note
+ * that validation against standard role patterns will still be applied in
+ * a later stage of validation.
+ */
+rule "staff_organisational_role_mapping_service_create"
+when
+    $rq: Request() //clientId == "am_org_role_mapping_service")
+
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.ORGANISATION,
+             roleCategory == RoleCategory.STAFF)
+then
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Create approved : staff_organisational_role_mapping_service_create");
+    update($ra);
+    System.out.println("Rule : staff_organisational_role_mapping_service_create");
+end;
+
+/*
+ * Generic rule for validation of roles deleted by the staff organisational
+ * role mapping service.  The mapping service can delete any organisational
+ * staff roles.
+ */
+rule "staff_organisational_role_mapping_service_delete"
+when
+    $rq: Request( ) //clientId == "am_org_role_mapping_service")
+
+    $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.ORGANISATION,
+             roleCategory == RoleCategory.STAFF)
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : staff_organisational_role_mapping_service_delete");
+
+    update($ra);
+    System.out.println("Rule :: staff_organisational_role_mapping_service_delete");
+end;

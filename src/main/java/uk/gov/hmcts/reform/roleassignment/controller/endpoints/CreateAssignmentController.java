@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
@@ -69,13 +70,15 @@ public class CreateAssignmentController {
         assignerId = "#assignmentRequest.request.assignerId",
         correlationId = "#correlationId")
 
-    public ResponseEntity<Object> createRoleAssignment(@RequestHeader(value = "x-correlation-id", required = false)
+    public ResponseEntity<RoleAssignmentRequestResource> createRoleAssignment(
+        @RequestHeader(value = "x-correlation-id", required = false)
                                                                String correlationId,
         @Validated
         @RequestBody AssignmentRequest assignmentRequest) throws ParseException {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("createRoleAssignment execution started at %s", startTime));
-        ResponseEntity<Object> response = createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
+        ResponseEntity<RoleAssignmentRequestResource> response = createRoleAssignmentOrchestrator
+            .createRoleAssignment(assignmentRequest);
         logger.info(String.format(
             "createRoleAssignment execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),

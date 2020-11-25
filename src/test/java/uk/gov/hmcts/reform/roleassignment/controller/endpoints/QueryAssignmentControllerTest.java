@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
@@ -61,7 +62,7 @@ class QueryAssignmentControllerTest {
             = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, 0, 20, "id", "desc");
-        ResponseEntity<Object> response = sut
+        ResponseEntity<List<Assignment>> response = sut
             .retrieveRoleAssignmentsByQueryRequest("", 0, 20, "id", "desc", queryRequest);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -82,7 +83,7 @@ class QueryAssignmentControllerTest {
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, 0, 20, "roleType", "desc");
 
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByQueryRequest(
+        ResponseEntity<List<Assignment>> response = sut.retrieveRoleAssignmentsByQueryRequest(
             "",
             0,
             20,
@@ -105,7 +106,7 @@ class QueryAssignmentControllerTest {
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, 0, 20, "id", "asc");
 
-        ResponseEntity<Object> response = sut.retrieveRoleAssignmentsByQueryRequest(
+        ResponseEntity<List<Assignment>> response = sut.retrieveRoleAssignmentsByQueryRequest(
             "",
             0,
             20,

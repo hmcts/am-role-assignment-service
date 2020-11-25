@@ -144,7 +144,7 @@ public class SmokeTest extends BaseTest {
         response.then().assertThat().statusCode(HttpStatus.NO_CONTENT.value());
     }
 
-    @Test
+    //@Test
     @FeatureFlagToggle("create-role-assignments")
     public void should_receive_response_for_add_role_assignment() throws IOException {
 
