@@ -32,21 +32,24 @@
       "Content-Type": "application/json"
     },
     "body": {
-      "roleRequest": {
-        "_extends_": "ResponseRoleRequest",
-        "status": "REJECTED"
-      },
-      "requestedRoles": [
-        {
-          "_extends_": "ResponseRequestedRole",
-          "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
-          "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
-          "attributes": {
-            "caseId": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}"
-          },
-          "status":"REJECTED"
-        }
-      ]
+      "links": [],
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest",
+          "status": "REJECTED"
+        },
+        "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRole",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "attributes": {
+              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}"
+            },
+            "status": "REJECTED"
+          }
+        ]
+      }
     }
   }
 }

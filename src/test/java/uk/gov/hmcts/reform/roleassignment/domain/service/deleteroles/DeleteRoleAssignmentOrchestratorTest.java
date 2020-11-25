@@ -106,7 +106,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         )).thenReturn(Collections.emptyList());
         mockHistoryEntity();
 
-        ResponseEntity<Object> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE);
+        ResponseEntity<Request> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
     }
@@ -122,7 +122,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId)))
             .thenReturn(Collections.emptyList());
         mockHistoryEntity();
-        ResponseEntity<Object> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
+        ResponseEntity<Request> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
 
@@ -137,7 +137,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId))).thenReturn(Collections.emptyList());
         mockHistoryEntity();
 
-        ResponseEntity<Object> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
+        ResponseEntity<Request> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(1)).updateRequest(any(RequestEntity.class));
     }
