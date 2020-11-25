@@ -21,13 +21,14 @@ public class QueryRoleAssignmentOrchestrator {
     private final PersistenceService persistenceService;
 
 
-    public ResponseEntity<Object> retrieveRoleAssignmentsByQueryRequest(QueryRequest queryRequest, Integer pageNumber,
+    public  ResponseEntity<List<Assignment>> retrieveRoleAssignmentsByQueryRequest(QueryRequest queryRequest,
+                                                                                   Integer pageNumber,
                                                                         Integer size, String sort, String direction) {
 
         long startTime = System.currentTimeMillis();
         logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
 
-        List<? extends Assignment> assignmentList =
+        List<Assignment> assignmentList =
             persistenceService.retrieveRoleAssignmentsByQueryRequest(
                 queryRequest,
                 pageNumber,
@@ -46,7 +47,8 @@ public class QueryRoleAssignmentOrchestrator {
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
-        return new ResponseEntity<>(assignmentList, responseHeaders, HttpStatus.OK);
+        //return new ResponseEntity<>( assignmentList, responseHeaders, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).headers(responseHeaders).body(assignmentList);
 
     }
 }
