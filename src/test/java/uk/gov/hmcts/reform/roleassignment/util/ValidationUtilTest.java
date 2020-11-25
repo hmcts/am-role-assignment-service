@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -119,7 +119,7 @@ class ValidationUtilTest {
 
     @Test
     void testBuildRole() throws IOException {
-        List<Role> roles = TestDataBuilder.buildRolesFromFile();
+        List<RoleConfigRole> roles = TestDataBuilder.buildRolesFromFile();
         assertNotNull(roles);
         assertTrue(roles.size() > 1);
     }
@@ -127,21 +127,21 @@ class ValidationUtilTest {
     @Test
     void should_validateDateTime() {
         Assertions.assertDoesNotThrow(() ->
-            ValidationUtil.validateDateTime(LocalDateTime.now().plusMinutes(1).toString(), "beginTime")
+            ValidationUtil.validateDateTime(LocalDateTime.now().plusMinutes(1).toString())
         );
     }
 
     @Test
     void validateDateTime_ThrowLessThanLimit() {
         Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateDateTime("2050-09-01T00:", "beginTime")
+            ValidationUtil.validateDateTime("2050-09-01T00:")
         );
     }
 
     @Test
     void validateDateTime_ThrowParseException() {
         Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateDateTime("2050-090000000000000","endTime")
+            ValidationUtil.validateDateTime("2050-090000000000000")
         );
     }
 
@@ -193,7 +193,9 @@ class ValidationUtilTest {
                                                                                      false);
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
             requestedRole.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC).minusDays(1L));
+            requestedRole.setRoleName("solicitor");
         }
+
 
         Assertions.assertThrows(BadRequestException.class, () ->
             ValidationUtil.validateAssignmentRequest(assignmentRequest)
@@ -290,7 +292,7 @@ class ValidationUtilTest {
     @Test
     void shouldThrow_ValidateDateOrder_BeginTimeBeforeCurrent() {
         String beginTime = LocalDateTime.now().minusDays(1).toString();
-        String endTime = LocalDateTime.now().plusDays(14).toString();
+        String endTime = LocalDateTime.now().minusDays(2).toString();
         Assertions.assertThrows(BadRequestException.class, () ->
             ValidationUtil.compareDateOrder(beginTime,endTime)
         );

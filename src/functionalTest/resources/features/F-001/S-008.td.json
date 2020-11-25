@@ -15,7 +15,12 @@
         {
           "_extends_": "RequestedRole",
           "beginTime" : "2020-01-01T00:00Z",
-          "endTime" : "2023-01-01T00:00Z"
+          "endTime" : "2023-01-01T00:00Z",
+          "roleType": "CASE",
+          "grantType": "SPECIFIC",
+          "attributes": {
+            "caseId": "1234567890123456"
+          }
         }
       ]
     }

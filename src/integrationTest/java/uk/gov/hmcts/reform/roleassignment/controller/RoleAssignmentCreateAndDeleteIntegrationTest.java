@@ -23,7 +23,9 @@ import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
@@ -44,6 +46,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 
 public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
@@ -83,6 +86,9 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     private SecurityContext securityContext;
 
     @MockBean
+    private RetrieveDataService retrieveDataService;
+
+    @MockBean
     private IdamRoleService idamRoleService;
 
     @MockBean
@@ -113,6 +119,11 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             "userInfo", userInfo
 
         );
+        Case retrievedCase = Case.builder().id("1234")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .build();
+        doReturn(retrievedCase).when(retrieveDataService).getCaseById(anyString());
     }
 
     @Test
@@ -125,6 +136,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         logger.info(" LIVE table record count before create assignment request {}", getAssignmentRecordsCount());
         AssignmentRequest assignmentRequest = TestDataBuilder.createRoleAssignmentRequest(
             false, false);
+        assignmentRequest.getRequest().setAssignerId("6b36bfc6-bb21-11ea-b3de-0242ac130006");
         logger.info(" assignmentRequest :  {}", mapper.writeValueAsString(assignmentRequest));
         final String url = "/am/role-assignments";
 
@@ -139,7 +151,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         List<String> statusList = getStatusFromHistory();
         assertNotNull(statusList);
         assertEquals(3, statusList.size());
-        assertEquals(CREATED, statusList.get(0));
+        assertEquals(CREATE_REQUESTED.toString(), statusList.get(0));
         assertEquals(APPROVED, statusList.get(1));
         assertEquals(LIVE, statusList.get(2));
         assertEquals(3, getAssignmentRecordsCount().longValue());
@@ -153,6 +165,8 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             true,
             true
         );
+
+        assignmentRequestWithReplaceExistingTrue.getRequest().setAssignerId("6b36bfc6-bb21-11ea-b3de-0242ac130006");
         logger.info(
             "** Creating another role assignment record with request :   {}",
             mapper.writeValueAsString(assignmentRequestWithReplaceExistingTrue)
@@ -167,11 +181,11 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         List<String> newStatusList = getStatusFromHistory();
         assertNotNull(newStatusList);
         assertEquals(8, newStatusList.size());
-        assertEquals(CREATED, newStatusList.get(0));
+        assertEquals(CREATE_REQUESTED.toString(), newStatusList.get(0));
         assertEquals(APPROVED, newStatusList.get(1));
         assertEquals(LIVE, newStatusList.get(2));
         assertEquals(DELETE_APPROVED, newStatusList.get(3));
-        assertEquals(CREATED, newStatusList.get(4));
+        assertEquals(CREATE_REQUESTED.toString(), newStatusList.get(4));
         assertEquals(APPROVED, newStatusList.get(5));
         assertEquals(DELETED, newStatusList.get(6));
         assertEquals(LIVE, newStatusList.get(7));

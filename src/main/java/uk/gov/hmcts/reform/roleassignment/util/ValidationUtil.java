@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
@@ -36,7 +36,7 @@ public class ValidationUtil {
     private ValidationUtil() {
     }
 
-    public static void validateDateTime(String strDate, String timeParam) {
+    public static void validateDateTime(String strDate) throws ParseException {
         LOG.info("validateDateTime");
         if (strDate.length() < 16) {
             throw new BadRequestException(String.format(
@@ -59,28 +59,16 @@ public class ValidationUtil {
             ));
         }
         assert javaDate != null;
-        if (javaDate.before(new Date())) {
-            throw new BadRequestException(String.format(
-                "The parameter '%s' cannot be prior to current date", timeParam
-            ));
-        }
+        //we need to check valida date that it should not be like 32 dec 2020
+
     }
 
     public static void compareDateOrder(String beginTime, String endTime) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_PATTERN);
         Date beginTimeP = sdf.parse(beginTime);
         Date endTimeP = sdf.parse(endTime);
-        Date createTimeP = new Date();
 
-        if (beginTimeP.before(createTimeP)) {
-            throw new BadRequestException(
-                String.format("The begin time: %s takes place before the current time: %s",
-                              beginTime, createTimeP
-                ));
-        } else if (endTimeP.before(createTimeP)) {
-            throw new BadRequestException(
-                String.format("The end time: %s takes place before the current time: %s", endTime, createTimeP));
-        } else if (endTimeP.before(beginTimeP)) {
+        if (endTimeP.before(beginTimeP)) {
             throw new BadRequestException(
                 String.format("The end time: %s takes place before the begin time: %s", endTime, beginTime));
         }
@@ -153,7 +141,8 @@ public class ValidationUtil {
     }
 
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
-        List<String> rolesName = JacksonUtils.getConfiguredRoles().get("roles").stream().map(Role::getName).collect(
+        List<String> rolesName = JacksonUtils.getConfiguredRoles().get("roles").stream()
+            .map(RoleConfigRole::getName).collect(
             Collectors.toList());
 
         for (RoleAssignment requestedRole : requestedRoles) {
@@ -172,11 +161,12 @@ public class ValidationUtil {
     }
 
     private static void validateBeginAndEndDates(RoleAssignment requestedRole) throws ParseException {
+
         if (requestedRole.getBeginTime() != null) {
-            validateDateTime(requestedRole.getBeginTime().toString(), "beginTime");
+            validateDateTime(requestedRole.getBeginTime().toString());
         }
         if (requestedRole.getEndTime() != null) {
-            validateDateTime(requestedRole.getEndTime().toString(), "endTime");
+            validateDateTime(requestedRole.getEndTime().toString());
         }
         if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
             compareDateOrder(

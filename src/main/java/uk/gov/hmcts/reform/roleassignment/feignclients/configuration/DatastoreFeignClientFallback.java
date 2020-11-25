@@ -22,7 +22,7 @@ public class DatastoreFeignClientFallback implements DataStoreFeignClient {
     @Override
     public Case getCaseDataV2(String caseId) {
         return Case.builder().id(caseId)
-            .caseTypeId("ASYLUM")
+            .caseTypeId("Asylum")
             .jurisdiction("IA")
             .build();
     }
