@@ -57,23 +57,23 @@ class RetrieveRoleAssignmentOrchestratorTest {
         MockitoAnnotations.initMocks(this);
     }
 
-   @Test
+    @Test
     void getRoleAssignment_shouldGetAssignmentsByActor() throws Exception {
 
         List<RoleAssignment> roleAssignments
             = (List<RoleAssignment>) TestDataBuilder.buildRequestedRoleCollection(Status.LIVE);
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
-       ResponseEntity<RoleAssignmentResource> roles = TestDataBuilder.buildResourceRoleAssignmentResponse(Status.LIVE);
+        ResponseEntity<RoleAssignmentResource> roles = TestDataBuilder.buildResourceRoleAssignmentResponse(Status.LIVE);
         when(persistenceService.getAssignmentsByActor(actorId)).thenReturn(roleAssignments);
         when(prepareResponseService.prepareRetrieveRoleResponse(roleAssignments, actorId)).thenReturn(
             roles);
 
-       ResponseEntity<RoleAssignmentResource> response = sut.getAssignmentsByActor(actorId);
+        ResponseEntity<RoleAssignmentResource> response = sut.getAssignmentsByActor(actorId);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         verify(persistenceService, times(1)).getAssignmentsByActor(any(String.class));
         verify(prepareResponseService, times(1))
-            .prepareRetrieveRoleResponse(any(),any(String.class));
+            .prepareRetrieveRoleResponse(any(), any(String.class));
     }
 
     @Test
