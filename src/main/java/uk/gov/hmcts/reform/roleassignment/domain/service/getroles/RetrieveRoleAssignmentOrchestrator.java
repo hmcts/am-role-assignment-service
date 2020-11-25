@@ -61,7 +61,6 @@ public class RetrieveRoleAssignmentOrchestrator {
         rootNode = mapper.readTree(input);
         for (JsonNode roleNode : rootNode) {
             ObjectNode obj = (ObjectNode) roleNode;
-            obj.remove(Constants.ROLE_JSON_PATTERNS_FIELD);
         }
 
         return rootNode;
