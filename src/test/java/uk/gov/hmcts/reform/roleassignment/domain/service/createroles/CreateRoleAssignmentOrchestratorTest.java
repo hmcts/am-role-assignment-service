@@ -94,7 +94,8 @@ class CreateRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(assignmentRequest)));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         doNothing().when(validationModelService).validateRequest(any());
 
@@ -129,7 +130,8 @@ class CreateRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(assignmentRequest)));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
@@ -169,7 +171,8 @@ class CreateRoleAssignmentOrchestratorTest {
             any(Request.class)
         )).thenReturn(historyEntity);
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.FORBIDDEN).body(new RoleAssignmentRequestResource(assignmentRequest)));
+            .thenReturn(ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
@@ -210,7 +213,8 @@ class CreateRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(assignmentRequest)));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
@@ -254,7 +258,8 @@ class CreateRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(assignmentRequest)));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
@@ -289,7 +294,8 @@ class CreateRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(assignmentRequest)));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
@@ -337,7 +343,8 @@ class CreateRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(new RoleAssignmentRequestResource(assignmentRequest)));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
 
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);

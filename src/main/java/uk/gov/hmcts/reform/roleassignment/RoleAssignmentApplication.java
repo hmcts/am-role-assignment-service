@@ -64,7 +64,7 @@ public class RoleAssignmentApplication {
 
 
     @CacheEvict(allEntries = true, cacheNames = "token")
-    @Scheduled(fixedDelayString = "${token.cache.ttl.secs}")
+    @Scheduled(fixedDelayString = "${token.cache.ttl.ms}")
     public void cacheEvict() {
     }
 }
