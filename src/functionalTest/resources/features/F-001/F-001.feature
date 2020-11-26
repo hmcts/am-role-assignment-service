@@ -4,7 +4,6 @@ Feature: F-001 : Create Role Assignments
   Background:
     Given an appropriate test context as detailed in the test data source
 
-
   @S-001 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create single Role Assignment with only mandatory fields
     Given an appropriate test context as detailed in the test data source,
