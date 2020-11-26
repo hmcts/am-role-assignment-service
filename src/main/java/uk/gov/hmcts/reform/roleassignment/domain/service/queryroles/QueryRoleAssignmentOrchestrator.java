@@ -48,8 +48,8 @@ public class QueryRoleAssignmentOrchestrator {
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
-        //return new ResponseEntity<>( assignmentList, responseHeaders, HttpStatus.OK);
-        return ResponseEntity.status(HttpStatus.OK).headers(responseHeaders).body( new RoleAssignmentResource(assignmentList));
+        return ResponseEntity.status(HttpStatus.OK).headers(responseHeaders).body(
+            new RoleAssignmentResource(assignmentList));
 
     }
 }
