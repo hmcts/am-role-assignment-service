@@ -12,13 +12,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentDeleteResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
@@ -65,8 +62,9 @@ class DeleteAssignmentControllerTest {
                  .deleteRoleAssignmentByAssignmentId("003352d0-e699-48bc-b6f5-5810411e68af"))
             .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
 
-        ResponseEntity<RoleAssignmentDeleteResource> response = sut.deleteRoleAssignmentById("003352d0-e699-48bc-b6f5-5810411e68af",
-                                                               "003352d0-e699-48bc-b6f5-5810411e68af");
+        ResponseEntity<RoleAssignmentDeleteResource> response = sut
+            .deleteRoleAssignmentById("003352d0-e699-48bc-b6f5-5810411e68af",
+                                      "003352d0-e699-48bc-b6f5-5810411e68af");
 
         assertAll(
             () -> assertNotNull(response),
