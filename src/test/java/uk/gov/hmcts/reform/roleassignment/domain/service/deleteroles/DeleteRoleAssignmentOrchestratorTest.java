@@ -107,7 +107,8 @@ class DeleteRoleAssignmentOrchestratorTest {
         )).thenReturn(Collections.emptyList());
         mockHistoryEntity();
 
-        ResponseEntity<RoleAssignmentDeleteResource> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE);
+        ResponseEntity<RoleAssignmentDeleteResource> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS,
+                                                                                                     REFERENCE);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
     }
