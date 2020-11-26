@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
@@ -64,7 +65,7 @@ public class QueryAssignmentController {
     @LogAudit(operationType = SEARCH_ASSIGNMENTS,
         id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).searchAssignmentIds(#result)",
         correlationId = "#correlationId")
-    public ResponseEntity<List<Assignment>> retrieveRoleAssignmentsByQueryRequest(
+    public ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByQueryRequest(
                                  @RequestHeader(value = "x-correlation-id",
                                   required = false) String correlationId,
                                   @RequestHeader(value = "pageNumber", required = false) Integer pageNumber,
@@ -74,7 +75,7 @@ public class QueryAssignmentController {
                                   @Validated @RequestBody(required = true) QueryRequest queryRequest) {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
-        ResponseEntity<List<Assignment>> response = queryRoleAssignmentOrchestrator
+        ResponseEntity<RoleAssignmentResource> response = queryRoleAssignmentOrchestrator
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
         logger.info(String.format(
             "retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
