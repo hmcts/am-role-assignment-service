@@ -20,7 +20,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 
-import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,7 +86,7 @@ public abstract class DroolBase {
                                                        .process(("p2"))
                                                        .replaceExisting(true)
                                                        .status(Status.CREATED)
-                                                       .created(LocalDateTime.now())
+                                                       .created(ZonedDateTime.now(ZoneOffset.UTC))
                                                        .build());
 
 

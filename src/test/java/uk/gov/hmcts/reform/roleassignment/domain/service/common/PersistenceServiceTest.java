@@ -606,7 +606,7 @@ class PersistenceServiceTest {
             .roleName(roleNames)
             .classification(classifications)
             .attributes(attributes)
-            .validAt(LocalDateTime.now())
+            .validAt(ZonedDateTime.now(ZoneOffset.UTC))
             .grantType(grantTypes)
             .build();
 
