@@ -8,8 +8,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -58,11 +58,11 @@ class QueryAssignmentControllerTest {
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
             .build();
-        ResponseEntity<Object> expectedResponse
-            = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
+        ResponseEntity<RoleAssignmentResource> expectedResponse
+            = TestDataBuilder.buildResourceRoleAssignmentResponse(Status.LIVE);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, 0, 20, "id", "desc");
-        ResponseEntity<List<Assignment>> response = sut
+        ResponseEntity<RoleAssignmentResource> response = sut
             .retrieveRoleAssignmentsByQueryRequest("", 0, 20, "id", "desc", queryRequest);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -79,11 +79,11 @@ class QueryAssignmentControllerTest {
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
             .build();
-        ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, 0, 20, "roleType", "desc");
 
-        ResponseEntity<List<Assignment>> response = sut.retrieveRoleAssignmentsByQueryRequest(
+        ResponseEntity<RoleAssignmentResource> response = sut.retrieveRoleAssignmentsByQueryRequest(
             "",
             0,
             20,
@@ -102,11 +102,11 @@ class QueryAssignmentControllerTest {
         QueryRequest queryRequest = QueryRequest.builder()
             .roleType(roleType)
             .build();
-        ResponseEntity<Object> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, 0, 20, "id", "asc");
 
-        ResponseEntity<List<Assignment>> response = sut.retrieveRoleAssignmentsByQueryRequest(
+        ResponseEntity<RoleAssignmentResource> response = sut.retrieveRoleAssignmentsByQueryRequest(
             "",
             0,
             20,

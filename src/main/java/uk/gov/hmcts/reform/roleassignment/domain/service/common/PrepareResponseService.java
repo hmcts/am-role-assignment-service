@@ -3,8 +3,8 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -32,10 +32,11 @@ public class PrepareResponseService {
 
     }
 
-
+    @SuppressWarnings("unchecked")
     public ResponseEntity<RoleAssignmentResource> prepareRetrieveRoleResponse(
-        List<RoleAssignment> roleAssignmentResponse,String actorId)  {
-        return ResponseEntity.status(HttpStatus.OK).body(new RoleAssignmentResource(roleAssignmentResponse, actorId));
+        List<? extends Assignment> roleAssignmentResponse, String actorId)  {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new RoleAssignmentResource((List<Assignment>) roleAssignmentResponse, actorId));
     }
 
 
