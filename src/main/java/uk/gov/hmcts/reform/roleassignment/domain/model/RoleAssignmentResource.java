@@ -36,6 +36,7 @@ public class RoleAssignmentResource extends RepresentationModel<RoleAssignmentRe
             log.error("context", e);
         }
     }
+
     public RoleAssignmentResource(List<? extends Assignment> roleAssignmentResponse) {
         this.roleAssignmentResponse = roleAssignmentResponse;
     }
