@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentDeleteResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
@@ -64,7 +65,7 @@ public class DeleteAssignmentController {
         process = "#process",
         reference = "#reference",
         correlationId = "#correlationId")
-    public ResponseEntity<Request> deleteRoleAssignment(@RequestHeader(value = "x-correlation-id", required = false)
+    public ResponseEntity<RoleAssignmentDeleteResource> deleteRoleAssignment(@RequestHeader(value = "x-correlation-id", required = false)
                                                            String correlationId,
                                                        @RequestParam(value = "process", required = false)
                                                            String process,
@@ -72,7 +73,7 @@ public class DeleteAssignmentController {
                                                            String reference) {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("deleteRoleAssignmentByProcessAndReference execution started at %s", startTime));
-        ResponseEntity<Request> responseEntity = deleteRoleAssignmentOrchestrator
+        ResponseEntity<RoleAssignmentDeleteResource> responseEntity = deleteRoleAssignmentOrchestrator
             .deleteRoleAssignmentByProcessAndReference(process, reference);
         logger.info(String.format(
             "deleteRoleAssignmentByProcessAndReference execution finished at %s .Time taken = %s milliseconds",
@@ -110,7 +111,7 @@ public class DeleteAssignmentController {
         assignmentId = "#assignmentId",
         correlationId = "#correlationId"
     )
-    public ResponseEntity<Request> deleteRoleAssignmentById(@RequestHeader(value = "x-correlation-id", required = false)
+    public ResponseEntity<RoleAssignmentDeleteResource> deleteRoleAssignmentById(@RequestHeader(value = "x-correlation-id", required = false)
                                                                String correlationId,
                                                            @ApiParam(value = "assignmentId", required = true)
                                                            @PathVariable String assignmentId)  {
