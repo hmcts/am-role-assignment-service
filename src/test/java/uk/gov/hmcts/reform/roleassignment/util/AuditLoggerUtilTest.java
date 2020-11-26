@@ -3,7 +3,10 @@ package uk.gov.hmcts.reform.roleassignment.util;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.*;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
@@ -35,7 +38,8 @@ public class AuditLoggerUtilTest {
         roleAssignmentRequestResource = new RoleAssignmentRequestResource(assignmentRequest);
         responseEntity = ResponseEntity.ok(roleAssignmentRequestResource);
         roleAssignmentResource = new RoleAssignmentResource();
-        roleAssignmentResource.setRoleAssignmentResponse((List<? extends Assignment>) assignmentRequest.getRequestedRoles());
+        roleAssignmentResource.setRoleAssignmentResponse((List<? extends Assignment>) assignmentRequest
+            .getRequestedRoles());
         roleAssignmentResponseEntity = ResponseEntity.ok(roleAssignmentResource);
 
 
