@@ -25,11 +25,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.*;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
@@ -145,12 +141,14 @@ class PersistenceServiceTest {
         RoleAssignmentEntity roleAssignmentEntity = TestDataBuilder.convertRoleAssignmentToEntity(
             assignmentRequest.getRequestedRoles().iterator().next());
         when(persistenceUtil.convertRoleAssignmentToEntity(
-            assignmentRequest.getRequestedRoles().iterator().next(), true)).thenReturn(roleAssignmentEntity);
+            ((AssignmentRequest) assignmentRequest).getRequestedRoles().iterator().next(), true)).thenReturn(roleAssignmentEntity);
 
         sut.persistRoleAssignments(assignmentRequest.getRequestedRoles());
 
         verify(persistenceUtil, times(2))
             .convertRoleAssignmentToEntity(any(RoleAssignment.class), any(boolean.class));
+        verify(entityManager, times(2)).persist(any());
+        verify(entityManager, times(1)).flush();
     }
 
     @Test
@@ -159,16 +157,20 @@ class PersistenceServiceTest {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.createObjectNode();
         ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.getActorId(), 1234, rootNode);
+        ActorCacheEntity entity1 = new ActorCacheEntity(roleAssignment.getActorId(), 12, rootNode);
         TestDataBuilder.prepareActorCache(roleAssignment);
         when(persistenceUtil.convertActorCacheToEntity(any())).thenReturn(entity);
-        when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(entity);
-        when(actorCacheRepository.save(entity)).thenReturn(entity);
+        when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(entity1);
         Collection<RoleAssignment> roleAssignmentCollation = new ArrayList<>();
         roleAssignmentCollation.add(roleAssignment);
         sut.persistActorCache(roleAssignmentCollation);
 
+        assertEquals(entity.getActorId(), roleAssignmentCollation.iterator().next().getActorId());
+        assertEquals(entity.getEtag(), entity1.getEtag());
+
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
         verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
+        verify(entityManager, times(1)).flush();
     }
 
     @Test
@@ -187,6 +189,8 @@ class PersistenceServiceTest {
 
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
         verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
+        verify(entityManager, times(1)).persist(any());
+        verify(entityManager, times(1)).flush();
     }
 
     @Test
@@ -219,11 +223,28 @@ class PersistenceServiceTest {
 
         assertNotNull(result);
         assertFalse(result.isEmpty());
+        assertFalse(result.contains(null));
 
         verify(historyRepository, times(1)).findByReference(
             "process", "reference", "status");
         verify(persistenceUtil, times(1)).convertHistoryEntityToRoleAssignment(historyEntity);
     }
+
+    @Test
+    void persistHistoryEntities() throws IOException {
+        AssignmentRequest assignmentRequest = TestDataBuilder
+            .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
+        RequestEntity requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
+        HistoryEntity historyEntity = TestDataBuilder.buildHistoryIntoEntity(
+            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
+        Set<HistoryEntity> historyEntities = new HashSet<>();
+        historyEntities.add(historyEntity);
+        sut.persistHistoryEntities(historyEntities);
+
+        verify(entityManager, times(1)).persist(any());
+        verify(entityManager, times(1)).flush();
+    }
+
 
     @Test
     void deleteRoleAssignment() throws IOException {
@@ -261,8 +282,8 @@ class PersistenceServiceTest {
         List<RoleAssignment> roleAssignmentList = sut.getAssignmentsByActor(id);
         assertNotNull(roleAssignmentList);
 
-        assertNotNull(roleAssignmentList);
         assertFalse(roleAssignmentList.isEmpty());
+        assertFalse(roleAssignmentList.contains(null));
 
         verify(persistenceUtil, times(1))
             .convertEntityToRoleAssignment(roleAssignmentEntitySet.iterator().next());
@@ -313,6 +334,7 @@ class PersistenceServiceTest {
             false).lockedby(null).build();
         when(databseChangelogLockRepository.getById(1)).thenReturn(databaseChangelogLockEntity);
         DatabaseChangelogLockEntity entity = sut.releaseDatabaseLock(1);
+        verify(databseChangelogLockRepository, times(1)).releaseLock(1);
         assertFalse(entity.isLocked());
 
     }
@@ -356,13 +378,11 @@ class PersistenceServiceTest {
 
         List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1,
                                                                                                   1, "id",
-                                                                                            "desc", false
+                                                                                                  "desc", false
         );
         assertNotNull(roleAssignmentList);
-
-        assertNotNull(roleAssignmentList);
         assertFalse(roleAssignmentList.isEmpty());
-
+        assertFalse(roleAssignmentList.contains(null));
         verify(persistenceUtil, times(1))
             .convertEntityToRoleAssignment(page.iterator().next());
 
@@ -571,6 +591,46 @@ class PersistenceServiceTest {
         List<RoleAssignment> roleAssignmentList = sut.getAssignmentById(id);
         assertNotNull(roleAssignmentList);
         assertEquals(roleAssignmentList.size(),Integer.valueOf(0));
+    }
+
+    @Test
+    void shouldReturnEmptyListOfRoleAssignmentRecordsWithRecordsPresentExistingFlagFalse() throws IOException {
+        UUID id = UUID.randomUUID();
+        AssignmentRequest assignmentRequest = TestDataBuilder
+            .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
+        RoleAssignmentEntity roleAssignmentEntity = TestDataBuilder.convertRoleAssignmentToEntity(
+            assignmentRequest.getRequestedRoles().iterator().next());
+        Optional<RoleAssignmentEntity> roleAssignmentOptional = Optional.of(roleAssignmentEntity);
+
+        when(roleAssignmentRepository.findById(id)).thenReturn(roleAssignmentOptional);
+        List<RoleAssignment> roleAssignmentList = sut.getAssignmentById(id);
+        verify(persistenceUtil, times(1))
+            .convertEntityToRoleAssignment(roleAssignmentEntity);
+        assertNotNull(roleAssignmentList);
+        assertNotNull(roleAssignmentOptional);
+        assertFalse(roleAssignmentList.isEmpty());
+        assertEquals(roleAssignmentList.size(),Integer.valueOf(1));
+
+    }
+
+    @Test
+    void shouldReturnEmptyListOfRoleAssignmentRecordsWithRecordsPresentExistingFlagTrue() throws IOException {
+        UUID id = UUID.randomUUID();
+        AssignmentRequest assignmentRequest = TestDataBuilder
+            .buildAssignmentRequest(Status.CREATED, Status.LIVE, true);
+        RoleAssignmentEntity roleAssignmentEntity = TestDataBuilder.convertRoleAssignmentToEntity(
+            assignmentRequest.getRequestedRoles().iterator().next());
+        Optional<RoleAssignmentEntity> roleAssignmentOptional = Optional.of(roleAssignmentEntity);
+
+        when(roleAssignmentRepository.findById(id)).thenReturn(roleAssignmentOptional);
+        List<RoleAssignment> roleAssignmentList = sut.getAssignmentById(id);
+        verify(persistenceUtil, times(1))
+            .convertEntityToRoleAssignment(roleAssignmentEntity);
+        assertNotNull(roleAssignmentList);
+        assertNotNull(roleAssignmentOptional);
+        assertFalse(roleAssignmentList.isEmpty());
+        assertEquals(roleAssignmentList.size(),Integer.valueOf(1));
+
     }
 
     @Test
