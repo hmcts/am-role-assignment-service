@@ -25,9 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 
 class ValidationModelServiceTest {
@@ -64,7 +62,6 @@ class ValidationModelServiceTest {
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
 
         sut.validateRequest(assignmentRequest);
-
 
         Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
     }
