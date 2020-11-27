@@ -4,9 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
@@ -38,7 +38,8 @@ public class AuditLoggerUtilTest {
         roleAssignmentRequestResource = new RoleAssignmentRequestResource(assignmentRequest);
         responseEntity = ResponseEntity.ok(roleAssignmentRequestResource);
         roleAssignmentResource = new RoleAssignmentResource();
-        roleAssignmentResource.setRoleAssignmentResponse((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
+        roleAssignmentResource.setRoleAssignmentResponse((List<? extends Assignment>) assignmentRequest
+            .getRequestedRoles());
         roleAssignmentResponseEntity = ResponseEntity.ok(roleAssignmentResource);
 
 
@@ -162,8 +163,8 @@ public class AuditLoggerUtilTest {
             UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f")
         );
 
-        ResponseEntity<List<RoleAssignment>> responseEntity = ResponseEntity
-            .ok((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
+        ResponseEntity<RoleAssignmentResource> responseEntity = ResponseEntity
+            .ok(new RoleAssignmentResource((List<? extends Assignment>) assignmentRequest.getRequestedRoles()));
         List<UUID> assignmentIds = AuditLoggerUtil.searchAssignmentIds(responseEntity);
         assertNotNull(assignmentIds);
         assertThat(assignmentIds).isEqualTo(expectedIds);

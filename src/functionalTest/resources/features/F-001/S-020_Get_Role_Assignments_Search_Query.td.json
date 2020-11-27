@@ -29,7 +29,8 @@
   "expectedResponse": {
     "_extends_": "Common_200_Response",
     "body": {
-      "arrayInMap" : [
+      "links": [],
+      "roleAssignmentResponse" : [
         {
           "_extends_": "ResponseRoleAssignment",
           "actorId": "${}${[scenarioContext][parentContext][childContexts][S-020_Multiple_Role_Creation][testData][request][body][requestedRoles][0][actorId]}"

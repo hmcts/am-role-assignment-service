@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -238,12 +239,15 @@ class CreateRoleAssignmentServiceTest {
         incomingAssignmentRequest.getRequest().setLog(msg);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(incomingAssignmentRequest));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(incomingAssignmentRequest)));
         sut.setRequestEntity(requestEntity);
 
         //Call actual Method
-        ResponseEntity<Object> response = sut.duplicateRequest(existingAssignmentRequest, incomingAssignmentRequest);
-        AssignmentRequest result = (AssignmentRequest) response.getBody();
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.duplicateRequest(existingAssignmentRequest,
+                                                                                      incomingAssignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result =  roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assertion
         assertEquals(incomingAssignmentRequest, result);
