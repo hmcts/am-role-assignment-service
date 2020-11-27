@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
@@ -78,7 +79,7 @@ public class AuditLoggerUtil {
         RoleAssignmentResource roleAssignmentResource = response.getBody();
         if (roleAssignmentResource != null) {
             return roleAssignmentResource.getRoleAssignmentResponse().stream().limit(10)
-                .map(RoleAssignment::getId)
+                .map(Assignment::getId)
                 .collect(Collectors.toList());
         }
         return List.of();
@@ -88,17 +89,18 @@ public class AuditLoggerUtil {
         RoleAssignmentResource roleAssignmentResource = response.getBody();
         if (roleAssignmentResource != null) {
             return roleAssignmentResource.getRoleAssignmentResponse().stream().limit(10)
-                .map(RoleAssignment::getActorId)
+                .map(Assignment::getActorId)
                 .collect(Collectors.toList());
         }
         return List.of();
     }
 
-    public static List<UUID> searchAssignmentIds(final ResponseEntity<List<RoleAssignment>> response) {
-        List<RoleAssignment> roleAssignmentResource = response.getBody();
+    public static List<UUID> searchAssignmentIds(final ResponseEntity<RoleAssignmentResource> response) {
+        RoleAssignmentResource roleAssignmentResource = response.getBody();
         if (roleAssignmentResource != null) {
-            return roleAssignmentResource.stream().limit(10)
-                .map(RoleAssignment::getId)
+            List<? extends Assignment> roleAssignmentResponse =  roleAssignmentResource.getRoleAssignmentResponse();
+            return roleAssignmentResponse.stream().limit(10)
+                .map(Assignment::getId)
                 .collect(Collectors.toList());
         }
         return List.of();

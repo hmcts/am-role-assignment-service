@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentDeleteResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -106,7 +107,8 @@ class DeleteRoleAssignmentOrchestratorTest {
         )).thenReturn(Collections.emptyList());
         mockHistoryEntity();
 
-        ResponseEntity<Object> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE);
+        ResponseEntity<RoleAssignmentDeleteResource> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS,
+                                                                                                     REFERENCE);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
     }
@@ -122,7 +124,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId)))
             .thenReturn(Collections.emptyList());
         mockHistoryEntity();
-        ResponseEntity<Object> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
+        ResponseEntity<RoleAssignmentDeleteResource> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
 
@@ -137,7 +139,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId))).thenReturn(Collections.emptyList());
         mockHistoryEntity();
 
-        ResponseEntity<Object> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
+        ResponseEntity<RoleAssignmentDeleteResource> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(1)).updateRequest(any(RequestEntity.class));
     }
