@@ -3,28 +3,21 @@ package uk.gov.hmcts.reform.roleassignment;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 
 @TestConfiguration
 public class RoleAssignmentProviderTestConfiguration {
@@ -64,7 +57,7 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @MockBean
-    private  DataStoreFeignClient dataStoreFeignClient;
+    private DataStoreFeignClient dataStoreFeignClient;
 
     @Bean
     public RetrieveDataService getRetrieveDataService() {
@@ -92,8 +85,10 @@ public class RoleAssignmentProviderTestConfiguration {
     @Bean
     @Primary
     public CreateRoleAssignmentOrchestrator createRoleAssignment() {
-        return new CreateRoleAssignmentOrchestrator(getParseRequestService(), getPrepareResponseService(), persistenceService,
-                                                    getValidationModelService(), getPersistenceUtil());
+        return new CreateRoleAssignmentOrchestrator(getParseRequestService(), getPrepareResponseService(),
+                                                    persistenceService, getValidationModelService(),
+                                                    getPersistenceUtil()
+        );
     }
 
 }
