@@ -43,7 +43,7 @@ class PrepareResponseServiceTest {
             prepareResponseService
                 .prepareCreateRoleResponse(assignmentRequest);
         RoleAssignmentRequestResource assignmentRequestResponse =
-            (RoleAssignmentRequestResource) responseEntity.getBody();
+            responseEntity.getBody();
         assert assignmentRequestResponse != null;
         assertNull(assignmentRequestResponse.getRoleAssignmentRequest().getRequest().getClientId());
         assertNotNull(assignmentRequestResponse.getRoleAssignmentRequest().getRequest());
