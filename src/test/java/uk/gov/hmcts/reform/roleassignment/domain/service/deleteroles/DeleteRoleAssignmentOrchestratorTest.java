@@ -40,7 +40,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.*;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
 
 @RunWith(MockitoJUnitRunner.class)
 class DeleteRoleAssignmentOrchestratorTest {
