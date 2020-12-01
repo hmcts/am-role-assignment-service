@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
@@ -34,11 +35,15 @@ class PrepareResponseServiceTest {
 
     @Test
     void prepareCreateRoleResponse() throws IOException {
+
+        AssignmentRequest assignmentRequest = TestDataBuilder
+            .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
+        assignmentRequest.getRequest().setClientId("ccd");
         ResponseEntity<RoleAssignmentRequestResource> responseEntity =
             prepareResponseService
-                .prepareCreateRoleResponse(TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE, false));
+                .prepareCreateRoleResponse(assignmentRequest);
         RoleAssignmentRequestResource assignmentRequestResponse =
-            (RoleAssignmentRequestResource) responseEntity.getBody();
+            responseEntity.getBody();
         assert assignmentRequestResponse != null;
         assertNull(assignmentRequestResponse.getRoleAssignmentRequest().getRequest().getClientId());
         assertNotNull(assignmentRequestResponse.getRoleAssignmentRequest().getRequest());

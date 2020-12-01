@@ -37,9 +37,21 @@ public class DeleteRoleAssignmentOrchestrator {
     private ParseRequestService parseRequestService;
     private ValidationModelService validationModelService;
     private PersistenceUtil persistenceUtil;
-    RequestEntity requestEntity;
+    private RequestEntity requestEntity;
     AssignmentRequest assignmentRequest;
-    Request request;
+    private Request request;
+
+    public Request getRequest() {
+        return request;
+    }
+
+    public RequestEntity getRequestEntity() {
+        return requestEntity;
+    }
+
+    public void setRequestEntity(RequestEntity requestEntity) {
+        this.requestEntity = requestEntity;
+    }
 
     public DeleteRoleAssignmentOrchestrator(PersistenceService persistenceService,
                                             ParseRequestService parseRequestService,
