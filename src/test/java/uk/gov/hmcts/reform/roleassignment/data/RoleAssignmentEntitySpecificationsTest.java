@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -113,7 +114,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
 
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByValidDate(
-            ZonedDateTime.now(ZoneOffset.UTC));
+            now());
         assertThat(specification).isNotNull();
 
 
@@ -424,8 +425,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     public void shouldReturnPredicate_WhileSearchByValidDateWithMock() {
 
 
-        Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByValidDate(
-            ZonedDateTime.now(ZoneOffset.UTC));
+        Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByValidDate(now());
         specification = specification.and(mockSpec);
         assertThat(specification).isNotNull();
         MatcherAssert.assertThat(specification.toPredicate(root, query, builder), is(predicate));

@@ -35,6 +35,7 @@ import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import static java.time.LocalDateTime.now;
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.ROLES_JSON;
@@ -77,7 +79,7 @@ public class TestDataBuilder {
             .process(("p2"))
             .replaceExisting(replaceExisting)
             .status(status)
-            .created(ZonedDateTime.now(ZoneOffset.UTC))
+            .created(now())
             .build();
     }
 
@@ -99,7 +101,7 @@ public class TestDataBuilder {
             .process(("process"))
             .statusSequence(10)
             .status(status)
-            .created(timeStamp)
+            .created(now())
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
             .notes(buildNotesFromFile())
             .authorisations(Collections.emptyList())
@@ -124,7 +126,7 @@ public class TestDataBuilder {
             .process(("new process"))
             .statusSequence(10)
             .status(status)
-            .created(timeStamp)
+            .created(now())
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
             .notes(buildNotesFromFile())
             .build();
@@ -225,9 +227,9 @@ public class TestDataBuilder {
         return HistoryEntity.builder().id(model.getId()).actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
-            .beginTime(model.getBeginTime())
+            .beginTime(model.getBeginTime().toLocalDateTime())
             .classification(model.getClassification().toString())
-            .endTime(model.getEndTime())
+            .endTime(model.getEndTime().toLocalDateTime())
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
@@ -247,9 +249,9 @@ public class TestDataBuilder {
             .actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
-            .beginTime(model.getBeginTime())
+            .beginTime(model.getBeginTime().toLocalDateTime())
             .classification(model.getClassification().toString())
-            .endTime(model.getEndTime())
+            .endTime(model.getEndTime().toLocalDateTime())
             .created(model.getCreated())
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
@@ -265,8 +267,8 @@ public class TestDataBuilder {
         requestedrole.setActorId(historyEntity.getActorId());
         requestedrole.setActorIdType(ActorIdType.valueOf(historyEntity.getActorIdType()));
         requestedrole.setAttributes(JacksonUtils.convertValue(historyEntity.getAttributes()));
-        requestedrole.setBeginTime(historyEntity.getBeginTime());
-        requestedrole.setEndTime(historyEntity.getEndTime());
+        requestedrole.setBeginTime(historyEntity.getBeginTime().atZone(ZoneId.of("UTC")));
+        requestedrole.setEndTime(historyEntity.getEndTime().atZone(ZoneId.of("UTC")));
         requestedrole.setCreated(historyEntity.getCreated());
         requestedrole.setClassification(Classification.valueOf(historyEntity.getClassification()));
         requestedrole.setGrantType(GrantType.valueOf(historyEntity.getGrantType()));
@@ -295,7 +297,6 @@ public class TestDataBuilder {
     }
 
     private static RoleAssignmentEntity buildRoleAssignmentEntitySet() throws IOException {
-        ZonedDateTime timeStamp = ZonedDateTime.now(ZoneOffset.UTC);
         return RoleAssignmentEntity.builder()
             .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .actorIdType(ActorIdType.IDAM.name())
@@ -305,9 +306,9 @@ public class TestDataBuilder {
             .grantType(GrantType.STANDARD.name())
             .roleCategory(RoleCategory.JUDICIAL.name())
             .readOnly(true)
-            .beginTime(timeStamp.plusDays(1))
-            .endTime(timeStamp.plusMonths(1))
-            .created(timeStamp)
+            .beginTime(now().plusDays(1))
+            .endTime(now().plusMonths(1))
+            .created(now())
             .attributes(buildAttributesFromFile())
             .build();
     }
@@ -338,8 +339,8 @@ public class TestDataBuilder {
             .process(roleAssignment.getProcess())
             .reference(roleAssignment.getReference())
             .created(roleAssignment.getCreated())
-            .beginTime(roleAssignment.getBeginTime())
-            .endTime(roleAssignment.getEndTime())
+            .beginTime(roleAssignment.getBeginTime().toLocalDateTime())
+            .endTime(roleAssignment.getEndTime().toLocalDateTime())
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
             .notes(roleAssignment.getNotes())
             .sequence(roleAssignment.getStatusSequence())
@@ -354,9 +355,9 @@ public class TestDataBuilder {
             .actorId(roleAssignment.getActorId())
             .actorIdType(roleAssignment.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
-            .beginTime(roleAssignment.getBeginTime())
+            .beginTime(roleAssignment.getBeginTime().toLocalDateTime())
             .classification(roleAssignment.getClassification().toString())
-            .endTime(roleAssignment.getEndTime())
+            .endTime(roleAssignment.getEndTime().toLocalDateTime())
             .created(roleAssignment.getCreated())
             .grantType(roleAssignment.getGrantType().toString())
             .roleName(roleAssignment.getRoleName())
@@ -444,7 +445,7 @@ public class TestDataBuilder {
             .classification(Arrays.asList(Classification.PUBLIC.toString()))
             .grantType(Arrays.asList(GrantType.SPECIFIC.toString()))
             .roleCategory(Arrays.asList(RoleCategory.JUDICIAL.toString()))
-            .validAt(ZonedDateTime.now(ZoneOffset.UTC))
+            .validAt(now())
             .attributes(attributes)
             .authorisations(Arrays.asList("dev"))
             .build();

@@ -1,6 +1,7 @@
 
 package uk.gov.hmcts.reform.roleassignment.data;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,13 +10,14 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -67,7 +69,7 @@ public class RequestEntity {
 
     @CreationTimestamp
     @Column(name = "created", nullable = false)
-    private ZonedDateTime created;
+    private LocalDateTime created;
 
     @OneToMany(
         fetch = FetchType.LAZY,

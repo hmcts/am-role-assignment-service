@@ -10,6 +10,6 @@ public class CreatedTimeComparator implements Comparator<RoleAssignment> {
 
     @Override
     public int compare(RoleAssignment roleAssignment1, RoleAssignment roleAssignment2) {
-        return roleAssignment1.getCreated().toLocalDateTime().compareTo(roleAssignment2.getCreated().toLocalDateTime());
+        return roleAssignment1.getCreated().compareTo(roleAssignment2.getCreated());
     }
 }

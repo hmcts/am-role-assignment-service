@@ -53,6 +53,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import static java.time.LocalDateTime.now;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -401,7 +402,7 @@ class PersistenceServiceTest {
             .roleName(roleNmaes)
             .classification(classifications)
             .attributes(attributes)
-            .validAt(ZonedDateTime.now(ZoneOffset.UTC))
+            .validAt(now())
             .grantType(grantTypes)
             .build();
 
@@ -606,7 +607,7 @@ class PersistenceServiceTest {
             .roleName(roleNames)
             .classification(classifications)
             .attributes(attributes)
-            .validAt(ZonedDateTime.now(ZoneOffset.UTC))
+            .validAt(now())
             .grantType(grantTypes)
             .build();
 

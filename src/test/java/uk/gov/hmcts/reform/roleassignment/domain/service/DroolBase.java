@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import static java.time.LocalDateTime.now;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
@@ -86,7 +87,7 @@ public abstract class DroolBase {
                                                        .process(("p2"))
                                                        .replaceExisting(true)
                                                        .status(Status.CREATED)
-                                                       .created(ZonedDateTime.now(ZoneOffset.UTC))
+                                                       .created(now())
                                                        .build());
 
 
