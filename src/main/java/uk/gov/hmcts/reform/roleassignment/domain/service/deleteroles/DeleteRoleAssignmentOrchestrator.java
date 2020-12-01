@@ -45,10 +45,6 @@ public class DeleteRoleAssignmentOrchestrator {
         return request;
     }
 
-    public void setRequest(Request request) {
-        this.request = request;
-    }
-
     public RequestEntity getRequestEntity() {
         return requestEntity;
     }
