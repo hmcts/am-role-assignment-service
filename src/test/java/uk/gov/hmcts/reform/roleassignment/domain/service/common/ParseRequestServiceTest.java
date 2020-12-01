@@ -33,7 +33,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 
 @RunWith(MockitoJUnitRunner.class)
 class ParseRequestServiceTest {
@@ -78,10 +77,28 @@ class ParseRequestServiceTest {
     }
 
     @Test
+    void getRoleAssignment_emptyCaseIdThrows400() {
+        String actorId = "123e4567-e89b-42d3-a456-556642445678";
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.validateGetAssignmentsByActorIdAndCaseId(actorId, null, null)
+        );
+    }
+
+    @Test
     void getRoleAssignmentByActorAndCaseId_shouldThrowBadRequestWhenActorAndCaseIdIsEmpty() {
 
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.validateGetAssignmentsByActorIdAndCaseId(null, null, ROLE_TYPE)
+        );
+    }
+
+    @Test
+    void getRoleAssignmentThrow400ForInvalidCaseId() {
+        String actorId = "123e4567-e89b-42d3-a456-556642445678";
+        String caseId = "%%%-e89b-42d3-a456-556642445678";
+
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.validateGetAssignmentsByActorIdAndCaseId(actorId, caseId, ROLE_TYPE)
         );
     }
 
@@ -124,13 +141,13 @@ class ParseRequestServiceTest {
         builtReq.setRequestType(RequestType.DELETE);
 
         assertEquals(clientId, result.getClientId());
-        assertEquals(userId.toString(), result.getAuthenticatedUserId().toString());
+        assertEquals(userId.toString(), result.getAuthenticatedUserId());
         assertEquals(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9d"), result.getRoleAssignmentId());
         assertEquals(builtReq.getStatus(), result.getStatus());
         assertEquals(builtReq.getRequestType(), result.getRequestType());
         assertEquals(builtReq.getProcess(), result.getProcess());
         assertEquals(builtReq.getReference(), result.getReference());
-        assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9c", result.getAssignerId().toString());
+        assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9c", result.getAssignerId());
         assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9d", result.getCorrelationId());
     }
 
@@ -166,7 +183,7 @@ class ParseRequestServiceTest {
     @Test
     void prepareDeleteRequest_InvalidAssignerIdHeader() {
         MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader("assignerId", "21334a2b-79ce-44eb-916!£$%£8-2d49a744be9");
+        request.addHeader("assignerId", "%%");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         String clientId = "copied client id";
         String userId = "21334a2b-79ce-44eb-9168-2d49a744be9";
@@ -177,7 +194,7 @@ class ParseRequestServiceTest {
 
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.prepareDeleteRequest("p2", "p2",
-                                     "21334a2b-79ce-44eb-9168-2d49a744$$$be9d",
+                                     "21334a2b-79ce-44eb-9168-2d49a744be9d",
                                      "21334a2b-79ce-44eb-9168-2d49a744be9d")
         );
     }
@@ -199,12 +216,15 @@ class ParseRequestServiceTest {
         String clientId = "copied client id";
         String userId = "21334a2b-79ce-44eb-9168-2d49a744be9c";
         when(securityUtilsMock.getServiceName()).thenReturn(clientId);
-        when(securityUtilsMock.getUserId()).thenReturn(userId.toString());
+        when(securityUtilsMock.getUserId()).thenReturn(userId);
         when(correlationInterceptorUtilMock.preHandle(
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
 
         RequestType requestType = RequestType.CREATE;
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, Status.LIVE, false);
+        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.LIVE, Status.LIVE, false);
+        assignmentRequest.getRequest().setCreated(null);
+        assignmentRequest.getRequest().setRequestType(null);
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> roleAssignment.setCreated(null));
         AssignmentRequest result = sut.parseRequest(assignmentRequest, requestType);
 
         sut.removeCorrelationLog();
@@ -216,6 +236,7 @@ class ParseRequestServiceTest {
         assertEquals(userId, result.getRequest().getAuthenticatedUserId());
         assertEquals(CREATED, result.getRequest().getStatus());
         assertEquals(requestType, result.getRequest().getRequestType());
+        assertNotNull(result.getRequest().getRequestType());
         assertNotNull(result.getRequest().getCreated());
         assertNotNull(result.getRequestedRoles());
         assertTrue(result.getRequestedRoles().size() > 1);
@@ -223,7 +244,7 @@ class ParseRequestServiceTest {
         result.getRequestedRoles().forEach(requestedRole -> {
             assertEquals(result.getRequest().getProcess(), requestedRole.getProcess());
             assertEquals(result.getRequest().getReference(), requestedRole.getReference());
-            assertEquals(CREATE_REQUESTED, requestedRole.getStatus());
+            assertEquals(Status.CREATE_REQUESTED, requestedRole.getStatus());
             assertNotNull(requestedRole.getCreated());
         });
         verify(securityUtilsMock, times(1)).getServiceName();
