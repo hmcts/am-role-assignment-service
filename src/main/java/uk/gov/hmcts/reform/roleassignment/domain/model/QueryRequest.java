@@ -1,12 +1,14 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
+
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.Value;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +29,7 @@ public class QueryRequest {
     @Singular("grantType")
     private final List<String> grantType;
 
-    private ZonedDateTime validAt;
+    private LocalDateTime validAt;
     @Singular("roleCategory")
     private final List<String> roleCategory;
 

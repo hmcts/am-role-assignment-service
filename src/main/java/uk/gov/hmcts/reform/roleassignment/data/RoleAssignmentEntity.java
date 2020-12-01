@@ -2,6 +2,7 @@
 package uk.gov.hmcts.reform.roleassignment.data;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,12 +12,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
+
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.ZonedDateTime;
 import javax.persistence.Transient;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder(toBuilder = true)
@@ -56,14 +58,14 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
     private boolean readOnly;
 
     @Column(name = "begin_time")
-    private ZonedDateTime beginTime;
+    private LocalDateTime beginTime;
 
     @Column(name = "end_time")
-    private ZonedDateTime endTime;
+    private LocalDateTime endTime;
 
     @CreationTimestamp
     @Column(name = "created", nullable = false)
-    private ZonedDateTime created;
+    private LocalDateTime created;
 
     @Column(name = "attributes", nullable = false, columnDefinition = "jsonb")
     @Convert(converter = JsonBConverter.class)

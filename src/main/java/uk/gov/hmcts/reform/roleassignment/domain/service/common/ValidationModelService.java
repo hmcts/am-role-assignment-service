@@ -9,8 +9,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -78,7 +77,7 @@ public class ValidationModelService {
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorIds)
             .roleType("ORGANISATION")
-            .validAt(ZonedDateTime.now(ZoneOffset.UTC))
+            .validAt(LocalDateTime.now())
             .build();
 
         return persistenceService.retrieveRoleAssignmentsByQueryRequest(

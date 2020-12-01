@@ -11,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
+
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -19,7 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder(toBuilder = true)
@@ -78,17 +79,17 @@ public class HistoryEntity implements Persistable<UUID> {
 
     @CreationTimestamp
     @Column(name = "created", nullable = false)
-    private ZonedDateTime created;
+    private LocalDateTime created;
 
     @Column(name = "begin_time")
-    private ZonedDateTime beginTime;
+    private LocalDateTime beginTime;
 
     @Column(name = "attributes", nullable = false, columnDefinition = "jsonb")
     @Convert(converter = JsonBConverter.class)
     private JsonNode attributes;
 
     @Column(name = "end_time")
-    private ZonedDateTime endTime;
+    private LocalDateTime endTime;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
