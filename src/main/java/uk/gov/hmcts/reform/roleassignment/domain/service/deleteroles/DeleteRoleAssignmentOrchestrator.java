@@ -14,6 +14,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentDeleteResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -36,9 +37,21 @@ public class DeleteRoleAssignmentOrchestrator {
     private ParseRequestService parseRequestService;
     private ValidationModelService validationModelService;
     private PersistenceUtil persistenceUtil;
-    RequestEntity requestEntity;
+    private RequestEntity requestEntity;
     AssignmentRequest assignmentRequest;
-    Request request;
+    private Request request;
+
+    public Request getRequest() {
+        return request;
+    }
+
+    public RequestEntity getRequestEntity() {
+        return requestEntity;
+    }
+
+    public void setRequestEntity(RequestEntity requestEntity) {
+        this.requestEntity = requestEntity;
+    }
 
     public DeleteRoleAssignmentOrchestrator(PersistenceService persistenceService,
                                             ParseRequestService parseRequestService,
@@ -51,7 +64,7 @@ public class DeleteRoleAssignmentOrchestrator {
     }
 
 
-    public ResponseEntity<Request> deleteRoleAssignmentByProcessAndReference(String process,
+    public ResponseEntity<RoleAssignmentDeleteResource> deleteRoleAssignmentByProcessAndReference(String process,
                                                                             String reference) {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("deleteRoleAssignmentByProcessAndReference execution started at %s", startTime));
@@ -84,7 +97,7 @@ public class DeleteRoleAssignmentOrchestrator {
             requestedRoles.stream().forEach(roleAssignment -> roleAssignment.setStatus(Status.DELETE_REQUESTED));
         }
 
-        ResponseEntity<Request> responseEntity = performOtherStepsForDelete("", requestedRoles);
+        ResponseEntity<RoleAssignmentDeleteResource> responseEntity = performOtherStepsForDelete("", requestedRoles);
         logger.info(String.format(
             "deleteRoleAssignmentByProcessAndReference execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
@@ -93,7 +106,7 @@ public class DeleteRoleAssignmentOrchestrator {
         return responseEntity;
     }
 
-    public ResponseEntity<Request> deleteRoleAssignmentByAssignmentId(String assignmentId) {
+    public ResponseEntity<RoleAssignmentDeleteResource> deleteRoleAssignmentByAssignmentId(String assignmentId) {
         List<RoleAssignment> requestedRoles;
 
         //1. create the request Object
@@ -123,7 +136,8 @@ public class DeleteRoleAssignmentOrchestrator {
     }
 
     @NotNull
-    private ResponseEntity<Request> performOtherStepsForDelete(String actorId, List<RoleAssignment> requestedRoles) {
+    private ResponseEntity<RoleAssignmentDeleteResource> performOtherStepsForDelete(String actorId,
+                                                                 List<RoleAssignment> requestedRoles) {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("performOtherStepsForDelete execution started at %s", startTime));
 
@@ -142,7 +156,8 @@ public class DeleteRoleAssignmentOrchestrator {
             System.currentTimeMillis() - startTime
         ));
         if (assignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(assignmentRequest.getRequest());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
+                new RoleAssignmentDeleteResource(assignmentRequest.getRequest()));
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

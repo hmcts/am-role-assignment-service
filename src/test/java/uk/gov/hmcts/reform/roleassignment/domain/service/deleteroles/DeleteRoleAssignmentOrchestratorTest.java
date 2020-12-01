@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentDeleteResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -26,10 +27,11 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,10 +40,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
 
 @RunWith(MockitoJUnitRunner.class)
 class DeleteRoleAssignmentOrchestratorTest {
@@ -106,7 +110,10 @@ class DeleteRoleAssignmentOrchestratorTest {
         )).thenReturn(Collections.emptyList());
         mockHistoryEntity();
 
-        ResponseEntity<Request> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE);
+        ResponseEntity<RoleAssignmentDeleteResource> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS,
+                                                                                                     REFERENCE);
+        assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
+        assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
     }
@@ -122,10 +129,74 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId)))
             .thenReturn(Collections.emptyList());
         mockHistoryEntity();
-        ResponseEntity<Request> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
+        ResponseEntity<RoleAssignmentDeleteResource> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
 
+    }
+
+    @Test
+    @DisplayName("should delete any delete approved records that are present")
+    void shouldDeleteRecordsForApprovedItems() throws Exception {
+        mockRequest();
+        when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment1 -> {
+            roleAssignment1.setStatus(DELETE_APPROVED);
+        });
+        mockHistoryEntity();
+
+        //set history entity into request entity
+        Set<HistoryEntity> historyEntities = new HashSet<>();
+        historyEntities.add(historyEntity);
+        requestEntity.setHistoryEntities(historyEntities);
+        sut.setRequestEntity(requestEntity);
+        sut.checkAllDeleteApproved(assignmentRequest, assignmentRequest.getRequest().getAssignerId());
+        verify(persistenceService, times(2)).deleteRoleAssignmentByActorId(any());
+        verify(persistenceService, times(1)).persistActorCache(any());
+        verify(persistenceService, times(2)).updateRequest(any(RequestEntity.class));
+    }
+
+    @Test
+    @DisplayName("should delete only delete approved records and remove other records")
+    void shouldDeleteRecordsOnlyForApprovedItems() throws Exception {
+        mockRequest();
+        when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
+        //Set 1 of 2 to delete approved status
+        assignmentRequest.getRequestedRoles().iterator().next().setStatus(DELETE_APPROVED);
+
+        mockHistoryEntity();
+
+        //set history entity into request entity
+        Set<HistoryEntity> historyEntities = new HashSet<>();
+        historyEntities.add(historyEntity);
+        requestEntity.setHistoryEntities(historyEntities);
+        sut.setRequestEntity(requestEntity);
+        sut.checkAllDeleteApproved(assignmentRequest, assignmentRequest.getRequest().getAssignerId());
+        assertEquals(1, assignmentRequest.getRequestedRoles().size());
+        assertEquals(REJECTED.toString(),sut.getRequestEntity().getStatus());
+        assertEquals(assignmentRequest.getRequest().getLog(),sut.getRequestEntity().getLog());
+
+    }
+
+    @Test
+    @DisplayName("should delete any delete approved records that are present even with no actorID passed")
+    void shouldDeleteRecordsForApprovedItemsNoActorID() throws Exception {
+        mockRequest();
+        when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment1 -> {
+            roleAssignment1.setStatus(DELETE_APPROVED);
+        });
+        mockHistoryEntity();
+
+        //set history entity into request entity
+        Set<HistoryEntity> historyEntities = new HashSet<>();
+        historyEntities.add(historyEntity);
+        requestEntity.setHistoryEntities(historyEntities);
+        sut.setRequestEntity(requestEntity);
+        sut.checkAllDeleteApproved(assignmentRequest, "");
+        verify(persistenceService, times(2)).deleteRoleAssignment(any());
+        verify(persistenceService, times(1)).persistActorCache(any());
+        verify(persistenceService, times(2)).updateRequest(any(RequestEntity.class));
     }
 
     @Test
@@ -137,7 +208,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId))).thenReturn(Collections.emptyList());
         mockHistoryEntity();
 
-        ResponseEntity<Request> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
+        ResponseEntity<RoleAssignmentDeleteResource> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(1)).updateRequest(any(RequestEntity.class));
     }
@@ -147,7 +218,7 @@ class DeleteRoleAssignmentOrchestratorTest {
     void shouldNotDeleteRecordsForZeroApprovedItems() throws Exception {
         mockRequest();
         when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
-        sut.requestEntity = new RequestEntity();
+        sut.setRequestEntity(new RequestEntity());
         sut.checkAllDeleteApproved(new AssignmentRequest(new Request(), Collections.emptyList()), "actorId");
         verify(persistenceService, times(0)).deleteRoleAssignmentByActorId(any());
         verify(persistenceService, times(0)).persistActorCache(any());
@@ -158,20 +229,22 @@ class DeleteRoleAssignmentOrchestratorTest {
     @DisplayName("should not delete any records if delete approved records don't match requested items")
     void shouldNotDeleteRecordsForNonMatchingRequestItems() throws Exception {
         mockRequest();
+        RoleAssignment roleAssignment = RoleAssignment.builder().status(DELETE_APPROVED).build();
         when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
 
-        sut.requestEntity = RequestEntity.builder().historyEntities(new HashSet<>()).build();
+        sut.setRequestEntity(RequestEntity.builder().historyEntities(new HashSet<>()).build());
         sut.checkAllDeleteApproved(new AssignmentRequest(
             new Request(),
             new ArrayList<>() {
                 {
-                    add(RoleAssignment.builder().status(DELETE_APPROVED).build());
+                    add(roleAssignment);
                     add(RoleAssignment.builder().status(DELETE_REJECTED).build());
                     add(RoleAssignment.builder().status(DELETED).build());
 
                 }
             }
         ), "actorId");
+        assertEquals(DELETE_REJECTED,roleAssignment.getStatus());
         verify(persistenceService, times(0)).deleteRoleAssignmentByActorId(any());
         verify(persistenceService, times(0)).persistActorCache(any());
         verify(persistenceService, times(2)).updateRequest(any(RequestEntity.class));
@@ -199,6 +272,8 @@ class DeleteRoleAssignmentOrchestratorTest {
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
         verify(validationModelService,times(1)).validateRequest(any(AssignmentRequest.class));
         verify(persistenceService,times(3)).updateRequest(any(RequestEntity.class));
+        verify(persistenceService,times(2)).persistHistoryEntities(any());
+
     }
 
     @Test
