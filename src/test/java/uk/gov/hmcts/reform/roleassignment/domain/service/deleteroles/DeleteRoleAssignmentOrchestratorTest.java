@@ -112,8 +112,8 @@ class DeleteRoleAssignmentOrchestratorTest {
 
         ResponseEntity<RoleAssignmentDeleteResource> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS,
                                                                                                      REFERENCE);
-        assertEquals(APPROVED.toString(), sut.requestEntity.getStatus());
-        assertEquals(sut.request.getId(),sut.requestEntity.getId());
+        assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
+        assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
     }
@@ -149,7 +149,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         Set<HistoryEntity> historyEntities = new HashSet<>();
         historyEntities.add(historyEntity);
         requestEntity.setHistoryEntities(historyEntities);
-        sut.requestEntity = requestEntity;
+        sut.setRequestEntity(requestEntity);
         sut.checkAllDeleteApproved(assignmentRequest, assignmentRequest.getRequest().getAssignerId());
         verify(persistenceService, times(2)).deleteRoleAssignmentByActorId(any());
         verify(persistenceService, times(1)).persistActorCache(any());
@@ -170,11 +170,11 @@ class DeleteRoleAssignmentOrchestratorTest {
         Set<HistoryEntity> historyEntities = new HashSet<>();
         historyEntities.add(historyEntity);
         requestEntity.setHistoryEntities(historyEntities);
-        sut.requestEntity = requestEntity;
+        sut.setRequestEntity(requestEntity);
         sut.checkAllDeleteApproved(assignmentRequest, assignmentRequest.getRequest().getAssignerId());
         assertEquals(1, assignmentRequest.getRequestedRoles().size());
-        assertEquals(REJECTED.toString(),sut.requestEntity.getStatus());
-        assertEquals(assignmentRequest.getRequest().getLog(),sut.requestEntity.getLog());
+        assertEquals(REJECTED.toString(),sut.getRequestEntity().getStatus());
+        assertEquals(assignmentRequest.getRequest().getLog(),sut.getRequestEntity().getLog());
 
     }
 
@@ -192,7 +192,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         Set<HistoryEntity> historyEntities = new HashSet<>();
         historyEntities.add(historyEntity);
         requestEntity.setHistoryEntities(historyEntities);
-        sut.requestEntity = requestEntity;
+        sut.setRequestEntity(requestEntity);
         sut.checkAllDeleteApproved(assignmentRequest, "");
         verify(persistenceService, times(2)).deleteRoleAssignment(any());
         verify(persistenceService, times(1)).persistActorCache(any());
@@ -218,7 +218,7 @@ class DeleteRoleAssignmentOrchestratorTest {
     void shouldNotDeleteRecordsForZeroApprovedItems() throws Exception {
         mockRequest();
         when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
-        sut.requestEntity = new RequestEntity();
+        sut.setRequestEntity(new RequestEntity());
         sut.checkAllDeleteApproved(new AssignmentRequest(new Request(), Collections.emptyList()), "actorId");
         verify(persistenceService, times(0)).deleteRoleAssignmentByActorId(any());
         verify(persistenceService, times(0)).persistActorCache(any());
@@ -232,7 +232,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         RoleAssignment roleAssignment = RoleAssignment.builder().status(DELETE_APPROVED).build();
         when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
 
-        sut.requestEntity = RequestEntity.builder().historyEntities(new HashSet<>()).build();
+        sut.setRequestEntity(RequestEntity.builder().historyEntities(new HashSet<>()).build());
         sut.checkAllDeleteApproved(new AssignmentRequest(
             new Request(),
             new ArrayList<>() {
