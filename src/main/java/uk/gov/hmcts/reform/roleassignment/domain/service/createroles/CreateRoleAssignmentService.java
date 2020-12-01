@@ -56,7 +56,7 @@ public class CreateRoleAssignmentService {
     Set<RoleAssignmentSubset> needToCreateRoleAssignments;
     Set<RoleAssignment> needToRetainRoleAssignments;
     private static final String REQUEST_REJECTION_MSG = "Request has been rejected due to following assignment Ids :";
-    private static final String REQUEST_APPROVAL_MSG = "Request has been Approved";
+    private static final String REQUEST_APPROVAL_MSG = "Request has been approved";
 
     public CreateRoleAssignmentService(ParseRequestService parseRequestService,
                                        PersistenceService persistenceService,

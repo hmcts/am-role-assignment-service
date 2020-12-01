@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 
@@ -59,11 +59,11 @@ class QueryRoleAssignmentOrchestratorTest {
                                                                           false))
             .thenReturn(Collections.emptyList());
         when(persistenceServiceMock.getTotalRecords()).thenReturn(Long.valueOf(10));
-        ResponseEntity<List<Assignment>> result = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,
-                                                                                            1,
-                                                                                            2,
-                                                                                            "id",
-                                                                                            "asc");
+        ResponseEntity<RoleAssignmentResource> result = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,
+                                                                                                  1,
+                                                                                                  2,
+                                                                                                  "id",
+                                                                                                  "asc");
         assertNotNull(result);
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getBody());
