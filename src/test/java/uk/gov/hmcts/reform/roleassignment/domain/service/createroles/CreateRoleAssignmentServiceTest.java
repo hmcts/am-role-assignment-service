@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,9 +15,13 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
@@ -27,6 +32,7 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -46,12 +52,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
 
 
 class CreateRoleAssignmentServiceTest {
@@ -130,7 +137,7 @@ class CreateRoleAssignmentServiceTest {
         verify(persistenceService, times(2))
             .updateRequest(any(RequestEntity.class));
         existingAssignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(Status.DELETED, roleAssignment.getStatus());
+            assertEquals(DELETED, roleAssignment.getStatus());
         });
         verify(persistenceService, times(2))
             .deleteRoleAssignment(any(RoleAssignment.class));
@@ -152,9 +159,9 @@ class CreateRoleAssignmentServiceTest {
         incomingAssignmentRequest.getRequest().setAssignerId(incomingAssignmentRequest.getRequest()
                                                                  .getAuthenticatedUserId());
         incomingAssignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-                                                                  roleAssignment.setGrantType(GrantType.SPECIFIC));
+                                                                  roleAssignment.setGrantType(SPECIFIC));
         existingAssignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-                                                                  roleAssignment.setGrantType(GrantType.SPECIFIC));
+                                                                  roleAssignment.setGrantType(SPECIFIC));
 
         Set<HistoryEntity> historyEntities = new HashSet<>();
 
@@ -494,30 +501,19 @@ class CreateRoleAssignmentServiceTest {
         historyEntities.add(historyEntity);
         requestEntity.setHistoryEntities(historyEntities);
 
-        RoleAssignmentSubset roleAssignmentSubset = RoleAssignmentSubset.builder().build();
-        roleAssignmentSubset
-            .setActorId(incomingAssignmentRequest.getRequestedRoles().iterator().next().getActorId());
-        roleAssignmentSubset
-            .setActorIdType(incomingAssignmentRequest.getRequestedRoles().iterator().next().getActorIdType());
-        roleAssignmentSubset
-            .setRoleType(incomingAssignmentRequest.getRequestedRoles().iterator().next().getRoleType());
-        roleAssignmentSubset
-            .setRoleName(incomingAssignmentRequest.getRequestedRoles().iterator().next().getRoleName());
-        roleAssignmentSubset
-            .setClassification(incomingAssignmentRequest.getRequestedRoles().iterator().next().getClassification());
-        roleAssignmentSubset
-            .setGrantType(incomingAssignmentRequest.getRequestedRoles().iterator().next().getGrantType());
-        roleAssignmentSubset
-            .setRoleCategory(incomingAssignmentRequest.getRequestedRoles().iterator().next().getRoleCategory());
-        roleAssignmentSubset
-            .setAttributes(incomingAssignmentRequest.getRequestedRoles().iterator().next().getAttributes());
-        roleAssignmentSubset
-            .setNotes(incomingAssignmentRequest.getRequestedRoles().iterator().next().getNotes());
-        roleAssignmentSubset
-            .setBeginTime(incomingAssignmentRequest.getRequestedRoles().iterator().next().getBeginTime());
-        roleAssignmentSubset
-            .setEndTime(incomingAssignmentRequest.getRequestedRoles().iterator().next().getEndTime());
-        roleAssignmentSubset.setReadOnly(true);
+        RoleAssignmentSubset roleAssignmentSubset = createRoleAssignmentSubset(
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getActorId(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getActorIdType(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getRoleType(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getRoleName(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getClassification(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getGrantType(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getRoleCategory(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getAttributes(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getNotes(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getBeginTime(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getEndTime()
+        );
 
         Set<RoleAssignmentSubset> needToCreateRoleAssignments = new HashSet<>();
         Map<UUID, RoleAssignmentSubset> needToDeleteRoleAssignments = new HashMap<>();
@@ -539,6 +535,29 @@ class CreateRoleAssignmentServiceTest {
 
     }
 
+    private RoleAssignmentSubset createRoleAssignmentSubset(String actorId, ActorIdType actorIdType,
+                                                            RoleType roleType, String roleName,
+                                                            Classification classification, GrantType grantType,
+                                                            RoleCategory roleCategory, Map<String, JsonNode> attributes,
+                                                            JsonNode notes, LocalDateTime beginTime,
+                                                            LocalDateTime endTime) {
+
+        return RoleAssignmentSubset
+            .builder()
+            .actorId(actorId)
+            .actorIdType(actorIdType)
+            .roleType(roleType)
+            .roleName(roleName)
+            .classification(classification)
+            .grantType(grantType)
+            .roleCategory(roleCategory)
+            .attributes(attributes)
+            .notes(notes)
+            .beginTime(beginTime)
+            .endTime(endTime)
+            .readOnly(true)
+            .build();
+    }
 
     private void prepareInput() throws IOException {
         existingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, DELETE_APPROVED,
