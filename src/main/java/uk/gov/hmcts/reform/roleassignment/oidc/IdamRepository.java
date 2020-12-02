@@ -45,6 +45,7 @@ public class IdamRepository {
         this.restTemplate = restTemplate;
     }
 
+    @Cacheable(value = "token")
     public UserInfo getUserInfo(String jwtToken) {
         return idamApi.retrieveUserInfo(BEARER + jwtToken);
     }
@@ -79,7 +80,7 @@ public class IdamRepository {
         return headers;
     }
 
-    @Cacheable(value = "token")
+
     public String getManageUserToken() {
         TokenRequest tokenRequest = new TokenRequest(
             oauth2Configuration.getClientId(),

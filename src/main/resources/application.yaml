@@ -136,7 +136,7 @@ audit:
 token:
   cache:
     ttl:
-      secs: 900000
+      ms: 150000
 
 roleassignment:
    query:

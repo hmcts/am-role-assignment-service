@@ -54,7 +54,8 @@ public class CreateRoleAssignmentOrchestrator {
         this.persistenceUtil = persistenceUtil;
     }
 
-    public ResponseEntity<Object> createRoleAssignment(AssignmentRequest roleAssignmentRequest) throws ParseException {
+    public ResponseEntity<RoleAssignmentRequestResource> createRoleAssignment(AssignmentRequest roleAssignmentRequest)
+        throws ParseException {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("createRoleAssignment execution started at %s", startTime));
         try {
@@ -142,7 +143,8 @@ public class CreateRoleAssignmentOrchestrator {
                 ));
             }
 
-            ResponseEntity<Object> result = prepareResponseService.prepareCreateRoleResponse(parsedAssignmentRequest);
+            ResponseEntity<RoleAssignmentRequestResource> result = prepareResponseService
+                .prepareCreateRoleResponse(parsedAssignmentRequest);
 
             parseRequestService.removeCorrelationLog();
             return result;

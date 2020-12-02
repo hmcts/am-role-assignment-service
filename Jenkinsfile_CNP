@@ -49,6 +49,9 @@ def secrets = [
   ]
 ]
 
+// Configure branches to sync with master branch
+def branchesToSync = ['demo', 'perftest']
+
 // Vars needed for functional and smoke tests to run against AKS
 env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
 env.IDAM_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
@@ -93,6 +96,9 @@ withPipeline(type, product, component) {
   enableAksStagingDeployment()
   disableLegacyDeploymentOnAAT()
   disableLegacyDeployment()
+
+  // Sync environment specific branches with master branch
+  syncBranchesWithMaster(branchesToSync)
 
   before('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'

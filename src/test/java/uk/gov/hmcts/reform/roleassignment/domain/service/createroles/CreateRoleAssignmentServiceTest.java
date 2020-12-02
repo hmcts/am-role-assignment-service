@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -9,11 +10,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
@@ -22,27 +30,36 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.List;
+import java.util.HashSet;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
+
 
 class CreateRoleAssignmentServiceTest {
 
@@ -116,16 +133,20 @@ class CreateRoleAssignmentServiceTest {
 
 
         //assertion
+
         verify(persistenceService, times(2))
             .updateRequest(any(RequestEntity.class));
-
+        existingAssignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(DELETED, roleAssignment.getStatus());
+        });
         verify(persistenceService, times(2))
             .deleteRoleAssignment(any(RoleAssignment.class));
-        verify(persistenceService, times(2))
-            .persistActorCache(any(RoleAssignment.class));
+        verify(persistenceService, times(1))
+            .persistActorCache(anyCollection());
         verify(persistenceUtil, times(2))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
-
+        verify(persistenceService, times(1))
+            .persistHistoryEntities(any());
     }
 
 
@@ -135,6 +156,13 @@ class CreateRoleAssignmentServiceTest {
         incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, APPROVED,
                                                                            false
         );
+        incomingAssignmentRequest.getRequest().setAssignerId(incomingAssignmentRequest.getRequest()
+                                                                 .getAuthenticatedUserId());
+        incomingAssignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                                  roleAssignment.setGrantType(SPECIFIC));
+        existingAssignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                                  roleAssignment.setGrantType(SPECIFIC));
+
         Set<HistoryEntity> historyEntities = new HashSet<>();
 
         historyEntities.add(historyEntity);
@@ -162,19 +190,23 @@ class CreateRoleAssignmentServiceTest {
             any(Request.class)
         )).thenReturn(historyEntity);
 
-
         //Call actual Method
         sut.checkAllDeleteApproved(existingAssignmentRequest, incomingAssignmentRequest);
 
 
         //assertion
+
+        assertEquals(REJECTED, incomingAssignmentRequest.getRequest().getStatus());
+        assertEquals(REJECTED.toString(), sut.getRequestEntity().getStatus());
+
         verify(persistenceService, times(5))
             .updateRequest(any(RequestEntity.class));
         verify(persistenceUtil, times(8))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(validationModelService, times(1))
             .validateRequest(any(AssignmentRequest.class));
-
+        verify(persistenceService, times(4))
+            .persistHistoryEntities(any());
     }
 
     @Test
@@ -211,19 +243,21 @@ class CreateRoleAssignmentServiceTest {
             any(Request.class)
         )).thenReturn(historyEntity);
 
-
         // actual Method call
         sut.executeReplaceRequest(existingAssignmentRequest, incomingAssignmentRequest);
 
-
         //assertion
+        assertEquals(APPROVED, incomingAssignmentRequest.getRequest().getStatus());
+        assertEquals("Request has been approved", incomingAssignmentRequest.getRequest().getLog());
+        assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
+        assertEquals(incomingAssignmentRequest.getRequest().getLog(), sut.getRequestEntity().getLog());
         verify(persistenceService, times(3))
             .updateRequest(any(RequestEntity.class));
 
         verify(persistenceService, times(2))
             .deleteRoleAssignment(any(RoleAssignment.class));
         verify(persistenceService, times(2))
-            .persistActorCache(any(RoleAssignment.class));
+            .persistActorCache(anyCollection());
         verify(persistenceUtil, times(2))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
 
@@ -232,25 +266,32 @@ class CreateRoleAssignmentServiceTest {
     @Test
     void check_DuplicateRequest() throws IOException {
 
-        String msg = "Duplicate Request: Requested Assignments are already live.";
-        incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(APPROVED, LIVE,
+        incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, LIVE,
                                                                            false
         );
-        incomingAssignmentRequest.getRequest().setLog(msg);
 
         when(prepareResponseService.prepareCreateRoleResponse(any()))
-            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(incomingAssignmentRequest));
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(incomingAssignmentRequest)));
         sut.setRequestEntity(requestEntity);
 
         //Call actual Method
-        ResponseEntity<Object> response = sut.duplicateRequest(existingAssignmentRequest, incomingAssignmentRequest);
-        AssignmentRequest result = (AssignmentRequest) response.getBody();
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.duplicateRequest(existingAssignmentRequest,
+                                                                                      incomingAssignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result =  roleAssignmentRequestResource.getRoleAssignmentRequest();
+
+        String msg = "Duplicate Request: Requested Assignments are already live.";
 
         //assertion
         assertEquals(incomingAssignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(msg, result.getRequest().getLog());
-        assertEquals(incomingAssignmentRequest, result);
+        assertEquals(APPROVED, incomingAssignmentRequest.getRequest().getStatus());
+        assertEquals(msg, incomingAssignmentRequest.getRequest().getLog());
+        assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
+        assertEquals(msg, sut.getRequestEntity().getLog());
+        assertEquals(existingAssignmentRequest.getRequestedRoles(), incomingAssignmentRequest.getRequestedRoles());
 
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
@@ -295,11 +336,18 @@ class CreateRoleAssignmentServiceTest {
         sut.checkAllApproved(incomingAssignmentRequest);
 
         //assertion
+        assertEquals(APPROVED, incomingAssignmentRequest.getRequest().getStatus());
+        assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
+        assertTrue(incomingAssignmentRequest.getRequest().getLog()
+                       .contains("Request has been approved"));
+        assertTrue(sut.getRequestEntity().getLog()
+                       .contains("Request has been approved"));
+
         verify(persistenceService, times(2))
             .updateRequest(any(RequestEntity.class));
 
         verify(persistenceService, times(1))
-            .persistActorCache(any(RoleAssignment.class));
+            .persistActorCache(anyCollection());
         verify(persistenceUtil, times(2))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(persistenceService, times(1))
@@ -340,11 +388,22 @@ class CreateRoleAssignmentServiceTest {
         sut.checkAllApproved(incomingAssignmentRequest);
 
         //assertion
+        incomingAssignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(REJECTED, roleAssignment.getStatus());
+        });
+        assertEquals(REJECTED, incomingAssignmentRequest.getRequest().getStatus());
+        assertEquals(REJECTED.toString(), sut.getRequestEntity().getStatus());
+
+        assertTrue(incomingAssignmentRequest.getRequest().getLog()
+                       .contains("Request has been rejected due to following assignment Ids :"));
+        assertTrue(sut.getRequestEntity().getLog()
+                       .contains("Request has been rejected due to following assignment Ids :"));
+
         verify(persistenceService, times(2))
             .updateRequest(any(RequestEntity.class));
 
         verify(persistenceService, times(0))
-            .persistActorCache(any(RoleAssignment.class));
+            .persistActorCache(anyCollection());
         verify(persistenceUtil, times(0))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(persistenceService, times(0))
@@ -385,6 +444,120 @@ class CreateRoleAssignmentServiceTest {
         assertEquals(existingRecords.values(), sut.needToDeleteRoleAssignments.values());
     }
 
+    @Test
+    void checkUpdateExistingAssignmentNoMatchingID() throws IOException {
+
+
+        incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, LIVE,
+                                                                           false
+        );
+        Set<HistoryEntity> historyEntities = new HashSet<>();
+
+        historyEntities.add(historyEntity);
+
+        Map<UUID, RoleAssignmentSubset> needToDeleteRoleAssignments = new HashMap<>();
+
+        RoleAssignmentSubset roleAssignmentSubset = RoleAssignmentSubset.builder().build();
+        needToDeleteRoleAssignments.put(UUID.randomUUID(), roleAssignmentSubset);
+
+        requestEntity.setHistoryEntities(historyEntities);
+        sut.setRequestEntity(requestEntity);
+        sut.setNeedToDeleteRoleAssignments(needToDeleteRoleAssignments);
+
+        // actual Method call
+        sut.updateExistingAssignments(incomingAssignmentRequest);
+
+        //assertion
+        assertEquals(0,incomingAssignmentRequest.getRequestedRoles().size());
+        assertEquals(2,sut.needToRetainRoleAssignments.size());
+
+        verify(persistenceService, times(1))
+            .updateRequest(any(RequestEntity.class));
+        verify(persistenceService, times(1))
+            .persistHistoryEntities(any());
+
+    }
+
+    @Test
+    void checkUpdateNewAssignments() throws IOException, InvocationTargetException, IllegalAccessException {
+
+        incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, REJECTED,
+                                                                           false
+        );
+        existingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, REJECTED,
+                                                                           false
+        );
+        //prepare request entity
+        requestEntity = TestDataBuilder.buildRequestEntity(existingAssignmentRequest.getRequest());
+
+        sut.setRequestEntity(requestEntity);
+
+        //build history entity
+        historyEntity = TestDataBuilder.buildHistoryIntoEntity(
+            existingAssignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
+
+        //set history entity into request entity
+        Set<HistoryEntity> historyEntities = new HashSet<>();
+        historyEntities.add(historyEntity);
+        requestEntity.setHistoryEntities(historyEntities);
+
+        RoleAssignmentSubset roleAssignmentSubset = createRoleAssignmentSubset(
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getActorId(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getActorIdType(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getRoleType(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getRoleName(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getClassification(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getGrantType(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getRoleCategory(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getAttributes(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getNotes(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getBeginTime(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getEndTime()
+        );
+
+        Set<RoleAssignmentSubset> needToCreateRoleAssignments = new HashSet<>();
+        Map<UUID, RoleAssignmentSubset> needToDeleteRoleAssignments = new HashMap<>();
+        needToCreateRoleAssignments.add(roleAssignmentSubset);
+        sut.setNeedToCreateRoleAssignments(needToCreateRoleAssignments);
+        sut.setNeedToDeleteRoleAssignments(needToDeleteRoleAssignments);
+
+        Set<RoleAssignment> needToRetainRoleAssignments = new HashSet<>();
+        sut.setNeedToRetainRoleAssignments(needToRetainRoleAssignments);
+
+        //actual method call
+        sut.updateNewAssignments(existingAssignmentRequest,incomingAssignmentRequest);
+
+        //assertion
+        assertEquals(1, incomingAssignmentRequest.getRequestedRoles().size());
+        assertFalse(existingAssignmentRequest.getRequestedRoles().isEmpty());
+        assertTrue(sut.needToDeleteRoleAssignments.isEmpty());
+        assertFalse(sut.needToRetainRoleAssignments.isEmpty());
+
+    }
+
+    private RoleAssignmentSubset createRoleAssignmentSubset(String actorId, ActorIdType actorIdType,
+                                                            RoleType roleType, String roleName,
+                                                            Classification classification, GrantType grantType,
+                                                            RoleCategory roleCategory, Map<String, JsonNode> attributes,
+                                                            JsonNode notes, LocalDateTime beginTime,
+                                                            LocalDateTime endTime) {
+
+        return RoleAssignmentSubset
+            .builder()
+            .actorId(actorId)
+            .actorIdType(actorIdType)
+            .roleType(roleType)
+            .roleName(roleName)
+            .classification(classification)
+            .grantType(grantType)
+            .roleCategory(roleCategory)
+            .attributes(attributes)
+            .notes(notes)
+            .beginTime(beginTime)
+            .endTime(endTime)
+            .readOnly(true)
+            .build();
+    }
 
     private void prepareInput() throws IOException {
         existingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, DELETE_APPROVED,
