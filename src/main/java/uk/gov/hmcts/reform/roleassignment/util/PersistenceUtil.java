@@ -24,6 +24,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static java.time.LocalTime.now;
+
 @Service
 public class PersistenceUtil {
 
@@ -97,7 +99,7 @@ public class PersistenceUtil {
         return ActorCacheEntity.builder()
             .actorId(actorCache.getActorId())
             .etag(actorCache.getEtag())
-            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(actorCache.getRoleAssignments()))
+            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(now()))
             .build();
 
     }

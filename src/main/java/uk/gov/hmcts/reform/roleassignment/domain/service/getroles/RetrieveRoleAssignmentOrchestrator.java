@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
@@ -18,7 +19,6 @@ import uk.gov.hmcts.reform.roleassignment.v1.V1;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class RetrieveRoleAssignmentOrchestrator {
@@ -38,9 +38,9 @@ public class RetrieveRoleAssignmentOrchestrator {
     //4. Call persistence to fetch requested assignment records
     //5. Call prepare response to make HATEOUS based response.
 
-    public ResponseEntity<Object> getAssignmentsByActor(String actorId) {
+    public ResponseEntity<RoleAssignmentResource> getAssignmentsByActor(String actorId) {
         ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, actorId);
-        List<RoleAssignment> assignments = persistenceService.getAssignmentsByActor(actorId);
+        List<? extends Assignment> assignments = persistenceService.getAssignmentsByActor(actorId);
         if (CollectionUtils.isEmpty(assignments)) {
             throw new ResourceNotFoundException(String.format(
                 V1.Error.NO_RECORDS_FOUND_BY_ACTOR + " %s",
@@ -49,7 +49,7 @@ public class RetrieveRoleAssignmentOrchestrator {
         }
         return prepareResponseService.prepareRetrieveRoleResponse(
             assignments,
-            UUID.fromString(actorId)
+            actorId
         );
     }
 
@@ -62,7 +62,6 @@ public class RetrieveRoleAssignmentOrchestrator {
         rootNode = mapper.readTree(input);
         for (JsonNode roleNode : rootNode) {
             ObjectNode obj = (ObjectNode) roleNode;
-            obj.remove(Constants.ROLE_JSON_PATTERNS_FIELD);
         }
 
         return rootNode;

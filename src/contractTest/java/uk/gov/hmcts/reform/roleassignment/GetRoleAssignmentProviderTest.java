@@ -19,11 +19,11 @@ import org.springframework.context.annotation.Import;
 import java.io.IOException;
 
 @ExtendWith(SpringExtension.class)
-@Provider("am_role_assignment_service")
+@Provider("am_role_assignment_service_roles")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}", host = "${PACT_BROKER_URL:localhost}",
     port = "${PACT_BROKER_PORT:9292}")
 @Import(RoleAssignmentProviderTestConfiguration.class)
-public class RoleAssignmentProviderTest {
+public class GetRoleAssignmentProviderTest {
 
     @Autowired
     private RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentServiceMock;
@@ -31,6 +31,7 @@ public class RoleAssignmentProviderTest {
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider.class)
     void pactVerificationTestTemplate(PactVerificationContext context) {
+
         context.verifyInteraction();
     }
 
@@ -46,7 +47,7 @@ public class RoleAssignmentProviderTest {
     }
 
     @State({"A list of roles are available in role assignment service"})
-    public void toGetlistOfRolesWithSuccess() throws IOException, JSONException {
+    public void getlistOfRolesWithSuccess() throws IOException, JSONException {
 
     }
 }

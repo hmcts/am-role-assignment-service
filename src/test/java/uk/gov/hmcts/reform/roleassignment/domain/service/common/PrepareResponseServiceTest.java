@@ -8,14 +8,15 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
@@ -34,11 +35,15 @@ class PrepareResponseServiceTest {
 
     @Test
     void prepareCreateRoleResponse() throws IOException {
-        ResponseEntity<Object> responseEntity =
+
+        AssignmentRequest assignmentRequest = TestDataBuilder
+            .buildAssignmentRequest(Status.CREATED, Status.LIVE, false);
+        assignmentRequest.getRequest().setClientId("ccd");
+        ResponseEntity<RoleAssignmentRequestResource> responseEntity =
             prepareResponseService
-                .prepareCreateRoleResponse(TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE, false));
+                .prepareCreateRoleResponse(assignmentRequest);
         RoleAssignmentRequestResource assignmentRequestResponse =
-            (RoleAssignmentRequestResource) responseEntity.getBody();
+            responseEntity.getBody();
         assert assignmentRequestResponse != null;
         assertNull(assignmentRequestResponse.getRoleAssignmentRequest().getRequest().getClientId());
         assertNotNull(assignmentRequestResponse.getRoleAssignmentRequest().getRequest());
@@ -47,7 +52,7 @@ class PrepareResponseServiceTest {
 
     @Test
     void prepareCreateRoleResponse_Rejected() throws IOException {
-        ResponseEntity<Object> responseEntity =
+        ResponseEntity<RoleAssignmentRequestResource> responseEntity =
             prepareResponseService
                 .prepareCreateRoleResponse(TestDataBuilder.buildAssignmentRequest(Status.REJECTED, Status.LIVE, false));
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
@@ -55,23 +60,24 @@ class PrepareResponseServiceTest {
 
     @Test
     void prepareRetrieveRoleResponse() throws Exception {
-        ResponseEntity<Object> responseEntity =
+        ResponseEntity<RoleAssignmentResource> responseEntity =
             prepareResponseService
-                .prepareRetrieveRoleResponse((List<RoleAssignment>) TestDataBuilder
-                    .buildRequestedRoleCollection(Status.LIVE),
-                                             UUID.fromString("6b36bfc6-bb21-11ea-b3de-0242ac140004"));
+                .prepareRetrieveRoleResponse(
+                    (List<RoleAssignment>) TestDataBuilder
+                        .buildRequestedRoleCollection(Status.LIVE),
+                    "6b36bfc6-bb21-11ea-b3de-0242ac140004"
+                );
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
-    /*@Test
+    @Test
     void addHateosLinks() throws IOException {
         RoleAssignmentRequestResource roleAssignmentRequestResource = new RoleAssignmentRequestResource();
         roleAssignmentRequestResource
             .setRoleAssignmentRequest(TestDataBuilder
                                           .buildAssignmentRequest(Status.CREATED, Status.LIVE, false));
 
-        prepareResponseService.addHateoasLinks(java.util.Optional.of(roleAssignmentRequestResource),
-                                               UUID.fromString("6b36bfc6-bb21-11ea-b3de-0242ac140004"));
-    }*/
+    }
+
 }

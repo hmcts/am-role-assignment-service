@@ -11,10 +11,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -54,7 +55,7 @@ public class CreateRoleAssignmentService {
     Set<RoleAssignmentSubset> needToCreateRoleAssignments;
     Set<RoleAssignment> needToRetainRoleAssignments;
     private static final String REQUEST_REJECTION_MSG = "Request has been rejected due to following assignment Ids :";
-    private static final String REQUEST_APPROVAL_MSG = "Request has been Approved";
+    private static final String REQUEST_APPROVAL_MSG = "Request has been approved";
 
     public CreateRoleAssignmentService(ParseRequestService parseRequestService,
                                        PersistenceService persistenceService,
@@ -238,8 +239,8 @@ public class CreateRoleAssignmentService {
             Collectors.toList());
         for (RoleAssignment requestedAssignment : roleAssignments) {
             requestedAssignment.setStatus(Status.LIVE);
-            persistenceService.persistActorCache(requestedAssignment);
         }
+        persistenceService.persistActorCache(roleAssignments);
         persistenceService.persistRoleAssignments(roleAssignments);
     }
 
@@ -264,8 +265,9 @@ public class CreateRoleAssignmentService {
 
         for (RoleAssignment requestedRole : existingAssignments) {
             persistenceService.deleteRoleAssignment(requestedRole);
-            persistenceService.persistActorCache(requestedRole);
+
         }
+        persistenceService.persistActorCache(existingAssignments);
         logger.info(String.format(
             "deleteLiveAssignments execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
@@ -429,8 +431,8 @@ public class CreateRoleAssignmentService {
         insertRequestedRole(existingAssignmentRequest, Status.DELETED, emptyUUIds);
     }
 
-    public ResponseEntity<Object> duplicateRequest(AssignmentRequest existingAssignmentRequest,
-                                                   AssignmentRequest parsedAssignmentRequest) {
+    public ResponseEntity<RoleAssignmentRequestResource> duplicateRequest(AssignmentRequest existingAssignmentRequest,
+                                                                          AssignmentRequest parsedAssignmentRequest) {
         parsedAssignmentRequest.getRequest().setStatus(Status.APPROVED);
         requestEntity.setStatus(Status.APPROVED.toString());
         requestEntity.setLog(
@@ -444,7 +446,7 @@ public class CreateRoleAssignmentService {
         parsedAssignmentRequest.setRequestedRoles(existingAssignmentRequest.getRequestedRoles());
 
 
-        ResponseEntity<Object> result = prepareResponseService.prepareCreateRoleResponse(
+        ResponseEntity<RoleAssignmentRequestResource> result = prepareResponseService.prepareCreateRoleResponse(
             parsedAssignmentRequest);
         parseRequestService.removeCorrelationLog();
         return result;
