@@ -10,18 +10,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
-
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
@@ -32,33 +31,32 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.List;
-import java.util.HashSet;
-
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
 
 
 class CreateRoleAssignmentServiceTest {
@@ -539,8 +537,8 @@ class CreateRoleAssignmentServiceTest {
                                                             RoleType roleType, String roleName,
                                                             Classification classification, GrantType grantType,
                                                             RoleCategory roleCategory, Map<String, JsonNode> attributes,
-                                                            JsonNode notes, LocalDateTime beginTime,
-                                                            LocalDateTime endTime) {
+                                                            JsonNode notes, ZonedDateTime beginTime,
+                                                            ZonedDateTime endTime) {
 
         return RoleAssignmentSubset
             .builder()

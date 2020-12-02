@@ -514,8 +514,10 @@ public class CreateRoleAssignmentService {
         //create a new existing assignment request for delete records
         existingAssignmentRequest = new AssignmentRequest(parsedAssignmentRequest.getRequest(), existingAssignments);
         existingAssignmentRequest.getRequestedRoles().forEach(requestedRole -> {
-            requestedRole.setBeginTime(requestedRole.getBeginTime().withZoneSameLocal(ZoneId.of("UTC")));
-            requestedRole.setEndTime(requestedRole.getEndTime().withZoneSameLocal(ZoneId.of("UTC")));
+            requestedRole.setBeginTime(requestedRole.getBeginTime() != null ? requestedRole.getBeginTime()
+                .withZoneSameLocal(ZoneId.of("UTC")) : null);
+            requestedRole.setEndTime(requestedRole.getEndTime() != null ? requestedRole.getEndTime()
+                .withZoneSameLocal(ZoneId.of("UTC")) : null);
         });
         return existingAssignmentRequest;
     }
