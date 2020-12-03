@@ -10,14 +10,17 @@ import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @RunWith(MockitoJUnitRunner.class)
 class PersistenceUtilTest {
@@ -35,7 +38,28 @@ class PersistenceUtilTest {
     void convertRoleAssignmentToHistoryEntity() throws IOException {
         assertNotNull(persistenceUtil.convertRoleAssignmentToHistoryEntity(
             TestDataBuilder.buildRoleAssignment(Status.LIVE),
-            TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED, false))));
+            TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED, false))
+        ));
+    }
+
+    @Test
+    void convertRoleAssignmentWithNullAttributesToHistoryEntity() throws IOException {
+
+
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
+        roleAssignment.setBeginTime(null);
+        roleAssignment.setEndTime(null);
+        roleAssignment.setAuthorisations(Collections.emptyList());
+        HistoryEntity historyEntity = persistenceUtil.convertRoleAssignmentToHistoryEntity(
+            roleAssignment,
+            TestDataBuilder.buildRequestEntity(TestDataBuilder
+                                                   .buildRequest(Status.APPROVED, false))
+        );
+        assertNotNull(historyEntity);
+        assertNull(historyEntity.getBeginTime());
+        assertNull(historyEntity.getEndTime());
+        assertNull(historyEntity.getAuthorisations());
+
     }
 
     @Test
@@ -52,6 +76,29 @@ class PersistenceUtilTest {
     }
 
     @Test
+    void convertRoleAssignmentWithNullValuesToEntity() throws IOException {
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
+        roleAssignment.setBeginTime(null);
+        roleAssignment.setEndTime(null);
+        roleAssignment.setActorIdType(null);
+        roleAssignment.setClassification(null);
+        roleAssignment.setGrantType(null);
+        roleAssignment.setRoleType(null);
+        roleAssignment.setRoleCategory(null);
+        RoleAssignmentEntity roleAssignmentEntity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment,
+                                                                                                  true
+        );
+        assertNotNull(roleAssignmentEntity);
+        assertNull(roleAssignmentEntity.getBeginTime());
+        assertNull(roleAssignmentEntity.getEndTime());
+        assertNull(roleAssignmentEntity.getActorIdType());
+        assertNull(roleAssignmentEntity.getClassification());
+        assertNull(roleAssignmentEntity.getGrantType());
+        assertNull(roleAssignmentEntity.getRoleType());
+        assertNull(roleAssignmentEntity.getRoleCategory());
+    }
+
+    @Test
     void convertActorCacheToEntity() throws IOException {
         assertNotNull(persistenceUtil.convertActorCacheToEntity(TestDataBuilder.buildActorCache()));
     }
@@ -61,7 +108,26 @@ class PersistenceUtilTest {
         assertNotNull(persistenceUtil.convertHistoryEntityToRoleAssignment(
             TestDataBuilder.buildHistoryEntity(
                 TestDataBuilder.buildRoleAssignment(Status.LIVE),
-                TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED, false)))));
+                TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED, false))
+            )));
+    }
+
+    @Test
+    void convertHistoryEntityWithNullAttributesToRoleAssignment() throws IOException {
+
+        HistoryEntity historyEntity = TestDataBuilder.buildHistoryEntity(
+            TestDataBuilder.buildRoleAssignment(Status.LIVE),
+            TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED, false))
+        );
+        historyEntity.setBeginTime(null);
+        historyEntity.setEndTime(null);
+        historyEntity.setAuthorisations(null);
+
+        RoleAssignment roleAssignment = persistenceUtil.convertHistoryEntityToRoleAssignment(historyEntity);
+        assertNotNull(roleAssignment);
+        assertNull(roleAssignment.getEndTime());
+        assertNull(roleAssignment.getBeginTime());
+        assertEquals(0, roleAssignment.getAuthorisations().size());
     }
 
     @Test
@@ -71,10 +137,24 @@ class PersistenceUtilTest {
     }
 
     @Test
-    void convertEntityToRoleAssignmentWithAutorisations() throws IOException {
+    void convertEntityWithNullAttributesToRoleAssignment() throws IOException {
+        RoleAssignmentEntity roleAssignmentEntity = TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
+                                                                                                  .buildRoleAssignment(
+                                                                                                      Status.LIVE));
+        roleAssignmentEntity.setBeginTime(null);
+        roleAssignmentEntity.setEndTime(null);
+        RoleAssignment roleAssignment = persistenceUtil.convertEntityToRoleAssignment(roleAssignmentEntity
+        );
+        assertNotNull(roleAssignment);
+        assertNull(roleAssignment.getBeginTime());
+        assertNull(roleAssignment.getEndTime());
+    }
 
-        RoleAssignmentEntity entity =  TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
-                                                            .buildRoleAssignment(Status.LIVE));
+    @Test
+    void convertEntityToRoleAssignmentWithAuthorisations() throws IOException {
+
+        RoleAssignmentEntity entity = TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
+                                                                                    .buildRoleAssignment(Status.LIVE));
         entity.setAuthorisations("dev;tester");
         assertNotNull(persistenceUtil.convertEntityToRoleAssignment(
             entity));
@@ -104,5 +184,24 @@ class PersistenceUtilTest {
     void convertEntityToExistingRoleAssignment() throws IOException {
         assertNotNull(persistenceUtil.convertEntityToExistingRoleAssignment(
             TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(Status.LIVE))));
+    }
+
+    @Test
+    void convertEntityWithNullAttributesToExistingRoleAssignment() throws IOException {
+        RoleAssignmentEntity roleAssignmentEntity = TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
+                                                                                                  .buildRoleAssignment(
+                                                                                                      Status.LIVE));
+        roleAssignmentEntity.setRoleCategory(null);
+        roleAssignmentEntity.setBeginTime(null);
+        roleAssignmentEntity.setEndTime(null);
+        roleAssignmentEntity.setAuthorisations(null);
+        ExistingRoleAssignment existingRoleAssignment = persistenceUtil.convertEntityToExistingRoleAssignment(
+            roleAssignmentEntity);
+
+        assertNotNull(existingRoleAssignment);
+        assertNull(existingRoleAssignment.getRoleCategory());
+        assertNull(existingRoleAssignment.getBeginTime());
+        assertNull(existingRoleAssignment.getEndTime());
+        assertEquals(0, existingRoleAssignment.getAuthorisations().size());
     }
 }
