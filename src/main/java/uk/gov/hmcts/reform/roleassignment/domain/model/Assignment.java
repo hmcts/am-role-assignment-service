@@ -13,6 +13,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -31,8 +32,8 @@ public abstract class Assignment {
     private GrantType grantType;
     private RoleCategory roleCategory;
     private boolean readOnly;
-    private LocalDateTime beginTime;
-    private LocalDateTime endTime;
+    private ZonedDateTime beginTime;
+    private ZonedDateTime endTime;
 
 
     private String process; //need to map from request

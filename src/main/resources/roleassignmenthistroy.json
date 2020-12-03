@@ -7,8 +7,8 @@
   "grantType": "STANDARD",
   "readOnly": false,
   "status": "CREATED",
-  "beginTime": "2020-01-01T00:00",
-  "endTime": "2050-01-01T00:00",
+  "beginTime": "2020-01-01T00:00Z",
+  "endTime": "2050-01-01T00:00Z",
   "attributes":
   {
     "jurisdiction": "divorce"

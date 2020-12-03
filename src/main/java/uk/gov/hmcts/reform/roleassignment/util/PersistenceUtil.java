@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
@@ -45,14 +46,14 @@ public class PersistenceUtil {
             .process(roleAssignment.getProcess())
             .reference(roleAssignment.getReference())
             .created(roleAssignment.getCreated())
-            .beginTime(roleAssignment.getBeginTime())
-            .endTime(roleAssignment.getEndTime())
+            .beginTime(roleAssignment.getBeginTime() != null ? roleAssignment.getBeginTime().toLocalDateTime() : null)
+            .endTime(roleAssignment.getEndTime() != null ? roleAssignment.getEndTime().toLocalDateTime() : null)
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
             .notes(roleAssignment.getNotes())
             .log(roleAssignment.getLog())
             .authorisations(
                 !CollectionUtils.isEmpty(roleAssignment.getAuthorisations())
-                 ? (String.join(";",roleAssignment.getAuthorisations())) : null)
+                    ? (String.join(";", roleAssignment.getAuthorisations())) : null)
             .build();
     }
 
@@ -78,17 +79,18 @@ public class PersistenceUtil {
         return RoleAssignmentEntity.builder()
             .id(roleAssignment.getId())
             .actorId(roleAssignment.getActorId())
-            .actorIdType(roleAssignment.getActorIdType().toString())
+            .actorIdType(roleAssignment.getActorIdType() != null ? roleAssignment.getActorIdType().toString() : null)
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
-            .beginTime(roleAssignment.getBeginTime())
-            .classification(roleAssignment.getClassification().toString())
-            .endTime(roleAssignment.getEndTime())
+            .classification(roleAssignment.getClassification() != null ? roleAssignment.getClassification()
+                .toString() : null)
+            .beginTime(roleAssignment.getBeginTime() != null ? roleAssignment.getBeginTime().toLocalDateTime() : null)
+            .endTime(roleAssignment.getEndTime() != null ? roleAssignment.getEndTime().toLocalDateTime() : null)
             .created(roleAssignment.getCreated())
-            .grantType(roleAssignment.getGrantType().toString())
+            .grantType(roleAssignment.getGrantType() != null ? roleAssignment.getGrantType().toString() : null)
             .roleName(roleAssignment.getRoleName())
-            .roleType(roleAssignment.getRoleType().toString())
+            .roleType(roleAssignment.getRoleType() != null ? roleAssignment.getRoleType().toString() : null)
             .readOnly(roleAssignment.isReadOnly())
-            .roleCategory(roleAssignment.getRoleCategory().toString())
+            .roleCategory(roleAssignment.getRoleCategory() != null ? roleAssignment.getRoleCategory().toString() : null)
             .authorisations(!CollectionUtils.isEmpty(roleAssignment.getAuthorisations())
                                 ? String.join(";", roleAssignment.getAuthorisations()) : null)
             .isNewFlag(isNewFlag)
@@ -118,15 +120,16 @@ public class PersistenceUtil {
             .status(Status.valueOf(historyEntity.getStatus()))
             .process(historyEntity.getProcess())
             .reference(historyEntity.getReference())
-            .beginTime(historyEntity.getBeginTime())
-            .endTime(historyEntity.getEndTime())
+            .beginTime(historyEntity.getBeginTime() != null ? historyEntity.getBeginTime().atZone(ZoneId
+                                                                                          .of("UTC")) : null)
+            .endTime(historyEntity.getEndTime() != null ? historyEntity.getEndTime().atZone(ZoneId.of("UTC")) : null)
             .created(historyEntity.getCreated())
             .log(historyEntity.getLog())
             .attributes(JacksonUtils.convertValue(historyEntity.getAttributes()))
             .notes(historyEntity.getNotes())
             .authorisations(StringUtils.isNotEmpty(historyEntity.getAuthorisations()) ? (Arrays.stream(historyEntity
-                                                                         .getAuthorisations().split(
-                ",")).collect(Collectors.toList())) : Collections.emptyList())
+                                                                                        .getAuthorisations().split(
+                    ",")).collect(Collectors.toList())) : Collections.emptyList())
             .build();
     }
 
@@ -142,9 +145,12 @@ public class PersistenceUtil {
             .roleName(roleAssignmentEntity.getRoleName())
             .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
             .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(roleAssignmentEntity
-                                                                                  .getRoleCategory()) : null)
-            .beginTime(roleAssignmentEntity.getBeginTime())
-            .endTime(roleAssignmentEntity.getEndTime())
+                                                                                         .getRoleCategory()) : null)
+            .beginTime(roleAssignmentEntity.getBeginTime() != null ? roleAssignmentEntity.getBeginTime()
+                .atZone(ZoneId.of(
+                "UTC")) : null)
+            .endTime(roleAssignmentEntity.getEndTime() != null ? roleAssignmentEntity.getEndTime().atZone(ZoneId.of(
+                "UTC")) : null)
             .created(roleAssignmentEntity.getCreated())
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
             .authorisations(roleAssignmentEntity.getAuthorisations() != null && !roleAssignmentEntity
@@ -183,9 +189,12 @@ public class PersistenceUtil {
             .roleName(roleAssignmentEntity.getRoleName())
             .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
             .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(roleAssignmentEntity
-                                                                                 .getRoleCategory()) : null)
-            .beginTime(roleAssignmentEntity.getBeginTime())
-            .endTime(roleAssignmentEntity.getEndTime())
+                                                                                    .getRoleCategory()) : null)
+            .beginTime(roleAssignmentEntity.getBeginTime() != null ? roleAssignmentEntity.getBeginTime()
+                .atZone(ZoneId.of(
+                "UTC")) : null)
+            .endTime(roleAssignmentEntity.getEndTime() != null ? roleAssignmentEntity.getEndTime().atZone(ZoneId.of(
+                "UTC")) : null)
             .created(roleAssignmentEntity.getCreated())
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
             .authorisations(roleAssignmentEntity.getAuthorisations() != null && !roleAssignmentEntity
