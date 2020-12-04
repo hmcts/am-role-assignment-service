@@ -35,6 +35,7 @@ import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -81,6 +82,37 @@ public class TestDataBuilder {
             .status(status)
             .created(now())
             .build();
+    }
+
+    public static RoleAssignment buildRoleAssignment_CustomActorId(Status status, String actorId) throws IOException {
+        ZonedDateTime timeStamp = ZonedDateTime.now();
+        return RoleAssignment.builder()
+            .id(UUID.fromString("3ed4f960-e50b-4127-af30-47821d5799f7"))
+            .actorId(actorId)
+            .actorIdType(ActorIdType.IDAM)
+            .roleType(RoleType.ORGANISATION)
+            .roleName("senior-tribunal-caseworker")
+            .classification(Classification.PRIVATE)
+            .grantType(GrantType.STANDARD)
+            .roleCategory(RoleCategory.STAFF)
+            .readOnly(false)
+            .beginTime(timeStamp.plusDays(1))
+            .created(LocalDateTime.now())
+            .endTime(timeStamp.plusDays(3))
+            .reference("reference")
+            .process(("process"))
+            .statusSequence(10)
+            .status(status)
+            .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
+            .authorisations(Collections.emptyList())
+            .build();
+    }
+
+    public static List<RoleAssignment> buildRoleAssignmentList_Custom(Status status, String actorId)
+        throws IOException {
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId));
+        return requestedRoles;
     }
 
     public static RoleAssignment buildRoleAssignment(Status status) throws IOException {
@@ -154,9 +186,22 @@ public class TestDataBuilder {
             .body(new RoleAssignmentResource(Arrays.asList(buildRoleAssignment(roleStatus)),""));
     }
 
+    public static ResponseEntity<RoleAssignmentResource> buildResourceRoleAssignmentResponse_Custom(
+        Status roleStatus, String actorId) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new RoleAssignmentResource(Arrays.asList(buildRoleAssignment_CustomActorId(roleStatus, actorId)),
+                                             actorId));
+    }
+
     public static Collection<RoleAssignment> buildRequestedRoleCollection(Status status) throws IOException {
         Collection<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRoleAssignment(status));
+        requestedRoles.add(buildRoleAssignment(status));
+        return requestedRoles;
+    }
+
+    public static Collection<RoleAssignment> buildRoleAssignmentCollection_Pact(Status status) throws IOException {
+        Collection<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRoleAssignment(status));
         return requestedRoles;
     }
@@ -464,8 +509,6 @@ public class TestDataBuilder {
             .build();
 
     }
-
-
 
     public static List<RoleAssignment> getRequestedOrgRole() {
         return Arrays.asList(RoleAssignment.builder()
