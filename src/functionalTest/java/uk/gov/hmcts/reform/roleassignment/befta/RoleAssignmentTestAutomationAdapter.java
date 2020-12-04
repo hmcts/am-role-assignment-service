@@ -2,12 +2,9 @@ package uk.gov.hmcts.reform.roleassignment.befta;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import uk.gov.hmcts.befta.DefaultTestAutomationAdapter;
 import uk.gov.hmcts.befta.player.BackEndFunctionalTestScenarioContext;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -21,6 +18,7 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
     @Override
     public void doLoadTestData() {
         //Needed for the BEFTA implementation
+        /*
         //CcdRoleConfig ccdRoleConfig = new CcdRoleConfig("caseworker-ia", "PUBLIC");
         //loader.addNewCcdRole(ccdRoleConfig);
 
@@ -37,6 +35,7 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
         } catch (IOException e) {
             e.printStackTrace();
         }
+        */
     }
 
     @Override
