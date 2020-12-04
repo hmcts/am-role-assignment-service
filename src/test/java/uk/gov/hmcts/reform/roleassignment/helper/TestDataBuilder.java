@@ -108,7 +108,8 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static List<RoleAssignment> buildRoleAssignmentList_Custom(Status status, String actorId) throws IOException {
+    public static List<RoleAssignment> buildRoleAssignmentList_Custom(Status status, String actorId)
+        throws IOException {
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId));
         return requestedRoles;
