@@ -95,7 +95,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             "classpath:sql/insert_actor_cache_control.sql"})
     public void shouldGetRoleAssignmentsBasedOnActorId() throws Exception {
         assertRoleAssignmentRecordSize();
-        final String url = "" + ACTOR_ID;
+        final String url = "/am/role-assignments/actors/" + ACTOR_ID;
 
         final MvcResult result = mockMvc.perform(get(url)
                                                      .contentType(JSON_CONTENT_TYPE)
