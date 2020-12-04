@@ -24,6 +24,7 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
@@ -67,8 +68,7 @@ public class GetActorByIdRoleAssignmentProviderTest {
             = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE, actorId);
 
         when(persistenceService.getAssignmentsByActor(anyString())).thenReturn(roleAssignments);
-        when(persistenceService.getActorCacheEntity(actorId)).thenReturn(ActorCacheEntity.builder().actorId
-         (actorId).etag(1L).build());
+        when(persistenceService.getActorCacheEntity(actorId)).thenReturn(ActorCacheEntity.builder().actorId(actorId)
+                                                                             .etag(1L).build());
     }
-
 }
