@@ -65,8 +65,6 @@ public class GetActorByIdRoleAssignmentProviderTest {
         String actorId = "23486";
         List<RoleAssignment> roleAssignments
             = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE, actorId);
-        ResponseEntity<RoleAssignmentResource> roles =
-            TestDataBuilder.buildResourceRoleAssignmentResponse_Custom(Status.LIVE, actorId);
 
         when(persistenceService.getAssignmentsByActor(anyString())).thenReturn(roleAssignments);
         when(persistenceService.getActorCacheEntity(actorId)).thenReturn(ActorCacheEntity.builder().actorId
