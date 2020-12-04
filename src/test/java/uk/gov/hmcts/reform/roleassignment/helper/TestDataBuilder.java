@@ -35,6 +35,7 @@ import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -52,7 +53,6 @@ import java.util.UUID;
 import static java.time.LocalDateTime.now;
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.ROLES_JSON;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
@@ -97,7 +97,7 @@ public class TestDataBuilder {
             .roleCategory(RoleCategory.STAFF)
             .readOnly(false)
             .beginTime(timeStamp.plusDays(1))
-            .created(timeStamp)
+            .created(LocalDateTime.now())
             .endTime(timeStamp.plusDays(3))
             .reference("reference")
             .process(("process"))
