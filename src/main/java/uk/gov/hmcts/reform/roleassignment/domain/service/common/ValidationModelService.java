@@ -74,11 +74,10 @@ public class ValidationModelService {
 
 
     public List<Assignment> getCurrentRoleAssignmentsForActors(Set<String> actorIds) {
-        LocalDateTime now = LocalDateTime.now();
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorIds)
             .roleType("ORGANISATION")
-            .validAt(now)
+            .validAt(LocalDateTime.now())
             .build();
 
         return persistenceService.retrieveRoleAssignmentsByQueryRequest(

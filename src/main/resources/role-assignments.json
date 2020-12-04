@@ -7,8 +7,8 @@
 		"classification": "PRIVATE",
 		"grantType": "STANDARD",
 		"readOnly": false,
-		"begin": "2020-01-01T00:00",
-		"end": "2050-01-01T00:00",
+		"begin": "2020-01-01T00:00Z",
+		"end": "2050-01-01T00:00Z",
 		"attributes":
 			{
 				"jurisdiction": "divorce",
@@ -25,8 +25,8 @@
 		"classification": "PRIVATE",
 		"grantType": "STANDARD",
 		"readOnly": false,
-		"begin": "2020-01-01T00:00",
-		"end": "2050-01-01T00:00",
+		"begin": "2020-01-01T00:00Z",
+		"end": "2050-01-01T00:00Z",
 		"attributes":
 			{
 				"jurisdiction": "probate",
@@ -42,8 +42,8 @@
 		"classification": "PUBLIC",
 		"grantType": "STANDARD",
 		"readOnly": false,
-		"begin": "2020-01-01T00:00",
-		"end": "2050-01-01T00:00",
+		"begin": "2020-01-01T00:00Z",
+		"end": "2050-01-01T00:00Z",
 		"attributes":
 			{
 				"organisationId": "organisation1"

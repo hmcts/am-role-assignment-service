@@ -18,7 +18,7 @@
           "actorId": "${[scenarioContext][testData][users][befta1][id]}",
           "roleName": "tribunal-caseworker",
           "roleCategory": "STAFF",
-          "beginTime" : "2020-09-01T00:00",
+          "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "IA",
@@ -31,7 +31,7 @@
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "senior-tribunal-caseworker",
           "roleCategory": "STAFF",
-          "beginTime" : "2020-09-01T00:00",
+          "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "IA",
