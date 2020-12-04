@@ -9,7 +9,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
-import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ class DroolJudicialCategoryTest extends DroolBase {
         assignmentRequest.setRequestedRoles(requestedRoles);
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
 
-            roleAssignment.setBeginTime(LocalDateTime.now());
+            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
         });
 
         //Execute Kie session
@@ -63,7 +64,7 @@ class DroolJudicialCategoryTest extends DroolBase {
         assignmentRequest.setRequestedRoles(requestedRoles);
 
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setBeginTime(LocalDateTime.now());
+            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
         });
 
         //Execute Kie session

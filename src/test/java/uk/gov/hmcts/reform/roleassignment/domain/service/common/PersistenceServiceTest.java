@@ -39,7 +39,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -51,6 +50,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import static java.time.LocalDateTime.now;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -426,7 +426,7 @@ class PersistenceServiceTest {
             .roleName(roleNmaes)
             .classification(classifications)
             .attributes(attributes)
-            .validAt(LocalDateTime.now())
+            .validAt(now())
             .grantType(grantTypes)
             .build();
 
@@ -671,7 +671,7 @@ class PersistenceServiceTest {
             .roleName(roleNames)
             .classification(classifications)
             .attributes(attributes)
-            .validAt(LocalDateTime.now())
+            .validAt(now())
             .grantType(grantTypes)
             .build();
 

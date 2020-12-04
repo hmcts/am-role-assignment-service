@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,13 +32,13 @@ public class Case {
     private String caseTypeId;
 
     @JsonProperty("created_date")
-    private LocalDateTime createdDate;
+    private ZonedDateTime createdDate;
 
     @JsonProperty("last_modified")
-    private LocalDateTime lastModified;
+    private ZonedDateTime lastModified;
 
     @JsonProperty("last_state_modified_date")
-    private LocalDateTime lastStateModifiedDate;
+    private ZonedDateTime lastStateModifiedDate;
 
     private String state;
 
