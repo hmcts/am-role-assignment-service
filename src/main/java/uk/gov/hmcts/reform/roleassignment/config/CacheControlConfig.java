@@ -12,7 +12,7 @@ public class CacheControlConfig {
     public FilterRegistrationBean<ShallowEtagHeaderFilter> shallowEtagHeaderFilter() {
         FilterRegistrationBean<ShallowEtagHeaderFilter> filterRegistrationBean =
             new FilterRegistrationBean<>(new ShallowEtagHeaderFilter());
-        filterRegistrationBean.addUrlPatterns("/*");
+        filterRegistrationBean.addUrlPatterns("/am/role-assignments/actors/*");
         filterRegistrationBean.setName("etagFilter");
         return filterRegistrationBean;
     }
