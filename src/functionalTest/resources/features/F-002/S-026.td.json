@@ -7,6 +7,12 @@
     "contains Process and Reference associated with multiple Role Assignments"
   ],
   "uri": "/am/role-assignments?process={process}&reference={reference}",
+  "users": {
+    "invokingUser": {
+      "username": "TEST_AM_USER6_BEFTA@test.local",
+      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+    }
+  },
   "request": {
     "pathVariables": {
       "process": "businessProcess1",
