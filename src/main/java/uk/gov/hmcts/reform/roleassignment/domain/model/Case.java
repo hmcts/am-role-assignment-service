@@ -28,7 +28,7 @@ public class Case {
 
     private String jurisdiction;
 
-    @JsonProperty("case_type_id")
+    @JsonProperty("case_type")
     private String caseTypeId;
 
     @JsonProperty("created_date")
