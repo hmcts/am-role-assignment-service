@@ -66,6 +66,16 @@ public class CreateRoleAssignmentProviderTest {
         setInitiMock();
     }
 
+    @State({"The assignment request is valid with one requested role and replaceExisting flag as true"})
+    public void createRoleAssignmentReplaceExistingTrue() {
+        setInitiMock();
+    }
+
+    @State({"The assignment request is valid with zero requested role and replaceExisting flag as true"})
+    public void createRoleAssignmentZeroRole() {
+        setInitiMock();
+    }
+
     private void setInitiMock() {
 
         when(persistenceService.persistRequest(any())).thenReturn(createEntity());
