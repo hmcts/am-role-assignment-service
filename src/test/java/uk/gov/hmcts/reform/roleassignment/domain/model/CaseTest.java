@@ -6,23 +6,14 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 
 @RunWith(MockitoJUnitRunner.class)
 class CaseTest {
 
 
-    private Case caseData = new Case("1234", (long)1, 1, "", "",
-                                     ZonedDateTime.now(ZoneOffset.UTC), ZonedDateTime.now(ZoneOffset.UTC),
-                                     ZonedDateTime.now(ZoneOffset.UTC),"",
-                                     null,null,null,
-                                     null,null, null);
+    private Case caseData = new Case("1234", "IA", "Asylum");
 
     @BeforeEach
     public void setUp() {
@@ -35,15 +26,4 @@ class CaseTest {
         assertTrue(caseData.toString().contains("1234"));
     }
 
-    @Test
-    void hasCaseReference() {
-        assertTrue(caseData.hasCaseReference());
-        assertEquals(1L, caseData.getReference());
-    }
-
-    @Test
-    void hasCaseReferenceFalse() {
-        caseData.setReference(null);
-        assertFalse(caseData.hasCaseReference());
-    }
 }
