@@ -74,8 +74,6 @@ Feature: F-008 : Create And Replace Staff Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
     And a successful call [to delete role assignments just created above] as in [S-106_DeleteDataForRoleAssignmentsForOrgRoles].
 
-
-
   @S-108 @FeatureToggle(create-role-assignments)
   Scenario: must successfully delete all existing Role Assignments for an actor having staff case roles.
     Given a user with [an active IDAM profile with full permissions],

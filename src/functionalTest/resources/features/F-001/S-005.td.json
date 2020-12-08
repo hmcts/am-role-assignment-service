@@ -6,6 +6,12 @@
     "contains a single Role Assignment",
     "contains data which is not as per rule validations"
   ],
+  "users": {
+    "invokingUser": {
+      "username": "TEST_AM_USER6_BEFTA@test.local",
+      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+    }
+  },
   "request": {
     "body": {
       "roleRequest": {
@@ -18,7 +24,7 @@
           "roleType": "CASE",
           "grantType": "STANDARD",
           "attributes": {
-          "caseId": "1234567890123456"
+          "caseId": "1607103938250138"
           }
         }
       ]

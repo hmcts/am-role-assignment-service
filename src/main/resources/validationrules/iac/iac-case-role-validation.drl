@@ -20,7 +20,7 @@ when
              assignerId == authenticatedUserId)
 
     $ra: RoleAssignment(
-              status == Status.CREATE_REQUESTED,
+             status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              roleName == "tribunal-caseworker",
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
