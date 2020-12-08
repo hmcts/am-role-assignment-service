@@ -61,6 +61,11 @@ public class SearchQueryRoleAssignmentProviderTest {
         setInitiMock();
     }
 
+    @State({"A list of role assignments for the search query by role name"})
+  public void searchQueryByRoleNameWithSuccess() throws Exception {
+        setInitiMock();
+    }
+
     private void setInitiMock() throws Exception {
         String actorId = "234873";
         List<Assignment> roleAssignments
