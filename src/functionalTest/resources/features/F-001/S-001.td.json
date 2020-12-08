@@ -5,7 +5,7 @@
   "specs": [
     "contains a single Role Assignment with only mandatory fields",
     "contains a single Role Assignment with only mandatory fields",
-    "Befta3 - who is the assigner",
+    "Befta2 - who is the assigner",
     "Befta2 - who invokes the API",
     "Befta1 - who is the actor for requested role"
   ],
