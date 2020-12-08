@@ -118,7 +118,7 @@ public class ValidationModelService {
         // Run the rules
         kieSession.execute(facts);
         log.info(String.format(
-            "runRulesOnAllRequestedAssignments execution finished at %s . Time taken = %s milliseconds",
+            " >> runRulesOnAllRequestedAssignments execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));

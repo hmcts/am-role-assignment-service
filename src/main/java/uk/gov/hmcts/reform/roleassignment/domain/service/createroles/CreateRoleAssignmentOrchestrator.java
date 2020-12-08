@@ -57,7 +57,7 @@ public class CreateRoleAssignmentOrchestrator {
     public ResponseEntity<RoleAssignmentRequestResource> createRoleAssignment(AssignmentRequest roleAssignmentRequest)
         throws ParseException {
         long startTime = System.currentTimeMillis();
-        logger.info(String.format("createRoleAssignment execution started at %s", startTime));
+        //logger.info(String.format("createRoleAssignment execution started at %s", startTime));
         try {
             AssignmentRequest existingAssignmentRequest;
             createRoleAssignmentService = new CreateRoleAssignmentService(
@@ -70,7 +70,7 @@ public class CreateRoleAssignmentOrchestrator {
 
             //1. call parse request service
 
-            logger.info(String.format("createRoleAssignment execution started at %s", startTime));
+            //logger.info(String.format("createRoleAssignment execution started at %s", startTime));
             AssignmentRequest parsedAssignmentRequest = parseRequestService
                 .parseRequest(roleAssignmentRequest, RequestType.CREATE);
             //2. Call persistence service to store only the request
@@ -125,19 +125,19 @@ public class CreateRoleAssignmentOrchestrator {
                     log.error("context", e);
                 }
                 logger.info(String.format(
-                    "replaceExisting Inner Method execution finished at %s . Time taken = %s milliseconds",
+                    " >> replaceExisting Inner Method execution finished at %s . Time taken = %s milliseconds",
                     System.currentTimeMillis(),
                     System.currentTimeMillis() - replaceExisting
                 ));
 
             } else {
                 long newAssignment = System.currentTimeMillis();
-                logger.info(String.format("newAssignment execution started at %s", newAssignment));
+                //logger.info(String.format("newAssignment execution started at %s", newAssignment));
                 //Save requested role in history table with CREATED and Approved Status
                 createRoleAssignmentService.createNewAssignmentRecords(parsedAssignmentRequest);
                 createRoleAssignmentService.checkAllApproved(parsedAssignmentRequest);
                 logger.info(String.format(
-                    "newAssignment execution finished at %s . Time taken = %s milliseconds",
+                    " >> newAssignment execution finished at %s . Time taken = %s milliseconds",
                     System.currentTimeMillis(),
                     System.currentTimeMillis() - newAssignment
                 ));
@@ -151,7 +151,7 @@ public class CreateRoleAssignmentOrchestrator {
         } finally {
             flushGlobalVariables();
             logger.info(String.format(
-                "createRoleAssignment execution finished at %s . Time taken = %s milliseconds",
+                " >> createRoleAssignment in orchestrator execution finished at %s . Time taken = %s milliseconds",
                 System.currentTimeMillis(),
                 System.currentTimeMillis() - startTime
             ));
@@ -217,7 +217,7 @@ public class CreateRoleAssignmentOrchestrator {
         //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
         createRoleAssignmentService.checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
         logger.info(String.format(
-            "identifyAssignmentsToBeUpdated execution finished at %s . Time taken = %s milliseconds",
+            " >> identifyAssignmentsToBeUpdated execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));

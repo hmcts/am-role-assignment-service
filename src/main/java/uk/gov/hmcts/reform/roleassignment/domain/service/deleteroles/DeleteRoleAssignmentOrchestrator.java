@@ -99,7 +99,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
         ResponseEntity<RoleAssignmentDeleteResource> responseEntity = performOtherStepsForDelete("", requestedRoles);
         logger.info(String.format(
-            "deleteRoleAssignmentByProcessAndReference execution finished at %s . Time taken = %s milliseconds",
+            " >> deleteRoleAssignmentByProcessAndReference execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
@@ -151,7 +151,7 @@ public class DeleteRoleAssignmentOrchestrator {
         //6. check status updated by drools and take decision
         checkAllDeleteApproved(assignmentRequest, actorId);
         logger.info(String.format(
-            "performOtherStepsForDelete execution finished at %s . Time taken = %s milliseconds",
+            " >> performOtherStepsForDelete execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
@@ -173,14 +173,14 @@ public class DeleteRoleAssignmentOrchestrator {
 
     private void validationByDrool(List<RoleAssignment> requestedRoles) {
         long startTime = System.currentTimeMillis();
-        logger.info(String.format("validationByDrool execution started at %s", startTime));
+        //logger.info(String.format("validationByDrool execution started at %s", startTime));
 
         assignmentRequest.setRequestedRoles(requestedRoles);
 
         //calling drools rules for validation
         validationModelService.validateRequest(assignmentRequest);
         logger.info(String.format(
-            "validationByDrool execution finished at %s . Time taken = %s milliseconds",
+            " >> validationByDrool execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
@@ -204,7 +204,7 @@ public class DeleteRoleAssignmentOrchestrator {
     public void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
         // decision block
         long startTime = System.currentTimeMillis();
-        logger.info(String.format("checkAllDeleteApproved execution started at %s", startTime));
+        //logger.info(String.format("checkAllDeleteApproved execution started at %s", startTime));
 
         List<RoleAssignment> deleteApprovedRoles = validatedAssignmentRequest.getRequestedRoles().stream()
             .filter(role -> role.getStatus()
@@ -234,7 +234,7 @@ public class DeleteRoleAssignmentOrchestrator {
             updateRequestStatus(validatedAssignmentRequest, Status.REJECTED);
         }
         logger.info(String.format(
-            "checkAllDeleteApproved execution finished at %s . Time taken = %s milliseconds",
+            " >> checkAllDeleteApproved execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
