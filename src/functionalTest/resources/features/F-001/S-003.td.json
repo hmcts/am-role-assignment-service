@@ -6,6 +6,12 @@
     "contains a single Role Assignment",
     "contains RoleTypeId as 'CASE'"
   ],
+  "users": {
+    "invokingUser": {
+      "username": "TEST_AM_USER6_BEFTA@test.local",
+      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+    }
+  },
   "request": {
     "body": {
       "roleRequest": {
@@ -20,7 +26,7 @@
           "roleType": "CASE",
           "grantType": "SPECIFIC",
           "attributes": {
-            "caseId": "1234567890123456"
+            "caseId": "1607103938250138"
           }
         }
       ]
