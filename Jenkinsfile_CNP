@@ -34,8 +34,8 @@ def vaultOverrides = [
 //These secrets will be available in the functional tests in the virtual machine where pipeline executes.
 def secrets = [
   's2s-${env}': [
-    secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
-    secret('microservicekey-am-role-assignment-service', 'AM_ROLE_ASSIGNMENT_SERVICE_SECRET')
+    secret('microservicekey-am-role-assignment-service', 'AM_ROLE_ASSIGNMENT_SERVICE_SECRET'),
+    secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET')
   ],
   'am-${env}': [
       secret('role-assignment-service-IDAM-CLIENT-SECRET', 'ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET'),

@@ -439,8 +439,6 @@ public class TestDataBuilder {
 
     public static Case buildCase() {
         return Case.builder()
-            .version(1)
-            .reference(1L)
             .id("1234").build();
     }
 
