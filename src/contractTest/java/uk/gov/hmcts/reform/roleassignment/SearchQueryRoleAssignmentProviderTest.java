@@ -12,61 +12,63 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentController;
+import uk.gov.hmcts.reform.roleassignment.controller.endpoints.QueryAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(SpringExtension.class)
-@Provider("am_role_assignment_service_get_actor_by_id")
+@Provider("am_role_assignment_service_search_query")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}", host = "${PACT_BROKER_URL:localhost}",
     port = "${PACT_BROKER_PORT:9292}")
 @Import(RoleAssignmentProviderTestConfiguration.class)
-public class GetActorByIdRoleAssignmentProviderTest {
+public class SearchQueryRoleAssignmentProviderTest {
 
     @Autowired
-    private PersistenceService persistenceService;
+  private PersistenceService persistenceService;
 
     @Autowired
-    private RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentServiceMock;
+  private QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator;
 
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider.class)
-    void pactVerificationTestTemplate(PactVerificationContext context) {
+  void pactVerificationTestTemplate(PactVerificationContext context) {
         context.verifyInteraction();
     }
 
     @BeforeEach
-    void before(PactVerificationContext context) {
+  void before(PactVerificationContext context) {
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
         System.getProperties().setProperty("pact.verifier.publishResults", "true");
-        testTarget.setControllers(new GetAssignmentController(
-            retrieveRoleAssignmentServiceMock
+        testTarget.setControllers(new QueryAssignmentController(
+            queryRoleAssignmentOrchestrator
         ));
         context.setTarget(testTarget);
 
     }
 
-    @State({"An actor with provided id is available in role assignment service"})
-    public void getActorByIdWithSuccess() throws Exception {
+    @State({"A list of role assignments for the search query"})
+  public void searchQueryByActorIdWithSuccess() throws Exception {
         setInitiMock();
     }
 
     private void setInitiMock() throws Exception {
-        String actorId = "23486";
-        List<RoleAssignment> roleAssignments
-            = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE, actorId, "attributes.json");
+        String actorId = "234873";
+        List<Assignment> roleAssignments
+            = TestDataBuilder.buildAssignmentList(Status.LIVE, actorId, "attributesSearchQuery.json");
 
-        when(persistenceService.getAssignmentsByActor(anyString())).thenReturn(roleAssignments);
+        when(persistenceService.retrieveRoleAssignmentsByQueryRequest(any(),any(),any(),any(),any(),anyBoolean()))
+            .thenReturn(roleAssignments);
         when(persistenceService.getActorCacheEntity(actorId)).thenReturn(ActorCacheEntity.builder().actorId(actorId)
-                                                                             .etag(1L).build());
+            .etag(1L).build());
     }
 }

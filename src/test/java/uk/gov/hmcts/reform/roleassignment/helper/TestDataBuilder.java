@@ -14,6 +14,7 @@ import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
@@ -84,7 +85,8 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static RoleAssignment buildRoleAssignment_CustomActorId(Status status, String actorId) throws IOException {
+    public static RoleAssignment buildRoleAssignment_CustomActorId(Status status, String actorId, String path)
+        throws IOException {
         ZonedDateTime timeStamp = ZonedDateTime.now();
         return RoleAssignment.builder()
             .id(UUID.fromString("3ed4f960-e50b-4127-af30-47821d5799f7"))
@@ -103,15 +105,22 @@ public class TestDataBuilder {
             .process(("process"))
             .statusSequence(10)
             .status(status)
-            .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
+            .attributes(JacksonUtils.convertValue(buildAttributesFromFile(path)))
             .authorisations(Collections.emptyList())
             .build();
     }
 
-    public static List<RoleAssignment> buildRoleAssignmentList_Custom(Status status, String actorId)
+    public static List<RoleAssignment> buildRoleAssignmentList_Custom(Status status, String actorId, String path)
         throws IOException {
         List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId));
+        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path));
+        return requestedRoles;
+    }
+
+    public static List<Assignment> buildAssignmentList(Status status, String actorId, String path)
+        throws IOException {
+        List<Assignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path));
         return requestedRoles;
     }
 
@@ -134,7 +143,7 @@ public class TestDataBuilder {
             .statusSequence(10)
             .status(status)
             .created(now())
-            .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
+            .attributes(JacksonUtils.convertValue(buildAttributesFromFile("attributes.json")))
             .notes(buildNotesFromFile())
             .authorisations(Collections.emptyList())
             .build();
@@ -159,7 +168,7 @@ public class TestDataBuilder {
             .statusSequence(10)
             .status(status)
             .created(now())
-            .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
+            .attributes(JacksonUtils.convertValue(buildAttributesFromFile("attributes.json")))
             .notes(buildNotesFromFile())
             .build();
     }
@@ -189,8 +198,8 @@ public class TestDataBuilder {
     public static ResponseEntity<RoleAssignmentResource> buildResourceRoleAssignmentResponse_Custom(
         Status roleStatus, String actorId) throws Exception {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new RoleAssignmentResource(Arrays.asList(buildRoleAssignment_CustomActorId(roleStatus, actorId)),
-                                             actorId));
+            .body(new RoleAssignmentResource(Arrays.asList(buildRoleAssignment_CustomActorId(
+                roleStatus, actorId,"attributes.json")), actorId));
     }
 
     public static Collection<RoleAssignment> buildRequestedRoleCollection(Status status) throws IOException {
@@ -213,9 +222,9 @@ public class TestDataBuilder {
         return requestedRoles;
     }
 
-    public static JsonNode buildAttributesFromFile() {
+    public static JsonNode buildAttributesFromFile(String path) {
         try (InputStream inputStream =
-            TestDataBuilder.class.getClassLoader().getResourceAsStream("attributes.json")) {
+            TestDataBuilder.class.getClassLoader().getResourceAsStream(path)) {
             assert inputStream != null;
             JsonNode result = new ObjectMapper().readValue(inputStream, new TypeReference<>() {});
             inputStream.close();
@@ -326,7 +335,7 @@ public class TestDataBuilder {
     }
 
     public static ActorCacheEntity buildActorCacheEntity() throws IOException {
-        JsonNode attributes = buildAttributesFromFile();
+        JsonNode attributes = buildAttributesFromFile("attributes.json");
         return ActorCacheEntity.builder()
             .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .etag(1)
@@ -354,7 +363,7 @@ public class TestDataBuilder {
             .beginTime(now().plusDays(1))
             .endTime(now().plusMonths(1))
             .created(now())
-            .attributes(buildAttributesFromFile())
+            .attributes(buildAttributesFromFile("attributes.json"))
             .build();
     }
 
@@ -469,7 +478,7 @@ public class TestDataBuilder {
             .readOnly(readOnly)
             .beginTime(timeStamp.plusDays(1))
             .endTime(timeStamp.plusMonths(1))
-            .attributes(JacksonUtils.convertValue(buildAttributesFromFile()))
+            .attributes(JacksonUtils.convertValue(buildAttributesFromFile("attributes.json")))
             .notes(buildNotesFromFile())
             .authorisations(Collections.emptyList())
             .build();
