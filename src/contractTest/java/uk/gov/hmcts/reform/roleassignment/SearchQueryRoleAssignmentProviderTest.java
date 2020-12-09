@@ -66,6 +66,21 @@ public class SearchQueryRoleAssignmentProviderTest {
         setInitiMock();
     }
 
+    @State({"A list of role assignments for the search query by attributes"})
+  public void searchQueryByAttributesWithSuccess() throws Exception {
+        setInitiMock();
+    }
+
+    @State({"A list of multiple role assignments for the search query"})
+  public void searchQueryMultipleRoleAssignmentsWithSuccess() throws Exception {
+        setInitiMock();
+    }
+
+    @State({"An empty list of role assignments for the search query"})
+  public void searchQueryReturnsEmptyListOfAssignmentsWithSuccess() throws Exception {
+        setInitiMock();
+    }
+
     private void setInitiMock() throws Exception {
         String actorId = "234873";
         List<Assignment> roleAssignments
