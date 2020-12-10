@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 public class CcdDataStoreHealthIndicator implements HealthIndicator, HealthContributor {
 
     private RestTemplate restTemplate;
-    @Value("${feign.client.config.datastoreclient.url:}") String URL;
+    @Value("${feign.client.config.datastoreclient.url:}") String url;
 
     @Autowired
     public CcdDataStoreHealthIndicator(RestTemplate restTemplate) {
@@ -26,7 +26,7 @@ public class CcdDataStoreHealthIndicator implements HealthIndicator, HealthContr
     @Override
     public Health health() {
         try {
-            JsonNode resp = restTemplate.getForObject(URL + "/health", JsonNode.class);
+            JsonNode resp = restTemplate.getForObject(url + "/health", JsonNode.class);
             if (resp.get("status").asText().equalsIgnoreCase("UP")) {
                 return Health.up().build();
             }

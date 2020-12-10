@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 public class IdamServiceHealthIndicator implements HealthIndicator, HealthContributor {
 
     private RestTemplate restTemplate;
-    @Value("${idam.api.url:}") String URL;
+    @Value("${idam.api.url:}") String url;
 
     @Autowired
     public IdamServiceHealthIndicator(RestTemplate restTemplate) {
@@ -26,7 +26,7 @@ public class IdamServiceHealthIndicator implements HealthIndicator, HealthContri
     @Override
     public Health health() {
         try {
-            JsonNode resp = restTemplate.getForObject(URL + "/health", JsonNode.class);
+            JsonNode resp = restTemplate.getForObject(url + "/health", JsonNode.class);
             if (resp.get("status").asText().equalsIgnoreCase("UP")) {
                 return Health.up().build();
             }
