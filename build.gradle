@@ -3,7 +3,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.5")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.9")
     classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
   }
 }
@@ -48,7 +48,7 @@ def versions = [
   cucumber       : '5.7.0',
   feign_jackson  : '9.7.0',
   drools         : '7.40.0.Final',
-  launchDarklySdk: '5.0.5'
+  launchDarklySdk: '5.1+'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
@@ -467,17 +467,16 @@ dependencies {
   }
   compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
 
-  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.39'
-  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.39'
+  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.40'
+  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.40'
   compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.25.Final'
-  compile group: 'org.springframework', name: 'spring-tx', version: '5.2.9.RELEASE'
 
-  compile(group: 'org.springframework', name: 'spring-jdbc', version: '5.2.9.RELEASE')
-  compile(group: 'org.springframework', name: 'spring-beans', version: '5.2.9.RELEASE')
-  compile(group: 'org.springframework', name: 'spring-context', version: '5.2.9.RELEASE')
-  compile(group: 'org.springframework', name: 'spring-core', version: '5.2.9.RELEASE')
-  compile(group: 'org.springframework', name: 'spring-test', version: '5.2.9.RELEASE')
-  compile(group: 'org.springframework', name: 'spring-tx', version: '5.2.9.RELEASE')
+  compile(group: 'org.springframework', name: 'spring-jdbc', version: '5.3.2')
+  compile(group: 'org.springframework', name: 'spring-beans', version: '5.3.2')
+  compile(group: 'org.springframework', name: 'spring-context', version: '5.3.2')
+  compile(group: 'org.springframework', name: 'spring-core', version: '5.3.2')
+  compile(group: 'org.springframework', name: 'spring-test', version: '5.3.2')
+  compile(group: 'org.springframework', name: 'spring-tx', version: '5.3.2')
 
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
   implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
