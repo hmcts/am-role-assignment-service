@@ -46,7 +46,7 @@ public abstract class BaseTest {
     CcdDataStoreHealthIndicator ccdDataStoreHealthIndicator;
 
     @MockBean
-    RestTemplate restTemplate;
+    public RestTemplate restTemplate;
 
     @BeforeClass
     public static void init() {
