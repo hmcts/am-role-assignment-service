@@ -4,21 +4,20 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Objects;
+
 public interface BaseHealthIndicator {
 
     default Health checkServiceHealth(RestTemplate restTemplate, String url) {
+        Health health = null;
         try {
-            JsonNode resp = restTemplate.getForObject(url + "/health", JsonNode.class);
-            /*if (Objects.requireNonNull(restTemplate.getForObject(url + "/health", JsonNode.class))
+            if (Objects.requireNonNull(restTemplate.getForObject(url + "/health", JsonNode.class))
                 .get("status").asText().equalsIgnoreCase("UP")) {
-                return Health.up().build();
-            }*/
-            if (resp.get("status").asText().equalsIgnoreCase("UP")) {
-                return Health.up().build();
+                health = Health.up().build();
             }
         } catch (Exception ex) {
-            return Health.down(ex).build();
+            health = Health.down(ex).build();
         }
-        return Health.down().build();
+        return health;
     }
 }
