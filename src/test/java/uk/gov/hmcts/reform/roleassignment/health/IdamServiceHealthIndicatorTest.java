@@ -29,9 +29,11 @@ class IdamServiceHealthIndicatorTest {
         String jsonString = "{\"status\": \"UP\"}";
         ObjectMapper mapper = new ObjectMapper();
         JsonNode actualObj = mapper.readTree(jsonString);
-        when(sut.health()).thenReturn(Health.up().build());
+        when(sut.checkServiceHealth(restTemplate, "url")).thenReturn(Health.up().build());
         when(restTemplate.getForObject("any_url",JsonNode.class)).thenReturn(actualObj);
-        Health health = sut.health();
-        assertNotNull(sut.checkServiceHealth(restTemplate,"url"));
+        //Health health = sut.health();
+        Health health1 = sut.checkServiceHealth(restTemplate, "url");
+        assertNotNull(health1);
+        //assertNotNull(sut.checkServiceHealth(restTemplate,"url"));
     }
 }
