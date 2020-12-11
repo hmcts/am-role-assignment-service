@@ -261,8 +261,7 @@ sonarqube {
       "**/SwaggerConfiguration.java," +
       "**/MutableHttpServletRequest.java," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/*Application.java," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/config/**" +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/health/*Indicator.java"
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/config/**"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.junit.repoGetAssignmentControllerrtPaths", "${project.buildDir}/test-results/junit-platform"
