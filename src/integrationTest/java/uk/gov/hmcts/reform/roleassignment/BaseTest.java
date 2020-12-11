@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.roleassignment.health.CcdDataStoreHealthIndicator;
 import uk.gov.hmcts.reform.roleassignment.health.IdamServiceHealthIndicator;
 
@@ -44,9 +43,6 @@ public abstract class BaseTest {
 
     @MockBean
     CcdDataStoreHealthIndicator ccdDataStoreHealthIndicator;
-
-    @MockBean
-    public RestTemplate restTemplate;
 
     @BeforeClass
     public static void init() {

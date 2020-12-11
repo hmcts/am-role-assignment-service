@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
@@ -19,7 +17,6 @@ import javax.sql.DataSource;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
@@ -52,9 +49,6 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
         this.mockMvc = standaloneSetup(this.welcomeController).build();
         template = new JdbcTemplate(ds);
         MockitoAnnotations.initMocks(this);
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.createObjectNode();
-        when(restTemplate.getForObject("url", JsonNode.class)).thenReturn(rootNode);
     }
 
     @Test
