@@ -57,7 +57,6 @@ public class CreateRoleAssignmentOrchestrator {
     public ResponseEntity<RoleAssignmentRequestResource> createRoleAssignment(AssignmentRequest roleAssignmentRequest)
         throws ParseException {
         long startTime = System.currentTimeMillis();
-        //logger.info(String.format("createRoleAssignment execution started at %s", startTime));
         try {
             AssignmentRequest existingAssignmentRequest;
             createRoleAssignmentService = new CreateRoleAssignmentService(
@@ -70,7 +69,6 @@ public class CreateRoleAssignmentOrchestrator {
 
             //1. call parse request service
 
-            //logger.info(String.format("createRoleAssignment execution started at %s", startTime));
             AssignmentRequest parsedAssignmentRequest = parseRequestService
                 .parseRequest(roleAssignmentRequest, RequestType.CREATE);
             //2. Call persistence service to store only the request
@@ -132,7 +130,6 @@ public class CreateRoleAssignmentOrchestrator {
 
             } else {
                 long newAssignment = System.currentTimeMillis();
-                //logger.info(String.format("newAssignment execution started at %s", newAssignment));
                 //Save requested role in history table with CREATED and Approved Status
                 createRoleAssignmentService.createNewAssignmentRecords(parsedAssignmentRequest);
                 createRoleAssignmentService.checkAllApproved(parsedAssignmentRequest);
