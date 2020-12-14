@@ -73,11 +73,10 @@ public class DeleteAssignmentController {
                                                        @RequestParam(value = "reference", required = false)
                                                            String reference) {
         long startTime = System.currentTimeMillis();
-        logger.info(String.format("deleteRoleAssignmentByProcessAndReference execution started at %s", startTime));
         ResponseEntity<RoleAssignmentDeleteResource> responseEntity = deleteRoleAssignmentOrchestrator
             .deleteRoleAssignmentByProcessAndReference(process, reference);
         logger.info(String.format(
-            "deleteRoleAssignmentByProcessAndReference execution finished at %s .Time taken = %s milliseconds",
+            " >> deleteRoleAssignmentByProcessAndReference execution finished at %s .Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));

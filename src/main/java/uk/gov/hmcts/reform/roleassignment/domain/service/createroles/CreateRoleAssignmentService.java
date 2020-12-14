@@ -75,8 +75,6 @@ public class CreateRoleAssignmentService {
                                        AssignmentRequest parsedAssignmentRequest) {
         // decision block
         long startTime = System.currentTimeMillis();
-        logger.info(String.format("checkAllDeleteApproved execution started at %s", startTime));
-
         if (!needToDeleteRoleAssignments.isEmpty()) {
             List<RoleAssignment> deleteApprovedAssignments = existingAssignmentRequest.getRequestedRoles().stream()
                 .filter(role -> role.getStatus().equals(
@@ -132,7 +130,7 @@ public class CreateRoleAssignmentService {
             checkAllApproved(parsedAssignmentRequest);
         }
         logger.info(String.format(
-            "checkAllDeleteApproved execution finished at %s . Time taken = %s milliseconds",
+            " >> checkAllDeleteApproved execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
@@ -163,7 +161,7 @@ public class CreateRoleAssignmentService {
 
         persistenceService.updateRequest(requestEntity);
         logger.info(String.format(
-            "rejectDeleteRequest execution finished at %s . Time taken = %s milliseconds",
+            " >> rejectDeleteRequest execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
@@ -220,7 +218,7 @@ public class CreateRoleAssignmentService {
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
         logger.info(String.format(
-            "createNewAssignmentRecords execution finished at %s . Time taken = %s milliseconds",
+            " >> createNewAssignmentRecords execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
@@ -247,11 +245,10 @@ public class CreateRoleAssignmentService {
 
     public RequestEntity persistInitialRequest(Request request) {
         long startTime = System.currentTimeMillis();
-        logger.info(String.format("persistInitialRequest execution started at %s", startTime));
 
         RequestEntity requestEntity = persistenceService.persistRequest(request);
         logger.info(String.format(
-            "persistInitialRequest execution finished at %s . Time taken = %s milliseconds",
+            " >> persistInitialRequest execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
@@ -261,7 +258,6 @@ public class CreateRoleAssignmentService {
 
     private void deleteLiveAssignments(Collection<RoleAssignment> existingAssignments) {
         long startTime = System.currentTimeMillis();
-        logger.info(String.format("deleteLiveAssignments execution started at %s", startTime));
 
         for (RoleAssignment requestedRole : existingAssignments) {
             persistenceService.deleteRoleAssignment(requestedRole);
@@ -269,7 +265,7 @@ public class CreateRoleAssignmentService {
         }
         persistenceService.persistActorCache(existingAssignments);
         logger.info(String.format(
-            "deleteLiveAssignments execution finished at %s . Time taken = %s milliseconds",
+            " >> deleteLiveAssignments execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
@@ -309,7 +305,7 @@ public class CreateRoleAssignmentService {
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
         logger.info(String.format(
-            "insertRequestedRole execution finished at %s . Time taken = %s milliseconds",
+            " >> insertRequestedRole execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
