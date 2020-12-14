@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.roleassignment.controller;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,6 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     public void setUp() {
         this.mockMvc = standaloneSetup(this.welcomeController).build();
         template = new JdbcTemplate(ds);
-        MockitoAnnotations.initMocks(this);
     }
 
     @Test
