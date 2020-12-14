@@ -77,7 +77,7 @@ public class ParseRequestService {
         parsedRequest.setRequest(request);
         parsedRequest.setRequestedRoles(requestedAssignments);
         logger.info(String.format(
-            "parseRequest execution finished at %s . Time taken = %s milliseconds",
+            " >> parseRequest execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));

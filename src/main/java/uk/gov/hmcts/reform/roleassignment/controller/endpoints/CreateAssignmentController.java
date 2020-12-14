@@ -76,11 +76,10 @@ public class CreateAssignmentController {
         @Validated
         @RequestBody AssignmentRequest assignmentRequest) throws ParseException {
         long startTime = System.currentTimeMillis();
-        logger.info(String.format("createRoleAssignment execution started at %s", startTime));
         ResponseEntity<RoleAssignmentRequestResource> response = createRoleAssignmentOrchestrator
             .createRoleAssignment(assignmentRequest);
         logger.info(String.format(
-            "createRoleAssignment execution finished at %s . Time taken = %s milliseconds",
+            " >> createRoleAssignment execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             System.currentTimeMillis() - startTime
         ));
