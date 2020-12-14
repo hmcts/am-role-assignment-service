@@ -154,7 +154,6 @@ public class PersistenceService {
 
     public List<RoleAssignment> getAssignmentsByProcess(String process, String reference, String status) {
         long startTime = System.currentTimeMillis();
-        //logger.info(String.format("getAssignmentsByProcess execution started at %s", startTime));
 
         Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
         //convert into model class
@@ -207,8 +206,6 @@ public class PersistenceService {
 
         long startTime = System.currentTimeMillis();
         List<Assignment> roleAssignmentList;
-
-        //logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
 
         pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(Objects.requireNonNull(

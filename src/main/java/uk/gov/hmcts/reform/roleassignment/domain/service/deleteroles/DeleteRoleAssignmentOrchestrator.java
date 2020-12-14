@@ -173,7 +173,6 @@ public class DeleteRoleAssignmentOrchestrator {
 
     private void validationByDrool(List<RoleAssignment> requestedRoles) {
         long startTime = System.currentTimeMillis();
-        //logger.info(String.format("validationByDrool execution started at %s", startTime));
 
         assignmentRequest.setRequestedRoles(requestedRoles);
 
@@ -204,7 +203,6 @@ public class DeleteRoleAssignmentOrchestrator {
     public void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
         // decision block
         long startTime = System.currentTimeMillis();
-        //logger.info(String.format("checkAllDeleteApproved execution started at %s", startTime));
 
         List<RoleAssignment> deleteApprovedRoles = validatedAssignmentRequest.getRequestedRoles().stream()
             .filter(role -> role.getStatus()

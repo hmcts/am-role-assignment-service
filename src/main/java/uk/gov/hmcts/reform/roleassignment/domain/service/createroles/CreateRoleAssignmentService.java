@@ -75,8 +75,6 @@ public class CreateRoleAssignmentService {
                                        AssignmentRequest parsedAssignmentRequest) {
         // decision block
         long startTime = System.currentTimeMillis();
-        //logger.info(String.format("checkAllDeleteApproved execution started at %s", startTime));
-
         if (!needToDeleteRoleAssignments.isEmpty()) {
             List<RoleAssignment> deleteApprovedAssignments = existingAssignmentRequest.getRequestedRoles().stream()
                 .filter(role -> role.getStatus().equals(
@@ -247,7 +245,6 @@ public class CreateRoleAssignmentService {
 
     public RequestEntity persistInitialRequest(Request request) {
         long startTime = System.currentTimeMillis();
-        //logger.info(String.format("persistInitialRequest execution started at %s", startTime));
 
         RequestEntity requestEntity = persistenceService.persistRequest(request);
         logger.info(String.format(
@@ -261,7 +258,6 @@ public class CreateRoleAssignmentService {
 
     private void deleteLiveAssignments(Collection<RoleAssignment> existingAssignments) {
         long startTime = System.currentTimeMillis();
-        //logger.info(String.format("deleteLiveAssignments execution started at %s", startTime));
 
         for (RoleAssignment requestedRole : existingAssignments) {
             persistenceService.deleteRoleAssignment(requestedRole);

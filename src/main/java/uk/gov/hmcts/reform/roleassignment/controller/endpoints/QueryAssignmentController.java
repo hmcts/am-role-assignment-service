@@ -71,7 +71,6 @@ public class QueryAssignmentController {
                                   @RequestHeader(value = "direction", required = false) String direction,
                                   @Validated @RequestBody(required = true) QueryRequest queryRequest) {
         long startTime = System.currentTimeMillis();
-        //logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
         ResponseEntity<RoleAssignmentResource> response = queryRoleAssignmentOrchestrator
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
         logger.info(String.format(

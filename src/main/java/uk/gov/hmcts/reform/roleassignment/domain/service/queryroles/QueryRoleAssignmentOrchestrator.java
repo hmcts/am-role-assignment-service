@@ -27,7 +27,6 @@ public class QueryRoleAssignmentOrchestrator {
                                                                         Integer size, String sort, String direction) {
 
         long startTime = System.currentTimeMillis();
-        //logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
 
         List<Assignment> assignmentList =
             persistenceService.retrieveRoleAssignmentsByQueryRequest(
