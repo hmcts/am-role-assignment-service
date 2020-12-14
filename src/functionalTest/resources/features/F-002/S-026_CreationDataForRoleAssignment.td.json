@@ -4,6 +4,12 @@
   "specs": [
     "to create multiple role assignment for an actor"
   ],
+  "users": {
+    "invokingUser": {
+      "username": "TEST_AM_USER6_BEFTA@test.local",
+      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+    }
+  },
   "request": {
     "body": {
       "roleRequest": {
@@ -17,7 +23,7 @@
           "grantType": "CHALLENGED",
           "attributes":
           {
-            "caseId": "1234567890123456"
+            "caseId": "1607103938250138"
           }
         }
       ]

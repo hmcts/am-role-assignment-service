@@ -14,6 +14,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
@@ -89,6 +90,12 @@ public class RoleAssignmentProviderTestConfiguration {
                                                     persistenceService, getValidationModelService(),
                                                     getPersistenceUtil()
         );
+    }
+
+    @Bean
+    @Primary
+    public QueryRoleAssignmentOrchestrator retrieveRoleAssignmentsByQueryRequest() {
+        return new QueryRoleAssignmentOrchestrator(persistenceService);
     }
 
 }

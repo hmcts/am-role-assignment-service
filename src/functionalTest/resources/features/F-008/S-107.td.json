@@ -8,11 +8,17 @@
     "contains multiple Role Assignments just created and couple of new role assignments"
 
   ],
+  "users": {
+    "invokingUser": {
+      "username": "TEST_AM_USER6_BEFTA@test.local",
+      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+    }
+  },
   "request": {
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1234567890123456/tribunal-caseworker",
+        "reference": "1607103938250138/tribunal-caseworker",
         "replaceExisting": true
       },
       "requestedRoles": [
@@ -25,7 +31,7 @@
           "grantType": "SPECIFIC",
           "attributes":
           {
-            "caseId" : "1234567890123456",
+            "caseId" : "1607103938250138",
             "primaryLocation": "dcb"
           }
         },
@@ -38,7 +44,7 @@
           "grantType": "SPECIFIC",
           "attributes":
           {
-            "caseId" : "1234567890123456"
+            "caseId" : "1607103938250138"
           }
         }
       ]
@@ -55,7 +61,7 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "reference": "1234567890123456/tribunal-caseworker",
+          "reference": "1607103938250138/tribunal-caseworker",
           "replaceExisting": true
         },
         "requestedRoles": [
@@ -68,7 +74,7 @@
             "grantType": "SPECIFIC",
             "attributes":
             {
-              "caseId" : "1234567890123456",
+              "caseId" : "1607103938250138",
               "primaryLocation": "dcb"
             }
           },
@@ -82,7 +88,7 @@
             "grantType": "SPECIFIC",
             "attributes":
             {
-              "caseId" : "1234567890123456"
+              "caseId" : "1607103938250138"
             }
           }
         ]
