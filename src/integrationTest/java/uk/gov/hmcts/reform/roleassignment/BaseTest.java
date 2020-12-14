@@ -15,10 +15,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.reform.roleassignment.health.CcdDataStoreHealthIndicator;
+import uk.gov.hmcts.reform.roleassignment.health.IdamServiceHealthIndicator;
 
 import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
@@ -34,6 +37,12 @@ import java.util.Properties;
 public abstract class BaseTest {
 
     protected static final ObjectMapper mapper = new ObjectMapper();
+
+    @MockBean
+    IdamServiceHealthIndicator idamServiceHealthIndicator;
+
+    @MockBean
+    CcdDataStoreHealthIndicator ccdDataStoreHealthIndicator;
 
     @BeforeClass
     public static void init() {
