@@ -16,7 +16,13 @@ management:
       show-details: "always"
       enabled: true
       cache:
-        time-to-live: 5s
+        time-to-live: 1s
+    # METRICS ENDPOINT CONFIG
+    # Enable the metrics endpoint
+    metrics:
+      enabled: true
+      cache:
+        time-to-live: 1s
   endpoints:
     health:
       sensitive: false
@@ -27,8 +33,6 @@ management:
   server:
     servlet:
       context-path: /
-
-#If you use a database then uncomment below lines and update db properties accordingly
 
 security:
   anonymousPaths:
@@ -51,6 +55,10 @@ spring:
     allow-bean-definition-overriding: true
   jackson:
     default-property-inclusion: NON_NULL
+  spring:
+    cloud:
+      discovery:
+        enabled: false
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
