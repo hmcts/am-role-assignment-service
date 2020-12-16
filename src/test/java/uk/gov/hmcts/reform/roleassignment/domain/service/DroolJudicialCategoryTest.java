@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
@@ -48,13 +47,10 @@ class DroolJudicialCategoryTest extends DroolBase {
                                                                        roleAssignment.getStatus()
                                                                    )
         );
-
-
     }
 
     @Test
-    void shouldRejectCaseValidationForRequestedRole() {
-
+    void shouldRejectCaseValidationForRequestedRoleMisssingCaseId() {
 
         RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "judge", GrantType.SPECIFIC);
 
@@ -62,7 +58,6 @@ class DroolJudicialCategoryTest extends DroolBase {
         requestedRoles.add(requestedRole1);
 
         assignmentRequest.setRequestedRoles(requestedRoles);
-
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
         });
@@ -70,23 +65,19 @@ class DroolJudicialCategoryTest extends DroolBase {
         //Execute Kie session
         buildExecuteKieSession();
 
-
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertNotEquals(
-                                                                       Status.APPROVED,
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
                                                                        roleAssignment.getStatus()
                                                                    )
         );
-
-
     }
 
     @Test
     void shouldApprovedRequestedRoleForOrg() {
 
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
@@ -118,21 +109,16 @@ class DroolJudicialCategoryTest extends DroolBase {
             roleAssignment.setRoleName("judge");
             roleAssignment.setGrantType(STANDARD);
             roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
-
         });
 
         //Execute Kie session
         buildExecuteKieSession();
 
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertNotEquals(
-                                                                       Status.APPROVED,
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
                                                                        roleAssignment.getStatus()
                                                                    )
         );
-
-
     }
-
-
 }
