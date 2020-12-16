@@ -24,7 +24,7 @@ class StaffCategoryCaseTest extends DroolBase {
 
 
     @Test
-    void shouldApproveCaseRequestedRoles_RequesterOrgRoleTCW() {
+    void shouldApproveCaseRequestedRoles_RequesterOrgRoleTCW_S001() {
 
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
                                                              SPECIFIC
@@ -823,7 +823,7 @@ class StaffCategoryCaseTest extends DroolBase {
         assignmentRequest.getRequestedRoles().stream()
             .filter(roleAssignment -> roleAssignment.getActorId().equals(requestedRole3.getActorId()))
             .forEach(roleAssignment -> {
-                assertNotEquals(Status.APPROVED, roleAssignment.getStatus());
+                assertEquals(Status.REJECTED, roleAssignment.getStatus());
             });
     }
 
