@@ -134,14 +134,14 @@ public final class RoleAssignmentEntitySpecifications {
 
         return (root, query, builder) ->
             builder.or(authorisations.stream()
-                           .map(element -> {
-                               return builder.isNotNull(
+                           .map(element ->
+                                builder.isNotNull(
                                    builder.function("array_position", Integer.class,
                                                     root.get("authorisations"),builder.literal(element))
 
-                               );
+                               )
 
-                           }).toArray(Predicate[]::new));
+                           ).toArray(Predicate[]::new));
 
     }
 
