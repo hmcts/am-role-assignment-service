@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
@@ -97,7 +98,8 @@ public class HistoryEntity implements Persistable<UUID> {
     private RequestEntity requestEntity;
 
     @Column(name = "authorisations")
-    private String authorisations;
+    @Type(type = "uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType")
+    private String[] authorisations;
 
     //getter method to retrieve the parent id in the child entity
     public UUID getRequestId() {

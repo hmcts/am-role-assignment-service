@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
@@ -72,7 +73,8 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
     private JsonNode attributes;
 
     @Column(name = "authorisations")
-    private String authorisations;
+    @Type(type = "uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType")
+    private String[] authorisations;
 
     @Builder.Default
     @Transient
