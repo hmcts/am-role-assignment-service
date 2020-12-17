@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.domain.service;
+package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
