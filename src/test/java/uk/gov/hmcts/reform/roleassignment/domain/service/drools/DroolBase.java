@@ -66,6 +66,13 @@ public abstract class DroolBase {
             .build();
         doReturn(caseObj1).when(retrieveDataService).getCaseById("1234567890123457");
 
+        //mock the retrieveDataService to fetch the Case Object with incorrect Jurisdiction ID
+        Case caseObj2 = Case.builder().id("1234567890123458")
+            .caseTypeId("Asylum")
+            .jurisdiction("Not IA")
+            .build();
+        doReturn(caseObj1).when(retrieveDataService).getCaseById("1234567890123458");
+
         // Set up the rule engine for validation.
         KieServices ks = KieServices.Factory.get();
         KieContainer kieContainer = ks.getKieClasspathContainer();
