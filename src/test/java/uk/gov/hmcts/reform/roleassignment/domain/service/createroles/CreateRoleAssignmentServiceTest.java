@@ -510,7 +510,8 @@ class CreateRoleAssignmentServiceTest {
             incomingAssignmentRequest.getRequestedRoles().iterator().next().getAttributes(),
             incomingAssignmentRequest.getRequestedRoles().iterator().next().getNotes(),
             incomingAssignmentRequest.getRequestedRoles().iterator().next().getBeginTime(),
-            incomingAssignmentRequest.getRequestedRoles().iterator().next().getEndTime()
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getEndTime(),
+            incomingAssignmentRequest.getRequestedRoles().iterator().next().getAuthorisations()
         );
 
         Set<RoleAssignmentSubset> needToCreateRoleAssignments = new HashSet<>();
@@ -538,7 +539,8 @@ class CreateRoleAssignmentServiceTest {
                                                             Classification classification, GrantType grantType,
                                                             RoleCategory roleCategory, Map<String, JsonNode> attributes,
                                                             JsonNode notes, ZonedDateTime beginTime,
-                                                            ZonedDateTime endTime) {
+                                                            ZonedDateTime endTime,
+                                                            List<String> authorisations) {
 
         return RoleAssignmentSubset
             .builder()
@@ -554,6 +556,7 @@ class CreateRoleAssignmentServiceTest {
             .beginTime(beginTime)
             .endTime(endTime)
             .readOnly(true)
+            .authorisations(authorisations)
             .build();
     }
 
