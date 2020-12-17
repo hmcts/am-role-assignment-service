@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.domain.service;
+package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
