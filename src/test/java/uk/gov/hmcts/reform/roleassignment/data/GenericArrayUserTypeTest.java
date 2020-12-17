@@ -9,8 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.io.Serializable;
 import java.sql.Array;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +18,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType.SQL_TYPES;
@@ -36,8 +37,9 @@ public class GenericArrayUserTypeTest {
     @Mock
     PreparedStatement ps;
 
+
     @Mock
-    Connection connection;
+    Serializable serializable;
 
     @Test
     public void getStringArrayForNullSafeGet() throws SQLException {
@@ -70,6 +72,67 @@ public class GenericArrayUserTypeTest {
         sut.nullSafeSet(ps, obj, 0, sharedSessionContractImplementor);
         verify(ps).setNull(0, SQL_TYPES[0]);
 
+
+    }
+
+    @Test
+    public void executeAssemble() throws HibernateException {
+
+        Object response = sut.assemble(serializable, new Object());
+        assertNotNull(response);
+    }
+
+    @Test
+    public void executeDeepCopy() throws HibernateException {
+
+        Object response = sut.deepCopy(new Object());
+        assertNotNull(response);
+    }
+
+    @Test
+    public void executeEquals() throws HibernateException {
+
+        String str1 = "test";
+        String str2 = "test";
+        assertTrue(sut.equals(str1, str2));
+    }
+
+    @Test
+    public void executeEqualsWithNull() throws HibernateException {
+
+        assertTrue(sut.equals(null, null));
+    }
+
+    @Test
+    public void executeHashCodel() throws HibernateException {
+
+        String str1 = "test";
+        assertNotNull(sut.hashCode(str1));
+    }
+
+    @Test
+    public void executeMutable() throws HibernateException {
+
+
+        assertTrue(sut.isMutable());
+    }
+
+    @Test
+    public void executeReplace() throws HibernateException {
+
+        Object original = new Object();
+        Object response = sut.replace(original, new Object(), new Object());
+        assertNotNull(response);
+        assertEquals(original, response);
+    }
+
+    @Test
+    public void executeSqlTypes() {
+
+
+        int[] response = sut.sqlTypes();
+        assertNotNull(response);
+        assertEquals(2003, response[0]);
 
     }
 
