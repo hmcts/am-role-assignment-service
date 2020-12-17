@@ -124,7 +124,8 @@ public class GenericArrayUserTypeTest {
     public void executeHashCodel() throws HibernateException {
 
         String str1 = "test";
-        sut.hashCode(str1);
+        Integer response = sut.hashCode(str1);
+        assertNotNull(response);
 
     }
 
