@@ -11,6 +11,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.Serializable;
 import java.sql.Array;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,6 +38,8 @@ public class GenericArrayUserTypeTest {
     @Mock
     PreparedStatement ps;
 
+    @Mock
+    Connection connection;
 
     @Mock
     Serializable serializable;
@@ -76,6 +79,20 @@ public class GenericArrayUserTypeTest {
     }
 
     @Test
+    public void setArrayInStatementInNullSafeGet() throws HibernateException, SQLException {
+
+        Array arr = getSqlArray();
+        String[] str = {"Success"};
+
+        when(ps.getConnection()).thenReturn(connection);
+        when(connection.createArrayOf("text", str)).thenReturn(arr);
+        sut.nullSafeSet(ps, str, 0, sharedSessionContractImplementor);
+        verify(ps).setArray(0, arr);
+
+
+    }
+
+    @Test
     public void executeAssemble() throws HibernateException {
 
         Object response = sut.assemble(serializable, new Object());
@@ -107,7 +124,8 @@ public class GenericArrayUserTypeTest {
     public void executeHashCodel() throws HibernateException {
 
         String str1 = "test";
-        assertNotNull(sut.hashCode(str1));
+        sut.hashCode(str1);
+
     }
 
     @Test
