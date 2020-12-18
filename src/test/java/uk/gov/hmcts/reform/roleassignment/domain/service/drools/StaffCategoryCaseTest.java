@@ -16,6 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.CHALLENGED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRoleForIAC;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
@@ -28,7 +29,7 @@ class StaffCategoryCaseTest extends DroolBase {
     void shouldApproveCaseRequestedRoles_RequesterOrgRoleTCW_S001() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
                                                              SPECIFIC, "caseId",
-                                                                "1234567890123456");
+                                                                "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
@@ -36,7 +37,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
                                                           "tribunal-caseworker")));
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(ra -> {
+        assignmentRequest.getRequestedRoles().forEach(ra -> {
             assertEquals(Status.APPROVED, ra.getStatus());
         });
     }
@@ -44,16 +45,13 @@ class StaffCategoryCaseTest extends DroolBase {
     @Test
     void shouldRejectCaseRequestedRole_MissingExistingRoleOfRequester_S017() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.setStatus(DELETE_REQUESTED);
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", DELETE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        executeDroolRules(List.of());
+        executeDroolRules(List.of(buildExistingRoleForIAC(
+            requestedRole1.getActorId(),"senior-tribunal-caseworker")
+        ));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -64,17 +62,13 @@ class StaffCategoryCaseTest extends DroolBase {
     @Test
     void shouldDeleteApprovedRequestedRoleForCase_S022() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.setStatus(DELETE_REQUESTED);
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", DELETE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-            "senior-tribunal-caseworker")));
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(), "tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -85,18 +79,15 @@ class StaffCategoryCaseTest extends DroolBase {
     @Test
     void shouldRejectRequestedRoleForDelete_WrongExistingRoleID_S023() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.setStatus(DELETE_REQUESTED);
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", DELETE_REQUESTED);
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId() + "98",
-                                                          "senior-tribunal-caseworker")));
-
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "senior-tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "23",
+                                                          "tribunal-caseworker")));
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
@@ -106,17 +97,13 @@ class StaffCategoryCaseTest extends DroolBase {
     @Test
     void shouldRejectRequestedRoleForDelete_WrongExistingRoleName_S019() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.setStatus(DELETE_REQUESTED);
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", DELETE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        executeDroolRules(List.of(buildExistingRoleForIAC( assignmentRequest.getRequest().getAssignerId(),
-                                                           "judge")));
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(), "tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "judge")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -154,36 +141,20 @@ class StaffCategoryCaseTest extends DroolBase {
     @Test
     void shouldApprovedCaseValidationForTCW_ForAssignee2STCW_RequesterTCW_S024() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
         RoleAssignment requestedRole2 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole2.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole2));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        requestedRoles.add(requestedRole2);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        ExistingRoleAssignment existingRoleAssignment1 = buildExistingRoleForIAC(
-            requestedRole1.getActorId(),
-            "tribunal-caseworker"
-        );
-        ExistingRoleAssignment existingRoleAssignment2 = buildExistingRoleForIAC(
-            requestedRole2.getActorId(),
-            "senior-tribunal-caseworker"
-        );
-        ExistingRoleAssignment existingRoleAssignment3 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "tribunal-caseworker");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingRoleAssignment1);
-        existingRoleAssignments.add(existingRoleAssignment2);
-        existingRoleAssignments.add(existingRoleAssignment3);
-        executeDroolRules(existingRoleAssignments);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(), "tribunal-caseworker"),
+                                  buildExistingRoleForIAC(requestedRole2.getActorId(),
+                                                          "senior-tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "tribunal-caseworker")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -194,28 +165,13 @@ class StaffCategoryCaseTest extends DroolBase {
     @Test
     void shouldApprovedCaseValidationForTCW_RequesterSTCW_S002() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
-            requestedRole1.getActorId(),
-            "tribunal-caseworker"
-        );
-
-        ExistingRoleAssignment existingRequesterAssignment2 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "senior-tribunal-caseworker");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingActorAssignment1);
-        existingRoleAssignments.add(existingRequesterAssignment2);
-
-        // facts must contain all affected role assignments
-        executeDroolRules(existingRoleAssignments);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(), "tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -226,28 +182,14 @@ class StaffCategoryCaseTest extends DroolBase {
     @Test
     void shouldRejectCaseValidationForTCW_RequesterJudge_S004A() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
-            requestedRole1.getActorId(),
-            "tribunal-caseworker"
-        );
-
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "judge");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingActorAssignment1);
-        existingRoleAssignments.add(existingRequesterAssignment1);
-
-        // facts must contain all affected role assignments
-        executeDroolRules(existingRoleAssignments);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "senior-tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "judge")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -257,338 +199,183 @@ class StaffCategoryCaseTest extends DroolBase {
 
     @Test
     void shouldRejectCaseValidationForAssigneeJudge_RequesterSTCW_S004() {
-        RoleAssignment requestedRole2 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole2.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "judge",
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole2);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
-            requestedRole2.getActorId(),
-            "judge"
-        );
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "senior-tribunal-caseworker");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingActorAssignment1);
-        existingRoleAssignments.add(existingRequesterAssignment1);
-
-        // facts must contain all affected role assignments
-        executeDroolRules(existingRoleAssignments);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"judge"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker")));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+        });
     }
 
     @Test
     void shouldRejectCaseValidationForTCW_RequesterSCTW_WrongAssignerID_S005() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
-            requestedRole1.getActorId(),
-            "tribunal-caseworker"
-        );
-
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "senior-tribunal-caseworker");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingActorAssignment1);
-        existingRoleAssignments.add(existingRequesterAssignment1);
-
-        //assign incorrect assigner id
-        assignmentRequest.getRequest().setAssignerId(requestedRole1.getRoleName() + requestedRole1.getActorId());
-
-        // facts must contain all affected role assignments
-        executeDroolRules(existingRoleAssignments);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "12",
+                                                          "senior-tribunal-caseworker")));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+        });
     }
 
     @Test
     void shouldRejectCaseValidationForTCW_RequesterSCTW_WrongRoleCategory_S006() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
-            requestedRole1.getActorId(),
-            "tribunal-caseworker"
-        );
-
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "senior-tribunal-caseworker");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingActorAssignment1);
-        existingRoleAssignments.add(existingRequesterAssignment1);
-
-        // facts must contain all affected role assignments
-        executeDroolRules(existingRoleAssignments);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker")));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+        });
     }
 
     @Test
     void shouldRejectCaseValidationForTCW_RequesterSCTW_MissingCaseID_S007() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
+                                                             SPECIFIC);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
-            requestedRole1.getActorId(),
-            "tribunal-caseworker"
-        );
-
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "senior-tribunal-caseworker");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingActorAssignment1);
-        existingRoleAssignments.add(existingRequesterAssignment1);
-
-        // facts must contain all affected role assignments
-        executeDroolRules(existingRoleAssignments);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker")));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+        });
     }
 
     @Test
     void shouldRejectCaseValidationForTCW_RequesterSCTW_WrongCaseType_S009() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123457"));
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123457", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
-            requestedRole1.getActorId(),
-            "tribunal-caseworker"
-        );
-
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "senior-tribunal-caseworker");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingActorAssignment1);
-        existingRoleAssignments.add(existingRequesterAssignment1);
-
-        // facts must contain all affected role assignments
-        executeDroolRules(existingRoleAssignments);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+            assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
     void shouldRejectCaseValidationForTCW_RequesterSCTW_WrongAssigneeJurisdiction_S008() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123458"));
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123458", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
-            requestedRole1.getActorId(),
-            "tribunal-caseworker"
-        );
-
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "senior-tribunal-caseworker");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingActorAssignment1);
-        existingRoleAssignments.add(existingRequesterAssignment1);
-
-        // facts must contain all affected role assignments
-        executeDroolRules(existingRoleAssignments);
-
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker")));
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+            assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
     void shouldRejectCaseValidationForTCW_RequesterSCTW_WithBeginEndTimeForAssignee_S027() {
-        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
         ZonedDateTime timeStamp = ZonedDateTime.now(ZoneOffset.UTC);
+
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+
         requestedRole1.setBeginTime(timeStamp.plusDays(1));
         requestedRole1.setEndTime(timeStamp.plusDays(100));
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        //Testing begin time by not adding existing role assignment for assigner 1
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
-            requestedRole1.getActorId(),
-            "tribunal-caseworker"
-        );
-
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "senior-tribunal-caseworker");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingActorAssignment1);
-        existingRoleAssignments.add(existingRequesterAssignment1);
-
-        // facts must contain all affected role assignments
-        executeDroolRules(existingRoleAssignments);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-                                                          assertEquals(Status.APPROVED, roleAssignment.getStatus()));
+            assertEquals(Status.APPROVED, roleAssignment.getStatus()));
     }
 
     @Test
     void shouldAcceptedCaseValidationForTCW_RequesterSCTW_NoBeginEndTimeForAssignee_S026() {
-
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        //Testing begin time by not adding existing role assignment for assignee1
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
-            requestedRole1.getActorId(),
-            "tribunal-caseworker"
-        );
-
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "senior-tribunal-caseworker");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingActorAssignment1);
-        existingRoleAssignments.add(existingRequesterAssignment1);
-
-        // facts must contain all affected role assignments
-        executeDroolRules(existingRoleAssignments);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-                                                          assertEquals(Status.APPROVED, roleAssignment.getStatus()));
+            assertEquals(Status.APPROVED, roleAssignment.getStatus()));
     }
 
     @Test
     void shouldRejectCaseValidationForTCW_WrongGrantType_S013() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             CHALLENGED
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+                                                             CHALLENGED, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
-            requestedRole1.getActorId(),
-            "tribunal-caseworker"
-        );
-
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "senior-tribunal-caseworker");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingActorAssignment1);
-        existingRoleAssignments.add(existingRequesterAssignment1);
-
-        // facts must contain all affected role assignments
-        executeDroolRules(existingRoleAssignments);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+            assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
     void shouldRejectCaseValidationForTCW_RequesterSCTW_MissingExistingRA_S025() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "senior-tribunal-caseworker");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingRequesterAssignment1);
-
-        // facts must contain all affected role assignments
-        executeDroolRules(existingRoleAssignments);
+        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+            assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
     void shouldRejectCaseDeleteRequestedRole_WrongAssignerId_S018() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.setStatus(DELETE_REQUESTED);
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", DELETE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        //assign incorrect assigner id
-        assignmentRequest.getRequest().setAssignerId(requestedRole1.getRoleName() + requestedRole1.getActorId());
-
-        // facts must contain the request
-        facts.add(assignmentRequest.getRequest());
-
-        // facts must contain all requested role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // Run the rules
-        kieSession.execute(facts);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "99",
+                                                          "senior-tribunal-caseworker")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -597,7 +384,8 @@ class StaffCategoryCaseTest extends DroolBase {
     }
 
     @Test
-    void shouldRejectCaseRequestedRole_ForRequester_WrongRequesterJurisdiction_S0021() {
+    void shouldRejectCaseRequestedRole_ForRequester_WrongRequesterJurisdiction_S021() {
+
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
                                                              SPECIFIC
         );
@@ -633,28 +421,14 @@ class StaffCategoryCaseTest extends DroolBase {
     @Test
     void shouldRejectCaseRequestedRole_ForRequester_WrongRoleName_S003() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
-            requestedRole1.getActorId(),
-            "tribunal-caseworker"
-        );
-
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "judge");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingActorAssignment1);
-        existingRoleAssignments.add(existingRequesterAssignment1);
-
-        // facts must contain the request
-        executeDroolRules(existingRoleAssignments);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "senior-tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "judge")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
