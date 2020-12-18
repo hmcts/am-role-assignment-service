@@ -27,37 +27,14 @@ class StaffCategoryCaseTest extends DroolBase {
     @Test
     void shouldApproveCaseRequestedRoles_RequesterOrgRoleTCW_S001() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.STAFF, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+                                                             SPECIFIC, "caseId",
+                                                                "1234567890123456");
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
-            requestedRole1.getActorId(),
-            "senior-tribunal-caseworker"
-        );
-        ExistingRoleAssignment existingRequesterAssignment2 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "tribunal-caseworker");
-
-        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
-        existingRoleAssignments.add(existingActorAssignment1);
-        existingRoleAssignments.add(existingRequesterAssignment2);
-
-        // facts must contain the request
-        facts.add(assignmentRequest.getRequest());
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // facts must contain all existing role assignments
-        facts.addAll(existingRoleAssignments);
-
-        // Run the rules
-        kieSession.execute(facts);
-
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                        "senior-tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "tribunal-caseworker")));
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(ra -> {
             assertEquals(Status.APPROVED, ra.getStatus());
@@ -76,16 +53,7 @@ class StaffCategoryCaseTest extends DroolBase {
         requestedRoles.add(requestedRole1);
         assignmentRequest.setRequestedRoles(requestedRoles);
 
-        // facts must contain the request
-        facts.add(assignmentRequest.getRequest());
-
-        // facts must contain all requested role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        //No existing record for requester, it is not added in fact.
-
-        // Run the rules
-        kieSession.execute(facts);
+        executeDroolRules(List.of());
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -99,26 +67,14 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC
         );
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.setStatus(Status.DELETE_REQUESTED);
+        requestedRole1.setStatus(DELETE_REQUESTED);
 
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(requestedRole1);
         assignmentRequest.setRequestedRoles(requestedRoles);
 
-        // facts must contain the request
-        facts.add(assignmentRequest.getRequest());
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        //facts must contain existing role of requester
-        facts.add(buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(),
-            "senior-tribunal-caseworker"
-        ));
-
-        // Run the rules
-        kieSession.execute(facts);
+        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+            "senior-tribunal-caseworker")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -132,23 +88,14 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC
         );
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.setStatus(Status.DELETE_REQUESTED);
+        requestedRole1.setStatus(DELETE_REQUESTED);
 
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(requestedRole1);
         assignmentRequest.setRequestedRoles(requestedRoles);
 
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        //facts must contain existing role of requester
-        facts.add(buildExistingRoleForIAC(
-            requestedRole1.getActorId() + "98",
-            "senior-tribunal-caseworker"
-        ));
-
-        // Run the rules
-        kieSession.execute(facts);
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId() + "98",
+                                                          "senior-tribunal-caseworker")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -162,23 +109,14 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC
         );
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.setStatus(Status.DELETE_REQUESTED);
+        requestedRole1.setStatus(DELETE_REQUESTED);
 
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(requestedRole1);
         assignmentRequest.setRequestedRoles(requestedRoles);
 
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        //facts must contain existing role of requester
-        facts.add(buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(),
-            "judge"
-        ));
-
-        // Run the rules
-        kieSession.execute(facts);
+        executeDroolRules(List.of(buildExistingRoleForIAC( assignmentRequest.getRequest().getAssignerId(),
+                                                           "judge")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -192,14 +130,11 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC
         );
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.setStatus(Status.DELETE_REQUESTED);
+        requestedRole1.setStatus(DELETE_REQUESTED);
 
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(requestedRole1);
         assignmentRequest.setRequestedRoles(requestedRoles);
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
 
         ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
             assignmentRequest.getRequest()
@@ -207,11 +142,8 @@ class StaffCategoryCaseTest extends DroolBase {
             "senior-tribunal-caseworker"
         );
         existingRequesterAssignment1.getAttributes().put("jurisdiction", convertValueJsonNode("CMC"));
-        //facts must contain existing role of requester
-        facts.add(existingRequesterAssignment1);
 
-        // Run the rules
-        kieSession.execute(facts);
+        executeDroolRules(List.of(existingRequesterAssignment1));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -646,16 +578,14 @@ class StaffCategoryCaseTest extends DroolBase {
         requestedRoles.add(requestedRole1);
         assignmentRequest.setRequestedRoles(requestedRoles);
 
+        //assign incorrect assigner id
+        assignmentRequest.getRequest().setAssignerId(requestedRole1.getRoleName() + requestedRole1.getActorId());
+
         // facts must contain the request
         facts.add(assignmentRequest.getRequest());
 
         // facts must contain all requested role assignments
         facts.addAll(assignmentRequest.getRequestedRoles());
-
-        //assign incorrect assigner id
-        assignmentRequest.getRequest().setAssignerId(requestedRole1.getRoleName() + requestedRole1.getActorId());
-        //facts must contain existing role of requester
-        facts.add(assignmentRequest);
 
         // Run the rules
         kieSession.execute(facts);
@@ -692,16 +622,7 @@ class StaffCategoryCaseTest extends DroolBase {
         existingRoleAssignments.add(existingRequesterAssignment1);
 
         // facts must contain the request
-        facts.add(assignmentRequest.getRequest());
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // facts must contain all existing role assignments
-        facts.addAll(existingRoleAssignments);
-
-        // Run the rules
-        kieSession.execute(facts);
+        executeDroolRules(existingRoleAssignments);
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -733,16 +654,7 @@ class StaffCategoryCaseTest extends DroolBase {
         existingRoleAssignments.add(existingRequesterAssignment1);
 
         // facts must contain the request
-        facts.add(assignmentRequest.getRequest());
-
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-
-        // facts must contain all existing role assignments
-        facts.addAll(existingRoleAssignments);
-
-        // Run the rules
-        kieSession.execute(facts);
+        executeDroolRules(existingRoleAssignments);
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
