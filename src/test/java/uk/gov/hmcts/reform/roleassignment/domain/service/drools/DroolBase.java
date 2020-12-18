@@ -73,7 +73,7 @@ public abstract class DroolBase {
             .caseTypeId("Asylum")
             .jurisdiction("Not IA")
             .build();
-        doReturn(caseObj1).when(retrieveDataService).getCaseById("1234567890123458");
+        doReturn(caseObj2).when(retrieveDataService).getCaseById("1234567890123458");
 
         // Set up the rule engine for validation.
         KieServices ks = KieServices.Factory.get();
@@ -117,7 +117,7 @@ public abstract class DroolBase {
     }
 
     RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType,
-                                           String attributeKey, String attributeVal) {
+                                           String attributeKey, String attributeVal, Status status) {
         return RoleAssignment.builder()
             .id(UUID.randomUUID())
             .actorId(UUID.randomUUID().toString())
@@ -128,7 +128,7 @@ public abstract class DroolBase {
             .grantType(grantType)
             .classification(Classification.PUBLIC)
             .readOnly(true)
-            .status(CREATE_REQUESTED)
+            .status(status)
             .attributes(Map.of(attributeKey, convertValueJsonNode(attributeVal)))
             .build();
     }
