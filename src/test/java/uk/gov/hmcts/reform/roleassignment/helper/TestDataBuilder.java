@@ -379,6 +379,7 @@ public class TestDataBuilder {
 
 
     public static HistoryEntity buildHistoryEntity(RoleAssignment roleAssignment, RequestEntity requestEntity) {
+        String[] auths = {"dev","test"};
         return HistoryEntity.builder()
             .actorId(roleAssignment.getActorId())
             .actorIdType(roleAssignment.getActorIdType().toString())
@@ -399,7 +400,7 @@ public class TestDataBuilder {
             .notes(roleAssignment.getNotes())
             .sequence(roleAssignment.getStatusSequence())
             .log(roleAssignment.getLog())
-            .authorisations("dev,tester")
+            .authorisations(auths)
             .build();
     }
 
@@ -418,7 +419,7 @@ public class TestDataBuilder {
             .roleType(roleAssignment.getRoleType().toString())
             .readOnly(roleAssignment.isReadOnly())
             .roleCategory(roleAssignment.getRoleCategory().toString())
-            .authorisations(String.join(";", roleAssignment.getAuthorisations()))
+            .authorisations(roleAssignment.getAuthorisations().toArray(new String[0]))
             .build();
     }
 

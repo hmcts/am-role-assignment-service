@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
@@ -23,7 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static java.time.LocalTime.now;
 
@@ -51,9 +49,9 @@ public class PersistenceUtil {
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
             .notes(roleAssignment.getNotes())
             .log(roleAssignment.getLog())
-            .authorisations(
-                !CollectionUtils.isEmpty(roleAssignment.getAuthorisations())
-                    ? (String.join(";", roleAssignment.getAuthorisations())) : null)
+
+            .authorisations(!CollectionUtils.isEmpty(roleAssignment.getAuthorisations())
+                                ? roleAssignment.getAuthorisations().toArray(new String[0]) : null)
             .build();
     }
 
@@ -92,7 +90,7 @@ public class PersistenceUtil {
             .readOnly(roleAssignment.isReadOnly())
             .roleCategory(roleAssignment.getRoleCategory() != null ? roleAssignment.getRoleCategory().toString() : null)
             .authorisations(!CollectionUtils.isEmpty(roleAssignment.getAuthorisations())
-                                ? String.join(";", roleAssignment.getAuthorisations()) : null)
+                                ? roleAssignment.getAuthorisations().toArray(new String[0]) : null)
             .isNewFlag(isNewFlag)
             .build();
     }
@@ -120,16 +118,18 @@ public class PersistenceUtil {
             .status(Status.valueOf(historyEntity.getStatus()))
             .process(historyEntity.getProcess())
             .reference(historyEntity.getReference())
-            .beginTime(historyEntity.getBeginTime() != null ? historyEntity.getBeginTime().atZone(ZoneId
-                                                                                          .of("UTC")) : null)
+            .beginTime(historyEntity.getBeginTime() != null ? historyEntity.getBeginTime()
+                .atZone(ZoneId.of("UTC")) : null)
             .endTime(historyEntity.getEndTime() != null ? historyEntity.getEndTime().atZone(ZoneId.of("UTC")) : null)
             .created(historyEntity.getCreated())
             .log(historyEntity.getLog())
             .attributes(JacksonUtils.convertValue(historyEntity.getAttributes()))
             .notes(historyEntity.getNotes())
-            .authorisations(StringUtils.isNotEmpty(historyEntity.getAuthorisations()) ? (Arrays.stream(historyEntity
-                                                                                        .getAuthorisations().split(
-                    ",")).collect(Collectors.toList())) : Collections.emptyList())
+
+            .authorisations(historyEntity.getAuthorisations() != null && historyEntity
+                .getAuthorisations().length != 0
+                                ? Arrays.asList(historyEntity.getAuthorisations()) :
+                                Collections.emptyList())
             .build();
     }
 
@@ -145,17 +145,17 @@ public class PersistenceUtil {
             .roleName(roleAssignmentEntity.getRoleName())
             .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
             .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(roleAssignmentEntity
-                                                                                         .getRoleCategory()) : null)
+                                                                               .getRoleCategory()) : null)
             .beginTime(roleAssignmentEntity.getBeginTime() != null ? roleAssignmentEntity.getBeginTime()
                 .atZone(ZoneId.of(
-                "UTC")) : null)
+                    "UTC")) : null)
             .endTime(roleAssignmentEntity.getEndTime() != null ? roleAssignmentEntity.getEndTime().atZone(ZoneId.of(
                 "UTC")) : null)
             .created(roleAssignmentEntity.getCreated())
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
-            .authorisations(roleAssignmentEntity.getAuthorisations() != null && !roleAssignmentEntity
-                .getAuthorisations().isEmpty()
-                                ? Arrays.asList(roleAssignmentEntity.getAuthorisations().split(";")) :
+            .authorisations(roleAssignmentEntity.getAuthorisations() != null && roleAssignmentEntity
+                .getAuthorisations().length != 0
+                                ? Arrays.asList(roleAssignmentEntity.getAuthorisations()) :
                                 Collections.emptyList())
             .build();
     }
@@ -189,17 +189,17 @@ public class PersistenceUtil {
             .roleName(roleAssignmentEntity.getRoleName())
             .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
             .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(roleAssignmentEntity
-                                                                                    .getRoleCategory()) : null)
+                                                                                  .getRoleCategory()) : null)
             .beginTime(roleAssignmentEntity.getBeginTime() != null ? roleAssignmentEntity.getBeginTime()
                 .atZone(ZoneId.of(
-                "UTC")) : null)
+                    "UTC")) : null)
             .endTime(roleAssignmentEntity.getEndTime() != null ? roleAssignmentEntity.getEndTime().atZone(ZoneId.of(
                 "UTC")) : null)
             .created(roleAssignmentEntity.getCreated())
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
-            .authorisations(roleAssignmentEntity.getAuthorisations() != null && !roleAssignmentEntity
-                .getAuthorisations().isEmpty()
-                                ? Arrays.asList(roleAssignmentEntity.getAuthorisations().split(";")) :
+            .authorisations(roleAssignmentEntity.getAuthorisations() != null && roleAssignmentEntity
+                .getAuthorisations().length != 0
+                                ? Arrays.asList(roleAssignmentEntity.getAuthorisations()) :
                                 Collections.emptyList())
             .build();
     }
