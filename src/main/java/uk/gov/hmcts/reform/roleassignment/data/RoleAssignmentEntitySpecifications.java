@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.data;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
@@ -126,14 +127,20 @@ public final class RoleAssignmentEntitySpecifications {
 
     public static Specification<RoleAssignmentEntity> searchByAuthorisations(List<String> authorisations) {
 
-        if (authorisations == null || authorisations.isEmpty()) {
+        if (CollectionUtils.isEmpty(authorisations)) {
             return null;
 
         }
 
         return (root, query, builder) ->
             builder.or(authorisations.stream()
-                           .map(value -> builder.like(root.get("authorisations"), "%" + value + "%")
+                           .map(element ->
+                                builder.isNotNull(
+                                   builder.function("array_position", Integer.class,
+                                                    root.get("authorisations"),builder.literal(element))
+
+                               )
+
                            ).toArray(Predicate[]::new));
 
     }

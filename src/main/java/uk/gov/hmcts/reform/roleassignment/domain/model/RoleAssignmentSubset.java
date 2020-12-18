@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Map;
 
 @Builder
@@ -32,4 +33,5 @@ public class RoleAssignmentSubset {
     private JsonNode notes;
     private ZonedDateTime beginTime;
     private ZonedDateTime endTime;
+    private List<String> authorisations;
 }

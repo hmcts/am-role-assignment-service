@@ -155,7 +155,9 @@ class PersistenceUtilTest {
 
         RoleAssignmentEntity entity = TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
                                                                                     .buildRoleAssignment(Status.LIVE));
-        entity.setAuthorisations("dev;tester");
+
+        String [] str = {"dev","tester"};
+        entity.setAuthorisations(str);
         assertNotNull(persistenceUtil.convertEntityToRoleAssignment(
             entity));
     }
