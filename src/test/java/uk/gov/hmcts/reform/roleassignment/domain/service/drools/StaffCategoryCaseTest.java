@@ -123,6 +123,11 @@ class StaffCategoryCaseTest extends DroolBase {
         requestedRoles.add(requestedRole1);
         assignmentRequest.setRequestedRoles(requestedRoles);
 
+        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
+            requestedRole1.getActorId(),
+            "tribunal-caseworker"
+        );
+
         ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
             assignmentRequest.getRequest()
                 .getAssignerId(),
@@ -130,7 +135,12 @@ class StaffCategoryCaseTest extends DroolBase {
         );
         existingRequesterAssignment1.getAttributes().put("jurisdiction", convertValueJsonNode("CMC"));
 
-        executeDroolRules(List.of(existingRequesterAssignment1));
+        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
+        existingRoleAssignments.add(existingActorAssignment1);
+        existingRoleAssignments.add(existingRequesterAssignment1);
+
+        // facts must contain the request
+        executeDroolRules(existingRoleAssignments);
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
