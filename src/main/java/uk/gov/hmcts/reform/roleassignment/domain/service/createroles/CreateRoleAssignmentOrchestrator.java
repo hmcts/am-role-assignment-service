@@ -71,6 +71,7 @@ public class CreateRoleAssignmentOrchestrator {
 
             AssignmentRequest parsedAssignmentRequest = parseRequestService
                 .parseRequest(roleAssignmentRequest, RequestType.CREATE);
+
             //2. Call persistence service to store only the request
             requestEntity = createRoleAssignmentService.persistInitialRequest(parsedAssignmentRequest.getRequest());
             requestEntity.setHistoryEntities(new HashSet<>());

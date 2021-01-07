@@ -29,15 +29,16 @@ public class LiquibaseConfig implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(
             new JdbcConnection(dataSource.getConnection()));
-        Liquibase liquibase;
+        Liquibase liquibase = null;
         try {
             liquibase = new Liquibase("db/changelog/db.changelog-master.xml",
                                       new ClassLoaderResourceAccessor(), database
             );
-            liquibaseForceRelase(liquibase);
             //liquibase.update(new Contexts())
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
+        } finally {
+            liquibaseForceRelase(liquibase);
         }
     }
 
