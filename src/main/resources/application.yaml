@@ -70,7 +70,7 @@ spring:
           batch_versioned_data: true
           lob:
             non_contextual_creation: true
-  flyway.enabled: true
+  flyway.enabled: ${ENABLE_DB_MIGRATE:true}
   flyway.locations: classpath:db/migration
   datasource:
     url: jdbc:postgresql://${ROLE_ASSIGNMENT_DB_HOST:localhost}:${ROLE_ASSIGNMENT_DB_PORT:5451}/${ROLE_ASSIGNMENT_DB_NAME:role_assignment}${ROLE_ASSIGNMENT_DB_OPTIONS:?stringtype=unspecified&reWriteBatchedInserts=true}
