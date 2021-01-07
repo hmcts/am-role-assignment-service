@@ -14,17 +14,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.DeleteAssignmentController;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
-@Provider("am_role_assignment_service_delete")
+@Provider("am_role_assignment_service_delete_actor")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}", host = "${PACT_BROKER_URL:localhost}",
     port = "${PACT_BROKER_PORT:9292}")
 @Import(RoleAssignmentProviderTestConfiguration.class)
 public class DeleteRoleAssignmentProviderTest {
 
     @Autowired
+    private PersistenceService persistenceService;
+
+    @Autowired
     private DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator;
+
+    private static final String ASSIGNMENT_ID = "704c8b1c-e89b-436a-90f6-953b1dc40157";
 
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider.class)
@@ -43,13 +60,32 @@ public class DeleteRoleAssignmentProviderTest {
     }
 
     @State({"An actor with provided id is available in role assignment service"})
-    public void createRoleAssignmentReplaceExistingFalse() {
-        setInitiMock();
+    public void deleteRoleAssignmentById() throws IOException {
+        setInitMockId();
     }
 
-    private void setInitiMock() {
-//        when(persistenceService.persistRequest(any())).thenReturn(createEntity());
-//        when(securityUtils.getUserId()).thenReturn("14a21569-eb80-4681-b62c-6ae2ed069e2f");
-//        when(correlationInterceptorUtil.preHandle(any())).thenReturn("14a21569-eb80-4681-b62c-6ae2ed069e2d");
+    @State({"An actor with provided process & reference is available in role assignment service"})
+    public void deleteRoleAssignmentByPr() throws IOException {
+        setInitMockPr();
+    }
+
+    private void setInitMockId() throws IOException {
+        Request deleteRequest = TestDataBuilder.buildRequest(Status.LIVE, false);
+        List<RoleAssignment> roleAssignmentList = TestDataBuilder
+            .buildRoleAssignmentList_Custom(Status.LIVE,"1234","attributes.json");
+
+        when(persistenceService.persistRequest(any())).thenReturn(TestDataBuilder.buildRequestEntity(deleteRequest));
+        when(persistenceService.getAssignmentById(UUID.fromString(ASSIGNMENT_ID)))
+            .thenReturn(roleAssignmentList);
+    }
+
+    private void setInitMockPr() throws IOException {
+        Request deleteRequest = TestDataBuilder.buildRequest(Status.LIVE, false);
+        List<RoleAssignment> roleAssignmentList = TestDataBuilder
+            .buildRoleAssignmentList_Custom(Status.LIVE,"1234","attributes.json");
+
+        when(persistenceService.persistRequest(any())).thenReturn(TestDataBuilder.buildRequestEntity(deleteRequest));
+        when(persistenceService.getAssignmentsByProcess("p2", "r2", Status.LIVE.toString()))
+            .thenReturn(roleAssignmentList);
     }
 }
