@@ -28,7 +28,8 @@
           "_extends_": "ResponseRoleAssignment",
           "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}",
           "roleType" : "ORGANISATION",
-          "grantType" : "STANDARD"
+          "grantType" : "STANDARD",
+          "authorisations" : [ ]
         },
         {
           "_extends_": "ResponseRoleAssignment",
@@ -37,7 +38,8 @@
           "grantType" : "${[scenarioContext][childContexts][S-087_CreationDataForRoleAssignment][testData][request][body][requestedRoles][1][grantType]}",
           "attributes": {
             "caseId": "${[scenarioContext][childContexts][S-087_CreationDataForRoleAssignment][testData][request][body][requestedRoles][1][attributes][caseId]}"
-          }
+          },
+          "authorisations" : [ ]
         },
 
         {
@@ -47,7 +49,8 @@
           "grantType" : "${[scenarioContext][childContexts][S-087_CreationDataForRoleAssignment][testData][request][body][requestedRoles][2][grantType]}",
           "attributes": {
             "caseId": "${[scenarioContext][childContexts][S-087_CreationDataForRoleAssignment][testData][request][body][requestedRoles][2][attributes][caseId]}"
-          }
+          },
+          "authorisations" : [ ]
         }
       ]
     }
