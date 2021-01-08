@@ -53,39 +53,43 @@ public class SearchQueryRoleAssignmentProviderTest {
             queryRoleAssignmentOrchestrator
         ));
         context.setTarget(testTarget);
-
     }
 
     @State({"A list of role assignments for the search query"})
   public void searchQueryByActorIdWithSuccess() throws Exception {
-        setInitiMock();
+        setInitiMock(false);
     }
 
     @State({"A list of role assignments for the search query by role name"})
   public void searchQueryByRoleNameWithSuccess() throws Exception {
-        setInitiMock();
+        setInitiMock(false);
     }
 
     @State({"A list of role assignments for the search query by attributes"})
   public void searchQueryByAttributesWithSuccess() throws Exception {
-        setInitiMock();
+        setInitiMock(false);
     }
 
     @State({"A list of multiple role assignments for the search query"})
   public void searchQueryMultipleRoleAssignmentsWithSuccess() throws Exception {
-        setInitiMock();
+        setInitiMock(true);
     }
 
     @State({"An empty list of role assignments for the search query"})
   public void searchQueryReturnsEmptyListOfAssignmentsWithSuccess() throws Exception {
-        setInitiMock();
+        setInitiMock(false);
     }
 
-    private void setInitiMock() throws Exception {
+    private void setInitiMock(boolean isMulti) throws Exception {
         String actorId = "234873";
-        List<Assignment> roleAssignments
-            = TestDataBuilder.buildAssignmentList(Status.LIVE, actorId, "attributesSearchQuery.json");
-
+        List<Assignment> roleAssignments;
+        if (isMulti == true) {
+            roleAssignments = TestDataBuilder.buildMultiAssignmentList(Status.LIVE, actorId,
+           "attributesSearchQuery.json");
+        } else {
+            roleAssignments = TestDataBuilder.buildAssignmentList(Status.LIVE, actorId,
+           "attributesSearchQuery.json");
+        }
         when(persistenceService.retrieveRoleAssignmentsByQueryRequest(any(),any(),any(),any(),any(),anyBoolean()))
             .thenReturn(roleAssignments);
         when(persistenceService.getActorCacheEntity(actorId)).thenReturn(ActorCacheEntity.builder().actorId(actorId)
