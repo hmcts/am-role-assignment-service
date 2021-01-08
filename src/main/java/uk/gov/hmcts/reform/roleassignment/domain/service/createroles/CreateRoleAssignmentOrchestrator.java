@@ -80,7 +80,7 @@ public class CreateRoleAssignmentOrchestrator {
             createRoleAssignmentService.setRequestEntity(requestEntity);
             createRoleAssignmentService.setIncomingRequest(request);
 
-            //Check replace existing true/false
+            //Check replace existing true or false
             if (request.isReplaceExisting()) {
                 long replaceExisting = System.currentTimeMillis();
                 logger.info(String.format("replaceExisting Inner Method execution started at %s", replaceExisting));
