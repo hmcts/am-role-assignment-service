@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -321,6 +322,15 @@ public class CreateRoleAssignmentService {
         // convert existing assignment records into role assignment subset
         Map<UUID, RoleAssignmentSubset> existingRecords = JacksonUtils.convertExistingRolesIntoSubSet(
             existingAssignmentRequest);
+
+        //to check if authorisation is empty
+        parsedAssignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            if (CollectionUtils.isEmpty(roleAssignment.getAuthorisations())) {
+                roleAssignment.setAuthorisations(null);
+            }
+
+        });
+
 
         // convert incoming assignment records into role assignment subset
         Set<RoleAssignmentSubset> incomingRecords = JacksonUtils.convertRequestedRolesIntoSubSet(

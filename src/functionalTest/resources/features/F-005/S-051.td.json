@@ -22,6 +22,7 @@
       "roleAssignmentResponse": [
         {
           "_extends_": "ResponseRoleAssignment",
+          "authorisations" : [ ],
           "actorId": "${}${[scenarioContext][testData][request][pathVariables][actorId]}"
         }
       ]

@@ -362,7 +362,7 @@ class CreateRoleAssignmentOrchestratorTest {
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
-        verify(prepareResponseService, times(2))
+        verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
 
