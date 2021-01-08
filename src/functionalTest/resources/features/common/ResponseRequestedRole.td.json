@@ -16,7 +16,6 @@
   "status":"LIVE",
   "created":"[[ANYTHING_PRESENT]]",
   "log":"[[ANYTHING_PRESENT]]",
-  "authorisations" : [ ],
   "attributes" : {
     "jurisdiction" : "divorce",
     "region" : "south-east",

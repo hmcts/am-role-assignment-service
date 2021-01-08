@@ -129,7 +129,7 @@ public class PersistenceUtil {
             .authorisations(historyEntity.getAuthorisations() != null && historyEntity
                 .getAuthorisations().length != 0
                                 ? Arrays.asList(historyEntity.getAuthorisations()) :
-                                Collections.emptyList())
+                                null)
             .build();
     }
 
