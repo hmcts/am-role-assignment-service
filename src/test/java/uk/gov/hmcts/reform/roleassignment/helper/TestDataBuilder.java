@@ -124,6 +124,14 @@ public class TestDataBuilder {
         return requestedRoles;
     }
 
+    public static List<Assignment> buildMultiAssignmentList(Status status, String actorId, String path)
+        throws IOException {
+        List<Assignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path));
+        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path));
+        return requestedRoles;
+    }
+
     public static RoleAssignment buildRoleAssignment(Status status) throws IOException {
         ZonedDateTime timeStamp = ZonedDateTime.now(ZoneOffset.UTC);
         return RoleAssignment.builder()
