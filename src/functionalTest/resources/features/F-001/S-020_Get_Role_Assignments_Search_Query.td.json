@@ -33,7 +33,8 @@
       "roleAssignmentResponse" : [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][parentContext][childContexts][S-020_Multiple_Role_Creation][testData][request][body][requestedRoles][0][actorId]}"
+          "actorId": "${}${[scenarioContext][parentContext][childContexts][S-020_Multiple_Role_Creation][testData][request][body][requestedRoles][0][actorId]}",
+          "authorisations" : [ ]
         }
       ]
     }
