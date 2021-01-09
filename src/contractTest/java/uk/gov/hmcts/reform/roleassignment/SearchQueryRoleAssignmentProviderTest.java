@@ -80,16 +80,12 @@ public class SearchQueryRoleAssignmentProviderTest {
         setInitiMock(false);
     }
 
-    private void setInitiMock(boolean isMulti) throws Exception {
+    private void setInitiMock(boolean hasMultipleAssignments) throws Exception {
         String actorId = "234873";
-        List<Assignment> roleAssignments;
-        if (isMulti == true) {
-            roleAssignments = TestDataBuilder.buildMultiAssignmentList(Status.LIVE, actorId,
-           "attributesSearchQuery.json");
-        } else {
-            roleAssignments = TestDataBuilder.buildAssignmentList(Status.LIVE, actorId,
-           "attributesSearchQuery.json");
-        }
+        List<Assignment> roleAssignments = (hasMultipleAssignments == true)
+            ? TestDataBuilder.buildMultiAssignmentList(Status.LIVE, actorId,"attributesSearchQuery.json")
+            : TestDataBuilder.buildAssignmentList(Status.LIVE, actorId, "attributesSearchQuery.json");
+
         when(persistenceService.retrieveRoleAssignmentsByQueryRequest(any(),any(),any(),any(),any(),anyBoolean()))
             .thenReturn(roleAssignments);
         when(persistenceService.getActorCacheEntity(actorId)).thenReturn(ActorCacheEntity.builder().actorId(actorId)
