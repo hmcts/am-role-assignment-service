@@ -19,7 +19,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 
