@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 @NoArgsConstructor
 @Validated
 @Slf4j
+@JsonIgnoreProperties(value = { "links" })
 public class RoleAssignmentDeleteResource extends RepresentationModel<RoleAssignmentDeleteResource> {
 
 
