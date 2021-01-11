@@ -156,7 +156,7 @@ public class PersistenceUtil {
             .authorisations(roleAssignmentEntity.getAuthorisations() != null && roleAssignmentEntity
                 .getAuthorisations().length != 0
                                 ? Arrays.asList(roleAssignmentEntity.getAuthorisations()) :
-                                Collections.emptyList())
+                                null)
             .build();
     }
 
@@ -200,7 +200,7 @@ public class PersistenceUtil {
             .authorisations(roleAssignmentEntity.getAuthorisations() != null && roleAssignmentEntity
                 .getAuthorisations().length != 0
                                 ? Arrays.asList(roleAssignmentEntity.getAuthorisations()) :
-                                Collections.emptyList())
+                                null)
             .build();
     }
 }
