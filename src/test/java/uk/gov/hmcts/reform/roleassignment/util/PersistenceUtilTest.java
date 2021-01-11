@@ -127,7 +127,7 @@ class PersistenceUtilTest {
         assertNotNull(roleAssignment);
         assertNull(roleAssignment.getEndTime());
         assertNull(roleAssignment.getBeginTime());
-        assertEquals(0, roleAssignment.getAuthorisations().size());
+        assertNull(roleAssignment.getAuthorisations());
     }
 
     @Test
