@@ -20,13 +20,13 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static java.time.LocalDateTime.now;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
@@ -94,7 +94,7 @@ public abstract class DroolBase {
                                                        .process(("p2"))
                                                        .replaceExisting(true)
                                                        .status(Status.CREATED)
-                                                       .created(now())
+                                                       .created(ZonedDateTime.now())
                                                        .build());
 
 
