@@ -14,17 +14,17 @@ import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -36,6 +36,7 @@ import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -80,7 +81,7 @@ public class TestDataBuilder {
             .process(("p2"))
             .replaceExisting(replaceExisting)
             .status(status)
-            .created(ZonedDateTime.now())
+            .created(now())
             .build();
     }
 
@@ -98,7 +99,7 @@ public class TestDataBuilder {
             .roleCategory(RoleCategory.STAFF)
             .readOnly(false)
             .beginTime(timeStamp.plusDays(1))
-            .created(timeStamp)
+            .created(LocalDateTime.now())
             .endTime(timeStamp.plusDays(3))
             .reference("reference")
             .process(("process"))
@@ -149,7 +150,7 @@ public class TestDataBuilder {
             .process(("process"))
             .statusSequence(10)
             .status(status)
-            .created(ZonedDateTime.now())
+            .created(now())
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile("attributes.json")))
             .notes(buildNotesFromFile())
             .authorisations(Collections.emptyList())
@@ -174,7 +175,7 @@ public class TestDataBuilder {
             .process(("new process"))
             .statusSequence(10)
             .status(status)
-            .created(ZonedDateTime.now())
+            .created(now())
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile("attributes.json")))
             .notes(buildNotesFromFile())
             .build();
@@ -279,7 +280,7 @@ public class TestDataBuilder {
             .assignerId(request.getAssignerId())
             .replaceExisting(request.isReplaceExisting())
             .requestType(request.getRequestType().toString())
-            .created(request.getCreated().toLocalDateTime())
+            .created(request.getCreated())
             .log(request.getLog())
             .build();
     }
@@ -299,7 +300,7 @@ public class TestDataBuilder {
             .requestEntity(requestEntity)
             .process(model.getProcess())
             .reference(model.getReference())
-            .created(model.getCreated().toLocalDateTime())
+            .created(model.getCreated())
             .notes(model.getNotes())
             .build();
     }
@@ -313,7 +314,7 @@ public class TestDataBuilder {
             .beginTime(model.getBeginTime().toLocalDateTime())
             .classification(model.getClassification().toString())
             .endTime(model.getEndTime().toLocalDateTime())
-            .created(model.getCreated().toLocalDateTime())
+            .created(model.getCreated())
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
@@ -330,7 +331,7 @@ public class TestDataBuilder {
         requestedrole.setAttributes(JacksonUtils.convertValue(historyEntity.getAttributes()));
         requestedrole.setBeginTime(historyEntity.getBeginTime().atZone(ZoneId.of("UTC")));
         requestedrole.setEndTime(historyEntity.getEndTime().atZone(ZoneId.of("UTC")));
-        requestedrole.setCreated(historyEntity.getCreated().atZone(ZoneId.of("UTC")));
+        requestedrole.setCreated(historyEntity.getCreated());
         requestedrole.setClassification(Classification.valueOf(historyEntity.getClassification()));
         requestedrole.setGrantType(GrantType.valueOf(historyEntity.getGrantType()));
         requestedrole.setReadOnly(historyEntity.isReadOnly());
@@ -400,7 +401,7 @@ public class TestDataBuilder {
             .requestEntity(requestEntity)
             .process(roleAssignment.getProcess())
             .reference(roleAssignment.getReference())
-            .created(roleAssignment.getCreated().toLocalDateTime())
+            .created(roleAssignment.getCreated())
             .beginTime(roleAssignment.getBeginTime().toLocalDateTime())
             .endTime(roleAssignment.getEndTime().toLocalDateTime())
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
@@ -420,7 +421,7 @@ public class TestDataBuilder {
             .beginTime(roleAssignment.getBeginTime().toLocalDateTime())
             .classification(roleAssignment.getClassification().toString())
             .endTime(roleAssignment.getEndTime().toLocalDateTime())
-            .created(roleAssignment.getCreated().toLocalDateTime())
+            .created(roleAssignment.getCreated())
             .grantType(roleAssignment.getGrantType().toString())
             .roleName(roleAssignment.getRoleName())
             .roleType(roleAssignment.getRoleType().toString())
