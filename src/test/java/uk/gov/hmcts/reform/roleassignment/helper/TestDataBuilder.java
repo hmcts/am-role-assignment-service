@@ -80,7 +80,7 @@ public class TestDataBuilder {
             .process(("p2"))
             .replaceExisting(replaceExisting)
             .status(status)
-            .created(now())
+            .created(ZonedDateTime.now())
             .build();
     }
 
@@ -279,7 +279,7 @@ public class TestDataBuilder {
             .assignerId(request.getAssignerId())
             .replaceExisting(request.isReplaceExisting())
             .requestType(request.getRequestType().toString())
-            .created(request.getCreated())
+            .created(request.getCreated().toLocalDateTime())
             .log(request.getLog())
             .build();
     }

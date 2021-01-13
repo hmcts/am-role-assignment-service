@@ -65,7 +65,7 @@ public class PersistenceUtil {
             .assignerId(request.getAssignerId())
             .replaceExisting(request.isReplaceExisting())
             .requestType(request.getRequestType().toString())
-            .created(request.getCreated())
+            .created(request.getCreated().toLocalDateTime())
             .log(request.getLog())
             .roleAssignmentId(request.getRoleAssignmentId())
             .build();
