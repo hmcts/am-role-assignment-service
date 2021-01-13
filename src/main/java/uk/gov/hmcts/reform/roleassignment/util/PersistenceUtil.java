@@ -19,7 +19,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -156,7 +155,7 @@ public class PersistenceUtil {
             .authorisations(roleAssignmentEntity.getAuthorisations() != null && roleAssignmentEntity
                 .getAuthorisations().length != 0
                                 ? Arrays.asList(roleAssignmentEntity.getAuthorisations()) :
-                                Collections.emptyList())
+                                null)
             .build();
     }
 
@@ -200,7 +199,7 @@ public class PersistenceUtil {
             .authorisations(roleAssignmentEntity.getAuthorisations() != null && roleAssignmentEntity
                 .getAuthorisations().length != 0
                                 ? Arrays.asList(roleAssignmentEntity.getAuthorisations()) :
-                                Collections.emptyList())
+                                null)
             .build();
     }
 }
