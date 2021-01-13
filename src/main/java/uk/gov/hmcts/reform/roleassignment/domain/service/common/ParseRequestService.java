@@ -25,6 +25,8 @@ import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -70,7 +72,7 @@ public class ParseRequestService {
             requestedAssignment.setProcess(request.getProcess());
             requestedAssignment.setReference(request.getReference());
             requestedAssignment.setStatus(Status.CREATE_REQUESTED);
-            requestedAssignment.setCreated(now());
+            requestedAssignment.setCreated(ZonedDateTime.now(ZoneOffset.UTC));
         });
         requestedAssignments.sort(new CreatedTimeComparator());
         AssignmentRequest parsedRequest = new AssignmentRequest(new Request(), Collections.emptyList());
