@@ -34,7 +34,6 @@ public abstract class Assignment {
     private ZonedDateTime beginTime;
     private ZonedDateTime endTime;
 
-
     private String process; //need to map from request
     private String reference; //need to map from request
     private Integer statusSequence; //this will be populated from status entity. Need to extend status entity.
