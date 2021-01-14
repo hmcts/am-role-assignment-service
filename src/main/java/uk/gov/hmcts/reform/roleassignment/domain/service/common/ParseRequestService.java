@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.CreatedTimeComparator;
@@ -24,11 +25,11 @@ import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import static java.time.LocalDateTime.now;
 
 @Service
 public class ParseRequestService {
@@ -56,7 +57,7 @@ public class ParseRequestService {
         //c. Set Status=Created and created Time = now
         request.setStatus(Status.CREATED);
         request.setRequestType(requestType);
-        request.setCreated(ZonedDateTime.now(ZoneOffset.UTC));
+        request.setCreated(now());
         //d. correlationId if it is empty then generate a new value and set.
         setCorrelationId(request);
         //3. RoleAssignment Parsing
@@ -69,7 +70,7 @@ public class ParseRequestService {
             requestedAssignment.setProcess(request.getProcess());
             requestedAssignment.setReference(request.getReference());
             requestedAssignment.setStatus(Status.CREATE_REQUESTED);
-            requestedAssignment.setCreated(ZonedDateTime.now(ZoneOffset.UTC));
+            requestedAssignment.setCreated(now());
         });
         requestedAssignments.sort(new CreatedTimeComparator());
         AssignmentRequest parsedRequest = new AssignmentRequest(new Request(), Collections.emptyList());
@@ -111,7 +112,7 @@ public class ParseRequestService {
             .authenticatedUserId(securityUtils.getUserId())
             .status(Status.CREATED)
             .requestType(RequestType.DELETE)
-            .created(ZonedDateTime.now(ZoneOffset.UTC))
+            .created(now())
             .process(process)
             .reference(reference)
             .build();
