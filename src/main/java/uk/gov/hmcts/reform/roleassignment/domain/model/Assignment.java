@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,7 @@ public abstract class Assignment {
     private String reference; //need to map from request
     private Integer statusSequence; //this will be populated from status entity. Need to extend status entity.
     private Status status; //this will be set by app default = created
-    private ZonedDateTime created; //this will be set by app
+    private LocalDateTime created; //this will be set by app
     private String log; //this will be set app based on drool validation rule name on individual assignments.
     private Map<String, JsonNode> attributes;
     private JsonNode notes;
