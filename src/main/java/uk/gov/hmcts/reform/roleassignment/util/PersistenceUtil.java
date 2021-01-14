@@ -48,7 +48,6 @@ public class PersistenceUtil {
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
             .notes(roleAssignment.getNotes())
             .log(roleAssignment.getLog())
-
             .authorisations(!CollectionUtils.isEmpty(roleAssignment.getAuthorisations())
                                 ? roleAssignment.getAuthorisations().toArray(new String[0]) : null)
             .build();
@@ -143,8 +142,8 @@ public class PersistenceUtil {
             .readOnly(roleAssignmentEntity.isReadOnly())
             .roleName(roleAssignmentEntity.getRoleName())
             .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
-            .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(roleAssignmentEntity
-                                                                                                    .getRoleCategory()) : null)
+            .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(
+                roleAssignmentEntity.getRoleCategory()) : null)
             .beginTime(roleAssignmentEntity.getBeginTime() != null ? roleAssignmentEntity.getBeginTime()
                 .atZone(ZoneId.of(
                     "UTC")) : null)
@@ -187,8 +186,8 @@ public class PersistenceUtil {
             .readOnly(roleAssignmentEntity.isReadOnly())
             .roleName(roleAssignmentEntity.getRoleName())
             .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
-            .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(roleAssignmentEntity
-                                                                                                    .getRoleCategory()) : null)
+            .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(
+                roleAssignmentEntity.getRoleCategory()) : null)
             .beginTime(roleAssignmentEntity.getBeginTime() != null ? roleAssignmentEntity.getBeginTime()
                 .atZone(ZoneId.of(
                     "UTC")) : null)
