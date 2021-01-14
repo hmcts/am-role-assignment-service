@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Builder
@@ -27,7 +27,7 @@ public class Request {
     private boolean replaceExisting;
     private UUID roleAssignmentId;
     private Status status; //this will be set by app default = created
-    private LocalDateTime created; //this will be set by app
+    private ZonedDateTime created; //this will be set by app
     private String log; //this will be set app based on drool validation rule name on individual assignments.
 
 }
