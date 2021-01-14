@@ -189,7 +189,8 @@ public class TestDataBuilder {
 
     public static ResponseEntity<RoleAssignmentRequestResource> buildAssignmentRequestResource(Status requestStatus,
                                                                                                Status roleStatus,
-                                                                                               Boolean replaceExisting) throws Exception {
+                                                                                               Boolean replaceExisting)
+        throws Exception {
         return ResponseEntity.status(HttpStatus.OK)
             .body(new RoleAssignmentRequestResource(buildAssignmentRequest(requestStatus,
                                                                            roleStatus,
