@@ -37,7 +37,6 @@
       "Content-Type": "application/json"
     },
     "body": {
-      "links": [],
       "roleAssignmentResponse": {
         "roleRequest": {
           "id": "[[ANYTHING_PRESENT]]",

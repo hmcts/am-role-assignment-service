@@ -13,22 +13,14 @@
   "expectedResponse": {
     "_extends_": "Common_200_Response",
     "body": {
-      "links": [
-        {
-          "rel": "binary",
-          "href": "{{TEST_URL}}/am/role-assignments/actors/${[scenarioContext][testData][request][pathVariables][actorId]}"
-        }
-      ],
       "roleAssignmentResponse": [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][pathVariables][actorId]}",
-          "authorisations" : [ ]
+          "actorId": "${}${[scenarioContext][testData][request][pathVariables][actorId]}"
         },
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][pathVariables][actorId]}",
-          "authorisations" : [ ]
+          "actorId": "${}${[scenarioContext][testData][request][pathVariables][actorId]}"
         }
       ]
     }

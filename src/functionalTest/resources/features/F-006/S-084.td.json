@@ -18,22 +18,19 @@
   "expectedResponse": {
     "_extends_": "Common_200_Response",
     "body": {
-      "links": [],
       "roleAssignmentResponse" : [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}",
-          "authorisations" : [ ]
+          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}"
         },
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}",
-          "authorisations" : [ ]
+          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}"
+
         },
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}",
-          "authorisations" : [ ]
+          "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}"
         }
       ]
     }
