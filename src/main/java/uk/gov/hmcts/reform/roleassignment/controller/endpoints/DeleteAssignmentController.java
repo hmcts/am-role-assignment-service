@@ -4,21 +4,20 @@ package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentDeleteResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
@@ -55,17 +54,13 @@ public class DeleteAssignmentController {
         @ApiResponse(
             code = 400,
             message = V1.Error.BAD_REQUEST_MISSING_PARAMETERS
-        ),
-        @ApiResponse(
-            code = 422,
-            message = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
         )
     })
     @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_PROCESS,
         process = "#process",
         reference = "#reference",
         correlationId = "#correlationId")
-    public ResponseEntity<RoleAssignmentDeleteResource> deleteRoleAssignment(@RequestHeader(value = "x-correlation-id",
+    public ResponseEntity<?> deleteRoleAssignment(@RequestHeader(value = "x-correlation-id",
         required = false)
                                                            String correlationId,
                                                        @RequestParam(value = "process", required = false)
@@ -73,7 +68,7 @@ public class DeleteAssignmentController {
                                                        @RequestParam(value = "reference", required = false)
                                                            String reference) {
         long startTime = System.currentTimeMillis();
-        ResponseEntity<RoleAssignmentDeleteResource> responseEntity = deleteRoleAssignmentOrchestrator
+        ResponseEntity<?> responseEntity = deleteRoleAssignmentOrchestrator
             .deleteRoleAssignmentByProcessAndReference(process, reference);
         logger.info(String.format(
             " >> deleteRoleAssignmentByProcessAndReference execution finished at %s .Time taken = %s milliseconds",
@@ -101,17 +96,13 @@ public class DeleteAssignmentController {
         @ApiResponse(
             code = 400,
             message = V1.Error.BAD_REQUEST_MISSING_PARAMETERS
-        ),
-        @ApiResponse(
-            code = 422,
-            message = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
         )
     })
     @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_ID,
         assignmentId = "#assignmentId",
         correlationId = "#correlationId"
     )
-    public ResponseEntity<RoleAssignmentDeleteResource> deleteRoleAssignmentById(@RequestHeader(
+    public ResponseEntity<?> deleteRoleAssignmentById(@RequestHeader(
         value = "x-correlation-id",
         required = false)
                                                                String correlationId,
