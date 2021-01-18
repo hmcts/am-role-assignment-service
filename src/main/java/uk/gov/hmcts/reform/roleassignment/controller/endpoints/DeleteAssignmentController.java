@@ -102,7 +102,7 @@ public class DeleteAssignmentController {
         assignmentId = "#assignmentId",
         correlationId = "#correlationId"
     )
-    public ResponseEntity<?> deleteRoleAssignmentById(@RequestHeader(
+    public ResponseEntity<Void> deleteRoleAssignmentById(@RequestHeader(
         value = "x-correlation-id",
         required = false)
                                                                String correlationId,
