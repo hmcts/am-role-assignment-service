@@ -54,13 +54,17 @@ public class DeleteAssignmentController {
         @ApiResponse(
             code = 400,
             message = V1.Error.BAD_REQUEST_MISSING_PARAMETERS
+        ),
+        @ApiResponse(
+            code = 422,
+            message = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
         )
     })
     @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_PROCESS,
         process = "#process",
         reference = "#reference",
         correlationId = "#correlationId")
-    public ResponseEntity<?> deleteRoleAssignment(@RequestHeader(value = "x-correlation-id",
+    public ResponseEntity<Void> deleteRoleAssignment(@RequestHeader(value = "x-correlation-id",
         required = false)
                                                            String correlationId,
                                                        @RequestParam(value = "process", required = false)
@@ -68,7 +72,7 @@ public class DeleteAssignmentController {
                                                        @RequestParam(value = "reference", required = false)
                                                            String reference) {
         long startTime = System.currentTimeMillis();
-        ResponseEntity<?> responseEntity = deleteRoleAssignmentOrchestrator
+        ResponseEntity<Void> responseEntity = deleteRoleAssignmentOrchestrator
             .deleteRoleAssignmentByProcessAndReference(process, reference);
         logger.info(String.format(
             " >> deleteRoleAssignmentByProcessAndReference execution finished at %s .Time taken = %s milliseconds",
@@ -96,6 +100,10 @@ public class DeleteAssignmentController {
         @ApiResponse(
             code = 400,
             message = V1.Error.BAD_REQUEST_MISSING_PARAMETERS
+        ),
+        @ApiResponse(
+            code = 422,
+            message = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
         )
     })
     @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_ID,
