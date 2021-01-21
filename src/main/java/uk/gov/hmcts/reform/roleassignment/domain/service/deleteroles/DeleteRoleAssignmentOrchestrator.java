@@ -14,7 +14,6 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentDeleteResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -64,7 +63,7 @@ public class DeleteRoleAssignmentOrchestrator {
     }
 
 
-    public ResponseEntity<RoleAssignmentDeleteResource> deleteRoleAssignmentByProcessAndReference(String process,
+    public ResponseEntity<Void> deleteRoleAssignmentByProcessAndReference(String process,
                                                                             String reference) {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("deleteRoleAssignmentByProcessAndReference execution started at %s", startTime));
@@ -101,7 +100,7 @@ public class DeleteRoleAssignmentOrchestrator {
             requestedRoles.stream().forEach(roleAssignment -> roleAssignment.setStatus(Status.DELETE_REQUESTED));
         }
 
-        ResponseEntity<RoleAssignmentDeleteResource> responseEntity = performOtherStepsForDelete("", requestedRoles);
+        ResponseEntity<Void> responseEntity = performOtherStepsForDelete("", requestedRoles);
         logger.info(String.format(
             " >> deleteRoleAssignmentByProcessAndReference execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
@@ -110,7 +109,7 @@ public class DeleteRoleAssignmentOrchestrator {
         return responseEntity;
     }
 
-    public ResponseEntity<RoleAssignmentDeleteResource> deleteRoleAssignmentByAssignmentId(String assignmentId) {
+    public ResponseEntity<Void> deleteRoleAssignmentByAssignmentId(String assignmentId) {
         List<RoleAssignment> requestedRoles;
 
         //1. create the request Object
@@ -140,7 +139,7 @@ public class DeleteRoleAssignmentOrchestrator {
     }
 
     @NotNull
-    private ResponseEntity<RoleAssignmentDeleteResource> performOtherStepsForDelete(String actorId,
+    private ResponseEntity<Void> performOtherStepsForDelete(String actorId,
                                                                  List<RoleAssignment> requestedRoles) {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("performOtherStepsForDelete execution started at %s", startTime));
@@ -160,12 +159,10 @@ public class DeleteRoleAssignmentOrchestrator {
             System.currentTimeMillis() - startTime
         ));
         if (assignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
-                new RoleAssignmentDeleteResource(assignmentRequest.getRequest()));
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
     }
 
     private void persistInitialRequestForDelete() {
