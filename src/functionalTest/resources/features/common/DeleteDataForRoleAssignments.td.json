@@ -21,7 +21,7 @@
     },
     "pathVariables": {
       "process": "businessProcess1",
-      "reference": "abc"
+      "reference": "${[scenarioContext][parentContext][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {
