@@ -72,8 +72,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
         //1. create the request Object
         try {
-            if ((!process.isBlank() && !process.equals("null"))
-                && (!reference.isBlank() && !reference.equals("null"))) {
+            if (!process.isBlank() && !reference.isBlank()) {
                 request = parseRequestService.prepareDeleteRequest(process, reference, "", "");
                 assignmentRequest = new AssignmentRequest(request, Collections.emptyList());
             } else {
