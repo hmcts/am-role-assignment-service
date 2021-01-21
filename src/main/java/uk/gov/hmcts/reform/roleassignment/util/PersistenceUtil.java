@@ -163,8 +163,6 @@ public class PersistenceUtil {
         UUID roleAssignmentId = roleAssignment.getId();
         UUID requestId = request.getId();
 
-        request.setLog("Create Requested with replace existing"); //TODO This does not set the log for the history
-
         RequestEntity requestEntity = convertRequestToEntity(request);
         if (requestId != null) {
             requestEntity.setId(requestId);
