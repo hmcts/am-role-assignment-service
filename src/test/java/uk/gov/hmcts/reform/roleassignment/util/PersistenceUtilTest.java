@@ -127,7 +127,7 @@ class PersistenceUtilTest {
         assertNotNull(roleAssignment);
         assertNull(roleAssignment.getEndTime());
         assertNull(roleAssignment.getBeginTime());
-        assertEquals(0, roleAssignment.getAuthorisations().size());
+        assertNull(roleAssignment.getAuthorisations());
     }
 
     @Test
@@ -155,7 +155,9 @@ class PersistenceUtilTest {
 
         RoleAssignmentEntity entity = TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
                                                                                     .buildRoleAssignment(Status.LIVE));
-        entity.setAuthorisations("dev;tester");
+
+        String [] str = {"dev","tester"};
+        entity.setAuthorisations(str);
         assertNotNull(persistenceUtil.convertEntityToRoleAssignment(
             entity));
     }
@@ -202,6 +204,6 @@ class PersistenceUtilTest {
         assertNull(existingRoleAssignment.getRoleCategory());
         assertNull(existingRoleAssignment.getBeginTime());
         assertNull(existingRoleAssignment.getEndTime());
-        assertEquals(0, existingRoleAssignment.getAuthorisations().size());
+        assertNull(existingRoleAssignment.getAuthorisations());
     }
 }
