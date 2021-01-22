@@ -11,6 +11,7 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.context.annotation.Bean;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -26,6 +27,7 @@ import java.time.Clock;
 @EnableCircuitBreaker
 @EnableCaching
 @EnableScheduling
+@EnableRetry
 @EnableFeignClients(basePackages = {
     "uk.gov.hmcts.reform.roleassignment"}, basePackageClasses = {IdamApi.class, ServiceAuthorisationApi.class})
 
