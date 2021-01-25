@@ -71,10 +71,14 @@ public class DeleteRoleAssignmentOrchestrator {
         List<RoleAssignment> requestedRoles;
 
         //1. create the request Object
-        if (process != null && reference != null) {
-            request = parseRequestService.prepareDeleteRequest(process, reference, "", "");
-            assignmentRequest = new AssignmentRequest(request, Collections.emptyList());
-        } else {
+        try {
+            if (!process.isBlank() && !reference.isBlank()) {
+                request = parseRequestService.prepareDeleteRequest(process, reference, "", "");
+                assignmentRequest = new AssignmentRequest(request, Collections.emptyList());
+            } else {
+                throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
+            }
+        } catch (NullPointerException npe) {
             throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
         }
 
