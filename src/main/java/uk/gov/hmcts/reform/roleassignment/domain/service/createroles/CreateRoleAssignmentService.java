@@ -293,6 +293,11 @@ public class CreateRoleAssignmentService {
                 || requestedAssignment.getStatus() == Status.DELETE_APPROVED || requestedAssignment.getStatus().equals(
                 Status.CREATE_REQUESTED)) {
                 requestedAssignment.setStatus(status);
+                if (requestedAssignment.getStatus().equals(
+                    Status.CREATE_REQUESTED)) {
+                    requestedAssignment.setLog("Create requested with replace: "
+                                                   + assignmentRequest.getRequest().isReplaceExisting());
+                }
                 HistoryEntity entity = persistenceUtil.prepareHistoryEntityForPersistance(
                     requestedAssignment,
                     assignmentRequest.getRequest()
