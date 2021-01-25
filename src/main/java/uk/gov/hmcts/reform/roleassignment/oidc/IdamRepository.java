@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
+import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class IdamRepository {
     @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 200, multiplier = 3))
     public UserInfo getUserInfo(String jwtToken) {
         CaffeineCache caffeineCache = (CaffeineCache) cacheManager.getCache("token");
-        com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache = caffeineCache.getNativeCache();
+        com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache =  requireNonNull(caffeineCache).getNativeCache();
         log.info("generating Bearer Token, current size of cache: {}",nativeCache.estimatedSize());
         return idamApi.retrieveUserInfo(BEARER + jwtToken);
     }
