@@ -284,6 +284,15 @@ class DeleteRoleAssignmentOrchestratorTest {
         );
     }
 
+    @Test
+    @DisplayName("should throw 400 when reference blank")
+    void shouldThrowBadRequestWhenReferenceBlank() throws Exception {
+        mockRequest();
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.deleteRoleAssignmentByProcessAndReference(PROCESS, " ")
+        );
+    }
+
     private void assertion() throws Exception {
         verify(parseRequestService, times(1)).prepareDeleteRequest(any(), any(), any(), any());
         verify(persistenceService, times(1)).persistRequest(any(Request.class));
