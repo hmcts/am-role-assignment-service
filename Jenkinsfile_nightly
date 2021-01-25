@@ -81,6 +81,8 @@ withNightlyPipeline(type, product, component) {
   loadVaultSecrets(secrets)
 
   enableMutationTest()
+  enableSecurityScan()
+  enableFullFunctionalTest()
 
   before('fullFunctionalTest') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
