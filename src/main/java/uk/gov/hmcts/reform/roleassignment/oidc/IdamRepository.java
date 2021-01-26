@@ -21,10 +21,10 @@ import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
-import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
 import static org.springframework.http.HttpMethod.GET;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.BEARER;
 
@@ -38,6 +38,9 @@ public class IdamRepository {
     private RestTemplate restTemplate;
     @Value("${idam.api.url}")
     protected String idamUrl;
+
+    @Value("${spring.cache.type}")
+    protected String cacheType;
 
     private CacheManager cacheManager;
 
@@ -58,10 +61,12 @@ public class IdamRepository {
     @Cacheable(value = "token")
     @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 200, multiplier = 3))
     public UserInfo getUserInfo(String jwtToken) {
-        CaffeineCache caffeineCache = (CaffeineCache) cacheManager.getCache("token");
-        com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache =  requireNonNull(caffeineCache)
-            .getNativeCache();
-        log.info("generating Bearer Token, current size of cache: {}",nativeCache.estimatedSize());
+        if (!cacheType.equals("none")) {
+            CaffeineCache caffeineCache = (CaffeineCache) cacheManager.getCache("token");
+            com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache = requireNonNull(caffeineCache)
+                .getNativeCache();
+            log.info("generating Bearer Token, current size of cache: {}", nativeCache.estimatedSize());
+        }
         return idamApi.retrieveUserInfo(BEARER + jwtToken);
     }
 
