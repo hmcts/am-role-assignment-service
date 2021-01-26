@@ -48,7 +48,7 @@ public class IdamRepository {
     }
 
     @Cacheable(value = "token")
-    @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 200, multiplier = 3))
+    @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 3))
     public UserInfo getUserInfo(String jwtToken) {
         return idamApi.retrieveUserInfo(BEARER + jwtToken);
     }
