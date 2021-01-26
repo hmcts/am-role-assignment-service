@@ -89,6 +89,7 @@ spring:
             client-id: microservicekey-am-role-assignment-service
             client-secret: ${AM_ROLE_ASSIGNMENT_SERVICE_SECRET:AAAAAAAAAAAAAAAA}
   cache:
+    type: ${ENABLE_CACHE:}
     cache-names: token
     caffeine:
       spec: maximumSize=50,expireAfterWrite=120s
