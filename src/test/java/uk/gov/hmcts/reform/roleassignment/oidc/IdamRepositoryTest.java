@@ -8,11 +8,13 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
@@ -32,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -69,16 +72,31 @@ class IdamRepositoryTest {
                                             oauth2Configuration, restTemplate,
                                             cacheManager
         );
+        ReflectionTestUtils.setField(
+            idamRepository,
+            "cacheType", ""
+
+        );
     }
 
     @Test
     @SuppressWarnings("unchecked")
     void getUserInfo() {
         UserInfo userInfo = mock(UserInfo.class);
+        CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
+        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+
         when(idamApi.retrieveUserInfo(anyString())).thenReturn(userInfo);
+        when(cacheManager.getCache(anyString())).thenReturn(caffeineCacheMock);
+        when(caffeineCacheMock.getNativeCache()).thenReturn(cache);
+        when(cache.estimatedSize()).thenReturn(anyLong());
+
         UserInfo returnedUserInfo = idamRepository.getUserInfo("Test");
         assertNotNull(returnedUserInfo);
         verify(idamApi, times(1)).retrieveUserInfo(any());
+        verify(cacheManager, times(1)).getCache(any());
+        verify(caffeineCacheMock, times(1)).getNativeCache();
+        verify(cache, times(1)).estimatedSize();
 
     }
 
