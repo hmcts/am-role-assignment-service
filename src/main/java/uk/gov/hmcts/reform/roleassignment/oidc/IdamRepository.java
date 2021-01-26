@@ -61,7 +61,7 @@ public class IdamRepository {
     @Cacheable(value = "token")
     @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 200, multiplier = 3))
     public UserInfo getUserInfo(String jwtToken) {
-        if (!cacheType.equals("none")) {
+        if (cacheType != null && !cacheType.equals("none")) {
             CaffeineCache caffeineCache = (CaffeineCache) cacheManager.getCache("token");
             com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache = requireNonNull(caffeineCache)
                 .getNativeCache();
