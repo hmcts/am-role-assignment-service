@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CreatedTimeComparatorTest {
 
@@ -18,7 +18,7 @@ class CreatedTimeComparatorTest {
     void compare() throws IOException {
         result = sut.compare(TestDataBuilder.buildRoleAssignment(Status.CREATED),
                              TestDataBuilder.buildRoleAssignment(Status.CREATED));
-        assertEquals(-1, result);
+        assertTrue(result < 0);
 
     }
 }
