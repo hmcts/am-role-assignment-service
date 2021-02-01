@@ -49,7 +49,7 @@ public class CreateAssignmentController {
         @ApiResponse(
             code = 201,
             message = "Created",
-            response = Object.class //need to replace with resource class
+            response = RoleAssignmentRequestResource.class
         ),
         @ApiResponse(
             code = 400,
@@ -58,7 +58,12 @@ public class CreateAssignmentController {
         @ApiResponse(
             code = 400,
             message = V1.Error.INVALID_REQUEST
+        ),
+        @ApiResponse(
+            code = 422,
+            message = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
         )
+
     })
     @LogAudit(operationType = CREATE_ASSIGNMENTS,
         process = "#assignmentRequest.request.process",

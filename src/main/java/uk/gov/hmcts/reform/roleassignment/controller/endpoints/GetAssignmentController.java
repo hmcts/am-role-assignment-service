@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
@@ -37,6 +36,8 @@ public class GetAssignmentController {
         this.retrieveRoleAssignmentService = retrieveRoleAssignmentService;
     }
 
+    //**************** Get role assignment records by actorId API ***************
+
     @GetMapping(
         path = "/am/role-assignments/actors/{actorId}",
         produces = V1.MediaType.GET_ASSIGNMENTS
@@ -46,7 +47,7 @@ public class GetAssignmentController {
         @ApiResponse(
             code = 200,
             message = "Success",
-            response = RoleAssignmentRequestResource.class
+            response = RoleAssignmentResource.class
         ),
         @ApiResponse(
             code = 400,
@@ -81,14 +82,14 @@ public class GetAssignmentController {
             .body(responseEntity.getBody());
     }
 
-    //**************** Get Roles  API ***************
+    //**************** Get role configurations API ***************
 
     @GetMapping(
         path = "/am/role-assignments/roles",
         produces = V1.MediaType.GET_ROLES
     )
     @ResponseStatus(code = HttpStatus.OK)
-    @ApiOperation("retrieves a list of roles available in role assignment service")
+    @ApiOperation("retrieves a list of roles configurations available in role assignment service")
     @ApiResponses({
         @ApiResponse(
             code = 200,
