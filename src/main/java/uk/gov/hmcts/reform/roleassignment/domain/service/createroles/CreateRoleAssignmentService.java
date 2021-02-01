@@ -138,7 +138,7 @@ public class CreateRoleAssignmentService {
 
     }
 
-    private void rejectDeleteRequest(AssignmentRequest existingAssignmentRequest,
+    void rejectDeleteRequest(AssignmentRequest existingAssignmentRequest,
                                      List<UUID> rejectedAssignmentIds,
                                      AssignmentRequest parsedAssignmentRequest) {
         long startTime = System.currentTimeMillis();
@@ -272,7 +272,7 @@ public class CreateRoleAssignmentService {
         ));
     }
 
-    private void insertRequestedRole(AssignmentRequest assignmentRequest,
+    void insertRequestedRole(AssignmentRequest assignmentRequest,
                                      Status status,
                                      List<UUID> rejectedAssignmentIds) {
         long startTime = System.currentTimeMillis();
@@ -293,6 +293,11 @@ public class CreateRoleAssignmentService {
                 || requestedAssignment.getStatus() == Status.DELETE_APPROVED || requestedAssignment.getStatus().equals(
                 Status.CREATE_REQUESTED)) {
                 requestedAssignment.setStatus(status);
+                if (requestedAssignment.getStatus().equals(
+                    Status.CREATE_REQUESTED)) {
+                    requestedAssignment.setLog("Create requested with replace: "
+                                                   + assignmentRequest.getRequest().isReplaceExisting());
+                }
                 HistoryEntity entity = persistenceUtil.prepareHistoryEntityForPersistance(
                     requestedAssignment,
                     assignmentRequest.getRequest()

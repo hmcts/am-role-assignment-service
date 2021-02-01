@@ -26,8 +26,10 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -405,6 +407,169 @@ class CreateRoleAssignmentOrchestratorTest {
         verify(persistenceService, times(1))
             .updateRequest(any(RequestEntity.class));
 
+    }
+
+    @Test
+    void createRoleAssignment_When_DuplicateRequest() throws Exception {
+        assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.APPROVED,
+                                                                   false
+        );
+        for (RoleAssignment roleAssignment : assignmentRequest.getRequestedRoles()) {
+            roleAssignment.setId(UUID.randomUUID());
+            roleAssignment.setAuthorisations(Arrays.asList("dev"));
+
+        }
+        assignmentRequest.getRequest().setReplaceExisting(true);
+        requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
+        historyEntity = TestDataBuilder.buildHistoryIntoEntity(
+            TestDataBuilder.buildRoleAssignment(Status.APPROVED), requestEntity);
+
+        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
+            .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
+
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
+            .thenReturn(
+                assignmentRequest);
+        when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
+            any(RoleAssignment.class),
+            any(Request.class)
+        )).thenReturn(historyEntity);
+
+        when(prepareResponseService.prepareCreateRoleResponse(any()))
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
+
+        //actual method call
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+
+        //assert values
+        assertEquals(assignmentRequest, result);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        verify(parseRequestService, times(1))
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
+        verify(persistenceService, times(1))
+            .persistRequest(any(Request.class));
+        verify(prepareResponseService, times(2))
+            .prepareCreateRoleResponse(any(AssignmentRequest.class));
+    }
+
+    @Test
+    void createRoleAssignment_NeedToRetainAndCreate() throws Exception {
+        prepareRequestWhenReplaceExistingTrue();
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> roleAssignment
+            .setAuthorisations(Arrays.asList("dev")));
+        ((List<RoleAssignment>) assignmentRequest.getRequestedRoles()).get(1).setRoleName("sdsdsd");
+
+        RoleAssignment existingRecords = ((List<RoleAssignment>)assignmentRequest.getRequestedRoles()).get(0);
+        AssignmentRequest existingAssignmentRecords = new AssignmentRequest(assignmentRequest
+                                                        .getRequest(),Arrays.asList(existingRecords));
+
+
+
+        requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
+        historyEntity = TestDataBuilder.buildHistoryIntoEntity(
+            TestDataBuilder.buildRoleAssignment(Status.APPROVED), requestEntity);
+
+        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
+            .thenReturn((List<RoleAssignment>) existingAssignmentRecords.getRequestedRoles());
+
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
+            .thenReturn(
+                assignmentRequest);
+        when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
+            any(RoleAssignment.class),
+            any(Request.class)
+        )).thenReturn(historyEntity);
+
+        when(prepareResponseService.prepareCreateRoleResponse(any()))
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
+
+        //actual method call
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+
+
+        //assert values
+        assertEquals(assignmentRequest, result);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        verify(parseRequestService, times(1))
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
+        verify(persistenceService, times(1))
+            .persistRequest(any(Request.class));
+        verify(persistenceUtil, times(3))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
+        verify(prepareResponseService, times(1))
+            .prepareCreateRoleResponse(any(AssignmentRequest.class));
+    }
+
+    @Test
+    void createRoleAssignment_NeedToRetainOnly() throws Exception {
+        prepareRequestWhenReplaceExistingTrue();
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> roleAssignment
+            .setAuthorisations(Arrays.asList("dev")));
+
+        Optional<RoleAssignment> incomingRecords = assignmentRequest.getRequestedRoles().stream().findFirst();
+        assignmentRequest.setRequestedRoles(Arrays.asList(incomingRecords.get()));
+
+        AssignmentRequest existingAssignmentRecords  = TestDataBuilder.buildAssignmentRequest(Status.CREATED,
+                                                                 Status.APPROVED,
+                                                                true
+        );
+        existingAssignmentRecords.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment
+                .setAuthorisations(Arrays.asList("dev"));
+            roleAssignment.setBeginTime(incomingRecords.get().getBeginTime());
+            roleAssignment.setEndTime(incomingRecords.get().getEndTime());
+        });
+
+
+        ((List<RoleAssignment>) existingAssignmentRecords.getRequestedRoles()).get(1).setRoleName("sdsdsd");
+        ((List<RoleAssignment>) existingAssignmentRecords.getRequestedRoles()).get(1).setId(UUID.randomUUID());
+
+
+        requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
+        historyEntity = TestDataBuilder.buildHistoryIntoEntity(
+            TestDataBuilder.buildRoleAssignment(Status.APPROVED), requestEntity);
+
+        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
+            .thenReturn((List<RoleAssignment>) existingAssignmentRecords.getRequestedRoles());
+
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
+            .thenReturn(
+                assignmentRequest);
+        when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
+            any(RoleAssignment.class),
+            any(Request.class)
+        )).thenReturn(historyEntity);
+
+        when(prepareResponseService.prepareCreateRoleResponse(any()))
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
+
+        //actual method call
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+
+
+        //assert values
+        assertEquals(assignmentRequest, result);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        verify(parseRequestService, times(1))
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
+        verify(persistenceService, times(1))
+            .persistRequest(any(Request.class));
+        verify(persistenceUtil, times(1))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
+        verify(prepareResponseService, times(1))
+            .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
 
     private void verifyNUmberOfInvocations() throws ParseException {
