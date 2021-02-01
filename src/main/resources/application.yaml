@@ -109,7 +109,7 @@ idam:
     secret: ${ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET:am_docker_secret}
     redirect_uri: ${ROLE_ASSIGNMENT_IDAM_REDIRECT_URI:http://localhost:4096/oauth2redirect}
     admin:
-      userId: ${ROLE_ASSIGNMENT_IDAM_ADMIN_USERID:TEST_RAS_CCD_BEFTA1@test.local}
+      userId: ${ROLE_ASSIGNMENT_IDAM_ADMIN_USERID:ras-validation-system@hmcts.net}
       secret: ${ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:Pa55word11}
       scope: ${ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE:openid profile roles authorities}
 
