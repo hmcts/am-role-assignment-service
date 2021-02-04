@@ -6,10 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -39,22 +36,14 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static java.time.LocalDateTime.now;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -85,7 +74,7 @@ class PersistenceServiceTest {
 
 
     @InjectMocks
-    private PersistenceService sut = new PersistenceService(
+    private final PersistenceService sut = new PersistenceService(
         historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository,
         databseChangelogLockRepository
     );
@@ -270,7 +259,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void deleteRoleAssignmentById() throws IOException {
+    void deleteRoleAssignmentById()  {
         sut.deleteRoleAssignmentByActorId(UUID.randomUUID().toString());
         verify(roleAssignmentRepository, times(1)).deleteByActorId(any(String.class));
     }
@@ -298,11 +287,8 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getAssignmentsByActor_NPE() throws IOException {
+    void getAssignmentsByActor_NPE() {
         String id = UUID.randomUUID().toString();
-        Set<RoleAssignmentEntity> roleAssignmentEntitySet = new HashSet<>();
-        roleAssignmentEntitySet.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
-                                                                                  .buildRoleAssignment(LIVE)));
         when(roleAssignmentRepository.findByActorId(id))
             .thenReturn(null);
 
@@ -352,7 +338,7 @@ class PersistenceServiceTest {
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
 
-        Page<RoleAssignmentEntity> page = new PageImpl<RoleAssignmentEntity>(tasks);
+        Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
         List<String> actorId = Arrays.asList(
@@ -371,7 +357,7 @@ class PersistenceServiceTest {
 
         Specification<RoleAssignmentEntity> spec = Specification.where(any());
 
-        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
+        when(roleAssignmentRepository.findAll(eq(spec), pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -401,7 +387,7 @@ class PersistenceServiceTest {
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
 
-        Page<RoleAssignmentEntity> page = new PageImpl<RoleAssignmentEntity>(tasks);
+        Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
         List<String> actorId = Arrays.asList(
@@ -409,8 +395,8 @@ class PersistenceServiceTest {
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
         List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
-        List<String> roleNmaes = Arrays.asList("judge", "senior judge");
-        List<String> roleCategories = Arrays.asList("JUDICIAL");
+        List<String> roleNames = Arrays.asList("judge", "senior judge");
+        List<String> roleCategories = Collections.singletonList("JUDICIAL");
         List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
         Map<String, List<String>> attributes = new HashMap<>();
         List<String> regions = Arrays.asList("London", "JAPAN");
@@ -423,7 +409,7 @@ class PersistenceServiceTest {
             .actorId(actorId)
             .roleType(roleType)
             .roleCategory(roleCategories)
-            .roleName(roleNmaes)
+            .roleName(roleNames)
             .classification(classifications)
             .attributes(attributes)
             .validAt(now())
@@ -435,7 +421,7 @@ class PersistenceServiceTest {
 
         Specification<RoleAssignmentEntity> spec = Specification.where(any());
 
-        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
+        when(roleAssignmentRepository.findAll(eq(spec), pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -478,7 +464,7 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
+        when(roleAssignmentRepository.findAll(eq(spec), pageableCaptor.capture()
         ))
             .thenThrow(ResourceNotFoundException.class);
 
@@ -506,7 +492,7 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
+        when(roleAssignmentRepository.findAll(eq(spec), pageableCaptor.capture()
         ))
             .thenThrow(ResourceNotFoundException.class);
 
@@ -524,7 +510,7 @@ class PersistenceServiceTest {
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
 
-        Page<RoleAssignmentEntity> page = new PageImpl<RoleAssignmentEntity>(tasks);
+        Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
         List<String> authorisations = Arrays.asList(
@@ -541,7 +527,7 @@ class PersistenceServiceTest {
 
         Specification<RoleAssignmentEntity> spec = Specification.where(any());
 
-        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
+        when(roleAssignmentRepository.findAll(eq(spec), pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -646,7 +632,7 @@ class PersistenceServiceTest {
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
 
-        Page<RoleAssignmentEntity> page = new PageImpl<RoleAssignmentEntity>(tasks);
+        Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
         List<String> actorId = Arrays.asList(
@@ -655,7 +641,7 @@ class PersistenceServiceTest {
         );
         List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
         List<String> roleNames = Arrays.asList("judge", "senior judge");
-        List<String> roleCategories = Arrays.asList("JUDICIAL");
+        List<String> roleCategories = Collections.singletonList("JUDICIAL");
         List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
         Map<String, List<String>> attributes = new HashMap<>();
         List<String> regions = Arrays.asList("London", "JAPAN");
@@ -680,7 +666,7 @@ class PersistenceServiceTest {
 
         Specification<RoleAssignmentEntity> spec = Specification.where(any());
 
-        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
+        when(roleAssignmentRepository.findAll(eq(spec), pageableCaptor.capture()
         ))
             .thenReturn(page);
 

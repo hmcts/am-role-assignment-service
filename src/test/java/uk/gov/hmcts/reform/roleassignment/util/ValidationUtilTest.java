@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -21,6 +23,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_TEXT_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_HYPHEN_PATTERN;
@@ -90,6 +94,7 @@ class ValidationUtilTest {
         Assertions.assertDoesNotThrow(() ->
             ValidationUtil.validateRoleRequest(TestDataBuilder.buildRequest(Status.APPROVED, false))
         );
+
     }
 
     @Test
