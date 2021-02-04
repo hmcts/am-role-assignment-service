@@ -464,9 +464,8 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        when(roleAssignmentRepository.findAll(eq(spec), pageableCaptor.capture()
-        ))
-            .thenThrow(ResourceNotFoundException.class);
+        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()))
+        .thenThrow(ResourceNotFoundException.class);
 
 
         Assertions.assertThrows(ResourceNotFoundException.class, () ->
