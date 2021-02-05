@@ -357,7 +357,7 @@ class PersistenceServiceTest {
 
         Specification<RoleAssignmentEntity> spec = Specification.where(any());
 
-        when(roleAssignmentRepository.findAll(eq(spec), pageableCaptor.capture()
+        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -421,7 +421,7 @@ class PersistenceServiceTest {
 
         Specification<RoleAssignmentEntity> spec = Specification.where(any());
 
-        when(roleAssignmentRepository.findAll(eq(spec), pageableCaptor.capture()
+        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -491,7 +491,7 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        when(roleAssignmentRepository.findAll(eq(spec), pageableCaptor.capture()
+        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
         ))
             .thenThrow(ResourceNotFoundException.class);
 
@@ -526,7 +526,7 @@ class PersistenceServiceTest {
 
         Specification<RoleAssignmentEntity> spec = Specification.where(any());
 
-        when(roleAssignmentRepository.findAll(eq(spec), pageableCaptor.capture()
+        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -665,7 +665,7 @@ class PersistenceServiceTest {
 
         Specification<RoleAssignmentEntity> spec = Specification.where(any());
 
-        when(roleAssignmentRepository.findAll(eq(spec), pageableCaptor.capture()
+        when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()
         ))
             .thenReturn(page);
 
