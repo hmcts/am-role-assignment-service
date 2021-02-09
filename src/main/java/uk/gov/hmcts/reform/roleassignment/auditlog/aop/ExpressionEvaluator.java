@@ -43,8 +43,8 @@ public class ExpressionEvaluator extends CachedExpressionEvaluator {
     private Method getTargetMethod(Class<?> targetClass, Method method) {
         AnnotatedElementKey methodKey = new AnnotatedElementKey(method, targetClass);
         return
-            targetMethodCache.computeIfAbsent(methodKey,
-                                              key -> AopUtils.getMostSpecificMethod(method, targetClass));
+            targetMethodCache.computeIfAbsent(methodKey, key -> AopUtils.getMostSpecificMethod(method, targetClass));
+
     }
 
     private static class ExpressionRootObject {

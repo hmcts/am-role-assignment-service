@@ -477,7 +477,7 @@ class PersistenceServiceTest {
             Pageable.class);
 
         when(roleAssignmentRepository.findAll(spec, pageableCaptor.capture()))
-        .thenThrow(ResourceNotFoundException.class);
+            .thenThrow(ResourceNotFoundException.class);
 
 
         Assertions.assertThrows(ResourceNotFoundException.class, () ->

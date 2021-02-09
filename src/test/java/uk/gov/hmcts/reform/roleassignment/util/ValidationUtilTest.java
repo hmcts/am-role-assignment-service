@@ -21,7 +21,10 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.*;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_TEXT_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_HYPHEN_PATTERN;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_PATTERN;
 
 class ValidationUtilTest {
 
