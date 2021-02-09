@@ -1,8 +1,12 @@
-apiVersion: v1
+apiVersion: v2
 appVersion: "1.0"
 description: A Helm chart for Role Assignment Service
 name: am-role-assignment-service
 home: https://github.com/hmcts/am-role-assignment-service
-version: 0.0.37
+version: 0.0.38
 maintainers:
   - name: Access Management Team
+dependencies:
+  - name: java
+    version: 3.4.4
+    repository: '@hmctspublic'
