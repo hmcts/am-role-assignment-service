@@ -344,6 +344,7 @@ class PersistenceServiceTest {
     }
 
     @Test
+    @SuppressWarnings("squid:S6073")
     void postRoleAssignmentsByQueryRequest() throws IOException {
 
 
