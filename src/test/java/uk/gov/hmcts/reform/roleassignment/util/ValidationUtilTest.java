@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.util;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
@@ -18,8 +19,12 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_TEXT_PATTERN;
@@ -110,6 +115,33 @@ class ValidationUtilTest {
         );
     }
 
+
+    @Test
+    void sanitizeCorrelationIdReturnsTrue() throws IOException {
+        final String uuid = UUID.randomUUID().toString();
+        final Pattern pattern = Pattern.compile(Constants.UUID_PATTERN);
+        final Matcher matcher = pattern.matcher(uuid);
+        assertTrue(matcher.matches());
+        assertNotNull(uuid);
+        assertTrue(!uuid.isEmpty());
+        final boolean result = ValidationUtil.sanitiseCorrelationId(uuid);
+        assertTrue(result);
+
+    }
+
+    @Test
+    void sanitizeCorrelationIdThrowsException() throws IOException {
+        final String inputString = "HelloJack";
+        final Pattern pattern = Pattern.compile(Constants.UUID_PATTERN);
+        final Matcher matcher = pattern.matcher(inputString);
+        assertFalse(matcher.matches());
+        assertNotNull(inputString);
+        assertTrue(!inputString.isEmpty());
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.sanitiseCorrelationId(inputString)
+        );
+    }
+
     @Test
     void shouldThrowInvalidRequestException_ValidateLists() {
         List<String> list = new ArrayList<>();
@@ -156,11 +188,25 @@ class ValidationUtilTest {
     }
 
     @Test
-    void shouldValidateAssignmentRequest_clt() throws IOException, ParseException {
+    void shouldValidateAssignmentRequest_ReplaceExistingAndRoles() throws IOException, ParseException {
+        final AssignmentRequest request =
+            TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,true);
+        assertTrue(request.getRequest().isReplaceExisting());
+        assertFalse(request.getRequestedRoles().isEmpty());
         Assertions.assertDoesNotThrow(() ->
-            ValidationUtil.validateAssignmentRequest(TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
-                                                                                            true
-            ))
+            ValidationUtil.validateAssignmentRequest(request)
+        );
+    }
+
+    @Test
+    void shouldValidateAssignmentRequest_noReplaceExisting() throws IOException, ParseException {
+        final AssignmentRequest request =
+            TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,false);
+        assertTrue(!request.getRequest().isReplaceExisting());
+        assertFalse(request.getRequest().isReplaceExisting()
+                        && !request.getRequestedRoles().isEmpty());
+        Assertions.assertDoesNotThrow(() ->
+                                          ValidationUtil.validateAssignmentRequest(request)
         );
     }
 

@@ -86,7 +86,7 @@ public class CreateAssignmentController {
         logger.info(String.format(
             " >> createRoleAssignment execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
         return response;
     }

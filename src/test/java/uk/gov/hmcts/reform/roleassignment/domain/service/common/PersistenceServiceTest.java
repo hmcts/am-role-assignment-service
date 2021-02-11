@@ -62,7 +62,6 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 
-@SuppressWarnings("squid:S6073")
 class PersistenceServiceTest {
 
     @Mock
