@@ -10,6 +10,7 @@ import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import uk.gov.hmcts.reform.roleassignment.controller.WelcomeController;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ForbiddenException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
@@ -18,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.ACTORIDTYPE;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.BAD_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.BOOLEAN;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.CLASSIFICATION;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.GRANTTYPE;
@@ -59,12 +61,29 @@ class RoleAssignmentControllerAdviceTest {
     }
 
     @Test
+    void customValidationForbiddenRequestError() {
+        ForbiddenException forbiddenException = mock(ForbiddenException.class);
+        ResponseEntity<Object> responseEntity = csda.customForbiddenException(forbiddenException);
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.FORBIDDEN.value(), responseEntity.getStatusCodeValue());
+    }
+
+    @Test
     void customRequestHeaderError() {
         HttpMediaTypeNotAcceptableException customContentTypeException = mock(
             HttpMediaTypeNotAcceptableException.class);
         ResponseEntity<Object> responseEntity = csda.customRequestHeaderError(customContentTypeException);
         assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE, responseEntity.getStatusCode());
         assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), responseEntity.getStatusCodeValue());
+    }
+
+    @Test
+    void customConsequenceBadRequestError() {
+        HttpMediaTypeNotAcceptableException customContentTypeException = mock(
+            HttpMediaTypeNotAcceptableException.class);
+        ResponseEntity<Object> responseEntity = csda.customConsequenceBadRequestError(new BadRequestException(BAD_REQUEST));
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
     }
 
     @Test
@@ -168,6 +187,7 @@ class RoleAssignmentControllerAdviceTest {
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(responseEntity.getBody().getErrorDescription().isEmpty());
     }
 
     @Test
@@ -177,6 +197,15 @@ class RoleAssignmentControllerAdviceTest {
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(UUID));
+    }
+
+    @Test
+    void notReadableException_NotInDeserializedItems() {
+        HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException("I AM NOT DESERIALIZED");
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().equals("I AM NOT DESERIALIZED"));
     }
 
     @Test
