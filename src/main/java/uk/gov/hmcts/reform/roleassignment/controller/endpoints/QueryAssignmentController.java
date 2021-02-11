@@ -75,7 +75,7 @@ public class QueryAssignmentController {
         logger.info(String.format(
             " >> retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
         return response;
     }

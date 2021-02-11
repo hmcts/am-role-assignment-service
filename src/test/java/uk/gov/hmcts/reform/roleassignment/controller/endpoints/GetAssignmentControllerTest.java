@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ class GetAssignmentControllerTest {
     private transient RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentServiceMock;
 
     @InjectMocks
+    @Spy
     private GetAssignmentController sut = new GetAssignmentController(retrieveRoleAssignmentServiceMock);
 
     @BeforeEach
