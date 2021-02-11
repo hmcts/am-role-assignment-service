@@ -48,7 +48,7 @@ public class SecurityUtils {
         return headers;
     }
 
-    private String getUserBearerToken() {
+    String getUserBearerToken() {
         return BEARER + getUserToken();
     }
 

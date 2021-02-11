@@ -11,6 +11,7 @@ import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import static org.mockito.ArgumentMatchers.anyString;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
 
@@ -93,6 +94,7 @@ class JwtGrantedAuthoritiesConverterTest {
         Collection<GrantedAuthority> authorities = sut.convert(jwt);
         assertNotNull(authorities);
         assertEquals(1, authorities.size());
+        assertEquals(sut.getUserInfo(), userInfo);
     }
 
     public static Jwt buildJwt(String tokenName) {
