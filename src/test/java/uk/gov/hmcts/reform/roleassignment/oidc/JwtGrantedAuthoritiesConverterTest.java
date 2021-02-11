@@ -11,7 +11,6 @@ import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import static org.mockito.ArgumentMatchers.anyString;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
 
