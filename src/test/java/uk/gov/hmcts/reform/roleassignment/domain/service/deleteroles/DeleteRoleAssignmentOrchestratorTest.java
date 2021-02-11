@@ -160,8 +160,8 @@ class DeleteRoleAssignmentOrchestratorTest {
         mockHistoryEntity();
         ResponseEntity<?> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(sut.getRequestEntity().getStatus(), APPROVED.toString());
         verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
-
     }
 
     @Test
