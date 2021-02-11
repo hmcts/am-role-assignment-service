@@ -29,10 +29,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -41,9 +44,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -115,6 +120,31 @@ class DeleteRoleAssignmentOrchestratorTest {
         assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
+    }
+
+    @Test
+    @DisplayName("should get 422 when role assignment records delete  not successful due to invalid status")
+    void shouldRejectedWithDeleteRoleAssignmentByProcessWhenRolesNotEmpty() throws Exception {
+
+        //Set the status approved of all requested role manually for drool validation process
+        setApprovedStatusByDrool();
+        mockRequest();
+        List<RoleAssignment> roleAssignmentList = TestDataBuilder
+            .buildRoleAssignmentList_Custom(DELETE_APPROVED, "1234", "attributes.json");
+        when(persistenceService.getAssignmentsByProcess(
+            PROCESS,
+            REFERENCE,
+            Status.LIVE.toString()
+        )).thenReturn(roleAssignmentList);
+        mockHistoryEntity();
+
+        ResponseEntity<Void> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS,
+                                                                                      REFERENCE);
+        assertNotNull(response);
+        assertEquals(REJECTED.toString(), sut.getRequestEntity().getStatus());
+        assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
+        assertEquals(roleAssignmentList.stream().filter(x -> x.getStatus() == DELETE_REQUESTED).count(), 1);
     }
 
     @Test

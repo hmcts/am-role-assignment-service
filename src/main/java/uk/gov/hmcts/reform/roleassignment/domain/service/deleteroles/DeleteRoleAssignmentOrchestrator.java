@@ -104,7 +104,7 @@ public class DeleteRoleAssignmentOrchestrator {
         logger.info(String.format(
             " >> deleteRoleAssignmentByProcessAndReference execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
         return responseEntity;
     }
@@ -156,7 +156,7 @@ public class DeleteRoleAssignmentOrchestrator {
         logger.info(String.format(
             " >> performOtherStepsForDelete execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
         if (assignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
@@ -182,7 +182,7 @@ public class DeleteRoleAssignmentOrchestrator {
         logger.info(String.format(
             " >> validationByDrool execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
 
     }
@@ -235,7 +235,7 @@ public class DeleteRoleAssignmentOrchestrator {
         logger.info(String.format(
             " >> checkAllDeleteApproved execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
     }
 
