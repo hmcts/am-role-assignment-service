@@ -93,6 +93,7 @@ class JwtGrantedAuthoritiesConverterTest {
         Collection<GrantedAuthority> authorities = sut.convert(jwt);
         assertNotNull(authorities);
         assertEquals(1, authorities.size());
+        assertEquals(sut.getUserInfo(), userInfo);
     }
 
     public static Jwt buildJwt(String tokenName) {
