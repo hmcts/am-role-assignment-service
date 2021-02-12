@@ -7,7 +7,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContext;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 

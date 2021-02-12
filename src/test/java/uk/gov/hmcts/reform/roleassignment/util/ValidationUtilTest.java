@@ -1,14 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ValueNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -122,7 +118,10 @@ class ValidationUtilTest {
     @Test
     void validateRequestedRolesThrowsBadRequestException() throws IOException {
         Collection<RoleAssignment>  assignments = TestDataBuilder.buildRequestedRoleCollection(Status.LIVE);
-        assignments.stream().forEach(x-> {x.setActorId(""); x.setRoleType(null);});
+        assignments.stream().forEach(x -> {
+            x.setActorId("");
+            x.setRoleType(null);
+        });
         Assertions.assertThrows(BadRequestException.class, () ->
                                           ValidationUtil.validateRequestedRoles(assignments)
         );
@@ -131,7 +130,7 @@ class ValidationUtilTest {
     @Test
     void validateRequestedRoles_RoleTypesThrowsBadRequestException() throws IOException {
         Collection<RoleAssignment>  assignments = TestDataBuilder.buildRequestedRoleCollection(Status.LIVE);
-        assignments.stream().forEach(x-> x.getAttributes().put("caseId", JacksonUtils.convertValueJsonNode("")));
+        assignments.stream().forEach(x -> x.getAttributes().put("caseId", JacksonUtils.convertValueJsonNode("")));
         Assertions.assertThrows(BadRequestException.class, () ->
             ValidationUtil.validateRequestedRoles(assignments)
         );

@@ -15,6 +15,12 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidReq
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -29,12 +35,6 @@ import static uk.gov.hmcts.reform.roleassignment.util.Constants.ROLECATEGORY;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.ROLETYPE;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.STATUS;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.UUID;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
-import javax.servlet.http.HttpServletRequest;
 
 class RoleAssignmentControllerAdviceTest {
 
@@ -81,7 +81,8 @@ class RoleAssignmentControllerAdviceTest {
     void customConsequenceBadRequestError() {
         HttpMediaTypeNotAcceptableException customContentTypeException = mock(
             HttpMediaTypeNotAcceptableException.class);
-        ResponseEntity<Object> responseEntity = csda.customConsequenceBadRequestError(new BadRequestException(BAD_REQUEST));
+        ResponseEntity<Object> responseEntity =
+            csda.customConsequenceBadRequestError(new BadRequestException(BAD_REQUEST));
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
     }
@@ -201,11 +202,13 @@ class RoleAssignmentControllerAdviceTest {
 
     @Test
     void notReadableException_NotInDeserializedItems() {
-        HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException("I AM NOT DESERIALIZED");
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException("I AM NOT DESERIALIZED");
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
-        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().equals("I AM NOT DESERIALIZED"));
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription()
+                 .equals("I AM NOT DESERIALIZED"));
     }
 
     @Test
