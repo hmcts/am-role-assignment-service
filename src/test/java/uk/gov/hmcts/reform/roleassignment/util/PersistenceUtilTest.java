@@ -21,6 +21,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 class PersistenceUtilTest {
@@ -105,11 +106,12 @@ class PersistenceUtilTest {
 
     @Test
     void convertHistoryEntityToRoleAssignment() throws IOException {
-        assertNotNull(persistenceUtil.convertHistoryEntityToRoleAssignment(
-            TestDataBuilder.buildHistoryEntity(
-                TestDataBuilder.buildRoleAssignment(Status.LIVE),
-                TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED, false))
-            )));
+        final HistoryEntity historyEntity = TestDataBuilder.buildHistoryEntity(
+            TestDataBuilder.buildRoleAssignment(Status.LIVE),
+            TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED, false))
+        );
+        assertNotNull(persistenceUtil.convertHistoryEntityToRoleAssignment(historyEntity));
+        assertTrue(historyEntity.getAuthorisations().length != 0);
     }
 
     @Test
