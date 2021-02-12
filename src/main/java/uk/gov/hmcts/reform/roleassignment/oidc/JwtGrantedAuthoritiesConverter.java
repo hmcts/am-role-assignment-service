@@ -52,7 +52,7 @@ public class JwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection
         log.info(String.format(
             " >> convert execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
         return authorities;
     }

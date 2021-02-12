@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
@@ -31,6 +32,12 @@ class HistoryEntityTest {
 
         assertNotNull(historyEntity.getRequestId());
         assertEquals("ab4e8c21-27a0-4abd-aed8-810fdce22adb", historyEntity.getRequestId().toString());
+    }
+
+    @Test
+    void isNew() {
+        HistoryEntity entity = new HistoryEntity();
+        assertTrue(entity.isNew());
     }
 
 
