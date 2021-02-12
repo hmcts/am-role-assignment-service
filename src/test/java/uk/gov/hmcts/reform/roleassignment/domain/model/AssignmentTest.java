@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.model;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AssignmentTest {
 
