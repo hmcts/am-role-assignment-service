@@ -122,8 +122,8 @@ feign:
   client:
     config:
       default:
-        connectTimeout: 5000
-        readTimeout: 5000
+        connectTimeout: 10000
+        readTimeout: 10000
         loggerLevel: basic
       datastoreclient:
         url: ${CCD_DATA_STORE_URL:http://localhost:4452}
