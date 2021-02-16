@@ -34,6 +34,13 @@ class AuditServiceTest {
     private static final String CASE_TYPE = "CaseType1";
     private static final String EVENT_NAME = "CreateCase";
     private static final List<String> TARGET_CASE_ROLES = Arrays.asList("CaseRole1", "CaseRole2");
+    public static final String ACTOR_ID = "ADCED";
+    public static final String PROCESS_ID = "39289489";
+    public static final String REFERENCE_ID = "DR_DKGRO";
+    public static final String ASSIGNER_ID = "DE_WQRP";
+    public static final String ASSIGNMENT_ID = "DF_59895";
+    public static final String ROLE_NAME = "ADMIN";
+    public static final String CORRELATION_ID = "CORRELATION-1";
 
     @Mock
     private SecurityUtils securityUtils;
@@ -70,11 +77,21 @@ class AuditServiceTest {
             .httpStatus(200)
             .requestPath(PATH)
             .requestId(REQUEST_ID_VALUE)
+            .actorId(ACTOR_ID)
+            .process(PROCESS_ID)
+            .reference(REFERENCE_ID)
+            .assignerId(ASSIGNER_ID)
+            .assignmentId(ASSIGNMENT_ID)
+            .roleName(ROLE_NAME)
+            .correlationId(CORRELATION_ID)
             .build();
 
         auditService.audit(auditContext);
 
         verify(auditRepository).save(captor.capture());
+        verify(securityUtils).getUserId();
+        AuditEntry entry = captor.getValue();
+
 
         assertThat(captor.getValue().getDateTime(), is(equalTo("2018-08-19T16:02:42.01")));
         assertThat(captor.getValue().getHttpStatus(), is(equalTo(200)));

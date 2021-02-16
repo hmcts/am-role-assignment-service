@@ -48,7 +48,7 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
         LOG.info(String.format(
             " >> afterCompletion execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
     }
 
