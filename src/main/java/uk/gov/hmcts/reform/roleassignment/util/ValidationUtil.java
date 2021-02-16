@@ -152,7 +152,6 @@ public class ValidationUtil {
             }
 
             validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, requestedRole.getActorId());
-            //compareRoleType(requestedRole.getRoleType().toString());
             if (requestedRole.getRoleType().equals(CASE)) {
                 validateId(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
             }
