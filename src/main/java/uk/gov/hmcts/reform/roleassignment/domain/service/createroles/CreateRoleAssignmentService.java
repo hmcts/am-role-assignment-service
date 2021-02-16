@@ -133,7 +133,7 @@ public class CreateRoleAssignmentService {
         logger.info(String.format(
             " >> checkAllDeleteApproved execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(),  startTime)
         ));
 
     }
@@ -164,7 +164,7 @@ public class CreateRoleAssignmentService {
         logger.info(String.format(
             " >> rejectDeleteRequest execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
     }
 
@@ -221,7 +221,7 @@ public class CreateRoleAssignmentService {
         logger.info(String.format(
             " >> createNewAssignmentRecords execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
     }
 
@@ -251,7 +251,7 @@ public class CreateRoleAssignmentService {
         logger.info(String.format(
             " >> persistInitialRequest execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
 
         return requestEntity;
@@ -268,7 +268,7 @@ public class CreateRoleAssignmentService {
         logger.info(String.format(
             " >> deleteLiveAssignments execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
     }
 
@@ -313,7 +313,7 @@ public class CreateRoleAssignmentService {
         logger.info(String.format(
             " >> insertRequestedRole execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
     }
 

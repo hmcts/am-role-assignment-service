@@ -121,6 +121,8 @@ public class GenericArrayUserTypeTest {
         str2 = "tester";
         assertFalse(sut.equals(str1, str2));
         assertEquals(str1.equals(str2), sut.equals(str1, str2));
+        assertNotNull(str1);
+        assertNotNull(str2);
     }
 
     @Test

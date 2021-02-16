@@ -139,6 +139,7 @@ class SecurityUtilsTest {
         assertEquals(serviceAuthorization, Objects.requireNonNull(result.get(SERVICE_AUTHORIZATION)).get(0));
         assertEquals(USER_ID, Objects.requireNonNull(result.get("user-id")).get(0));
         assertEquals("", Objects.requireNonNull(Objects.requireNonNull(result.get("user-roles")).get(0)));
+        assertNotNull(result.get(HttpHeaders.AUTHORIZATION));
     }
 
     @Test
