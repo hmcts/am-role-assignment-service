@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Validated
+@JsonIgnoreProperties(value = { "links" })
 public class RoleAssignmentRequestResource extends RepresentationModel<RoleAssignmentRequestResource> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleAssignmentRequestResource.class);

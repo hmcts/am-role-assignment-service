@@ -40,7 +40,6 @@ public class AuditService {
         entry.setOperationType(auditContext.getAuditOperationType() != null
                                    ? auditContext.getAuditOperationType().getLabel() : null);
         entry.setAssignerId(auditContext.getAssignerId());
-        entry.setAssignerId(auditContext.getAssignerId());
         entry.setAssignmentId(auditContext.getAssignmentId());
         entry.setRoleName(auditContext.getRoleName());
         entry.setPath(auditContext.getRequestPath());

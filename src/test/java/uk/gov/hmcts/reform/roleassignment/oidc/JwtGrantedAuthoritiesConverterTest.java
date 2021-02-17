@@ -18,8 +18,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 class JwtGrantedAuthoritiesConverterTest {
@@ -93,6 +93,7 @@ class JwtGrantedAuthoritiesConverterTest {
         Collection<GrantedAuthority> authorities = sut.convert(jwt);
         assertNotNull(authorities);
         assertEquals(1, authorities.size());
+        assertEquals(sut.getUserInfo(), userInfo);
     }
 
     public static Jwt buildJwt(String tokenName) {

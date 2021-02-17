@@ -24,7 +24,6 @@
       "Content-Type": "application/json"
     },
     "body": {
-      "links": [],
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",

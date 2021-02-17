@@ -14,7 +14,6 @@
   "expectedResponse": {
     "_extends_": "Common_200_Response",
     "body": {
-      "links": [],
       "roleAssignmentResponse" : [
         {
           "_extends_": "ResponseRoleAssignment",
