@@ -29,5 +29,5 @@ public class Request {
     private Status status; //this will be set by app default = created
     private ZonedDateTime created; //this will be set by app
     private String log; //this will be set app based on drool validation rule name on individual assignments.
-
+    private boolean byPassOrgDroolRule;
 }

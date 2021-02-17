@@ -150,5 +150,7 @@ roleassignment:
    query:
      size: 20
      sortcolumn: roleName
+   drool:
+     rule-validation: true
 
 
