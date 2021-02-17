@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.Serializable;
@@ -18,6 +19,8 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
@@ -28,6 +31,7 @@ import static uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType.SQL_T
 public class GenericArrayUserTypeTest {
 
     @InjectMocks
+    @Spy
     private GenericArrayUserType sut = new GenericArrayUserType();
 
     @Mock
@@ -112,6 +116,22 @@ public class GenericArrayUserTypeTest {
         String str1 = "test";
         String str2 = "test";
         assertTrue(sut.equals(str1, str2));
+        assertEquals(str1.equals(str2), sut.equals(str1, str2));
+
+        str2 = "tester";
+        assertFalse(sut.equals(str1, str2));
+        assertEquals(str1.equals(str2), sut.equals(str1, str2));
+        assertNotNull(str1);
+        assertNotNull(str2);
+    }
+
+    @Test
+    public void executeDissasenble() throws HibernateException {
+
+        String str1 = "test";
+        String str2 = "test";
+        Serializable result = sut.disassemble(str1);
+        assertNotNull(result);
     }
 
     @Test
@@ -126,6 +146,7 @@ public class GenericArrayUserTypeTest {
         String str1 = "test";
         Integer response = sut.hashCode(str1);
         assertNotNull(response);
+        assertNotEquals(0, response);
 
     }
 

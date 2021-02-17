@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -118,10 +119,17 @@ class SecurityUtilsTest {
 
     @Test
     void getAuthorizationHeaders() throws IOException {
+        Jwt jwt = Mockito.mock(Jwt.class);
+        when(authentication.getPrincipal()).thenReturn(jwt);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        when(securityUtils.getUserToken()).thenReturn("ERFDTYGBYTBTYKGF:K");
         HttpHeaders result = securityUtils.authorizationHeaders();
         assertEquals(serviceAuthorization, Objects.requireNonNull(result.get(SERVICE_AUTHORIZATION)).get(0));
         assertEquals(USER_ID, Objects.requireNonNull(result.get("user-id")).get(0));
         assertEquals("", Objects.requireNonNull(Objects.requireNonNull(result.get("user-roles")).get(0)));
+        assertNotNull(SecurityContextHolder.getContext().getAuthentication());
+        assertEquals(securityUtils.getUserBearerToken(), "Bearer ERFDTYGBYTBTYKGF:K");
     }
 
     @Test
@@ -131,6 +139,14 @@ class SecurityUtilsTest {
         assertEquals(serviceAuthorization, Objects.requireNonNull(result.get(SERVICE_AUTHORIZATION)).get(0));
         assertEquals(USER_ID, Objects.requireNonNull(result.get("user-id")).get(0));
         assertEquals("", Objects.requireNonNull(Objects.requireNonNull(result.get("user-roles")).get(0)));
+        assertNotNull(result.get(HttpHeaders.AUTHORIZATION));
+    }
+
+    @Test
+    void getServiceAuthorizationHeader() {
+        when(authTokenGenerator.generate()).thenReturn("Hello");
+        final String authHeader = securityUtils.getServiceAuthorizationHeader();
+        assertFalse(authHeader.isBlank());
     }
 
     @Test

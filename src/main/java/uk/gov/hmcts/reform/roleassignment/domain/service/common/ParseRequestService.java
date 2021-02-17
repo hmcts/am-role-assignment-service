@@ -78,7 +78,7 @@ public class ParseRequestService {
         logger.info(String.format(
             " >> parseRequest execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
         return parsedRequest;
     }

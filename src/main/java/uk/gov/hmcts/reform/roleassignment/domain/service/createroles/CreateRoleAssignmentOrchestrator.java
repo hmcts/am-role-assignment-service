@@ -126,7 +126,7 @@ public class CreateRoleAssignmentOrchestrator {
                 logger.info(String.format(
                     " >> replaceExisting Inner Method execution finished at %s . Time taken = %s milliseconds",
                     System.currentTimeMillis(),
-                    System.currentTimeMillis() - replaceExisting
+                    Math.subtractExact(System.currentTimeMillis(), replaceExisting)
                 ));
 
             } else {
@@ -137,7 +137,7 @@ public class CreateRoleAssignmentOrchestrator {
                 logger.info(String.format(
                     " >> newAssignment execution finished at %s . Time taken = %s milliseconds",
                     System.currentTimeMillis(),
-                    System.currentTimeMillis() - newAssignment
+                    Math.subtractExact(System.currentTimeMillis(), newAssignment)
                 ));
             }
 
@@ -151,7 +151,7 @@ public class CreateRoleAssignmentOrchestrator {
             logger.info(String.format(
                 " >> createRoleAssignment in orchestrator execution finished at %s . Time taken = %s milliseconds",
                 System.currentTimeMillis(),
-                System.currentTimeMillis() - startTime
+                Math.subtractExact(System.currentTimeMillis(), startTime)
             ));
 
         }
@@ -217,7 +217,7 @@ public class CreateRoleAssignmentOrchestrator {
         logger.info(String.format(
             " >> identifyAssignmentsToBeUpdated execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
 
     }
