@@ -18,7 +18,6 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentDeleteResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -27,25 +26,28 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.ArrayList;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
 
 @RunWith(MockitoJUnitRunner.class)
 class DeleteRoleAssignmentOrchestratorTest {
@@ -110,12 +112,37 @@ class DeleteRoleAssignmentOrchestratorTest {
         )).thenReturn(Collections.emptyList());
         mockHistoryEntity();
 
-        ResponseEntity<RoleAssignmentDeleteResource> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS,
+        ResponseEntity<Void> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS,
                                                                                                      REFERENCE);
         assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
         assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
+    }
+
+    @Test
+    @DisplayName("should get 422 when role assignment records delete  not successful due to invalid status")
+    void shouldRejectedWithDeleteRoleAssignmentByProcessWhenRolesNotEmpty() throws Exception {
+
+        //Set the status approved of all requested role manually for drool validation process
+        setApprovedStatusByDrool();
+        mockRequest();
+        List<RoleAssignment> roleAssignmentList = TestDataBuilder
+            .buildRoleAssignmentList_Custom(DELETE_APPROVED, "1234", "attributes.json");
+        when(persistenceService.getAssignmentsByProcess(
+            PROCESS,
+            REFERENCE,
+            Status.LIVE.toString()
+        )).thenReturn(roleAssignmentList);
+        mockHistoryEntity();
+
+        ResponseEntity<Void> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS,
+                                                                                      REFERENCE);
+        assertNotNull(response);
+        assertEquals(REJECTED.toString(), sut.getRequestEntity().getStatus());
+        assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
+        assertEquals(roleAssignmentList.stream().filter(x -> x.getStatus() == DELETE_REQUESTED).count(), 1);
     }
 
     @Test
@@ -129,10 +156,10 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId)))
             .thenReturn(Collections.emptyList());
         mockHistoryEntity();
-        ResponseEntity<RoleAssignmentDeleteResource> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
+        ResponseEntity<?> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(sut.getRequestEntity().getStatus(), APPROVED.toString());
         verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
-
     }
 
     @Test
@@ -208,7 +235,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         when(persistenceService.getAssignmentById(UUID.fromString(assignmentId))).thenReturn(Collections.emptyList());
         mockHistoryEntity();
 
-        ResponseEntity<RoleAssignmentDeleteResource> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
+        ResponseEntity<?> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(persistenceService, times(1)).updateRequest(any(RequestEntity.class));
     }
@@ -282,6 +309,15 @@ class DeleteRoleAssignmentOrchestratorTest {
         mockRequest();
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.deleteRoleAssignmentByProcessAndReference(PROCESS, null)
+        );
+    }
+
+    @Test
+    @DisplayName("should throw 400 when reference blank")
+    void shouldThrowBadRequestWhenReferenceBlank() throws Exception {
+        mockRequest();
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.deleteRoleAssignmentByProcessAndReference(PROCESS, " ")
         );
     }
 

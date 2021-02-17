@@ -40,7 +40,7 @@ public class ValidationModelService {
         runRulesOnAllRequestedAssignments(assignmentRequest);
         log.info(
             "Execution time of validateRequest() : {} in milli seconds ",
-            (System.currentTimeMillis() - startTime)
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         );
 
     }
@@ -118,9 +118,9 @@ public class ValidationModelService {
         // Run the rules
         kieSession.execute(facts);
         log.info(String.format(
-            "runRulesOnAllRequestedAssignments execution finished at %s . Time taken = %s milliseconds",
+            " >> runRulesOnAllRequestedAssignments execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
 
 

@@ -10,14 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
@@ -51,7 +50,7 @@ public class QueryAssignmentController {
         @ApiResponse(
             code = 200,
             message = "Success",
-            response = RoleAssignmentRequestResource.class
+            response = RoleAssignmentResource.class
         ),
         @ApiResponse(
             code = 400,
@@ -61,7 +60,7 @@ public class QueryAssignmentController {
     })
     @LogAudit(operationType = SEARCH_ASSIGNMENTS,
         id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).searchAssignmentIds(#result)",
-        correlationId = "#correlationId")
+        correlationId = "#corsrelationId")
     public ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByQueryRequest(
                                  @RequestHeader(value = "x-correlation-id",
                                   required = false) String correlationId,
@@ -71,13 +70,12 @@ public class QueryAssignmentController {
                                   @RequestHeader(value = "direction", required = false) String direction,
                                   @Validated @RequestBody(required = true) QueryRequest queryRequest) {
         long startTime = System.currentTimeMillis();
-        logger.info(String.format("retrieveRoleAssignmentsByQueryRequest execution started at %s", startTime));
         ResponseEntity<RoleAssignmentResource> response = queryRoleAssignmentOrchestrator
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
         logger.info(String.format(
-            "retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
+            " >> retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
         return response;
     }
