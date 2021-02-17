@@ -163,7 +163,7 @@ public class PersistenceService {
         logger.info(String.format(
             " >> getAssignmentsByProcess execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
         return roleAssignmentList;
 
@@ -252,7 +252,7 @@ public class PersistenceService {
         logger.info(String.format(
             " >> retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
-            System.currentTimeMillis() - startTime
+            Math.subtractExact(System.currentTimeMillis(), startTime)
         ));
         return roleAssignmentList;
     }

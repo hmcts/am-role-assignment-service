@@ -8,10 +8,9 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.IOException;
 
 @RunWith(MockitoJUnitRunner.class)
 class JsonBConverterTest {
