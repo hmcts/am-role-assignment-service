@@ -15,7 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
  */
 rule "staff_organisational_role_mapping_service_create"
 when
-    $rq: Request() //clientId == "am_org_role_mapping_service")
+    $rq: Request(byPassOrgDroolRule || clientId == "am_org_role_mapping_service")
 
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
@@ -35,7 +35,7 @@ end;
  */
 rule "staff_organisational_role_mapping_service_delete"
 when
-    $rq: Request( ) //clientId == "am_org_role_mapping_service")
+    $rq: Request(byPassOrgDroolRule || clientId == "am_org_role_mapping_service")
 
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
