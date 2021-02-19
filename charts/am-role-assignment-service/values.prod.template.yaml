@@ -1,0 +1,3 @@
+java:
+  environment:
+    BYPASS_ORG_DROOL_RULE: false
