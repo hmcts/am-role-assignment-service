@@ -21,7 +21,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
     @Test
     void shouldApproveOrgRequestedRoleForTCW_S001() {
         //clientId check not implemented yet
-        //assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.STAFF);
@@ -44,7 +44,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
     @Test
     void shouldApproveOrgRequestedRoleForSTCW_S002() {
         //clientId check not implemented yet
-        //assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.STAFF);
@@ -88,7 +88,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
     @Test
     void shouldRejectOrgValidationForTCW_WrongRoleCategory_S004() {
         //clientId check not implemented yet
-        //assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
@@ -111,7 +111,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
     @Test
     void shouldRejectOrgValidationForTCW_WrongGrantType_S005() {
         //clientId check not implemented yet
-        //assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.STAFF);
@@ -199,7 +199,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
     @Test
     void shouldRejectOrgValidationForTCW_MissingPrimaryLocation_S009() {
         //clientId check not implemented yet
-        //assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.STAFF);
@@ -220,7 +220,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
     @Test
     void shouldApproveDeleteRequestedRoleForOrg_S010() {
         //clientId check not implemented yet
-        //assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setStatus(Status.DELETE_REQUESTED);
