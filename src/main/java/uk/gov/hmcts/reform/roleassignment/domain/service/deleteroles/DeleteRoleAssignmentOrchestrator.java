@@ -187,7 +187,8 @@ public class DeleteRoleAssignmentOrchestrator {
 
     }
 
-    private void updateStatusAndPersist(Request request) {
+    @Transactional
+    public void updateStatusAndPersist(Request request) {
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
 
             // persist history in db
