@@ -25,7 +25,8 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "replaceExisting": true
+          "replaceExisting": true,
+          "byPassOrgDroolRule": true
         },
         "requestedRoles": [
           {

@@ -8,7 +8,8 @@
 
   "request": {
     "body": {
-      "actorId": ["${[scenarioContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"]
+      "actorId": ["${[scenarioContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"],
+      "byPassOrgDroolRule": true
     }
   },
   "expectedResponse": {
