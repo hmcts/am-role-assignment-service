@@ -52,7 +52,8 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "replaceExisting": true
+          "replaceExisting": true,
+          "byPassOrgDroolRule": true
         },
         "requestedRoles": [
           {
