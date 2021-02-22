@@ -118,6 +118,7 @@ public class ParseRequestService {
             .requestType(RequestType.DELETE)
             .created(ZonedDateTime.now(ZoneOffset.UTC))
             .process(process)
+            .byPassOrgDroolRule(byPassOrgDroolRule)
             .reference(reference)
             .build();
         setCorrelationId(request);

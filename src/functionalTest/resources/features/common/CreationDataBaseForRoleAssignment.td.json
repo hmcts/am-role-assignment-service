@@ -49,6 +49,7 @@
           "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "replaceExisting": "${[scenarioContext][testData][request][body][roleRequest][replaceExisting]}",
           "created": "[[ANYTHING_PRESENT]]",
+          "byPassOrgDroolRule": "[[ANYTHING_PRESENT]]",
           "log": "[[ANYTHING_PRESENT]]"
         }
       }
