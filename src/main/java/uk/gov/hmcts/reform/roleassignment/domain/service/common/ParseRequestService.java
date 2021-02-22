@@ -120,6 +120,7 @@ public class ParseRequestService {
             .process(process)
             .byPassOrgDroolRule(byPassOrgDroolRule)
             .reference(reference)
+            .byPassOrgDroolRule(byPassOrgDroolRule)
             .build();
         setCorrelationId(request);
         setAssignerId(request);
