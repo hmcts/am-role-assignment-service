@@ -34,8 +34,7 @@
     "body": {
       "roleAssignmentResponse": {
         "roleRequest": {
-          "_extends_": "ResponseRoleRequest",
-          "byPassOrgDroolRule": true
+          "_extends_": "ResponseRoleRequest"
         },
         "requestedRoles": [
           {
