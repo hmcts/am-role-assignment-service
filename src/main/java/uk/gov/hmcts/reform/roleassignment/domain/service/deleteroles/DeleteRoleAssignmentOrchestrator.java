@@ -187,7 +187,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
     }
 
-    @Transactional
+
     public void updateStatusAndPersist(Request request) {
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
 

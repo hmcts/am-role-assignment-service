@@ -106,7 +106,7 @@ public class PersistenceService {
         requestRepository.save(requestEntity);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public void persistHistoryEntities(Collection<HistoryEntity> historyEntityList) {
         historyEntityList.forEach(historyEntity -> entityManager.persist(historyEntity));
         entityManager.flush();
