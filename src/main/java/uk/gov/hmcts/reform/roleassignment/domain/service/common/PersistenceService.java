@@ -88,7 +88,7 @@ public class PersistenceService {
         this.databseChangelogLockRepository = databseChangelogLockRepository;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public RequestEntity persistRequest(Request request) {
 
         //Prepare request entity
