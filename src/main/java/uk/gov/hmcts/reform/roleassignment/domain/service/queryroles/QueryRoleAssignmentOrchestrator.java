@@ -42,11 +42,11 @@ public class QueryRoleAssignmentOrchestrator {
             "Total-Records",
             Long.toString(persistenceService.getTotalRecords())
         );
-        logger.info(String.format(
-            " >> retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
+        logger.info(
+            " >> retrieveRoleAssignmentsByQueryRequest execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
-        ));
+        );
         return ResponseEntity.status(HttpStatus.OK).headers(responseHeaders).body(
             new RoleAssignmentResource(assignmentList));
 

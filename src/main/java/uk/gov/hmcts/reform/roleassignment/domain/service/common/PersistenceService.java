@@ -160,11 +160,11 @@ public class PersistenceService {
         List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(historyEntity -> persistenceUtil
             .convertHistoryEntityToRoleAssignment(historyEntity)).collect(
             Collectors.toList());
-        logger.info(String.format(
-            " >> getAssignmentsByProcess execution finished at %s . Time taken = %s milliseconds",
+        logger.info(
+            " >> getAssignmentsByProcess execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
-        ));
+        );
         return roleAssignmentList;
 
     }
@@ -249,11 +249,11 @@ public class PersistenceService {
 
         }
 
-        logger.info(String.format(
-            " >> retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
+        logger.info(
+            " >> retrieveRoleAssignmentsByQueryRequest execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
-        ));
+        );
         return roleAssignmentList;
     }
 
