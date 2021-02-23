@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -24,7 +25,7 @@ public class FeatureToggleServiceTest {
     LDClient ldClient = mock(LDClient.class);
 
     @Mock
-    HttpServletRequest request;
+    HttpServletRequest request  = mock(HttpServletRequest.class);
 
     @InjectMocks
     FeatureToggleService featureToggleService = new FeatureToggleService(ldClient, "user");
@@ -59,11 +60,11 @@ public class FeatureToggleServiceTest {
 
     @ParameterizedTest
     @CsvSource({
-        "/am/role-assignments/ld/endpoint, GET, get-ld-flag",
-        "/am/role-assignments/actors/, GET, get-role-assignments-by-actor-id",
-        "/am/role-assignments, POST, create-role-assignments",
-        "/am/role-assignments, DELETE, delete-role-assignments",
-        "/am/role-assignments/, DELETE, delete-role-assignments-by-id",
+        "/am/role-assignments/ld/endpoint,GET,get-ld-flag",
+        "/am/role-assignments/actors/,GET,get-role-assignments-by-actor-id",
+        "/am/role-assignments,POST,create-role-assignments",
+        "/am/role-assignments,DELETE,delete-role-assignments",
+        "/am/role-assignments/,DELETE,delete-role-assignments-by-id",
     })
     void getLdFlagGetCase(String url, String method, String flag) {
         when(request.getRequestURI()).thenReturn(url);
