@@ -88,7 +88,7 @@ public class PersistenceService {
         this.databseChangelogLockRepository = databseChangelogLockRepository;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public RequestEntity persistRequest(Request request) {
 
         //Prepare request entity
@@ -106,7 +106,7 @@ public class PersistenceService {
         requestRepository.save(requestEntity);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public void persistHistoryEntities(Collection<HistoryEntity> historyEntityList) {
         historyEntityList.forEach(historyEntity -> entityManager.persist(historyEntity));
         entityManager.flush();
