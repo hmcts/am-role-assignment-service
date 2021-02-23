@@ -83,7 +83,7 @@ public class CreateRoleAssignmentOrchestrator {
             //Check replace existing true/false
             if (request.isReplaceExisting()) {
                 long replaceExisting = System.currentTimeMillis();
-                logger.info(String.format("replaceExisting Inner Method execution started at %s", replaceExisting));
+                logger.info("replaceExisting Inner Method execution started at {}", replaceExisting);
                 //retrieve existing assignments and prepared temp request
                 existingAssignmentRequest = createRoleAssignmentService
                     .retrieveExistingAssignments(parsedAssignmentRequest);
@@ -123,22 +123,22 @@ public class CreateRoleAssignmentOrchestrator {
                     // Don't throw the exception, as we need to build the response as Http:201
                     log.error("context", e);
                 }
-                logger.info(String.format(
-                    " >> replaceExisting Inner Method execution finished at %s . Time taken = %s milliseconds",
+                logger.info(
+                    " >> replaceExisting Inner Method execution finished at {} . Time taken = {} milliseconds",
                     System.currentTimeMillis(),
                     Math.subtractExact(System.currentTimeMillis(), replaceExisting)
-                ));
+                );
 
             } else {
                 long newAssignment = System.currentTimeMillis();
                 //Save requested role in history table with CREATED and Approved Status
                 createRoleAssignmentService.createNewAssignmentRecords(parsedAssignmentRequest);
                 createRoleAssignmentService.checkAllApproved(parsedAssignmentRequest);
-                logger.info(String.format(
-                    " >> newAssignment execution finished at %s . Time taken = %s milliseconds",
+                logger.info(
+                    " >> newAssignment execution finished at {} . Time taken = {} milliseconds",
                     System.currentTimeMillis(),
                     Math.subtractExact(System.currentTimeMillis(), newAssignment)
-                ));
+                );
             }
 
             ResponseEntity<RoleAssignmentRequestResource> result = prepareResponseService
@@ -148,11 +148,11 @@ public class CreateRoleAssignmentOrchestrator {
             return result;
         } finally {
             flushGlobalVariables();
-            logger.info(String.format(
-                " >> createRoleAssignment in orchestrator execution finished at %s . Time taken = %s milliseconds",
+            logger.info(
+                " >> createRoleAssignment in orchestrator execution finished at {} . Time taken = {} milliseconds",
                 System.currentTimeMillis(),
                 Math.subtractExact(System.currentTimeMillis(), startTime)
-            ));
+            );
 
         }
 
@@ -192,7 +192,7 @@ public class CreateRoleAssignmentOrchestrator {
                                                 AssignmentRequest parsedAssignmentRequest)
         throws IllegalAccessException, InvocationTargetException {
         long startTime = System.currentTimeMillis();
-        logger.info(String.format("identifyAssignmentsToBeUpdated execution started at %s", startTime));
+        logger.info("identifyAssignmentsToBeUpdated execution started at {}", startTime);
 
 
         //update the existingAssignmentRequest with Only need to be removed record
@@ -214,11 +214,11 @@ public class CreateRoleAssignmentOrchestrator {
 
         //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
         createRoleAssignmentService.checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
-        logger.info(String.format(
-            " >> identifyAssignmentsToBeUpdated execution finished at %s . Time taken = %s milliseconds",
+        logger.info(
+            " >> identifyAssignmentsToBeUpdated execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
-        ));
+        );
 
     }
 }

@@ -33,7 +33,7 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
                                 @Nullable Exception ex) {
         long startTime = System.currentTimeMillis();
         if (applicationParams.isAuditLogEnabled() && hasAuditAnnotation(handler)) {
-            LOG.info(String.format("afterCompletion execution started at %s", startTime));
+            LOG.info("afterCompletion execution started at {}", startTime);
             if (!applicationParams.getAuditLogIgnoreStatuses().contains(response.getStatus())) {
                 AuditContext auditContext = AuditContextHolder.getAuditContext();
                 auditContext = populateHttpSemantics(auditContext, request, response);
@@ -45,11 +45,11 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
             }
             AuditContextHolder.remove();
         }
-        LOG.info(String.format(
-            " >> afterCompletion execution finished at %s . Time taken = %s milliseconds",
+        LOG.info(
+            " >> afterCompletion execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
-        ));
+        );
     }
 
     private boolean hasAuditAnnotation(Object handler) {
