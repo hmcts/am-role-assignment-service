@@ -62,7 +62,7 @@ public class DeleteRoleAssignmentOrchestrator {
         this.persistenceUtil = persistenceUtil;
     }
 
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResponseEntity<Void> deleteRoleAssignmentByProcessAndReference(String process,
                                                                             String reference) {
         long startTime = System.currentTimeMillis();
@@ -109,6 +109,7 @@ public class DeleteRoleAssignmentOrchestrator {
         return responseEntity;
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResponseEntity<Void> deleteRoleAssignmentByAssignmentId(String assignmentId) {
         List<RoleAssignment> requestedRoles;
 
@@ -187,7 +188,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
     }
 
-    @Transactional
+
     public void updateStatusAndPersist(Request request) {
         for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
 
