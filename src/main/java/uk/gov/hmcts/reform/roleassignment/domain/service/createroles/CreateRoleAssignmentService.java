@@ -277,7 +277,6 @@ public class CreateRoleAssignmentService {
                                      List<UUID> rejectedAssignmentIds) {
         long startTime = System.currentTimeMillis();
         logger.info(String.format("insertRequestedRole execution started at %s", startTime));
-        List<HistoryEntity> historyEntityList = new ArrayList<>();
         for (RoleAssignment requestedAssignment : assignmentRequest.getRequestedRoles()) {
             if (!rejectedAssignmentIds.isEmpty()
                 && (status.equals(Status.REJECTED) || status.equals(Status.DELETE_REJECTED))
@@ -302,12 +301,13 @@ public class CreateRoleAssignmentService {
                     requestedAssignment,
                     assignmentRequest.getRequest()
                 );
-                historyEntityList.add(entity);
+                //set the history entity into the request table.
+                requestEntity.getHistoryEntities().add(entity);
                 requestedAssignment.setId(entity.getId());
             }
 
         }
-        persistenceService.persistHistoryEntities(historyEntityList);
+        persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
         logger.info(String.format(
