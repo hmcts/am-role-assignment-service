@@ -9,7 +9,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
@@ -35,6 +37,81 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            assertEquals("tribunal-caseworker", roleAssignment.getRoleName());
+        });
+    }
+
+    @Test
+    void shouldApproveOrgRequestedRoleWithByPassOrgDroolRuleTrue() {
+        //clientId check not implemented yet
+        assignmentRequest.getRequest().setClientId("not_am_org_role_mapping_service");
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName("tribunal-caseworker");
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assertTrue(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            assertEquals("tribunal-caseworker", roleAssignment.getRoleName());
+        });
+    }
+
+    @Test
+    void shouldRejectOrgRequestedRoleWithNoByPassOrgDroolRuleTrueAndInvalidClientId() {
+        //clientId check not implemented yet
+        assignmentRequest.getRequest().setClientId("not_am_org_role_mapping_service");
+        assignmentRequest.getRequest().setByPassOrgDroolRule(false);
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName("tribunal-caseworker");
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+            assertEquals("tribunal-caseworker", roleAssignment.getRoleName());
+        });
+    }
+
+    @Test
+    void shouldApproveOrgRequestedRoleWithNoByPassOrgDroolRuleTrueAndValidClientId() {
+        //clientId check not implemented yet
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setByPassOrgDroolRule(false);
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName("tribunal-caseworker");
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             assertEquals(Status.APPROVED, roleAssignment.getStatus());
             assertEquals("tribunal-caseworker", roleAssignment.getRoleName());
@@ -232,6 +309,66 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus());
+        });
+    }
+
+    @Test
+    void shouldApproveDeleteRequestedRoleWithBadClientIdAndBypassDroolRule() {
+        //clientId check not implemented yet
+        assignmentRequest.getRequest().setClientId("not_am_org_role_mapping_service");
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setStatus(Status.DELETE_REQUESTED);
+            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+        });
+        buildExecuteKieSession();
+
+        //assertion
+        assertTrue(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus());
+        });
+    }
+
+    @Test
+    void shouldApproveDeleteRequestedRoleWithGoodClientIdAndNoBypassDroolRule() {
+        //clientId check not implemented yet
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setByPassOrgDroolRule(false);
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setStatus(Status.DELETE_REQUESTED);
+            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+        });
+        buildExecuteKieSession();
+
+        //assertion
+        assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus());
+        });
+    }
+
+    @Test
+    void shouldRejectDeleteRequestedRoleBadGoodClientIdAndNoBypassDroolRule() {
+        //clientId check not implemented yet
+        assignmentRequest.getRequest().setClientId("not_am_org_role_mapping_service");
+        assignmentRequest.getRequest().setByPassOrgDroolRule(false);
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setStatus(Status.DELETE_REQUESTED);
+            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+        });
+        buildExecuteKieSession();
+
+        //assertion
+        assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
         });
     }
 
