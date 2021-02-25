@@ -250,9 +250,9 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     }
 
-    private AssignmentRequest buildDroolRuleBypassRequest() throws Exception{
+    private AssignmentRequest buildDroolRuleBypassRequest() throws Exception {
         final AssignmentRequest assignmentRequest =
-        TestDataBuilder.createRoleAssignmentRequest(
+            TestDataBuilder.createRoleAssignmentRequest(
             true,
             true
         );

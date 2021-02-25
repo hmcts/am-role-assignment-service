@@ -52,6 +52,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.ST
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
+
 @TestPropertySource(properties = {"org.request.byPassOrgDroolRule=false"})
 public class DroolPassAssignmentCreateAndDeleteIntegration extends BaseTest {
 
@@ -181,9 +182,9 @@ public class DroolPassAssignmentCreateAndDeleteIntegration extends BaseTest {
             .andReturn();
     }
 
-    private AssignmentRequest buildDroolRuleBypassRequest() throws Exception{
+    private AssignmentRequest buildDroolRuleBypassRequest() throws Exception {
         final AssignmentRequest assignmentRequest =
-        TestDataBuilder.createRoleAssignmentRequest(
+            TestDataBuilder.createRoleAssignmentRequest(
             true,
             true
         );
