@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -18,9 +17,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.ST
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.CASE;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
