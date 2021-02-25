@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -18,12 +19,14 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getReque
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @RunWith(MockitoJUnitRunner.class)
+@Disabled
 class StaffCategoryOrgRoleTest extends DroolBase {
 
     @Test
     void shouldApproveOrgRequestedRoleForTCW_S001() {
         //clientId check not implemented yet
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.STAFF);
