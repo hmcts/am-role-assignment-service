@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,13 +24,10 @@ import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -41,10 +37,8 @@ import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
-import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -56,10 +50,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
+
 public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentCreateAndDeleteIntegrationTest.class);
@@ -208,65 +202,6 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         logger.info(" LIVE table actor Id after create assignment request : {}", getActorFromAssignmentTable());
     }
 
-    private AssignmentRequest.AssignmentRequestBuilder getAssignmentRequest() {
-        return AssignmentRequest.builder().request(Request.builder()
-                                                       .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
-                                                       .authenticatedUserId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
-                                                       .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
-                                                       .assignerId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
-                                                       .requestType(RequestType.CREATE)
-                                                       .reference("4772dc44-268f-4d0c-8f83-f0fb662aac84")
-                                                       .process(("p2"))
-                                                       .replaceExisting(true)
-                                                       .status(CREATE_REQUESTED)
-                                                       .created(ZonedDateTime.now())
-                                                       .build());
-
-
-    }
-
-    @Test
-    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
-        {"classpath:sql/role_assignment_clean_up.sql"
-
-        })
-    public void shouldCreateRoleAssignmentsWithBypassDroolRule() throws Exception {
-        logger.info(" History record count before create assignment request {}", getHistoryRecordsCount());
-        logger.info(" LIVE table record count before create assignment request {}", getAssignmentRecordsCount());
-        AssignmentRequest assignmentRequest = buildDroolRuleBypassRequest();
-        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
-        assignmentRequest.getRequest().setClientId("wrong");
-        logger.info(" assignmentRequest :  {}", mapper.writeValueAsString(assignmentRequest));
-        final String url = "/am/role-assignments";
-
-
-        mockMvc.perform(post(url)
-                            .contentType(JSON_CONTENT_TYPE)
-                            .headers(getHttpHeaders())
-                            .content(mapper.writeValueAsBytes(assignmentRequest))
-        ).andExpect(status().is(201)).andReturn();
-    }
-
-    @Test
-    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
-        {"classpath:sql/role_assignment_clean_up.sql"
-
-        })
-    public void shouldCreateRoleAssignmentsWithNoBypassRule() throws Exception {
-        logger.info(" History record count before create assignment request {}", getHistoryRecordsCount());
-        logger.info(" LIVE table record count before create assignment request {}", getAssignmentRecordsCount());
-        AssignmentRequest assignmentRequest = buildDroolRuleBypassRequest();
-        logger.info(" assignmentRequest :  {}", mapper.writeValueAsString(assignmentRequest));
-        final String url = "/am/role-assignments";
-
-
-        mockMvc.perform(post(url)
-                            .contentType(JSON_CONTENT_TYPE)
-                            .headers(getHttpHeaders("wrong"))
-                            .content(mapper.writeValueAsBytes(assignmentRequest))
-        ).andExpect(status().is(201)).andReturn();
-    }
-
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
         {"classpath:sql/role_assignment_clean_up.sql",
@@ -291,6 +226,30 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     }
 
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
+        {"classpath:sql/role_assignment_clean_up.sql",
+            "classpath:sql/insert_assignment_records_to_delete.sql"})
+    public void shouldDeleteRoleAssignmentsByAssignmentId() throws Exception {
+
+        logger.info(" Method shouldDeleteRoleAssignmentsByAssignmentId starts : ");
+        logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
+        logger.info(" LIVE table record count before create assignment request : {}", getAssignmentRecordsCount());
+        final String url = "/am/role-assignments/" + ASSIGNMENT_ID;
+
+        mockMvc.perform(delete(url)
+                            .contentType(JSON_CONTENT_TYPE)
+                            .headers(getHttpHeaders())
+                            .param("process", "S-052")
+                            .param("reference", "S-052")
+        )
+            .andExpect(status().is(204))
+            .andReturn();
+
+        assertAssignmentRecords();
+
+    }
+
     private AssignmentRequest buildDroolRuleBypassRequest() throws Exception{
         final AssignmentRequest assignmentRequest =
         TestDataBuilder.createRoleAssignmentRequest(
@@ -298,13 +257,14 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             true
         );
         assignmentRequest.getRequest().setRequestType(RequestType.CREATE);
-        assignmentRequest.getRequest().setStatus(CREATE_REQUESTED);
+        // assignmentRequest.getRequest().setStatus(CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.STAFF);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
             roleAssignment.setGrantType(SPECIFIC);
+            roleAssignment.setStatus(CREATE_REQUESTED);
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
             roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
         });
