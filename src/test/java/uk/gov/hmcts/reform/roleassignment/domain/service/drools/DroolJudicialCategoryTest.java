@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -22,6 +23,7 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getReque
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @RunWith(MockitoJUnitRunner.class)
+@Disabled
 class DroolJudicialCategoryTest extends DroolBase {
 
     @Test
@@ -31,7 +33,7 @@ class DroolJudicialCategoryTest extends DroolBase {
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
 
         List<RoleAssignment> requestedRoles = new ArrayList<>();
-     //   requestedRoles.add(requestedRole1);
+        requestedRoles.add(requestedRole1);
 
         assignmentRequest.setRequestedRoles(requestedRoles);
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -94,14 +96,13 @@ class DroolJudicialCategoryTest extends DroolBase {
 
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
                                                                    assertEquals(
-                                                                       Status.CREATED,
+                                                                       Status.APPROVED,
                                                                        roleAssignment.getStatus()
                                                                    )
         );
     }
 
     @Test
-    @Ignore
     void shouldRejectOrgValidation_MissingAttributeJurisdiction() {
 
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
