@@ -106,7 +106,6 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.setRoleName("tribunal-caseworker");
             roleAssignment.setGrantType(STANDARD);
             roleAssignment.setStatus(CREATE_REQUESTED);
-            roleAssignment.setRoleType(CASE);
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
             roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
         });
@@ -130,7 +129,6 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
             roleAssignment.setGrantType(SPECIFIC);
-            roleAssignment.setStatus(CREATE_REQUESTED);
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
             roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
         });
