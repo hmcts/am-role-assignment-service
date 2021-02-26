@@ -19,9 +19,9 @@ import java.io.IOException;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 class PersistenceUtilTest {
@@ -117,7 +117,7 @@ class PersistenceUtilTest {
 
         RoleAssignment roleAssignment = persistenceUtil.convertHistoryEntityToRoleAssignment(historyEntity);
         assertNotNull(roleAssignment);
-        assertTrue(historyEntity.getAuthorisations().length != 0);
+        assertNotEquals(0, historyEntity.getAuthorisations().length);
 
         historyEntity.setAuthorisations(new String[]{});
         roleAssignment = persistenceUtil.convertHistoryEntityToRoleAssignment(historyEntity);
