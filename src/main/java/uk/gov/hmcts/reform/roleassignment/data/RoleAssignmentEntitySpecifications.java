@@ -57,19 +57,14 @@ public final class RoleAssignmentEntitySpecifications {
         }
         return (root, query, builder) -> builder.and(attributes.entrySet()
                                                          .stream()
-                                                         .map(entry -> {
-                                                             return builder.or(entry.getValue()
-                                                                                   .stream()
-                                                         .map(value -> {
-                                                             return builder.equal(builder.function(
-                                                                                           "jsonb_extract_path_text",
-                                                                                           String.class,
-                                                                               root.<String>get("attributes"),
-                                                                               builder.literal(entry.getKey())
-                                                                                       ), value);
-
-                                                         }).toArray(Predicate[]::new));
-                                                         })
+                                                         .map(entry -> builder.or(entry.getValue()
+                                                                               .stream()
+                                                     .map(value -> builder.equal(builder.function(
+                                                                                   "jsonb_extract_path_text",
+                                                                                   String.class,
+                                                                       root.<String>get("attributes"),
+                                                                       builder.literal(entry.getKey())
+                                                                               ), value)).toArray(Predicate[]::new)))
                                                          .toArray(Predicate[]::new));
 
     }
