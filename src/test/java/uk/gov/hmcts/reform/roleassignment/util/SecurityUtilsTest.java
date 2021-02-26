@@ -129,7 +129,7 @@ class SecurityUtilsTest {
         assertEquals(USER_ID, Objects.requireNonNull(result.get("user-id")).get(0));
         assertEquals("", Objects.requireNonNull(Objects.requireNonNull(result.get("user-roles")).get(0)));
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
-        assertEquals(securityUtils.getUserBearerToken(), "Bearer ERFDTYGBYTBTYKGF:K");
+        assertEquals("Bearer ERFDTYGBYTBTYKGF:K", securityUtils.getUserBearerToken());
     }
 
     @Test
