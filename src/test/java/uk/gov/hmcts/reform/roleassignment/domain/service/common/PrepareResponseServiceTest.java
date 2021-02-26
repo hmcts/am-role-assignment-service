@@ -70,14 +70,4 @@ class PrepareResponseServiceTest {
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
-
-    @Test
-    void addHateosLinks() throws IOException {
-        RoleAssignmentRequestResource roleAssignmentRequestResource = new RoleAssignmentRequestResource();
-        roleAssignmentRequestResource
-            .setRoleAssignmentRequest(TestDataBuilder
-                                          .buildAssignmentRequest(Status.CREATED, Status.LIVE, false));
-
-    }
-
 }
