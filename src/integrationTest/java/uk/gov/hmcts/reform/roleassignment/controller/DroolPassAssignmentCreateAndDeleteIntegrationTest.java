@@ -56,7 +56,8 @@ import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJ
 @TestPropertySource(properties = {"org.request.byPassOrgDroolRule=false"})
 public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(DroolPassAssignmentCreateAndDeleteIntegrationTest.class);
+    private static final Logger logger =
+        LoggerFactory.getLogger(DroolPassAssignmentCreateAndDeleteIntegrationTest.class);
 
     private static final String ASSIGNMENT_ID = "f7edb29d-e421-450c-be66-a10169b04f0a";
     private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445612";

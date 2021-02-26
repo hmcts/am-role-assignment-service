@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.CASE;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
