@@ -250,30 +250,6 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     }
 
-    private AssignmentRequest buildDroolRuleBypassRequest() throws Exception {
-        final AssignmentRequest assignmentRequest =
-            TestDataBuilder.createRoleAssignmentRequest(
-            true,
-            true
-        );
-        assignmentRequest.getRequest().setRequestType(RequestType.CREATE);
-        // assignmentRequest.getRequest().setStatus(CREATE_REQUESTED);
-        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
-            roleAssignment.setRoleType(RoleType.ORGANISATION);
-            roleAssignment.setRoleName("tribunal-caseworker");
-            roleAssignment.setGrantType(SPECIFIC);
-            roleAssignment.setStatus(CREATE_REQUESTED);
-            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
-        });
-
-        return assignmentRequest;
-    }
-
-
-
     private void assertAssignmentRecords() {
         logger.info(" History record count after create assignment request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count after create assignment request : {}", getAssignmentRecordsCount());
@@ -296,14 +272,9 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     @NotNull
     private HttpHeaders getHttpHeaders() {
-        return getHttpHeaders(AUTHORISED_SERVICE);
-    }
-
-    @NotNull
-    private HttpHeaders getHttpHeaders(final String clientId) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(AUTHORIZATION, "Bearer user1");
-        String s2SToken = MockUtils.generateDummyS2SToken(clientId);
+        String s2SToken = MockUtils.generateDummyS2SToken(AUTHORISED_SERVICE);
         headers.add("ServiceAuthorization", "Bearer " + s2SToken);
         headers.add(Constants.CORRELATION_ID_HEADER_NAME, "38a90097-434e-47ee-8ea1-9ea2a267f51d");
         return headers;

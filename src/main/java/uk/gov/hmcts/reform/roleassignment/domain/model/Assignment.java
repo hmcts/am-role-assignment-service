@@ -45,10 +45,6 @@ public abstract class Assignment {
     private JsonNode notes;
     private List<String> authorisations;
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
     public void log(String message) {
         log = (log == null ? "" : log + "\n") + message;
     }
