@@ -81,6 +81,7 @@ class DroolJudicialCategoryTest extends DroolBase {
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
             roleAssignment.setRoleName("judge");
             roleAssignment.setGrantType(STANDARD);
             roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
@@ -108,6 +109,7 @@ class DroolJudicialCategoryTest extends DroolBase {
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("judge");
             roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
             roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
         });
 
