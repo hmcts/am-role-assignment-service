@@ -10,6 +10,7 @@
     "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
     "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
     "replaceExisting": false,
+    "byPassOrgDroolRule" : "[[ANYTHING_PRESENT]]",
     "created": "[[ANYTHING_PRESENT]]",
     "log": "[[ANYTHING_PRESENT]]"
 }

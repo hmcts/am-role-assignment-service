@@ -234,14 +234,15 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         mockMvc.perform(delete(url)
                             .contentType(JSON_CONTENT_TYPE)
                             .headers(getHttpHeaders())
+                            .param("process", "S-052")
+                            .param("reference", "S-052")
         )
             .andExpect(status().is(204))
             .andReturn();
 
         assertAssignmentRecords();
+
     }
-
-
 
     private void assertAssignmentRecords() {
         logger.info(" History record count after create assignment request : {}", getHistoryRecordsCount());
