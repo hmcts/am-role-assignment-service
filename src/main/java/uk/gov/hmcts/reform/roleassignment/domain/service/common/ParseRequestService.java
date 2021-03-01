@@ -42,7 +42,7 @@ public class ParseRequestService {
     @Autowired
     private CorrelationInterceptorUtil correlationInterceptorUtil;
 
-    @Value("${org.request.byPassOrgDroolRule}")
+    @Value("#{new Boolean('${org.request.byPassOrgDroolRule}')}")
     private boolean byPassOrgDroolRule;
 
     public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType)
