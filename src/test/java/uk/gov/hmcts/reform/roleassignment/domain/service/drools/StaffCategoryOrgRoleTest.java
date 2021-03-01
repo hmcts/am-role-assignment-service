@@ -24,7 +24,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         //assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
             roleAssignment.setGrantType(STANDARD);
@@ -47,7 +47,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         //assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("senior-tribunal-caseworker");
             roleAssignment.setGrantType(STANDARD);
@@ -70,7 +70,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         assignmentRequest.getRequest().setClientId("ccd-gw");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
             roleAssignment.setGrantType(STANDARD);
@@ -114,7 +114,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         //assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
             roleAssignment.setGrantType(SPECIFIC);
@@ -136,7 +136,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         //assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setClassification(Classification.RESTRICTED);
             roleAssignment.setRoleName("tribunal-caseworker");
@@ -159,7 +159,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         //assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("senior-tribunal-caseworker");
             roleAssignment.setGrantType(STANDARD);
@@ -180,7 +180,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         //assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
             roleAssignment.setGrantType(STANDARD);
@@ -202,7 +202,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         //assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
             roleAssignment.setGrantType(STANDARD);
@@ -224,7 +224,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setStatus(Status.DELETE_REQUESTED);
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
         });
         buildExecuteKieSession();
@@ -240,7 +240,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setStatus(Status.DELETE_REQUESTED);
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
         });
         buildExecuteKieSession();
 
@@ -258,7 +258,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setStatus(Status.DELETE_REQUESTED);
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
         });
         buildExecuteKieSession();

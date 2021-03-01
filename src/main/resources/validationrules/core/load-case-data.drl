@@ -21,13 +21,11 @@ rule "load_case_data_for_role_assignments_with_case_ids"
 when
     $ra: RoleAssignment(
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-             not Case(id == $caseId)
 then
   try {
-  	insert(DATA_SERVICE.getCaseById($caseId));
+  	insert(DATA_SERVICE.getCaseById($caseId, $ra));
   }
   catch(Throwable ex) {
-  System.out.println("Error from the ccd data-store feign client");
   throw new BadRequestException(ex.getMessage());
   }
 	System.out.println("Rule :load_case_data_for_role_assignments_with_case_ids");
