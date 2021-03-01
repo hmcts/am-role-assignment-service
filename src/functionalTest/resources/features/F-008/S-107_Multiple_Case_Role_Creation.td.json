@@ -24,7 +24,7 @@
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta1][id]}",
           "roleName": "tribunal-caseworker",
-          "roleCategory": "STAFF",
+          "roleCategory": "LEGAL_OPERATIONS",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
           "attributes":
@@ -36,7 +36,7 @@
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "tribunal-caseworker",
-          "roleCategory": "STAFF",
+          "roleCategory": "LEGAL_OPERATIONS",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
           "attributes":
@@ -57,31 +57,36 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "reference": "1607103938250138/tribunal-caseworker"
+          "reference": "1607103938250138/tribunal-caseworker",
+          "replaceExisting": true
         },
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][befta1][id]}",
             "roleName": "tribunal-caseworker",
-            "roleCategory": "STAFF",
+            "roleCategory": "LEGAL_OPERATIONS",
             "roleType": "CASE",
             "grantType": "SPECIFIC",
             "attributes":
             {
-              "caseId" : "1607103938250138"
+              "caseId" : "1607103938250138",
+              "jurisdiction" : "IA",
+              "caseTypeId" : "Asylum"
             }
           },
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "roleName": "tribunal-caseworker",
-            "roleCategory": "STAFF",
+            "roleCategory": "LEGAL_OPERATIONS",
             "roleType": "CASE",
             "grantType": "SPECIFIC",
             "attributes":
             {
-              "caseId" : "1607103938250138"
+              "caseId" : "1607103938250138",
+              "jurisdiction" : "IA",
+              "caseTypeId" : "Asylum"
             }
 
           }

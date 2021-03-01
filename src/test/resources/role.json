@@ -61,7 +61,7 @@
     "name": "tribunal-caseworker",
     "label": "Tribunal Caseworker",
     "description": "Tribunal caseworker",
-    "category": "STAFF",
+    "category": "LEGAL_OPERATIONS",
     "patterns": [
       {
 
@@ -114,7 +114,7 @@
     "name": "senior-tribunal-caseworker",
     "label": "Senior Tribunal Caseworker",
     "description": "Senior Tribunal caseworker",
-    "category": "STAFF",
+    "category": "LEGAL_OPERATIONS",
     "patterns": [
       {
 

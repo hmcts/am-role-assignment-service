@@ -3,8 +3,10 @@ package uk.gov.hmcts.reform.roleassignment;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
@@ -20,6 +22,8 @@ import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
+
+import static org.mockito.Mockito.mock;
 
 @TestConfiguration
 public class RoleAssignmentProviderTestConfiguration {
@@ -61,9 +65,12 @@ public class RoleAssignmentProviderTestConfiguration {
     @MockBean
     private DataStoreFeignClient dataStoreFeignClient;
 
+    @Mock
+    private CacheManager cacheManager = mock(CacheManager.class);
+
     @Bean
     public RetrieveDataService getRetrieveDataService() {
-        return new RetrieveDataService(dataStoreFeignClient);
+        return new RetrieveDataService(dataStoreFeignClient,cacheManager);
     }
 
     @Bean
