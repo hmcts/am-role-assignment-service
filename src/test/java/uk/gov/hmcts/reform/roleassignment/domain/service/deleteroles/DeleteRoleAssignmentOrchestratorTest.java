@@ -142,7 +142,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         assertEquals(REJECTED.toString(), sut.getRequestEntity().getStatus());
         assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
-        assertEquals(roleAssignmentList.stream().filter(x -> x.getStatus() == DELETE_REQUESTED).count(), 1);
+        assertEquals(1, roleAssignmentList.stream().filter(x -> x.getStatus() == DELETE_REQUESTED).count());
     }
 
     @Test

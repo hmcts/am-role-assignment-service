@@ -16,11 +16,11 @@ class AssignmentTest {
         assignment = new RoleAssignment();
         assignment.setLog(YES);
         assignment.log(HELLO);
-        assertEquals(assignment.getLog(), YES_HELLO);
+        assertEquals(YES_HELLO, assignment.getLog());
 
         assignment.setLog(null);
         assignment.log(HELLO);
-        assertEquals(assignment.getLog(), HELLO);
+        assertEquals(HELLO, assignment.getLog());
     }
 
 }

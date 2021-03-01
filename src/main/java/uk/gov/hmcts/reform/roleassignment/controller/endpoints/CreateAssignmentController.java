@@ -83,11 +83,11 @@ public class CreateAssignmentController {
         long startTime = System.currentTimeMillis();
         ResponseEntity<RoleAssignmentRequestResource> response = createRoleAssignmentOrchestrator
             .createRoleAssignment(assignmentRequest);
-        logger.info(String.format(
-            " >> createRoleAssignment execution finished at %s . Time taken = %s milliseconds",
+        logger.info(
+            " >> createRoleAssignment execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
-        ));
+        );
         return response;
     }
 }
