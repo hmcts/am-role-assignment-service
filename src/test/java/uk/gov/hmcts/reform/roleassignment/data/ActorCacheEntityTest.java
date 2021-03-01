@@ -16,7 +16,7 @@ class ActorCacheEntityTest {
     void getId() {
         cacheEntity = new ActorCacheEntity();
         cacheEntity.setActorId("10292");
-        assertEquals(cacheEntity.getId(), "10292");
+        assertEquals("10292", cacheEntity.getId());
     }
 
     @Test

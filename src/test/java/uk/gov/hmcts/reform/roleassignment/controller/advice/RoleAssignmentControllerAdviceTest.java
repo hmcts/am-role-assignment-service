@@ -207,8 +207,8 @@ class RoleAssignmentControllerAdviceTest {
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
-        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription()
-                 .equals("I AM NOT DESERIALIZED"));
+        assertEquals("I AM NOT DESERIALIZED",
+                     Objects.requireNonNull(responseEntity.getBody()).getErrorDescription());
     }
 
     @Test

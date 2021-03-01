@@ -44,7 +44,7 @@ public class ParseRequestService {
     public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType)
         throws ParseException {
         long startTime = System.currentTimeMillis();
-        logger.info(String.format("parseRequest execution started at %s", startTime));
+        logger.info("parseRequest execution started at {}", startTime);
         Request request = assignmentRequest.getRequest();
         ValidationUtil.validateAssignmentRequest(assignmentRequest);
 
@@ -75,11 +75,11 @@ public class ParseRequestService {
         AssignmentRequest parsedRequest = new AssignmentRequest(new Request(), Collections.emptyList());
         parsedRequest.setRequest(request);
         parsedRequest.setRequestedRoles(requestedAssignments);
-        logger.info(String.format(
-            " >> parseRequest execution finished at %s . Time taken = %s milliseconds",
+        logger.info(
+            " >> parseRequest execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
-        ));
+        );
         return parsedRequest;
     }
 

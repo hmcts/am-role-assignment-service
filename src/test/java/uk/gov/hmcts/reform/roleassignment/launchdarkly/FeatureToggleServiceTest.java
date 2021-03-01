@@ -3,6 +3,8 @@ package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 import com.launchdarkly.sdk.server.LDClient;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,13 +18,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FeatureToggleServiceTest {
+class FeatureToggleServiceTest {
 
     @Mock
     LDClient ldClient = mock(LDClient.class);
 
     @Mock
-    HttpServletRequest request;
+    HttpServletRequest request  = mock(HttpServletRequest.class);
 
     @InjectMocks
     FeatureToggleService featureToggleService = new FeatureToggleService(ldClient, "user");
@@ -55,64 +57,33 @@ public class FeatureToggleServiceTest {
         Assertions.assertFalse(featureToggleService.isValidFlag("serviceName"));
     }
 
-    @Test
-    public void getLdFlagGetCase() {
-        when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint");
-        when(request.getMethod()).thenReturn("GET");
+    @ParameterizedTest
+    @CsvSource({
+        "/am/role-assignments/ld/endpoint,GET,get-ld-flag",
+        "/am/role-assignments/actors/,GET,get-role-assignments-by-actor-id",
+        "/am/role-assignments,POST,create-role-assignments",
+        "/am/role-assignments,DELETE,delete-role-assignments",
+        "/am/role-assignments/,DELETE,delete-role-assignments-by-id",
+    })
+    void getLdFlagGetCase(String url, String method, String flag) {
+        when(request.getRequestURI()).thenReturn(url);
+        when(request.getMethod()).thenReturn(method);
         featureToggleService = new FeatureToggleService(ldClient, "user");
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
-        Assertions.assertEquals("get-ld-flag", flagName);
+        Assertions.assertEquals(flag, flagName);
     }
 
-    @Test
-    public void getLdFlagGetCaseNoMatch() {
+    @ParameterizedTest
+    @CsvSource({
+        "GET",
+        "DELETE",
+        "POST",
+        "POST",
+        "INVALID",
+    })
+    void getLdFlagCase(String method) {
         when(request.getRequestURI()).thenReturn("/am/dummy");
-        when(request.getMethod()).thenReturn("GET");
-        featureToggleService = new FeatureToggleService(ldClient, "user");
-        String flagName = featureToggleService.getLaunchDarklyFlag(request);
-        Assertions.assertNull(flagName);
-    }
-
-    @Test
-    public void getLdFlagGetContainsScenario() {
-        when(request.getRequestURI()).thenReturn("/am/role-assignments/actors/");
-        when(request.getMethod()).thenReturn("GET");
-        featureToggleService = new FeatureToggleService(ldClient, "user");
-        String flagName = featureToggleService.getLaunchDarklyFlag(request);
-        Assertions.assertEquals("get-role-assignments-by-actor-id", flagName);
-    }
-
-    @Test
-    public void getLdFlagPostCase() {
-        when(request.getRequestURI()).thenReturn("/am/role-assignments");
-        when(request.getMethod()).thenReturn("POST");
-        featureToggleService = new FeatureToggleService(ldClient, "user");
-        String flagName = featureToggleService.getLaunchDarklyFlag(request);
-        Assertions.assertEquals("create-role-assignments", flagName);
-    }
-
-    @Test
-    public void getLdFlagPostCaseNoMatch() {
-        when(request.getRequestURI()).thenReturn("/am/dummy");
-        when(request.getMethod()).thenReturn("POST");
-        featureToggleService = new FeatureToggleService(ldClient, "user");
-        String flagName = featureToggleService.getLaunchDarklyFlag(request);
-        Assertions.assertNull(flagName);
-    }
-
-    @Test
-    public void getLdFlagDeleteCase() {
-        when(request.getRequestURI()).thenReturn("/am/role-assignments");
-        when(request.getMethod()).thenReturn("DELETE");
-        featureToggleService = new FeatureToggleService(ldClient, "user");
-        String flagName = featureToggleService.getLaunchDarklyFlag(request);
-        Assertions.assertEquals("delete-role-assignments", flagName);
-    }
-
-    @Test
-    public void getLdFlagDeleteCaseNoMatch() {
-        when(request.getRequestURI()).thenReturn("/am/dummy");
-        when(request.getMethod()).thenReturn("DELETE");
+        when(request.getMethod()).thenReturn(method);
         featureToggleService = new FeatureToggleService(ldClient, "user");
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
         Assertions.assertNull(flagName);
@@ -125,23 +96,5 @@ public class FeatureToggleServiceTest {
         featureToggleService = new FeatureToggleService(ldClient, "user");
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
         Assertions.assertEquals("delete-role-assignments-by-id", flagName);
-    }
-
-    @Test
-    public void getLdFlagNoneMatchCase() {
-        when(request.getRequestURI()).thenReturn("/am/dummy");
-        when(request.getMethod()).thenReturn("POST");
-        featureToggleService = new FeatureToggleService(ldClient, "user");
-        String flagName = featureToggleService.getLaunchDarklyFlag(request);
-        Assertions.assertNull(flagName);
-    }
-
-    @Test
-    public void getLdFlagInvalidRequestMethod() {
-        when(request.getRequestURI()).thenReturn("/am/dummy");
-        when(request.getMethod()).thenReturn("INVALID");
-        featureToggleService = new FeatureToggleService(ldClient, "user");
-        String flagName = featureToggleService.getLaunchDarklyFlag(request);
-        Assertions.assertNull(flagName);
     }
 }

@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.getroles;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -60,9 +59,6 @@ public class RetrieveRoleAssignmentOrchestrator {
             .getResourceAsStream(Constants.ROLES_JSON);
         assert input != null;
         rootNode = mapper.readTree(input);
-        for (JsonNode roleNode : rootNode) {
-            ObjectNode obj = (ObjectNode) roleNode;
-        }
 
         return rootNode;
     }
