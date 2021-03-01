@@ -72,11 +72,11 @@ public class QueryAssignmentController {
         long startTime = System.currentTimeMillis();
         ResponseEntity<RoleAssignmentResource> response = queryRoleAssignmentOrchestrator
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
-        logger.info(String.format(
-            " >> retrieveRoleAssignmentsByQueryRequest execution finished at %s . Time taken = %s milliseconds",
+        logger.info(
+            " >> retrieveRoleAssignmentsByQueryRequest execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
-        ));
+        );
         return response;
     }
 }
