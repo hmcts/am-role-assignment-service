@@ -135,8 +135,14 @@
                 "mandatory": true
               },
               "attributes": {
-                "caseId": {
-                  "mandatory": true
+                "jurisdiction" : {
+                  "mandatory" : true
+                },
+                "caseType" : {
+                  "mandatory" : true
+                },
+                "caseId" : {
+                  "mandatory" : true
                 }
               }
             }
