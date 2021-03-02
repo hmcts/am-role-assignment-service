@@ -116,7 +116,7 @@ public abstract class DroolBase {
 
     RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType,
                                         String attributeKey, String attributeVal, Status status) {
-         RoleAssignment ra = RoleAssignment.builder()
+        RoleAssignment ra = RoleAssignment.builder()
             .id(UUID.randomUUID())
             .actorId(UUID.randomUUID().toString())
             .actorIdType(ActorIdType.IDAM)
