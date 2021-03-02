@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -41,11 +42,15 @@ public class ParseRequestService {
     @Autowired
     private CorrelationInterceptorUtil correlationInterceptorUtil;
 
+    @Value("#{new Boolean('${org.request.byPassOrgDroolRule}')}")
+    private boolean byPassOrgDroolRule;
+
     public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType)
         throws ParseException {
         long startTime = System.currentTimeMillis();
         logger.info("parseRequest execution started at {}", startTime);
         Request request = assignmentRequest.getRequest();
+        request.setByPassOrgDroolRule(byPassOrgDroolRule);
         ValidationUtil.validateAssignmentRequest(assignmentRequest);
 
         //2. Request Parsing
@@ -113,6 +118,7 @@ public class ParseRequestService {
             .requestType(RequestType.DELETE)
             .created(ZonedDateTime.now(ZoneOffset.UTC))
             .process(process)
+            .byPassOrgDroolRule(byPassOrgDroolRule)
             .reference(reference)
             .build();
         setCorrelationId(request);
