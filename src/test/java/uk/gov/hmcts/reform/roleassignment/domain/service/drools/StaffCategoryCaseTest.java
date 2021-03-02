@@ -387,8 +387,7 @@ class StaffCategoryCaseTest extends DroolBase {
     void shouldRejectCaseRequestedRole_ForRequester_WrongRequesterJurisdiction_S021() {
 
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, "tribunal-caseworker",
-                                                             SPECIFIC
-        );
+                                                             SPECIFIC);
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
 
         List<RoleAssignment> requestedRoles = new ArrayList<>();
