@@ -17,8 +17,7 @@
   "created":"[[ANYTHING_PRESENT]]",
   "log":"[[ANYTHING_PRESENT]]",
   "attributes" : {
-    "jurisdiction" : "IA",
-    "caseTypeId" : "Asylum",
+    "jurisdiction" : "divorce",
     "region" : "south-east",
     "contractType": "SALARIED",
     "caseId": "1607103938250138"

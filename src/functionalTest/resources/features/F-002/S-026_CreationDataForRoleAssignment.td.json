@@ -40,10 +40,7 @@
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][1][roleType]}",
             "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
             "attributes": {
-              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}",
-              "jurisdiction" : "IA",
-              "caseTypeId" : "Asylum"
-
+              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
             }
           }
         ]
