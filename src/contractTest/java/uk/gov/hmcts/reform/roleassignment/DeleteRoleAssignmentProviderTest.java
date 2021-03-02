@@ -20,6 +20,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -37,6 +38,9 @@ public class DeleteRoleAssignmentProviderTest {
 
     @Autowired
     private PersistenceService persistenceService;
+
+    @Autowired
+    private SecurityUtils securityUtils;
 
     @Autowired
     private DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator;
@@ -74,6 +78,7 @@ public class DeleteRoleAssignmentProviderTest {
         List<RoleAssignment> roleAssignmentList = TestDataBuilder
             .buildRoleAssignmentList_Custom(Status.LIVE,"1234","attributes.json");
 
+        when(securityUtils.getServiceName()).thenReturn("am_org_role_mapping_service");
         when(persistenceService.persistRequest(any())).thenReturn(TestDataBuilder.buildRequestEntity(deleteRequest));
         when(persistenceService.getAssignmentById(UUID.fromString(ASSIGNMENT_ID)))
             .thenReturn(roleAssignmentList);
@@ -84,6 +89,7 @@ public class DeleteRoleAssignmentProviderTest {
         List<RoleAssignment> roleAssignmentList = TestDataBuilder
             .buildRoleAssignmentList_Custom(Status.LIVE,"1234","attributes.json");
 
+        when(securityUtils.getServiceName()).thenReturn("am_org_role_mapping_service");
         when(persistenceService.persistRequest(any())).thenReturn(TestDataBuilder.buildRequestEntity(deleteRequest));
         when(persistenceService.getAssignmentsByProcess("p2", "r2", Status.LIVE.toString()))
             .thenReturn(roleAssignmentList);

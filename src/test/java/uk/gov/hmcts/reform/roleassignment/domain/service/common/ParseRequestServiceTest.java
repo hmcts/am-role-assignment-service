@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -140,6 +141,7 @@ class ParseRequestServiceTest {
         );
         builtReq.setRequestType(RequestType.DELETE);
 
+        assertFalse(result.isByPassOrgDroolRule());
         assertEquals(clientId, result.getClientId());
         assertEquals(userId.toString(), result.getAuthenticatedUserId());
         assertEquals(UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9d"), result.getRoleAssignmentId());
@@ -170,6 +172,7 @@ class ParseRequestServiceTest {
         );
         builtReq.setRequestType(RequestType.DELETE);
 
+        assertFalse(result.isByPassOrgDroolRule());
         assertEquals(clientId, result.getClientId());
         assertEquals(userId.toString(), result.getAuthenticatedUserId().toString());
         assertEquals(builtReq.getStatus(), result.getStatus());
