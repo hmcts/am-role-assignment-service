@@ -6,7 +6,6 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
 import org.mockito.Mock;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -25,14 +24,11 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
-import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 public abstract class DroolBase {
 
@@ -61,24 +57,21 @@ public abstract class DroolBase {
             .caseTypeId("Asylum")
             .jurisdiction("IA")
             .build();
-        Assignment assignment = RoleAssignment.builder().attributes(new HashMap<String, JsonNode>()).build();
-        doReturn(caseObj).when(retrieveDataService).getCaseById(any(), any());
+        doReturn(caseObj).when(retrieveDataService).getCaseById("1234567890123456");
 
         //mock the retrieveDataService to fetch the Case Object with incorrect type ID
         Case caseObj1 = Case.builder().id("1234567890123457")
             .caseTypeId("Not Asylum")
             .jurisdiction("IA")
             .build();
-        doReturn(caseObj1).when(retrieveDataService).getCaseById("1234567890123457", RoleAssignment.builder()
-            .attributes(new HashMap<String, JsonNode>()).build());
+        doReturn(caseObj1).when(retrieveDataService).getCaseById("1234567890123457");
 
         //mock the retrieveDataService to fetch the Case Object with incorrect Jurisdiction ID
         Case caseObj2 = Case.builder().id("1234567890123458")
             .caseTypeId("Asylum")
             .jurisdiction("Not IA")
             .build();
-        doReturn(caseObj2).when(retrieveDataService).getCaseById("1234567890123458", RoleAssignment.builder()
-            .attributes(new HashMap<String, JsonNode>()).build());
+        doReturn(caseObj2).when(retrieveDataService).getCaseById("1234567890123458");
 
         // Set up the rule engine for validation.
         KieServices ks = KieServices.Factory.get();
@@ -123,7 +116,7 @@ public abstract class DroolBase {
 
     RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType,
                                         String attributeKey, String attributeVal, Status status) {
-        return RoleAssignment.builder()
+         RoleAssignment ra = RoleAssignment.builder()
             .id(UUID.randomUUID())
             .actorId(UUID.randomUUID().toString())
             .actorIdType(ActorIdType.IDAM)
@@ -134,8 +127,10 @@ public abstract class DroolBase {
             .classification(Classification.PUBLIC)
             .readOnly(true)
             .status(status)
-            .attributes(Map.of(attributeKey, convertValueJsonNode(attributeVal)))
+            .attributes(new HashMap<String, JsonNode>())
             .build();
+        ra.setAttribute(attributeKey, attributeVal);
+        return ra;
     }
 
     void buildExecuteKieSession() {
