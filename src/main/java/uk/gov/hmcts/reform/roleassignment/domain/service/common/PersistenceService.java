@@ -101,6 +101,7 @@ public class PersistenceService {
 
     }
 
+    @Transactional
     public void updateRequest(RequestEntity requestEntity) {
         //Persist the request entity
         requestRepository.save(requestEntity);
@@ -108,7 +109,7 @@ public class PersistenceService {
 
     @Transactional
     public void persistHistoryEntities(Collection<HistoryEntity> historyEntityList) {
-        historyEntityList.forEach(historyEntity -> entityManager.persist(historyEntity));
+        historyEntityList.forEach(historyEntity -> entityManager.merge(historyEntity));
         entityManager.flush();
     }
 
@@ -118,7 +119,7 @@ public class PersistenceService {
         Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignments.stream().map(
             roleAssignment -> persistenceUtil.convertRoleAssignmentToEntity(roleAssignment, true)
         ).collect(Collectors.toSet());
-        roleAssignmentEntities.forEach(roleAssignmentEntity -> entityManager.persist(roleAssignmentEntity));
+        roleAssignmentEntities.forEach(roleAssignmentEntity -> entityManager.merge(roleAssignmentEntity));
         entityManager.flush();
     }
 
@@ -132,7 +133,7 @@ public class PersistenceService {
                 actorCacheEntity.setEtag(existingActorCache.getEtag());
                 entityManager.merge(actorCacheEntity);
             } else {
-                entityManager.persist(actorCacheEntity);
+                entityManager.merge(actorCacheEntity);
             }
         });
         entityManager.flush();

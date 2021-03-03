@@ -13,6 +13,8 @@ import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Version;
 
@@ -26,6 +28,7 @@ public class ActorCacheEntity implements Persistable<String> {
 
     @Id
     @Column(name = "actor_id", nullable = false)
+    @GeneratedValue(strategy= GenerationType.TABLE)
     private String actorId;
 
     @Version

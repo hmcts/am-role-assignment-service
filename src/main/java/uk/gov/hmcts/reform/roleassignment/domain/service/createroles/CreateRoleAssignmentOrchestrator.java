@@ -1,11 +1,14 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
+import com.microsoft.applicationinsights.core.dependencies.io.grpc.netty.shaded.io.netty.util.internal.ConcurrentSet;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -22,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 
@@ -54,6 +58,7 @@ public class CreateRoleAssignmentOrchestrator {
         this.persistenceUtil = persistenceUtil;
     }
 
+    @Transactional
     public ResponseEntity<RoleAssignmentRequestResource> createRoleAssignment(AssignmentRequest roleAssignmentRequest)
         throws ParseException {
         long startTime = System.currentTimeMillis();
@@ -74,7 +79,7 @@ public class CreateRoleAssignmentOrchestrator {
 
             //2. Call persistence service to store only the request
             requestEntity = createRoleAssignmentService.persistInitialRequest(parsedAssignmentRequest.getRequest());
-            requestEntity.setHistoryEntities(new HashSet<>());
+            requestEntity.setHistoryEntities(new CopyOnWriteArraySet<>());
             request = parsedAssignmentRequest.getRequest();
             request.setId(requestEntity.getId());
             createRoleAssignmentService.setRequestEntity(requestEntity);
