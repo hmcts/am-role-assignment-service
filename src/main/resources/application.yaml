@@ -150,5 +150,8 @@ roleassignment:
    query:
      size: 20
      sortcolumn: roleName
+org :
+  request:
+    byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:true}
 
 
