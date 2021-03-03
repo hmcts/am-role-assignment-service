@@ -42,8 +42,8 @@ when
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 
 then
-    $ra.setAttribute("jurisdiction", "IA");
-    $ra.setAttribute("caseType", "Asylum");
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Stage 1 approved : ia_caseworker_create_case_roles");
     update($ra);
