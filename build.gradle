@@ -563,7 +563,7 @@ dependencies {
   smokeTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
   contractTestCompile group: 'au.com.dius.pact.provider', name: 'junit5', version: '4.1.14'
-  contractTestCompile group: 'au.com.dius.pact.provider', name: 'spring', version: '4.1.14'
+  contractTestCompile group: 'au.com.dius.pact.provider', name: 'spring', version: '4.2.1'
   contractTestCompile group: 'au.com.dius.pact.provider', name: 'junit5spring', version: '4.1.14'
 
   contractTestCompile sourceSets.main.runtimeClasspath
