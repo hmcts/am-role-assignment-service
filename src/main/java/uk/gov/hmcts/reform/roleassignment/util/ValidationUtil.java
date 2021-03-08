@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import antlr.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -150,7 +151,12 @@ public class ValidationUtil {
                 throw new BadRequestException(V1.Error.BAD_REQUEST_INVALID_PARAMETER + " roleName :"
                                                   + requestedRole.getRoleName());
             }
-
+            if (requestedRole.getBeginTime() != null && requestedRole.getBeginTime().getYear() == 1970) {
+                throw new BadRequestException(V1.Error.BAD_REQUEST_INVALID_DATETIME + " for beginTime");
+            }
+            if (requestedRole.getEndTime() != null && requestedRole.getEndTime().getYear() == 1970) {
+                throw new BadRequestException(V1.Error.BAD_REQUEST_INVALID_DATETIME + " for endTime");
+            }
             validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, requestedRole.getActorId());
             if (requestedRole.getRoleType().equals(CASE)) {
                 validateId(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
