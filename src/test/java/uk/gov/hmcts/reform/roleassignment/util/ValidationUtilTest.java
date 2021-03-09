@@ -27,13 +27,14 @@ import java.util.regex.Pattern;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.LOCALDATETIME;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_TEXT_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_HYPHEN_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_PATTERN;
 
 class ValidationUtilTest {
+
+    ZonedDateTime nineteenSeventy = ZonedDateTime.of(1970, 4, 20, 12, 0, 0, 0, ZoneId.systemDefault());
 
     @Test
     void shouldValidate() {
@@ -151,14 +152,7 @@ class ValidationUtilTest {
     @Test
     void validateRequestedRoles_BeginTime_BadRequest() throws IOException {
         Collection<RoleAssignment>  assignments = TestDataBuilder.buildRequestedRoleCollection(Status.LIVE);
-        assignments.stream().forEach(x -> x.setBeginTime(ZonedDateTime.of(1970,
-                                                                          4,
-                                                                          20,
-                                                                          12,
-                                                                          0,
-                                                                          0,
-                                                                          0,
-                                                                          ZoneId.systemDefault())));
+        assignments.stream().forEach(x -> x.setBeginTime(nineteenSeventy));
         Assertions.assertThrows(BadRequestException.class, () ->
             ValidationUtil.validateRequestedRoles(assignments)
         );
@@ -167,14 +161,7 @@ class ValidationUtilTest {
     @Test
     void validateRequestedRoles_EndTime_BadRequest() throws IOException {
         Collection<RoleAssignment>  assignments = TestDataBuilder.buildRequestedRoleCollection(Status.LIVE);
-        assignments.stream().forEach(x -> x.setEndTime(ZonedDateTime.of(1970,
-                                                                          4,
-                                                                          20,
-                                                                          12,
-                                                                          0,
-                                                                          0,
-                                                                          0,
-                                                                          ZoneId.systemDefault())));
+        assignments.stream().forEach(x -> x.setEndTime(nineteenSeventy));
         Assertions.assertThrows(BadRequestException.class, () ->
             ValidationUtil.validateRequestedRoles(assignments)
         );
