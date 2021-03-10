@@ -21,9 +21,9 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 
@@ -118,8 +118,8 @@ public class CreateRoleAssignmentOrchestrator {
                         parsedAssignmentRequest.getRequestedRoles()
                             .addAll(createRoleAssignmentService.needToRetainRoleAssignments);
                     } else if (!createRoleAssignmentService.needToRetainRoleAssignments.isEmpty()) {
-                        Collection<RoleAssignment> assignments =
-                            createRoleAssignmentService.needToRetainRoleAssignments;
+                        Set<RoleAssignment> assignments =
+                            new HashSet<>(createRoleAssignmentService.needToRetainRoleAssignments);
                         parsedAssignmentRequest.setRequestedRoles(assignments);
                     }
                 } catch (InvocationTargetException | IllegalAccessException e) {
@@ -212,9 +212,7 @@ public class CreateRoleAssignmentOrchestrator {
             );
 
         } else {
-            //parsedAssignmentRequest.setRequestedRoles(Collections.emptyList());
-            Collection<RoleAssignment> retainedRoles = createRoleAssignmentService.needToRetainRoleAssignments;
-            parsedAssignmentRequest.setRequestedRoles(retainedRoles);
+            parsedAssignmentRequest.setRequestedRoles(Collections.emptyList());
         }
 
         //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
