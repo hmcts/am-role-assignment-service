@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -20,6 +21,7 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
@@ -116,8 +118,9 @@ public class CreateRoleAssignmentOrchestrator {
                         parsedAssignmentRequest.getRequestedRoles()
                             .addAll(createRoleAssignmentService.needToRetainRoleAssignments);
                     } else if (!createRoleAssignmentService.needToRetainRoleAssignments.isEmpty()) {
-                        parsedAssignmentRequest.setRequestedRoles(createRoleAssignmentService
-                                                                      .needToRetainRoleAssignments);
+                        Collection<RoleAssignment> assignments =
+                            createRoleAssignmentService.needToRetainRoleAssignments;
+                        parsedAssignmentRequest.setRequestedRoles(assignments);
                     }
                 } catch (InvocationTargetException | IllegalAccessException e) {
                     // Don't throw the exception, as we need to build the response as Http:201
@@ -209,7 +212,9 @@ public class CreateRoleAssignmentOrchestrator {
             );
 
         } else {
-            parsedAssignmentRequest.setRequestedRoles(Collections.emptyList());
+            //parsedAssignmentRequest.setRequestedRoles(Collections.emptyList());
+            Collection<RoleAssignment> retainedRoles = createRoleAssignmentService.needToRetainRoleAssignments;
+            parsedAssignmentRequest.setRequestedRoles(retainedRoles);
         }
 
         //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
