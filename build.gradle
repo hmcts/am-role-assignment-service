@@ -393,7 +393,7 @@ dependencies {
   }
 
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
-  compile group: 'org.json', name: 'json', version: '20200518'
+  compile group: 'org.json', name: 'json', version: '20210307'
 
   implementation('com.squareup.okhttp3:okhttp:4.8.1') {
     exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
