@@ -4,7 +4,7 @@ buildscript {
   }
   dependencies {
     classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.12")
-    classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
+    classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.6.0'
   }
 }
 
@@ -16,8 +16,8 @@ plugins {
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'org.springframework.boot' version '2.3.9.RELEASE'
-  id 'info.solidsoft.pitest' version '1.5.0'
-  id 'com.github.ben-manes.versions' version '0.38.0'
+  id 'info.solidsoft.pitest' version '1.6.0'
+  id 'com.github.ben-manes.versions' version '0.31.0'
   id 'org.sonarqube' version '2.8'
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.22'
   id 'au.com.dius.pact' version '4.1.14'
@@ -393,7 +393,7 @@ dependencies {
   }
 
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
-  compile group: 'org.json', name: 'json', version: '20200518'
+  compile group: 'org.json', name: 'json', version: '20210307'
 
   implementation('com.squareup.okhttp3:okhttp:4.8.1') {
     exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
@@ -467,8 +467,8 @@ dependencies {
   }
   compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
 
-  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.40'
-  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.40'
+  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.43'
+  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.43'
   compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.29.Final'
 
   compile(group: 'org.springframework', name: 'spring-jdbc', version: '5.3.3')
@@ -504,7 +504,7 @@ dependencies {
   testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junit
 
   testCompile group: 'org.pitest', name: 'pitest', version: versions.pitest
-  testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.7'
+  testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.6.0'
   testCompile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
