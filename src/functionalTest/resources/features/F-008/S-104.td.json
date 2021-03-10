@@ -19,7 +19,7 @@
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleName": "tribunal-caseworker",
-          "roleCategory": "STAFF",
+          "roleCategory": "LEGAL_OPERATIONS",
           "attributes":
           {
             "jurisdiction": "IA",
@@ -31,7 +31,7 @@
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleName": "senior-tribunal-caseworker",
-          "roleCategory": "STAFF",
+          "roleCategory": "LEGAL_OPERATIONS",
           "attributes":
           {
             "jurisdiction": "IA",
@@ -57,7 +57,7 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "roleCategory": "STAFF",
+            "roleCategory": "LEGAL_OPERATIONS",
             "roleName": "tribunal-caseworker",
             "attributes":
             {
@@ -67,7 +67,7 @@
           },
           {
             "_extends_": "ResponseRequestedRole",
-            "roleCategory": "STAFF",
+            "roleCategory": "LEGAL_OPERATIONS",
             "roleName": "senior-tribunal-caseworker",
             "attributes":
             {
