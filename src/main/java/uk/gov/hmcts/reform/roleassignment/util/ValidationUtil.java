@@ -150,7 +150,6 @@ public class ValidationUtil {
                 throw new BadRequestException(V1.Error.BAD_REQUEST_INVALID_PARAMETER + " roleName :"
                                                   + requestedRole.getRoleName());
             }
-
             validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, requestedRole.getActorId());
             if (requestedRole.getRoleType().equals(CASE)) {
                 validateId(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
@@ -160,11 +159,16 @@ public class ValidationUtil {
     }
 
     private static void validateBeginAndEndDates(RoleAssignment requestedRole) throws ParseException {
-
         if (requestedRole.getBeginTime() != null) {
+            if (requestedRole.getBeginTime().getYear() == 1970) {
+                throw new BadRequestException(V1.Error.BAD_REQUEST_INVALID_DATETIME + " for beginTime");
+            }
             validateDateTime(requestedRole.getBeginTime().toString());
         }
         if (requestedRole.getEndTime() != null) {
+            if (requestedRole.getEndTime().getYear() == 1970) {
+                throw new BadRequestException(V1.Error.BAD_REQUEST_INVALID_DATETIME + " for endTime");
+            }
             validateDateTime(requestedRole.getEndTime().toString());
         }
         if (requestedRole.getBeginTime() != null && requestedRole.getEndTime() != null) {
