@@ -28,7 +28,6 @@ public class ActorCacheEntity implements Persistable<String> {
 
     @Id
     @Column(name = "actor_id", nullable = false)
-    @GeneratedValue(strategy= GenerationType.TABLE)
     private String actorId;
 
     @Version

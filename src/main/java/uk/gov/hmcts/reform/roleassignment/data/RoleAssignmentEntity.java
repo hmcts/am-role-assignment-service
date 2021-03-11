@@ -31,12 +31,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "role_assignment")
-
 public class RoleAssignmentEntity implements Persistable<UUID> {
 
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private UUID id;
 
     @Column(name = "actor_id_type", nullable = false)

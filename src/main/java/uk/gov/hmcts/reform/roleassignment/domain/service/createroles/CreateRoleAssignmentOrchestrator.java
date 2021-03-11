@@ -58,7 +58,7 @@ public class CreateRoleAssignmentOrchestrator {
         this.persistenceUtil = persistenceUtil;
     }
 
-    @Transactional
+
     public ResponseEntity<RoleAssignmentRequestResource> createRoleAssignment(AssignmentRequest roleAssignmentRequest)
         throws ParseException {
         long startTime = System.currentTimeMillis();

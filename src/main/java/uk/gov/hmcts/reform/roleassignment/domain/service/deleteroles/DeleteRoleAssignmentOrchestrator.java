@@ -62,7 +62,7 @@ public class DeleteRoleAssignmentOrchestrator {
         this.persistenceUtil = persistenceUtil;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public ResponseEntity<Void> deleteRoleAssignmentByProcessAndReference(String process,
                                                                             String reference) {
         long startTime = System.currentTimeMillis();
@@ -83,7 +83,7 @@ public class DeleteRoleAssignmentOrchestrator {
         }
 
         //2. Call persistence service to store only the request
-        persistInitialRequestForDelete();
+      requestEntity = persistInitialRequestForDelete();
 
         //3. retrieve all assignment records based on actorId/process+reference
         requestedRoles = persistenceService.getAssignmentsByProcess(
@@ -93,7 +93,7 @@ public class DeleteRoleAssignmentOrchestrator {
         );
         if (requestedRoles.isEmpty()) {
             requestEntity.setStatus(Status.APPROVED.toString());
-            persistenceService.updateRequest(requestEntity);
+            requestEntity = persistenceService.updateRequest(requestEntity);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             //update the records status from Live to Delete_requested for drool to approve it.
@@ -109,7 +109,7 @@ public class DeleteRoleAssignmentOrchestrator {
         return responseEntity;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public ResponseEntity<Void> deleteRoleAssignmentByAssignmentId(String assignmentId) {
         List<RoleAssignment> requestedRoles;
 
@@ -122,7 +122,7 @@ public class DeleteRoleAssignmentOrchestrator {
         }
 
         //2. Call persistence service to store only the request
-        persistInitialRequestForDelete();
+      requestEntity = persistInitialRequestForDelete();
 
         //3. retrieve all assignment records based on actorId/process+reference
         requestedRoles = persistenceService.getAssignmentById(UUID.fromString(assignmentId));
@@ -166,11 +166,12 @@ public class DeleteRoleAssignmentOrchestrator {
         }
     }
 
-    private void persistInitialRequestForDelete() {
+    private RequestEntity persistInitialRequestForDelete() {
 
         requestEntity = persistenceService.persistRequest(request);
         requestEntity.setHistoryEntities(new HashSet<>());
         request.setId(requestEntity.getId());
+       return  requestEntity;
     }
 
     private void validationByDrool(List<RoleAssignment> requestedRoles) {
@@ -199,7 +200,7 @@ public class DeleteRoleAssignmentOrchestrator {
         }
         persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
         //Persist request to update relationship with history entities
-        persistenceService.updateRequest(requestEntity);
+       requestEntity = persistenceService.updateRequest(requestEntity);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -245,13 +246,15 @@ public class DeleteRoleAssignmentOrchestrator {
         if (!StringUtils.isEmpty(actorId)) {
             for (RoleAssignment requestedRole : validatedAssignmentRequest.getRequestedRoles()) {
                 persistenceService.deleteRoleAssignmentByActorId(requestedRole.getActorId());
+                persistenceService.persistActorCache(requestedRole);
             }
-            persistenceService.persistActorCache(validatedAssignmentRequest.getRequestedRoles());
+           // persistenceService.persistActorCache(validatedAssignmentRequest.getRequestedRoles());
         } else {
             for (RoleAssignment requestedRole : validatedAssignmentRequest.getRequestedRoles()) {
                 persistenceService.deleteRoleAssignment(requestedRole);
+                persistenceService.persistActorCache(requestedRole);
             }
-            persistenceService.persistActorCache(validatedAssignmentRequest.getRequestedRoles());
+            //persistenceService.persistActorCache(validatedAssignmentRequest.getRequestedRoles());
         }
     }
 
@@ -267,7 +270,7 @@ public class DeleteRoleAssignmentOrchestrator {
         }
         persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
         //Persist request to update relationship with history entities
-        persistenceService.updateRequest(requestEntity);
+        requestEntity = persistenceService.updateRequest(requestEntity);
 
     }
 

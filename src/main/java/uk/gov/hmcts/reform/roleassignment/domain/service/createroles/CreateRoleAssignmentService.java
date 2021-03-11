@@ -188,12 +188,12 @@ public class CreateRoleAssignmentService {
     private void insertExistingRecordsAfterDroolValidation(AssignmentRequest existingAssignmentRequest) {
         for (RoleAssignment requestedAssignment : existingAssignmentRequest.getRequestedRoles()) {
             // persist history in db
-            requestEntity.getHistoryEntities().add(persistenceUtil.prepareHistoryEntityForPersistance(
+            requestEntity.getHistoryEntities().add(persistenceService.persistHistory(
                 requestedAssignment,
                 incomingRequest
             ));
         }
-        persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
+       // persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
     }
@@ -210,14 +210,14 @@ public class CreateRoleAssignmentService {
 
         //Save requested role in history table with APPROVED/REJECTED Status
         for (RoleAssignment requestedAssignment : parsedAssignmentRequest.getRequestedRoles()) {
-            requestEntity.getHistoryEntities().add(persistenceUtil.prepareHistoryEntityForPersistance(
+            requestEntity.getHistoryEntities().add(persistenceService.persistHistory(
                 requestedAssignment,
                 parsedAssignmentRequest.getRequest()
             ));
         }
-        persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
+       // persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
         //Persist request to update relationship with history entities
-        persistenceService.updateRequest(requestEntity);
+     requestEntity =  persistenceService.updateRequest(requestEntity);
         logger.info(String.format(
             " >> createNewAssignmentRecords execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
@@ -238,9 +238,11 @@ public class CreateRoleAssignmentService {
             Collectors.toList());
         for (RoleAssignment requestedAssignment : roleAssignments) {
             requestedAssignment.setStatus(Status.LIVE);
+            persistenceService.persistActorCache(requestedAssignment);
+            persistenceService.persistRoleAssignment(requestedAssignment);
         }
-        persistenceService.persistActorCache(roleAssignments);
-        persistenceService.persistRoleAssignments(roleAssignments);
+        //persistenceService.persistActorCache(roleAssignments);
+        //persistenceService.persistRoleAssignments(roleAssignments);
     }
 
 
@@ -262,9 +264,10 @@ public class CreateRoleAssignmentService {
 
         for (RoleAssignment requestedRole : existingAssignments) {
             persistenceService.deleteRoleAssignment(requestedRole);
+            persistenceService.persistActorCache(requestedRole);
 
         }
-        persistenceService.persistActorCache(existingAssignments);
+        //persistenceService.persistActorCache(existingAssignments);
         logger.info(String.format(
             " >> deleteLiveAssignments execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
@@ -297,7 +300,7 @@ public class CreateRoleAssignmentService {
                     requestedAssignment.setLog("Create requested with replace: "
                                                    + assignmentRequest.getRequest().isReplaceExisting());
                 }
-                HistoryEntity entity = persistenceUtil.prepareHistoryEntityForPersistance(
+                HistoryEntity entity = persistenceService.persistHistory(
                     requestedAssignment,
                     assignmentRequest.getRequest()
                 );
@@ -307,9 +310,9 @@ public class CreateRoleAssignmentService {
             }
 
         }
-        persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
+        //persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
         //Persist request to update relationship with history entities
-        persistenceService.updateRequest(requestEntity);
+        requestEntity   = persistenceService.updateRequest(requestEntity);
         logger.info(String.format(
             " >> insertRequestedRole execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
