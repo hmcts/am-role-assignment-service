@@ -23,6 +23,7 @@ public class WelcomeController {
         return "redirect:swagger-ui.html";
     }
 
+
     @GetMapping("/exception/{type}")
     public ResponseEntity<String> getException(@PathVariable String type) {
         switch (type) {
