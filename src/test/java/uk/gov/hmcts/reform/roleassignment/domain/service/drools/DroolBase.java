@@ -24,13 +24,11 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
-import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 public abstract class DroolBase {
 
@@ -118,7 +116,7 @@ public abstract class DroolBase {
 
     RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType,
                                         String attributeKey, String attributeVal, Status status) {
-        return RoleAssignment.builder()
+        RoleAssignment ra = RoleAssignment.builder()
             .id(UUID.randomUUID())
             .actorId(UUID.randomUUID().toString())
             .actorIdType(ActorIdType.IDAM)
@@ -129,8 +127,10 @@ public abstract class DroolBase {
             .classification(Classification.PUBLIC)
             .readOnly(true)
             .status(status)
-            .attributes(Map.of(attributeKey, convertValueJsonNode(attributeVal)))
+            .attributes(new HashMap<String, JsonNode>())
             .build();
+        ra.setAttribute(attributeKey, attributeVal);
+        return ra;
     }
 
     void buildExecuteKieSession() {

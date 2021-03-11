@@ -1,6 +1,6 @@
 {
   "_guid_": "S-087_CreationDataForRoleAssignment",
-  "_extends_": "CreationDataForRoleAssignment",
+  "_extends_": "CreationDataBaseForRoleAssignment",
   "users": {
     "invokingUser": {
       "username": "TEST_AM_USER6_BEFTA@test.local",
@@ -9,14 +9,17 @@
   },
   "request": {
     "body": {
+      "roleRequest": {
+        "reference": "${[scenarioContext][customValues][generateUUID]}",
+        "replaceExisting": true
+      },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
-          "attributes":
-          {
+          "attributes": {
             "caseId": "1607103938250138"
           }
         },
@@ -25,8 +28,7 @@
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleType": "CASE",
           "grantType": "CHALLENGED",
-          "attributes":
-          {
+          "attributes": {
             "caseId": "1607103938250138"
           }
         }
@@ -36,7 +38,21 @@
   "expectedResponse": {
     "body": {
       "roleAssignmentResponse": {
+        "roleRequest": {
+          "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "replaceExisting": true
+        },
         "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "attributes": {
+              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}"
+            }
+          },
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
@@ -45,16 +61,6 @@
             "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
             "attributes": {
               "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
-            }
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][2][roleType]}",
-            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][2][grantType]}",
-            "attributes": {
-              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][2][attributes][caseId]}"
             }
           }
         ]
