@@ -11,6 +11,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -47,5 +48,10 @@ public abstract class Assignment {
 
     public void log(String message) {
         log = (log == null ? "" : log + "\n") + message;
+    }
+
+    public void setAttribute(String key, String value) {
+        JsonNode valueNode = JacksonUtils.convertValueJsonNode(value);
+        attributes.put(key, valueNode);
     }
 }

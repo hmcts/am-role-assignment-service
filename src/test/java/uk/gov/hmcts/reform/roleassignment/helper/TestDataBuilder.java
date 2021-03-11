@@ -95,7 +95,7 @@ public class TestDataBuilder {
             .roleName("senior-tribunal-caseworker")
             .classification(Classification.PRIVATE)
             .grantType(GrantType.STANDARD)
-            .roleCategory(RoleCategory.STAFF)
+            .roleCategory(RoleCategory.LEGAL_OPERATIONS)
             .readOnly(false)
             .beginTime(timeStamp.plusDays(1))
             .created(timeStamp)

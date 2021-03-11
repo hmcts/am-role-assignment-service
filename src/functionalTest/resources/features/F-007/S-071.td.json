@@ -84,7 +84,7 @@
           "name": "tribunal-caseworker",
           "label": "Tribunal Caseworker",
           "description": "Tribunal caseworker",
-          "category": "STAFF",
+          "category": "LEGAL_OPERATIONS",
           "patterns": [
             {
               "roleType": {
@@ -135,8 +135,14 @@
                 "mandatory": true
               },
               "attributes": {
-                "caseId": {
-                  "mandatory": true
+                "jurisdiction" : {
+                  "mandatory" : true
+                },
+                "caseType" : {
+                  "mandatory" : true
+                },
+                "caseId" : {
+                  "mandatory" : true
                 }
               }
             }
@@ -146,7 +152,7 @@
           "name": "senior-tribunal-caseworker",
           "label": "Senior Tribunal Caseworker",
           "description": "Senior Tribunal caseworker",
-          "category": "STAFF",
+          "category": "LEGAL_OPERATIONS",
           "patterns": [
             {
               "roleType": {

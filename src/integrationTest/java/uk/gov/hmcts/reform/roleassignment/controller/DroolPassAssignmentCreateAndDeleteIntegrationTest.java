@@ -193,7 +193,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
         assignmentRequest.getRequest().setStatus(CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.STAFF);
+            roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
             roleAssignment.setGrantType(STANDARD);

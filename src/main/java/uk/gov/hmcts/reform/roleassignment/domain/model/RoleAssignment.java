@@ -6,6 +6,4 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 public class RoleAssignment extends Assignment {
-
-
 }
