@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -22,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 
@@ -116,8 +118,9 @@ public class CreateRoleAssignmentOrchestrator {
                         parsedAssignmentRequest.getRequestedRoles()
                             .addAll(createRoleAssignmentService.needToRetainRoleAssignments);
                     } else if (!createRoleAssignmentService.needToRetainRoleAssignments.isEmpty()) {
-                        parsedAssignmentRequest.setRequestedRoles(createRoleAssignmentService
-                                                                      .needToRetainRoleAssignments);
+                        Set<RoleAssignment> assignments =
+                            new HashSet<>(createRoleAssignmentService.needToRetainRoleAssignments);
+                        parsedAssignmentRequest.setRequestedRoles(assignments);
                     }
                 } catch (InvocationTargetException | IllegalAccessException e) {
                     // Don't throw the exception, as we need to build the response as Http:201
