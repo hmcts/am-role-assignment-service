@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.feignclients.configuration;
 
-import okhttp3.OkHttpClient;
+import com.launchdarkly.shaded.okhttp3.OkHttpClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
