@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import org.jetbrains.annotations.NotNull;
+import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
