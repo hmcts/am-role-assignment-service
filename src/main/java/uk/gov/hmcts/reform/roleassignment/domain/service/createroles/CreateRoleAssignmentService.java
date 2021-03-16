@@ -1,10 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
+import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
