@@ -107,9 +107,11 @@ public class ValidationModelService {
         facts.addAll(assignmentRequest.getRequestedRoles());
         // facts must contain the role config, for access to the patterns
         facts.add(RoleConfig.getRoleConfig());
-        // facts must contain existing role assignments for assigner and authenticatedUser,
-        // and assignee for create requests
-        facts.addAll(getExistingRoleAssignmentsForRequest(assignmentRequest));
+        // add existing role assignments for assigner/authenticatedUser
+        // and assignee to facts if create requests is having replace existing set to true.
+        if (assignmentRequest.getRequest().isReplaceExisting()) {
+            facts.addAll(getExistingRoleAssignmentsForRequest(assignmentRequest));
+        }
 
         // Make the retrieve data service available to rules - this allows data - e.g. case data - to be
         // loaded dynamically when needed by a rule, rather than up-front, when it may never be used.
