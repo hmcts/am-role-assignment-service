@@ -44,7 +44,7 @@ def versions = [
   springBoot     : '2.3.9.RELEASE',
   springHystrix  : '2.1.1.RELEASE',
   swagger2Version: '2.10.5',
-  pact_version   : '3.5.24',
+  pact_version   : '4.1.7',
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
   feign_jackson  : '9.7.0',
@@ -177,39 +177,13 @@ task contract(type: Test) {
   systemProperty 'pact.rootDir', "pacts"
 }
 
-task runAndPublishConsumerPactTests(type: Test, description: 'Publish pact test to broker.', group: 'Verification') {
-  // Nothing to do here
-  testClassesDirs = sourceSets.contractTest.output.classesDirs
-  classpath = sourceSets.contractTest.runtimeClasspath
-}
-
-runAndPublishConsumerPactTests.finalizedBy pactPublish
-
-pact {
-  publish {
-    pactDirectory = 'pacts'
-    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:9292'
-    tags = ['Dev']
-    version = "1.0"
-  }
-}
-
-//Provider PACT tasks
-task contractTest(type: Test) {
-  logger.lifecycle("Runnning contract Tests")
+task runProviderPactVerification(type: Test) {
+  logger.lifecycle("Runs pact Tests")
   useJUnitPlatform()
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
-  exclude "uk/gov/hmcts/reform/roleassignment/*IdamConsumerTest*"
 }
 
-task runProviderPactVerification(type: Test) {
-  logger.lifecycle("Runs pact Tests")
-  testClassesDirs = sourceSets.contractTest.output.classesDirs
-  classpath = sourceSets.contractTest.runtimeClasspath
-}
-
-runProviderPactVerification.dependsOn contractTest
 
 runProviderPactVerification.finalizedBy pactVerify
 
@@ -523,13 +497,9 @@ dependencies {
   testCompile group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
   testCompile group: 'io.github.openfeign', name: 'feign-jackson', version: versions.feign_jackson
 
-  contractTestCompile(group: 'au.com.dius', name:'pact-jvm-consumer-junit5_2.12', version: versions.pact_version) {
-    endorseStrictVersions()
-  }
-
   contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.6.2")
   contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.6.2")
-  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.3.2')
+  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.6.2')
 
   testCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   testCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
@@ -562,9 +532,9 @@ dependencies {
   smokeTestCompileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   smokeTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  contractTestCompile group: 'au.com.dius.pact.provider', name: 'junit5', version: '4.1.14'
-  contractTestCompile group: 'au.com.dius.pact.provider', name: 'spring', version: '4.1.14'
-  contractTestCompile group: 'au.com.dius.pact.provider', name: 'junit5spring', version: '4.1.14'
+  contractTestCompile group: 'au.com.dius.pact.provider', name: 'junit5', version: versions.pact_version
+  contractTestCompile group: 'au.com.dius.pact.provider', name: 'spring', version: versions.pact_version
+  contractTestCompile group: 'au.com.dius.pact.provider', name: 'junit5spring', version: versions.pact_version
 
 
   contractTestCompile sourceSets.main.runtimeClasspath
