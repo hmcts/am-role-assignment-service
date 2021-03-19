@@ -168,6 +168,14 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
   finalizedBy aggregate
 }
 
+project.ext {
+  pacticipantVersion = getCheckedOutGitCommitHash()
+}
+
+def getCheckedOutGitCommitHash() {
+  'git rev-parse --verify --short HEAD'.execute().text.trim()
+}
+
 task contract(type: Test) {
   description = 'Runs the consumer Pact tests'
   useJUnitPlatform()
@@ -182,6 +190,7 @@ task runProviderPactVerification(type: Test) {
   useJUnitPlatform()
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
+  systemProperty 'pact.provider.version', project.pacticipantVersion
 }
 
 
