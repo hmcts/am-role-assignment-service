@@ -1,12 +1,11 @@
 
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 
 @Service
 public class RetrieveDataService {
@@ -22,7 +21,6 @@ public class RetrieveDataService {
         this.dataStoreFeignClient = dataStoreFeignClient;
     }
 
-    @Cacheable(value = "case")
     @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 3))
     public Case getCaseById(String caseId) {
         return dataStoreFeignClient.getCaseDataV2(caseId);

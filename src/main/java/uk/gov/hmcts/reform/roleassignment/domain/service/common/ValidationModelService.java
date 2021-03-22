@@ -109,7 +109,8 @@ public class ValidationModelService {
         facts.add(RoleConfig.getRoleConfig());
         // add existing role assignments for assigner/authenticatedUser
         // and assignee to facts if create requests is having replace existing set to true.
-        if (assignmentRequest.getRequest().isReplaceExisting()) {
+        if (assignmentRequest.getRequest().isReplaceExisting() ||
+            (assignmentRequest.getRequest().getRequestType().equals(RequestType.DELETE))) {
             facts.addAll(getExistingRoleAssignmentsForRequest(assignmentRequest));
         }
 
