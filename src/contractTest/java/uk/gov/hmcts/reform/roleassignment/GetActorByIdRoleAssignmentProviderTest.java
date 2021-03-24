@@ -63,7 +63,7 @@ public class GetActorByIdRoleAssignmentProviderTest {
     private void setInitiMock() throws Exception {
         String actorId = "23486";
         List<RoleAssignment> roleAssignments
-            = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE, actorId, "attributes.json");
+            = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE, actorId, "attributesJudicial.json");
 
         when(persistenceService.getAssignmentsByActor(anyString())).thenReturn(roleAssignments);
         when(persistenceService.getActorCacheEntity(actorId)).thenReturn(ActorCacheEntity.builder().actorId(actorId)
