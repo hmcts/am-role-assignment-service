@@ -60,7 +60,6 @@ public class FeatureToggleService {
             .lastName(USER)
             .custom(SERVICE_NAME, serviceName)
             .build();
-
         return ldClient.boolVariation(flagName, user, false);
     }
 
