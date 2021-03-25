@@ -80,22 +80,4 @@ withNightlyPipeline(type, product, component) {
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
 
-  enableMutationTest()
-  enableSecurityScan()
-  enableFullFunctionalTest()
-
-  before('fullFunctionalTest') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
-  }
-
-  after('build') {
-    stage("integration tests") {
-      sh "./gradlew integration"
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
-    }
-  }
-
-  after('fullFunctionalTest') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/cucumber/**/*'
-  }
 }
