@@ -94,8 +94,8 @@ public class CreateRoleAssignmentProviderTest {
         return RequestEntity.builder()
             .correlationId("123")
             .id(UUID.fromString("c3552563-80e1-49a1-9dc9-b2625e7c44dc"))
-            .authenticatedUserId("123")
-            .clientId("123")
+            .authenticatedUserId("3168da13-00b3-41e3-81fa-cbc71ac28a0f")
+            .clientId("am_org_role_mapping_service")
             .created(LocalDateTime.now())
             .build();
 
