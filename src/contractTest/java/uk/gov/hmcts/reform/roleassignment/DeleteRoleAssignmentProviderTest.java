@@ -34,7 +34,7 @@ import java.util.UUID;
 @ExtendWith(SpringExtension.class)
 @Provider("am_roleAssignment_deleteAssignment")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
-    host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:80}", consumerVersionSelectors = {
+    host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
     @VersionSelector(tag = "master")})
 @Import(RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify

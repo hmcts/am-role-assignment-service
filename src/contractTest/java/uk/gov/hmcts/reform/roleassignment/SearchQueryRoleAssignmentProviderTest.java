@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @Provider("am_roleAssignment_queryAssignment")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
-    host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:80}", consumerVersionSelectors = {
+    host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
     @VersionSelector(tag = "master")})
 @Import(RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
@@ -54,7 +54,6 @@ public class SearchQueryRoleAssignmentProviderTest {
     @BeforeEach
   void before(PactVerificationContext context) {
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
-        System.getProperties().setProperty("pact.verifier.publishResults", "true");
         testTarget.setControllers(new QueryAssignmentController(
             queryRoleAssignmentOrchestrator
         ));
@@ -91,8 +90,8 @@ public class SearchQueryRoleAssignmentProviderTest {
     private void setInitiMock(boolean hasMultipleAssignments) throws Exception {
         String actorId = "234873";
         List<Assignment> roleAssignments = (hasMultipleAssignments == true)
-            ? TestDataBuilder.buildMultiAssignmentList(Status.LIVE, actorId,"attributesSearchQuery.json")
-            : TestDataBuilder.buildAssignmentList(Status.LIVE, actorId, "attributesSearchQuery.json");
+            ? TestDataBuilder.buildMultiAssignmentList(Status.LIVE, actorId, "attributesJurPri.json")
+            : TestDataBuilder.buildAssignmentList(Status.LIVE, actorId, "attributesJurPri.json");
 
         when(persistenceService.retrieveRoleAssignmentsByQueryRequest(any(),any(),any(),any(),any(),anyBoolean()))
             .thenReturn(roleAssignments);
