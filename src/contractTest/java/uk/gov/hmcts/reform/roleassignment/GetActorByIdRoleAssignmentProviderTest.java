@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @Provider("am_roleAssignment_getAssignment")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
-    host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:80}", consumerVersionSelectors = {
+    host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
     @VersionSelector(tag = "master")})
 @Import(RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
@@ -70,7 +70,7 @@ public class GetActorByIdRoleAssignmentProviderTest {
     private void setInitiMock() throws Exception {
         String actorId = "23486";
         List<RoleAssignment> roleAssignments
-            = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE, actorId, "attributes.json");
+            = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE, actorId, "attributesJurPri.json");
 
         when(persistenceService.getAssignmentsByActor(anyString())).thenReturn(roleAssignments);
         when(persistenceService.getActorCacheEntity(actorId)).thenReturn(ActorCacheEntity.builder().actorId(actorId)

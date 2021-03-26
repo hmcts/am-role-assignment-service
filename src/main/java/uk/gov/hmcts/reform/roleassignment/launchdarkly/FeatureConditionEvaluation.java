@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
+import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
 import lombok.AllArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;

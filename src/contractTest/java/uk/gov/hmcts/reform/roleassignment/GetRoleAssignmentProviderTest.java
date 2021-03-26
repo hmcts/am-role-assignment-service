@@ -19,9 +19,9 @@ import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentCont
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 
 @ExtendWith(SpringExtension.class)
-@Provider("am_role_assignment_service_roles")
+@Provider("am_roleAssignment_getRoles")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
-    host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:80}", consumerVersionSelectors = {
+    host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
     @VersionSelector(tag = "master")})
 @Import(RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
