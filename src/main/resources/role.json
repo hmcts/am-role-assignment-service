@@ -148,5 +148,63 @@
 
       }
     ]
+  },
+  {
+    "name": "salaried-judge",
+    "label": "Judge - Sample role (Only for Testing)",
+    "description": "Judicial office holder able to do judicial case work",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "attributes": {
+          "region": {
+            "mandatory": true,
+            "values": ["north-east","south-east"]
+          },
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["divorce","IA"]
+          }
+        }
+
+      },
+      {
+
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC","CHALLENGED"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "beginTime": {
+          "mandatory": true
+        },
+        "attributes": {
+          "caseId": {
+            "mandatory": true
+          }
+        }
+
+      }
+    ]
   }
 ]
