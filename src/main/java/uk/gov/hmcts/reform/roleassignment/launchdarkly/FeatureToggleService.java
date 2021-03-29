@@ -48,6 +48,8 @@ public class FeatureToggleService {
         deleteRequestMap.put(AM_ROLE_ASSIGNMENTS, "delete-role-assignments");
     }
 
+
+
     @Autowired
     public FeatureToggleService(LDClient ldClient, @Value("${launchdarkly.sdk.user}") String userName) {
         this.ldClient = ldClient;
@@ -59,6 +61,15 @@ public class FeatureToggleService {
             .firstName(userName)
             .lastName(USER)
             .custom(SERVICE_NAME, serviceName)
+            .build();
+
+        return ldClient.boolVariation(flagName, user, false);
+    }
+    public boolean isFlagEnabled(String flagName) {
+        LDUser user = new LDUser.Builder(environment)
+            .firstName(userName)
+            .lastName(USER)
+            .custom(SERVICE_NAME, "am_role_assignment_service")
             .build();
 
         return ldClient.boolVariation(flagName, user, false);

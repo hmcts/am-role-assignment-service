@@ -1,6 +1,6 @@
 [
   {
-    "name": "judge",
+    "name": "salaried-judge",
     "label": "Judge - Sample role (Only for Testing)",
     "description": "Judicial office holder able to do judicial case work",
     "category": "JUDICIAL",

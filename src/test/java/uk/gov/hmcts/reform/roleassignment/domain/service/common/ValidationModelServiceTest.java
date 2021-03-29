@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ class ValidationModelServiceTest {
 
 
     RetrieveDataService retrieveDataServiceMock = mock(RetrieveDataService.class);
+    FeatureToggleService featureToggleService = mock(FeatureToggleService.class);
 
 
     AssignmentRequest assignmentRequest;
@@ -49,8 +51,8 @@ class ValidationModelServiceTest {
     ValidationModelService sut = new ValidationModelService(
         kieSessionMock,
         retrieveDataServiceMock,
-        persistenceService
-    );
+        persistenceService,
+            featureToggleService);
 
     @BeforeEach
     void setUp() {
