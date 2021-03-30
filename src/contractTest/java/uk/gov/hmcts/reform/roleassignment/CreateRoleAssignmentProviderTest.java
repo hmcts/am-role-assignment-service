@@ -54,6 +54,7 @@ public class CreateRoleAssignmentProviderTest {
     void beforeCreate(PactVerificationContext context) {
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
         System.getProperties().setProperty("pact.verifier.publishResults", "true");
+        System.getProperties().setProperty("org.request.byPassOrgDroolRule", "true");
         testTarget.setControllers(new CreateAssignmentController(
             createRoleAssignmentOrchestrator
         ));
