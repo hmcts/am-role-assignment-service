@@ -151,12 +151,11 @@
   },
   {
     "name": "salaried-judge",
-    "label": "Judge - Sample role (Only for Testing)",
+    "label": "salaried-judge",
     "description": "Judicial office holder able to do judicial case work",
     "category": "JUDICIAL",
     "patterns": [
       {
-
         "roleType": {
           "mandatory": true,
           "values": ["ORGANISATION"]
@@ -169,14 +168,25 @@
           "mandatory": true,
           "values": ["PUBLIC","PRIVATE"]
         },
+        "beginTime": {
+          "mandatory": true
+        },
+        "endTime": {
+          "mandatory": true
+        },
         "attributes": {
-          "region": {
-            "mandatory": true,
-            "values": ["north-east","south-east"]
-          },
           "jurisdiction": {
             "mandatory": true,
-            "values": ["divorce","IA"]
+            "values": ["IA"]
+          },
+          "region": {
+            "mandatory": true
+          },
+          "baseLocation": {
+            "mandatory": true
+          },
+          "contractType": {
+            "mandatory": true
           }
         }
 
@@ -189,16 +199,21 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC","CHALLENGED"]
+          "values": ["SPECIFIC"]
+        },
+         "beginTime": {
+          "mandatory": true
         },
         "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "beginTime": {
           "mandatory": true
         },
         "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
           "caseId": {
             "mandatory": true
           }
