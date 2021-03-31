@@ -55,4 +55,12 @@ then
 	System.err.println("We have a pattern for " + $p.getRoleName() + " : " + $p);
 end;
 
+rule "feature_flag"
+salience 1000
+when
+	$f: LDFeatureFlag()
+then
+	System.err.println("We have a Feature flag for " + $f.getFlagName() + " : " + $f);
+end;
+
 

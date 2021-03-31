@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 public enum FeatureFlagEnum {
-    getListOfRoles("get-list-of-roles"), createRoleAssignment("create-role-assignments");
+    getLDFlag("get-ld-flag"),getIACFlag("ras_drool_iac_flag_1_0");
 
     private final String value;
 
@@ -13,4 +13,7 @@ public enum FeatureFlagEnum {
     public String getValue() {
         return value;
     }
+
+
+
 }

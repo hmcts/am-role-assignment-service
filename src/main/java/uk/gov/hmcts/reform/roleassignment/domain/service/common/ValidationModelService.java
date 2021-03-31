@@ -11,11 +11,13 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.LDFeatureFlag;
+import uk.gov.hmcts.reform.roleassignment.util.LDEventListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -117,10 +119,12 @@ public class ValidationModelService {
         List<LDFeatureFlag> featureFlags = new ArrayList<>();
 
         // building the LDFeature Flag
-        for (FeatureFlagEnum flag : FeatureFlagEnum.values()) {
+       Map<String,Boolean> droolFlagStates = LDEventListener.getDroolFlagStates();
+
+        for (String flag : droolFlagStates.keySet()) {
             LDFeatureFlag  featureFlag   =  LDFeatureFlag.builder()
-                .flagName(flag.getValue())
-                .status(featureToggleService.isFlagEnabled(flag.getValue()))
+                .flagName(flag)
+                .status(droolFlagStates.get(flag))
                  .build();
             featureFlags.add(featureFlag);
         }

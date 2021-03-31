@@ -4,7 +4,9 @@ import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.LDClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.roleassignment.util.LDEventListener;
 
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -42,7 +44,8 @@ public class FeatureFlagListener {
                                   user.getKey(), event.getOldValue(), event.getNewValue()
                 );
                 if(event.getNewValue() != event.getOldValue()){
-                    System.out.println("Value inserted into db");
+               Map<String,Boolean> droolFlagStates  =  LDEventListener.getDroolFlagStates();
+               droolFlagStates.put(event.getKey(),event.getNewValue().booleanValue());
                 }
             });
         }
