@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +38,9 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 class RetrieveRoleAssignmentOrchestratorTest {
+
+    @Mock
+    private FeatureToggleService featureConditionEvaluator;
 
     @Mock
     private PersistenceService persistenceService = mock(PersistenceService.class);
@@ -125,6 +129,15 @@ class RetrieveRoleAssignmentOrchestratorTest {
 
     @Test
     void getListOfRoles() throws IOException {
+        when(featureConditionEvaluator.isFlagEnabled(any(),any())).thenReturn(true);
+        JsonNode roles = sut.getListOfRoles();
+        assertNotNull(roles);
+        assertEquals(4, roles.size());
+    }
+
+    @Test
+    void getListOfRoles_Flag_False() throws IOException {
+        when(featureConditionEvaluator.isFlagEnabled(any(),any())).thenReturn(false);
         JsonNode roles = sut.getListOfRoles();
         assertNotNull(roles);
         assertEquals(3, roles.size());
