@@ -37,8 +37,6 @@ class ValidationModelServiceTest {
 
 
     RetrieveDataService retrieveDataServiceMock = mock(RetrieveDataService.class);
-    FeatureToggleService featureToggleService = mock(FeatureToggleService.class);
-
 
     AssignmentRequest assignmentRequest;
 
@@ -51,8 +49,7 @@ class ValidationModelServiceTest {
     ValidationModelService sut = new ValidationModelService(
         kieSessionMock,
         retrieveDataServiceMock,
-        persistenceService,
-            featureToggleService);
+        persistenceService);
 
     @BeforeEach
     void setUp() {

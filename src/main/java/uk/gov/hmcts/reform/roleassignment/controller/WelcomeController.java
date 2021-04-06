@@ -12,12 +12,6 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidReq
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagListener;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
-
-import java.util.concurrent.ExecutionException;
-
-import static uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService.SERVICE_NAME;
 
 @RestController
 public class WelcomeController {
@@ -25,20 +19,9 @@ public class WelcomeController {
     @Autowired
     PersistenceService persistenceService;
 
-    @Autowired
-    FeatureToggleService featureToggleService;
-
-    @Autowired
-    FeatureFlagListener featureFlagListner;
-
-
     @GetMapping(value = "/swagger")
     public String index() {
         return "redirect:swagger-ui.html";
-    }
-
-    static{
-
     }
 
 
@@ -61,27 +44,12 @@ public class WelcomeController {
 
     @GetMapping(value = "/welcome")
     public String welcome() {
-
-        boolean flagStatus = featureToggleService.isFlagEnabled("get-list-of-roles");
-        LDUser user = new LDUser.Builder("pr")
-            .firstName("sdsd")
-            .lastName("sdsd")
-            .custom(SERVICE_NAME, "am_role_assignment_service")
-            .build();
-        featureFlagListner.logWheneverOneFlagChangesForOneUser("get-list-of-roles",user);
-        featureFlagListner.logWheneverOneFlagChangesForOneUser("get-ld-flag",user);
-
-        if(flagStatus) {
-            return "welcome to role assignment service";
-        }else{
-            return "flag is disabled the feature";
-        }
+        return "welcome to role assignment service";
     }
 
     @GetMapping("/db/releaselock")
     public ResponseEntity<DatabaseChangelogLockEntity> dbReleaseLock() {
         DatabaseChangelogLockEntity entity = persistenceService.releaseDatabaseLock(1);
-
         return ResponseEntity.ok(entity);
     }
 }

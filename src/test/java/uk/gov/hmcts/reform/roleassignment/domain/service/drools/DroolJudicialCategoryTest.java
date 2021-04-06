@@ -8,6 +8,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagEnum;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.LDFeatureFlag;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -36,6 +38,11 @@ class DroolJudicialCategoryTest extends DroolBase {
 
             roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
         });
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.getJudicialFlag.getValue())
+            .status(true).build();
+        ldFeatureFlags.add(ldFeatureFlag);
 
         //Execute Kie session
         buildExecuteKieSession();
@@ -78,6 +85,7 @@ class DroolJudicialCategoryTest extends DroolBase {
     void shouldApprovedRequestedRoleForOrg() {
 
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
@@ -88,6 +96,9 @@ class DroolJudicialCategoryTest extends DroolBase {
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
         });
 
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.getJudicialFlag.getValue())
+            .status(true).build();
+        ldFeatureFlags.add(ldFeatureFlag);
         //Execute Kie session
         buildExecuteKieSession();
 

@@ -5,11 +5,15 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import  uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagEnum;
+import  uk.gov.hmcts.reform.roleassignment.launchdarkly.LDFeatureFlag;
 
 
 rule "judicial_organisational_role_mapping_service_create"
 when
-   $rq: Request() //clientId == "am_org_role_mapping_service")
+
+   $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.getJudicialFlag.getValue())
+   $rq: Request(byPassOrgDroolRule || clientId == "am_org_role_mapping_service")
 
    $ra: RoleAssignment(
                 status == Status.CREATE_REQUESTED,
@@ -26,7 +30,8 @@ end;
 
 rule "judicial_organisational_role_mapping_service_delete"
 when
-    $rq: Request( ) //clientId == "am_org_role_mapping_service")
+      $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.getJudicialFlag.getValue())
+      $rq: Request(byPassOrgDroolRule || clientId == "am_org_role_mapping_service")
 
     $ra: RoleAssignment(
                  status == Status.DELETE_REQUESTED,

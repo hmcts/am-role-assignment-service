@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.LDFeatureFlag;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public abstract class DroolBase {
 
     StatelessKieSession kieSession;
     AssignmentRequest assignmentRequest;
+    List<LDFeatureFlag> ldFeatureFlags;
     List<Object> facts;
 
     @Mock
@@ -44,6 +46,9 @@ public abstract class DroolBase {
 
         //list of facts
         facts = new ArrayList<>();
+
+        //Create instance of feature flag
+        ldFeatureFlags = new ArrayList<>();
 
         //build assignmentRequest
         assignmentRequest = getAssignmentRequest()
@@ -138,6 +143,9 @@ public abstract class DroolBase {
         facts.add(assignmentRequest.getRequest());
         // facts must contain all affected role assignments
         facts.addAll(assignmentRequest.getRequestedRoles());
+
+        // add the list of all feature flags
+        facts.addAll(ldFeatureFlags);
         // Run the rules
         kieSession.execute(facts);
     }

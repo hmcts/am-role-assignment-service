@@ -8,8 +8,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagEnum;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.LDFeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.util.LDEventListener;
 
@@ -27,19 +25,18 @@ public class ValidationModelService {
     private StatelessKieSession kieSession;
     private RetrieveDataService retrieveDataService;
     private PersistenceService persistenceService;
-    private FeatureToggleService featureToggleService;
+
 
 
     public ValidationModelService(StatelessKieSession kieSession,
                                   RetrieveDataService retrieveDataService,
-                                  PersistenceService persistenceService, FeatureToggleService featureToggleService) {
+                                  PersistenceService persistenceService) {
         this.kieSession = kieSession;
 
         this.retrieveDataService = retrieveDataService;
 
         this.persistenceService = persistenceService;
 
-        this.featureToggleService = featureToggleService;
     }
 
     public void validateRequest(AssignmentRequest assignmentRequest) {
@@ -136,8 +133,6 @@ public class ValidationModelService {
         // Make the retrieve data service available to rules - this allows data - e.g. case data - to be
         // loaded dynamically when needed by a rule, rather than up-front, when it may never be used.
         kieSession.setGlobal("DATA_SERVICE", retrieveDataService);
-
-
 
         // Run the rules
         kieSession.execute(facts);

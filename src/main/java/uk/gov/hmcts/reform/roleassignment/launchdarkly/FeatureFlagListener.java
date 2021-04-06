@@ -26,18 +26,9 @@ public class FeatureFlagListener {
     }
 
 
-    public void logWheneverAnyFlagChanges() {
-        ldClient.getFlagTracker().addFlagChangeListener(event -> {
-            System.out.printf("Flag \"%s\" has changed\n", event.getKey());
-        });
-    }
-
-
-
 
 
    public void logWheneverOneFlagChangesForOneUser( String flagKey, LDUser user) {
-        System.out.println("Inside method");
         if(ldClient !=null) {
             ldClient.getFlagTracker().addFlagValueChangeListener(flagKey, user, event -> {
                 System.out.printf("Flag \"%s\" for user \"%s\" has changed from %s to %s\n", event.getKey(),

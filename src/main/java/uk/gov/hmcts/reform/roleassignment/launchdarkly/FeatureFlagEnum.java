@@ -1,7 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 public enum FeatureFlagEnum {
-    getLDFlag("get-ld-flag"),getIACFlag("ras_drool_iac_flag_1_0");
+    getLDFlag("get-ld-flag"),getIACFlag("ras_drool_iac_flag_1_0"),
+    getJudicialFlag("ras_drool_judicial_flag_1_0");
 
     private final String value;
 
