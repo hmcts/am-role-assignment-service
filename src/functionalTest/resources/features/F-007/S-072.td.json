@@ -1,6 +1,6 @@
 {
   "title": "must successfully receive static list of roles",
-  "_guid_": "S-071",
+  "_guid_": "S-072",
   "_extends_": "F-007_Test_Data_Base",
   "expectedResponse": {
     "_extends_": "Common_200_Response",
@@ -182,6 +182,89 @@
                   ]
                 },
                 "primaryLocation": {
+                  "mandatory": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "salaried-judge",
+          "label": "salaried-judge",
+          "description": "Judicial office holder able to do judicial case work",
+          "category": "JUDICIAL",
+          "patterns": [
+            {
+              "roleType": {
+                "mandatory": true,
+                "values": [
+                  "ORGANISATION"
+                ]
+              },
+              "grantType": {
+                "mandatory": true,
+                "values": [
+                  "STANDARD"
+                ]
+              },
+              "classification": {
+                "mandatory": true,
+                "values": [
+                  "PUBLIC",
+                  "PRIVATE"
+                ]
+              },
+              "beginTime": {
+                "mandatory": true
+              },
+              "endTime": {
+                "mandatory": true
+              },
+              "attributes": {
+                "jurisdiction": {
+                  "mandatory": true,
+                  "values": [
+                    "IA"
+                  ]
+                },
+                "region": {
+                  "mandatory": true
+                },
+                "baseLocation": {
+                  "mandatory": true
+                },
+                "contractType": {
+                  "mandatory": true
+                }
+              }
+            },
+            {
+              "roleType": {
+                "mandatory": true,
+                "values": [
+                  "CASE"
+                ]
+              },
+              "grantType": {
+                "mandatory": true,
+                "values": [
+                  "SPECIFIC"
+                ]
+              },
+              "beginTime": {
+                "mandatory": true
+              },
+              "classification": {
+                "mandatory": true
+              },
+              "attributes": {
+                "jurisdiction": {
+                  "mandatory": true
+                },
+                "caseType": {
+                  "mandatory": true
+                },
+                "caseId": {
                   "mandatory": true
                 }
               }
