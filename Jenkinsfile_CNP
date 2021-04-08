@@ -10,7 +10,7 @@ properties(
 )
 
 @Library("Infrastructure")
-import java.lang.Object
+import uk.gov.hmcts.contino.AppPipelineDsl
 
 def type = "java"
 def product = "am"
@@ -121,4 +121,14 @@ withPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/site/serenity/**'
   }
 
+  onMaster(){
+      enablePactAs([
+              AppPipelineDsl.PactRoles.PROVIDER
+      ])
+  }
+    onPR(){
+        enablePactAs([
+                AppPipelineDsl.PactRoles.PROVIDER
+        ])
+    }
 }

@@ -2,9 +2,11 @@ package uk.gov.hmcts.reform.roleassignment;
 
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
+import au.com.dius.pact.provider.junitsupport.IgnoreNoPactsToVerify;
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
+import au.com.dius.pact.provider.junitsupport.loader.VersionSelector;
 import au.com.dius.pact.provider.spring.junit5.MockMvcTestTarget;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
@@ -27,10 +29,12 @@ import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@Provider("am_role_assignment_service_search_query")
-@PactBroker(scheme = "${PACT_BROKER_SCHEME:http}", host = "${PACT_BROKER_URL:localhost}",
-    port = "${PACT_BROKER_PORT:9292}")
+@Provider("am_roleAssignment_queryAssignment")
+@PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
+    host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
+    @VersionSelector(tag = "master")})
 @Import(RoleAssignmentProviderTestConfiguration.class)
+@IgnoreNoPactsToVerify
 public class SearchQueryRoleAssignmentProviderTest {
 
     @Autowired
@@ -42,17 +46,20 @@ public class SearchQueryRoleAssignmentProviderTest {
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider.class)
   void pactVerificationTestTemplate(PactVerificationContext context) {
-        context.verifyInteraction();
+        if (context != null) {
+            context.verifyInteraction();
+        }
     }
 
     @BeforeEach
   void before(PactVerificationContext context) {
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
-        System.getProperties().setProperty("pact.verifier.publishResults", "true");
         testTarget.setControllers(new QueryAssignmentController(
             queryRoleAssignmentOrchestrator
         ));
-        context.setTarget(testTarget);
+        if (context != null) {
+            context.setTarget(testTarget);
+        }
     }
 
     @State({"A list of role assignments for the search query"})
@@ -83,8 +90,8 @@ public class SearchQueryRoleAssignmentProviderTest {
     private void setInitiMock(boolean hasMultipleAssignments) throws Exception {
         String actorId = "234873";
         List<Assignment> roleAssignments = (hasMultipleAssignments == true)
-            ? TestDataBuilder.buildMultiAssignmentList(Status.LIVE, actorId,"attributesSearchQuery.json")
-            : TestDataBuilder.buildAssignmentList(Status.LIVE, actorId, "attributesSearchQuery.json");
+            ? TestDataBuilder.buildMultiAssignmentList(Status.LIVE, actorId, "attributes_orm_orgrole.json")
+            : TestDataBuilder.buildAssignmentList(Status.LIVE, actorId, "attributes_orm_orgrole.json");
 
         when(persistenceService.retrieveRoleAssignmentsByQueryRequest(any(),any(),any(),any(),any(),anyBoolean()))
             .thenReturn(roleAssignments);
