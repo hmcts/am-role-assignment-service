@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,6 +24,9 @@ import uk.gov.hmcts.reform.roleassignment.annotations.FeatureFlagToggle;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -32,6 +36,8 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,6 +56,9 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     @Rule
     public FeatureFlagToggleEvaluator featureFlagToggleEvaluator = new FeatureFlagToggleEvaluator();
     private JdbcTemplate template;
+
+    @MockBean
+    private FeatureToggleService featureConditionEvaluator;
 
     @Inject
     private WebApplicationContext wac;
@@ -189,8 +198,11 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     }
 
     @Test
-    public void shouldGetListOfRoles() throws Exception {
+    public void shouldGetListOfRolesOrmJrdFlagEnabled() throws Exception {
         final String url = "/am/role-assignments/roles";
+
+        doReturn(true).when(featureConditionEvaluator)
+            .isFlagEnabled(Constants.ORM_SERVICE_NAME, Constants.ORM_JRD_ORG_ROLE_FLAG);
 
         final MvcResult result = mockMvc.perform(get(url)
                                                      .contentType(MediaType.APPLICATION_JSON)
@@ -200,23 +212,58 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             .andReturn();
         String response = result.getResponse().getContentAsString();
 
-        JsonNode jsonResonse = mapper.readValue(response, JsonNode.class);
+        JsonNode jsonResponse = mapper.readValue(response, JsonNode.class);
         assertEquals(200, result.getResponse().getStatus());
         assertEquals(
-            2,
-            jsonResonse.size()
+            4,
+            jsonResponse.size()
         );
         assertEquals(
-            "judge",
-            jsonResonse.get(0).get("name").asText()
+            "salaried-judge",
+            jsonResponse.get(3).get("name").asText()
         );
         assertEquals(
             "Judicial office holder able to do judicial case work",
-            jsonResonse.get(0).get("description").asText()
+            jsonResponse.get(3).get("description").asText()
         );
         assertEquals(
             "JUDICIAL",
-            jsonResonse.get(0).get("category").asText()
+            jsonResponse.get(3).get("category").asText()
+        );
+    }
+
+    @Test
+    public void shouldGetListOfRolesOrmJrdFlagDisabled() throws Exception {
+        final String url = "/am/role-assignments/roles";
+
+        doReturn(false).when(featureConditionEvaluator)
+            .isFlagEnabled(Constants.ORM_SERVICE_NAME, Constants.ORM_JRD_ORG_ROLE_FLAG);
+
+        final MvcResult result = mockMvc.perform(get(url)
+                                                     .contentType(MediaType.APPLICATION_JSON)
+                                                     .headers(getHttpHeaders())
+        )
+            .andExpect(status().is(200))
+            .andReturn();
+        String response = result.getResponse().getContentAsString();
+
+        JsonNode jsonResponse = mapper.readValue(response, JsonNode.class);
+        assertEquals(200, result.getResponse().getStatus());
+        assertEquals(
+            3,
+            jsonResponse.size()
+        );
+        assertEquals(
+            "judge",
+            jsonResponse.get(0).get("name").asText()
+        );
+        assertEquals(
+            "Judicial office holder able to do judicial case work",
+            jsonResponse.get(0).get("description").asText()
+        );
+        assertEquals(
+            "JUDICIAL",
+            jsonResponse.get(0).get("category").asText()
         );
     }
 
