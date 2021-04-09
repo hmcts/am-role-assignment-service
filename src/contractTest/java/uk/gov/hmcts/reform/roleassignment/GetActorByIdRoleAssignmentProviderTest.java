@@ -2,9 +2,11 @@ package uk.gov.hmcts.reform.roleassignment;
 
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
+import au.com.dius.pact.provider.junitsupport.IgnoreNoPactsToVerify;
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
+import au.com.dius.pact.provider.junitsupport.loader.VersionSelector;
 import au.com.dius.pact.provider.spring.junit5.MockMvcTestTarget;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
@@ -20,16 +22,18 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceServi
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
-
 @ExtendWith(SpringExtension.class)
-@Provider("am_role_assignment_service_get_actor_by_id")
-@PactBroker(scheme = "${PACT_BROKER_SCHEME:http}", host = "${PACT_BROKER_URL:localhost}",
-    port = "${PACT_BROKER_PORT:9292}")
+@Provider("am_roleAssignment_getAssignment")
+@PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
+    host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
+    @VersionSelector(tag = "master")})
 @Import(RoleAssignmentProviderTestConfiguration.class)
+@IgnoreNoPactsToVerify
 public class GetActorByIdRoleAssignmentProviderTest {
 
     @Autowired
@@ -41,17 +45,20 @@ public class GetActorByIdRoleAssignmentProviderTest {
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider.class)
     void pactVerificationTestTemplate(PactVerificationContext context) {
-        context.verifyInteraction();
+        if (context != null) {
+            context.verifyInteraction();
+        }
     }
 
     @BeforeEach
     void before(PactVerificationContext context) {
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
-        System.getProperties().setProperty("pact.verifier.publishResults", "true");
         testTarget.setControllers(new GetAssignmentController(
             retrieveRoleAssignmentServiceMock
         ));
-        context.setTarget(testTarget);
+        if (context != null) {
+            context.setTarget(testTarget);
+        }
 
     }
 
@@ -63,10 +70,10 @@ public class GetActorByIdRoleAssignmentProviderTest {
     private void setInitiMock() throws Exception {
         String actorId = "23486";
         List<RoleAssignment> roleAssignments
-            = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE, actorId, "attributes.json");
+            = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE, actorId, "attributes_orm_orgrole.json");
 
         when(persistenceService.getAssignmentsByActor(anyString())).thenReturn(roleAssignments);
         when(persistenceService.getActorCacheEntity(actorId)).thenReturn(ActorCacheEntity.builder().actorId(actorId)
-                                                                             .etag(1L).build());
+            .etag(1L).build());
     }
 }
