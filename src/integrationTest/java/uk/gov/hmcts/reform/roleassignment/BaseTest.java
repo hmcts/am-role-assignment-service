@@ -1,7 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import org.junit.BeforeClass;
@@ -31,7 +34,13 @@ import java.util.Properties;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class BaseTest {
 
-    protected static final ObjectMapper mapper = new ObjectMapper();
+    //protected static final ObjectMapper mapper = new ObjectMapper();
+
+    public static final ObjectMapper mapper = new ObjectMapper()
+        .registerModule(new JavaTimeModule()).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        .configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true)
+        .configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
+        .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
 
     @MockBean
     IdamServiceHealthIndicator idamServiceHealthIndicator;

@@ -1,8 +1,8 @@
 DELETE FROM role_assignment;
 
 INSERT INTO public.role_assignment
-(id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-VALUES('638e8e7a-7d7c-4027-9d53-ea4b1095eab1', 'IDAM', '123e4567-e89b-42d3-a456-556642445613', 'ORGANISATION', 'salaried-judge', 'PUBLIC', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', '2022-01-01 11:00:00.000', '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
+(id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created,authorisations)
+VALUES('638e8e7a-7d7c-4027-9d53-ea4b1095eab1', 'IDAM', '123e4567-e89b-42d3-a456-556642445613', 'ORGANISATION', 'salaried-judge', 'PUBLIC', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', '2022-01-01 11:00:00.000', '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546',ARRAY['dev']);
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
