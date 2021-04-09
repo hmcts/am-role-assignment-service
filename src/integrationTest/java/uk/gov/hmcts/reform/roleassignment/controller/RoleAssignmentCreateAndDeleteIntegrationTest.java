@@ -29,13 +29,17 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
+import uk.gov.hmcts.reform.roleassignment.util.LDEventListener;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -94,6 +98,10 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @MockBean
     private FeatureConditionEvaluation featureConditionEvaluation;
 
+    @Inject
+    private LDEventListener ldEventListener;
+
+
     @Before
     public void setUp() throws Exception {
         template = new JdbcTemplate(ds);
@@ -108,7 +116,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         doReturn(roles).when(idamRoleService).getUserRoles(anyString());
         doReturn(authentication).when(securityContext).getAuthentication();
         SecurityContextHolder.setContext(securityContext);
-        doReturn(true).when(featureConditionEvaluation).preHandle(any(),any(),any());
+        doReturn(true).when(featureConditionEvaluation).preHandle(any(), any(), any());
         MockUtils.setSecurityAuthorities(authentication, MockUtils.ROLE_CASEWORKER);
         UserInfo userInfo = UserInfo.builder()
             .uid("6b36bfc6-bb21-11ea-b3de-0242ac130006")
@@ -119,6 +127,18 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             "userInfo", userInfo
 
         );
+        final Map<String, Boolean> droolFlagStates = new HashMap<>();
+        for (FeatureFlagEnum flag : FeatureFlagEnum.values()) {
+
+            droolFlagStates.put(flag.getValue(), true);
+
+
+        }
+        ReflectionTestUtils.setField(
+            ldEventListener,
+            "droolFlagStates", droolFlagStates
+
+        );
         Case retrievedCase = Case.builder().id("1234")
             .caseTypeId("Asylum")
             .jurisdiction("IA")
@@ -126,11 +146,13 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         doReturn(retrievedCase).when(retrieveDataService).getCaseById(anyString());
     }
 
+
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
         {"classpath:sql/role_assignment_clean_up.sql"
 
-            })
+        })
+
     public void shouldCreateRoleAssignmentsWithReplaceExistingTrue() throws Exception {
         logger.info(" History record count before create assignment request {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count before create assignment request {}", getAssignmentRecordsCount());

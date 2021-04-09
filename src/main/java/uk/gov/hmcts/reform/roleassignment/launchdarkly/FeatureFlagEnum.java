@@ -6,7 +6,7 @@ public enum FeatureFlagEnum {
 
     private final String value;
 
-    FeatureFlagEnum( String value) {
+    FeatureFlagEnum(String value) {
         this.value = value;
     }
 

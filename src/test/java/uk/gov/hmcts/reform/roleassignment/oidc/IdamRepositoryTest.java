@@ -48,6 +48,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 class IdamRepositoryTest {
 
+
     @Mock
     private IdamApi idamApi = mock(IdamApi.class);
 

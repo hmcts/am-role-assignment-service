@@ -63,6 +63,7 @@ public class FeatureToggleService {
 
         return ldClient.boolVariation(flagName, user, false);
     }
+
     public boolean isFlagEnabled(String flagName) {
         LDUser user = new LDUser.Builder(environment)
             .firstName(userName)

@@ -1,5 +1,7 @@
 {
   "region": "north-east",
   "contractType": "SALARIED",
-  "caseId": "1234567890123456"
+  "caseId": "1234567890123456",
+  "jurisdiction": "IA" ,
+  "caseType": "Salaried"
 }

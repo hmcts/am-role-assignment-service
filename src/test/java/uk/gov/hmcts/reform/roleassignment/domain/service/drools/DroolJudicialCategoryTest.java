@@ -27,8 +27,11 @@ class DroolJudicialCategoryTest extends DroolBase {
     @Test
     void shouldApproveRequestedRoleForCase() {
 
-        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "judge", GrantType.SPECIFIC);
+        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "salaried-judge",
+                                                              GrantType.SPECIFIC);
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("JA"));
+        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Salaried"));
 
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(requestedRole1);
@@ -39,6 +42,7 @@ class DroolJudicialCategoryTest extends DroolBase {
             roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
         });
         assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+
 
         LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.getJudicialFlag.getValue())
             .status(true).build();
@@ -59,7 +63,8 @@ class DroolJudicialCategoryTest extends DroolBase {
     @Test
     void shouldRejectCaseValidationForRequestedRoleMisssingCaseId() {
 
-        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "judge", GrantType.SPECIFIC);
+        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "salaried-judge",
+                                                              GrantType.SPECIFIC);
 
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(requestedRole1);
@@ -90,10 +95,14 @@ class DroolJudicialCategoryTest extends DroolBase {
             roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setStatus(Status.CREATE_REQUESTED);
-            roleAssignment.setRoleName("judge");
+            roleAssignment.setRoleName("salaried-judge");
+            roleAssignment.setBeginTime(ZonedDateTime.now());
+            roleAssignment.setEndTime(ZonedDateTime.now());
             roleAssignment.setGrantType(STANDARD);
             roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+            roleAssignment.getAttributes().put("baseLocation", convertValueJsonNode("1351"));
+            roleAssignment.getAttributes().put("contractType", convertValueJsonNode("salaried"));
         });
 
         LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.getJudicialFlag.getValue())
@@ -118,7 +127,7 @@ class DroolJudicialCategoryTest extends DroolBase {
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
-            roleAssignment.setRoleName("judge");
+            roleAssignment.setRoleName("salaried-judge");
             roleAssignment.setGrantType(STANDARD);
             roleAssignment.setStatus(Status.CREATE_REQUESTED);
             roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));

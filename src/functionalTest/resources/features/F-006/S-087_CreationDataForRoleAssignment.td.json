@@ -20,16 +20,18 @@
           "roleType": "CASE",
           "grantType": "SPECIFIC",
           "attributes": {
-            "caseId": "1607103938250138"
+            "caseId": "1607103938250138",
+            "caseType": "Salaried"
           }
         },
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleType": "CASE",
-          "grantType": "CHALLENGED",
+          "grantType": "SPECIFIC",
           "attributes": {
-            "caseId": "1607103938250138"
+            "caseId": "1607103938250138",
+            "caseType": "Salaried"
           }
         }
       ]
@@ -50,7 +52,8 @@
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
             "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
             "attributes": {
-              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}"
+              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
+              "caseType": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}"
             }
           },
           {
@@ -60,7 +63,8 @@
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][1][roleType]}",
             "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
             "attributes": {
-              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}"
+              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseId]}",
+              "caseType": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][caseType]}"
             }
           }
         ]

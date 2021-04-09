@@ -7,13 +7,6 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.util.LDEventListener;
 
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
-import static uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService.SERVICE_NAME;
 
 @Service
 public class FeatureFlagListener {
@@ -21,22 +14,23 @@ public class FeatureFlagListener {
     @Autowired
     private final LDClient ldClient;
 
+    @Autowired
+    private LDEventListener ldEventListener;
+
     public FeatureFlagListener(LDClient ldClient) {
         this.ldClient = ldClient;
     }
 
 
-
-
-   public void logWheneverOneFlagChangesForOneUser( String flagKey, LDUser user) {
-        if(ldClient !=null) {
+    public void logWheneverOneFlagChangesForOneUser(String flagKey, LDUser user) {
+        if (ldClient != null) {
             ldClient.getFlagTracker().addFlagValueChangeListener(flagKey, user, event -> {
                 System.out.printf("Flag \"%s\" for user \"%s\" has changed from %s to %s\n", event.getKey(),
                                   user.getKey(), event.getOldValue(), event.getNewValue()
                 );
-                if(event.getNewValue() != event.getOldValue()){
-               Map<String,Boolean> droolFlagStates  =  LDEventListener.getDroolFlagStates();
-               droolFlagStates.put(event.getKey(),event.getNewValue().booleanValue());
+                if (event.getNewValue() != event.getOldValue()) {
+                    Map<String, Boolean> droolFlagStates = ldEventListener.getDroolFlagStates();
+                    droolFlagStates.put(event.getKey(), event.getNewValue().booleanValue());
                 }
             });
         }

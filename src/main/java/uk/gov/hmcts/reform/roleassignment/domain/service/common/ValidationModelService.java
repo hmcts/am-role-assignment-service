@@ -25,18 +25,19 @@ public class ValidationModelService {
     private StatelessKieSession kieSession;
     private RetrieveDataService retrieveDataService;
     private PersistenceService persistenceService;
-
+    private LDEventListener ldEventListener;
 
 
     public ValidationModelService(StatelessKieSession kieSession,
                                   RetrieveDataService retrieveDataService,
-                                  PersistenceService persistenceService) {
+                                  PersistenceService persistenceService, LDEventListener ldEventListener) {
         this.kieSession = kieSession;
 
         this.retrieveDataService = retrieveDataService;
 
         this.persistenceService = persistenceService;
 
+        this.ldEventListener = ldEventListener;
     }
 
     public void validateRequest(AssignmentRequest assignmentRequest) {
@@ -96,7 +97,6 @@ public class ValidationModelService {
         );
 
 
-
     }
 
     private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) {
@@ -116,13 +116,13 @@ public class ValidationModelService {
         List<LDFeatureFlag> featureFlags = new ArrayList<>();
 
         // building the LDFeature Flag
-       Map<String,Boolean> droolFlagStates = LDEventListener.getDroolFlagStates();
+        Map<String, Boolean> droolFlagStates = ldEventListener.getDroolFlagStates();
 
         for (String flag : droolFlagStates.keySet()) {
-            LDFeatureFlag  featureFlag   =  LDFeatureFlag.builder()
+            LDFeatureFlag featureFlag = LDFeatureFlag.builder()
                 .flagName(flag)
                 .status(droolFlagStates.get(flag))
-                 .build();
+                .build();
             featureFlags.add(featureFlag);
         }
         facts.addAll(featureFlags);

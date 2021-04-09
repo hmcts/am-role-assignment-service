@@ -12,7 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
+import uk.gov.hmcts.reform.roleassignment.util.LDEventListener;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -42,6 +42,8 @@ class ValidationModelServiceTest {
 
     PersistenceService persistenceService = mock(PersistenceService.class);
 
+    LDEventListener ldEventListener = mock(LDEventListener.class);
+
     @Getter
     private static final Map<String, List<Role>> configuredRoles = new HashMap<>();
 
@@ -49,7 +51,7 @@ class ValidationModelServiceTest {
     ValidationModelService sut = new ValidationModelService(
         kieSessionMock,
         retrieveDataServiceMock,
-        persistenceService);
+        persistenceService, ldEventListener);
 
     @BeforeEach
     void setUp() {

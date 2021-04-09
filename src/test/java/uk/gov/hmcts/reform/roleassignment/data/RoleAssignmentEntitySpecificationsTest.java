@@ -131,7 +131,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldReturnPredicate_WhileSearchByRoleName() {
-        List<String> roleNames = Arrays.asList("judge", "senior judge");
+        List<String> roleNames = Arrays.asList("salaried-judge", "senior judge");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleName(
             roleNames);
         specification = specification.and(mockSpec);
@@ -142,7 +142,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldNotReturnPredicate_WhileSearchByRoleNameWithoutMock() {
-        List<String> roleNames = Arrays.asList("judge", "senior judge");
+        List<String> roleNames = Arrays.asList("salaried-judge", "senior judge");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleName(
             roleNames);
         assertThat(specification).isNotNull();

@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAs
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
+import uk.gov.hmcts.reform.roleassignment.util.LDEventListener;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
@@ -61,6 +62,9 @@ public class RoleAssignmentProviderTestConfiguration {
     @MockBean
     private DataStoreFeignClient dataStoreFeignClient;
 
+    @MockBean
+    private LDEventListener ldEventListener;
+
     @Bean
     public RetrieveDataService getRetrieveDataService() {
         return new RetrieveDataService(dataStoreFeignClient);
@@ -69,8 +73,9 @@ public class RoleAssignmentProviderTestConfiguration {
     @Bean
     @Primary
     public ValidationModelService getValidationModelService() {
-        return new ValidationModelService(getStatelessKieSession(), getRetrieveDataService(), persistenceService);
+        return new ValidationModelService(getStatelessKieSession(), getRetrieveDataService(), persistenceService, ldEventListener);
     }
+
 
     @Bean
     @Primary
@@ -92,6 +97,7 @@ public class RoleAssignmentProviderTestConfiguration {
                                                     getPersistenceUtil()
         );
     }
+
 
     @Bean
     @Primary

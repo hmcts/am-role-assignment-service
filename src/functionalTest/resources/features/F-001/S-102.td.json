@@ -13,10 +13,9 @@
       },
       "requestedRoles": [
         {
-          "_extends_": "S-101_Role_Request_without_time",
-          "actorId": "${[scenarioContext][customValues][generateUUID]}",
-          "beginTime" : null,
-          "endTime" : null
+          "_extends_": "S-101_Role_Request_with_time",
+          "actorId": "${[scenarioContext][customValues][generateUUID]}"
+
         }
       ]
     }
@@ -35,7 +34,7 @@
         },
         "requestedRoles": [
           {
-            "_extends_": "S-101_Response_without_time",
+            "_extends_": "S-101_Response_with_time",
             "actorId": "${}${[scenarioContext][testData][request][body][requestedRoles][0][actorId]}"
           }
         ]

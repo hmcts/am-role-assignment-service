@@ -33,12 +33,16 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
+import uk.gov.hmcts.reform.roleassignment.util.LDEventListener;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -95,6 +99,9 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     @MockBean
     private FeatureConditionEvaluation featureConditionEvaluation;
 
+    @Inject
+    private LDEventListener ldEventListener;
+
     @Before
     public void setUp() throws Exception {
         template = new JdbcTemplate(ds);
@@ -120,12 +127,25 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
             "userInfo", userInfo
 
         );
+        final Map<String,Boolean> droolFlagStates = new HashMap<>();
+        for (FeatureFlagEnum flag : FeatureFlagEnum.values()) {
+
+            droolFlagStates.put(flag.getValue(),true);
+
+
+        }
+        ReflectionTestUtils.setField(
+            ldEventListener,
+            "droolFlagStates", droolFlagStates
+
+        );
         Case retrievedCase = Case.builder().id("1234")
             .caseTypeId("Asylum")
             .jurisdiction("IA")
             .build();
         doReturn(retrievedCase).when(retrieveDataService).getCaseById(anyString());
     }
+
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
@@ -171,6 +191,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
         {"classpath:sql/role_assignment_clean_up.sql",
             "classpath:sql/insert_assignment_records_to_delete.sql"})
     public void shouldDeleteRoleAssignmentsByProcessAndReference() throws Exception {
+
         final String url = "/am/role-assignments";
 
         mockMvc.perform(delete(url)

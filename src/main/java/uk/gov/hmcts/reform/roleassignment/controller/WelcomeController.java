@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import com.launchdarkly.sdk.LDUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;

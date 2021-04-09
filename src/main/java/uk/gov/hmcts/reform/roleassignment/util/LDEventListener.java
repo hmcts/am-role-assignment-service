@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import com.launchdarkly.sdk.LDUser;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -27,8 +26,8 @@ public class LDEventListener implements CommandLineRunner {
     @Value("${launchdarkly.sdk.environment}")
     private String environment;
 
-    @Getter
-    public static final Map<String,Boolean> droolFlagStates = new HashMap<>();
+
+    private Map<String, Boolean> droolFlagStates = new HashMap<>();
 
     @Override
     public void run(String... args) throws Exception {
@@ -40,10 +39,14 @@ public class LDEventListener implements CommandLineRunner {
 
         for (FeatureFlagEnum flag : FeatureFlagEnum.values()) {
 
-            droolFlagStates.put(flag.getValue(),featureToggleService.isFlagEnabled(flag.getValue()));
+            droolFlagStates.put(flag.getValue(), featureToggleService.isFlagEnabled(flag.getValue()));
             featureFlagListener.logWheneverOneFlagChangesForOneUser(flag.getValue(), user);
 
         }
 
+    }
+
+    public Map<String, Boolean> getDroolFlagStates() {
+        return droolFlagStates;
     }
 }
