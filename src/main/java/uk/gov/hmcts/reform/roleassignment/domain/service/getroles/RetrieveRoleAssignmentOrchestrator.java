@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.getroles;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
@@ -11,12 +12,17 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.ORM_JRD_ORG_ROLE_FLAG;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.ORM_SERVICE_NAME;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -24,6 +30,9 @@ public class RetrieveRoleAssignmentOrchestrator {
 
     private PersistenceService persistenceService;
     private PrepareResponseService prepareResponseService;
+
+    @Autowired
+    private FeatureToggleService featureConditionEvaluator;
 
     public RetrieveRoleAssignmentOrchestrator(PersistenceService persistenceService,
                                               PrepareResponseService prepareResponseService) {
@@ -54,14 +63,25 @@ public class RetrieveRoleAssignmentOrchestrator {
 
     public JsonNode getListOfRoles() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode;
+        JsonNode arrayNode;
         InputStream input = RetrieveRoleAssignmentOrchestrator.class.getClassLoader()
             .getResourceAsStream(Constants.ROLES_JSON);
         assert input != null;
-        rootNode = mapper.readTree(input);
+        arrayNode = mapper.readTree(input);
 
-        return rootNode;
+        if (!featureConditionEvaluator.isFlagEnabled(ORM_SERVICE_NAME, ORM_JRD_ORG_ROLE_FLAG)) {
+            Iterator<JsonNode> it = arrayNode.iterator();
+            while (it.hasNext()) {
+                JsonNode node = it.next();
+                if (node.get("name").asText().equals("salaried-judge")) {
+                    it.remove();
+                }
+            }
+        }
+
+        return arrayNode;
     }
+
 
     public long retrieveETag(String actorId) {
         ActorCacheEntity entity = persistenceService.getActorCacheEntity(actorId);

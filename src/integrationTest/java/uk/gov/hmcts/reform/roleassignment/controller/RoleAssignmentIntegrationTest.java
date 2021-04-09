@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Rule;
@@ -10,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,6 +23,7 @@ import uk.gov.hmcts.reform.roleassignment.annotations.FeatureFlagToggle;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -186,38 +187,6 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
                 response.get(0).getActorId().toString()
             );
         }
-    }
-
-    @Test
-    public void shouldGetListOfRoles() throws Exception {
-        final String url = "/am/role-assignments/roles";
-
-        final MvcResult result = mockMvc.perform(get(url)
-                                                     .contentType(MediaType.APPLICATION_JSON)
-                                                     .headers(getHttpHeaders())
-        )
-            .andExpect(status().is(200))
-            .andReturn();
-        String response = result.getResponse().getContentAsString();
-
-        JsonNode jsonResonse = mapper.readValue(response, JsonNode.class);
-        assertEquals(200, result.getResponse().getStatus());
-        assertEquals(
-            2,
-            jsonResonse.size()
-        );
-        assertEquals(
-            "judge",
-            jsonResonse.get(0).get("name").asText()
-        );
-        assertEquals(
-            "Judicial office holder able to do judicial case work",
-            jsonResonse.get(0).get("description").asText()
-        );
-        assertEquals(
-            "JUDICIAL",
-            jsonResonse.get(0).get("category").asText()
-        );
     }
 
     @Test
