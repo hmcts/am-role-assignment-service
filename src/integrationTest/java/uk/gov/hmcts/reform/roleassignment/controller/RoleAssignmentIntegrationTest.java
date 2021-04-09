@@ -9,7 +9,6 @@ import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,7 +22,6 @@ import uk.gov.hmcts.reform.roleassignment.annotations.FeatureFlagToggle;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
