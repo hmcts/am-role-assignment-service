@@ -32,7 +32,7 @@ class FeatureToggleServiceTest {
     FeatureToggleService featureToggleService = new FeatureToggleService(ldClient, "user");
 
     @Test
-    public void evaluateLdFlag() {
+     void evaluateLdFlag() {
         when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(true);
         boolean flagStatus  =  featureToggleService.isFlagEnabled("serviceName", "userName");
         Assertions.assertTrue(flagStatus);
@@ -46,14 +46,14 @@ class FeatureToggleServiceTest {
     }
 
     @Test
-    public void isValidFlag() {
+     void isValidFlag() {
         when(ldClient.isFlagKnown(any())).thenReturn(true);
         featureToggleService = new FeatureToggleService(ldClient, "user");
         Assertions.assertTrue(featureToggleService.isValidFlag("serviceName"));
     }
 
     @Test
-    public void isValidFlagReturnsFalse() {
+     void isValidFlagReturnsFalse() {
         when(ldClient.isFlagKnown(any())).thenReturn(false);
         featureToggleService = new FeatureToggleService(ldClient, "user");
         Assertions.assertFalse(featureToggleService.isValidFlag("serviceName"));
@@ -92,7 +92,7 @@ class FeatureToggleServiceTest {
     }
 
     @Test
-    public void getLdFlagDeleteStringContainsCase() {
+     void getLdFlagDeleteStringContainsCase() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/");
         when(request.getMethod()).thenReturn("DELETE");
         featureToggleService = new FeatureToggleService(ldClient, "user");
@@ -101,7 +101,7 @@ class FeatureToggleServiceTest {
     }
 
     @Test
-    public void evaluateLdFlagTrue() {
+     void evaluateLdFlagTrue() {
         when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(true);
         boolean flagStatus  =  featureToggleService.isFlagEnabled("userName");
         Assertions.assertTrue(flagStatus);

@@ -33,7 +33,7 @@ class LDEventListenerTest {
     LDEventListener ldEventListener = new LDEventListener();
 
     @Test
-    public void executeListener() throws Exception {
+     void executeListener() throws Exception {
 
         when(featureToggleService.isFlagEnabled(any())).thenReturn(true);
         doNothing().when(featureFlagListener).logWheneverOneFlagChangesForOneUser(any(), any());
@@ -46,7 +46,7 @@ class LDEventListenerTest {
     }
 
     @Test
-    public void getFlagsMap() throws Exception {
+     void getFlagsMap() throws Exception {
 
         Map<String, Boolean> ldEventListenerDroolFlagStates =  ldEventListener.getDroolFlagStates();
         assertNotNull(ldEventListenerDroolFlagStates);
