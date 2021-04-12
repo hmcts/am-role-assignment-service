@@ -12,7 +12,7 @@ import  uk.gov.hmcts.reform.roleassignment.launchdarkly.LDFeatureFlag;
 rule "judicial_organisational_role_mapping_service_create"
 when
 
-   $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.getJudicialFlag.getValue())
+   $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.JUDICIALFLAG.getValue())
    $rq: Request(byPassOrgDroolRule || clientId == "am_org_role_mapping_service")
 
    $ra: RoleAssignment(
@@ -30,7 +30,7 @@ end;
 
 rule "judicial_organisational_role_mapping_service_delete"
 when
-      $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.getJudicialFlag.getValue())
+      $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.JUDICIALFLAG.getValue())
       $rq: Request(byPassOrgDroolRule || clientId == "am_org_role_mapping_service")
 
     $ra: RoleAssignment(
