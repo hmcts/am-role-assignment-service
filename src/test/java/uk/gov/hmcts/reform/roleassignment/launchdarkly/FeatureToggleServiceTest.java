@@ -1,8 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import com.launchdarkly.sdk.server.LDClient;
-import org.junit.Test;
+
+
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
@@ -32,15 +34,15 @@ class FeatureToggleServiceTest {
     @Test
     public void evaluateLdFlag() {
         when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(true);
-        featureToggleService = new FeatureToggleService(ldClient, "user");
-        Assertions.assertTrue(featureToggleService.isFlagEnabled("serviceName", "userName"));
+        boolean flagStatus  =  featureToggleService.isFlagEnabled("serviceName", "userName");
+        Assertions.assertTrue(flagStatus);
     }
 
     @Test
     public void evaluateLdFlagFalse() {
         when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(false);
-        featureToggleService = new FeatureToggleService(ldClient, "user");
-        Assertions.assertFalse(featureToggleService.isFlagEnabled("serviceName", "userName"));
+        boolean flagStatus = featureToggleService.isFlagEnabled("serviceName", "userName");
+        Assertions.assertFalse(flagStatus);
     }
 
     @Test
@@ -96,5 +98,12 @@ class FeatureToggleServiceTest {
         featureToggleService = new FeatureToggleService(ldClient, "user");
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
         Assertions.assertEquals("delete-role-assignments-by-id", flagName);
+    }
+
+    @Test
+    public void evaluateLdFlagTrue() {
+        when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(true);
+        boolean flagStatus  =  featureToggleService.isFlagEnabled("userName");
+        Assertions.assertTrue(flagStatus);
     }
 }

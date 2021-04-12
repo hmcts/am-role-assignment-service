@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.util.LDEventListener;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 
 class ValidationModelServiceTest {
@@ -60,6 +62,14 @@ class ValidationModelServiceTest {
 
     @Test
     void validateRequest() throws IOException {
+
+        final Map<String, Boolean> droolFlagStates = new HashMap<>();
+        for (FeatureFlagEnum flag : FeatureFlagEnum.values()) {
+            droolFlagStates.put(flag.getValue(), true);
+
+        }
+
+        when(ldEventListener.getDroolFlagStates()).thenReturn(droolFlagStates);
 
         assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
