@@ -27,13 +27,15 @@ public class LDEventListenerTest {
     FeatureToggleService featureToggleService = mock(FeatureToggleService.class);
 
     @InjectMocks
-    LDEventListener ldEventListener = new LDEventListener(featureFlagListener, featureToggleService);
+    LDEventListener ldEventListener = new LDEventListener();
 
     @Test
     public void executeListener() throws Exception {
 
         when(featureToggleService.isFlagEnabled(any())).thenReturn(true);
         doNothing().when(featureFlagListener).logWheneverOneFlagChangesForOneUser(any(), any());
+        ldEventListener.setFeatureToggleService(featureToggleService);
+        ldEventListener.setFeatureFlagListener(featureFlagListener);
         ldEventListener.run("dsf");
         Mockito.verify(featureToggleService, times(3)).isFlagEnabled(any());
         Mockito.verify(featureFlagListener, times(3)).logWheneverOneFlagChangesForOneUser(any(), any());

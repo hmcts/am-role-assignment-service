@@ -1,6 +1,9 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import com.launchdarkly.sdk.LDUser;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -14,23 +17,23 @@ import java.util.Map;
 import static uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService.SERVICE_NAME;
 
 @Component
+@Getter
+@Setter
 public class LDEventListener implements CommandLineRunner {
 
+    @Autowired
+    FeatureFlagListener featureFlagListener;
 
-    private FeatureFlagListener featureFlagListener;
-
-    private FeatureToggleService featureToggleService;
+    @Autowired
+    FeatureToggleService featureToggleService;
 
     @Value("${launchdarkly.sdk.environment}")
     private String environment;
 
 
-    private Map<String, Boolean> droolFlagStates = new HashMap<>();
 
-    public LDEventListener(FeatureFlagListener featureFlagListener, FeatureToggleService featureToggleService) {
-        this.featureFlagListener = featureFlagListener;
-        this.featureToggleService = featureToggleService;
-    }
+
+    private Map<String, Boolean> droolFlagStates = new HashMap<>();
 
     @Override
     public void run(String... args) throws Exception {
