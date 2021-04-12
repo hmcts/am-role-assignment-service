@@ -1,9 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagListener;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 
@@ -17,6 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class LDEventListenerTest {
 
 

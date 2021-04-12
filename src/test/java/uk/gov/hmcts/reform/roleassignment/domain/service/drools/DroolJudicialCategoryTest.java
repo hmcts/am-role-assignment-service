@@ -44,7 +44,7 @@ class DroolJudicialCategoryTest extends DroolBase {
         assignmentRequest.getRequest().setByPassOrgDroolRule(true);
 
 
-        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.getJudicialFlag.getValue())
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIALFLAG.getValue())
             .status(true).build();
         ldFeatureFlags.add(ldFeatureFlag);
 
@@ -105,7 +105,7 @@ class DroolJudicialCategoryTest extends DroolBase {
             roleAssignment.getAttributes().put("contractType", convertValueJsonNode("salaried"));
         });
 
-        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.getJudicialFlag.getValue())
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIALFLAG.getValue())
             .status(true).build();
         ldFeatureFlags.add(ldFeatureFlag);
         //Execute Kie session
