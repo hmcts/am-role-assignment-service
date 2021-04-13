@@ -4,7 +4,7 @@ Feature: F-001 : Create Role Assignments
   Background:
     Given an appropriate test context as detailed in the test data source
 
-  @S-001 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-001 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create single Role Assignment with only mandatory fields
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
@@ -17,7 +17,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-002 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-002 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create multiple Role Assignments
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -27,7 +27,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-003 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-003 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create single Role Assignment with RoleTypeId as case
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -100,7 +100,7 @@ Feature: F-001 : Create Role Assignments
     Then a negative response is received,
     And the response has all other details as expected.
 
-  @S-011 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-011 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create single Role Assignment with RoleTypeId as organisational
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -111,7 +111,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-012 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-012 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create single Role Assignment when ReplaceExisting is True with Process and Reference
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -122,7 +122,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-013 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-013 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create multiple Role Assignments when ReplaceExisting is True with Process and Reference
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -144,7 +144,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-015 @FeatureToggle(create-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-015 @FeatureToggle(create-role-assignments)
   Scenario: must successfully remove single Role Assignment when ReplaceExisting is True along with empty role assignment list
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
@@ -156,7 +156,7 @@ Feature: F-001 : Create Role Assignments
     And the response [contains an empty Role Assignments list],
     And the response has all other details as expected.
 
-  @S-016 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-016 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive a positive response when creating same assignment record twice with ReplaceExisting set to True
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
@@ -168,7 +168,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-017 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-017 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive a positive response when creating mix and match role assignments ReplaceExisting set to True
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [S-017_Multiple_Role_Creation],
@@ -180,7 +180,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-018 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-018 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive a positive response when existing role assignments replaced with none ReplaceExisting set to True
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [S-018_Multiple_Role_Creation],
@@ -192,7 +192,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-019 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-019 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive a positive response when one of existing role assignment replaced with new
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [S-017_Multiple_Role_Creation],
@@ -204,7 +204,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-091 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-091 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully store single Authorisation in new DB column Authorisations
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -214,7 +214,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-092 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-092 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully store multiple Authorisations in new DB column Authorisations
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -224,7 +224,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-097 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-097 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create Role Assignments without Authorisations
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -234,7 +234,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-101 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-101 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create Org Role Assignment without begin time and end time
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -244,7 +244,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-102 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-102 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully create Org Role Assignment with begin time and end time have null values
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -254,7 +254,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
-  @S-020 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-020 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must retain existing records when creation of any Role Assignment is not successful where ReplaceExisting is True
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [S-020_Multiple_Role_Creation],
@@ -269,7 +269,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to get role assignments which created initially above] as in [S-020_Get_Role_Assignments_Search_Query_Second_ActorId],
     And a successful call [to delete role assignments just created above] as in [S-020_DeleteDataForRoleAssignments].
 
-  @S-109 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-109 @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive a positive response when creating same assignment record twice with Authorisation
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [S-109_CreationDataForRoleAssignment],

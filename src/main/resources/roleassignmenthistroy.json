@@ -2,7 +2,7 @@
   "actorIdType": "IDAM",
   "actorId": "00000000-0000-0000-0000-000000000000",
   "roleType": "CASE",
-  "roleName": "salaried-judge",
+  "roleName": "judge",
   "classification": "PUBLIC",
   "grantType": "STANDARD",
   "readOnly": false,

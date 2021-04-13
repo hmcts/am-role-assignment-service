@@ -4,7 +4,7 @@ Feature: F-006 : Post Role Assignments Query Request
   Background:
     Given an appropriate test context as detailed in the test data source
 
-  @S-081 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-081 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments with one query param
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
@@ -15,7 +15,7 @@ Feature: F-006 : Post Role Assignments Query Request
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [F-006_DeleteDataForMultipleRoleAssignments].
 
-  @S-082 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-082 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments with more than one query params
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
@@ -26,7 +26,7 @@ Feature: F-006 : Post Role Assignments Query Request
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [F-006_DeleteDataForMultipleRoleAssignments].
 
-  @S-083 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-083 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments without specific page number
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [S-083_CreationDataForRoleAssignment],
@@ -37,7 +37,7 @@ Feature: F-006 : Post Role Assignments Query Request
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [S-083_DeleteDataForMultipleRoleAssignments].
 
-  @S-084 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-084 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments with specific page number
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [S-083_CreationDataForRoleAssignment],
@@ -48,7 +48,7 @@ Feature: F-006 : Post Role Assignments Query Request
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [S-083_DeleteDataForMultipleRoleAssignments].
 
-  @S-085 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-085 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments without X-Correlation-ID Header
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [S-083_CreationDataForRoleAssignment],
@@ -59,7 +59,7 @@ Feature: F-006 : Post Role Assignments Query Request
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [S-083_DeleteDataForMultipleRoleAssignments].
 
-  @S-086 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-086 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments without optional headers
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
@@ -72,7 +72,7 @@ Feature: F-006 : Post Role Assignments Query Request
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [F-006_DeleteDataForMultipleRoleAssignments].
 
-  @S-087 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments) @FeatureToggle(ras_drool_judicial_flag_1_0)
+  @S-087 @FeatureToggle(search-by-query) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
   Scenario: must successfully receive Role Assignments with optional headers
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [S-087_CreationDataForRoleAssignment],

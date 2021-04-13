@@ -168,16 +168,16 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             jsonResonse.size()
         );
         assertEquals(
-            "salaried-judge",
-            jsonResonse.get(2).get("name").asText()
+            "judge",
+            jsonResonse.get(0).get("name").asText()
         );
         assertEquals(
             "Judicial office holder able to do judicial case work",
-            jsonResonse.get(2).get("description").asText()
+            jsonResonse.get(0).get("description").asText()
         );
         assertEquals(
             "JUDICIAL",
-            jsonResonse.get(2).get("category").asText()
+            jsonResonse.get(0).get("category").asText()
         );
     }
 
@@ -212,8 +212,8 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         assertNotNull(response);
         response.forEach(element -> assertAll(
             () -> assertEquals(element.getRoleType().toString(), "ORGANISATION"),
-            () -> assertEquals(element.getRoleName(), "salaried-judge"),
-            () -> assertEquals(element.getActorId(), "123e4567-e89b-42d3-a456-556642445613"),
+            () -> assertEquals(element.getRoleName(), "judge"),
+            () -> assertEquals(element.getActorId(), "123e4567-e89b-42d3-a456-556642445614"),
             () -> assertEquals(element.getGrantType().toString(), "STANDARD"),
             () -> assertEquals(element.getClassification().toString(), "PUBLIC"),
             () -> assertEquals(element.getAuthorisations().size(), 1),

@@ -566,12 +566,11 @@ class CreateRoleAssignmentOrchestratorTest {
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
-        verify(persistenceUtil, times(3))
+        verify(persistenceUtil, times(1))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
-
 
     private void verifyNUmberOfInvocations() throws ParseException {
         verify(parseRequestService, times(1))

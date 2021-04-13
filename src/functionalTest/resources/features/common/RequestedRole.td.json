@@ -3,7 +3,7 @@
   "actorIdType": "IDAM",
   "actorId": "123e4567-e89b-42d3-a456-556642445674",
   "roleType": "ORGANISATION",
-  "roleName": "salaried-judge",
+  "roleName": "judge",
   "roleCategory": "JUDICIAL",
   "classification": "PUBLIC",
   "grantType": "STANDARD",
@@ -12,10 +12,9 @@
   "endTime" : "2023-01-01T00:00:00Z",
   "attributes":
   {
-    "jurisdiction": "IA",
+    "jurisdiction": "divorce",
     "region": "south-east",
-    "contractType": "SALARIED",
-    "baseLocation": "1234"
+    "contractType": "SALARIED"
   },
   "notes":
   [

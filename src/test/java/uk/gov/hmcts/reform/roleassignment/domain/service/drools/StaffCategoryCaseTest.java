@@ -105,7 +105,7 @@ class StaffCategoryCaseTest extends DroolBase {
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(), "tribunal-caseworker"),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "salaried-judge")));
+                                                          "judge")));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -193,9 +193,9 @@ class StaffCategoryCaseTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "tribunal-caseworker, senior-tribunal-caseworker, salaried-judge",
-        "salaried-judge, salaried-judge, senior-tribunal-caseworker",
-        "tribunal-caseworker, senior-tribunal-caseworker, salaried-judge",
+        "tribunal-caseworker, senior-tribunal-caseworker, judge",
+        "judge, judge, senior-tribunal-caseworker",
+        "tribunal-caseworker, senior-tribunal-caseworker, judge",
     })
     void shouldRejectCaseValidationForTCW_RequesterJudge_S004A(String role1, String role2, String role3) {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, role1,

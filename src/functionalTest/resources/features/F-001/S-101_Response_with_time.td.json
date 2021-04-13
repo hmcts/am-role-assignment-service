@@ -1,14 +1,12 @@
 {
-  "_guid_": "S-101_Response_with_time",
+  "_guid_": "S-101_Response_without_time",
   "id" : "[[ANYTHING_PRESENT]]",
   "actorIdType" : "IDAM",
   "roleType": "ORGANISATION",
-  "roleName" : "salaried-judge",
+  "roleName" : "judge",
   "classification" : "PUBLIC",
   "grantType": "STANDARD",
   "roleCategory":"JUDICIAL",
-  "beginTime" : "[[ANYTHING_PRESENT]]",
-  "endTime" : "[[ANYTHING_PRESENT]]",
   "readOnly" : false,
   "process": "businessProcess1",
   "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
@@ -16,10 +14,9 @@
   "created":"[[ANYTHING_PRESENT]]",
   "log":"[[ANYTHING_PRESENT]]",
   "attributes" : {
-    "jurisdiction" : "IA",
+    "jurisdiction" : "divorce",
     "region" : "south-east",
-    "contractType": "SALARIED",
-    "baseLocation": "1234"
+    "contractType": "SALARIED"
   },
   "notes" : [ {
     "userId" : "003352d0-e699-48bc-b6f5-5810411e60ag",

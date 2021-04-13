@@ -87,8 +87,8 @@ public class AuditLoggerUtilTest {
     public void checkRoleNames() {
 
         List<String> expectedRoles = Arrays.asList(
-            "salaried-judge",
-            "salaried-judge"
+            "judge",
+            "judge"
         );
 
         List<String> roleNames = AuditLoggerUtil.buildRoleNames(responseEntity);

@@ -4,90 +4,11 @@
   "_extends_": "F-007_Test_Data_Base",
   "expectedResponse": {
     "_extends_": "Common_200_Response",
-    "body" : {
-      "arrayInMap" : [ {
-        "name" : "tribunal-caseworker",
-        "label" : "Tribunal Caseworker",
-        "description" : "Tribunal caseworker",
-        "category" : "LEGAL_OPERATIONS",
-        "patterns" : [ {
-          "roleType" : {
-            "mandatory" : true,
-            "values" : [ "ORGANISATION" ]
-          },
-          "grantType" : {
-            "mandatory" : true,
-            "values" : [ "STANDARD" ]
-          },
-          "classification" : {
-            "mandatory" : true,
-            "values" : [ "PUBLIC", "PRIVATE" ]
-          },
-          "attributes" : {
-            "jurisdiction" : {
-              "mandatory" : true,
-              "values" : [ "IA" ]
-            },
-            "primaryLocation" : {
-              "mandatory" : true
-            }
-          }
-        }, {
-          "roleType" : {
-            "mandatory" : true,
-            "values" : [ "CASE" ]
-          },
-          "grantType" : {
-            "mandatory" : true,
-            "values" : [ "SPECIFIC" ]
-          },
-          "classification" : {
-            "mandatory" : true
-          },
-          "attributes" : {
-            "jurisdiction" : {
-              "mandatory" : true
-            },
-            "caseType" : {
-              "mandatory" : true
-            },
-            "caseId" : {
-              "mandatory" : true
-            }
-          }
-        } ]
-      }, {
-        "name" : "senior-tribunal-caseworker",
-        "label" : "Senior Tribunal Caseworker",
-        "description" : "Senior Tribunal caseworker",
-        "category" : "LEGAL_OPERATIONS",
-        "patterns" : [ {
-          "roleType" : {
-            "mandatory" : true,
-            "values" : [ "ORGANISATION" ]
-          },
-          "grantType" : {
-            "mandatory" : true,
-            "values" : [ "STANDARD" ]
-          },
-          "classification" : {
-            "mandatory" : true,
-            "values" : [ "PUBLIC", "PRIVATE" ]
-          },
-          "attributes" : {
-            "jurisdiction" : {
-              "mandatory" : true,
-              "values" : [ "IA" ]
-            },
-            "primaryLocation" : {
-              "mandatory" : true
-            }
-          }
-        } ]
-      },
+    "body": {
+      "arrayInMap": [
         {
-          "name": "salaried-judge",
-          "label": "salaried-judge",
+          "name": "judge",
+          "label": "Judge - Sample role (Only for Testing)",
           "description": "Judicial office holder able to do judicial case work",
           "category": "JUDICIAL",
           "patterns": [
@@ -111,11 +32,79 @@
                   "PRIVATE"
                 ]
               },
+              "attributes": {
+                "region": {
+                  "mandatory": true,
+                  "values": [
+                    "north-east",
+                    "south-east"
+                  ]
+                },
+                "jurisdiction": {
+                  "mandatory": true,
+                  "values": [
+                    "divorce",
+                    "IA"
+                  ]
+                }
+              }
+            },
+            {
+              "roleType": {
+                "mandatory": true,
+                "values": [
+                  "CASE"
+                ]
+              },
+              "grantType": {
+                "mandatory": true,
+                "values": [
+                  "SPECIFIC",
+                  "CHALLENGED"
+                ]
+              },
+              "classification": {
+                "mandatory": true,
+                "values": [
+                  "PUBLIC"
+                ]
+              },
               "beginTime": {
                 "mandatory": true
               },
-              "endTime": {
-                "mandatory": true
+              "attributes": {
+                "caseId": {
+                  "mandatory": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "tribunal-caseworker",
+          "label": "Tribunal Caseworker",
+          "description": "Tribunal caseworker",
+          "category": "LEGAL_OPERATIONS",
+          "patterns": [
+            {
+              "roleType": {
+                "mandatory": true,
+                "values": [
+                  "ORGANISATION"
+                ]
+              },
+              "grantType": {
+                "mandatory": true,
+                "values": [
+                  "STANDARD"
+                ]
+              },
+              "classification": {
+                "mandatory": true,
+                "values": [
+                  "PUBLIC",
+                  "PRIVATE"
+                ]
               },
               "attributes": {
                 "jurisdiction": {
@@ -124,13 +113,7 @@
                     "IA"
                   ]
                 },
-                "region": {
-                  "mandatory": true
-                },
-                "baseLocation": {
-                  "mandatory": true
-                },
-                "contractType": {
+                "primaryLocation": {
                   "mandatory": true
                 }
               }
@@ -148,31 +131,64 @@
                   "SPECIFIC"
                 ]
               },
-              "beginTime": {
-                "mandatory": true
-              },
               "classification": {
                 "mandatory": true
               },
               "attributes": {
+                "jurisdiction" : {
+                  "mandatory" : true
+                },
+                "caseType" : {
+                  "mandatory" : true
+                },
+                "caseId" : {
+                  "mandatory" : true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "senior-tribunal-caseworker",
+          "label": "Senior Tribunal Caseworker",
+          "description": "Senior Tribunal caseworker",
+          "category": "LEGAL_OPERATIONS",
+          "patterns": [
+            {
+              "roleType": {
+                "mandatory": true,
+                "values": [
+                  "ORGANISATION"
+                ]
+              },
+              "grantType": {
+                "mandatory": true,
+                "values": [
+                  "STANDARD"
+                ]
+              },
+              "classification": {
+                "mandatory": true,
+                "values": [
+                  "PUBLIC",
+                  "PRIVATE"
+                ]
+              },
+              "attributes": {
                 "jurisdiction": {
-                  "mandatory": true
+                  "mandatory": true,
+                  "values": [
+                    "IA"
+                  ]
                 },
-                "caseType": {
-                  "mandatory": true
-                },
-                "caseId": {
+                "primaryLocation": {
                   "mandatory": true
                 }
               }
             }
           ]
-        } ]
+        }
+      ]
     }
   }
 }
-
-
-
-
-

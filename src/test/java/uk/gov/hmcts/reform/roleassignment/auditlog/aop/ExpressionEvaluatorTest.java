@@ -66,7 +66,7 @@ public class ExpressionEvaluatorTest {
             RoleAssignment.class
         );
         RoleAssignment roleAssignment = new RoleAssignment();
-        roleAssignment.setRoleName("salaried-judge");
+        roleAssignment.setRoleName("judge");
         EvaluationContext context = evaluator.createEvaluationContext(this, EvaluateMethods.class, method, new Object[]{
             "test", roleAssignment});
         assert method != null;
@@ -75,7 +75,7 @@ public class ExpressionEvaluatorTest {
         assertThat(evaluator.condition("#roleAssignment.roleName",
                                        elementKey, context,
                                        String.class
-        )).isEqualTo("salaried-judge");
+        )).isEqualTo("judge");
     }
 
 
@@ -89,7 +89,7 @@ public class ExpressionEvaluatorTest {
             RoleAssignment.class
         );
         RoleAssignment roleAssignment = new RoleAssignment();
-        roleAssignment.setRoleName("salaried-judge");
+        roleAssignment.setRoleName("judge");
         EvaluationContext context = evaluator.createEvaluationContext(this, EvaluateMethods.class, method, new Object[]{
             "test", roleAssignment});
         assert method != null;

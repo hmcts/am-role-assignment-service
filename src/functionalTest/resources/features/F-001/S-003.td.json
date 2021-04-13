@@ -26,8 +26,7 @@
           "roleType": "CASE",
           "grantType": "SPECIFIC",
           "attributes": {
-            "caseId": "1607103938250138",
-            "caseType": "Salaried"
+            "caseId": "1607103938250138"
           }
         }
       ]
@@ -50,8 +49,7 @@
             "roleType" : "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
             "grantType" : "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
             "attributes": {
-              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
-              "caseType": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}"
+              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}"
             }
           }
         ]

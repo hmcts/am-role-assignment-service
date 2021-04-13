@@ -1,11 +1,12 @@
 [
   {
-    "name": "salaried-judge",
-    "label": "salaried-judge",
+    "name": "judge",
+    "label": "Judge - Sample role (Only for Testing)",
     "description": "Judicial office holder able to do judicial case work",
     "category": "JUDICIAL",
     "patterns": [
       {
+
         "roleType": {
           "mandatory": true,
           "values": ["ORGANISATION"]
@@ -18,25 +19,14 @@
           "mandatory": true,
           "values": ["PUBLIC","PRIVATE"]
         },
-        "beginTime": {
-          "mandatory": true
-        },
-        "endTime": {
-          "mandatory": true
-        },
         "attributes": {
+          "region": {
+            "mandatory": true,
+            "values": ["north-east","south-east"]
+          },
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA"]
-          },
-          "region": {
-            "mandatory": true
-          },
-          "baseLocation": {
-            "mandatory": true
-          },
-          "contractType": {
-            "mandatory": true
+            "values": ["divorce","IA"]
           }
         }
 
@@ -49,21 +39,16 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["SPECIFIC","CHALLENGED"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
         },
         "beginTime": {
           "mandatory": true
         },
-        "classification": {
-          "mandatory": true
-        },
         "attributes": {
-          "jurisdiction": {
-            "mandatory": true
-          },
-          "caseType": {
-            "mandatory": true
-          },
           "caseId": {
             "mandatory": true
           }
@@ -157,6 +142,79 @@
             "values": ["IA"]
           },
           "primaryLocation": {
+            "mandatory": true
+          }
+        }
+
+      }
+    ]
+  },
+  {
+    "name": "salaried-judge",
+    "label": "salaried-judge",
+    "description": "Judicial office holder able to do judicial case work",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "beginTime": {
+          "mandatory": true
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA"]
+          },
+          "region": {
+            "mandatory": true
+          },
+          "baseLocation": {
+            "mandatory": true
+          },
+          "contractType": {
+            "mandatory": true
+          }
+        }
+
+      },
+      {
+
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "beginTime": {
+          "mandatory": true
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
             "mandatory": true
           }
         }

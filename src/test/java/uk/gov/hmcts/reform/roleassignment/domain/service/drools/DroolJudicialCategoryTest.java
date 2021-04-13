@@ -8,8 +8,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagEnum;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.LDFeatureFlag;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -27,11 +25,8 @@ class DroolJudicialCategoryTest extends DroolBase {
     @Test
     void shouldApproveRequestedRoleForCase() {
 
-        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "salaried-judge",
-                                                              GrantType.SPECIFIC);
+        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "judge", GrantType.SPECIFIC);
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("JA"));
-        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Salaried"));
 
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(requestedRole1);
@@ -41,12 +36,6 @@ class DroolJudicialCategoryTest extends DroolBase {
 
             roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
         });
-        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
-
-
-        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIALFLAG.getValue())
-            .status(true).build();
-        ldFeatureFlags.add(ldFeatureFlag);
 
         //Execute Kie session
         buildExecuteKieSession();
@@ -63,8 +52,7 @@ class DroolJudicialCategoryTest extends DroolBase {
     @Test
     void shouldRejectCaseValidationForRequestedRoleMisssingCaseId() {
 
-        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "salaried-judge",
-                                                              GrantType.SPECIFIC);
+        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "judge", GrantType.SPECIFIC);
 
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(requestedRole1);
@@ -90,24 +78,16 @@ class DroolJudicialCategoryTest extends DroolBase {
     void shouldApprovedRequestedRoleForOrg() {
 
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setStatus(Status.CREATE_REQUESTED);
-            roleAssignment.setRoleName("salaried-judge");
-            roleAssignment.setBeginTime(ZonedDateTime.now());
-            roleAssignment.setEndTime(ZonedDateTime.now());
+            roleAssignment.setRoleName("judge");
             roleAssignment.setGrantType(STANDARD);
             roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-            roleAssignment.getAttributes().put("baseLocation", convertValueJsonNode("1351"));
-            roleAssignment.getAttributes().put("contractType", convertValueJsonNode("salaried"));
         });
 
-        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIALFLAG.getValue())
-            .status(true).build();
-        ldFeatureFlags.add(ldFeatureFlag);
         //Execute Kie session
         buildExecuteKieSession();
 
@@ -127,7 +107,7 @@ class DroolJudicialCategoryTest extends DroolBase {
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
-            roleAssignment.setRoleName("salaried-judge");
+            roleAssignment.setRoleName("judge");
             roleAssignment.setGrantType(STANDARD);
             roleAssignment.setStatus(Status.CREATE_REQUESTED);
             roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
