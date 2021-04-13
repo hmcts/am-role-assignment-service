@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.DeleteAssignmentController;
@@ -22,14 +23,15 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @Provider("am_roleAssignment_deleteAssignment")
@@ -42,6 +44,9 @@ public class DeleteRoleAssignmentProviderTest {
 
     @Autowired
     private PersistenceService persistenceService;
+
+    @MockBean
+    private FeatureToggleService featureToggleService;
 
     @Autowired
     private SecurityUtils securityUtils;

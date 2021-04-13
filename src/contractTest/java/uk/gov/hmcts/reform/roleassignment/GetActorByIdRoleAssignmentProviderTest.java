@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentController;
@@ -21,6 +22,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 
 import java.util.List;
 
@@ -38,6 +40,9 @@ public class GetActorByIdRoleAssignmentProviderTest {
 
     @Autowired
     private PersistenceService persistenceService;
+
+    @MockBean
+    private FeatureToggleService featureToggleService;
 
     @Autowired
     private RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentServiceMock;
