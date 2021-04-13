@@ -38,4 +38,7 @@ public final class Constants {
     public static final String REQUEST_BODY = "Request body";
     public static final String SERVICE_AUTHORIZATION2 = "ServiceAuthorization";
 
+    public static final String ORM_SERVICE_NAME = "am_org_role_mapping_service";
+    public static final String ORM_JRD_ORG_ROLE_FLAG = "orm-jrd-org-role";
+
 }

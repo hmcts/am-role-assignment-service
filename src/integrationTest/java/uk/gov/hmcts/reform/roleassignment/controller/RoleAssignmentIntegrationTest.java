@@ -31,7 +31,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -62,6 +64,8 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     @MockBean
     private FeatureConditionEvaluation featureConditionEvaluation;
 
+    @MockBean
+    private FeatureToggleService featureToggleService;
 
     private JdbcTemplate template;
 
@@ -148,11 +152,11 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         }
     }
 
-
     @Test
-    public void shouldGetListOfRoles() throws Exception {
+    public void shouldGetListOfRolesOrmJrdFlagEnabled() throws Exception {
         final String url = "/am/role-assignments/roles";
-
+        doReturn(true).when(featureToggleService)
+            .isFlagEnabled(Constants.ORM_SERVICE_NAME, Constants.ORM_JRD_ORG_ROLE_FLAG);
         final MvcResult result = mockMvc.perform(get(url)
                                                      .contentType(MediaType.APPLICATION_JSON)
                                                      .headers(getHttpHeaders())
@@ -160,29 +164,60 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             .andExpect(status().is(200))
             .andReturn();
         String response = result.getResponse().getContentAsString();
-
-        JsonNode jsonResonse = mapper.readValue(response, JsonNode.class);
+        JsonNode jsonResponse = mapper.readValue(response, JsonNode.class);
         assertEquals(200, result.getResponse().getStatus());
         assertEquals(
             4,
-            jsonResonse.size()
+            jsonResponse.size()
         );
         assertEquals(
-            "judge",
-            jsonResonse.get(0).get("name").asText()
+            "salaried-judge",
+            jsonResponse.get(3).get("name").asText()
         );
         assertEquals(
             "Judicial office holder able to do judicial case work",
-            jsonResonse.get(0).get("description").asText()
+            jsonResponse.get(3).get("description").asText()
         );
         assertEquals(
             "JUDICIAL",
-            jsonResonse.get(0).get("category").asText()
+            jsonResponse.get(3).get("category").asText()
         );
     }
 
     @Test
+    public void shouldGetListOfRolesOrmJrdFlagDisabled() throws Exception {
+        final String url = "/am/role-assignments/roles";
+        doReturn(false).when(featureToggleService)
+            .isFlagEnabled(Constants.ORM_SERVICE_NAME, Constants.ORM_JRD_ORG_ROLE_FLAG);
+        final MvcResult result = mockMvc.perform(get(url)
+                                                     .contentType(MediaType.APPLICATION_JSON)
+                                                     .headers(getHttpHeaders())
+        )
+            .andExpect(status().is(200))
+            .andReturn();
+        String response = result.getResponse().getContentAsString();
+        JsonNode jsonResponse = mapper.readValue(response, JsonNode.class);
+        assertEquals(200, result.getResponse().getStatus());
+        assertEquals(
+            3,
+            jsonResponse.size()
+        );
+        assertEquals(
+            "judge",
+            jsonResponse.get(0).get("name").asText()
+        );
+        assertEquals(
+            "Judicial office holder able to do judicial case work",
+            jsonResponse.get(0).get("description").asText()
+        );
+        assertEquals(
+            "JUDICIAL",
+            jsonResponse.get(0).get("category").asText()
+        );
+    }
 
+
+    @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void shouldGetRoleAssignmentsRecordsBasedOnDynamicQuery() throws Exception {
 
