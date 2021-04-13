@@ -14,7 +14,6 @@ import  uk.gov.hmcts.reform.roleassignment.launchdarkly.LDFeatureFlag;
  */
 rule "judicial_case_role_mapping_service_create"
 when
-     $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.JUDICIALFLAG.getValue())
     $rq: Request(
                  assignerId == authenticatedUserId)
     $ra: RoleAssignment(status == Status.CREATE_REQUESTED,
@@ -29,6 +28,37 @@ end;
 
 
 rule "judicial_case_role_mapping_service_delete"
+when
+    $rq: Request(assignerId == authenticatedUserId)
+
+    $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleCategory == RoleCategory.JUDICIAL)
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : judicial_case_role_mapping_service_delete");
+     update($ra);
+    System.out.println("Rule :: judicial_case_role_mapping_service_delete");
+end;
+
+rule "judicial_salaried_judge_case_role_mapping_service_create"
+when
+     $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.JUDICIALFLAG.getValue())
+    $rq: Request(
+                 assignerId == authenticatedUserId)
+    $ra: RoleAssignment(status == Status.CREATE_REQUESTED,
+                          roleType == RoleType.CASE,
+                          roleCategory == RoleCategory.JUDICIAL)
+then
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Create approved : judicial_case_role_mapping_service_create");
+    update($ra);
+    System.out.println("Rule : judicial_case_role_mapping_service_create");
+end;
+
+
+rule "judicial__salaried_judge_case_role_mapping_service_delete"
 when
     $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.JUDICIALFLAG.getValue())
     $rq: Request(assignerId == authenticatedUserId)
