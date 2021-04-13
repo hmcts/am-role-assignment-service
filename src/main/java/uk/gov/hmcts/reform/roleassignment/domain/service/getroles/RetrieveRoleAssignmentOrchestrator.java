@@ -17,13 +17,13 @@ import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.ORM_JRD_ORG_ROLE_FLAG;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.ORM_SERVICE_NAME;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
+
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.ORM_JRD_ORG_ROLE_FLAG;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.ORM_SERVICE_NAME;
 
 @Service
 public class RetrieveRoleAssignmentOrchestrator {
@@ -32,7 +32,7 @@ public class RetrieveRoleAssignmentOrchestrator {
     private PrepareResponseService prepareResponseService;
 
     @Autowired
-    private FeatureToggleService featureConditionEvaluator;
+    private FeatureToggleService featureToggleService;
 
     public RetrieveRoleAssignmentOrchestrator(PersistenceService persistenceService,
                                               PrepareResponseService prepareResponseService) {
@@ -69,7 +69,7 @@ public class RetrieveRoleAssignmentOrchestrator {
         assert input != null;
         arrayNode = mapper.readTree(input);
 
-        if (!featureConditionEvaluator.isFlagEnabled(ORM_SERVICE_NAME, ORM_JRD_ORG_ROLE_FLAG)) {
+        if (!featureToggleService.isFlagEnabled(ORM_SERVICE_NAME, ORM_JRD_ORG_ROLE_FLAG)) {
             Iterator<JsonNode> it = arrayNode.iterator();
             while (it.hasNext()) {
                 JsonNode node = it.next();
