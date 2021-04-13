@@ -164,7 +164,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         JsonNode jsonResonse = mapper.readValue(response, JsonNode.class);
         assertEquals(200, result.getResponse().getStatus());
         assertEquals(
-            3,
+            4,
             jsonResonse.size()
         );
         assertEquals(

@@ -10,12 +10,13 @@ import  uk.gov.hmcts.reform.roleassignment.launchdarkly.LDFeatureFlag;
 
 rule "judicial_organisational_role_mapping_service_create"
 when
-   $rq: Request() //clientId == "am_org_role_mapping_service")
+    $rq: Request(byPassOrgDroolRule || clientId == "am_org_role_mapping_service")
 
    $ra: RoleAssignment(
                 status == Status.CREATE_REQUESTED,
                 roleType == RoleType.ORGANISATION,
-                roleCategory == RoleCategory.JUDICIAL)
+                roleCategory == RoleCategory.JUDICIAL,
+                roleName == "judge" )
 then
        $ra.setStatus(Status.CREATE_APPROVED);
        $ra.log("Create approved : judicial_organisational_role_mapping_service_create");
@@ -27,12 +28,13 @@ end;
 
 rule "judicial_organisational_role_mapping_service_delete"
 when
-    $rq: Request( ) //clientId == "am_org_role_mapping_service")
+     $rq: Request(byPassOrgDroolRule || clientId == "am_org_role_mapping_service")
 
     $ra: RoleAssignment(
                  status == Status.DELETE_REQUESTED,
                  roleType == RoleType.ORGANISATION,
-                 roleCategory == RoleCategory.JUDICIAL)
+                 roleCategory == RoleCategory.JUDICIAL,
+                 roleName == "judge")
 then
        $ra.setStatus(Status.DELETE_APPROVED);
        $ra.log("Delete approved : judicial_organisational_role_mapping_service_delete");
@@ -44,13 +46,14 @@ end;
 rule "judicial_org_salaried_judge_create"
 when
 
-   $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.JUDICIALFLAG.getValue())
+   $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.JUDICIAL_FLAG.getValue())
    $rq: Request(byPassOrgDroolRule || clientId == "am_org_role_mapping_service")
 
    $ra: RoleAssignment(
                 status == Status.CREATE_REQUESTED,
                 roleType == RoleType.ORGANISATION,
-                roleCategory == RoleCategory.JUDICIAL)
+                roleCategory == RoleCategory.JUDICIAL,
+                roleName == "salaried-judge")
 then
        $ra.setStatus(Status.CREATE_APPROVED);
        $ra.log("Create approved : judicial_organisational_role_mapping_service_create");
@@ -62,13 +65,14 @@ end;
 
 rule "judicial_org_salaried_judge_delete"
 when
-      $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.JUDICIALFLAG.getValue())
+      $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.JUDICIAL_FLAG.getValue())
       $rq: Request(byPassOrgDroolRule || clientId == "am_org_role_mapping_service")
 
     $ra: RoleAssignment(
                  status == Status.DELETE_REQUESTED,
                  roleType == RoleType.ORGANISATION,
-                 roleCategory == RoleCategory.JUDICIAL)
+                 roleCategory == RoleCategory.JUDICIAL,
+                 roleName == "salaried-judge")
 then
        $ra.setStatus(Status.DELETE_APPROVED);
        $ra.log("Delete approved : judicial_organisational_role_mapping_service_delete");

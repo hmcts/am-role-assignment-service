@@ -18,7 +18,8 @@ when
                  assignerId == authenticatedUserId)
     $ra: RoleAssignment(status == Status.CREATE_REQUESTED,
                           roleType == RoleType.CASE,
-                          roleCategory == RoleCategory.JUDICIAL)
+                          roleCategory == RoleCategory.JUDICIAL,
+                          roleName == "judge")
 then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Create approved : judicial_case_role_mapping_service_create");
@@ -34,7 +35,8 @@ when
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
-             roleCategory == RoleCategory.JUDICIAL)
+             roleCategory == RoleCategory.JUDICIAL,
+             roleName == "judge")
 then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : judicial_case_role_mapping_service_delete");
@@ -44,12 +46,13 @@ end;
 
 rule "judicial_salaried_judge_case_role_mapping_service_create"
 when
-     $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.JUDICIALFLAG.getValue())
+     $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.JUDICIAL_FLAG.getValue())
     $rq: Request(
                  assignerId == authenticatedUserId)
     $ra: RoleAssignment(status == Status.CREATE_REQUESTED,
                           roleType == RoleType.CASE,
-                          roleCategory == RoleCategory.JUDICIAL)
+                          roleCategory == RoleCategory.JUDICIAL,
+                          roleName == "salaried-judge")
 then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Create approved : judicial_case_role_mapping_service_create");
@@ -60,13 +63,14 @@ end;
 
 rule "judicial__salaried_judge_case_role_mapping_service_delete"
 when
-    $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.JUDICIALFLAG.getValue())
+    $f : LDFeatureFlag(status && flagName == FeatureFlagEnum.JUDICIAL_FLAG.getValue())
     $rq: Request(assignerId == authenticatedUserId)
 
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
-             roleCategory == RoleCategory.JUDICIAL)
+             roleCategory == RoleCategory.JUDICIAL,
+             roleName == "salaried-judge")
 then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : judicial_case_role_mapping_service_delete");
