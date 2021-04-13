@@ -140,6 +140,6 @@ class RetrieveRoleAssignmentOrchestratorTest {
         when(featureConditionEvaluator.isFlagEnabled(any(),any())).thenReturn(false);
         JsonNode roles = sut.getListOfRoles();
         assertNotNull(roles);
-        assertEquals(4, roles.size());
+        assertEquals(3, roles.size());
     }
 }
