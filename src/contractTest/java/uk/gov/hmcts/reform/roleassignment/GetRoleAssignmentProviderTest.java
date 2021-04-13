@@ -13,10 +13,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 
 @ExtendWith(SpringExtension.class)
 @Provider("am_roleAssignment_getRoles")
@@ -29,6 +31,9 @@ public class GetRoleAssignmentProviderTest {
 
     @Autowired
     private RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentServiceMock;
+
+    @MockBean
+    private FeatureToggleService featureToggleService;
 
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider.class)

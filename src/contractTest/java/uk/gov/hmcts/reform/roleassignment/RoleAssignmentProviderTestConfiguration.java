@@ -77,7 +77,6 @@ public class RoleAssignmentProviderTestConfiguration {
                                           ldEventListener);
     }
 
-
     @Bean
     @Primary
     public PersistenceUtil getPersistenceUtil() {
@@ -98,7 +97,6 @@ public class RoleAssignmentProviderTestConfiguration {
                                                     getPersistenceUtil()
         );
     }
-
 
     @Bean
     @Primary
