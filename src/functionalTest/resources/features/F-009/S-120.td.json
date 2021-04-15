@@ -1,0 +1,59 @@
+{
+  "title": "must successfully create single salaried judge Role Assignment",
+  "_guid_": "S-120",
+  "_extends_": "F-009_Test_Data_Base",
+  "specs": [
+    "contains a single salaried judge Role Assignment"
+  ],
+  "request": {
+    "body": {
+      "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "${[scenarioContext][customValues][generateUUID]}"
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRoleSalariedJudge",
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "roleType": "ORGANISATION",
+          "roleName": "salaried-judge",
+          "grantType": "STANDARD",
+          "attributes":
+          {
+            "region": "south-east",
+            "baseLocation": "12345",
+            "contractType": "salaried-judge"
+          }
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest"
+        },
+        "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRoleSalariedJudge",
+            "roleType": "ORGANISATION",
+            "roleName": "salaried-judge",
+            "grantType": "STANDARD",
+            "attributes":
+            {
+              "region": "south-east",
+              "baseLocation": "12345",
+              "contractType": "salaried-judge"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

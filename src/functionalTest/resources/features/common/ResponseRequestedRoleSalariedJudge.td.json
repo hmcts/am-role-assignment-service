@@ -1,0 +1,22 @@
+{
+  "_guid_": "ResponseRequestedRoleSalariedJudge",
+  "id" : "[[ANYTHING_PRESENT]]",
+  "actorIdType" : "IDAM",
+  "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+  "roleType": "ORGANISATION",
+  "roleName" : "judge",
+  "classification" : "PUBLIC",
+  "grantType": "STANDARD",
+  "roleCategory":"JUDICIAL",
+  "readOnly" : false,
+  "beginTime" : "[[ANYTHING_PRESENT]]",
+  "endTime" : "[[ANYTHING_PRESENT]]",
+  "process": "businessProcess1",
+  "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+  "status":"LIVE",
+  "created":"[[ANYTHING_PRESENT]]",
+  "log":"[[ANYTHING_PRESENT]]",
+  "attributes" : {
+    "jurisdiction" : "IA"
+  }
+}
