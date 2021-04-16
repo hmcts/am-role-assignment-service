@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.util;
 import com.launchdarkly.sdk.LDUser;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -19,6 +20,7 @@ import static uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleServi
 @Component
 @Getter
 @Setter
+@Slf4j
 public class LDEventListener implements CommandLineRunner {
 
     @Autowired
@@ -44,12 +46,11 @@ public class LDEventListener implements CommandLineRunner {
             .build();
 
         for (FeatureFlagEnum flag : FeatureFlagEnum.values()) {
-
             droolFlagStates.put(flag.getValue(), featureToggleService.isFlagEnabled(flag.getValue()));
             featureFlagListener.logWheneverOneFlagChangesForOneUser(flag.getValue(), user);
-
+            log.info("Flag: {} has been initialised with value: {}", flag.getValue(),
+                     droolFlagStates.get(flag.getValue()));
         }
-
     }
 
     public Map<String, Boolean> getDroolFlagStates() {
