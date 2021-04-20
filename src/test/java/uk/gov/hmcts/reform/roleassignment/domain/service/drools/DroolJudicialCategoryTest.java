@@ -4,10 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.*;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.LDFeatureFlag;
 
@@ -190,6 +187,362 @@ class DroolJudicialCategoryTest extends DroolBase {
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
                                                                    assertEquals(
                                                                        Status.APPROVED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectCaseValidationForRequestedRoleMissingCaseIdForSalariedJudge() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "salaried-judge", GrantType.SPECIFIC);
+
+        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("JA"));
+        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Salaried"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.setRequestedRoles(requestedRoles);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
+        });
+
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIAL_FLAG.getValue())
+            .status(true).build();
+        ldFeatureFlags.add(ldFeatureFlag);
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectCaseValidationForRequestedRoleMissingCaseTypeForSalariedJudge() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "salaried-judge", GrantType.SPECIFIC);
+
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("JA"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.setRequestedRoles(requestedRoles);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
+        });
+
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIAL_FLAG.getValue())
+            .status(true).build();
+        ldFeatureFlags.add(ldFeatureFlag);
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+
+    @Test
+    void shouldRejectCaseValidationForRequestedRoleMissingJurisdictionForSalariedJudge() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "salaried-judge", GrantType.SPECIFIC);
+
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Salaried"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.setRequestedRoles(requestedRoles);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
+        });
+
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIAL_FLAG.getValue())
+            .status(true).build();
+        ldFeatureFlags.add(ldFeatureFlag);
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectCaseValidationForRequestedRoleMissingBeginTimeForSalariedJudge() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "salaried-judge",
+                                                              GrantType.SPECIFIC);
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("JA"));
+        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Salaried"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.setRequestedRoles(requestedRoles);
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIAL_FLAG.getValue())
+            .status(true).build();
+        ldFeatureFlags.add(ldFeatureFlag);
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectOrgValidation_MissingMandatoryAttributeBaseLocationForSalariedJudge() {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setRoleName("salaried-judge");
+            roleAssignment.setBeginTime(ZonedDateTime.now());
+            roleAssignment.setEndTime(ZonedDateTime.now().plusYears(1));
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+            roleAssignment.getAttributes().put("contractType", convertValueJsonNode("salaried"));
+        });
+
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIAL_FLAG.getValue())
+            .status(true).build();
+        ldFeatureFlags.add(ldFeatureFlag);
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectOrgValidation_MissingMandatoryAttributeJurisdictionForSalariedJudge() {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setRoleName("salaried-judge");
+            roleAssignment.setBeginTime(ZonedDateTime.now());
+            roleAssignment.setEndTime(ZonedDateTime.now().plusYears(1));
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
+            roleAssignment.getAttributes().put("baseLocation", convertValueJsonNode("12345"));
+            roleAssignment.getAttributes().put("contractType", convertValueJsonNode("salaried"));
+        });
+
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIAL_FLAG.getValue())
+            .status(true).build();
+        ldFeatureFlags.add(ldFeatureFlag);
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectOrgValidation_MandatoryAttributeJurisdictionNotIAForSalariedJudge() {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setRoleName("salaried-judge");
+            roleAssignment.setBeginTime(ZonedDateTime.now());
+            roleAssignment.setEndTime(ZonedDateTime.now().plusYears(1));
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
+            roleAssignment.getAttributes().put("baseLocation", convertValueJsonNode("12345"));
+            roleAssignment.getAttributes().put("contractType", convertValueJsonNode("salaried"));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("JA"));
+        });
+
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIAL_FLAG.getValue())
+            .status(true).build();
+        ldFeatureFlags.add(ldFeatureFlag);
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectOrgValidation_MissingMandatoryAttributeContractTypeForSalariedJudge() {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setRoleName("salaried-judge");
+            roleAssignment.setBeginTime(ZonedDateTime.now());
+            roleAssignment.setEndTime(ZonedDateTime.now().plusYears(1));
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
+            roleAssignment.getAttributes().put("baseLocation", convertValueJsonNode("12345"));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        });
+
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIAL_FLAG.getValue())
+            .status(true).build();
+        ldFeatureFlags.add(ldFeatureFlag);
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectOrgValidation_MissingMandatoryAttributeRegionForSalariedJudge() {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setRoleName("salaried-judge");
+            roleAssignment.setBeginTime(ZonedDateTime.now());
+            roleAssignment.setEndTime(ZonedDateTime.now().plusYears(1));
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.getAttributes().put("contractType", convertValueJsonNode("salaried"));
+            roleAssignment.getAttributes().put("baseLocation", convertValueJsonNode("12345"));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        });
+
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIAL_FLAG.getValue())
+            .status(true).build();
+        ldFeatureFlags.add(ldFeatureFlag);
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectOrgValidation_MissingBeginTimeForSalariedJudge() {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setRoleName("salaried-judge");
+            roleAssignment.setEndTime(ZonedDateTime.now().plusYears(1));
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
+            roleAssignment.getAttributes().put("contractType", convertValueJsonNode("salaried"));
+            roleAssignment.getAttributes().put("baseLocation", convertValueJsonNode("12345"));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        });
+
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIAL_FLAG.getValue())
+            .status(true).build();
+        ldFeatureFlags.add(ldFeatureFlag);
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectOrgValidation_MissingEndTimeForSalariedJudge() {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setRoleName("salaried-judge");
+            roleAssignment.setBeginTime(ZonedDateTime.now());
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
+            roleAssignment.getAttributes().put("contractType", convertValueJsonNode("salaried"));
+            roleAssignment.getAttributes().put("baseLocation", convertValueJsonNode("12345"));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        });
+
+        LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIAL_FLAG.getValue())
+            .status(true).build();
+        ldFeatureFlags.add(ldFeatureFlag);
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
                                                                        roleAssignment.getStatus()
                                                                    )
         );
