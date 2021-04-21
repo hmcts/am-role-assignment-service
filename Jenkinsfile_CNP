@@ -121,6 +121,12 @@ withPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/site/serenity/**'
   }
 
+  post {
+      always {
+          steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/contract/**/*'
+      }
+  }
+
   onMaster(){
       enablePactAs([
               AppPipelineDsl.PactRoles.PROVIDER
