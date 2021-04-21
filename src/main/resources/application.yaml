@@ -82,7 +82,7 @@ spring:
       maximumPoolSize: 10
       poolName: AMHikariCP
       maxLifetime: 30000
-      connectionTimeout: 30000
+      connectionTimeout: 10000
   security:
     oauth2:
       client:
