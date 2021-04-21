@@ -79,12 +79,10 @@ spring:
     properties:
       charSet: UTFh-8
     hikari:
-      minimumIdle: 10
-      maximumPoolSize: 48
-      idleTimeout: 10000
-      poolName: CWHikariCP
+      maximumPoolSize: 10
+      poolName: AMHikariCP
       maxLifetime: 30000
-      connectionTimeout: 30000
+      connectionTimeout: 10000
   security:
     oauth2:
       client:
