@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ForbiddenException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
@@ -20,16 +19,12 @@ import static org.mockito.Mockito.when;
 
 public class FeatureConditionEvaluationTest {
 
-    @Mock
     FeatureToggleService featureToggleService = mock(FeatureToggleService.class);
 
-    @Mock
     SecurityUtils securityUtils = mock(SecurityUtils.class);
 
-    @Mock
     HttpServletRequest request = mock(HttpServletRequest.class);
 
-    @Mock
     HttpServletResponse response = mock(HttpServletResponse.class);
 
     Map<String, String> launchDarklyMap;
