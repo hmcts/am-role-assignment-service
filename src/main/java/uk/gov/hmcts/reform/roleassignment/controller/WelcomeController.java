@@ -43,7 +43,12 @@ public class WelcomeController {
 
     @GetMapping(value = "/welcome")
     public String welcome() {
-        return "welcome to role assignment service";
+        if (persistenceService.getStatusByParam("ccd_drool_config","aat",
+                                                "am_role_assignment_service")) {
+            return "welcome ccd_drool_config flag is set to true";
+        } else {
+            return "welcome ccd_drool_config flag is set to false";
+        }
     }
 
     @GetMapping("/db/releaselock")

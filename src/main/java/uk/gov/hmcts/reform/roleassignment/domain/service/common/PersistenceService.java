@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
+import uk.gov.hmcts.reform.roleassignment.data.FlagConfigRepository;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
@@ -66,6 +67,7 @@ public class PersistenceService {
     private ActorCacheRepository actorCacheRepository;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
     private Page<RoleAssignmentEntity> pageRoleAssignmentEntities;
+    private FlagConfigRepository flagConfigRepository;
 
     @Value("${roleassignment.query.sortcolumn}")
     private String sortColumn;
@@ -79,13 +81,14 @@ public class PersistenceService {
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
                               RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
                               ActorCacheRepository actorCacheRepository,
-                              DatabseChangelogLockRepository databseChangelogLockRepository) {
+                              DatabseChangelogLockRepository databseChangelogLockRepository, FlagConfigRepository flagConfigRepository) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
         this.persistenceUtil = persistenceUtil;
         this.actorCacheRepository = actorCacheRepository;
         this.databseChangelogLockRepository = databseChangelogLockRepository;
+        this.flagConfigRepository = flagConfigRepository;
     }
 
     @Transactional
@@ -272,5 +275,8 @@ public class PersistenceService {
 
     }
 
+    public Boolean getStatusByParam(String flagName, String envName, String serviceName) {
+        return flagConfigRepository.getStatusByParams(flagName, envName, serviceName).getStatus();
+    }
 
 }

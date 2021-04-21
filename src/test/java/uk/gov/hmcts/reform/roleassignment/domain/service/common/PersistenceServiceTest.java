@@ -87,8 +87,8 @@ class PersistenceServiceTest {
     @InjectMocks
     private final PersistenceService sut = new PersistenceService(
         historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository,
-        databseChangelogLockRepository
-    );
+        databseChangelogLockRepository,
+            flagConfigRepository);
 
 
     @Mock
