@@ -121,11 +121,11 @@ withPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/site/serenity/**'
   }
 
-  after('runProviderPactVerification:aat') {
+  after('contractTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/contract/**'
   }
 
-  after('runProviderPactVerification:preview') {
+  after('contractTest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/contract/**'
   }
 
