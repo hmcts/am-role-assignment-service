@@ -10,7 +10,6 @@ java:
         - role-assignment-service-POSTGRES-PASS
         - AppInsightsInstrumentationKey
         - role-assignment-service-IDAM-CLIENT-SECRET
-        - role-assignment-service-IDAM-ADMIN-USERID
         - role-assignment-service-IDAM-ADMIN-SECRET
         - role-assignment-service-LD-SDK-KEY
   environment:
@@ -34,4 +33,5 @@ java:
     PACT_BROKER_PORT: 443
     PACT_BROKER_SCHEME: https
     ENABLE_FEIGN_HYSTRIX: false
+    ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: ras-validation-system@hmcts.net
 
