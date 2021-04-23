@@ -7,7 +7,6 @@ java:
         - am-role-assignment-service-s2s-secret
         - AppInsightsInstrumentationKey
         - role-assignment-service-IDAM-CLIENT-SECRET
-        - role-assignment-service-IDAM-ADMIN-USERID
         - role-assignment-service-IDAM-ADMIN-SECRET
         - role-assignment-service-LD-SDK-KEY
   environment:
