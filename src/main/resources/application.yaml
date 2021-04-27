@@ -79,12 +79,11 @@ spring:
     properties:
       charSet: UTFh-8
     hikari:
-      minimumIdle: 10
-      maximumPoolSize: 48
-      idleTimeout: 10000
-      poolName: CWHikariCP
-      maxLifetime: 30000
-      connectionTimeout: 30000
+      maximumPoolSize: 10
+      poolName: AMHikariCP
+      maxLifetime: 90000
+      connectionTimeout: 10000
+      keepAliveTime: 60000
   security:
     oauth2:
       client:
@@ -116,8 +115,8 @@ idam:
     secret: ${ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET:am_docker_secret}
     redirect_uri: ${ROLE_ASSIGNMENT_IDAM_REDIRECT_URI:http://localhost:4096/oauth2redirect}
     admin:
-      userId: ${ROLE_ASSIGNMENT_IDAM_ADMIN_USERID:ras-validation-system@hmcts.net}
-      secret: ${ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:Pa55word11}
+      userId: ${ROLE_ASSIGNMENT_IDAM_ADMIN_USERID:}
+      secret: ${ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:}
       scope: ${ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE:openid profile roles authorities}
 
 
