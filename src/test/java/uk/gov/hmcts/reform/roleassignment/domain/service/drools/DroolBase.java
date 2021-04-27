@@ -8,6 +8,7 @@ import org.kie.api.runtime.StatelessKieSession;
 import org.mockito.Mock;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
@@ -35,6 +36,7 @@ public abstract class DroolBase {
     StatelessKieSession kieSession;
     AssignmentRequest assignmentRequest;
     List<Object> facts;
+    List<FeatureFlag> featureFlags;
 
     @Mock
     private RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
@@ -44,6 +46,7 @@ public abstract class DroolBase {
 
         //list of facts
         facts = new ArrayList<>();
+        featureFlags = new ArrayList<>();
 
         //build assignmentRequest
         assignmentRequest = getAssignmentRequest()
@@ -136,10 +139,13 @@ public abstract class DroolBase {
     void buildExecuteKieSession() {
         // facts must contain the request
         facts.add(assignmentRequest.getRequest());
+        facts.addAll(featureFlags);
         // facts must contain all affected role assignments
         facts.addAll(assignmentRequest.getRequestedRoles());
         // Run the rules
         kieSession.execute(facts);
+
+
     }
 
 

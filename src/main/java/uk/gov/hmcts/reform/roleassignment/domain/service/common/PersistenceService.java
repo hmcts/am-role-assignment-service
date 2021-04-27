@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
+import uk.gov.hmcts.reform.roleassignment.data.FlagConfig;
 import uk.gov.hmcts.reform.roleassignment.data.FlagConfigRepository;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryRepository;
@@ -81,7 +82,8 @@ public class PersistenceService {
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
                               RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
                               ActorCacheRepository actorCacheRepository,
-                              DatabseChangelogLockRepository databseChangelogLockRepository, FlagConfigRepository flagConfigRepository) {
+                              DatabseChangelogLockRepository databseChangelogLockRepository,
+                              FlagConfigRepository flagConfigRepository) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
@@ -128,7 +130,7 @@ public class PersistenceService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void persistActorCache(Collection<RoleAssignment> roleAssignments) {
         roleAssignments.stream().forEach(roleAssignment -> {
-            ActorCacheEntity actorCacheEntity  = persistenceUtil
+            ActorCacheEntity actorCacheEntity = persistenceUtil
                 .convertActorCacheToEntity(prepareActorCache(roleAssignment));
             ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
             if (existingActorCache != null) {
@@ -275,8 +277,13 @@ public class PersistenceService {
 
     }
 
-    public Boolean getStatusByParam(String flagName, String envName, String serviceName) {
-        return flagConfigRepository.getStatusByParams(flagName, envName, serviceName).getStatus();
+    public Boolean getStatusByParam(String flagName, String envName) {
+        return flagConfigRepository.getStatusByParams(flagName, envName).getStatus();
+    }
+
+    public FlagConfig persistFlagConfig(FlagConfig flagConfig) {
+        return flagConfigRepository.save(flagConfig);
+
     }
 
 }

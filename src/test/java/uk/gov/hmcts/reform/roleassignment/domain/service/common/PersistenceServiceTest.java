@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
+import uk.gov.hmcts.reform.roleassignment.data.FlagConfigRepository;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
@@ -81,6 +82,9 @@ class PersistenceServiceTest {
 
     @Mock
     private Page<RoleAssignmentEntity> pageable;
+
+    @Mock
+    private FlagConfigRepository flagConfigRepository;
 
 
 
