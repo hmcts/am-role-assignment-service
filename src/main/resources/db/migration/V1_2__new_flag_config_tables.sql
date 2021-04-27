@@ -14,19 +14,19 @@ ALTER TABLE flag_config ALTER COLUMN id
 SET DEFAULT nextval('ID_SEQ');
 
 -- insert iac base flag into flag_config table
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_drool_config_1_0', 'pr', 'ia', 'true');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_drool_config_1_0', 'aat', 'ia', 'true');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_drool_config_1_0', 'demo', 'ia', 'false');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_drool_config_1_0', 'perftest', 'ia', 'false');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_drool_config_1_0', 'ithc', 'ia', 'false');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_drool_config_1_0', 'prod', 'ia', 'false');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'pr', 'iac', 'true');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'aat', 'iac', 'true');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'demo', 'iac', 'false');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'perftest', 'iac', 'false');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'ithc', 'iac', 'false');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'prod', 'iac', 'false');
 
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_drool_config_1_1', 'pr', 'ia', 'false');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_drool_config_1_1', 'aat', 'ia', 'false');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_drool_config_1_1', 'demo', 'ia', 'false');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_drool_config_1_1', 'perftest', 'ia', 'false');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_drool_config_1_1', 'ithc', 'ia', 'false');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_drool_config_1_1', 'prod', 'ia', 'true');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_1', 'pr', 'iac', 'false');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_1', 'aat', 'iac', 'false');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_1', 'demo', 'iac', 'false');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_1', 'perftest', 'iac', 'false');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_1', 'ithc', 'iac', 'false');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_1', 'prod', 'iac', 'false');
 
 
 
