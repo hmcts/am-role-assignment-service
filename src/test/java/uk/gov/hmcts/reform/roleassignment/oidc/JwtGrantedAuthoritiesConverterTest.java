@@ -2,9 +2,10 @@ package uk.gov.hmcts.reform.roleassignment.oidc;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
@@ -21,11 +22,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
+@RunWith(MockitoJUnitRunner.class)
 class JwtGrantedAuthoritiesConverterTest {
 
-    @Mock
-    private IdamRepository idamRepositoryMock = mock(IdamRepository.class);
+    private final IdamRepository idamRepositoryMock = mock(IdamRepository.class);
 
     private UserInfo userInfo;
 
