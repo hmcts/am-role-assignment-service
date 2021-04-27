@@ -130,22 +130,9 @@ class DroolJudicialCategoryTest extends DroolBase {
     @Test
     void shouldApprovedSalariedJudgeRoleForOrg() {
 
-        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
-            roleAssignment.setRoleType(RoleType.ORGANISATION);
-            roleAssignment.setStatus(Status.CREATE_REQUESTED);
-            roleAssignment.setRoleName("salaried-judge");
-            roleAssignment.setBeginTime(ZonedDateTime.now());
-            roleAssignment.setEndTime(ZonedDateTime.now());
-            roleAssignment.setGrantType(STANDARD);
-            roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
-            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-            roleAssignment.getAttributes().put("baseLocation", convertValueJsonNode("1351"));
-            roleAssignment.getAttributes().put("contractType", convertValueJsonNode("salaried"));
-        });
-
+        prepareSalariedJudgeRequestedRole("north-east", "1351", "IA",
+                                          "salaried",
+                                          ZonedDateTime.now(), ZonedDateTime.now());
         LDFeatureFlag ldFeatureFlag  =  LDFeatureFlag.builder().flagName(FeatureFlagEnum.JUDICIAL_FLAG.getValue())
             .status(true).build();
         ldFeatureFlags.add(ldFeatureFlag);
