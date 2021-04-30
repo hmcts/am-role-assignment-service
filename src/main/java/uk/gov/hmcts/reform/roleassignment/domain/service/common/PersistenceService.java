@@ -108,10 +108,7 @@ public class PersistenceService {
 
     @Transactional
     public void persistHistoryEntities(Collection<HistoryEntity> historyEntityList) {
-        entityManager.flush();
-        historyEntityList.forEach(historyEntity -> {entityManager.persist(historyEntity);
-            entityManager.flush();
-        });
+        historyEntityList.forEach(historyEntity -> entityManager.persist(historyEntity));
         entityManager.flush();
     }
 
@@ -121,10 +118,7 @@ public class PersistenceService {
         Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignments.stream().map(
             roleAssignment -> persistenceUtil.convertRoleAssignmentToEntity(roleAssignment, true)
         ).collect(Collectors.toSet());
-        roleAssignmentEntities.forEach(roleAssignmentEntity -> {
-            entityManager.persist(roleAssignmentEntity);
-            entityManager.flush();
-        });
+        roleAssignmentEntities.forEach(roleAssignmentEntity -> entityManager.persist(roleAssignmentEntity));
         entityManager.flush();
     }
 
@@ -140,7 +134,6 @@ public class PersistenceService {
             } else {
                 entityManager.persist(actorCacheEntity);
             }
-            entityManager.flush();
         });
         entityManager.flush();
 

@@ -21,7 +21,7 @@ import javax.persistence.Version;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "actor_cache_control")
-public class ActorCacheEntity/* implements Persistable<String>*/ {
+public class ActorCacheEntity {
 
     @Id
     @Column(name = "actor_id", nullable = false)
@@ -35,14 +35,5 @@ public class ActorCacheEntity/* implements Persistable<String>*/ {
     @Convert(converter = JsonBConverter.class)
     private JsonNode roleAssignmentResponse;
 
-/*    @Override
-    public String getId() {
-        return actorId;
-    }*/
-
-/*    @Override
-    public boolean isNew() {
-        return true;
-    }*/
 }
 

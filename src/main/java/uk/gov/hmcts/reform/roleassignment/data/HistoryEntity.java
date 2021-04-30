@@ -29,7 +29,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity(name = "role_assignment_history")
 @IdClass(RoleAssignmentIdentity.class)
-public class HistoryEntity /*implements Persistable<UUID>*/ {
+public class HistoryEntity {
 
     @Id
     private UUID id;
@@ -104,9 +104,5 @@ public class HistoryEntity /*implements Persistable<UUID>*/ {
         return requestEntity.getId();
     }
 
-/*    @Override
-    public boolean isNew() {
-        return true;
-    }*/
 }
 
