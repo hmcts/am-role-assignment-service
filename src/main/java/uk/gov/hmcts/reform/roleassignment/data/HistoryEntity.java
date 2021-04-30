@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
-import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
-
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -31,7 +29,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity(name = "role_assignment_history")
 @IdClass(RoleAssignmentIdentity.class)
-public class HistoryEntity implements Persistable<UUID> {
+public class HistoryEntity /*implements Persistable<UUID>*/ {
 
     @Id
     private UUID id;
@@ -106,9 +104,9 @@ public class HistoryEntity implements Persistable<UUID> {
         return requestEntity.getId();
     }
 
-    @Override
+/*    @Override
     public boolean isNew() {
         return true;
-    }
+    }*/
 }
 

@@ -101,6 +101,7 @@ public class RoleAssignmentControllerAdvice {
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ErrorResponse> nullException(final NullPointerException e) {
+        e.printStackTrace();
         return new ResponseEntity<>(
             ErrorResponse
                 .builder()
