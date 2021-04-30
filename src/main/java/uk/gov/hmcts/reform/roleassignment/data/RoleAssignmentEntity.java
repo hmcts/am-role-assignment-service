@@ -2,7 +2,6 @@
 package uk.gov.hmcts.reform.roleassignment.data;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,9 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
-import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
-
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -29,7 +26,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity(name = "role_assignment")
 
-public class RoleAssignmentEntity implements Persistable<UUID> {
+public class RoleAssignmentEntity/* implements Persistable<UUID>*/ {
 
     @Id
     private UUID id;
@@ -80,10 +77,10 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
     @Transient
     private boolean isNewFlag = true;
 
-    @Override
+ /*   @Override
     public boolean isNew() {
         return isNewFlag;
-    }
+    }*/
 
 }
 

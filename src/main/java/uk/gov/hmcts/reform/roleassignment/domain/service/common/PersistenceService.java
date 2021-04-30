@@ -108,7 +108,10 @@ public class PersistenceService {
 
     @Transactional
     public void persistHistoryEntities(Collection<HistoryEntity> historyEntityList) {
-        historyEntityList.forEach(historyEntity -> entityManager.persist(historyEntity));
+        entityManager.flush();
+        historyEntityList.forEach(historyEntity -> {entityManager.persist(historyEntity);
+            entityManager.flush();
+        });
         entityManager.flush();
     }
 
@@ -118,13 +121,16 @@ public class PersistenceService {
         Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignments.stream().map(
             roleAssignment -> persistenceUtil.convertRoleAssignmentToEntity(roleAssignment, true)
         ).collect(Collectors.toSet());
-        roleAssignmentEntities.forEach(roleAssignmentEntity -> entityManager.persist(roleAssignmentEntity));
+        roleAssignmentEntities.forEach(roleAssignmentEntity -> {
+            entityManager.persist(roleAssignmentEntity);
+            entityManager.flush();
+        });
         entityManager.flush();
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void persistActorCache(Collection<RoleAssignment> roleAssignments) {
-        roleAssignments.stream().forEach(roleAssignment -> {
+        roleAssignments.forEach(roleAssignment -> {
             ActorCacheEntity actorCacheEntity  = persistenceUtil
                 .convertActorCacheToEntity(prepareActorCache(roleAssignment));
             ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
@@ -134,6 +140,7 @@ public class PersistenceService {
             } else {
                 entityManager.persist(actorCacheEntity);
             }
+            entityManager.flush();
         });
         entityManager.flush();
 
