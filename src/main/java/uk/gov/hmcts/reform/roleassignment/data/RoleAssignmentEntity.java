@@ -26,7 +26,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity(name = "role_assignment")
 
-public class RoleAssignmentEntity/* implements Persistable<UUID>*/ {
+public class RoleAssignmentEntity {
 
     @Id
     private UUID id;
@@ -76,11 +76,6 @@ public class RoleAssignmentEntity/* implements Persistable<UUID>*/ {
     @Builder.Default
     @Transient
     private boolean isNewFlag = true;
-
- /*   @Override
-    public boolean isNew() {
-        return isNewFlag;
-    }*/
 
 }
 

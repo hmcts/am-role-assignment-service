@@ -53,8 +53,8 @@ public class CreateRoleAssignmentService {
     private Request incomingRequest;
     List<UUID> emptyUUIds = new ArrayList<>();
     CreatedTimeComparator createdTimeComparator;
-    Map<UUID, RoleAssignmentSubset> needToDeleteRoleAssignments;
-    Set<RoleAssignmentSubset> needToCreateRoleAssignments;
+    Map<UUID, RoleAssignmentSubset> needToDeleteRoleAssignments = new HashMap<>();
+    Set<RoleAssignmentSubset> needToCreateRoleAssignments = new HashSet<>();
     Set<RoleAssignment> needToRetainRoleAssignments;
     private static final String REQUEST_REJECTION_MSG = "Request has been rejected due to following assignment Ids :";
     private static final String REQUEST_APPROVAL_MSG = "Request has been approved";
