@@ -28,7 +28,7 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.SEA
 public class QueryAssignmentController {
 
     private static final Logger logger = LoggerFactory.getLogger(QueryAssignmentController.class);
-    private final QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator;
+    private QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator;
 
     public QueryAssignmentController(QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator) {
         this.queryRoleAssignmentOrchestrator = queryRoleAssignmentOrchestrator;
