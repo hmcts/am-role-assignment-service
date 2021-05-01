@@ -30,7 +30,6 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPRO
 
 @Slf4j
 @Service
-//@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @RequestScope
 public class CreateRoleAssignmentOrchestrator {
     private static final Logger logger = LoggerFactory.getLogger(CreateRoleAssignmentOrchestrator.class);
