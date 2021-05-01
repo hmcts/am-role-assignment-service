@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
+import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
 import javax.persistence.Column;
@@ -26,7 +27,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity(name = "role_assignment")
 
-public class RoleAssignmentEntity {
+public class RoleAssignmentEntity implements Persistable<UUID> {
 
     @Id
     private UUID id;
@@ -77,5 +78,9 @@ public class RoleAssignmentEntity {
     @Transient
     private boolean isNewFlag = true;
 
+    @Override
+    public boolean isNew() {
+        return isNewFlag;
+    }
 }
 
