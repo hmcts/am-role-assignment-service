@@ -29,9 +29,10 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DEL
 @Api(value = "roles")
 @RestController
 public class DeleteAssignmentController {
+
     private static final Logger logger = LoggerFactory.getLogger(DeleteAssignmentController.class);
 
-    private final DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator;
+    private DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator;
 
     public DeleteAssignmentController(@Autowired DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator) {
         this.deleteRoleAssignmentOrchestrator = deleteRoleAssignmentOrchestrator;

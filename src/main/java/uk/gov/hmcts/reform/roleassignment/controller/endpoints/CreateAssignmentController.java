@@ -30,7 +30,7 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CRE
 @RestController
 public class CreateAssignmentController {
 
-    private final CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
+    private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
     private static final Logger logger = LoggerFactory.getLogger(CreateAssignmentController.class);
 
     public CreateAssignmentController(@Autowired CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator) {

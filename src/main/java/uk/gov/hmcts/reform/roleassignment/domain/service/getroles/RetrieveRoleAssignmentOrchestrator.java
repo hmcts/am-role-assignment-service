@@ -25,8 +25,8 @@ import java.util.List;
 @RequestScope
 public class RetrieveRoleAssignmentOrchestrator {
 
-    private final PersistenceService persistenceService;
-    private final PrepareResponseService prepareResponseService;
+    private PersistenceService persistenceService;
+    private PrepareResponseService prepareResponseService;
 
     public RetrieveRoleAssignmentOrchestrator(@Autowired PersistenceService persistenceService,
                                               @Autowired PrepareResponseService prepareResponseService) {
