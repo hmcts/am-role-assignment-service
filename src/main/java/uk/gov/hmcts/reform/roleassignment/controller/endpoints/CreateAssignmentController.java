@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,12 +30,10 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CRE
 @RestController
 public class CreateAssignmentController {
 
-    private final CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
+    @Autowired
+    private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
     private static final Logger logger = LoggerFactory.getLogger(CreateAssignmentController.class);
 
-    public CreateAssignmentController(CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator) {
-        this.createRoleAssignmentOrchestrator = createRoleAssignmentOrchestrator;
-    }
 
     //**************** Create Role Assignment  API ***************
 
