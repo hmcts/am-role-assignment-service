@@ -31,9 +31,11 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DEL
 public class DeleteAssignmentController {
     private static final Logger logger = LoggerFactory.getLogger(DeleteAssignmentController.class);
 
-    @Autowired
-    private DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator;
+    private final DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator;
 
+    public DeleteAssignmentController(@Autowired DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator) {
+        this.deleteRoleAssignmentOrchestrator = deleteRoleAssignmentOrchestrator;
+    }
     @DeleteMapping(
         path = "am/role-assignments",
         produces = V1.MediaType.DELETE_ASSIGNMENTS

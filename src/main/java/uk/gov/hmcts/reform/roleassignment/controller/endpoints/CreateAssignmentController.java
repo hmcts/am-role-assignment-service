@@ -30,10 +30,12 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CRE
 @RestController
 public class CreateAssignmentController {
 
-    @Autowired
-    private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
+    private final CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
     private static final Logger logger = LoggerFactory.getLogger(CreateAssignmentController.class);
 
+    public CreateAssignmentController(@Autowired CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator) {
+        this.createRoleAssignmentOrchestrator = createRoleAssignmentOrchestrator;
+    }
 
     //**************** Create Role Assignment  API ***************
 
