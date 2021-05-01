@@ -37,6 +37,7 @@ public class DeleteAssignmentController {
     public DeleteAssignmentController(@Autowired DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator) {
         this.deleteRoleAssignmentOrchestrator = deleteRoleAssignmentOrchestrator;
     }
+
     @DeleteMapping(
         path = "am/role-assignments",
         produces = V1.MediaType.DELETE_ASSIGNMENTS
