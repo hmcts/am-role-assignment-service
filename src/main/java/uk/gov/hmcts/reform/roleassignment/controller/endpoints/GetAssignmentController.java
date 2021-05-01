@@ -31,9 +31,11 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.GET
 @RestController
 public class GetAssignmentController {
 
-    @Autowired
-    private RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentService;
+    private final RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentService;
 
+    public GetAssignmentController(@Autowired RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentService) {
+        this.retrieveRoleAssignmentService = retrieveRoleAssignmentService;
+    }
     //**************** Get role assignment records by actorId API ***************
 
     @GetMapping(

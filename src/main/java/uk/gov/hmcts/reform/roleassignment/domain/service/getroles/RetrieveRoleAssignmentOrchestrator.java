@@ -25,11 +25,14 @@ import java.util.List;
 @RequestScope
 public class RetrieveRoleAssignmentOrchestrator {
 
-    @Autowired
-    private PersistenceService persistenceService;
-    @Autowired
-    private PrepareResponseService prepareResponseService;
+    private final PersistenceService persistenceService;
+    private final PrepareResponseService prepareResponseService;
 
+    public RetrieveRoleAssignmentOrchestrator(@Autowired PersistenceService persistenceService,
+                                              @Autowired PrepareResponseService prepareResponseService) {
+        this.persistenceService = persistenceService;
+        this.prepareResponseService = prepareResponseService;
+    }
 
     //1. call parse request service
     //2. Call retrieve Data service to fetch all required objects
