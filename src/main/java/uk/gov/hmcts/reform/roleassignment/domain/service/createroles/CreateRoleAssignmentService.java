@@ -74,7 +74,11 @@ public class CreateRoleAssignmentService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
-                                       AssignmentRequest parsedAssignmentRequest) {
+                                       AssignmentRequest parsedAssignmentRequest,
+                                       RequestEntity requestEntity,
+                                       Request request) {
+        this.requestEntity = requestEntity;
+        this.incomingRequest = request;
         // decision block
         long startTime = System.currentTimeMillis();
         if (MapUtils.isNotEmpty(needToDeleteRoleAssignments)) {
@@ -88,7 +92,7 @@ public class CreateRoleAssignmentService {
 
                 //Create New Assignment records
                 if (CollectionUtils.isNotEmpty(needToCreateRoleAssignments)) {
-                    createNewAssignmentRecords(parsedAssignmentRequest);
+                    createNewAssignmentRecords(parsedAssignmentRequest, requestEntity, request);
 
 
                     // decision block
@@ -128,8 +132,8 @@ public class CreateRoleAssignmentService {
             }
         } else {
             //Save requested role in history table with CREATED and Approved Status
-            createNewAssignmentRecords(parsedAssignmentRequest);
-            checkAllApproved(parsedAssignmentRequest);
+            createNewAssignmentRecords(parsedAssignmentRequest, requestEntity, request);
+            checkAllApproved(parsedAssignmentRequest, requestEntity, request);
         }
         logger.info(
             " >> checkAllDeleteApproved execution finished at {} . Time taken = {} milliseconds",
@@ -200,7 +204,9 @@ public class CreateRoleAssignmentService {
     }
 
     //Create New Assignment Records
-    public void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest) {
+    public void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest, RequestEntity requestEntity, Request request) {
+        this.requestEntity = requestEntity;
+        this.incomingRequest = request;
         //Save new requested role in history table with CREATE_REQUESTED Status
         long startTime = System.currentTimeMillis();
         logger.info("createNewAssignmentRecords execution started at {}", startTime);
@@ -321,8 +327,11 @@ public class CreateRoleAssignmentService {
 
 
     public boolean hasAssignmentsUpdated(AssignmentRequest existingAssignmentRequest,
-                                         AssignmentRequest parsedAssignmentRequest)
+                                         AssignmentRequest parsedAssignmentRequest,
+                                         RequestEntity requestEntity, Request request)
         throws InvocationTargetException, IllegalAccessException {
+this.requestEntity = requestEntity;
+this.incomingRequest = request;
 
         needToRetainRoleAssignments = new HashSet<>();
         // convert existing assignment records into role assignment subset
@@ -449,7 +458,8 @@ public class CreateRoleAssignmentService {
     }
 
     public ResponseEntity<RoleAssignmentRequestResource> duplicateRequest(AssignmentRequest existingAssignmentRequest,
-                                                                          AssignmentRequest parsedAssignmentRequest) {
+                                                                          AssignmentRequest parsedAssignmentRequest
+    , RequestEntity requestEntity, Request request) {
         parsedAssignmentRequest.getRequest().setStatus(Status.APPROVED);
         requestEntity.setStatus(Status.APPROVED.toString());
         requestEntity.setLog(
@@ -516,7 +526,10 @@ public class CreateRoleAssignmentService {
     }
 
     @NotNull
-    public AssignmentRequest retrieveExistingAssignments(AssignmentRequest parsedAssignmentRequest) {
+    public AssignmentRequest retrieveExistingAssignments(AssignmentRequest parsedAssignmentRequest
+    , RequestEntity requestEntity, Request incomingRequest) {
+        this.requestEntity = requestEntity;
+        this.incomingRequest = incomingRequest;
 
         Request request = parsedAssignmentRequest.getRequest();
         List<RoleAssignment> existingAssignments = persistenceService.getAssignmentsByProcess(
@@ -541,8 +554,9 @@ public class CreateRoleAssignmentService {
         insertExistingRecordsAfterDroolValidation(existingAssignmentRequest);
     }
 
-    public void checkAllApproved(AssignmentRequest parsedAssignmentRequest) {
-
+    public void checkAllApproved(AssignmentRequest parsedAssignmentRequest, RequestEntity requestEntity, Request request) {
+        this.requestEntity = requestEntity;
+        this.incomingRequest = request;
         // decision block
         List<RoleAssignment> createApprovedAssignments = parsedAssignmentRequest.getRequestedRoles().stream()
             .filter(role -> role.getStatus().equals(Status.APPROVED)).collect(Collectors.toList());
