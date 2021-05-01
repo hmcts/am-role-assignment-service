@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +31,8 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.GET
 @RestController
 public class GetAssignmentController {
 
+    @Autowired
     private RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentService;
-
-    public GetAssignmentController(RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentService) {
-        this.retrieveRoleAssignmentService = retrieveRoleAssignmentService;
-    }
 
     //**************** Get role assignment records by actorId API ***************
 

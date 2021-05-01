@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,11 +30,9 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DEL
 @RestController
 public class DeleteAssignmentController {
     private static final Logger logger = LoggerFactory.getLogger(DeleteAssignmentController.class);
-    private DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator;
 
-    public DeleteAssignmentController(DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator) {
-        this.deleteRoleAssignmentOrchestrator = deleteRoleAssignmentOrchestrator;
-    }
+    @Autowired
+    private DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator;
 
     @DeleteMapping(
         path = "am/role-assignments",
