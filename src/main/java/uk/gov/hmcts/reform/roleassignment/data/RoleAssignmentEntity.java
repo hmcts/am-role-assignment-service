@@ -2,6 +2,7 @@
 package uk.gov.hmcts.reform.roleassignment.data;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
+
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -82,5 +84,6 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
     public boolean isNew() {
         return isNewFlag;
     }
+
 }
 
