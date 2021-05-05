@@ -12,12 +12,7 @@ import lombok.Value;
 public class FlagRequest {
 
     private String flagName;
-
-
     private String env;
-
-
     private String serviceName;
-
     private Boolean status;
 }
