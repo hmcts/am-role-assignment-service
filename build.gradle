@@ -149,7 +149,7 @@ task functional(type: Test, description: 'Runs the functional tests.', group: 'V
       main = "uk.gov.hmcts.reform.roleassignment.befta.RoleAssignmentBeftaMain"
       classpath += configurations.cucumberRuntime + sourceSets.functionalTest.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
       args = ['--plugin', "json:${projectDir}/target/cucumber.json", '--tags', 'not @Ignore', '--glue',
-              'uk.gov.hmcts.befta.player', 'src/functionalTest/resources/features/']
+              'uk.gov.hmcts.befta.player', 'src/functionalTest/resources/features/F-000/']
     }
   }
 }
@@ -383,8 +383,8 @@ dependencies {
   testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  testCompile 'com.github.hmcts:befta-fw:7.0.0-RDM-10539-1'
-  //compile fileTree(dir: 'lib', include: 'befta-fw-5.11.0.jar')
+  testCompile 'com.github.hmcts:befta-fw:add_custom_annotation_handler-SNAPSHOT'
+  //compile fileTree(dir: 'lib', include: 'befta-fw-6.15.0-SNAPSHOT.jar')
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.5.RELEASE'
 
   testCompile(group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber) {
