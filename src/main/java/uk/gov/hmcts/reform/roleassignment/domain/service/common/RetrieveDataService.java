@@ -2,7 +2,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
+import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreApi;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 
 @Service
@@ -13,14 +13,14 @@ public class RetrieveDataService {
     //4. getting some location reference data
 
 
-    private final DataStoreFeignClient dataStoreFeignClient;
+    private final DataStoreApi dataStoreApi;
 
-    public RetrieveDataService(DataStoreFeignClient dataStoreFeignClient) {
-        this.dataStoreFeignClient = dataStoreFeignClient;
+    public RetrieveDataService(DataStoreApi dataStoreApi) {
+        this.dataStoreApi = dataStoreApi;
     }
 
 
     public Case getCaseById(String caseId) {
-        return dataStoreFeignClient.getCaseDataV2(caseId);
+        return dataStoreApi.getCaseDataV2(caseId);
     }
 }

@@ -10,10 +10,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(MockitoJUnitRunner.class)
-class DatastoreFeignClientConfigurationTest {
+class DatastoreApiConfigurationTest {
 
     @InjectMocks
-    DatastoreFeignClientConfiguration datastoreFeignClientConfiguration = new DatastoreFeignClientConfiguration();
+    DatastoreApiConfiguration datastoreApiConfiguration = new DatastoreApiConfiguration();
 
     @BeforeEach
     public void setUp() {
@@ -22,7 +22,7 @@ class DatastoreFeignClientConfigurationTest {
 
     @Test
     void client() {
-        assertNotNull(datastoreFeignClientConfiguration.client());
+        assertNotNull(datastoreApiConfiguration.client());
     }
 
 

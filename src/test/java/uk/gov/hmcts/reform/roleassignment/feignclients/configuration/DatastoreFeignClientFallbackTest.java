@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DatastoreFeignClientFallbackTest {
 
     @InjectMocks
-    DatastoreFeignClientFallback datastoreFeignClientFallback = new DatastoreFeignClientFallback();
+    DatastoreApiFallback datastoreFeignClientFallback = new DatastoreApiFallback();
 
     @BeforeEach
     public void setUp() {
@@ -25,13 +25,6 @@ class DatastoreFeignClientFallbackTest {
     void getServiceStatus() {
         assertEquals("The data store Service is not available",
                      datastoreFeignClientFallback.getServiceStatus());
-    }
-
-    @Test
-    void getCaseDataV1() {
-        assertEquals("The data store Service is not available",
-                     datastoreFeignClientFallback
-                         .getCaseDataV1("123","123", "123", "case123"));
     }
 
     @Test
