@@ -10,10 +10,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(MockitoJUnitRunner.class)
-class DatastoreApiConfigurationTest {
+class DataStoreApiConfigurationTest {
 
     @InjectMocks
-    DatastoreApiConfiguration datastoreApiConfiguration = new DatastoreApiConfiguration();
+    DataStoreApiConfiguration datastoreApiConfiguration = new DataStoreApiConfiguration();
 
     @BeforeEach
     public void setUp() {
