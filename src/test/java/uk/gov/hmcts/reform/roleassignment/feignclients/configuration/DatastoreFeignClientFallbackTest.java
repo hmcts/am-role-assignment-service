@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DatastoreFeignClientFallbackTest {
 
     @InjectMocks
-    DatastoreApiFallback datastoreFeignClientFallback = new DatastoreApiFallback();
+    DataStoreApiFallback datastoreFeignClientFallback = new DataStoreApiFallback();
 
     @BeforeEach
     public void setUp() {
