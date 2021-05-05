@@ -9,8 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -52,6 +52,7 @@ import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecif
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByValidDate;
 
 @Service
+@RequestScope
 public class PersistenceService {
 
     private static final Logger logger = LoggerFactory.getLogger(PersistenceService.class);
@@ -106,6 +107,7 @@ public class PersistenceService {
 
     }
 
+    @Transactional
     public void updateRequest(RequestEntity requestEntity) {
         //Persist the request entity
         requestRepository.save(requestEntity);
@@ -117,7 +119,7 @@ public class PersistenceService {
         entityManager.flush();
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void persistRoleAssignments(Collection<RoleAssignment> roleAssignments) {
         //Persist the role assignment entity
         Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignments.stream().map(
@@ -127,10 +129,10 @@ public class PersistenceService {
         entityManager.flush();
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void persistActorCache(Collection<RoleAssignment> roleAssignments) {
-        roleAssignments.stream().forEach(roleAssignment -> {
-            ActorCacheEntity actorCacheEntity = persistenceUtil
+        roleAssignments.forEach(roleAssignment -> {
+            ActorCacheEntity actorCacheEntity  = persistenceUtil
                 .convertActorCacheToEntity(prepareActorCache(roleAssignment));
             ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
             if (existingActorCache != null) {
@@ -151,7 +153,7 @@ public class PersistenceService {
         return actorCache;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public ActorCacheEntity getActorCacheEntity(String actorId) {
 
         return actorCacheRepository.findByActorId(actorId);
@@ -174,14 +176,14 @@ public class PersistenceService {
 
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void deleteRoleAssignment(RoleAssignment roleAssignment) {
         //Persist the role assignment entity
         RoleAssignmentEntity entity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment, false);
         roleAssignmentRepository.delete(entity);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void deleteRoleAssignmentByActorId(String actorId) {
         roleAssignmentRepository.deleteByActorId(actorId);
     }
@@ -192,7 +194,7 @@ public class PersistenceService {
         return databseChangelogLockRepository.getById(id);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public List<RoleAssignment> getAssignmentsByActor(String actorId) {
 
         Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
