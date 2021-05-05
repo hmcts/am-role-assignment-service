@@ -16,17 +16,17 @@ SET DEFAULT nextval('ID_SEQ');
 -- insert iac base flag into flag_config table
 INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'pr', 'iac', 'true');
 INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'aat', 'iac', 'true');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'demo', 'iac', 'true');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'perftest', 'iac', 'true');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'ithc', 'iac', 'true');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'prod', 'iac', 'true');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'demo', 'iac', 'false');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'perftest', 'iac', 'false');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'ithc', 'iac', 'false');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_0', 'prod', 'iac', 'false');
 
 INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_1', 'pr', 'iac', 'false');
 INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_1', 'aat', 'iac', 'false');
 INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_1', 'demo', 'iac', 'false');
 INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_1', 'perftest', 'iac', 'false');
 INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_1', 'ithc', 'iac', 'false');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_1', 'prod', 'iac', 'true');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('iac_1_1', 'prod', 'iac', 'false');
 
 
 

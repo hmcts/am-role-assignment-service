@@ -7,8 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FlagConfigRepository extends CrudRepository<FlagConfig, Long> {
 
-    @Query("select * from flag_config "
-        + " where flag_name=?1 "
-        + " and upper(env) = upper(?2) and upper(service_name) = upper(?3) ")
-    FlagConfig getStatusByParams(String flagName, String envName, String serviceName);
+    @Query("select fc from flag_config as fc"
+        + " where fc.flagName=?1 "
+        + " and upper(fc.env) = upper(?2)")
+    FlagConfig getStatusByParams(String flagName, String envName);
+
 }
