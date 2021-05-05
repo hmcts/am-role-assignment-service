@@ -16,7 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleA
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
+import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreApi;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
@@ -59,11 +59,11 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @MockBean
-    private DataStoreFeignClient dataStoreFeignClient;
+    private DataStoreApi dataStoreApi;
 
     @Bean
     public RetrieveDataService getRetrieveDataService() {
-        return new RetrieveDataService(dataStoreFeignClient);
+        return new RetrieveDataService(dataStoreApi);
     }
 
     @Bean

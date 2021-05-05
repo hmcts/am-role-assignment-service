@@ -16,7 +16,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class DatastoreFeignClientInterceptorTest {
+class DataStoreApiInterceptorTest {
 
     @Mock
     private IdamRepository idamRepositoryMock;
@@ -27,19 +27,19 @@ class DatastoreFeignClientInterceptorTest {
     @Mock
     private RequestTemplate restTemplate;
 
-    private DatastoreFeignClientInterceptor datastoreFeignClientInterceptor;
+    private DataStoreApiInterceptor dataStoreApiInterceptor;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        datastoreFeignClientInterceptor = new DatastoreFeignClientInterceptor();
-        datastoreFeignClientInterceptor.idamRepository = idamRepositoryMock;
-        datastoreFeignClientInterceptor.securityUtils = securityUtils;
+        dataStoreApiInterceptor = new DataStoreApiInterceptor();
+        dataStoreApiInterceptor.idamRepository = idamRepositoryMock;
+        dataStoreApiInterceptor.securityUtils = securityUtils;
     }
 
     @Test
     void requestInterceptorConsumerWithConditionMet() {
-        RequestInterceptor interceptor = datastoreFeignClientInterceptor.requestInterceptor();
+        RequestInterceptor interceptor = dataStoreApiInterceptor.requestInterceptor();
         assertNotNull(interceptor);
 
         when(restTemplate.url()).thenReturn("badok");
@@ -53,7 +53,7 @@ class DatastoreFeignClientInterceptorTest {
 
     @Test
     void requestInterceptorConsumerWithNoConditionMet() {
-        RequestInterceptor interceptor = datastoreFeignClientInterceptor.requestInterceptor();
+        RequestInterceptor interceptor = dataStoreApiInterceptor.requestInterceptor();
         assertNotNull(interceptor);
 
         when(restTemplate.url()).thenReturn("healthok");

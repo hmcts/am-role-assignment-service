@@ -10,7 +10,7 @@ import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
 @Service
-public class DatastoreFeignClientInterceptor {
+public class DataStoreApiInterceptor {
 
     @Autowired
     SecurityUtils securityUtils;
