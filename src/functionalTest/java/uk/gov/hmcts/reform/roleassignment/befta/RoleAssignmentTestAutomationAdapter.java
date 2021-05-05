@@ -12,11 +12,6 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
     private TestDataLoaderToDefinitionStore loader = new TestDataLoaderToDefinitionStore(this);
 
     @Override
-    public void doLoadTestData() {
-        //Needed for the BEFTA implementation
-    }
-
-    @Override
     public Object calculateCustomValue(BackEndFunctionalTestScenarioContext scenarioContext, Object key) {
         //the docAMUrl is is referring the self link in PR
         switch (key.toString()) {
