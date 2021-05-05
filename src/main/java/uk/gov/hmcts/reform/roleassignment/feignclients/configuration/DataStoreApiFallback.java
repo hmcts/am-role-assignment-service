@@ -5,7 +5,7 @@ import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreApi;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 
 @Component
-public class DatastoreApiFallback implements DataStoreApi {
+public class DataStoreApiFallback implements DataStoreApi {
 
     public static final String DATA_STORE_NOT_AVAILABLE = "The data store Service is not available";
 
