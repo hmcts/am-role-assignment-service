@@ -32,14 +32,11 @@ public class RetrieveRoleAssignmentOrchestrator {
 
     private PersistenceService persistenceService;
     private PrepareResponseService prepareResponseService;
-
-    public RetrieveRoleAssignmentOrchestrator(@Autowired PersistenceService persistenceService,
-                                              @Autowired PrepareResponseService prepareResponseService) {
     @Autowired
     private FeatureToggleService featureToggleService;
 
-    public RetrieveRoleAssignmentOrchestrator(PersistenceService persistenceService,
-                                              PrepareResponseService prepareResponseService) {
+    public RetrieveRoleAssignmentOrchestrator(@Autowired PersistenceService persistenceService,
+                                              @Autowired PrepareResponseService prepareResponseService) {
         this.persistenceService = persistenceService;
         this.prepareResponseService = prepareResponseService;
     }
