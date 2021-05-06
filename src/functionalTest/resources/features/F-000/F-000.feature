@@ -14,8 +14,11 @@ Feature: F-000 : Access Role Assignment API
 #    #//@FeatureToggle(get-ld-flag, false)   @dbFeatureToggle(Database flagName, expectedValue)
 #    #// If both annotation return true, execute scenario, else Skip.
 
-  @S-000 @FeatureToggle(get-ld-flag)
-  @S-000 @FeatureToggleWithExpectedValue(get-ld-flag,true)
+  #@S-000 @FeatureToggle(get-ld-flag)
+  #@S-000 @FeatureToggle(get-ld-flag) @FeatureFlagWithExpectedValue(get-ld-flag,true)
+  #@S-000 @FeatureToggle(get-ld-flag) @FeatureFlagWithExpectedValue(get-ld-flag,true) @DatabaseFlagWithExpectedValue(fetchFlagStatus?flagName=iac_1_0&env=pr,iac_1_0,false)
+
+  @S-000 @FeatureToggle(get-ld-flag) @FeatureFlagWithExpectedValue(get-ld-flag,true) @DatabaseFlagWithExpectedValue(fetchFlagStatus?flagName=iac_1_0&env=pr,iac_1_0,true)
   Scenario: must access Role Assignment API
     Given a user with [an active caseworker profile],
     When a request is prepared with appropriate values,
