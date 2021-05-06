@@ -2,12 +2,17 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreApi;
+
+import static java.util.Objects.requireNonNull;
 
 @Service
 @Slf4j
@@ -18,14 +23,24 @@ public class RetrieveDataService {
     //4. getting some location reference data
 
     private final DataStoreApi dataStoreApi;
+    private CacheManager cacheManager;
+    @Value("${spring.cache.type}")
+    protected String cacheType;
 
-    public RetrieveDataService(DataStoreApi dataStoreApi) {
+    public RetrieveDataService(DataStoreApi dataStoreApi, CacheManager cacheManager) {
         this.dataStoreApi = dataStoreApi;
+        this.cacheManager = cacheManager;
     }
 
     @Cacheable(value = "caseId")
     @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 3))
     public Case getCaseById(String caseId) {
+        if (cacheType != null && !cacheType.equals("none")) {
+            CaffeineCache caffeineCache = (CaffeineCache) cacheManager.getCache("caseId");
+            com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache = requireNonNull(caffeineCache)
+                .getNativeCache();
+            log.info("Retrieving case details, current size of cache: {}", nativeCache.estimatedSize());
+        }
         return dataStoreApi.getCaseDataV2(caseId);
     }
 }

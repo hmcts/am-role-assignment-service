@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
+import uk.gov.hmcts.reform.roleassignment.oidc.OIdcAdminConfiguration;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
@@ -27,6 +28,9 @@ class DataStoreApiInterceptorTest {
     @Mock
     private RequestTemplate restTemplate;
 
+    @Mock
+    private OIdcAdminConfiguration oidcAdminConfiguration;
+
     private DataStoreApiInterceptor dataStoreApiInterceptor;
 
     @BeforeEach
@@ -35,6 +39,7 @@ class DataStoreApiInterceptorTest {
         dataStoreApiInterceptor = new DataStoreApiInterceptor();
         dataStoreApiInterceptor.idamRepository = idamRepositoryMock;
         dataStoreApiInterceptor.securityUtils = securityUtils;
+        dataStoreApiInterceptor.oidcAdminConfiguration = oidcAdminConfiguration;
     }
 
     @Test

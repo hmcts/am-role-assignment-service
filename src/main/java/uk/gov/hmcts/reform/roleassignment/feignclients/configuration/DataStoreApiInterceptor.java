@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
+import uk.gov.hmcts.reform.roleassignment.oidc.OIdcAdminConfiguration;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
@@ -16,6 +17,8 @@ public class DataStoreApiInterceptor {
     SecurityUtils securityUtils;
     @Autowired
     IdamRepository idamRepository;
+    @Autowired
+    OIdcAdminConfiguration oidcAdminConfiguration;
 
     @Bean
     public RequestInterceptor requestInterceptor() {
@@ -23,7 +26,8 @@ public class DataStoreApiInterceptor {
             if (!requestTemplate.url().contains("health")) {
                 requestTemplate.header(Constants.SERVICE_AUTHORIZATION2, "Bearer "
                     + securityUtils.getServiceAuthorizationHeader());
-                requestTemplate.header(HttpHeaders.AUTHORIZATION, "Bearer " + idamRepository.getManageUserToken());
+                requestTemplate.header(HttpHeaders.AUTHORIZATION, "Bearer "
+                    + idamRepository.getManageUserToken(oidcAdminConfiguration.getUserId()));
                 requestTemplate.header(HttpHeaders.CONTENT_TYPE, "application/json");
             }
         };
