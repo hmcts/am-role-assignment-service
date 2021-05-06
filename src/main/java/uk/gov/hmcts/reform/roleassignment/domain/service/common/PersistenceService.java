@@ -277,7 +277,7 @@ public class PersistenceService {
 
     }
 
-    public Boolean getStatusByParam(String flagName, String envName) {
+    public boolean getStatusByParam(String flagName, String envName) {
         return flagConfigRepository.getStatusByParams(flagName, envName).getStatus();
     }
 
