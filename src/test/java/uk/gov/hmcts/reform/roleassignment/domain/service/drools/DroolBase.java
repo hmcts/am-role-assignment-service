@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
-import org.mockito.Mock;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -38,8 +37,7 @@ public abstract class DroolBase {
     List<LDFeatureFlag> ldFeatureFlags;
     List<Object> facts;
 
-    @Mock
-    private RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
+    private final RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
 
     @BeforeEach
     public void setUp() {

@@ -6,6 +6,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
@@ -26,11 +27,14 @@ import static uk.gov.hmcts.reform.roleassignment.util.Constants.ORM_JRD_ORG_ROLE
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.ORM_SERVICE_NAME;
 
 @Service
+@RequestScope
 public class RetrieveRoleAssignmentOrchestrator {
 
     private PersistenceService persistenceService;
     private PrepareResponseService prepareResponseService;
 
+    public RetrieveRoleAssignmentOrchestrator(@Autowired PersistenceService persistenceService,
+                                              @Autowired PrepareResponseService prepareResponseService) {
     @Autowired
     private FeatureToggleService featureToggleService;
 
