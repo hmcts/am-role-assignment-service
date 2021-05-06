@@ -10,6 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
+import uk.gov.hmcts.reform.roleassignment.oidc.OIdcAdminConfiguration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,8 +28,11 @@ class IdamRoleServiceTest {
     @Mock
     private IdamRepository idamRepositoryMock = mock(IdamRepository.class);
 
+    @Mock
+    private OIdcAdminConfiguration oidcAdminConfiguration = mock(OIdcAdminConfiguration.class);
+
     @InjectMocks
-    private IdamRoleService sut = new IdamRoleService(idamRepositoryMock);
+    private IdamRoleService sut = new IdamRoleService(idamRepositoryMock, oidcAdminConfiguration);
 
     @BeforeEach
     public void setUp() {

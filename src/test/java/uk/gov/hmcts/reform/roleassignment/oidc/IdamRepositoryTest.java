@@ -113,18 +113,25 @@ class IdamRepositoryTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void getManageUserToken() {
+        CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
+        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+
+        when(cacheManager.getCache(anyString())).thenReturn(caffeineCacheMock);
+        when(caffeineCacheMock.getNativeCache()).thenReturn(cache);
+        when(cache.estimatedSize()).thenReturn(1L);
 
         when(oauth2Configuration.getClientId()).thenReturn("clientId");
         when(oauth2Configuration.getClientSecret()).thenReturn("secret");
-        when(oidcAdminConfiguration.getUserId()).thenReturn("userid");
+        //when(oidcAdminConfiguration.getUserId()).thenReturn("userid");
         when(oidcAdminConfiguration.getSecret()).thenReturn("password");
         when(oidcAdminConfiguration.getScope()).thenReturn("scope");
         TokenResponse tokenResponse = new
             TokenResponse("a", "1", "1", "a", "v", "v");
         when(idamApi.generateOpenIdToken(any())).thenReturn(tokenResponse);
 
-        String result = idamRepository.getManageUserToken();
+        String result = idamRepository.getManageUserToken("123");
 
         assertNotNull(result);
         assertFalse(result.isBlank());
