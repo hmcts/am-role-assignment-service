@@ -96,7 +96,7 @@ spring:
             client-secret: ${AM_ROLE_ASSIGNMENT_SERVICE_SECRET:AAAAAAAAAAAAAAAA}
   cache:
     type: ${ENABLE_CACHE:}
-    cache-names: token
+    cache-names: token, caseId, userToken
     caffeine:
       spec: maximumSize=500,expireAfterWrite=120s
 oidc.issuer: ${OIDC_ISSUER_URL:https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts}
