@@ -8,14 +8,14 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagEnum;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.LDFeatureFlag;
-import uk.gov.hmcts.reform.roleassignment.util.LDEventListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -25,19 +25,18 @@ public class ValidationModelService {
     private StatelessKieSession kieSession;
     private RetrieveDataService retrieveDataService;
     private PersistenceService persistenceService;
-    private LDEventListener ldEventListener;
+    private FeatureToggleService featureToggleService;
 
 
     public ValidationModelService(StatelessKieSession kieSession,
                                   RetrieveDataService retrieveDataService,
-                                  PersistenceService persistenceService, LDEventListener ldEventListener) {
+                                  PersistenceService persistenceService, FeatureToggleService featureToggleService) {
         this.kieSession = kieSession;
 
         this.retrieveDataService = retrieveDataService;
 
         this.persistenceService = persistenceService;
-
-        this.ldEventListener = ldEventListener;
+        this.featureToggleService = featureToggleService;
     }
 
     public void validateRequest(AssignmentRequest assignmentRequest) {
@@ -115,13 +114,10 @@ public class ValidationModelService {
 
         List<LDFeatureFlag> featureFlags = new ArrayList<>();
 
-        // building the LDFeature Flag
-        Map<String, Boolean> droolFlagStates = ldEventListener.getDroolFlagStates();
-
-        for (String flag : droolFlagStates.keySet()) {
+        for (FeatureFlagEnum flag : FeatureFlagEnum.values()) {
             LDFeatureFlag featureFlag = LDFeatureFlag.builder()
-                .flagName(flag)
-                .status(droolFlagStates.get(flag))
+                .flagName(flag.getValue())
+                .status(featureToggleService.isFlagEnabled(flag.getValue()))
                 .build();
             featureFlags.add(featureFlag);
         }

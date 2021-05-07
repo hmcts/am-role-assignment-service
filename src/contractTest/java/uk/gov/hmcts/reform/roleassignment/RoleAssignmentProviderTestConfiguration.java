@@ -18,8 +18,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleA
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreApi;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
-import uk.gov.hmcts.reform.roleassignment.util.LDEventListener;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
@@ -68,7 +68,7 @@ public class RoleAssignmentProviderTestConfiguration {
 
 
     @MockBean
-    private LDEventListener ldEventListener;
+    private FeatureToggleService featureToggleService;
 
     @Bean
     public RetrieveDataService getRetrieveDataService() {
@@ -79,7 +79,7 @@ public class RoleAssignmentProviderTestConfiguration {
     @Primary
     public ValidationModelService getValidationModelService() {
         return new ValidationModelService(getStatelessKieSession(), getRetrieveDataService(), persistenceService,
-                                          ldEventListener);
+                                          featureToggleService);
     }
 
     @Bean

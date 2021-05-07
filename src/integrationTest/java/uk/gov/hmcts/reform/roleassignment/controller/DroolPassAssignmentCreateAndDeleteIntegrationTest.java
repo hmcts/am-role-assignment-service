@@ -34,9 +34,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleServic
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagEnum;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
-import uk.gov.hmcts.reform.roleassignment.util.LDEventListener;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -100,7 +100,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     private FeatureConditionEvaluation featureConditionEvaluation;
 
     @Inject
-    private LDEventListener ldEventListener;
+    private FeatureToggleService featureToggleService;
 
     @Before
     public void setUp() throws Exception {
@@ -134,11 +134,6 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
 
 
         }
-        ReflectionTestUtils.setField(
-            ldEventListener,
-            "droolFlagStates", droolFlagStates
-
-        );
         Case retrievedCase = Case.builder().id("1234")
             .caseTypeId("Asylum")
             .jurisdiction("IA")

@@ -13,7 +13,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureFlagEnum;
-import uk.gov.hmcts.reform.roleassignment.util.LDEventListener;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -44,7 +44,7 @@ class ValidationModelServiceTest {
 
     PersistenceService persistenceService = mock(PersistenceService.class);
 
-    LDEventListener ldEventListener = mock(LDEventListener.class);
+    FeatureToggleService featureToggleService = mock(FeatureToggleService.class);
 
     @Getter
     private static final Map<String, List<Role>> configuredRoles = new HashMap<>();
@@ -53,7 +53,7 @@ class ValidationModelServiceTest {
     ValidationModelService sut = new ValidationModelService(
         kieSessionMock,
         retrieveDataServiceMock,
-        persistenceService, ldEventListener);
+        persistenceService, featureToggleService);
 
     @BeforeEach
     void setUp() {
@@ -69,7 +69,7 @@ class ValidationModelServiceTest {
 
         }
 
-        when(ldEventListener.getDroolFlagStates()).thenReturn(droolFlagStates);
+        when(featureToggleService.isFlagEnabled("abc")).thenReturn(Boolean.TRUE);
 
         assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
