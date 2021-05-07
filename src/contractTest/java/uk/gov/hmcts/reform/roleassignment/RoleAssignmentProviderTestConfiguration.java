@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment;
 
+import com.launchdarkly.sdk.server.LDClient;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
@@ -66,9 +67,8 @@ public class RoleAssignmentProviderTestConfiguration {
     @MockBean
     private CacheManager cacheManager;
 
-
     @MockBean
-    private FeatureToggleService featureToggleService;
+    private LDClient ldClient;
 
     @Bean
     public RetrieveDataService getRetrieveDataService() {
@@ -76,10 +76,15 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @Bean
+    public FeatureToggleService featureToggleService() {
+        return new FeatureToggleService(ldClient,"123");
+    }
+
+    @Bean
     @Primary
     public ValidationModelService getValidationModelService() {
         return new ValidationModelService(getStatelessKieSession(), getRetrieveDataService(), persistenceService,
-                                          featureToggleService);
+                                          featureToggleService());
     }
 
     @Bean
