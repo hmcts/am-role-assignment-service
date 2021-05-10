@@ -14,7 +14,7 @@ Feature: F-000 : Access Role Assignment API
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-001
+  @S-120
   @FeatureToggle(get-ld-flag) @FeatureFlagWithExpectedValue(get-ld-flag,true)
   Scenario: must access Role Assignment API
     Given a user with [an active caseworker profile],
@@ -24,7 +24,7 @@ Feature: F-000 : Access Role Assignment API
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-002
+  @S-110
   @FeatureToggle(get-ld-flag) @FeatureFlagWithExpectedValue(get-ld-flag,true) @ExternalFlagWithExpectedValue(iac_1_0,true)
   Scenario: must access Role Assignment API
     Given a user with [an active caseworker profile],
@@ -34,7 +34,7 @@ Feature: F-000 : Access Role Assignment API
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-003
+  @S-111
   @FeatureToggle(get-ld-flag) @FeatureFlagWithExpectedValue(get-ld-flag,false) @ExternalFlagWithExpectedValue(iac_1_0,true)
   Scenario: must access Role Assignment API
     Given a user with [an active caseworker profile],
@@ -44,7 +44,7 @@ Feature: F-000 : Access Role Assignment API
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-004
+  @S-112
   @FeatureToggle(get-ld-flag) @FeatureFlagWithExpectedValue(get-ld-flag,true) @ExternalFlagWithExpectedValue(iac_1_0,false)
   Scenario: must access Role Assignment API
     Given a user with [an active caseworker profile],
@@ -54,7 +54,7 @@ Feature: F-000 : Access Role Assignment API
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-005
+  @S-113
   @FeatureToggle(get-ld-flag) @FeatureFlagWithExpectedValue(get-ld-flag,false) @ExternalFlagWithExpectedValue(iac_1_0,false)
   Scenario: must access Role Assignment API
     Given a user with [an active caseworker profile],
@@ -64,7 +64,7 @@ Feature: F-000 : Access Role Assignment API
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-006
+  @S-114
   @FeatureToggle(get-ld-flag) @FeatureFlagWithExpectedValue(get-ld-flag,false)
   Scenario: must access Role Assignment API
     Given a user with [an active caseworker profile],
@@ -74,7 +74,7 @@ Feature: F-000 : Access Role Assignment API
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-007
+  @S-115
   @FeatureToggle(get-ld-flag) @ExternalFlagWithExpectedValue(iac_1_0,false)
   Scenario: must access Role Assignment API
     Given a user with [an active caseworker profile],
