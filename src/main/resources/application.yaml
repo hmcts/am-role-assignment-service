@@ -47,7 +47,9 @@ security:
     - "/search/**"
     - "/csrf"
     - "/error"
+    - "/welcome"
     - "/favicon.ico"
+    - "/error"
 
 spring:
   application:

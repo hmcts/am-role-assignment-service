@@ -84,7 +84,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers(AUTH_WHITELIST);
+
+        web.ignoring().antMatchers("/");
+        web.ignoring().antMatchers("/am/role-assignments/fetchFlagStatus");
+        web.ignoring().antMatchers("/loggers/**");
+        web.ignoring().antMatchers("/welcome");
+        web.ignoring().antMatchers("/favicon.ico");
+/*        web.ignoring().antMatchers("");
+        web.ignoring().antMatchers("");
+        web.ignoring().antMatchers("");
+        web.ignoring().antMatchers("");
+        web.ignoring().antMatchers("");*/
+
     }
 
     @Override
@@ -98,6 +109,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .logout().disable()
             .authorizeRequests()
             .antMatchers("/error").permitAll()
+            .antMatchers(AUTH_WHITELIST).permitAll()
             .anyRequest()
             .authenticated()
             .and()
