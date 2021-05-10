@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
@@ -118,7 +117,7 @@ public class PersistenceService {
         entityManager.flush();
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void persistRoleAssignments(Collection<RoleAssignment> roleAssignments) {
         //Persist the role assignment entity
         Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignments.stream().map(
@@ -152,7 +151,7 @@ public class PersistenceService {
         return actorCache;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public ActorCacheEntity getActorCacheEntity(String actorId) {
 
         return actorCacheRepository.findByActorId(actorId);
@@ -175,14 +174,14 @@ public class PersistenceService {
 
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void deleteRoleAssignment(RoleAssignment roleAssignment) {
         //Persist the role assignment entity
         RoleAssignmentEntity entity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment, false);
         roleAssignmentRepository.delete(entity);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void deleteRoleAssignmentByActorId(String actorId) {
         roleAssignmentRepository.deleteByActorId(actorId);
     }
@@ -193,7 +192,7 @@ public class PersistenceService {
         return databseChangelogLockRepository.getById(id);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public List<RoleAssignment> getAssignmentsByActor(String actorId) {
 
         Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
