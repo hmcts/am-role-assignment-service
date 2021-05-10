@@ -22,7 +22,7 @@ public class FeatureFlagController {
     @Autowired
     PersistenceUtil persistenceUtil;
 
-    @GetMapping(value = "/fetchFlagStatus")
+    @GetMapping(value = "/am/role-assignments/fetchFlagStatus")
     public ResponseEntity<Object> getFeatureFlag(@RequestParam(value = "flagName", required = false) String flagName,
                                                  @RequestParam(value = "env", required = false) String env) {
         return ResponseEntity.ok(persistenceService.getStatusByParam(flagName, env));
@@ -30,7 +30,7 @@ public class FeatureFlagController {
     }
 
     @PostMapping(
-        path = "/createFeatureFlag",
+        path = "/am/role-assignments/createFeatureFlag",
         produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = {"application/json"}
     )
