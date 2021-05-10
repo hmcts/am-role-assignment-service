@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -53,6 +54,7 @@ import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecif
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByValidDate;
 
 @Service
+@RequestScope
 public class PersistenceService {
 
     private static final Logger logger = LoggerFactory.getLogger(PersistenceService.class);
@@ -128,9 +130,9 @@ public class PersistenceService {
         entityManager.flush();
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void persistActorCache(Collection<RoleAssignment> roleAssignments) {
-        roleAssignments.stream().forEach(roleAssignment -> {
+        roleAssignments.forEach(roleAssignment -> {
             ActorCacheEntity actorCacheEntity = persistenceUtil
                 .convertActorCacheToEntity(prepareActorCache(roleAssignment));
             ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());

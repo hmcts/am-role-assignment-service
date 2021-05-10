@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -28,6 +29,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequestScope
 public class DeleteRoleAssignmentOrchestrator {
 
     private static final Logger logger = LoggerFactory.getLogger(DeleteRoleAssignmentOrchestrator.class);
@@ -62,7 +64,7 @@ public class DeleteRoleAssignmentOrchestrator {
         this.persistenceUtil = persistenceUtil;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public ResponseEntity<Void> deleteRoleAssignmentByProcessAndReference(String process,
                                                                             String reference) {
         long startTime = System.currentTimeMillis();
@@ -109,7 +111,7 @@ public class DeleteRoleAssignmentOrchestrator {
         return responseEntity;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public ResponseEntity<Void> deleteRoleAssignmentByAssignmentId(String assignmentId) {
         List<RoleAssignment> requestedRoles;
 
