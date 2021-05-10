@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.reform.roleassignment.data.FlagConfigRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DBFlagConfigurtion implements CommandLineRunner {
 
     @Autowired
-    PersistenceService persistenceService;
+    FlagConfigRepository flagConfigRepository;
 
     @Value("${launchdarkly.sdk.environment}")
     private String environment;
@@ -27,10 +27,11 @@ public class DBFlagConfigurtion implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
 
         for (FeatureFlagEnum featureFlagEnum : FeatureFlagEnum.values()) {
-            Boolean status = persistenceService.getStatusByParam(featureFlagEnum.getValue(), environment);
+            Boolean status = flagConfigRepository
+                .getStatusByParams(featureFlagEnum.getValue(), environment).getStatus();
             droolFlagStates.put(featureFlagEnum.getValue(), status);
 
 
