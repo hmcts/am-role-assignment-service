@@ -9,8 +9,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -28,10 +31,12 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DEL
 @Api(value = "roles")
 @RestController
 public class DeleteAssignmentController {
+
     private static final Logger logger = LoggerFactory.getLogger(DeleteAssignmentController.class);
+
     private DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator;
 
-    public DeleteAssignmentController(DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator) {
+    public DeleteAssignmentController(@Autowired DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator) {
         this.deleteRoleAssignmentOrchestrator = deleteRoleAssignmentOrchestrator;
     }
 
@@ -64,6 +69,7 @@ public class DeleteAssignmentController {
         process = "#process",
         reference = "#reference",
         correlationId = "#correlationId")
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResponseEntity<Void> deleteRoleAssignment(@RequestHeader(value = "x-correlation-id",
         required = false)
                                                            String correlationId,
@@ -110,6 +116,7 @@ public class DeleteAssignmentController {
         assignmentId = "#assignmentId",
         correlationId = "#correlationId"
     )
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResponseEntity<Void> deleteRoleAssignmentById(@RequestHeader(
         value = "x-correlation-id",
         required = false)
