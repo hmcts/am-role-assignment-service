@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -278,6 +279,9 @@ public class PersistenceService {
     }
 
     public boolean getStatusByParam(String flagName, String envName) {
+        if(StringUtils.isEmpty(envName)) {
+            envName = System.getenv("LAUNCH_DARKLY_ENV");
+        }
         return flagConfigRepository.getStatusByParams(flagName, envName).getStatus();
     }
 
