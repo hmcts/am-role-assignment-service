@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -52,6 +53,7 @@ import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecif
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByValidDate;
 
 @Service
+@RequestScope
 public class PersistenceService {
 
     private static final Logger logger = LoggerFactory.getLogger(PersistenceService.class);
@@ -106,6 +108,7 @@ public class PersistenceService {
 
     }
 
+    @Transactional
     public void updateRequest(RequestEntity requestEntity) {
         //Persist the request entity
         requestRepository.save(requestEntity);
