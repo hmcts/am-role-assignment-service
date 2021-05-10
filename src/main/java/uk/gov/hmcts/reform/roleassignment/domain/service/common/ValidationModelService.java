@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.config.DBFlagConfigurtion;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -23,6 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Slf4j
+@RequestScope
 public class ValidationModelService {
 
     private StatelessKieSession kieSession;
