@@ -40,6 +40,8 @@ public class FeatureToggleService {
     static {
         //Get Map
         getRequestMap.put("/am/role-assignments/ld/endpoint","get-ld-flag");
+        getRequestMap.put("/am/role-assignments/fetchFlagStatus","get-db-drools-flag");
+        getRequestMap.put("/am/role-assignments/createFeatureFlag","get-db-drools-flag");
         getRequestMap.put("/am/role-assignments/roles","get-list-of-roles");
         //Post Map
         postRequestMap.put(AM_ROLE_ASSIGNMENTS, "create-role-assignments");
