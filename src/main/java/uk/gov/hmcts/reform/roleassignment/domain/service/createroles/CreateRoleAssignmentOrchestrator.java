@@ -111,6 +111,7 @@ public class CreateRoleAssignmentOrchestrator {
                             parsedAssignmentRequest
                         );
                     }
+                    
 
                     //8. Call the persistence to copy assignment records to RoleAssignmentLive table
                     if (!createRoleAssignmentService.needToCreateRoleAssignments.isEmpty()
