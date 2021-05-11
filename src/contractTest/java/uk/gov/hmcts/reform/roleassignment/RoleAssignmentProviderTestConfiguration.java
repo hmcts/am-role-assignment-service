@@ -5,6 +5,7 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
@@ -16,7 +17,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleA
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreFeignClient;
+import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreApi;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
@@ -59,11 +60,14 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @MockBean
-    private DataStoreFeignClient dataStoreFeignClient;
+    private DataStoreApi dataStoreApi;
 
-    @Bean
+    @MockBean
+    private CacheManager cacheManager;
+
+
     public RetrieveDataService getRetrieveDataService() {
-        return new RetrieveDataService(dataStoreFeignClient);
+        return new RetrieveDataService(dataStoreApi, cacheManager);
     }
 
     @Bean
