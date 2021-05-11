@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -29,6 +30,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPRO
 
 @Slf4j
 @Service
+@RequestScope
 public class CreateRoleAssignmentOrchestrator {
     private static final Logger logger = LoggerFactory.getLogger(CreateRoleAssignmentOrchestrator.class);
 
