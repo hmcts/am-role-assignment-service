@@ -18,9 +18,9 @@ plugins {
   id 'org.springframework.boot' version '2.3.9.RELEASE'
   id 'info.solidsoft.pitest' version '1.5.0'
   id 'com.github.ben-manes.versions' version '0.31.0'
-  id 'org.sonarqube' version '2.8'
+  id 'org.sonarqube' version '3.2.0'
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.22'
-  id 'au.com.dius.pact' version '4.1.14'
+  id 'au.com.dius.pact' version '4.1.7' //do not change this version or serenity reports will fail to generate
 
 }
 
@@ -291,7 +291,7 @@ repositories {
   jcenter()
   mavenCentral()
   maven {
-    url "https://dl.bintray.com/hmcts/hmcts-maven"
+    url 'https://jitpack.io'
   }
   maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
 }
@@ -323,6 +323,8 @@ dependencies {
     exclude group: 'org.apache.ant', module: 'ant'
     exclude group: 'org.apache.ant', module: 'ant-launcher'
   }
+  //Dependent on drools Jar. Can be removed CVE-2021-26291
+  implementation group: 'org.apache.maven', name: 'maven-core', version: '3.8.1'
 
   compile group: 'org.flywaydb', name: 'flyway-core', version: '5.2.4'
 
@@ -383,7 +385,7 @@ dependencies {
   testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  testCompile group: 'uk.gov.hmcts', name: 'befta-fw', version: '5.19.0-RDM-9893-3'
+  testCompile 'com.github.hmcts:befta-fw:7.0.0-RDM-10539-1'
   //compile fileTree(dir: 'lib', include: 'befta-fw-5.11.0.jar')
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.5.RELEASE'
 
