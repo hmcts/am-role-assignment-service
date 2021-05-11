@@ -96,9 +96,9 @@ spring:
             client-secret: ${AM_ROLE_ASSIGNMENT_SERVICE_SECRET:AAAAAAAAAAAAAAAA}
   cache:
     type: ${ENABLE_CACHE:}
-    cache-names: token
+    cache-names: token, caseId, userToken
     caffeine:
-      spec: maximumSize=50,expireAfterWrite=120s
+      spec: maximumSize=500,expireAfterWrite=120s
 oidc.issuer: ${OIDC_ISSUER_URL:https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts}
 
 idam:
@@ -115,8 +115,8 @@ idam:
     secret: ${ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET:am_docker_secret}
     redirect_uri: ${ROLE_ASSIGNMENT_IDAM_REDIRECT_URI:http://localhost:4096/oauth2redirect}
     admin:
-      userId: ${ROLE_ASSIGNMENT_IDAM_ADMIN_USERID:ras-validation-system@hmcts.net}
-      secret: ${ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:Pa55word11}
+      userId: ${ROLE_ASSIGNMENT_IDAM_ADMIN_USERID:}
+      secret: ${ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:}
       scope: ${ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE:openid profile roles authorities}
 
 
