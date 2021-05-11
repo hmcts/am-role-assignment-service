@@ -31,7 +31,7 @@ public class FeatureToggleService {
 
     static {
         //Any new end point need to be placed in respective map.
-        //postRequestMap.put(AM_ROLE_ASSIGNMENTS, "create-role-assignments");
+        //postRequestMap.put(AM_ROLE_ASSIGNMENTS, "create-role-assignments")
     }
 
     @Autowired
