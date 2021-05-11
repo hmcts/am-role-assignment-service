@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
-import uk.gov.hmcts.reform.roleassignment.annotations.FeatureFlagToggle;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
@@ -65,7 +64,6 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     }
 
     @Test
-    @FeatureFlagToggle(flagEnabled = true)
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {
         "classpath:sql/insert_role_assignment_request.sql",
         "classpath:sql/insert_role_assignment_history.sql"
@@ -78,7 +76,6 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     }
 
     @Test
-    @FeatureFlagToggle(flagEnabled = false)
     public void disableTestAsPerFlagValue() {
         assertRoleAssignmentRecordSize();
     }
