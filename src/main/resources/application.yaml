@@ -160,4 +160,4 @@ org :
   request:
     byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:true}
 
-
+logging.level.uk.gov.hmcts: DEBUG
