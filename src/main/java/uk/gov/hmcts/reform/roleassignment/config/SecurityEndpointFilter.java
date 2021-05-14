@@ -36,6 +36,11 @@ public class SecurityEndpointFilter extends OncePerRequestFilter {
                 UserInfo userInfo = idamApi.retrieveUserInfo(request.getHeader(AUTHORIZATION));
                 logger.debug(userInfo);
             }
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
+
+        try {
             filterChain.doFilter(request, response);
 
         } catch (Exception e) {
