@@ -42,7 +42,6 @@ public class SecurityEndpointFilter extends OncePerRequestFilter {
 
         try {
             filterChain.doFilter(request, response);
-
         } catch (Exception e) {
             Throwable throwable = e.getCause();
             if (throwable instanceof FeignException.FeignClientException) {
