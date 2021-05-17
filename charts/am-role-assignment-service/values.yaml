@@ -34,4 +34,3 @@ java:
     PACT_BROKER_SCHEME: https
     ENABLE_FEIGN_HYSTRIX: false
     ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: ras-validation-system@hmcts.net
-    EXTERNAL_FLAG_QUERY_PATH: am/role-assignments/fetchFlagStatus?flagName=
