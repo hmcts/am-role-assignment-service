@@ -386,7 +386,7 @@ dependencies {
     exclude group: 'junit', module: 'junit'
   }
   testCompile 'com.github.hmcts:befta-fw:AM-1350-extend-befta-fw-SNAPSHOT'
-  //testCompile files('lib/befta-fw-add_custom_annotation_handler-SNAPSHOT.jar')
+
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.5.RELEASE'
 
   testCompile(group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber) {
