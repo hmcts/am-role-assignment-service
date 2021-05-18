@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.kie.api.runtime.StatelessKieSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -21,6 +23,7 @@ public class ValidationModelService {
     private StatelessKieSession kieSession;
     private RetrieveDataService retrieveDataService;
     private PersistenceService persistenceService;
+    private static final Logger RULE_LOGGER = LoggerFactory.getLogger("RuleLogger");
 
 
     public ValidationModelService(StatelessKieSession kieSession,
@@ -114,6 +117,7 @@ public class ValidationModelService {
         // Make the retrieve data service available to rules - this allows data - e.g. case data - to be
         // loaded dynamically when needed by a rule, rather than up-front, when it may never be used.
         kieSession.setGlobal("DATA_SERVICE", retrieveDataService);
+        kieSession.setGlobal("logger", RULE_LOGGER);
 
         // Run the rules
         kieSession.execute(facts);
