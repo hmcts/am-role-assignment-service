@@ -91,10 +91,7 @@ end;
  */
 rule "ia_caseworker_create_case_roles_without_assigner_existing_role"
 when
-$f : FeatureFlag(status && flagName == FeatureFlagEnum.getIAC_1_1.getValue())
-    $rq: Request(
-             assignerId == authenticatedUserId)
-
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.getIAC_1_1.getValue())
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
@@ -106,6 +103,12 @@ $f : FeatureFlag(status && flagName == FeatureFlagEnum.getIAC_1_1.getValue())
              caseTypeId == "Asylum")
          ExistingRoleAssignment(
              actorId == $ra.actorId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+
+         ExistingRoleAssignment(
+             actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
              roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
@@ -136,6 +139,11 @@ when
              id == $caseId,
              jurisdiction == "IA",
              caseTypeId == "Asylum")
+        ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
+             attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
 
 then
     $ra.setStatus(Status.DELETE_APPROVED);
