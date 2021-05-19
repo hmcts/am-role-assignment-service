@@ -161,3 +161,4 @@ org :
     byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:true}
 
 
+logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:INFO}
