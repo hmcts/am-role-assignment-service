@@ -52,10 +52,6 @@ public class GetAssignmentController {
         @ApiResponse(
             code = 400,
             message = V1.Error.INVALID_REQUEST
-        ),
-        @ApiResponse(
-            code = 404,
-            message = V1.Error.NO_RECORDS_FOUND_BY_ACTOR
         )
     })
     @LogAudit(operationType = GET_ASSIGNMENTS_BY_ACTOR,
@@ -72,10 +68,13 @@ public class GetAssignmentController {
         ResponseEntity<RoleAssignmentResource> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
             actorId
         );
-        long etag = retrieveRoleAssignmentService.retrieveETag(actorId);
-        String weakEtag = "W/\"" + etag + "\"";
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setETag(weakEtag);
+        if (responseEntity.getBody() != null && !responseEntity.getBody().getRoleAssignmentResponse().isEmpty()) {
+            long etag = retrieveRoleAssignmentService.retrieveETag(actorId);
+            String weakEtag = "W/\"" + etag + "\"";
+
+            responseHeaders.setETag(weakEtag);
+        }
         return ResponseEntity
             .status(HttpStatus.OK)
             .headers(responseHeaders)
