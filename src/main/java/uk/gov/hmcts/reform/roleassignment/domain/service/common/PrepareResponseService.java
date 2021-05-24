@@ -35,7 +35,6 @@ public class PrepareResponseService {
     @SuppressWarnings("unchecked")
     public ResponseEntity<RoleAssignmentResource> prepareRetrieveRoleResponse(
         List<? extends Assignment> roleAssignmentResponse, String actorId)  {
-
         return ResponseEntity.status(HttpStatus.OK).body(
             new RoleAssignmentResource((List<Assignment>) roleAssignmentResponse, actorId));
     }
