@@ -27,12 +27,12 @@ Feature: F-005 : Get Role Assignments by Actor Id
     And a successful call [to delete role assignments just created above] as in [F-005_DeleteDataForMultipleRoleAssignments].
 
   @S-053 @FeatureToggle(get-role-assignments-by-actor-id)
-  Scenario: must receive an error response for a non-existing ActorId
+  Scenario: should return a blank response for a non-existing ActorId
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
     And the request [contains a non-existing Actor Id],
     And it is submitted to call the [Get Role Assignments by Actor Id] operation of [Role Assignment Service],
-    Then a negative response is received,
+    Then a positive response is received,
     And the response has all other details as expected.
 
   @S-054 @FeatureToggle(get-role-assignments-by-actor-id) @FeatureToggle(create-role-assignments) @FeatureToggle(delete-role-assignments)
