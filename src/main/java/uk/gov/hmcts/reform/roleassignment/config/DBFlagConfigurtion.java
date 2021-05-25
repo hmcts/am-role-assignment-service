@@ -36,7 +36,7 @@ public class DBFlagConfigurtion implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (!dbFeature2Disable.isEmpty()) {
+        if (!dbFeature2Enable.isEmpty()) {
             updateFeatureFlag(dbFeature2Enable, Boolean.TRUE);
         }
         if (!dbFeature2Disable.isEmpty()) {
