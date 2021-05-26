@@ -7,5 +7,6 @@
   "10010_Cookie No HttpOnly Flag_http://am-role-assignment-service-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
   "90033_Loosely Scoped Cookie_http://am-role-assignment-service-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
   "10054_Cookie Without SameSite Attribute_http://am-role-assignment-service-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
-  "10096_Timestamp Disclosure - Unix_http://am-role-assignment-service-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore"
+  "10096_Timestamp Disclosure - Unix_http://am-role-assignment-service-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10054_Cookie without SameSite Attribute_http://am-role-assignment-service-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore"
 }

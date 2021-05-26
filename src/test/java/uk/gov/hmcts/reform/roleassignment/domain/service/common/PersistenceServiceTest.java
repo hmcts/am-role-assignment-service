@@ -721,7 +721,7 @@ class PersistenceServiceTest {
             .serviceName("iac")
             .status(Boolean.TRUE)
             .build();
-        when(flagConfigRepository.getStatusByParams(flagName, env)).thenReturn(flagConfig);
+        when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
         Boolean response = sut.getStatusByParam(flagName, env);
         assertTrue(response);
 
