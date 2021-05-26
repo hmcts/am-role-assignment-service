@@ -1,7 +1,11 @@
 buildscript {
   repositories {
     jcenter()
+    flatDir {
+      dirs "$rootProject.projectDir/lib"
+    }
   }
+
   dependencies {
     classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.12")
     classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
@@ -149,7 +153,7 @@ task functional(type: Test, description: 'Runs the functional tests.', group: 'V
       main = "uk.gov.hmcts.reform.roleassignment.befta.RoleAssignmentBeftaMain"
       classpath += configurations.cucumberRuntime + sourceSets.functionalTest.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
       args = ['--plugin', "json:${projectDir}/target/cucumber.json", '--tags', 'not @Ignore', '--glue',
-              'uk.gov.hmcts.befta.player', 'src/functionalTest/resources/features/']
+              'uk.gov.hmcts.befta.player', 'src/functionalTest/resources/features/F-000/']
     }
   }
 }
@@ -385,7 +389,11 @@ dependencies {
   testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  testCompile 'com.github.hmcts:befta-fw:AM-1350-extend-befta-fw-SNAPSHOT'
+  implementation(files("lib/befta-fw-6.15.0-SNAPSHOT.jar"))
+  implementation(files("/lib/befta-fw-6.15.0-SNAPSHOT.jar"))
+  testImplementation(files("lib/befta-fw-6.15.0-SNAPSHOT.jar"))
+  testImplementation(files("/lib/befta-fw-6.15.0-SNAPSHOT.jar"))
+  //testCompile 'com.github.hmcts:befta-fw:AM-1350-extend-befta-fw-SNAPSHOT'
   //testCompile files('lib/befta-fw-add_custom_annotation_handler-SNAPSHOT.jar')
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.5.RELEASE'
 
@@ -395,6 +403,37 @@ dependencies {
   testCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
   testCompile group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
   testCompile group: 'io.github.openfeign', name: 'feign-jackson', version: versions.feign_jackson
+
+
+  compile "com.fasterxml.jackson.core:jackson-databind:2.10.0"
+
+  compile group: 'io.rest-assured', name: 'rest-assured', version: '3.1.0'
+
+  compile group: 'io.cucumber', name: 'cucumber-java', version: '5.7.0'
+  compile group: 'io.cucumber', name: 'cucumber-junit', version: '5.7.0'
+
+  compile 'org.projectlombok:lombok:1.18.4'
+
+  compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+  compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.12'
+
+  compile group: 'com.google.guava', name: 'guava', version: '28.1-jre'
+
+  compile group: 'org.apache.poi', name: 'poi', version: '4.0.0'
+  compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.0.0'
+  compile group: 'com.github.rholder', name: 'guava-retrying', version: '2.0.0'
+
+  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.+'
+
+  testCompile 'io.github.openfeign:feign-jackson:9.7.0'
+  testCompile group: 'org.mockito', name: 'mockito-core', version: '3.3.3'
+  testCompile group: 'org.mockito', name: 'mockito-inline', version: '3.4.0'
+  testCompile group: 'org.junit-pioneer', name: 'junit-pioneer', version: '0.9.0'
+  testCompile "org.junit.jupiter:junit-jupiter-api:5.2.0"
+  testRuntime "org.junit.jupiter:junit-jupiter-engine:5.2.0"
+  testRuntime "org.junit.platform:junit-platform-commons:1.5.2"
+  testRuntime "org.junit.platform:junit-platform-engine:1.6.2"
+
 
   contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.6.2")
   contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.6.2")
@@ -441,6 +480,10 @@ dependencies {
 
   pactTestCompile sourceSets.main.runtimeClasspath
   pactTestCompile sourceSets.test.runtimeClasspath
+
+
+
+
 }
 
 bootJar {
