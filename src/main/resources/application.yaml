@@ -162,3 +162,8 @@ org :
     byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:true}
 
 
+logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:INFO}
+dbFeature:
+  flags:
+    enable: ${DB_FEATURE_FLAG_ENABLE:iac_1_0}
+    disable: ${DB_FEATURE_FLAG_DISABLE:iac_1_1}
