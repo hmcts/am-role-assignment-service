@@ -37,7 +37,7 @@ public class ValidationUtil {
     }
 
     public static void validateDateTime(String strDate) throws ParseException {
-        LOG.info("validateDateTime");
+        LOG.debug("validateDateTime");
         if (strDate.length() < 16) {
             throw new BadRequestException(String.format(
                 "Incorrect date format %s",
@@ -49,8 +49,8 @@ public class ValidationUtil {
         Date javaDate;
         try {
             javaDate = simpleDateFormat.parse(strDate);
-            if (LOG.isInfoEnabled() && javaDate != null) {
-                LOG.info(javaDate.toString());
+            if (LOG.isDebugEnabled() && javaDate != null) {
+                LOG.debug(javaDate.toString());
             }
         } catch (ParseException e) {
             throw new BadRequestException(String.format(
