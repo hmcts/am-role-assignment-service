@@ -19,6 +19,7 @@ java:
     CCD_DATA_STORE_URL: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     LAUNCH_DARKLY_ENV: pr
+    APPLICATION_LOGGING_LEVEL: DEBUG
     ENABLE_DB_MIGRATE: true
   postgresql:
     enabled: true
