@@ -8,7 +8,8 @@ import uk.gov.hmcts.befta.featuretoggle.ScenarioFeatureToggleInfo;
 public class RasDefaultMultiSourceFeatureToggleService extends DefaultMultiSourceFeatureToggleService {
 
     private static final String LAUNCH_DARKLY_FLAG = "FeatureToggle";
-    public static final RasDefaultMultiSourceFeatureToggleService INSTANCE = new RasDefaultMultiSourceFeatureToggleService();
+    public static final RasDefaultMultiSourceFeatureToggleService INSTANCE
+        = new RasDefaultMultiSourceFeatureToggleService();
 
     @Override
     @SuppressWarnings("unchecked")
@@ -18,8 +19,6 @@ public class RasDefaultMultiSourceFeatureToggleService extends DefaultMultiSourc
         toggleable.getSourceTagNames().stream().filter(tag -> tag.contains(LAUNCH_DARKLY_FLAG)).forEach(tag -> {
             String domain = null;
             String id = null;
-            Boolean expectedStatus = null;
-            Boolean actualStatus;
             domain = tag.contains(COLON) ? tag.substring(tag.indexOf("(") + 1, tag.indexOf(COLON)) : "LD";
             FeatureToggleService service = getToggleService(domain);
 
@@ -30,12 +29,13 @@ public class RasDefaultMultiSourceFeatureToggleService extends DefaultMultiSourc
             } else if (tag.contains(COLON) && tag.contains(STRING_EQUALS)) {
                 id = tag.substring(tag.indexOf(COLON) + 1, tag.indexOf(STRING_EQUALS));
             }
+            Boolean expectedStatus = null;
             if (tag.contains(STRING_EQUALS)) {
                 String expectedStatusString = tag.substring(tag.indexOf(STRING_EQUALS) + 1, tag.indexOf(")"));
                 expectedStatus = expectedStatusString.equalsIgnoreCase("on");
                 scenarioFeatureToggleInfo.addExpectedStatus(id, expectedStatus);
             }
-
+            Boolean actualStatus;
             actualStatus = (Boolean) service.getToggleStatusFor(id);
             scenarioFeatureToggleInfo.addActualStatus(id, actualStatus);
         });
