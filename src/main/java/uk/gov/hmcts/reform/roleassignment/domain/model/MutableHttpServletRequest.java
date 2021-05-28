@@ -50,6 +50,10 @@ public final class MutableHttpServletRequest extends HttpServletRequestWrapper {
         return bodyString;
     }
 
+    /**
+     * This method id used to read HttpServletRequest Body data multiple times in order
+     * to capture the incoming request payload.
+     */
     @Override
     public ServletInputStream getInputStream() {
         final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(body);
