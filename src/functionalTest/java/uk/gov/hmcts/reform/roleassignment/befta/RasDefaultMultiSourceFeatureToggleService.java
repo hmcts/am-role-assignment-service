@@ -1,15 +1,14 @@
 package uk.gov.hmcts.reform.roleassignment.befta;
 
-
 import io.cucumber.java.Scenario;
-import uk.gov.hmcts.befta.DefaultMultiSourceFeatureToggleService;
+import uk.gov.hmcts.befta.featuretoggle.DefaultMultiSourceFeatureToggleService;
 import uk.gov.hmcts.befta.featuretoggle.FeatureToggleService;
 import uk.gov.hmcts.befta.featuretoggle.ScenarioFeatureToggleInfo;
 
 public class RasDefaultMultiSourceFeatureToggleService extends DefaultMultiSourceFeatureToggleService {
 
     private static final String LAUNCH_DARKLY_FLAG = "FeatureToggle";
-    public static RasDefaultMultiSourceFeatureToggleService INSTANCE = new RasDefaultMultiSourceFeatureToggleService();
+    public static final RasDefaultMultiSourceFeatureToggleService INSTANCE = new RasDefaultMultiSourceFeatureToggleService();
 
     @Override
     @SuppressWarnings("unchecked")
