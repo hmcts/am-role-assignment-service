@@ -92,6 +92,8 @@ end;
 rule "ia_caseworker_create_case_roles_without_assigner_existing_role"
 when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.getIAC_1_1.getValue())
+    $rq: Request(
+                 assignerId == authenticatedUserId)
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
@@ -107,11 +109,6 @@ when
              roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 
-         ExistingRoleAssignment(
-             actorId == $rq.assignerId,
-             roleType == RoleType.ORGANISATION,
-             roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 then
     $ra.setAttribute("jurisdiction", $c.getJurisdiction());
     $ra.setAttribute("caseType", $c.getCaseTypeId());
@@ -128,26 +125,21 @@ end;
 rule "ia_caseworker_delete_case_roles_without_assigner_existing_role"
 when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.getIAC_1_1.getValue())
-    $rq: Request(
-             assignerId == authenticatedUserId)
-    $ra: RoleAssignment(
-             status == Status.DELETE_REQUESTED,
-             roleType == RoleType.CASE,
-             roleName == "tribunal-caseworker",
-             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-         Case(
-             id == $caseId,
-             jurisdiction == "IA",
-             caseTypeId == "Asylum")
-        ExistingRoleAssignment(
-             actorId == $rq.assignerId,
-             roleType == RoleType.ORGANISATION,
-             roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
-             attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
+     $rq: Request(
+                 assignerId == authenticatedUserId)
+        $ra: RoleAssignment(
+                 status == Status.DELETE_REQUESTED,
+                 roleType == RoleType.CASE,
+                 roleName == "tribunal-caseworker",
+                 attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+             Case(
+                 id == $caseId,
+                 jurisdiction == "IA",
+                 caseTypeId == "Asylum")
 
-then
-    $ra.setStatus(Status.DELETE_APPROVED);
-    $ra.log("Delete approved : ia_caseworker_delete_case_roles");
-    update($ra);
-    System.out.println("Rule : ia_caseworker_delete_case_roles_without_assigner_existing_role");
+    then
+        $ra.setStatus(Status.DELETE_APPROVED);
+        $ra.log("Delete approved : ia_caseworker_delete_case_roles");
+        update($ra);
+        System.out.println("Rule : ia_caseworker_delete_case_roles");
 end;
