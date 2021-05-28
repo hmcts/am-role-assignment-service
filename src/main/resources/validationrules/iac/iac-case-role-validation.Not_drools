@@ -12,6 +12,10 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 
+AM Team : THIS FILE IS TAMPERED and the extension has been changed. There was some bootrun issue
+Need to fix this later.
+
+
 /*
  * IAC case worker case roles can be created by any existing tribunal casworker
  * or senior tribunal case worker, and can also only be assigned to users with
