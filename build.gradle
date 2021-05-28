@@ -389,12 +389,9 @@ dependencies {
   testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  implementation(files("lib/befta-fw-6.15.0-SNAPSHOT.jar"))
-  implementation(files("/lib/befta-fw-6.15.0-SNAPSHOT.jar"))
-  testImplementation(files("lib/befta-fw-6.15.0-SNAPSHOT.jar"))
-  testImplementation(files("/lib/befta-fw-6.15.0-SNAPSHOT.jar"))
-  //testCompile 'com.github.hmcts:befta-fw:AM-1350-extend-befta-fw-SNAPSHOT'
-  //testCompile files('lib/befta-fw-add_custom_annotation_handler-SNAPSHOT.jar')
+
+  testCompile 'com.github.hmcts:befta-fw:extend-feature-flag-framework-SNAPSHOT'
+
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.5.RELEASE'
 
   testCompile(group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber) {
