@@ -49,9 +49,6 @@ class ParseRequestServiceTest {
 
     private static final String ROLE_TYPE = "CASE";
 
-    @Mock
-    HttpServletRequest httpServletRequest;
-
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -225,7 +222,6 @@ class ParseRequestServiceTest {
         when(securityUtilsMock.getUserId()).thenReturn(userId);
         when(correlationInterceptorUtilMock.preHandle(
             any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
-        //when(httpServletRequest.getInputStream()).thenReturn(request.getInputStream());
 
         RequestType requestType = RequestType.CREATE;
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.LIVE, Status.LIVE, false);
