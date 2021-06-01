@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog;
 
 import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
-import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
@@ -58,7 +57,6 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
         return handler instanceof HandlerMethod && ((HandlerMethod) handler).hasMethodAnnotation(LogAudit.class);
     }
 
-    @SneakyThrows
     private AuditContext populateHttpSemantics(AuditContext auditContext,
                                                HttpServletRequest request, HttpServletResponse response) {
         AuditContext context = (auditContext != null) ? auditContext : new AuditContext();
