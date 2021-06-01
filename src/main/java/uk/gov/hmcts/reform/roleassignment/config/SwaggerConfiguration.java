@@ -35,11 +35,9 @@ public class SwaggerConfiguration {
             .build()
             .useDefaultResponseMessages(false)
             .apiInfo(apiV2Info())
-            .host(host)
             .globalOperationParameters(Arrays.asList(
                 headerServiceAuthorization(),
                 headerAuthorization()
-
             ));
     }
 
@@ -47,7 +45,7 @@ public class SwaggerConfiguration {
         return new ApiInfoBuilder()
             .title("Role Assignment Service")
             .description("Manage role assignments")
-            .version("2-beta")
+            .version("2")
             .build();
     }
 
