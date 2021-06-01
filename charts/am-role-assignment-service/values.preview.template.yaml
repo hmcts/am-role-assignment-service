@@ -20,7 +20,6 @@ java:
     S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     LAUNCH_DARKLY_ENV: pr
     ENABLE_DB_MIGRATE: true
-    APPLICATION_LOGGING_LEVEL: DEBUG
   postgresql:
     enabled: true
     postgresqlUsername: role_assignment
