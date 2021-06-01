@@ -5,8 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -38,7 +36,6 @@ public abstract class DroolBase {
     List<Object> facts;
 
     private final RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
-    private static final Logger RULE_LOGGER = LoggerFactory.getLogger("RuleLogger");
 
     @BeforeEach
     public void setUp() {
@@ -79,7 +76,6 @@ public abstract class DroolBase {
         KieContainer kieContainer = ks.getKieClasspathContainer();
         this.kieSession = kieContainer.newStatelessKieSession("role-assignment-validation-session");
         this.kieSession.setGlobal("DATA_SERVICE", retrieveDataService);
-        this.kieSession.setGlobal("logger", RULE_LOGGER);
 
     }
 
