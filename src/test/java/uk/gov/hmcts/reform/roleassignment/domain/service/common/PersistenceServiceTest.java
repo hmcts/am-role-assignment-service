@@ -601,7 +601,7 @@ class PersistenceServiceTest {
         when(roleAssignmentRepository.findById(id)).thenReturn(roleAssignmentOptional);
         List<RoleAssignment> roleAssignmentList = sut.getAssignmentById(id);
         assertNotNull(roleAssignmentList);
-//        assertEquals(roleAssignmentList.size(), Integer.valueOf(0));
+        assertEquals(roleAssignmentList.size(),Integer.valueOf(0));
     }
 
     @Test
@@ -620,7 +620,7 @@ class PersistenceServiceTest {
         assertNotNull(roleAssignmentList);
         assertNotNull(roleAssignmentOptional);
         assertFalse(roleAssignmentList.isEmpty());
-//        assertEquals(roleAssignmentList.size(), Integer.valueOf(1));
+        assertEquals(roleAssignmentList.size(),Integer.valueOf(1));
 
     }
 
@@ -640,7 +640,7 @@ class PersistenceServiceTest {
         assertNotNull(roleAssignmentList);
         assertNotNull(roleAssignmentOptional);
         assertFalse(roleAssignmentList.isEmpty());
-//        assertEquals(roleAssignmentList.size(), Integer.valueOf(1));
+        assertEquals(roleAssignmentList.size(),Integer.valueOf(1));
 
     }
 
