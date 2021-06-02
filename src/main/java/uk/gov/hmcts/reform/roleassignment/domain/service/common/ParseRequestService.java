@@ -48,7 +48,7 @@ public class ParseRequestService {
     public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType)
         throws ParseException {
         long startTime = System.currentTimeMillis();
-        logger.info("parseRequest execution started at {}", startTime);
+        logger.debug("parseRequest execution started at {}", startTime);
         Request request = assignmentRequest.getRequest();
         request.setByPassOrgDroolRule(byPassOrgDroolRule);
         ValidationUtil.validateAssignmentRequest(assignmentRequest);
@@ -80,7 +80,7 @@ public class ParseRequestService {
         AssignmentRequest parsedRequest = new AssignmentRequest(new Request(), Collections.emptyList());
         parsedRequest.setRequest(request);
         parsedRequest.setRequestedRoles(requestedAssignments);
-        logger.info(
+        logger.debug(
             " >> parseRequest execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)

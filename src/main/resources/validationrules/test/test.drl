@@ -5,13 +5,14 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigPattern;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
 
 rule "request"
 salience 1000
 when
 	$r: Request()
 then
-	System.err.println("We have request " + $r);
+	logMsg("We have request " + $r);
 end;
 
 rule "role_assignment"
@@ -19,7 +20,7 @@ salience 1000
 when
 	$ra: RoleAssignment()
 then
-	System.err.println("We have role assignment " + $ra.getStatus() + " : " + $ra);
+	logMsg("We have role assignment " + $ra.getStatus() + " : " + $ra);
 end;
 
 rule "existing_role_assignment"
@@ -27,7 +28,7 @@ salience 1000
 when
 	$ra: ExistingRoleAssignment()
 then
-	System.err.println("We have existing role assignment " + $ra);
+	logMsg("We have existing role assignment " + $ra);
 end;
 
 rule "show_case"
@@ -35,7 +36,7 @@ salience 1000
 when
 	$c: Case()
 then
-	System.err.println("We have case " + $c.getId() + " : " + $c);
+	logMsg("We have case " + $c.getId() + " : " + $c);
 end;
 
 rule "config"
@@ -43,7 +44,7 @@ salience 1000
 when
 	$c: RoleConfig()
 then
-	System.err.println("We have role config");
+	logMsg("We have role config");
 end;
 
 
@@ -52,7 +53,7 @@ salience 1000
 when
 	$p: RoleConfigPattern()
 then
-	System.err.println("We have a pattern for " + $p.getRoleName() + " : " + $p);
+	logMsg("We have a pattern for " + $p.getRoleName() + " : " + $p);
 end;
 
 
