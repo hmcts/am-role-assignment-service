@@ -1,6 +1,7 @@
 package validationrules.core;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
 
 /*
  * Explicitly reject any role assignments to be created which have not been approved.
@@ -12,7 +13,7 @@ salience -1000
 when
     $ra: RoleAssignment(status in ( Status.CREATE_REQUESTED, Status.CREATE_APPROVED))
 then
-    System.out.println("Rule : reject_unapproved_create_role_assignments");
+    logMsg("Rule : reject_unapproved_create_role_assignments");
     $ra.setStatus(Status.REJECTED);
     $ra.log("Create not approved by any rule, hence rejected  : reject_unapproved_create_role_assignments");
     update($ra);
@@ -28,7 +29,7 @@ salience -1000
 when
     $ra: RoleAssignment(status == Status.DELETE_REQUESTED)
 then
-    System.out.println("Rule : reject_unapproved_delete_role_assignments");
+    logMsg("Rule : reject_unapproved_delete_role_assignments");
     $ra.setStatus(Status.DELETE_REJECTED);
     $ra.log("Delete not approved by any rule, hence ejected  : reject_unapproved_delete_role_assignments");
     update($ra);

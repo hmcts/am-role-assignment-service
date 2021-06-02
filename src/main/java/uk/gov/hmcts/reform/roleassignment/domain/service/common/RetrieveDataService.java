@@ -14,6 +14,8 @@ import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreApi;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
+
 @Service
 @Slf4j
 public class RetrieveDataService {
@@ -35,7 +37,7 @@ public class RetrieveDataService {
     @Cacheable(value = "caseId")
     @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 3))
     public Case getCaseById(String caseId) {
-        if (cacheType != null && !cacheType.equals("none")) {
+        if (Objects.nonNull(cacheType) && !cacheType.equals("none")) {
             CaffeineCache caffeineCache = (CaffeineCache) cacheManager.getCache("caseId");
             com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache = requireNonNull(caffeineCache)
                 .getNativeCache();

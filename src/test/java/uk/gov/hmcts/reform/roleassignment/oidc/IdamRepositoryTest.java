@@ -101,6 +101,60 @@ class IdamRepositoryTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
+    void getUserInfo_cacheNone() {
+        UserInfo userInfo = mock(UserInfo.class);
+
+
+        ReflectionTestUtils.setField(
+            idamRepository,
+            "cacheType", "none"
+
+        );
+
+        when(idamApi.retrieveUserInfo(anyString())).thenReturn(userInfo);
+
+        UserInfo returnedUserInfo = idamRepository.getUserInfo("Test");
+        assertNotNull(returnedUserInfo);
+        verify(idamApi, times(1)).retrieveUserInfo(any());
+        verify(cacheManager, times(0)).getCache(any());
+
+        CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
+        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+
+        verify(caffeineCacheMock, times(0)).getNativeCache();
+        verify(cache, times(0)).estimatedSize();
+
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void getUserInfo_cacheNull() {
+        UserInfo userInfo = mock(UserInfo.class);
+
+
+        ReflectionTestUtils.setField(
+            idamRepository,
+            "cacheType", null
+
+        );
+
+        when(idamApi.retrieveUserInfo(anyString())).thenReturn(userInfo);
+
+        UserInfo returnedUserInfo = idamRepository.getUserInfo("Test");
+        assertNotNull(returnedUserInfo);
+        verify(idamApi, times(1)).retrieveUserInfo(any());
+        verify(cacheManager, times(0)).getCache(any());
+
+        CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
+        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+
+        verify(caffeineCacheMock, times(0)).getNativeCache();
+        verify(cache, times(0)).estimatedSize();
+
+    }
+
+    @Test
     void getUserRolesBlankResponse() throws IOException {
         String userId = "003352d0-e699-48bc-b6f5-5810411e60af";
         UserDetails userDetails = UserDetails.builder().email("black@betty.com").forename("ram").surname("jam").id(
@@ -138,6 +192,69 @@ class IdamRepositoryTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
+    void getManageUserToken_cacheNone() {
+
+        ReflectionTestUtils.setField(
+            idamRepository,
+            "cacheType", "none"
+
+        );
+
+        when(oauth2Configuration.getClientId()).thenReturn("clientId");
+        when(oauth2Configuration.getClientSecret()).thenReturn("secret");
+        when(oidcAdminConfiguration.getSecret()).thenReturn("password");
+        when(oidcAdminConfiguration.getScope()).thenReturn("scope");
+        TokenResponse tokenResponse = new
+            TokenResponse("a", "1", "1", "a", "v", "v");
+        when(idamApi.generateOpenIdToken(any())).thenReturn(tokenResponse);
+
+        String result = idamRepository.getManageUserToken("123");
+
+        assertNotNull(result);
+        assertFalse(result.isBlank());
+        assertFalse(result.isEmpty());
+        verify(cacheManager, times(0)).getCache(any());
+
+        CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
+        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+
+        verify(caffeineCacheMock, times(0)).getNativeCache();
+        verify(cache, times(0)).estimatedSize();
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void getManageUserToken_cacheNull() {
+
+        ReflectionTestUtils.setField(
+            idamRepository,
+            "cacheType", null
+        );
+
+        when(oauth2Configuration.getClientId()).thenReturn("clientId");
+        when(oauth2Configuration.getClientSecret()).thenReturn("secret");
+        when(oidcAdminConfiguration.getSecret()).thenReturn("password");
+        when(oidcAdminConfiguration.getScope()).thenReturn("scope");
+        TokenResponse tokenResponse = new
+            TokenResponse("a", "1", "1", "a", "v", "v");
+        when(idamApi.generateOpenIdToken(any())).thenReturn(tokenResponse);
+
+        String result = idamRepository.getManageUserToken("123");
+
+        assertNotNull(result);
+        assertFalse(result.isBlank());
+        assertFalse(result.isEmpty());
+        verify(cacheManager, times(0)).getCache(any());
+
+        CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
+        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+
+        verify(caffeineCacheMock, times(0)).getNativeCache();
+        verify(cache, times(0)).estimatedSize();
+    }
+
+    @Test
     void shouldThrowNullPointerException() {
 
         String token = "eyJhbGciOiJIUzUxMiJ9.Eim7hdYejtBbWXnqCf1gntbYpWHRX8BRzm4zIC_oszmC3D5QlNmkIetVPcMINg";
@@ -150,6 +267,26 @@ class IdamRepositoryTest {
 
         assertThrows(NullPointerException.class, () -> idamRepository.searchUserByUserId(token, userId));
 
+
+    }
+
+    @Test
+    void searchUserByUserId() {
+
+        String token = "eyJhbGciOiJIUzUxMiJ9.Eim7hdYejtBbWXnqCf1gntbYpWHRX8BRzm4zIC_oszmC3D5QlNmkIetVPcMINg";
+        String userId = "4dc7dd3c-3fb5-4611-bbde-5101a97681e0";
+
+        ResponseEntity<List<Object>> responseEntity = new ResponseEntity<List<Object>>(HttpStatus.OK);
+
+        doReturn(responseEntity)
+            .when(restTemplate)
+            .exchange(
+                isA(String.class),
+                eq(HttpMethod.GET),
+                isA(HttpEntity.class),
+                (ParameterizedTypeReference<?>) any(ParameterizedTypeReference.class));
+
+        assertNotNull(idamRepository.searchUserByUserId(token, userId));
 
     }
 
