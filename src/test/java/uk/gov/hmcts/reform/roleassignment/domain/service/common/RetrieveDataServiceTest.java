@@ -60,10 +60,26 @@ class RetrieveDataServiceTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void getCaseById_cache_none() {
+    void getCaseById_cacheNone() {
 
         org.springframework.test.util.ReflectionTestUtils.setField(
             sut, "cacheType", "none");
+
+        when(dataStoreApi.getCaseDataV2("1234")).thenReturn(TestDataBuilder.buildCase());
+
+        assertNotNull(sut.getCaseById("1234"));
+        verify(cacheManager, times(0)).getCache(any());
+        verify(caffeineCacheMock, times(0)).getNativeCache();
+        verify(cache, times(0)).estimatedSize();
+
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void getCaseById_cacheNull() {
+
+        org.springframework.test.util.ReflectionTestUtils.setField(
+            sut, "cacheType", null);
 
         when(dataStoreApi.getCaseDataV2("1234")).thenReturn(TestDataBuilder.buildCase());
 
