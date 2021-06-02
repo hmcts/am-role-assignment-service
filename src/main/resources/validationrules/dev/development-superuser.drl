@@ -5,6 +5,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
 
 
 
@@ -19,7 +20,7 @@ then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Stage 1 approved : staff_organisational_role_mapping_service_create");
     update($ra);
-    System.out.println("Rule :development_superuser");
+    logMsg("Rule :development_superuser");
 end;
 
 
@@ -35,25 +36,5 @@ then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Stage 1 approved : staff_organisational_role_mapping_service_create");
     update($ra);
-    System.out.println("Rule :development_superuser");
+    logMsg("Rule :development_superuser");
 end;
-
-/*rule "development_superuser_warning"
-when
-    $rq: Request()
-then
-    System.err.println("*************************************************************************************************");
-    System.err.println("*************************************************************************************************");
-    System.err.println("*************************************************************************************************");
-    System.err.println("*************************************************************************************************");
-    System.err.println("*************************************************************************************************");
-    System.err.println("*************************************************************************************************");
-    System.err.println("******* DEVELOPMENT SUPERUSER MODE IS AVAILABLE.  THIS MUST NOT RUN IN PRODUCTION. **************");
-    System.err.println("*************************************************************************************************");
-    System.err.println("*************************************************************************************************");
-    System.err.println("*************************************************************************************************");
-    System.err.println("*************************************************************************************************");
-    System.err.println("*************************************************************************************************");
-    System.err.println("*************************************************************************************************");
-    System.err.println("*************************************************************************************************");
-end;*/
