@@ -19,7 +19,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
  */
 rule "ia_caseworker_create_case_roles"
 when
-    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.getIAC_1_0.getValue())
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_0.getValue())
     $rq: Request(assignerId == authenticatedUserId)
 
     $ra: RoleAssignment(
@@ -58,7 +58,7 @@ end;
  */
 rule "ia_caseworker_delete_case_roles"
 when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.getIAC_1_0.getValue())
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_0.getValue())
     $rq: Request(
              assignerId == authenticatedUserId)
     $ra: RoleAssignment(
@@ -91,7 +91,7 @@ end;
  */
 rule "ia_caseworker_create_case_roles_without_assigner_existing_role"
 when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.getIAC_1_1.getValue())
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
     $rq: Request(
                  assignerId == authenticatedUserId)
     $ra: RoleAssignment(
@@ -124,7 +124,7 @@ end;
  */
 rule "ia_caseworker_delete_case_roles_without_assigner_existing_role"
 when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.getIAC_1_1.getValue())
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
      $rq: Request(
                  assignerId == authenticatedUserId)
         $ra: RoleAssignment(
