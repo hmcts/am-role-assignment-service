@@ -35,7 +35,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                                 "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -56,7 +56,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              "1234567890123456", DELETE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -76,7 +76,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -97,7 +97,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              "1234567890123456", DELETE_REQUESTED);
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -117,7 +117,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -158,7 +158,7 @@ class StaffCategoryCaseTest extends DroolBase {
         List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
         existingRoleAssignments.add(existingActorAssignment1);
         existingRoleAssignments.add(existingRequesterAssignment1);
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -182,7 +182,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole2));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -204,7 +204,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -335,7 +335,7 @@ class StaffCategoryCaseTest extends DroolBase {
         requestedRole1.setBeginTime(timeStamp.plusDays(1));
         requestedRole1.setEndTime(timeStamp.plusDays(100));
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -354,7 +354,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -456,7 +456,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_1.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -475,7 +475,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_1.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 

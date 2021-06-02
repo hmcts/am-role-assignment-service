@@ -130,10 +130,10 @@ public class ValidationModelService {
             getFlagValuesFromDB(droolFlagStates);
         }
 
-        for (String flag : droolFlagStates.keySet()) {
+        for (Map.Entry<String, Boolean> flag : droolFlagStates.entrySet()) {
             FeatureFlag featureFlag = FeatureFlag.builder()
-                .flagName(flag)
-                .status(droolFlagStates.get(flag))
+                .flagName(flag.getKey())
+                .status(flag.getValue())
                 .build();
             featureFlags.add(featureFlag);
         }
