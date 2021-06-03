@@ -4,7 +4,7 @@ Feature: F-007 : Get Static List of Roles Configuration
   Background:
     Given an appropriate test context as detailed in the test data source
 
-  @S-071 @FeatureToggle(get-list-of-roles)
+  @S-071
   Scenario: must successfully receive static list of roles
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
