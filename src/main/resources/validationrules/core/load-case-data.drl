@@ -4,6 +4,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import java.lang.Throwable
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
 
 global uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService DATA_SERVICE;
 
@@ -27,8 +28,8 @@ then
   	insert(DATA_SERVICE.getCaseById($caseId));
   }
   catch(Throwable ex) {
-  System.out.println("Error from the ccd data-store feign client");
+  logMsg("Error from the ccd data-store feign client");
   throw new BadRequestException(ex.getMessage());
   }
-	System.out.println("Rule :load_case_data_for_role_assignments_with_case_ids");
+	logMsg("Rule :load_case_data_for_role_assignments_with_case_ids");
 end;

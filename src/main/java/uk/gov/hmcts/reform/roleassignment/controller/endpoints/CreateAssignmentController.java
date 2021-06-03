@@ -76,7 +76,9 @@ public class CreateAssignmentController {
         roleName = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildRoleNames(#result)",
         caseId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildCaseIds(#result)",
         assignerId = "#assignmentRequest.request.assignerId",
-        correlationId = "#correlationId")
+        correlationId = "#correlationId",
+        requestPayload = "#auditContextWith.requestPayload"
+    )
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResponseEntity<RoleAssignmentRequestResource> createRoleAssignment(
@@ -87,7 +89,7 @@ public class CreateAssignmentController {
         long startTime = System.currentTimeMillis();
         ResponseEntity<RoleAssignmentRequestResource> response = createRoleAssignmentOrchestrator
             .createRoleAssignment(assignmentRequest);
-        logger.info(
+        logger.debug(
             " >> createRoleAssignment execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
