@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.kie.api.runtime.StatelessKieSession;
@@ -11,15 +10,12 @@ import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,9 +39,6 @@ class ValidationModelServiceTest {
     AssignmentRequest assignmentRequest;
 
     PersistenceService persistenceService = mock(PersistenceService.class);
-
-    @Getter
-    private static final Map<String, List<Role>> configuredRoles = new HashMap<>();
 
     @Mock
     Logger logger = mock(Logger.class);
