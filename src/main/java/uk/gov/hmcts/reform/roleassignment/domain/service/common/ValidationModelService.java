@@ -163,6 +163,7 @@ public class ValidationModelService {
     public static void logMsg(final String message) {
         log.debug(message);
     }
+
     private void getFlagValuesFromDB(Map<String, Boolean> droolFlagStates) {
         for (FeatureFlagEnum featureFlagEnum : FeatureFlagEnum.values()) {
             Boolean status = persistenceService.getStatusByParam(featureFlagEnum.getValue(), environment);
