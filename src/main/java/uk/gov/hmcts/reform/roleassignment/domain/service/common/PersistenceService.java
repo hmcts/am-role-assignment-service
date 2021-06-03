@@ -168,7 +168,7 @@ public class PersistenceService {
         List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(historyEntity -> persistenceUtil
             .convertHistoryEntityToRoleAssignment(historyEntity)).collect(
             Collectors.toList());
-        logger.info(
+        logger.debug(
             " >> getAssignmentsByProcess execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
@@ -257,7 +257,7 @@ public class PersistenceService {
 
         }
 
-        logger.info(
+        logger.debug(
             " >> retrieveRoleAssignmentsByQueryRequest execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)

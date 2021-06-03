@@ -44,7 +44,7 @@ Feature: F-002 : Delete Role Assignments by Process and Reference
 #    Then a negative response is received,
 #    And the response has all other details as expected.
 
-  @S-025 @FeatureToggle(delete-role-assignments) @FeatureToggle(create-role-assignments)
+  @S-025
   Scenario: must successfully delete single Role Assignment by Process
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
@@ -54,7 +54,7 @@ Feature: F-002 : Delete Role Assignments by Process and Reference
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-026 @FeatureToggle(delete-role-assignments) @FeatureToggle(create-role-assignments)
+  @S-026
   Scenario: must successfully delete multiple Role Assignments by Process
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create multiple role assignment for an actor] as in [S-026_CreationDataForRoleAssignment],
@@ -64,7 +64,7 @@ Feature: F-002 : Delete Role Assignments by Process and Reference
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-027 @FeatureToggle(delete-role-assignments)
+  @S-027
   Scenario: must receive positive response when delete Role Assignment with a non-existing Process
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -73,7 +73,7 @@ Feature: F-002 : Delete Role Assignments by Process and Reference
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-028 @FeatureToggle(delete-role-assignments)
+  @S-028
   Scenario: must receive positive response when delete Role Assignment with a non-existing Reference
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
@@ -82,7 +82,7 @@ Feature: F-002 : Delete Role Assignments by Process and Reference
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-029 @FeatureToggle(delete-role-assignments) @FeatureToggle(create-role-assignments)
+  @S-029
   Scenario: must successfully delete Role Assignment with Assigner Id Header
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
@@ -93,7 +93,7 @@ Feature: F-002 : Delete Role Assignments by Process and Reference
     Then a positive response is received,
     And the response has all other details as expected.
 
-  @S-030 @FeatureToggle(delete-role-assignments) @FeatureToggle(create-role-assignments)
+  @S-030
   Scenario: must receive positive response when trying to delete a Role Assignment twice
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
