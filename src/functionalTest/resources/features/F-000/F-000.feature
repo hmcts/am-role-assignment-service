@@ -4,7 +4,7 @@ Feature: F-000 : Access Role Assignment API
   Background:
     Given an appropriate test context as detailed in the test data source
 
-  @S-000 @FeatureToggle(get-ld-flag)
+  @S-000
   Scenario: must access Role Assignment API
     Given a user with [an active caseworker profile],
     When a request is prepared with appropriate values,
