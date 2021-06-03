@@ -9,6 +9,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
 
 /*
  * IAC case worker case roles can be created by any existing tribunal casworker
@@ -47,7 +48,7 @@ then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Stage 1 approved : ia_caseworker_create_case_roles");
     update($ra);
-    System.out.println("Rule : ia_caseworker_create_case_roles");
+    logMsg("Rule : ia_caseworker_create_case_roles");
 end;
 
 /*
@@ -77,5 +78,5 @@ then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : ia_caseworker_delete_case_roles");
     update($ra);
-    System.out.println("Rule : ia_caseworker_delete_case_roles");
+    logMsg("Rule : ia_caseworker_delete_case_roles");
 end;

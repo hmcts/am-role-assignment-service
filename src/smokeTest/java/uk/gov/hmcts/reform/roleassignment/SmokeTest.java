@@ -56,7 +56,6 @@ public class SmokeTest extends BaseTest {
     public FeatureFlagToggleEvaluator featureFlagToggleEvaluator = new FeatureFlagToggleEvaluator(this);
 
     @Test
-    @FeatureFlagToggle("get-list-of-roles")
     public void should_receive_response_for_get_static_roles() {
 
         String targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments/roles";
@@ -74,7 +73,6 @@ public class SmokeTest extends BaseTest {
     }
 
     @Test
-    @FeatureFlagToggle("get-role-assignments-by-actor-id")
     public void should_receive_response_for_get_by_actor_id() {
 
         String targetInstance = config.getRoleAssignmentUrl()
@@ -93,7 +91,6 @@ public class SmokeTest extends BaseTest {
     }
 
     @Test
-    @FeatureFlagToggle("delete-role-assignments-by-id")
     public void should_receive_response_for_delete_by_assignment_id() {
 
         String targetInstance = config.getRoleAssignmentUrl()
@@ -113,7 +110,6 @@ public class SmokeTest extends BaseTest {
     }
 
     @Test
-    @FeatureFlagToggle("delete-role-assignments")
     public void should_receive_response_for_delete_by_process_and_reference() {
 
         String targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments?process=p2&reference=r2";
@@ -131,7 +127,6 @@ public class SmokeTest extends BaseTest {
     }
 
     //@Test
-    @FeatureFlagToggle("create-role-assignments")
     public void should_receive_response_for_add_role_assignment() throws IOException {
 
         String targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments";
