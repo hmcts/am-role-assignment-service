@@ -37,7 +37,7 @@ public class QueryRoleAssignmentOrchestrator {
                 direction,
                 false
             );
-        HttpHeaders responseHeaders = new HttpHeaders();
+        var responseHeaders = new HttpHeaders();
         responseHeaders.add(
             "Total-Records",
             Long.toString(persistenceService.getTotalRecords())

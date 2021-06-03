@@ -86,7 +86,7 @@ public class ValidationModelService {
 
 
     public List<Assignment> getCurrentRoleAssignmentsForActors(Set<String> actorIds) {
-        QueryRequest queryRequest = QueryRequest.builder()
+        var queryRequest = QueryRequest.builder()
             .actorId(actorIds)
             .roleType("ORGANISATION")
             .validAt(LocalDateTime.now())
@@ -131,7 +131,7 @@ public class ValidationModelService {
         }
 
         for (Map.Entry<String, Boolean> flag : droolFlagStates.entrySet()) {
-            FeatureFlag featureFlag = FeatureFlag.builder()
+            var featureFlag = FeatureFlag.builder()
                 .flagName(flag.getKey())
                 .status(flag.getValue())
                 .build();
