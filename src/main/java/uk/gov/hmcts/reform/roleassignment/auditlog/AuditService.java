@@ -27,7 +27,7 @@ public class AuditService {
 
     public void audit(AuditContext auditContext) {
 
-        AuditEntry entry = new AuditEntry();
+        var entry = new AuditEntry();
 
         String formattedDate = LocalDateTime.now(clock).format(ISO_LOCAL_DATE_TIME);
         entry.setDateTime(formattedDate);

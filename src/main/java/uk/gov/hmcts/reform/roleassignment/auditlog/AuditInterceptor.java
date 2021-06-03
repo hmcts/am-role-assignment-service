@@ -35,7 +35,7 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
         if (applicationParams.isAuditLogEnabled() && hasAuditAnnotation(handler)) {
             LOG.info("afterCompletion execution started at {}", startTime);
             if (!applicationParams.getAuditLogIgnoreStatuses().contains(response.getStatus())) {
-                AuditContext auditContext = AuditContextHolder.getAuditContext();
+                var auditContext = AuditContextHolder.getAuditContext();
                 auditContext = populateHttpSemantics(auditContext, request, response);
                 try {
                     auditService.audit(auditContext);
