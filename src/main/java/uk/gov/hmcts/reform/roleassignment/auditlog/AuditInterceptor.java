@@ -9,6 +9,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import uk.gov.hmcts.reform.roleassignment.ApplicationParams;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContext;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContextHolder;
+import uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +34,7 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
                                 @Nullable Exception ex) {
         long startTime = System.currentTimeMillis();
         if (applicationParams.isAuditLogEnabled() && hasAuditAnnotation(handler)) {
-            LOG.info("afterCompletion execution started at {}", startTime);
+            LOG.debug("afterCompletion execution started at {}", startTime);
             if (!applicationParams.getAuditLogIgnoreStatuses().contains(response.getStatus())) {
                 AuditContext auditContext = AuditContextHolder.getAuditContext();
                 auditContext = populateHttpSemantics(auditContext, request, response);
@@ -45,7 +46,7 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
             }
             AuditContextHolder.remove();
         }
-        LOG.info(
+        LOG.debug(
             " >> afterCompletion execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
@@ -62,6 +63,9 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
         context.setHttpStatus(response.getStatus());
         context.setHttpMethod(request.getMethod());
         context.setRequestPath(request.getRequestURI());
+        if (LOG.isDebugEnabled()) {
+            context.setRequestPayload(new MutableHttpServletRequest(request).getBodyAsString());
+        }
         return context;
     }
 }

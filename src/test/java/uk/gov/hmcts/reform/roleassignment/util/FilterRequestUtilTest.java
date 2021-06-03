@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,9 +10,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.mock.web.MockHttpServletRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
-
-import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -42,9 +42,12 @@ class FilterRequestUtilTest {
     @Mock
     CorrelationInterceptorUtil correlationInterceptorUtil;
 
+
     @InjectMocks
     @Spy
     private FilterRequestUtil sut = new FilterRequestUtil();
+
+    MockHttpServletRequest request = new MockHttpServletRequest();
 
     @BeforeEach
     public void setUp() {
@@ -55,6 +58,9 @@ class FilterRequestUtilTest {
     void doFilterInternal() throws ServletException, IOException {
         when(correlationInterceptorUtil.preHandle(any(HttpServletRequest.class)))
             .thenReturn("a5cff648-84b6-404d-83d6-f86b526cc59b");
+
+        when(httpServletRequest.getInputStream()).thenReturn(request.getInputStream());
+
         sut.doFilterInternal(httpServletRequest, httpServletResponse, filterChain);
         verify(correlationInterceptorUtil, times(1))
             .preHandle(any(HttpServletRequest.class));
@@ -66,6 +72,7 @@ class FilterRequestUtilTest {
     void doFilterInternal_throwsBadRequest() throws Exception {
         when(correlationInterceptorUtil.preHandle(any(HttpServletRequest.class)))
             .thenReturn("a5cff648-84b6-404d-83d6");
+        when(httpServletRequest.getInputStream()).thenReturn(request.getInputStream());
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
         );
