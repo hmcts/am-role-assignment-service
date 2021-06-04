@@ -68,7 +68,7 @@ public class DeleteRoleAssignmentOrchestrator {
     public ResponseEntity<Void> deleteRoleAssignmentByProcessAndReference(String process,
                                                                             String reference) {
         long startTime = System.currentTimeMillis();
-        logger.info("deleteRoleAssignmentByProcessAndReference execution started at {}", startTime);
+        logger.debug("deleteRoleAssignmentByProcessAndReference execution started at {}", startTime);
 
         List<RoleAssignment> requestedRoles;
 
@@ -103,7 +103,7 @@ public class DeleteRoleAssignmentOrchestrator {
         }
 
         ResponseEntity<Void> responseEntity = performOtherStepsForDelete("", requestedRoles);
-        logger.info(
+        logger.debug(
             " >> deleteRoleAssignmentByProcessAndReference execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
@@ -145,7 +145,7 @@ public class DeleteRoleAssignmentOrchestrator {
     private ResponseEntity<Void> performOtherStepsForDelete(String actorId,
                                                                  List<RoleAssignment> requestedRoles) {
         long startTime = System.currentTimeMillis();
-        logger.info("performOtherStepsForDelete execution started at {}", startTime);
+        logger.debug("performOtherStepsForDelete execution started at {}", startTime);
 
 
         //4. call validation rule
@@ -156,7 +156,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
         //6. check status updated by drools and take decision
         checkAllDeleteApproved(assignmentRequest, actorId);
-        logger.info(
+        logger.debug(
             " >> performOtherStepsForDelete execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
@@ -182,7 +182,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
         //calling drools rules for validation
         validationModelService.validateRequest(assignmentRequest);
-        logger.info(
+        logger.debug(
             " >> validationByDrool execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
@@ -236,7 +236,7 @@ public class DeleteRoleAssignmentOrchestrator {
             // Update request status to REJECTED
             updateRequestStatus(validatedAssignmentRequest, Status.REJECTED);
         }
-        logger.info(
+        logger.debug(
             " >> checkAllDeleteApproved execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
