@@ -80,7 +80,7 @@ public class DeleteAssignmentController {
         long startTime = System.currentTimeMillis();
         ResponseEntity<Void> responseEntity = deleteRoleAssignmentOrchestrator
             .deleteRoleAssignmentByProcessAndReference(process, reference);
-        logger.info(
+        logger.debug(
             " >> deleteRoleAssignmentByProcessAndReference execution finished at {} .Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)

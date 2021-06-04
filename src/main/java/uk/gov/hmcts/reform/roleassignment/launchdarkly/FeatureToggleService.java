@@ -17,11 +17,6 @@ public class FeatureToggleService {
     public static final String GET = "GET";
     public static final String POST = "POST";
     public static final String DELETE = "DELETE";
-    public static final String URI_GET_ASSIGNMENTS_BY_ACTOR_ID = "/am/role-assignments/actors/";
-    public static final String LD_FLAG_GET_ROLE_ASSIGNMENTS_BY_ACTOR_ID = "get-role-assignments-by-actor-id";
-    public static final String URI_DELETE_ASSIGNMENTS_BY_ID = "/am/role-assignments/";
-    public static final String LD_FLAG_DELETE_ROLE_ASSIGNMENTS_BY_ID = "delete-role-assignments-by-id";
-    public static final String LD_FLAG_GET_ASSIGNMENTS_BY_QUERY_PARAMS = "get-assignments-by-query-params";
 
     @Autowired
     private final LDClient ldClient;
@@ -34,20 +29,10 @@ public class FeatureToggleService {
     private static final HashMap<String, String> postRequestMap = new HashMap<>();
     private static final HashMap<String, String> deleteRequestMap = new HashMap<>();
 
-    public static final String AM_ROLE_ASSIGNMENTS = "/am/role-assignments";
-    public static final String QUERY_REQUEST_ROLE_ASSIGNMENTS = "/am/role-assignments/query";
-
     static {
-        //Get Map
-        getRequestMap.put("/am/role-assignments/ld/endpoint","get-ld-flag");
+        //Any new end point need to be placed in respective map.
         getRequestMap.put("/am/role-assignments/fetchFlagStatus","get-db-drools-flag");
         getRequestMap.put("/am/role-assignments/createFeatureFlag","get-db-drools-flag");
-        getRequestMap.put("/am/role-assignments/roles","get-list-of-roles");
-        //Post Map
-        postRequestMap.put(AM_ROLE_ASSIGNMENTS, "create-role-assignments");
-        postRequestMap.put(QUERY_REQUEST_ROLE_ASSIGNMENTS, "search-by-query");
-        //Delete Map
-        deleteRequestMap.put(AM_ROLE_ASSIGNMENTS, "delete-role-assignments");
     }
 
     @Autowired
@@ -76,10 +61,6 @@ public class FeatureToggleService {
             case GET:
                 if (getRequestMap.get(uri) != null) {
                     return getRequestMap.get(uri);
-                } else if (uri.contains(URI_GET_ASSIGNMENTS_BY_ACTOR_ID)) {
-                    return LD_FLAG_GET_ROLE_ASSIGNMENTS_BY_ACTOR_ID;
-                } else if (uri.contains(AM_ROLE_ASSIGNMENTS)) {
-                    return LD_FLAG_GET_ASSIGNMENTS_BY_QUERY_PARAMS;
                 }
                 break;
             case POST:
@@ -90,8 +71,6 @@ public class FeatureToggleService {
             case DELETE:
                 if (deleteRequestMap.get(uri) != null) {
                     return deleteRequestMap.get(uri);
-                } else if (uri.contains(URI_DELETE_ASSIGNMENTS_BY_ID)) {
-                    return LD_FLAG_DELETE_ROLE_ASSIGNMENTS_BY_ID;
                 }
                 break;
 

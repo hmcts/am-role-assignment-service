@@ -35,4 +35,5 @@ public class AuditContext {
     private String reference;
     private AuditOperationType auditOperationType;
     private String correlationId;
+    private String requestPayload;
 }
