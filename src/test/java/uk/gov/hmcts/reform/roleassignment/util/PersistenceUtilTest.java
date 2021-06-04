@@ -6,11 +6,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.reform.roleassignment.data.FlagConfig;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.FlagRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -90,8 +92,9 @@ class PersistenceUtilTest {
         roleAssignment.setGrantType(null);
         roleAssignment.setRoleType(null);
         roleAssignment.setRoleCategory(null);
-        RoleAssignmentEntity roleAssignmentEntity = persistenceUtil.convertRoleAssignmentToEntity(roleAssignment,
-                                                                                                  true
+        RoleAssignmentEntity roleAssignmentEntity = persistenceUtil.convertRoleAssignmentToEntity(
+            roleAssignment,
+            true
         );
         assertNotNull(roleAssignmentEntity);
         assertNull(roleAssignmentEntity.getBeginTime());
@@ -168,7 +171,7 @@ class PersistenceUtilTest {
         RoleAssignmentEntity entity = TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
                                                                                     .buildRoleAssignment(Status.LIVE));
 
-        String [] str = {"dev","tester"};
+        String[] str = {"dev", "tester"};
         entity.setAuthorisations(str);
         RoleAssignment roleAssignment = persistenceUtil.convertEntityToRoleAssignment(entity);
         assertNotNull(roleAssignment);
@@ -240,5 +243,23 @@ class PersistenceUtilTest {
         assertNull(existingRoleAssignment.getBeginTime());
         assertNull(existingRoleAssignment.getEndTime());
         assertNull(existingRoleAssignment.getAuthorisations());
+    }
+
+    @Test
+    void convertFlagRequestToFlagConfig() {
+        FlagRequest flagRequest = FlagRequest.builder()
+            .env("pr")
+            .flagName("iac_1_0")
+            .serviceName("iac")
+            .status(Boolean.TRUE)
+            .build();
+
+        FlagConfig flagConfig = persistenceUtil.convertFlagRequestToFlagConfig(flagRequest);
+        assertNotNull(flagConfig);
+        assertEquals("pr", flagConfig.getEnv());
+        assertEquals("iac_1_0", flagConfig.getFlagName());
+        assertEquals("iac", flagConfig.getServiceName());
+        assertEquals(true, flagConfig.getStatus());
+
     }
 }
