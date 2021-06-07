@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -156,9 +158,9 @@ class CreateRoleAssignmentOrchestratorTest {
 
     @Test
     void createRoleAssignment_ReplaceTrue_RejectRoleRequests() throws Exception {
-        assignmentRequest = TestDataBuilder.buildAssignmentRequest(REJECTED, Status.LIVE,
-                                                                   false
-        );
+        assignmentRequest = Mockito.spy(TestDataBuilder.buildAssignmentRequest(REJECTED, Status.LIVE,
+                                                                           false
+        ));
         assignmentRequest.getRequest().setReplaceExisting(true);
         requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
 
@@ -189,6 +191,9 @@ class CreateRoleAssignmentOrchestratorTest {
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         assertEquals(REJECTED, result.getRequest().getStatus());
         assertEquals(assignmentRequest.getRequest(), result.getRequest());
+        verify(assignmentRequest, times(1)).setRequestedRoles(any());
+        verify(parseRequestService, times(1))
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(parseRequestService, times(1))
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))

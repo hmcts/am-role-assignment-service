@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -228,7 +230,8 @@ class ParseRequestServiceTest {
         assignmentRequest.getRequest().setCreated(null);
         assignmentRequest.getRequest().setRequestType(null);
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> roleAssignment.setCreated(null));
-        AssignmentRequest result = sut.parseRequest(assignmentRequest, requestType);
+        AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
+        AssignmentRequest result = sut.parseRequest(assignmentRequestSpy, requestType);
 
         sut.removeCorrelationLog();
 
@@ -251,6 +254,7 @@ class ParseRequestServiceTest {
             assertEquals(Status.CREATE_REQUESTED, requestedRole.getStatus());
             assertNotNull(requestedRole.getCreated());
         });
+        verify(assignmentRequestSpy, times(3)).getRequestedRoles();
         verify(securityUtilsMock, times(1)).getServiceName();
         verify(securityUtilsMock, times(1)).getUserId();
         verify(correlationInterceptorUtilMock, times(1))

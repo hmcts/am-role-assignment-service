@@ -4,6 +4,7 @@ import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -11,10 +12,13 @@ import org.springframework.web.method.HandlerMethod;
 import uk.gov.hmcts.reform.roleassignment.ApplicationParams;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContext;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContextHolder;
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
@@ -53,20 +57,20 @@ class AuditInterceptorTest {
     @Test
     void shouldPrepareAuditContextWithHttpSemantics() {
         AuditContext auditContext = new AuditContext();
-
+        AuditContext auditContextSpy = Mockito.spy(auditContext);
         given(handler.hasMethodAnnotation(LogAudit.class)).willReturn(true);
-        AuditContextHolder.setAuditContext(auditContext);
+        AuditContextHolder.setAuditContext(auditContextSpy);
 
         interceptor.afterCompletion(request, response, handler, null);
 
-        assertThat(auditContext.getHttpMethod()).isEqualTo(METHOD);
-        assertThat(auditContext.getRequestPath()).isEqualTo(REQUEST_URI);
-        assertThat(auditContext.getHttpStatus()).isEqualTo(STATUS);
+        assertThat(auditContextSpy.getHttpMethod()).isEqualTo(METHOD);
+        assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
+        assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
         //assertThat(auditContext.getRequestId()).isEqualTo(REQUEST_ID);
-
+        assertThat(auditContextSpy.getRequestPayload()).isEqualTo("");
         assertThat(AuditContextHolder.getAuditContext()).isNull();
-
-        verify(auditService).audit(auditContext);
+        Mockito.verify(auditContextSpy, times(1)).setRequestPayload(any());
+        verify(auditService).audit(auditContextSpy);
     }
 
     @Test

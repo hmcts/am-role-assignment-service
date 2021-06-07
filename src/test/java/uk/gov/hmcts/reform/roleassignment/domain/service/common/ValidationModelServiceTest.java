@@ -79,19 +79,26 @@ class ValidationModelServiceTest {
     }
 
     @Test
+    void validateRequest_withEmptyRoles() throws IOException {
+        ReflectionTestUtils.setField(sut,"environment", "prod");
+        assignmentRequest = TestDataBuilder
+            .buildAssignmentRequest(Status.CREATED, LIVE, false);
+        assignmentRequest.setRequestedRoles(Collections.emptyList());
+        AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
+        sut.validateRequest(assignmentRequestSpy);
+
+        Mockito.verify(assignmentRequestSpy, times(6)).getRequest();
+        Mockito.verify(assignmentRequestSpy, times(2)).getRequestedRoles();
+
+        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
+        Mockito.verify(kieSessionMock, times(1)).setGlobal(any(), any());
+    }
+
+    @Test
     void validateRequest_Scenario_withPrEnv() throws IOException {
         ReflectionTestUtils.setField(sut,"environment", "pr");
         assignmentRequest = TestDataBuilder.buildEmptyAssignmentRequest(LIVE);
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
-        doReturn(Collections.emptyList()).when(persistenceService)
-            .retrieveRoleAssignmentsByQueryRequest(
-                any(),
-                anyInt(),
-                anyInt(),
-                any(),
-                any(),
-                anyBoolean()
-            );
 
         sut.validateRequest(assignmentRequestSpy);
 

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -58,8 +59,10 @@ import static java.time.LocalDateTime.now;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -178,7 +181,6 @@ class PersistenceServiceTest {
 
         assertEquals(entity.getActorId(), roleAssignmentCollation.iterator().next().getActorId());
         assertEquals(entity.getEtag(), entity1.getEtag());
-
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
         verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
         verify(entityManager, times(1)).flush();
@@ -190,7 +192,8 @@ class PersistenceServiceTest {
         roleAssignment.setActorId(null);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.createObjectNode();
-        ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.getActorId(), 1234, rootNode);
+        ActorCacheEntity entity = Mockito.spy(new ActorCacheEntity(roleAssignment.getActorId(), 1234, rootNode));
+
         TestDataBuilder.prepareActorCache(roleAssignment);
         when(persistenceUtil.convertActorCacheToEntity(any())).thenReturn(entity);
         when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(null);
@@ -199,6 +202,8 @@ class PersistenceServiceTest {
         roleAssignmentCollation.add(roleAssignment);
         sut.persistActorCache(roleAssignmentCollation);
 
+        assertNull(entity.getActorId());
+        //verify(entity, times(1)).setActorId(anyString());
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
         verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
         verify(entityManager, times(1)).persist(any());
@@ -786,6 +791,74 @@ class PersistenceServiceTest {
     }
 
     @Test
+    void postRoleAssignmentsByQueryRequestWithTrueFlagAndPageSizeZero_throwException() throws IOException {
+
+        ReflectionTestUtils.setField(sut, "defaultSize", 1);
+        ReflectionTestUtils.setField(sut, "sortColumn", "id");
+        List<RoleAssignmentEntity> tasks = new ArrayList<>();
+        tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
+
+        Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
+
+
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleNames = Arrays.asList("judge", "senior judge");
+        List<String> roleCategories = Collections.singletonList("JUDICIAL");
+        List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
+        Map<String, List<String>> attributes = new HashMap<>();
+        List<String> regions = Arrays.asList("London", "JAPAN");
+        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        attributes.put("region", regions);
+        attributes.put("contractType", contractTypes);
+        List<String> grantTypes = Arrays.asList("SPECIFIC", "STANDARD");
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleType)
+            .roleCategory(roleCategories)
+            .roleName(roleNames)
+            .classification(classifications)
+            .attributes(attributes)
+            .validAt(now())
+            .grantType(grantTypes)
+            .build();
+
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
+            Pageable.class);
+
+        Specification<RoleAssignmentEntity> spec = Specification.where(any());
+        Pageable pageableCapture = pageableCaptor.capture();
+
+        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        ))
+            .thenReturn(page);
+
+
+        when(mockSpec.toPredicate(root, query, builder)).thenReturn(predicate);
+
+
+        when(persistenceUtil.convertEntityToExistingRoleAssignment(page.iterator().next()))
+            .thenReturn(null);
+
+        List<Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 0,
+                                                                                        0, null,
+                                                                                        null,true
+        );
+        assertNotNull(roleAssignmentList);
+
+        assertNotNull(roleAssignmentList);
+        assertFalse(roleAssignmentList.isEmpty());
+
+        verify(persistenceUtil, times(1))
+            .convertEntityToExistingRoleAssignment(page.iterator().next());
+
+    }
+
+    @Test
     void getFlagStatus() {
         String flagName = "iac_1_0";
         String env = "pr";
@@ -798,6 +871,22 @@ class PersistenceServiceTest {
         when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
         Boolean response = sut.getStatusByParam(flagName, env);
         assertTrue(response);
+
+    }
+
+    @Test
+    void getFlagStatus_WithEmptyEnv() {
+        String flagName = "iac_1_0";
+        String env = "local";
+        FlagConfig flagConfig = FlagConfig.builder()
+            .env("local")
+            .flagName("iac_1_0")
+            .serviceName("iac")
+            .status(Boolean.FALSE)
+            .build();
+        when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
+        Boolean response = sut.getStatusByParam(flagName, null);
+        assertFalse(response);
 
     }
 
