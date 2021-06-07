@@ -240,6 +240,7 @@ class ParseRequestServiceTest {
         assertEquals(CREATED, result.getRequest().getStatus());
         assertEquals(requestType, result.getRequest().getRequestType());
         assertNotNull(result.getRequest().getRequestType());
+        assertFalse(result.getRequest().isByPassOrgDroolRule());
         assertNotNull(result.getRequest().getCreated());
         assertNotNull(result.getRequestedRoles());
         assertTrue(result.getRequestedRoles().size() > 1);

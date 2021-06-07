@@ -33,9 +33,6 @@ public class ValidationUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(ValidationUtil.class);
 
-    private ValidationUtil() {
-    }
-
     public static void validateDateTime(String strDate) throws ParseException {
         LOG.info("validateDateTime");
         if (strDate.length() < 16) {

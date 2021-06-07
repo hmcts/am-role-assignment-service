@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import com.launchdarkly.sdk.server.LDClient;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -66,6 +66,18 @@ class FeatureToggleServiceTest {
         "/am/role-assignments/,DELETE,delete-role-assignments-by-id",
     })
     void getLdFlagGetCase(String url, String method, String flag) {
+        when(request.getRequestURI()).thenReturn(url);
+        when(request.getMethod()).thenReturn(method);
+        featureToggleService = new FeatureToggleService(ldClient, "user");
+        String flagName = featureToggleService.getLaunchDarklyFlag(request);
+        Assertions.assertEquals(flag, flagName);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "/am/role-assignments,GET,get-assignments-by-query-params"
+    })
+    void getLdFlagGet_RoleAssignmentCase(String url, String method, String flag) {
         when(request.getRequestURI()).thenReturn(url);
         when(request.getMethod()).thenReturn(method);
         featureToggleService = new FeatureToggleService(ldClient, "user");

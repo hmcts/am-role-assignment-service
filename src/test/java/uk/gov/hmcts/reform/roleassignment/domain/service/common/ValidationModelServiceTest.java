@@ -14,6 +14,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -62,9 +63,33 @@ class ValidationModelServiceTest {
 
         assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
+        AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
+        sut.validateRequest(assignmentRequestSpy);
 
-        sut.validateRequest(assignmentRequest);
+        Mockito.verify(assignmentRequestSpy, times(6)).getRequest();
+        Mockito.verify(assignmentRequestSpy, times(2)).getRequestedRoles();
+        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
+    }
 
+    @Test
+    void validateRequest_Scenario2() throws IOException {
+
+        assignmentRequest = TestDataBuilder.buildEmptyAssignmentRequest(LIVE);
+        AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
+        doReturn(Collections.emptyList()).when(persistenceService)
+            .retrieveRoleAssignmentsByQueryRequest(
+                any(),
+                anyInt(),
+                anyInt(),
+                any(),
+                any(),
+                anyBoolean()
+            );
+
+        sut.validateRequest(assignmentRequestSpy);
+
+        Mockito.verify(assignmentRequestSpy, times(4)).getRequest();
+        Mockito.verify(assignmentRequestSpy, times(1)).getRequestedRoles();
         Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
     }
 

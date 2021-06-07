@@ -241,6 +241,14 @@ class DeleteRoleAssignmentOrchestratorTest {
     }
 
     @Test
+    @DisplayName("should throw 400 exception for a no Assignment id")
+    void shouldThrowBadRequestForAssignmentId() {
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.deleteRoleAssignmentByAssignmentId(null)
+        );
+    }
+
+    @Test
     @DisplayName("should not delete any records if delete approved records are zero")
     void shouldNotDeleteRecordsForZeroApprovedItems() throws Exception {
         mockRequest();
