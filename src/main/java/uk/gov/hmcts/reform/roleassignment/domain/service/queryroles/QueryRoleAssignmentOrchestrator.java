@@ -42,7 +42,7 @@ public class QueryRoleAssignmentOrchestrator {
             "Total-Records",
             Long.toString(persistenceService.getTotalRecords())
         );
-        logger.info(
+        logger.debug(
             " >> retrieveRoleAssignmentsByQueryRequest execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)

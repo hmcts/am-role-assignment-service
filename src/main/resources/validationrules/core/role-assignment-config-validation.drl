@@ -4,6 +4,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigPattern;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
 
 
 
@@ -30,7 +31,7 @@ when
 then
     for (RoleConfigPattern pattern : $rc.get($roleName).getPatterns()) {
         insert(pattern);
-        System.out.println("Rule : load_role_config_patterns :: " + pattern);
+        logMsg("Rule : load_role_config_patterns :: " + pattern);
     }
 
 end;
@@ -55,6 +56,6 @@ then
     $ra.setStatus(Status.APPROVED);
     $ra.log("Approved : validate_role_assignment_against_patterns");
     update($ra);
-    System.out.println("Rule : validate_role_assignment_against_patterns");
+    logMsg("Rule : validate_role_assignment_against_patterns");
 
 end;

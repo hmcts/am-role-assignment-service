@@ -5,8 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.kie.api.runtime.StatelessKieSession;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
@@ -46,6 +49,9 @@ class ValidationModelServiceTest {
     @Getter
     private static final Map<String, List<Role>> configuredRoles = new HashMap<>();
 
+    @Mock
+    Logger logger = mock(Logger.class);
+
     @InjectMocks
     ValidationModelService sut = new ValidationModelService(
         kieSessionMock,
@@ -60,7 +66,7 @@ class ValidationModelServiceTest {
 
     @Test
     void validateRequest() throws IOException {
-
+        ReflectionTestUtils.setField(sut,"environment", "prod");
         assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
@@ -68,12 +74,13 @@ class ValidationModelServiceTest {
 
         Mockito.verify(assignmentRequestSpy, times(6)).getRequest();
         Mockito.verify(assignmentRequestSpy, times(2)).getRequestedRoles();
+
         Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
     }
 
     @Test
-    void validateRequest_Scenario2() throws IOException {
-
+    void validateRequest_Scenario_withPrEnv() throws IOException {
+        ReflectionTestUtils.setField(sut,"environment", "pr");
         assignmentRequest = TestDataBuilder.buildEmptyAssignmentRequest(LIVE);
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
         doReturn(Collections.emptyList()).when(persistenceService)
@@ -116,6 +123,13 @@ class ValidationModelServiceTest {
         assertEquals(2, existingRecords.size());
 
 
+    }
+
+    @Test
+    void shouldLogMsg() {
+        Mockito.doNothing().when(logger).debug(any());
+        ValidationModelService.logMsg("1234567890123456");
+        assertNotNull(logger);
     }
 
 

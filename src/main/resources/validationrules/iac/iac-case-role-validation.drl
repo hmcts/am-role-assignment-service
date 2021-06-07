@@ -9,6 +9,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
+import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 
 /*
  * IAC case worker case roles can be created by any existing tribunal casworker
@@ -17,8 +20,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
  */
 rule "ia_caseworker_create_case_roles"
 when
-    $rq: Request(
-             assignerId == authenticatedUserId)
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.getIAC_1_0.getValue())
+    $rq: Request(assignerId == authenticatedUserId)
 
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
@@ -47,7 +50,7 @@ then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Stage 1 approved : ia_caseworker_create_case_roles");
     update($ra);
-    System.out.println("Rule : ia_caseworker_create_case_roles");
+    logMsg("Rule : ia_caseworker_create_case_roles");
 end;
 
 /*
@@ -56,6 +59,7 @@ end;
  */
 rule "ia_caseworker_delete_case_roles"
 when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.getIAC_1_0.getValue())
     $rq: Request(
              assignerId == authenticatedUserId)
     $ra: RoleAssignment(
@@ -77,5 +81,77 @@ then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : ia_caseworker_delete_case_roles");
     update($ra);
-    System.out.println("Rule : ia_caseworker_delete_case_roles");
+    logMsg("Rule : ia_caseworker_delete_case_roles");
+end;
+
+
+/*
+ * IAC case worker case roles can be created by any existing tribunal casworker
+ * or senior tribunal case worker, and can also only be assigned to users with
+ * one of those two roles (this includes self-assignment).
+ */
+rule "ia_caseworker_create_case_roles_v11"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.getIAC_1_1.getValue())
+    $rq: Request(assignerId == authenticatedUserId)
+
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName == "tribunal-caseworker",
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+    $c:  Case(
+             id == $caseId,
+             jurisdiction == "IA",
+             caseTypeId == "Asylum")
+         ExistingRoleAssignment(
+             actorId == $ra.actorId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+
+         ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+
+then
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : ia_caseworker_create_case_roles");
+    update($ra);
+    logMsg("Rule : ia_caseworker_create_case_roles");
+end;
+
+/*
+ * IAC case worker case roles can be deleted by any existing tribunal casworker
+ * or senior tribunal case worker.
+ */
+rule "ia_caseworker_delete_case_roles_v11"
+when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.getIAC_1_1.getValue())
+    $rq: Request(
+             assignerId == authenticatedUserId)
+    $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName == "tribunal-caseworker",
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+         Case(
+             id == $caseId,
+             jurisdiction == "IA",
+             caseTypeId == "Asylum")
+        ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
+             attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
+
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : ia_caseworker_delete_case_roles");
+    update($ra);
+    logMsg("Rule : ia_caseworker_delete_case_roles");
 end;

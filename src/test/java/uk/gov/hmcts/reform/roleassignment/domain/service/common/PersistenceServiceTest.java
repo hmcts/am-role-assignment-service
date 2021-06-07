@@ -20,6 +20,8 @@ import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
+import uk.gov.hmcts.reform.roleassignment.data.FlagConfig;
+import uk.gov.hmcts.reform.roleassignment.data.FlagConfigRepository;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
@@ -56,6 +58,7 @@ import static java.time.LocalDateTime.now;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -83,12 +86,15 @@ class PersistenceServiceTest {
     @Mock
     private Page<RoleAssignmentEntity> pageable;
 
+    @Mock
+    private FlagConfigRepository flagConfigRepository;
 
 
     @InjectMocks
     private final PersistenceService sut = new PersistenceService(
         historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository,
-        databseChangelogLockRepository
+        databseChangelogLockRepository,
+        flagConfigRepository
     );
 
 
@@ -136,8 +142,6 @@ class PersistenceServiceTest {
             throw new InternalError(e);
         }
     }
-
-
 
 
     @Test
@@ -448,8 +452,8 @@ class PersistenceServiceTest {
             .thenReturn(TestDataBuilder.buildRoleAssignment(LIVE));
 
         List<Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1,
-                                                                                                  1, "id",
-                                                                                            "desc",false
+                                                                                        1, "id",
+                                                                                        "desc", false
         );
         assertNotNull(roleAssignmentList);
 
@@ -697,11 +701,11 @@ class PersistenceServiceTest {
 
 
         when(persistenceUtil.convertEntityToExistingRoleAssignment(page.iterator().next()))
-            .thenReturn(TestDataBuilder.buildExistingRoleForIAC("123e4567-e89b-42d3-a456-556642445678","judge"));
+            .thenReturn(TestDataBuilder.buildExistingRoleForIAC("123e4567-e89b-42d3-a456-556642445678", "judge"));
 
         List<Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1,
                                                                                         1, "id",
-                                                                                        "desc",true
+                                                                                        "desc", true
         );
         assertNotNull(roleAssignmentList);
 
@@ -778,6 +782,37 @@ class PersistenceServiceTest {
 
         verify(persistenceUtil, times(1))
             .convertEntityToExistingRoleAssignment(page.iterator().next());
+
+    }
+
+    @Test
+    void getFlagStatus() {
+        String flagName = "iac_1_0";
+        String env = "pr";
+        FlagConfig flagConfig = FlagConfig.builder()
+            .env("pr")
+            .flagName("iac_1_0")
+            .serviceName("iac")
+            .status(Boolean.TRUE)
+            .build();
+        when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
+        Boolean response = sut.getStatusByParam(flagName, env);
+        assertTrue(response);
+
+    }
+
+    @Test
+    void persistFlagConfig() {
+
+        FlagConfig flagConfig = FlagConfig.builder()
+            .env("pr")
+            .flagName("iac_1_0")
+            .serviceName("iac")
+            .status(Boolean.TRUE)
+            .build();
+        when(flagConfigRepository.save(flagConfig)).thenReturn(flagConfig);
+        FlagConfig flagConfigEntity = sut.persistFlagConfig(flagConfig);
+        assertNotNull(flagConfigEntity);
 
     }
 }

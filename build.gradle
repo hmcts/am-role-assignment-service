@@ -1,7 +1,7 @@
 buildscript {
   repositories {
     jcenter()
-  }
+    }
   dependencies {
     classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.12")
     classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
@@ -389,7 +389,9 @@ dependencies {
   testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  testCompile 'com.github.hmcts:befta-fw:7.0.0-RDM-10539-1'
+  testImplementation 'com.github.hmcts:befta-fw:extend-feature-flag-framework-SNAPSHOT'
+
+  //implementation 'com.github.hmcts:befta-fw:7.0.2-am-1385'
   //compile fileTree(dir: 'lib', include: 'befta-fw-5.11.0.jar')
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.5.RELEASE'
 
