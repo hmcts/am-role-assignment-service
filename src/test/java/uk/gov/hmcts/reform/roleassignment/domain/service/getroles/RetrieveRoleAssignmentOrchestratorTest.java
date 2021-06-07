@@ -13,7 +13,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
@@ -29,6 +28,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -99,16 +99,18 @@ class RetrieveRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    void getRoleAssignment_shouldThrowResourceNotFoundWhenActorIsNotAvailable() throws Exception {
-
+    void getRoleAssignment_shouldNotThrowResourceNotFoundWhenActorIsNotAvailable() throws Exception {
         List<RoleAssignment> roleAssignments = new ArrayList<>();
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
-        ResponseEntity<Object> roles = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
+
         when(persistenceService.getAssignmentsByActor(actorId)).thenReturn(roleAssignments);
-        Assertions.assertThrows(ResourceNotFoundException.class, () ->
-            sut.getAssignmentsByActor(actorId)
-        );
-        verify(persistenceService, times(1)).getAssignmentsByActor(any(String.class));
+        ResponseEntity<RoleAssignmentResource> responseEntity = ResponseEntity.status(HttpStatus.OK).body(
+            new RoleAssignmentResource(List.of(), actorId));
+        when(prepareResponseService.prepareRetrieveRoleResponse(anyList(), any())).thenReturn(responseEntity);
+
+        ResponseEntity<RoleAssignmentResource> response = sut.getAssignmentsByActor(actorId);
+        assertNotNull(response.getBody());
+        assertNotNull(response.getBody().getRoleAssignmentResponse());
     }
 
     @Test

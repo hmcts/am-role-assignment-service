@@ -8,7 +8,6 @@ import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.WithTag;
 import net.thucydides.core.annotations.WithTags;
 import org.apache.commons.io.IOUtils;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,12 +24,9 @@ import java.nio.charset.StandardCharsets;
 @WithTags({@WithTag("testType:Smoke")})
 public class SmokeTest extends BaseTest {
 
-    public static final String ERROR_DESCRIPTION = "errorDescription";
     public static final String AUTHORIZATION = "Authorization";
     public static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
     public static final String BEARER = "Bearer ";
-    public static final String ERROR_MESSAGE = "errorMessage";
-    public static final String RESOURCE_NOT_FOUND = "Resource not found";
 
     UserTokenProviderConfig config;
     String accessToken;
@@ -59,8 +55,6 @@ public class SmokeTest extends BaseTest {
     @Rule
     public FeatureFlagToggleEvaluator featureFlagToggleEvaluator = new FeatureFlagToggleEvaluator(this);
 
-
-
     @Test
     public void should_receive_response_for_get_static_roles() {
 
@@ -78,8 +72,6 @@ public class SmokeTest extends BaseTest {
         response.then().assertThat().statusCode(HttpStatus.OK.value());
     }
 
-
-
     @Test
     public void should_receive_response_for_get_by_actor_id() {
 
@@ -95,13 +87,7 @@ public class SmokeTest extends BaseTest {
             .when()
             .get(targetInstance)
             .andReturn();
-        response.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
-            .body(
-                ERROR_DESCRIPTION,
-                Matchers.equalTo(
-                    "Role Assignment not found for Actor 0b00bfc0-bb00-00ea-b0de-0000ac000000"));
-
-        response.then().assertThat().body(ERROR_MESSAGE, Matchers.equalTo(RESOURCE_NOT_FOUND));
+        response.then().assertThat().statusCode(HttpStatus.OK.value());
     }
 
     @Test
