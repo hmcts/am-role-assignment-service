@@ -95,23 +95,22 @@ class AuditServiceTest {
         AuditEntry entry = captor.getValue();
 
 
-        assertThat(captor.getValue().getDateTime(), is(equalTo("2018-08-19T16:02:42.01")));
-        assertThat(captor.getValue().getHttpStatus(), is(equalTo(200)));
-        assertThat(captor.getValue().getHttpMethod(), is(equalTo(HTTP_METHOD)));
-        assertThat(captor.getValue().getPath(), is(equalTo((PATH))));
-        assertThat(captor.getValue().getActorId(), is(equalTo(auditContext.getActorId())));
-        assertThat(captor.getValue().getProcess(), is(equalTo(auditContext.getProcess())));
-        assertThat(captor.getValue().getReference(), is(equalTo(auditContext.getReference())));
-        assertThat(captor.getValue().getAssignerId(), is(equalTo(auditContext.getAssignerId())));
-        assertThat(captor.getValue().getAssignmentId(), is(equalTo(auditContext.getAssignmentId())));
-        assertThat(captor.getValue().getRoleName(), is(equalTo(auditContext.getRoleName())));
-        assertThat(captor.getValue().getCorrelationId(), is(equalTo(auditContext.getCorrelationId())));
-        assertThat(captor.getValue().getAuthenticatedUserId(), is(equalTo(securityUtils.getUserId())));
+        assertThat(entry.getDateTime(), is(equalTo("2018-08-19T16:02:42.01")));
+        assertThat(entry.getHttpStatus(), is(equalTo(200)));
+        assertThat(entry.getHttpMethod(), is(equalTo(HTTP_METHOD)));
+        assertThat(entry.getPath(), is(equalTo((PATH))));
+        assertThat(entry.getActorId(), is(equalTo(auditContext.getActorId())));
+        assertThat(entry.getProcess(), is(equalTo(auditContext.getProcess())));
+        assertThat(entry.getReference(), is(equalTo(auditContext.getReference())));
+        assertThat(entry.getAssignerId(), is(equalTo(auditContext.getAssignerId())));
+        assertThat(entry.getAssignmentId(), is(equalTo(auditContext.getAssignmentId())));
+        assertThat(entry.getRoleName(), is(equalTo(auditContext.getRoleName())));
+        assertThat(entry.getCorrelationId(), is(equalTo(auditContext.getCorrelationId())));
+        assertThat(entry.getAuthenticatedUserId(), is(equalTo(securityUtils.getUserId())));
 
-        assertThat(captor.getValue().getInvokingService(), is(equalTo((SERVICE_NAME))));
-        assertThat(captor.getValue().getOperationType(), is(equalTo(AuditOperationType.CREATE_ASSIGNMENTS.getLabel())));
-
-
+        assertThat(entry.getInvokingService(), is(equalTo((SERVICE_NAME))));
+        assertThat(entry.getOperationType(), is(equalTo(AuditOperationType.CREATE_ASSIGNMENTS.getLabel())));
+        assertThat(entry.getRequestPayload(), is(equalTo(auditContext.getRequestPayload())));
 
     }
 
