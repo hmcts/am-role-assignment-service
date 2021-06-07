@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.controller.advice;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
@@ -73,6 +74,18 @@ class RoleAssignmentControllerAdviceTest {
         HttpMediaTypeNotAcceptableException customContentTypeException = mock(
             HttpMediaTypeNotAcceptableException.class);
         ResponseEntity<Object> responseEntity = csda.customRequestHeaderError(customContentTypeException);
+        assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), responseEntity.getStatusCodeValue());
+    }
+
+    @Test
+    void customRequestHeaderError_withWrappedCause() {
+        String wrappedMessage = "Wrapped bad request message";
+        HttpMediaTypeNotAcceptableException customContentException = mock(HttpMediaTypeNotAcceptableException.class);
+        BadRequestException badRequestException = new BadRequestException(wrappedMessage);
+        Mockito.when(customContentException.getCause()).thenReturn(badRequestException);
+        ResponseEntity<Object> responseEntity = csda.customRequestHeaderError(customContentException);
+        assertEquals(wrappedMessage, ((ErrorResponse)responseEntity.getBody()).getErrorDescription());
         assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE, responseEntity.getStatusCode());
         assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), responseEntity.getStatusCodeValue());
     }
@@ -289,6 +302,15 @@ class RoleAssignmentControllerAdviceTest {
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(STATUS));
+    }
+
+    @Test
+    void notReadableException_EmptyExceptionMessage() {
+        HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException("");
+        ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(""));
     }
 
     @Test

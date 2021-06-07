@@ -32,6 +32,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -138,6 +139,58 @@ class IdamRepositoryTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
+    void getManageUserToken_withCacheNone() {
+        ReflectionTestUtils.setField(idamRepository, "cacheType", "none");
+        CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
+        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+
+        when(cacheManager.getCache(anyString())).thenReturn(caffeineCacheMock);
+        when(caffeineCacheMock.getNativeCache()).thenReturn(cache);
+        when(cache.estimatedSize()).thenReturn(1L);
+
+        when(oauth2Configuration.getClientId()).thenReturn("clientId");
+        when(oauth2Configuration.getClientSecret()).thenReturn("secret");
+        when(oidcAdminConfiguration.getSecret()).thenReturn("password");
+        when(oidcAdminConfiguration.getScope()).thenReturn("scope");
+        TokenResponse tokenResponse = new
+            TokenResponse("a", "1", "1", "a", "v", "v");
+        when(idamApi.generateOpenIdToken(any())).thenReturn(tokenResponse);
+
+        String result = idamRepository.getManageUserToken("123");
+
+        assertNotNull(result);
+        assertFalse(result.isBlank());
+        assertFalse(result.isEmpty());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void getManageUserToken_withCache() {
+        ReflectionTestUtils.setField(idamRepository, "cacheType", "userToken");
+        CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
+        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+
+        when(cacheManager.getCache(anyString())).thenReturn(caffeineCacheMock);
+        when(caffeineCacheMock.getNativeCache()).thenReturn(cache);
+        when(cache.estimatedSize()).thenReturn(1L);
+
+        when(oauth2Configuration.getClientId()).thenReturn("clientId");
+        when(oauth2Configuration.getClientSecret()).thenReturn("secret");
+        when(oidcAdminConfiguration.getSecret()).thenReturn("password");
+        when(oidcAdminConfiguration.getScope()).thenReturn("scope");
+        TokenResponse tokenResponse = new
+            TokenResponse("a", "1", "1", "a", "v", "v");
+        when(idamApi.generateOpenIdToken(any())).thenReturn(tokenResponse);
+
+        String result = idamRepository.getManageUserToken("123");
+
+        assertNotNull(result);
+        assertFalse(result.isBlank());
+        assertFalse(result.isEmpty());
+    }
+
+    @Test
     void shouldThrowNullPointerException() {
 
         String token = "eyJhbGciOiJIUzUxMiJ9.Eim7hdYejtBbWXnqCf1gntbYpWHRX8BRzm4zIC_oszmC3D5QlNmkIetVPcMINg";
@@ -181,6 +234,35 @@ class IdamRepositoryTest {
         assertNotNull(actualResponse);
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
 
+
+    }
+
+    @Test
+    void shouldReturnUserRolesAsNull() {
+
+
+        Map<String, Object> mapRoles = new HashMap<>();
+
+        mapRoles.put("userRoles", Arrays.asList("caseworker", "am_import"));
+
+        List<Object> list = new ArrayList<>();
+        list.add(mapRoles);
+
+        ResponseEntity<List<Object>> responseEntity = new ResponseEntity<List<Object>>(HttpStatus.NOT_ACCEPTABLE);
+        doReturn(responseEntity)
+            .when(restTemplate)
+            .exchange(
+                isA(String.class),
+                eq(HttpMethod.GET),
+                isA(HttpEntity.class),
+                (ParameterizedTypeReference<?>) any(ParameterizedTypeReference.class)
+            );
+
+        String token = "eyJhbGciOiJIUzUxMiJ9.Eim7hdYejtBbWXnqCf1gntbYpWHRX8BRzm4zIC_oszmC3D5QlNmkIetVPcMINg";
+        String userId = "4dc7dd3c-3fb5-4611-bbde-5101a97681e0";
+
+        ResponseEntity<List<Object>> actualResponse = idamRepository.searchUserByUserId(token, userId);
+        assertNull(actualResponse);
 
     }
 }

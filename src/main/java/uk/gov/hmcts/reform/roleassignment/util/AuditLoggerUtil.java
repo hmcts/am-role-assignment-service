@@ -18,10 +18,6 @@ import java.util.stream.Collectors;
 @Singleton
 public class AuditLoggerUtil {
 
-    private AuditLoggerUtil() {
-
-    }
-
     public static List<UUID> buildAssignmentIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
         if (response.getBody() instanceof RoleAssignmentRequestResource) {
             RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();

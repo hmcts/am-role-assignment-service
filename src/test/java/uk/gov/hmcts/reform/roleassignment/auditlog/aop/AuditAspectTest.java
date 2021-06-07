@@ -51,6 +51,24 @@ public class AuditAspectTest {
 
     }
 
+    @Test
+    public void shouldThrowExceptionOnInvalidMethod() {
+        controllerProxy.retrieveRoleAssignmentByActorId_invalidMethod(ACTOR_ID, ROLE_NAME);
+    }
+
+    @Test
+    public void unProcessableAuditContext() {
+        ResponseEntity result = controllerProxy.unProcessEntity("", "", ACTOR_ID, ROLE_NAME);
+        assertThat(result).isNotNull();
+        assertThat(((RoleAssignment)result.getBody()).getRoleName()).isEqualTo(ROLE_NAME);
+    }
+
+    @Test
+    public void conflictAuditContext() {
+        ResponseEntity result = controllerProxy.conflictEntity(ACTOR_ID, ROLE_NAME);
+        assertThat(result).isNotNull();
+        assertThat(((RoleAssignment)result.getBody()).getRoleName()).isEqualTo(ROLE_NAME);
+    }
 
     @Controller
     @SuppressWarnings("unused")
@@ -67,6 +85,11 @@ public class AuditAspectTest {
                 .roleName(roleName).build();
         }
 
+        @LogAudit(operationType = AuditOperationType.GET_ASSIGNMENTS_BY_ACTOR, actorId
+            = "#actorId", id = "#result.invalidMethod", roleName = "#roleName")
+        public void retrieveRoleAssignmentByActorId_invalidMethod(String actorId, String roleName) {
+        }
+
         @LogAudit(operationType = AuditOperationType.CREATE_ASSIGNMENTS,
             process = "#process",
             reference = "#reference",
@@ -74,7 +97,6 @@ public class AuditAspectTest {
         public RoleAssignment createRoleAssignment(String process, String reference, String actorId) {
             throw new RuntimeException("get RoleAssignment failed");
         }
-
 
         @LogAudit(operationType = AuditOperationType.CREATE_ASSIGNMENTS,
             process = "#process",
@@ -88,6 +110,17 @@ public class AuditAspectTest {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(roleAssignment);
         }
 
+        @LogAudit(operationType = AuditOperationType.CREATE_ASSIGNMENTS,
+            process = "#process",
+            reference = "#reference",
+            actorId = "#actorId")
+        public ResponseEntity<?> conflictEntity(String actorId, String roleName) {
+            RoleAssignment roleAssignment = RoleAssignment.builder()
+                .id(UUID.fromString(ID))
+                .roleName(roleName).build();
+
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(roleAssignment);
+        }
 
     }
 }

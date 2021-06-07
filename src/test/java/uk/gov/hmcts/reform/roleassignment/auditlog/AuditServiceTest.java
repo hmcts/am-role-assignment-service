@@ -27,6 +27,7 @@ class AuditServiceTest {
 
     private static final String TARGET_IDAM_ID = "target@mail.com";
     private static final String SERVICE_NAME = "ccd_api_gateway";
+    private static final String USER_ID = "123e4567-e89b-42d3-a456-556642445555";
     private static final String REQUEST_ID_VALUE = "30f14c6c1fc85cba12bfd093aa8f90e3";
     private static final String PATH = "/someUri";
     private static final String HTTP_METHOD = "POST";
@@ -61,6 +62,7 @@ class AuditServiceTest {
         auditService = new AuditService(fixedClock, securityUtils, auditRepository);
 
         doReturn(SERVICE_NAME).when(securityUtils).getServiceName();
+        doReturn(USER_ID).when(securityUtils).getUserId();
     }
 
     @Test

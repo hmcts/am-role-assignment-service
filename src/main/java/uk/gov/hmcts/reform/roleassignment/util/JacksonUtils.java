@@ -35,9 +35,6 @@ import java.util.UUID;
 @Singleton
 public class JacksonUtils {
 
-    private JacksonUtils() {
-    }
-
     @Getter
     private static final Map<String, List<RoleConfigRole>> configuredRoles = new HashMap<>();
 

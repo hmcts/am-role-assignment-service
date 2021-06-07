@@ -34,6 +34,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -196,6 +197,28 @@ class CreateRoleAssignmentOrchestratorTest {
             .getAssignmentsByProcess(anyString(), anyString(), anyString());
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
+    }
+
+    @Test
+    void createRoleAssignment_ReplaceTrue_ParseRequestException() throws Exception {
+        assignmentRequest = TestDataBuilder.buildAssignmentRequest(REJECTED, Status.LIVE, false);
+        assignmentRequest.getRequest().setReplaceExisting(true);
+        requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
+
+        historyEntity = TestDataBuilder.buildHistoryIntoEntity(
+            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
+
+        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
+            .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
+
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
+            .thenThrow(mock(ParseException.class));
+
+        //actual method call
+        assertThrows(ParseException.class, () -> {
+            sut.createRoleAssignment(assignmentRequest);
+        });
+
     }
 
     @Test
