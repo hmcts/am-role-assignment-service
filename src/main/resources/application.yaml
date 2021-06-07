@@ -39,6 +39,7 @@ security:
     - "/"
     - "/health/**"
     - "/loggers/**"
+    - "/am/role-assignments/fetchFlagStatus"
     - "/swagger-ui.html"
     - "/swagger-resources/**"
     - "/v2/api-docs"
@@ -162,3 +163,7 @@ org :
 
 
 logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:INFO}
+dbFeature:
+  flags:
+    enable: ${DB_FEATURE_FLAG_ENABLE:iac_1_0}
+    disable: ${DB_FEATURE_FLAG_DISABLE:iac_1_1}

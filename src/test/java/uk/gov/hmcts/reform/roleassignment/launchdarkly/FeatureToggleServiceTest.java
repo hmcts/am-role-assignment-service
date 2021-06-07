@@ -59,11 +59,8 @@ class FeatureToggleServiceTest {
 
     @ParameterizedTest
     @CsvSource({
-        "/am/role-assignments/ld/endpoint,GET,get-ld-flag",
-        "/am/role-assignments/actors/,GET,get-role-assignments-by-actor-id",
-        "/am/role-assignments,POST,create-role-assignments",
-        "/am/role-assignments,DELETE,delete-role-assignments",
-        "/am/role-assignments/,DELETE,delete-role-assignments-by-id",
+        "/am/role-assignments/fetchFlagStatus,GET,get-db-drools-flag",
+        "/am/role-assignments/createFeatureFlag,GET,get-db-drools-flag"
     })
     void getLdFlagGetCase(String url, String method, String flag) {
         when(request.getRequestURI()).thenReturn(url);
@@ -75,7 +72,7 @@ class FeatureToggleServiceTest {
 
     @ParameterizedTest
     @CsvSource({
-        "/am/role-assignments,GET,get-assignments-by-query-params"
+        "/am/role-assignments/createFeatureFlag,GET,get-db-drools-flag"
     })
     void getLdFlagGet_RoleAssignmentCase(String url, String method, String flag) {
         when(request.getRequestURI()).thenReturn(url);
@@ -102,11 +99,14 @@ class FeatureToggleServiceTest {
     }
 
     @Test
+    @CsvSource({
+        "/am/role-assignments/,DELETE,delete-role-assignments-by-id",
+    })
     public void getLdFlagDeleteStringContainsCase() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/");
         when(request.getMethod()).thenReturn("DELETE");
         featureToggleService = new FeatureToggleService(ldClient, "user");
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
-        Assertions.assertEquals("delete-role-assignments-by-id", flagName);
+        Assertions.assertNull(flagName);
     }
 }
