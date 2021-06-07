@@ -2,12 +2,10 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.getroles;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
@@ -15,7 +13,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceServi
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
-import uk.gov.hmcts.reform.roleassignment.v1.V1;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,12 +40,6 @@ public class RetrieveRoleAssignmentOrchestrator {
     public ResponseEntity<RoleAssignmentResource> getAssignmentsByActor(String actorId) {
         ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, actorId);
         List<? extends Assignment> assignments = persistenceService.getAssignmentsByActor(actorId);
-        if (CollectionUtils.isEmpty(assignments)) {
-            throw new ResourceNotFoundException(String.format(
-                V1.Error.NO_RECORDS_FOUND_BY_ACTOR + " %s",
-                actorId
-            ));
-        }
         return prepareResponseService.prepareRetrieveRoleResponse(
             assignments,
             actorId
