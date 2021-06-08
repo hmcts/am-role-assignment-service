@@ -40,7 +40,7 @@ public class SecurityEndpointFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            logger.info("Exception while processing the user or service tokens : " + e.getMessage());
         }
 
         try {
