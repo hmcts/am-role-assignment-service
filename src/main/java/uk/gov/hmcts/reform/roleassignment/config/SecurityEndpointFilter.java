@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.config;
 
-import com.microsoft.applicationinsights.web.dependencies.apachecommons.lang3.StringUtils;
 import feign.FeignException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.OncePerRequestFilter;
