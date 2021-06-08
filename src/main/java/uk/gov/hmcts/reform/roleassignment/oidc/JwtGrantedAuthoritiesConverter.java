@@ -44,12 +44,12 @@ public class JwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection
         List<GrantedAuthority> authorities = new ArrayList<>();
         long startTime = System.currentTimeMillis();
         if (jwt.containsClaim(TOKEN_NAME).equals(true) && jwt.getClaim(TOKEN_NAME).equals(ACCESS_TOKEN)) {
-            log.info(String.format("convert execution started at %s", startTime));
+            log.debug(String.format("convert execution started at %s", startTime));
             userInfo = idamRepository.getUserInfo(jwt.getTokenValue());
             authorities = extractAuthorityFromClaims(userInfo.getRoles());
 
         }
-        log.info(String.format(
+        log.debug(String.format(
             " >> convert execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)

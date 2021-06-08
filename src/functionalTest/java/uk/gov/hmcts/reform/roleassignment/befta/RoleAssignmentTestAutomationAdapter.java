@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAdapter {
-
+    public static RoleAssignmentTestAutomationAdapter INSTANCE = new RoleAssignmentTestAutomationAdapter();
     private TestDataLoaderToDefinitionStore loader = new TestDataLoaderToDefinitionStore(this);
 
     @Override

@@ -5,8 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.kie.api.runtime.StatelessKieSession;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
@@ -45,6 +48,9 @@ class ValidationModelServiceTest {
     @Getter
     private static final Map<String, List<Role>> configuredRoles = new HashMap<>();
 
+    @Mock
+    Logger logger = mock(Logger.class);
+
     @InjectMocks
     ValidationModelService sut = new ValidationModelService(
         kieSessionMock,
@@ -62,6 +68,7 @@ class ValidationModelServiceTest {
 
         assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
+        ReflectionTestUtils.setField(sut, "environment", "pr");
 
         sut.validateRequest(assignmentRequest);
 
@@ -91,6 +98,13 @@ class ValidationModelServiceTest {
         assertEquals(2, existingRecords.size());
 
 
+    }
+
+    @Test
+    void shouldLogMsg() {
+        Mockito.doNothing().when(logger).debug(any());
+        ValidationModelService.logMsg("1234567890123456");
+        assertNotNull(logger);
     }
 
 
