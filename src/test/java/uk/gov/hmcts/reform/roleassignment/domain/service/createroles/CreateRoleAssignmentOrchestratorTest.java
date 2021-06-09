@@ -28,7 +28,6 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -167,9 +166,6 @@ class CreateRoleAssignmentOrchestratorTest {
 
         historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
-
-        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
-            .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
             assignmentRequest);
@@ -539,6 +535,7 @@ class CreateRoleAssignmentOrchestratorTest {
     @Test
     void createRoleAssignment_NeedToRetainOnly() throws Exception {
         prepareRequestWhenReplaceExistingTrue();
+        assignmentRequest = Mockito.spy(assignmentRequest);
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> roleAssignment
             .setAuthorisations(Arrays.asList("dev")));
 
@@ -586,8 +583,9 @@ class CreateRoleAssignmentOrchestratorTest {
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
         AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
-
         //assert values
+        verify(assignmentRequest, times(3)).setRequestedRoles(any());
+        assertEquals(result.getRequestedRoles(), assignmentRequest.getRequestedRoles());
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(parseRequestService, times(1))

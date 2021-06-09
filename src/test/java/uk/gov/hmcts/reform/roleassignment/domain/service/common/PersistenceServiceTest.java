@@ -62,7 +62,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -188,7 +187,7 @@ class PersistenceServiceTest {
 
     @Test
     void persistActorCache_nullEntity() throws IOException {
-        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(LIVE);
+        RoleAssignment roleAssignment = Mockito.spy(TestDataBuilder.buildRoleAssignment(LIVE));
         roleAssignment.setActorId(null);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.createObjectNode();
@@ -203,7 +202,7 @@ class PersistenceServiceTest {
         sut.persistActorCache(roleAssignmentCollation);
 
         assertNull(entity.getActorId());
-        //verify(entity, times(1)).setActorId(anyString());
+        verify(roleAssignment, times(6)).getActorId();
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
         verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
         verify(entityManager, times(1)).persist(any());
@@ -331,6 +330,8 @@ class PersistenceServiceTest {
         when(roleAssignmentRepository.findById(id)).thenReturn(roleAssignmentOptional);
         List<RoleAssignment> roleAssignmentList = sut.getAssignmentById(id);
         assertNotNull(roleAssignmentList);
+        verify(persistenceUtil, times(1))
+            .convertEntityToRoleAssignment(any());
     }
 
     @Test
@@ -340,6 +341,18 @@ class PersistenceServiceTest {
         Assertions.assertThrows(NullPointerException.class, () ->
             sut.getAssignmentById(id)
         );
+    }
+
+    @Test
+    void getAssignmentById_nullRole() throws IOException {
+        UUID id = UUID.randomUUID();
+        Optional<RoleAssignmentEntity> roleAssignmentOptional =
+            Optional.of(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
+        when(roleAssignmentRepository.findById(id)).thenReturn(roleAssignmentOptional);
+        when(persistenceUtil.convertEntityToRoleAssignment(any())).thenReturn(null);
+        List<RoleAssignment> roleAssignmentList = sut.getAssignmentById(id);
+        assertNotNull(roleAssignmentList);
+        verify(persistenceUtil, times(1)).convertEntityToRoleAssignment(any());
     }
 
     @Test

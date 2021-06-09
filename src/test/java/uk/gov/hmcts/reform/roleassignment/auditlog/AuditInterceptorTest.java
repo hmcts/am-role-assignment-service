@@ -12,7 +12,6 @@ import org.springframework.web.method.HandlerMethod;
 import uk.gov.hmcts.reform.roleassignment.ApplicationParams;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContext;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContextHolder;
-import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

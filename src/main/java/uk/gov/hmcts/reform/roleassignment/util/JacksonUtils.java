@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+
 @Slf4j
 @Named
 @Singleton
@@ -37,6 +38,9 @@ public class JacksonUtils {
 
     @Getter
     private static final Map<String, List<RoleConfigRole>> configuredRoles = new HashMap<>();
+
+    private JacksonUtils(){
+    }
 
     public static final JsonFactory jsonFactory = JsonFactory.builder()
         // Change per-factory setting to prevent use of `String.intern()` on symbols

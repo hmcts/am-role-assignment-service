@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContext;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
@@ -20,6 +21,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @DisplayName("audit log specific calls")
@@ -42,6 +44,7 @@ class AuditServiceTest {
     public static final String ASSIGNMENT_ID = "DF_59895";
     public static final String ROLE_NAME = "ADMIN";
     public static final String CORRELATION_ID = "CORRELATION-1";
+    public static final String REQUEST_PAYLOAD = "PAYLOAD-1";
 
     @Mock
     private SecurityUtils securityUtils;
@@ -86,31 +89,32 @@ class AuditServiceTest {
             .assignmentId(ASSIGNMENT_ID)
             .roleName(ROLE_NAME)
             .correlationId(CORRELATION_ID)
+            .requestPayload(REQUEST_PAYLOAD)
             .build();
-
-        auditService.audit(auditContext);
+        AuditContext auditContextSpy = Mockito.spy(auditContext);
+        auditService.audit(auditContextSpy);
 
         verify(auditRepository).save(captor.capture());
         verify(securityUtils).getUserId();
+        verify(auditContextSpy, times(1)).getRequestPayload();
         AuditEntry entry = captor.getValue();
-
 
         assertThat(entry.getDateTime(), is(equalTo("2018-08-19T16:02:42.01")));
         assertThat(entry.getHttpStatus(), is(equalTo(200)));
         assertThat(entry.getHttpMethod(), is(equalTo(HTTP_METHOD)));
         assertThat(entry.getPath(), is(equalTo((PATH))));
-        assertThat(entry.getActorId(), is(equalTo(auditContext.getActorId())));
-        assertThat(entry.getProcess(), is(equalTo(auditContext.getProcess())));
-        assertThat(entry.getReference(), is(equalTo(auditContext.getReference())));
-        assertThat(entry.getAssignerId(), is(equalTo(auditContext.getAssignerId())));
-        assertThat(entry.getAssignmentId(), is(equalTo(auditContext.getAssignmentId())));
-        assertThat(entry.getRoleName(), is(equalTo(auditContext.getRoleName())));
-        assertThat(entry.getCorrelationId(), is(equalTo(auditContext.getCorrelationId())));
+        assertThat(entry.getActorId(), is(equalTo(auditContextSpy.getActorId())));
+        assertThat(entry.getProcess(), is(equalTo(auditContextSpy.getProcess())));
+        assertThat(entry.getReference(), is(equalTo(auditContextSpy.getReference())));
+        assertThat(entry.getAssignerId(), is(equalTo(auditContextSpy.getAssignerId())));
+        assertThat(entry.getAssignmentId(), is(equalTo(auditContextSpy.getAssignmentId())));
+        assertThat(entry.getRoleName(), is(equalTo(auditContextSpy.getRoleName())));
+        assertThat(entry.getCorrelationId(), is(equalTo(auditContextSpy.getCorrelationId())));
         assertThat(entry.getAuthenticatedUserId(), is(equalTo(securityUtils.getUserId())));
 
         assertThat(entry.getInvokingService(), is(equalTo((SERVICE_NAME))));
         assertThat(entry.getOperationType(), is(equalTo(AuditOperationType.CREATE_ASSIGNMENTS.getLabel())));
-        assertThat(entry.getRequestPayload(), is(equalTo(auditContext.getRequestPayload())));
+        assertThat(entry.getRequestPayload(), is(equalTo(auditContextSpy.getRequestPayload())));
 
     }
 
