@@ -3,6 +3,8 @@ package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 import com.launchdarkly.sdk.server.LDClient;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -63,4 +65,34 @@ class FeatureToggleServiceTest {
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
         Assertions.assertEquals("delete-role-assignments-by-id", flagName);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+        "/am/role-assignments/fetchFlagStatus,GET,get-db-drools-flag",
+        "/am/role-assignments/createFeatureFlag,POST,get-db-drools-flag",
+    })
+    void getLdFlagGetCase(String url, String method, String flag) {
+        when(request.getRequestURI()).thenReturn(url);
+        when(request.getMethod()).thenReturn(method);
+        featureToggleService = new FeatureToggleService(ldClient, "user");
+        String flagName = featureToggleService.getLaunchDarklyFlag(request);
+        Assertions.assertEquals(flag, flagName);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "GET",
+        "DELETE",
+        "POST",
+        "POST",
+        "INVALID",
+    })
+    void getLdFlagCase(String method) {
+        when(request.getRequestURI()).thenReturn("/am/dummy");
+        when(request.getMethod()).thenReturn(method);
+        featureToggleService = new FeatureToggleService(ldClient, "user");
+        String flagName = featureToggleService.getLaunchDarklyFlag(request);
+        Assertions.assertNull(flagName);
+    }
+
 }
