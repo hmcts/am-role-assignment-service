@@ -27,7 +27,6 @@ public class FeatureToggleService {
     private final String userName;
     private static final HashMap<String, String> getRequestMap = new HashMap<>();
     private static final HashMap<String, String> postRequestMap = new HashMap<>();
-    private static final HashMap<String, String> deleteRequestMap = new HashMap<>();
 
     static {
         //Any new end point need to be placed in respective map.
@@ -70,7 +69,6 @@ public class FeatureToggleService {
                 break;
             case DELETE:
                 break;
-
             default:
         }
         return null;
