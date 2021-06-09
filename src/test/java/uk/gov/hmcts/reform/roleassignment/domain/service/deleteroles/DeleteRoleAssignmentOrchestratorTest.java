@@ -125,6 +125,7 @@ class DeleteRoleAssignmentOrchestratorTest {
     void shouldRejectedWithDeleteRoleAssignmentByProcessWhenRolesNotEmpty() throws Exception {
 
         //Set the status approved of all requested role manually for drool validation process
+        assignmentRequest.getRequest().setLog("Assignment Request Log");
         setApprovedStatusByDrool();
         mockRequest();
         List<RoleAssignment> roleAssignmentList = TestDataBuilder
@@ -138,11 +139,31 @@ class DeleteRoleAssignmentOrchestratorTest {
 
         ResponseEntity<Void> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS,
                                                                                       REFERENCE);
+        assertNotNull(sut.getRequest().getId());
+        assertEquals("Assignment Request Log", requestEntity.getLog());
         assertNotNull(response);
         assertEquals(REJECTED.toString(), sut.getRequestEntity().getStatus());
         assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
         assertEquals(1, roleAssignmentList.stream().filter(x -> x.getStatus() == DELETE_REQUESTED).count());
+        assertNotNull(assignmentRequest.getRequestedRoles());
+    }
+
+    @Test
+    @DisplayName("should delete records from role_assignment table for a valid Assignment Id")
+    void shouldDeleteRecordsFromRoleAssignment_withAssignments() throws Exception {
+
+        //Set the status approved of all requested role manually for drool validation process
+        String assignmentId = UUID.randomUUID().toString();
+        setApprovedStatusByDrool();
+        mockRequest();
+        RoleAssignment assignment = TestDataBuilder.buildRoleAssignment(APPROVED);
+        when(persistenceService.getAssignmentById(any())).thenReturn(List.of(assignment));
+        mockHistoryEntity();
+        ResponseEntity<?> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
+        assertEquals(assignment.getStatus(), DELETE_REQUESTED);
+        verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
     }
 
     @Test

@@ -26,12 +26,16 @@ import java.util.stream.Collectors;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.CASE;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
 
+
 @Named
 @Singleton
 @Slf4j
 public class ValidationUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(ValidationUtil.class);
+
+    private ValidationUtil() {
+    }
 
     public static void validateDateTime(String strDate) throws ParseException {
         LOG.debug("validateDateTime");

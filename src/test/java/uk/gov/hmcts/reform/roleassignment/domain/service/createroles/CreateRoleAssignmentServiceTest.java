@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -8,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -43,8 +45,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
@@ -57,8 +61,10 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
 
@@ -103,6 +109,7 @@ class CreateRoleAssignmentServiceTest {
         incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, DELETE_APPROVED,
                                                                            false
         );
+
         Set<HistoryEntity> historyEntities = new HashSet<>();
 
         historyEntities.add(historyEntity);
@@ -135,7 +142,7 @@ class CreateRoleAssignmentServiceTest {
 
 
         //assertion
-
+        assertNotNull(incomingAssignmentRequest.getRequestedRoles().iterator().next().getId());
         verify(persistenceService, times(2))
             .updateRequest(any(RequestEntity.class));
         existingAssignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -164,7 +171,6 @@ class CreateRoleAssignmentServiceTest {
                                                                   roleAssignment.setGrantType(SPECIFIC));
         existingAssignmentRequest.getRequestedRoles().forEach(roleAssignment ->
                                                                   roleAssignment.setGrantType(SPECIFIC));
-
         Set<HistoryEntity> historyEntities = new HashSet<>();
 
         historyEntities.add(historyEntity);
@@ -197,7 +203,9 @@ class CreateRoleAssignmentServiceTest {
 
 
         //assertion
-
+        RoleAssignment assignment = incomingAssignmentRequest.getRequestedRoles().iterator().next();
+        assertEquals("Create requested with replace: false", assignment.getLog());
+        assertNotNull(assignment.getId());
         assertEquals(REJECTED, incomingAssignmentRequest.getRequest().getStatus());
         assertEquals(REJECTED.toString(), sut.getRequestEntity().getStatus());
 
@@ -212,12 +220,23 @@ class CreateRoleAssignmentServiceTest {
     }
 
     @Test
-    void check_ExecuteReplaceRequest() throws IOException, ParseException {
+    void checkAllDeleteApproved_whenExecuteReplaceRequest_withEmptyUuidValues() throws IOException, ParseException {
 
-
-        incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, LIVE,
+        incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, APPROVED,
                                                                            false
         );
+        incomingAssignmentRequest.getRequest().setAssignerId(incomingAssignmentRequest.getRequest()
+                                                                 .getAuthenticatedUserId());
+        incomingAssignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                                  roleAssignment.setGrantType(SPECIFIC));
+        existingAssignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                                  roleAssignment.setGrantType(SPECIFIC));
+        incomingAssignmentRequest.getRequestedRoles().add(TestDataBuilder.buildRoleAssignment(REJECTED));
+        incomingAssignmentRequest.getRequestedRoles().add(TestDataBuilder.buildRoleAssignment(APPROVED));
+        incomingAssignmentRequest.getRequestedRoles().add(TestDataBuilder.buildRoleAssignment(DELETE_REJECTED));
+        incomingAssignmentRequest.getRequestedRoles().add(TestDataBuilder.buildRoleAssignment(CREATE_REQUESTED));
+        incomingAssignmentRequest.getRequestedRoles().add(TestDataBuilder.buildRoleAssignment(DELETE_APPROVED));
+        ReflectionTestUtils.setField(sut, "emptyUUIds", List.of(UUID.randomUUID()));
         Set<HistoryEntity> historyEntities = new HashSet<>();
 
         historyEntities.add(historyEntity);
@@ -245,10 +264,136 @@ class CreateRoleAssignmentServiceTest {
             any(Request.class)
         )).thenReturn(historyEntity);
 
+        //Call actual Method
+        sut.checkAllDeleteApproved(existingAssignmentRequest, incomingAssignmentRequest);
+
+
+        //assertion
+        RoleAssignment assignment = incomingAssignmentRequest.getRequestedRoles().iterator().next();
+        MatcherAssert.assertThat(assignment.getLog(),
+              containsString(("Requested Role has been rejected due to following new/existing assignment Ids ")));
+        assertNotNull(assignment.getId());
+        assertEquals(REJECTED, incomingAssignmentRequest.getRequest().getStatus());
+        assertEquals(REJECTED.toString(), sut.getRequestEntity().getStatus());
+
+        verify(persistenceService, times(5))
+            .updateRequest(any(RequestEntity.class));
+        verify(persistenceUtil, times(19))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
+        verify(validationModelService, times(1))
+            .validateRequest(any(AssignmentRequest.class));
+        verify(persistenceService, times(4))
+            .persistHistoryEntities(any());
+    }
+
+    @Test
+    void checkAllDeleteApproved_whenExecuteReplaceRequest_withAllDelete() throws IOException, ParseException {
+
+        incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, DELETE_APPROVED,
+                                                                           false
+        );
+        incomingAssignmentRequest.getRequest().setAssignerId(incomingAssignmentRequest.getRequest()
+                                                                 .getAuthenticatedUserId());
+        incomingAssignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                                  roleAssignment.setGrantType(SPECIFIC));
+        existingAssignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                                  roleAssignment.setGrantType(SPECIFIC));
+        existingAssignmentRequest.getRequestedRoles().add(TestDataBuilder.buildRoleAssignment(REJECTED));
+        existingAssignmentRequest.getRequestedRoles().add(TestDataBuilder.buildRoleAssignment(DELETE_REJECTED));
+        ReflectionTestUtils.setField(sut, "emptyUUIds", List.of(UUID.randomUUID()));
+        Set<HistoryEntity> historyEntities = new HashSet<>();
+
+        historyEntities.add(historyEntity);
+
+        Map<UUID, RoleAssignmentSubset> needToDeleteRoleAssignments = new HashMap<>();
+        Set<RoleAssignmentSubset> needToCreateRoleAssignments = new HashSet<>();
+
+        RoleAssignmentSubset roleAssignmentSubset = RoleAssignmentSubset.builder().build();
+        needToDeleteRoleAssignments.put(UUID.randomUUID(), roleAssignmentSubset);
+        needToCreateRoleAssignments.add(roleAssignmentSubset);
+
+        requestEntity.setHistoryEntities(historyEntities);
+        sut.setRequestEntity(requestEntity);
+        sut.setNeedToDeleteRoleAssignments(needToDeleteRoleAssignments);
+        sut.setNeedToCreateRoleAssignments(needToCreateRoleAssignments);
+
+        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
+            .thenReturn((List<RoleAssignment>) existingAssignmentRequest.getRequestedRoles());
+
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
+            existingAssignmentRequest);
+        when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
+            any(RoleAssignment.class),
+            any(Request.class)
+        )).thenReturn(historyEntity);
+
+        //Call actual Method
+        sut.checkAllDeleteApproved(existingAssignmentRequest, incomingAssignmentRequest);
+
+
+        //assertion
+        RoleAssignment assignment = incomingAssignmentRequest.getRequestedRoles().iterator().next();
+        MatcherAssert.assertThat(assignment.getLog(),
+            containsString(("Requested Role has been rejected due to following new/existing assignment Ids ")));
+        assertNotNull(assignment.getId());
+        assertEquals(REJECTED, incomingAssignmentRequest.getRequest().getStatus());
+        assertEquals(REJECTED.toString(), sut.getRequestEntity().getStatus());
+
+        verify(persistenceService, times(3))
+            .updateRequest(any(RequestEntity.class));
+        verify(persistenceUtil, times(4))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
+        verify(persistenceService, times(2))
+            .persistHistoryEntities(any());
+    }
+
+    @Test
+    void check_ExecuteReplaceRequest() throws IOException, ParseException {
+
+
+        incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, LIVE,
+                                                                           false
+        );
+        historyEntity = TestDataBuilder.buildHistoryIntoEntity(TestDataBuilder.buildRoleAssignment(APPROVED),
+                                                               requestEntity);
+        Set<HistoryEntity> historyEntities = new HashSet<>();
+
+        historyEntities.add(historyEntity);
+        historyEntities.add(TestDataBuilder.buildHistoryIntoEntity(TestDataBuilder.buildRoleAssignment(REJECTED),
+                                                                   requestEntity));
+        Map<UUID, RoleAssignmentSubset> needToDeleteRoleAssignments = new HashMap<>();
+        Set<RoleAssignmentSubset> needToCreateRoleAssignments = new HashSet<>();
+
+        RoleAssignmentSubset roleAssignmentSubset = RoleAssignmentSubset.builder().build();
+        needToDeleteRoleAssignments.put(UUID.randomUUID(), roleAssignmentSubset);
+        needToCreateRoleAssignments.add(roleAssignmentSubset);
+
+        requestEntity.setHistoryEntities(historyEntities);
+        sut.setRequestEntity(requestEntity);
+        sut.setNeedToDeleteRoleAssignments(needToDeleteRoleAssignments);
+        sut.setNeedToCreateRoleAssignments(needToCreateRoleAssignments);
+        existingAssignmentRequest.getRequestedRoles().add(TestDataBuilder.buildRoleAssignment(APPROVED));
+        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
+            .thenReturn((List<RoleAssignment>) existingAssignmentRequest.getRequestedRoles());
+
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
+            existingAssignmentRequest);
+        when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
+            any(RoleAssignment.class),
+            any(Request.class)
+        )).thenReturn(historyEntity);
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(APPROVED);
+        when(persistenceUtil.convertHistoryEntityToRoleAssignment(any(HistoryEntity.class)))
+            .thenReturn(roleAssignment);
+
         // actual Method call
         sut.executeReplaceRequest(existingAssignmentRequest, incomingAssignmentRequest);
 
         //assertion
+        assertEquals(LIVE,  incomingAssignmentRequest.getRequestedRoles().iterator().next().getStatus());
+        assertEquals(LIVE,  roleAssignment.getStatus());
         assertEquals(APPROVED, incomingAssignmentRequest.getRequest().getStatus());
         assertEquals("Request has been approved", incomingAssignmentRequest.getRequest().getLog());
         assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
@@ -256,11 +401,11 @@ class CreateRoleAssignmentServiceTest {
         verify(persistenceService, times(3))
             .updateRequest(any(RequestEntity.class));
 
-        verify(persistenceService, times(2))
+        verify(persistenceService, times(3))
             .deleteRoleAssignment(any(RoleAssignment.class));
         verify(persistenceService, times(2))
             .persistActorCache(anyCollection());
-        verify(persistenceUtil, times(2))
+        verify(persistenceUtil, times(3))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
 
     }
@@ -636,8 +781,12 @@ class CreateRoleAssignmentServiceTest {
 
 
         //assertion
-
         assertEquals(REJECTED, incomingAssignmentRequest.getRequest().getStatus());
+        assertNotNull(incomingAssignmentRequest.getRequestedRoles().iterator().next().getId());
+        MatcherAssert.assertThat(incomingAssignmentRequest.getRequest().getLog(),
+                                 containsString(("Request has been rejected due to following assignment Ids ")));
+        MatcherAssert.assertThat(sut.getRequestEntity().getLog(),
+                                 containsString(("Request has been rejected due to following assignment Ids ")));
         assertEquals(REJECTED.toString(), sut.getRequestEntity().getStatus());
 
         verify(persistenceService, times(3))
@@ -697,6 +846,70 @@ class CreateRoleAssignmentServiceTest {
                                 Status.REJECTED, rejectedAssignmentIds
         );
 
+        //assertion
+        RoleAssignment roleAssignment = incomingAssignmentRequest.getRequestedRoles().iterator().next();
+        assertNotNull(roleAssignment);
+        MatcherAssert.assertThat(roleAssignment.getLog(),
+                  containsString(("Requested Role has been rejected due to following new/existing assignment Ids")));
+        assertEquals(CREATED, incomingAssignmentRequest.getRequest().getStatus());
+        assertEquals(CREATED.toString(), sut.getRequestEntity().getStatus());
+
+        verify(persistenceService, times(1))
+            .updateRequest(any(RequestEntity.class));
+        verify(persistenceUtil, times(2))
+            .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
+        verify(persistenceService, times(1))
+            .persistHistoryEntities(any());
+    }
+
+    @Test
+    void insertRequestedRoles_whenEmptyAssignmentIds() throws IOException, ParseException {
+
+        incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, APPROVED,
+                                                                           false
+        );
+        incomingAssignmentRequest.getRequest().setAssignerId(incomingAssignmentRequest.getRequest()
+                                                                 .getAuthenticatedUserId());
+        incomingAssignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                                  roleAssignment.setGrantType(SPECIFIC));
+        existingAssignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                                  roleAssignment.setGrantType(SPECIFIC));
+
+        Set<HistoryEntity> historyEntities = new HashSet<>();
+
+        historyEntities.add(historyEntity);
+
+        Map<UUID, RoleAssignmentSubset> needToDeleteRoleAssignments = new HashMap<>();
+        Set<RoleAssignmentSubset> needToCreateRoleAssignments = new HashSet<>();
+
+        RoleAssignmentSubset roleAssignmentSubset = RoleAssignmentSubset.builder().build();
+        needToDeleteRoleAssignments.put(UUID.randomUUID(), roleAssignmentSubset);
+        needToCreateRoleAssignments.add(roleAssignmentSubset);
+
+        requestEntity.setHistoryEntities(historyEntities);
+        sut.setRequestEntity(requestEntity);
+        sut.setNeedToDeleteRoleAssignments(needToDeleteRoleAssignments);
+        sut.setNeedToCreateRoleAssignments(needToCreateRoleAssignments);
+
+        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
+            .thenReturn((List<RoleAssignment>) existingAssignmentRequest.getRequestedRoles());
+
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
+            existingAssignmentRequest);
+        when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
+            any(RoleAssignment.class),
+            any(Request.class)
+        )).thenReturn(historyEntity);
+
+        List<UUID> rejectedAssignmentIds = new ArrayList<>();
+        rejectedAssignmentIds.add(UUID.randomUUID());
+
+        //Call actual Method
+        sut.insertRequestedRole(incomingAssignmentRequest,
+                                Status.REJECTED, rejectedAssignmentIds
+        );
+
 
         //assertion
         assertEquals(CREATED, incomingAssignmentRequest.getRequest().getStatus());
@@ -709,7 +922,6 @@ class CreateRoleAssignmentServiceTest {
         verify(persistenceService, times(1))
             .persistHistoryEntities(any());
     }
-
 
     @Test
     void hasAssignmentsUpdated_withAuthorizations() throws IOException, ParseException,

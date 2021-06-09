@@ -2,6 +2,9 @@ package uk.gov.hmcts.reform.roleassignment.auditlog.aop;
 
 public class AuditContextHolder {
 
+    private AuditContextHolder(){
+    }
+
     private static final InheritableThreadLocal<AuditContext> threadLocal = new InheritableThreadLocal<>();
 
     public static void setAuditContext(AuditContext auditContext) {

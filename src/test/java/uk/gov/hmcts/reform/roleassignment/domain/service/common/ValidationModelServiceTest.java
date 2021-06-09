@@ -26,6 +26,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -101,10 +102,17 @@ class ValidationModelServiceTest {
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
 
         sut.validateRequest(assignmentRequestSpy);
-
         Mockito.verify(assignmentRequestSpy, times(4)).getRequest();
         Mockito.verify(assignmentRequestSpy, times(1)).getRequestedRoles();
         Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
+    }
+
+    @Test
+    void validateRequest_Scenario_withoutEnv() throws IOException {
+        assignmentRequest = TestDataBuilder.buildEmptyAssignmentRequest(LIVE);
+        AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
+
+        assertThrows(NullPointerException.class, () -> sut.validateRequest(assignmentRequestSpy));
     }
 
     @Test

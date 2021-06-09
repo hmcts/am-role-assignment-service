@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,14 +59,16 @@ public class AuditAspectTest {
 
     @Test
     public void unProcessableAuditContext() {
-        ResponseEntity result = controllerProxy.unProcessEntity("", "", ACTOR_ID, ROLE_NAME);
-        assertThat(result).isNotNull();
-        assertThat(((RoleAssignment)result.getBody()).getRoleName()).isEqualTo(ROLE_NAME);
+        for (HttpStatus state: List.of(HttpStatus.UNPROCESSABLE_ENTITY, HttpStatus.CONFLICT)) {
+            ResponseEntity result = controllerProxy.responseProcessEntity(state, ACTOR_ID, ROLE_NAME);
+            assertThat(result).isNotNull();
+            assertThat(((RoleAssignment) result.getBody()).getRoleName()).isEqualTo(ROLE_NAME);
+        }
     }
 
     @Test
-    public void conflictAuditContext() {
-        ResponseEntity result = controllerProxy.conflictEntity(ACTOR_ID, ROLE_NAME);
+    public void acceptProcessableAuditContext() {
+        ResponseEntity result = controllerProxy.responseProcessEntity(HttpStatus.ACCEPTED, ACTOR_ID, ROLE_NAME);
         assertThat(result).isNotNull();
         assertThat(((RoleAssignment)result.getBody()).getRoleName()).isEqualTo(ROLE_NAME);
     }
@@ -102,24 +105,12 @@ public class AuditAspectTest {
             process = "#process",
             reference = "#reference",
             actorId = "#actorId")
-        public ResponseEntity<?> unProcessEntity(String process, String reference, String actorId, String roleName) {
+        public ResponseEntity<?> responseProcessEntity(HttpStatus state, String actorId, String roleName) {
             RoleAssignment roleAssignment = RoleAssignment.builder()
                 .id(UUID.fromString(ID))
                 .roleName(roleName).build();
 
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(roleAssignment);
-        }
-
-        @LogAudit(operationType = AuditOperationType.CREATE_ASSIGNMENTS,
-            process = "#process",
-            reference = "#reference",
-            actorId = "#actorId")
-        public ResponseEntity<?> conflictEntity(String actorId, String roleName) {
-            RoleAssignment roleAssignment = RoleAssignment.builder()
-                .id(UUID.fromString(ID))
-                .roleName(roleName).build();
-
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(roleAssignment);
+            return ResponseEntity.status(state).body(roleAssignment);
         }
 
     }

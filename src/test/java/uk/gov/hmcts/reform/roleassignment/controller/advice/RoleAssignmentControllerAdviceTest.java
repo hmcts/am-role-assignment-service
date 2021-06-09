@@ -314,6 +314,13 @@ class RoleAssignmentControllerAdviceTest {
     }
 
     @Test
+    void notReadableException_nullExceptionMessage() {
+        HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException(null);
+        Assertions.assertThrows(NullPointerException.class,
+            () -> csda.notReadableException(httpMessageNotReadableException));
+    }
+
+    @Test
     void nullException() {
         NullPointerException nullPointerException = mock(NullPointerException.class);
         ResponseEntity<ErrorResponse> responseEntity = csda.nullException(nullPointerException);
