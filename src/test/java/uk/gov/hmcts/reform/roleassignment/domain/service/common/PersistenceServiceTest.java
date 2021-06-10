@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -883,7 +882,7 @@ class PersistenceServiceTest {
             .status(Boolean.TRUE)
             .build();
         when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
-        Boolean response = sut.getStatusByParam(flagName, env);
+        boolean response = sut.getStatusByParam(flagName, env);
         assertTrue(response);
 
     }
