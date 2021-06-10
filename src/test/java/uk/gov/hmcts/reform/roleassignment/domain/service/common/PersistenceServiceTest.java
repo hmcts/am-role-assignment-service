@@ -888,23 +888,6 @@ class PersistenceServiceTest {
 
     }
 
-    @Ignore
-    @Test
-    void getFlagStatus_WithEmptyEnv() {
-        String flagName = "iac_1_0";
-        String env = "local";
-        FlagConfig flagConfig = FlagConfig.builder()
-            .env("local")
-            .flagName("iac_1_0")
-            .serviceName("iac")
-            .status(Boolean.FALSE)
-            .build();
-        when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
-        Boolean response = sut.getStatusByParam(flagName, null);
-        assertFalse(response);
-
-    }
-
     @Test
     void persistFlagConfig() {
 
