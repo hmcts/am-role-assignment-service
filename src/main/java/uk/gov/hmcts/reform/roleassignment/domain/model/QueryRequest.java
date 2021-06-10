@@ -37,4 +37,9 @@ public class QueryRequest {
     @Singular("authorisations")
     private final List<String> authorisations;
 
+    @Singular("hasAttributes")
+    private final List<String> hasAttributes;
+
+    private boolean readOnly;
+
 }

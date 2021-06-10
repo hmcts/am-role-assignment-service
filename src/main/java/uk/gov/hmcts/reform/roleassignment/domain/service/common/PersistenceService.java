@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.annotation.RequestScope;
@@ -24,6 +26,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequests;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
@@ -44,6 +47,8 @@ import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecif
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByAuthorisations;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByClassification;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByGrantType;
+import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByHasAttributes;
+import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByReadOnly;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByRoleCategories;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByRoleName;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByRoleType;
@@ -127,7 +132,7 @@ public class PersistenceService {
     @Transactional
     public void persistActorCache(Collection<RoleAssignment> roleAssignments) {
         roleAssignments.forEach(roleAssignment -> {
-            ActorCacheEntity actorCacheEntity  = persistenceUtil
+            ActorCacheEntity actorCacheEntity = persistenceUtil
                 .convertActorCacheToEntity(prepareActorCache(roleAssignment));
             ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
             if (existingActorCache != null) {
@@ -207,7 +212,6 @@ public class PersistenceService {
                                                                   boolean existingFlag) {
 
         long startTime = System.currentTimeMillis();
-        List<Assignment> roleAssignmentList;
 
         pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(Objects.requireNonNull(
@@ -239,15 +243,87 @@ public class PersistenceService {
             )
         );
 
+        return prepareQueryRequestResponse(existingFlag, startTime);
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public List<Assignment> retrieveRoleAssignmentsByMultipleQueryRequest(QueryRequests queryRequests,
+                                                                          Integer pageNumber,
+                                                                          Integer size, String sort,
+                                                                          String direction,
+                                                                          boolean existingFlag) {
+
+        long startTime = System.currentTimeMillis();
+        Specification finalQuery = null;
+        if (CollectionUtils.isNotEmpty(queryRequests.getQueryRequests())) {
+            Specification initialQuery = Specification.where(
+                searchByActorIds(queryRequests.getQueryRequests().get(0).getActorId()))
+                .and(searchByGrantType(queryRequests.getQueryRequests().get(0).getGrantType()))
+                .and(searchByValidDate(queryRequests.getQueryRequests().get(0).getValidAt()))
+                .and(searchByAttributes(queryRequests.getQueryRequests().get(0).getAttributes()))
+                .and(searchByRoleType(queryRequests.getQueryRequests().get(0).getRoleType()))
+                .and(searchByRoleName(queryRequests.getQueryRequests().get(0).getRoleName()))
+                .and(searchByClassification(queryRequests.getQueryRequests().get(0).getClassification()))
+                .and(searchByRoleCategories(queryRequests.getQueryRequests().get(0).getRoleCategory()))
+                .and(searchByAuthorisations(queryRequests.getQueryRequests().get(0).getAuthorisations()))
+                .and(searchByHasAttributes(queryRequests.getQueryRequests().get(0).getHasAttributes()))
+                .and(searchByReadOnly(queryRequests.getQueryRequests().get(0).isReadOnly()));
+
+
+            if (queryRequests.getQueryRequests().size() > 1) {
+                for (int i = 1; i < queryRequests.getQueryRequests().size(); i++) {
+                    finalQuery = initialQuery.or(searchByRoleName(queryRequests.getQueryRequests().get(i)
+                                                                      .getRoleName())
+                           .and(searchByHasAttributes(queryRequests.getQueryRequests().get(i).getHasAttributes()))
+                           .and(searchByAuthorisations(queryRequests.getQueryRequests().get(i).getAuthorisations()))
+                           .and(searchByActorIds(queryRequests.getQueryRequests().get(i).getActorId()))
+                           .and(searchByGrantType(queryRequests.getQueryRequests().get(i).getGrantType()))
+                           .and(searchByValidDate(queryRequests.getQueryRequests().get(i).getValidAt()))
+                           .and(searchByAttributes(queryRequests.getQueryRequests().get(i).getAttributes()))
+                           .and(searchByRoleType(queryRequests.getQueryRequests().get(i).getRoleType()))
+                           .and(searchByClassification(queryRequests.getQueryRequests().get(i).getClassification()))
+                           .and(searchByRoleCategories(queryRequests.getQueryRequests().get(i).getRoleCategory()))
+                           .and(searchByReadOnly(queryRequests.getQueryRequests().get(i).isReadOnly())));
+
+                }
+            } else {
+                finalQuery = initialQuery;
+            }
+
+        }
+
+
+        pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
+            finalQuery,
+            PageRequest.of(
+                (pageNumber != null
+                    && pageNumber > 0) ? pageNumber : 0,
+                (size != null
+                    && size > 0) ? size : defaultSize,
+                Sort.by(
+                    (direction != null) ? Sort.Direction.fromString(direction) : Sort.DEFAULT_DIRECTION,
+                    (sort != null) ? sort : sortColumn
+                )
+            )
+        );
+
+        return prepareQueryRequestResponse(existingFlag, startTime);
+    }
+
+    private List<Assignment> prepareQueryRequestResponse(boolean existingFlag, long startTime) {
+        List<Assignment> roleAssignmentList;
         if (!existingFlag) {
             roleAssignmentList = pageRoleAssignmentEntities.stream()
                 .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
                 .collect(Collectors.toList());
 
+
         } else {
             roleAssignmentList = pageRoleAssignmentEntities.stream()
                 .map(role -> persistenceUtil.convertEntityToExistingRoleAssignment(role))
                 .collect(Collectors.toList());
+
 
         }
 
@@ -256,6 +332,7 @@ public class PersistenceService {
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
         );
+
         return roleAssignmentList;
     }
 

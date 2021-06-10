@@ -63,6 +63,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
+        order_by.default_null_ordering: ${DEFAULT_NULL_ORDERING:last}
         jdbc:
           batch_size: 10
           order_inserts: true
@@ -70,6 +71,7 @@ spring:
           batch_versioned_data: true
           lob:
             non_contextual_creation: true
+    show-sql: true
   flyway.enabled: ${ENABLE_DB_MIGRATE:true}
   flyway.locations: classpath:db/migration
   datasource:

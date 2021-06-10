@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.v1;
+package uk.gov.hmcts.reform.roleassignment.versions;
 
 public final class V1 {
 
