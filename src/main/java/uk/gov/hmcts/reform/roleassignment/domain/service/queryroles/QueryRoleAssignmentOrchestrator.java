@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequests;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 
@@ -37,6 +38,40 @@ public class QueryRoleAssignmentOrchestrator {
                 direction,
                 false
             );
+        return prepareQueryResponse(startTime, assignmentList);
+
+    }
+
+
+
+    public  ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByMultipleQueryRequest(
+        QueryRequests queryRequest,
+        Integer pageNumber,
+        Integer size, String sort, String direction) {
+
+        long startTime = System.currentTimeMillis();
+
+        List<Assignment> assignmentList =
+            persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
+                queryRequest,
+                pageNumber,
+                size,
+                sort,
+                direction,
+                false
+            );
+        return prepareQueryResponse(startTime, assignmentList);
+
+    }
+
+    /**
+         * prepare final query response based on search criteria.
+         * @param startTime must not be {@literal null}.
+         * @param assignmentList must not be {@literal null}.
+         * @return
+     */
+    private ResponseEntity<RoleAssignmentResource> prepareQueryResponse(long startTime,
+                                                                        List<Assignment> assignmentList) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(
             "Total-Records",
@@ -49,6 +84,5 @@ public class QueryRoleAssignmentOrchestrator {
         );
         return ResponseEntity.status(HttpStatus.OK).headers(responseHeaders).body(
             new RoleAssignmentResource(assignmentList));
-
     }
 }

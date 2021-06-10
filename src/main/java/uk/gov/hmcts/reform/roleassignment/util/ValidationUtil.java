@@ -11,7 +11,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-import uk.gov.hmcts.reform.roleassignment.v1.V1;
+import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
 import javax.inject.Named;
 import javax.inject.Singleton;

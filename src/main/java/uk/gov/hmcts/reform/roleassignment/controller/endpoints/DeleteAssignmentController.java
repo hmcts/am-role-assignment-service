@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.v1.V1;
+import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DELETE_ASSIGNMENTS_BY_ID;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DELETE_ASSIGNMENTS_BY_PROCESS;

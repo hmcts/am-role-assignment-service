@@ -58,14 +58,33 @@ public final class RoleAssignmentEntitySpecifications {
         return (root, query, builder) -> builder.and(attributes.entrySet()
                                                          .stream()
                                                          .map(entry -> builder.or(entry.getValue()
-                                                                               .stream()
-                                                     .map(value -> builder.equal(builder.function(
-                                                                                   "jsonb_extract_path_text",
-                                                                                   String.class,
-                                                                       root.<String>get("attributes"),
-                                                                       builder.literal(entry.getKey())
-                                                                               ), value)).toArray(Predicate[]::new)))
+                                                                              .stream()
+                                                       .map(value -> {
+                                                           if (value == null) {
+                                                               return builder.isNull(builder.function(
+                                                                                     "jsonb_extract_path_text",
+                                                                                      String.class,
+                                                                                      root.<String>get("attributes"),
+                                                                                      builder.literal(entry.getKey())
+                                                                                              ));
+                                                           } else {
+                                                               return builder.or(builder.equal(
+                                                                                                  builder.function(
+                                                                                      "jsonb_extract_path_text",
+                                                                                                      String.class,
+                                                                                                      root.<String>get(
+                                                                                                        "attributes"),
+                                                                                                      builder.literal(
+                                                                                                     entry.getKey())
+                                                                                                  ),
+                                                                                                  value
+                                                                                              ));
+                                                           }
+
+                                                       }).toArray(Predicate[]::new)))
                                                          .toArray(Predicate[]::new));
+
+
 
     }
 
@@ -137,6 +156,30 @@ public final class RoleAssignmentEntitySpecifications {
                                )
 
                            ).toArray(Predicate[]::new));
+
+    }
+
+    public static Specification<RoleAssignmentEntity> searchByHasAttributes(List<String> hasAttributes) {
+        if (hasAttributes == null || hasAttributes.isEmpty()) {
+            return null;
+
+        }
+        return (root, query, builder) -> builder.or(hasAttributes
+                                                        .stream()
+                                                        .map(value -> builder.isNotNull(builder.function(
+                                                            "jsonb_extract_path_text",
+                                                            Object.class,
+                                                            root.<String>get("attributes"),
+                                                            builder.literal(value)
+                                                        )))
+                                                        .toArray(Predicate[]::new));
+
+    }
+
+    public static Specification<RoleAssignmentEntity> searchByReadOnly(boolean readOnly) {
+
+        return (root, query, builder) -> builder.equal(root.get("readOnly"),readOnly);
+
 
     }
 
