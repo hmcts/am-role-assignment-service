@@ -944,7 +944,7 @@ class CreateRoleAssignmentServiceTest {
             roleAssignment.setEndTime(((List<RoleAssignment>) incomingAssignmentRequest.getRequestedRoles())
                                           .get(0).getEndTime());
         });
-
+        existingAssignmentRequest.getRequestedRoles().iterator().next().setRoleType(RoleType.ORGANISATION);
         //Call actual Method
         boolean result = sut.hasAssignmentsUpdated(existingAssignmentRequest, incomingAssignmentRequest);
 
