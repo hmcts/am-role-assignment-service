@@ -154,7 +154,7 @@ class DeleteRoleAssignmentOrchestratorTest {
     void shouldDeleteRecordsFromRoleAssignment_withAssignments() throws Exception {
 
         //Set the status approved of all requested role manually for drool validation process
-        String assignmentId = UUID.randomUUID().toString();
+        final String assignmentId = UUID.randomUUID().toString();
         setApprovedStatusByDrool();
         mockRequest();
         RoleAssignment assignment = TestDataBuilder.buildRoleAssignment(APPROVED);

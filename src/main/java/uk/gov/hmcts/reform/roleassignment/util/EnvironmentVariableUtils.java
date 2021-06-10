@@ -2,10 +2,9 @@ package uk.gov.hmcts.reform.roleassignment.util;
 
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 
-
 public class EnvironmentVariableUtils {
 
-    private EnvironmentVariableUtils(){
+    private EnvironmentVariableUtils() {
     }
 
     public static String getRequiredVariable(String name) {

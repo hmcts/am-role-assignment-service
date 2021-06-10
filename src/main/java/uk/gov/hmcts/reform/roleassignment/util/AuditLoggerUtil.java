@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class AuditLoggerUtil {
 
     private AuditLoggerUtil(){
+
     }
 
     public static List<UUID> buildAssignmentIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
