@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Singleton
 public class AuditLoggerUtil {
 
-    private AuditLoggerUtil(){
+    private AuditLoggerUtil() {
 
     }
 
