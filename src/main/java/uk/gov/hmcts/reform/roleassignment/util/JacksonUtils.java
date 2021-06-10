@@ -35,7 +35,7 @@ import java.util.UUID;
 @Singleton
 public class JacksonUtils {
 
-    private JacksonUtils(){
+    private JacksonUtils() {
     }
 
     @Getter
