@@ -30,8 +30,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @Provider("am_roleAssignment_getAssignment")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
-    host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
-    @VersionSelector(tag = "master")})
+    host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}")
 @Import(RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
 public class GetActorByIdRoleAssignmentProviderTest {
@@ -53,6 +52,7 @@ public class GetActorByIdRoleAssignmentProviderTest {
     @BeforeEach
     void before(PactVerificationContext context) {
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
+        System.getProperties().setProperty("pact.verifier.publishResults", "true");
         testTarget.setControllers(new GetAssignmentController(
             retrieveRoleAssignmentServiceMock
         ));
