@@ -74,6 +74,7 @@ withNightlyPipeline(type, product, component) {
   env.IDAM_CLIENT_ID = "am_role_assignment"
   env.OPENID_SCOPE_VARIABLES = "openid+profile+roles+authorities"
   env.MICROSERVICE_NAME = "am_role_assignment_service"
+  env.EXTERNAL_FLAG_QUERY_PATH = "am/role-assignments/fetchFlagStatus?flagName="
 
   env.Rules = params.SecurityRules
 

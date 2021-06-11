@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.befta;
 
 import uk.gov.hmcts.befta.BeftaMain;
+import uk.gov.hmcts.befta.TestAutomationConfig;
 
 public class RoleAssignmentBeftaMain {
 
@@ -9,6 +10,7 @@ public class RoleAssignmentBeftaMain {
 
     public static void main(String[] args) {
 
-        BeftaMain.main(args, new RoleAssignmentTestAutomationAdapter());
+        BeftaMain.main(args, TestAutomationConfig.INSTANCE, new RoleAssignmentTestAutomationAdapter(),
+                       RasDefaultMultiSourceFeatureToggleService.INSTANCE);
     }
 }
