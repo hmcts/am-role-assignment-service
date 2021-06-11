@@ -19,7 +19,7 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Builder(toBuilder = true)
@@ -59,14 +59,14 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
     private boolean readOnly;
 
     @Column(name = "begin_time")
-    private LocalDateTime beginTime;
+    private ZonedDateTime beginTime;
 
     @Column(name = "end_time")
-    private LocalDateTime endTime;
+    private ZonedDateTime endTime;
 
     @CreationTimestamp
     @Column(name = "created", nullable = false)
-    private LocalDateTime created;
+    private ZonedDateTime created;
 
     @Column(name = "attributes", nullable = false, columnDefinition = "jsonb")
     @Convert(converter = JsonBConverter.class)
