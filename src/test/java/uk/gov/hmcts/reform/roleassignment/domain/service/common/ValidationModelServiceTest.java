@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -60,6 +61,7 @@ class ValidationModelServiceTest {
 
         assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
+        ReflectionTestUtils.setField(sut, "environment", "pr");
 
         sut.validateRequest(assignmentRequest);
 

@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -28,7 +29,7 @@ class GetAssignmentControllerTest {
 
     @InjectMocks
     @Spy
-    private GetAssignmentController sut = new GetAssignmentController(retrieveRoleAssignmentServiceMock);
+    private final GetAssignmentController sut = new GetAssignmentController(retrieveRoleAssignmentServiceMock);
 
     @BeforeEach
     public void setUp() {
@@ -43,7 +44,34 @@ class GetAssignmentControllerTest {
     }
 
     @Test
-    void shouldGetRoleAssignment() throws Exception {
+    void shouldGetRoleAssignmentResourceWithOutBody() {
+        String actorId = "123e4567-e89b-42d3-a456-556642445678";
+        ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.OK).body(null);
+
+        doReturn(expectedResponse).when(retrieveRoleAssignmentServiceMock).getAssignmentsByActor(actorId);
+        ResponseEntity<RoleAssignmentResource> response = sut.retrieveRoleAssignmentsByActorId("", "", actorId);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResponse.getBody(), response.getBody());
+        assertNull(response.getHeaders().getETag());
+    }
+
+    @Test
+    void shouldGetRoleAssignmentResourceWithOutRoleAssignment() {
+        String actorId = "123e4567-e89b-42d3-a456-556642445678";
+        ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.OK)
+            .body(new RoleAssignmentResource(null, ""));
+
+        doReturn(expectedResponse).when(retrieveRoleAssignmentServiceMock).getAssignmentsByActor(actorId);
+        ResponseEntity<RoleAssignmentResource> response = sut.retrieveRoleAssignmentsByActorId("", "", actorId);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResponse.getBody(), response.getBody());
+        assertNull(response.getHeaders().getETag());
+    }
+
+    @Test
+    void shouldGetRoleAssignmentResourceWithRoleAssignment() throws Exception {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         ResponseEntity<RoleAssignmentResource> expectedResponse = TestDataBuilder
             .buildResourceRoleAssignmentResponse(Status.LIVE);

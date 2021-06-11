@@ -24,6 +24,8 @@ public class LaunchDarklyConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         //Any new end point need to be placed in respective map.
         //registry.addInterceptor(featureConditionEvaluation).addPathPatterns("/am/role-assignments")
+        registry.addInterceptor(featureConditionEvaluation).addPathPatterns("/am/role-assignments/createFeatureFlag");
+        registry.addInterceptor(featureConditionEvaluation).addPathPatterns("/am/role-assignments/fetchFlagStatus");
     }
 }
 
