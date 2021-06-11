@@ -6,7 +6,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
@@ -33,6 +35,9 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                                 "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
                                         "senior-tribunal-caseworker"),
@@ -51,6 +56,10 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              "1234567890123456", DELETE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
         executeDroolRules(List.of(buildExistingRoleForIAC(
             requestedRole1.getActorId(),"senior-tribunal-caseworker")
         ));
@@ -67,6 +76,9 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(), "tribunal-caseworker"),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
@@ -85,6 +97,9 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              "1234567890123456", DELETE_REQUESTED);
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
                                                           "senior-tribunal-caseworker"),
@@ -102,6 +117,9 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(), "tribunal-caseworker"),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
@@ -140,6 +158,9 @@ class StaffCategoryCaseTest extends DroolBase {
         List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
         existingRoleAssignments.add(existingActorAssignment1);
         existingRoleAssignments.add(existingRequesterAssignment1);
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
         // facts must contain the request
         executeDroolRules(existingRoleAssignments);
@@ -161,6 +182,9 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole2));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(), "tribunal-caseworker"),
                                   buildExistingRoleForIAC(requestedRole2.getActorId(),
@@ -180,6 +204,9 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(), "tribunal-caseworker"),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
@@ -308,6 +335,9 @@ class StaffCategoryCaseTest extends DroolBase {
         requestedRole1.setBeginTime(timeStamp.plusDays(1));
         requestedRole1.setEndTime(timeStamp.plusDays(100));
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
@@ -324,6 +354,9 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
@@ -417,6 +450,50 @@ class StaffCategoryCaseTest extends DroolBase {
         });
     }
 
+    @Test
+    void shouldApprovedCaseValidationForTCW_RequesterSTCW_Version1_1() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS,
+                                                             "tribunal-caseworker",
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "senior-tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "tribunal-caseworker")));
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.APPROVED, roleAssignment.getStatus());
+        });
+    }
+
+    @Test
+    void shouldDeleteApprovedRequestedRoleForCase_V1_1() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS,
+                                                             "tribunal-caseworker",
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", DELETE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.getIAC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker"),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker")));
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus());
+        });
+    }
+
     private void executeDroolRules(List<ExistingRoleAssignment> existingRoleAssignments) {
         // facts must contain all affected role assignments
         facts.addAll(assignmentRequest.getRequestedRoles());
@@ -426,6 +503,8 @@ class StaffCategoryCaseTest extends DroolBase {
 
         // facts must contain the request
         facts.add(assignmentRequest.getRequest());
+
+        facts.addAll(featureFlags);
 
         // Run the rules
         kieSession.execute(facts);

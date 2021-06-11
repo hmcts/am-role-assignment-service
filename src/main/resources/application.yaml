@@ -39,6 +39,7 @@ security:
     - "/"
     - "/health/**"
     - "/loggers/**"
+    - "/am/role-assignments/fetchFlagStatus"
     - "/swagger-ui.html"
     - "/swagger-resources/**"
     - "/v2/api-docs"
@@ -132,7 +133,7 @@ feign:
       default:
         connectTimeout: 30000
         readTimeout: 30000
-        loggerLevel: basic
+        loggerLevel: BASIC
       datastoreclient:
         url: ${CCD_DATA_STORE_URL:http://localhost:4452}
   hystrix:
@@ -152,8 +153,6 @@ audit:
       statues: 404
     enabled: true
 
-
-
 roleassignment:
    query:
      size: 20
@@ -162,5 +161,9 @@ org :
   request:
     byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:true}
 
-
 logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:INFO}
+
+dbFeature:
+  flags:
+    enable: ${DB_FEATURE_FLAG_ENABLE:iac_1_0}
+    disable: ${DB_FEATURE_FLAG_DISABLE:iac_1_1}

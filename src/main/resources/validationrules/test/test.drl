@@ -6,6 +6,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigPattern;
 import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
+import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 
 rule "request"
 salience 1000
@@ -56,4 +57,11 @@ then
 	logMsg("We have a pattern for " + $p.getRoleName() + " : " + $p);
 end;
 
+rule "flag_config"
+salience 1000
+when
+	$f:  FeatureFlag()
+then
+	logMsg("We have a feature flag for " + $f.getFlagName() + " : " + $f);
+end;
 

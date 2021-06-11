@@ -3,11 +3,13 @@ package uk.gov.hmcts.reform.roleassignment.util;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
+import uk.gov.hmcts.reform.roleassignment.data.FlagConfig;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.FlagRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
@@ -199,6 +201,15 @@ public class PersistenceUtil {
                 .getAuthorisations().length != 0
                                 ? Arrays.asList(roleAssignmentEntity.getAuthorisations()) :
                                 null)
+            .build();
+    }
+
+    public FlagConfig convertFlagRequestToFlagConfig(FlagRequest flagRequest) {
+        return FlagConfig.builder()
+            .flagName(flagRequest.getFlagName())
+            .env(flagRequest.getEnv())
+            .serviceName(flagRequest.getServiceName())
+            .status(flagRequest.getStatus())
             .build();
     }
 }
