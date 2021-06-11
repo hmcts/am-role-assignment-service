@@ -162,7 +162,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         mockHistoryEntity();
         ResponseEntity<?> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
-        assertEquals(assignment.getStatus(), DELETE_REQUESTED);
+        assertEquals(DELETE_REQUESTED, assignment.getStatus());
         verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
     }
 

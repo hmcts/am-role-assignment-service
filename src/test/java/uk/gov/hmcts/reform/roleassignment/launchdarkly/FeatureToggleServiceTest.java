@@ -30,28 +30,28 @@ class FeatureToggleServiceTest {
     FeatureToggleService featureToggleService = new FeatureToggleService(ldClient, "user");
 
     @Test
-    public void evaluateLdFlag() {
+    void evaluateLdFlag() {
         when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(true);
         featureToggleService = new FeatureToggleService(ldClient, "user");
         Assertions.assertTrue(featureToggleService.isFlagEnabled("serviceName", "userName"));
     }
 
     @Test
-    public void evaluateLdFlagFalse() {
+    void evaluateLdFlagFalse() {
         when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(false);
         featureToggleService = new FeatureToggleService(ldClient, "user");
         Assertions.assertFalse(featureToggleService.isFlagEnabled("serviceName", "userName"));
     }
 
     @Test
-    public void isValidFlag() {
+    void isValidFlag() {
         when(ldClient.isFlagKnown(any())).thenReturn(true);
         featureToggleService = new FeatureToggleService(ldClient, "user");
         Assertions.assertTrue(featureToggleService.isValidFlag("serviceName"));
     }
 
     @Test
-    public void isValidFlagReturnsFalse() {
+    void isValidFlagReturnsFalse() {
         when(ldClient.isFlagKnown(any())).thenReturn(false);
         featureToggleService = new FeatureToggleService(ldClient, "user");
         Assertions.assertFalse(featureToggleService.isValidFlag("serviceName"));
@@ -102,7 +102,7 @@ class FeatureToggleServiceTest {
     @CsvSource({
         "/am/role-assignments/,DELETE,delete-role-assignments-by-id",
     })
-    public void getLdFlagDeleteStringContainsCase() {
+    void getLdFlagDeleteStringContainsCase() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/");
         when(request.getMethod()).thenReturn("DELETE");
         featureToggleService = new FeatureToggleService(ldClient, "user");
