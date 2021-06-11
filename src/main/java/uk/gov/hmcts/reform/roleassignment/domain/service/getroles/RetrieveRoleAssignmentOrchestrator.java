@@ -13,7 +13,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceServi
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
-import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
 import java.io.IOException;
 import java.io.InputStream;
