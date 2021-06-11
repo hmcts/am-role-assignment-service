@@ -55,6 +55,8 @@ public class AuditAspectTest {
     @Test
     public void shouldThrowExceptionOnInvalidMethod() {
         controllerProxy.retrieveRoleAssignmentByActorId_invalidMethod(ACTOR_ID, ROLE_NAME);
+        AuditContext context = AuditContextHolder.getAuditContext();
+        assertThat(context).isNotNull();
     }
 
     @Test

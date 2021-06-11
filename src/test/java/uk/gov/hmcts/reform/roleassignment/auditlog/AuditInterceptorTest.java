@@ -66,7 +66,7 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
         //assertThat(auditContext.getRequestId()).isEqualTo(REQUEST_ID);
-        assertThat(auditContextSpy.getRequestPayload()).isEqualTo("");
+        assertThat(auditContextSpy.getRequestPayload()).isEmpty();;
         assertThat(AuditContextHolder.getAuditContext()).isNull();
         Mockito.verify(auditContextSpy, times(1)).setRequestPayload(any());
         verify(auditService).audit(auditContextSpy);
