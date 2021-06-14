@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -56,6 +57,14 @@ public class AuditLoggerUtilTest {
         List<UUID> assignmentIds = AuditLoggerUtil.buildAssignmentIds(responseEntity);
         assertNotNull(assignmentIds);
         assertThat(assignmentIds).isEqualTo(expectedIds);
+    }
+
+    @Test
+    public void checkAddLinks() {
+        roleAssignmentRequestResource = Mockito.mock(RoleAssignmentRequestResource.class);
+        roleAssignmentRequestResource.addLinks(assignmentRequest.getRequest().getId());
+        Mockito.verify(roleAssignmentRequestResource, Mockito.times(1))
+            .addLinks(assignmentRequest.getRequest().getId());
     }
 
     @Test
