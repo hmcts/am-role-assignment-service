@@ -131,7 +131,7 @@ feign:
       default:
         connectTimeout: 30000
         readTimeout: 30000
-        loggerLevel: basic
+        loggerLevel: BASIC
       datastoreclient:
         url: ${CCD_DATA_STORE_URL:http://localhost:4452}
   hystrix:
@@ -142,7 +142,7 @@ roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
 launchdarkly:
   sdk:
     key: ${LD_SDK_KEY:}
-    environment: pr
+    environment: ${LAUNCH_DARKLY_ENV:pr}
     user: am-${LAUNCH_DARKLY_ENV:local}
 
 audit:
@@ -150,8 +150,6 @@ audit:
     ignore:
       statues: 404
     enabled: true
-
-
 
 roleassignment:
    query:
@@ -161,8 +159,8 @@ org :
   request:
     byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:true}
 
+logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:INFO}
 
-logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:DEBUG}
 dbFeature:
   flags:
     enable: ${DB_FEATURE_FLAG_ENABLE:iac_1_0}
