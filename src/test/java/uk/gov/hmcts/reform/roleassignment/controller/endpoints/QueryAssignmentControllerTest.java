@@ -9,6 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequests;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
@@ -113,6 +114,87 @@ class QueryAssignmentControllerTest {
             "id",
             "asc",
             queryRequest
+        );
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+    }
+
+    @Test
+    void shouldPostRoleAssignmentQueryByRequests() throws Exception {
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .build();
+        QueryRequests queryRequests  =  QueryRequests.builder()
+            .queryRequests(Arrays.asList(queryRequest))
+            .build();
+
+        ResponseEntity<RoleAssignmentResource> expectedResponse
+            = TestDataBuilder.buildResourceRoleAssignmentResponse(Status.LIVE);
+        doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
+            .retrieveRoleAssignmentsByMultipleQueryRequest(queryRequests, 0, 20, "id", "desc");
+        ResponseEntity<RoleAssignmentResource> response = sut
+            .retrieveRoleAssignmentsByQueryRequestV2("", 0, 20, "id", "desc", queryRequests);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResponse.getBody(), response.getBody());
+    }
+
+    @Test
+    void shouldReturnBadRequestForInvalidRequestForV2() {
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .build();
+        QueryRequests queryRequests  =  QueryRequests.builder()
+            .queryRequests(Arrays.asList(queryRequest))
+            .build();
+        ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
+            .retrieveRoleAssignmentsByMultipleQueryRequest(queryRequests, 0, 20, "roleType", "desc");
+
+        ResponseEntity<RoleAssignmentResource> response = sut.retrieveRoleAssignmentsByQueryRequestV2(
+            "",
+            0,
+            20,
+            "roleType",
+            "desc",
+            queryRequests
+        );
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+    }
+
+    @Test
+    void shouldReturnEmptyResultIfNoRecordsFoundForV2() {
+        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .roleType(roleType)
+            .build();
+        QueryRequests queryRequests  =  QueryRequests.builder()
+            .queryRequests(Arrays.asList(queryRequest))
+            .build();
+        ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
+            .retrieveRoleAssignmentsByMultipleQueryRequest(queryRequests, 0, 20, "id", "asc");
+
+        ResponseEntity<RoleAssignmentResource> response = sut.retrieveRoleAssignmentsByQueryRequestV2(
+            "",
+            0,
+            20,
+            "id",
+            "asc",
+            queryRequests
         );
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 

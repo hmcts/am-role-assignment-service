@@ -30,6 +30,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequests;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -739,6 +740,125 @@ class PersistenceServiceTest {
         when(flagConfigRepository.save(flagConfig)).thenReturn(flagConfig);
         FlagConfig flagConfigEntity = sut.persistFlagConfig(flagConfig);
         assertNotNull(flagConfigEntity);
+
+    }
+
+    @Test
+    void postRoleAssignmentsByOneQueryRequest() throws IOException {
+
+
+        List<RoleAssignmentEntity> tasks = new ArrayList<>();
+        tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
+
+        Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
+
+
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleType)
+            .build();
+
+        QueryRequests queryRequests  =  QueryRequests.builder()
+            .queryRequests(Arrays.asList(queryRequest))
+            .build();
+
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
+            Pageable.class);
+
+        Specification<RoleAssignmentEntity> spec = Specification.where(any());
+        Pageable pageableCapture = pageableCaptor.capture();
+
+        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        ))
+            .thenReturn(page);
+
+
+        when(mockSpec.toPredicate(root, query, builder)).thenReturn(predicate);
+
+
+        when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
+            .thenReturn(TestDataBuilder.buildRoleAssignment(LIVE));
+
+        List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByMultipleQueryRequest(queryRequests,
+                                                                                                          1,
+                                                                                                  1, "id",
+                                                                                                  "desc",
+                                                                                            false
+        );
+        assertNotNull(roleAssignmentList);
+        assertFalse(roleAssignmentList.isEmpty());
+        assertFalse(roleAssignmentList.contains(null));
+        verify(persistenceUtil, times(1))
+            .convertEntityToRoleAssignment(page.iterator().next());
+
+    }
+
+
+    @Test
+    void postRoleAssignmentsByMultipleQueryRequest() throws IOException {
+
+
+        List<RoleAssignmentEntity> tasks = new ArrayList<>();
+        tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
+
+        Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
+
+
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+
+        String roleName = "senior-tribunal-caseworker";
+
+        QueryRequest queryRequest1 = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleType)
+            .build();
+        QueryRequest queryRequest2 = QueryRequest.builder()
+            .roleName(roleName)
+            .build();
+
+        QueryRequests queryRequests  =  QueryRequests.builder()
+            .queryRequests(Arrays.asList(queryRequest1,queryRequest2))
+            .build();
+
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
+            Pageable.class);
+
+        Specification<RoleAssignmentEntity> spec = Specification.where(any());
+        Pageable pageableCapture = pageableCaptor.capture();
+
+        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        ))
+            .thenReturn(page);
+
+
+        when(mockSpec.toPredicate(root, query, builder)).thenReturn(predicate);
+
+
+        when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
+            .thenReturn(TestDataBuilder.buildRoleAssignment(LIVE));
+
+        List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByMultipleQueryRequest(queryRequests,
+                                                                                                          1,
+                                                                                                          1,
+                                                                                                          "id",
+                                                                                             "desc",
+                                                                                                          false
+        );
+        assertNotNull(roleAssignmentList);
+        assertFalse(roleAssignmentList.isEmpty());
+        assertFalse(roleAssignmentList.contains(null));
+        verify(persistenceUtil, times(1))
+            .convertEntityToRoleAssignment(page.iterator().next());
 
     }
 }
