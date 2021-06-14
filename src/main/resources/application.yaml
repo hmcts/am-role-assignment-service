@@ -142,7 +142,7 @@ roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
 launchdarkly:
   sdk:
     key: ${LD_SDK_KEY:}
-    environment: ${LAUNCH_DARKLY_ENV:pr}
+    environment: pr
     user: am-${LAUNCH_DARKLY_ENV:local}
 
 audit:
@@ -162,7 +162,7 @@ org :
     byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:true}
 
 
-logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:INFO}
+logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:DEBUG}
 dbFeature:
   flags:
     enable: ${DB_FEATURE_FLAG_ENABLE:iac_1_0}
