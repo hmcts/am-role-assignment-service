@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -65,14 +67,52 @@ class ValidationModelServiceTest {
 
     @Test
     void validateRequest() throws IOException {
-
+        ReflectionTestUtils.setField(sut,"environment", "prod");
         assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
-        ReflectionTestUtils.setField(sut, "environment", "pr");
+        AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
+        sut.validateRequest(assignmentRequestSpy);
 
-        sut.validateRequest(assignmentRequest);
+        Mockito.verify(assignmentRequestSpy, times(6)).getRequest();
+        Mockito.verify(assignmentRequestSpy, times(2)).getRequestedRoles();
 
         Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
+    }
+
+    @Test
+    void validateRequest_withEmptyRoles() throws IOException {
+        ReflectionTestUtils.setField(sut,"environment", "prod");
+        assignmentRequest = TestDataBuilder
+            .buildAssignmentRequest(Status.CREATED, LIVE, false);
+        assignmentRequest.setRequestedRoles(Collections.emptyList());
+        AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
+        sut.validateRequest(assignmentRequestSpy);
+
+        Mockito.verify(assignmentRequestSpy, times(6)).getRequest();
+        Mockito.verify(assignmentRequestSpy, times(2)).getRequestedRoles();
+
+        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
+        Mockito.verify(kieSessionMock, times(1)).setGlobal(any(), any());
+    }
+
+    @Test
+    void validateRequest_Scenario_withPrEnv() throws IOException {
+        ReflectionTestUtils.setField(sut,"environment", "pr");
+        assignmentRequest = TestDataBuilder.buildEmptyAssignmentRequest(LIVE);
+        AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
+
+        sut.validateRequest(assignmentRequestSpy);
+        Mockito.verify(assignmentRequestSpy, times(4)).getRequest();
+        Mockito.verify(assignmentRequestSpy, times(1)).getRequestedRoles();
+        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
+    }
+
+    @Test
+    void validateRequest_Scenario_withoutEnv() throws IOException {
+        assignmentRequest = TestDataBuilder.buildEmptyAssignmentRequest(LIVE);
+        AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
+
+        assertThrows(NullPointerException.class, () -> sut.validateRequest(assignmentRequestSpy));
     }
 
     @Test
