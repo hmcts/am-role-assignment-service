@@ -5,6 +5,7 @@ buildscript {
   dependencies {
     classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.12")
     classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
+    classpath 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.3'
   }
 }
 
@@ -363,6 +364,8 @@ dependencies {
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.19'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   implementation 'commons-io:commons-io:2.8.0'
+
+  implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.12.3'
 
   testImplementation('com.opentable.components:otj-pg-embedded:0.13.3')
   testImplementation('com.github.tomakehurst:wiremock-jre8:2.25.1')

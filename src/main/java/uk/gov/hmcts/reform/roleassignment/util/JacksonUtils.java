@@ -54,11 +54,13 @@ public class JacksonUtils {
 
 
     public static Map<String, JsonNode> convertValue(Object from) {
+        MAPPER.findAndRegisterModules();
         return MAPPER.convertValue(from, new TypeReference<HashMap<String, JsonNode>>() {
         });
     }
 
     public static JsonNode convertValueJsonNode(Object from) {
+        MAPPER.findAndRegisterModules();
         return MAPPER.convertValue(from, JsonNode.class);
     }
 
