@@ -69,6 +69,10 @@ public class TestDataBuilder {
                                      buildRequestedRoleCollection(roleStatus));
     }
 
+    public static AssignmentRequest buildEmptyAssignmentRequest(Status roleStatus) throws IOException {
+        return new AssignmentRequest(Request.builder().build(),  buildRequestedRoleCollection(roleStatus));
+    }
+
     public static Request buildRequest(Status status, Boolean replaceExisting) {
         return Request.builder()
             .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))

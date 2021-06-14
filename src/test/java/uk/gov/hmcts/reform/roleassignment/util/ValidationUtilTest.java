@@ -242,6 +242,7 @@ class ValidationUtilTest {
     void shouldValidateAssignmentRequest_ReplaceExistingAndRoles() throws IOException, ParseException {
         final AssignmentRequest request =
             TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,true);
+        request.getRequestedRoles().iterator().next().setEndTime(null);
         assertTrue(request.getRequest().isReplaceExisting());
         assertFalse(request.getRequestedRoles().isEmpty());
         Assertions.assertDoesNotThrow(() ->

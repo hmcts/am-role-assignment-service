@@ -1,12 +1,15 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import com.github.benmanes.caffeine.cache.Cache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCache;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreApi;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
@@ -14,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -28,6 +32,11 @@ class RetrieveDataServiceTest {
     private CacheManager cacheManager = mock(CacheManager.class);
 
     private CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
+
+    private final CaffeineCache caffeineCache = mock(CaffeineCache.class);
+
+    @Mock
+    Cache<Object, Object> nativeCache;
 
     private com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
 
@@ -88,5 +97,21 @@ class RetrieveDataServiceTest {
         verify(caffeineCacheMock, times(0)).getNativeCache();
         verify(cache, times(0)).estimatedSize();
 
+    }
+
+    @Test
+    void getCaseById_withValidCache() {
+        ReflectionTestUtils.setField(sut, "cacheType", "caseId");
+        doReturn(caffeineCache).when(cacheManager).getCache(anyString());
+        when(caffeineCache.getNativeCache()).thenReturn(nativeCache);
+        when(dataStoreApi.getCaseDataV2("1234")).thenReturn(TestDataBuilder.buildCase());
+        assertNotNull(sut.getCaseById("1234"));
+    }
+
+    @Test
+    void getCaseById_withInValidCache() {
+        ReflectionTestUtils.setField(sut, "cacheType", "none");
+        when(dataStoreApi.getCaseDataV2("1234")).thenReturn(TestDataBuilder.buildCase());
+        assertNotNull(sut.getCaseById("1234"));
     }
 }
