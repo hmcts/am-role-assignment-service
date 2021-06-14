@@ -218,7 +218,9 @@ pitest {
                      'uk.gov.hmcts.reform.roleassignment.config.*',
                      'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot',
                      'uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest',
-                     'uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType']
+                     'uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType',
+                     'uk.gov.hmcts.reform.roleassignment.data.*',
+                     'uk.gov.hmcts.reform.roleassignment.domain.model.*']
   excludedMethods = ['getListOfRoles', 'removeCorrelationLog', 'getExitCode', 'validateDateTime', 'requestInterceptor']
   threads = 15
   outputFormats = ['XML', 'HTML']
@@ -244,7 +246,9 @@ sonarqube {
       "**/SwaggerConfiguration.java," +
       "**/MutableHttpServletRequest.java," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/*Application.java," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/config/**"
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/config/**," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/data/**," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/domain/model/**"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.junit.repoGetAssignmentControllerrtPaths", "${project.buildDir}/test-results/junit-platform"

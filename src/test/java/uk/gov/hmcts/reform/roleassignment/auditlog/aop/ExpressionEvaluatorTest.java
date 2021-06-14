@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.expression.AnnotatedElementKey;
 import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.TypedValue;
 import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.util.ReflectionUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -12,6 +13,7 @@ import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -30,7 +32,7 @@ public class ExpressionEvaluatorTest {
         Method method = ReflectionUtils.findMethod(EvaluateMethods.class, "evaluate", String.class, Boolean.class);
         EvaluationContext context = evaluator.createEvaluationContext(this, EvaluateMethods.class, method, new Object[]{
             "test", true});
-
+        assertNotNull(((TypedValue)context.getRootObject()).getValue());
         assertThat(context.lookupVariable("a0")).isEqualTo("test");
         assertThat(context.lookupVariable("p0")).isEqualTo("test");
         assertThat(context.lookupVariable("foo")).isEqualTo("test");

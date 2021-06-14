@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -155,18 +157,15 @@ class CreateRoleAssignmentOrchestratorTest {
 
     @Test
     void createRoleAssignment_ReplaceTrue_RejectRoleRequests() throws Exception {
-        assignmentRequest = TestDataBuilder.buildAssignmentRequest(REJECTED, Status.LIVE,
-                                                                   false
-        );
+        assignmentRequest = Mockito.spy(TestDataBuilder.buildAssignmentRequest(REJECTED, Status.LIVE,
+                                                                           false
+        ));
         assignmentRequest.getRequest().setReplaceExisting(true);
         requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
 
 
         historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
-
-        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
-            .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class))).thenReturn(
             assignmentRequest);
@@ -188,6 +187,9 @@ class CreateRoleAssignmentOrchestratorTest {
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         assertEquals(REJECTED, result.getRequest().getStatus());
         assertEquals(assignmentRequest.getRequest(), result.getRequest());
+        verify(assignmentRequest, times(1)).setRequestedRoles(any());
+        verify(parseRequestService, times(1))
+            .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(parseRequestService, times(1))
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
@@ -196,6 +198,28 @@ class CreateRoleAssignmentOrchestratorTest {
             .getAssignmentsByProcess(anyString(), anyString(), anyString());
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
+    }
+
+    @Test
+    void createRoleAssignment_ReplaceTrue_ParseRequestException() throws Exception {
+        assignmentRequest = TestDataBuilder.buildAssignmentRequest(REJECTED, Status.LIVE, false);
+        assignmentRequest.getRequest().setReplaceExisting(true);
+        requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
+
+        historyEntity = TestDataBuilder.buildHistoryIntoEntity(
+            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
+
+        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
+            .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
+
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
+            .thenThrow(mock(ParseException.class));
+
+        //actual method call
+        assertThrows(ParseException.class, () -> {
+            sut.createRoleAssignment(assignmentRequest);
+        });
+
     }
 
     @Test
@@ -511,6 +535,7 @@ class CreateRoleAssignmentOrchestratorTest {
     @Test
     void createRoleAssignment_NeedToRetainOnly() throws Exception {
         prepareRequestWhenReplaceExistingTrue();
+        assignmentRequest = Mockito.spy(assignmentRequest);
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> roleAssignment
             .setAuthorisations(Arrays.asList("dev")));
 
@@ -558,8 +583,9 @@ class CreateRoleAssignmentOrchestratorTest {
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
         AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
-
         //assert values
+        verify(assignmentRequest, times(3)).setRequestedRoles(any());
+        assertEquals(result.getRequestedRoles(), assignmentRequest.getRequestedRoles());
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(parseRequestService, times(1))
