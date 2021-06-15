@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.reform.roleassignment.data.FlagConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FlagRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
@@ -36,7 +35,7 @@ public class FeatureFlagController {
     )
     public ResponseEntity<Object> createFeatureFlag(@RequestBody() FlagRequest flagRequest) {
 
-        FlagConfig flagConfig = persistenceUtil.convertFlagRequestToFlagConfig(flagRequest);
+        var flagConfig = persistenceUtil.convertFlagRequestToFlagConfig(flagRequest);
         return ResponseEntity.ok(persistenceService.persistFlagConfig(flagConfig));
 
     }

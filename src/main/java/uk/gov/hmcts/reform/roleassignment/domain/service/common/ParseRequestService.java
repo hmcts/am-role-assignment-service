@@ -23,7 +23,6 @@ import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -49,7 +48,7 @@ public class ParseRequestService {
         throws ParseException {
         long startTime = System.currentTimeMillis();
         logger.debug("parseRequest execution started at {}", startTime);
-        Request request = assignmentRequest.getRequest();
+        var request = assignmentRequest.getRequest();
         request.setByPassOrgDroolRule(byPassOrgDroolRule);
         ValidationUtil.validateAssignmentRequest(assignmentRequest);
 
@@ -77,7 +76,7 @@ public class ParseRequestService {
             requestedAssignment.setCreated(ZonedDateTime.now(ZoneOffset.UTC));
         });
         requestedAssignments.sort(new CreatedTimeComparator());
-        AssignmentRequest parsedRequest = new AssignmentRequest(new Request(), Collections.emptyList());
+        var parsedRequest = new AssignmentRequest(new Request(), Collections.emptyList());
         parsedRequest.setRequest(request);
         parsedRequest.setRequestedRoles(requestedAssignments);
         logger.debug(
@@ -89,14 +88,14 @@ public class ParseRequestService {
     }
 
     private void setCorrelationId(Request request) {
-        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
+        var httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
             .currentRequestAttributes())
             .getRequest();
         request.setCorrelationId(correlationInterceptorUtil.preHandle(httpServletRequest));
     }
 
     public String getRequestCorrelationId() {
-        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
+        var httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
             .currentRequestAttributes())
             .getRequest();
         return correlationInterceptorUtil.preHandle(httpServletRequest);
@@ -111,7 +110,7 @@ public class ParseRequestService {
             ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, actorId);
         }
 
-        Request request = Request.builder()
+        var request = Request.builder()
             .clientId(securityUtils.getServiceName())
             .authenticatedUserId(securityUtils.getUserId())
             .status(Status.CREATED)
@@ -132,7 +131,7 @@ public class ParseRequestService {
     }
 
     private void setAssignerId(Request request) {
-        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
+        var httpServletRequest = ((ServletRequestAttributes) RequestContextHolder
             .currentRequestAttributes())
             .getRequest();
         String assignerId = httpServletRequest.getHeader("assignerId");
