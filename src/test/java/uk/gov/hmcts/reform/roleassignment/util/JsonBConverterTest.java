@@ -11,6 +11,7 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @RunWith(MockitoJUnitRunner.class)
 class JsonBConverterTest {
@@ -39,6 +40,26 @@ class JsonBConverterTest {
                                                            + "\":\"Access granted for 3 months\"}]");
 
         assertEquals(TestDataBuilder.buildNotesFromFile(), result);
+
+    }
+
+    @Test
+    void convertToNullEntityAttribute() throws IOException {
+        JsonNode result = sut.convertToEntityAttribute(null);
+
+        assertNull(result);
+
+    }
+
+    @Test
+    void convertWrongJsonToEntityAttribute() throws IOException {
+        JsonNode result = sut.convertToEntityAttribute("[{\"userId\":\"S-042\"\"time\":\"2020-01-01T00:00Z"
+                                                           + "\",\"comment\":\"Need Access to case number"
+                                                           + " 1234567890123456 for a year\"},{\"userId\":"
+                                                           + "\"HMCTS\",\"time\":\"2020-01-02T00:00Z\",\"comment"
+                                                           + "\":\"Access granted for 3 months\"}]");
+
+        assertNull(result);
 
     }
 }

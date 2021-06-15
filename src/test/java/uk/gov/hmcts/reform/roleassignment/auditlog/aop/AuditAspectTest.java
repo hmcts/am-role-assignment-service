@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,6 +52,28 @@ public class AuditAspectTest {
 
     }
 
+    @Test
+    public void shouldThrowExceptionOnInvalidMethod() {
+        controllerProxy.retrieveRoleAssignmentByActorId_invalidMethod(ACTOR_ID, ROLE_NAME);
+        AuditContext context = AuditContextHolder.getAuditContext();
+        assertThat(context).isNotNull();
+    }
+
+    @Test
+    public void unProcessableAuditContext() {
+        for (HttpStatus state: List.of(HttpStatus.UNPROCESSABLE_ENTITY, HttpStatus.CONFLICT)) {
+            ResponseEntity result = controllerProxy.responseProcessEntity(state, ACTOR_ID, ROLE_NAME);
+            assertThat(result).isNotNull();
+            assertThat(((RoleAssignment) result.getBody()).getRoleName()).isEqualTo(ROLE_NAME);
+        }
+    }
+
+    @Test
+    public void acceptProcessableAuditContext() {
+        ResponseEntity result = controllerProxy.responseProcessEntity(HttpStatus.ACCEPTED, ACTOR_ID, ROLE_NAME);
+        assertThat(result).isNotNull();
+        assertThat(((RoleAssignment)result.getBody()).getRoleName()).isEqualTo(ROLE_NAME);
+    }
 
     @Controller
     @SuppressWarnings("unused")
@@ -67,6 +90,11 @@ public class AuditAspectTest {
                 .roleName(roleName).build();
         }
 
+        @LogAudit(operationType = AuditOperationType.GET_ASSIGNMENTS_BY_ACTOR, actorId
+            = "#actorId", id = "#result.invalidMethod", roleName = "#roleName")
+        public void retrieveRoleAssignmentByActorId_invalidMethod(String actorId, String roleName) {
+        }
+
         @LogAudit(operationType = AuditOperationType.CREATE_ASSIGNMENTS,
             process = "#process",
             reference = "#reference",
@@ -75,19 +103,17 @@ public class AuditAspectTest {
             throw new RuntimeException("get RoleAssignment failed");
         }
 
-
         @LogAudit(operationType = AuditOperationType.CREATE_ASSIGNMENTS,
             process = "#process",
             reference = "#reference",
             actorId = "#actorId")
-        public ResponseEntity<?> unProcessEntity(String process, String reference, String actorId, String roleName) {
+        public ResponseEntity<?> responseProcessEntity(HttpStatus state, String actorId, String roleName) {
             RoleAssignment roleAssignment = RoleAssignment.builder()
                 .id(UUID.fromString(ID))
                 .roleName(roleName).build();
 
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(roleAssignment);
+            return ResponseEntity.status(state).body(roleAssignment);
         }
-
 
     }
 }
