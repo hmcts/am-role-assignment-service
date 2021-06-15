@@ -148,9 +148,9 @@ public class PersistenceUtil {
                 roleAssignmentEntity.getRoleCategory()) : null)
             .beginTime(roleAssignmentEntity.getBeginTime() != null ? roleAssignmentEntity.getBeginTime()
                 .atZone(ZoneId.of(
-                    "UTC")) : null)
-            .endTime(roleAssignmentEntity.getEndTime() != null ? roleAssignmentEntity.getEndTime().atZone(ZoneId.of(
                 "UTC")) : null)
+            .endTime(roleAssignmentEntity.getEndTime() != null ? roleAssignmentEntity.getEndTime().atZone(ZoneId.of(
+                "UTC"))  : null)
             .created(roleAssignmentEntity.getCreated().atZone(ZoneId.of("UTC")))
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
             .authorisations(roleAssignmentEntity.getAuthorisations() != null && roleAssignmentEntity
@@ -192,9 +192,9 @@ public class PersistenceUtil {
                 roleAssignmentEntity.getRoleCategory()) : null)
             .beginTime(roleAssignmentEntity.getBeginTime() != null ? roleAssignmentEntity.getBeginTime()
                 .atZone(ZoneId.of(
-                    "UTC")) : null)
+                "UTC"))  : null)
             .endTime(roleAssignmentEntity.getEndTime() != null ? roleAssignmentEntity.getEndTime().atZone(ZoneId.of(
-                "UTC")) : null)
+                "UTC"))  : null)
             .created(roleAssignmentEntity.getCreated().atZone(ZoneId.of("UTC")))
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
             .authorisations(roleAssignmentEntity.getAuthorisations() != null && roleAssignmentEntity
