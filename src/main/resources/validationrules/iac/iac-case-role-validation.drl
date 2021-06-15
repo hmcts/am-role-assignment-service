@@ -120,9 +120,9 @@ then
     $ra.setAttribute("jurisdiction", $c.getJurisdiction());
     $ra.setAttribute("caseType", $c.getCaseTypeId());
     $ra.setStatus(Status.CREATE_APPROVED);
-    $ra.log("Stage 1 approved : ia_caseworker_create_case_roles");
+    $ra.log("Stage 1 approved : ia_caseworker_create_case_roles_v11");
     update($ra);
-    logMsg("Rule : ia_caseworker_create_case_roles");
+    logMsg("Rule : ia_caseworker_create_case_roles_v11");
 end;
 
 /*
@@ -151,7 +151,7 @@ when
 
 then
     $ra.setStatus(Status.DELETE_APPROVED);
-    $ra.log("Delete approved : ia_caseworker_delete_case_roles");
+    $ra.log("Delete approved : ia_caseworker_delete_case_roles_v11");
     update($ra);
-    logMsg("Rule : ia_caseworker_delete_case_roles");
+    logMsg("Rule : ia_caseworker_delete_case_roles_v11");
 end;
