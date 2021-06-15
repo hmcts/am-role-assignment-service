@@ -24,7 +24,7 @@ public class AuditLoggerUtil {
 
     public static List<UUID> buildAssignmentIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
         if (response.getBody() instanceof RoleAssignmentRequestResource) {
-            RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+            var roleAssignmentRequestResource = response.getBody();
             if (roleAssignmentRequestResource != null) {
                 return roleAssignmentRequestResource.getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
                     .map(RoleAssignment::getId)
@@ -36,7 +36,7 @@ public class AuditLoggerUtil {
 
     public static List<String> buildActorIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
         if (response.getBody() instanceof RoleAssignmentRequestResource) {
-            RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+            var roleAssignmentRequestResource = response.getBody();
             if (roleAssignmentRequestResource != null) {
                 return roleAssignmentRequestResource.getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
                     .map(RoleAssignment::getActorId)
@@ -48,7 +48,7 @@ public class AuditLoggerUtil {
 
     public static List<String> buildRoleNames(final ResponseEntity<RoleAssignmentRequestResource> response) {
         if (response.getBody() instanceof RoleAssignmentRequestResource) {
-            RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+            var roleAssignmentRequestResource = response.getBody();
             if (roleAssignmentRequestResource != null) {
                 return roleAssignmentRequestResource.getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
                     .map(RoleAssignment::getRoleName)
@@ -61,7 +61,7 @@ public class AuditLoggerUtil {
     public static Set<String> buildCaseIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
         Set<String> caseIds = new HashSet<>();
         if (response.getBody() instanceof RoleAssignmentRequestResource) {
-            RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+            var roleAssignmentRequestResource = response.getBody();
             if (roleAssignmentRequestResource != null) {
                 roleAssignmentRequestResource.getRoleAssignmentRequest().getRequestedRoles()
                     .stream().map(RoleAssignment::getAttributes).forEach(obj -> obj.forEach((key, value) -> {
@@ -76,7 +76,7 @@ public class AuditLoggerUtil {
     }
 
     public static List<UUID> getAssignmentIds(final ResponseEntity<RoleAssignmentResource> response) {
-        RoleAssignmentResource roleAssignmentResource = response.getBody();
+        var roleAssignmentResource = response.getBody();
         if (roleAssignmentResource != null) {
             return roleAssignmentResource.getRoleAssignmentResponse().stream().limit(10)
                 .map(Assignment::getId)
@@ -86,7 +86,7 @@ public class AuditLoggerUtil {
     }
 
     public static List<String> getActorIds(final ResponseEntity<RoleAssignmentResource> response) {
-        RoleAssignmentResource roleAssignmentResource = response.getBody();
+        var roleAssignmentResource = response.getBody();
         if (roleAssignmentResource != null) {
             return roleAssignmentResource.getRoleAssignmentResponse().stream().limit(10)
                 .map(Assignment::getActorId)
@@ -96,7 +96,7 @@ public class AuditLoggerUtil {
     }
 
     public static List<UUID> searchAssignmentIds(final ResponseEntity<RoleAssignmentResource> response) {
-        RoleAssignmentResource roleAssignmentResource = response.getBody();
+        var roleAssignmentResource = response.getBody();
         if (roleAssignmentResource != null) {
             List<? extends Assignment> roleAssignmentResponse =  roleAssignmentResource.getRoleAssignmentResponse();
             return roleAssignmentResponse.stream().limit(10)
