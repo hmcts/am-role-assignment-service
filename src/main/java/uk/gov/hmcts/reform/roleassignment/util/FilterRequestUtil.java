@@ -27,7 +27,7 @@ public class FilterRequestUtil extends OncePerRequestFilter {
 
         final String correlationId = correlationInterceptorUtil.preHandle(request);
 
-        MutableHttpServletRequest mutableRequest = new MutableHttpServletRequest(request);
+        var mutableRequest = new MutableHttpServletRequest(request);
 
         String whiteList = Constants.UUID_PATTERN;
         boolean match = Pattern.matches(whiteList, correlationId);

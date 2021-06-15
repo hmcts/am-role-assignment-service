@@ -164,12 +164,12 @@ public class PersistenceUtil {
         UUID roleAssignmentId = roleAssignment.getId();
         UUID requestId = request.getId();
 
-        RequestEntity requestEntity = convertRequestToEntity(request);
+        var requestEntity = convertRequestToEntity(request);
         if (requestId != null) {
             requestEntity.setId(requestId);
         }
 
-        HistoryEntity historyEntity = convertRoleAssignmentToHistoryEntity(
+        var historyEntity = convertRoleAssignmentToHistoryEntity(
             roleAssignment,
             requestEntity
         );

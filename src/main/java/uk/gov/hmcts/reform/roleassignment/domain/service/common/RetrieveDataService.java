@@ -38,7 +38,7 @@ public class RetrieveDataService {
     @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 3))
     public Case getCaseById(String caseId) {
         if (Objects.nonNull(cacheType) && !cacheType.equals("none")) {
-            CaffeineCache caffeineCache = (CaffeineCache) cacheManager.getCache("caseId");
+            var caffeineCache = (CaffeineCache) cacheManager.getCache("caseId");
             com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache = requireNonNull(caffeineCache)
                 .getNativeCache();
             log.info("Retrieving case details, current size of cache: {}", nativeCache.estimatedSize());
