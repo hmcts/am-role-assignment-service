@@ -62,7 +62,7 @@ class FeatureToggleServiceTest {
         "/am/role-assignments/fetchFlagStatus,GET,get-db-drools-flag",
         "/am/role-assignments/createFeatureFlag,POST,get-db-drools-flag"
     })
-    void getLdFlagGetCase(String url, String method, String flag) {
+    void getLdFlagWithValidFlagMapEntries(String url, String method, String flag) {
         when(request.getRequestURI()).thenReturn(url);
         when(request.getMethod()).thenReturn(method);
         featureToggleService = new FeatureToggleService(ldClient, "user");
@@ -90,7 +90,7 @@ class FeatureToggleServiceTest {
         "POST",
         "INVALID",
     })
-    void getLdFlagCase1(String method) {
+    void getLdFlagWithNonExistingUriPath(String method) {
         when(request.getRequestURI()).thenReturn("/am/dummy");
         when(request.getMethod()).thenReturn(method);
         featureToggleService = new FeatureToggleService(ldClient, "user");
@@ -99,9 +99,6 @@ class FeatureToggleServiceTest {
     }
 
     @Test
-    @CsvSource({
-        "/am/role-assignments/,DELETE,delete-role-assignments-by-id",
-    })
     void getLdFlagDeleteStringContainsCase() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/");
         when(request.getMethod()).thenReturn("DELETE");
@@ -109,34 +106,4 @@ class FeatureToggleServiceTest {
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
         Assertions.assertNull(flagName);
     }
-
-    @ParameterizedTest
-    @CsvSource({
-        "/am/role-assignments/fetchFlagStatus,GET,get-db-drools-flag",
-        "/am/role-assignments/createFeatureFlag,POST,get-db-drools-flag",
-    })
-    void getLdFlagGetCase2(String url, String method, String flag) {
-        when(request.getRequestURI()).thenReturn(url);
-        when(request.getMethod()).thenReturn(method);
-        featureToggleService = new FeatureToggleService(ldClient, "user");
-        String flagName = featureToggleService.getLaunchDarklyFlag(request);
-        Assertions.assertEquals(flag, flagName);
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "GET",
-        "DELETE",
-        "POST",
-        "POST",
-        "INVALID",
-    })
-    void getLdFlagCase3(String method) {
-        when(request.getRequestURI()).thenReturn("/am/dummy");
-        when(request.getMethod()).thenReturn(method);
-        featureToggleService = new FeatureToggleService(ldClient, "user");
-        String flagName = featureToggleService.getLaunchDarklyFlag(request);
-        Assertions.assertNull(flagName);
-    }
-
 }
