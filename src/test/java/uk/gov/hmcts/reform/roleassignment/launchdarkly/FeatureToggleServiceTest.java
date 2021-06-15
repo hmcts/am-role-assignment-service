@@ -90,7 +90,7 @@ class FeatureToggleServiceTest {
         "POST",
         "INVALID",
     })
-    void getLdFlagCase(String method) {
+    void getLdFlagCase1(String method) {
         when(request.getRequestURI()).thenReturn("/am/dummy");
         when(request.getMethod()).thenReturn(method);
         featureToggleService = new FeatureToggleService(ldClient, "user");
@@ -115,7 +115,7 @@ class FeatureToggleServiceTest {
         "/am/role-assignments/fetchFlagStatus,GET,get-db-drools-flag",
         "/am/role-assignments/createFeatureFlag,POST,get-db-drools-flag",
     })
-    void getLdFlagGetCase(String url, String method, String flag) {
+    void getLdFlagGetCase2(String url, String method, String flag) {
         when(request.getRequestURI()).thenReturn(url);
         when(request.getMethod()).thenReturn(method);
         featureToggleService = new FeatureToggleService(ldClient, "user");
@@ -131,7 +131,7 @@ class FeatureToggleServiceTest {
         "POST",
         "INVALID",
     })
-    void getLdFlagCase(String method) {
+    void getLdFlagCase3(String method) {
         when(request.getRequestURI()).thenReturn("/am/dummy");
         when(request.getMethod()).thenReturn(method);
         featureToggleService = new FeatureToggleService(ldClient, "user");
