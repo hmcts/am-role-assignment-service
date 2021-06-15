@@ -73,7 +73,7 @@ public class CreateRoleAssignmentOrchestrator {
 
             //1. call parse request service
 
-            AssignmentRequest parsedAssignmentRequest = parseRequestService
+            var parsedAssignmentRequest = parseRequestService
                 .parseRequest(roleAssignmentRequest, RequestType.CREATE);
 
             //2. Call persistence service to store only the request

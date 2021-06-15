@@ -69,6 +69,10 @@ public class TestDataBuilder {
                                      buildRequestedRoleCollection(roleStatus));
     }
 
+    public static AssignmentRequest buildEmptyAssignmentRequest(Status roleStatus) throws IOException {
+        return new AssignmentRequest(Request.builder().build(),  buildRequestedRoleCollection(roleStatus));
+    }
+
     public static Request buildRequest(Status status, Boolean replaceExisting) {
         return Request.builder()
             .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
@@ -149,7 +153,7 @@ public class TestDataBuilder {
             .process(("process"))
             .statusSequence(10)
             .status(status)
-            .created(ZonedDateTime.now())
+            .created(timeStamp)
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile("attributes.json")))
             .notes(buildNotesFromFile())
             .authorisations(Collections.emptyList())
@@ -174,7 +178,7 @@ public class TestDataBuilder {
             .process(("new process"))
             .statusSequence(10)
             .status(status)
-            .created(ZonedDateTime.now())
+            .created(timeStamp)
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile("attributes.json")))
             .notes(buildNotesFromFile())
             .build();
@@ -369,7 +373,7 @@ public class TestDataBuilder {
             .roleCategory(RoleCategory.JUDICIAL.name())
             .readOnly(true)
             .beginTime(now().plusDays(1))
-            .endTime(now().plusMonths(1))
+            .endTime(now().plusMonths(2))
             .created(now())
             .attributes(buildAttributesFromFile("attributes.json"))
             .build();

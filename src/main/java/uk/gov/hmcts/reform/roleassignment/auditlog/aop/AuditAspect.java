@@ -10,13 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.expression.AnnotatedElementKey;
-import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,14 +65,14 @@ public class AuditAspect {
 
     private <T> T getValue(JoinPoint joinPoint, String condition, Object result, Class<T> returnType) {
         if (StringUtils.isNotBlank(condition) && !(result == null && condition.contains(RESULT_VARIABLE))) {
-            Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
+            var method = ((MethodSignature) joinPoint.getSignature()).getMethod();
             try {
-                EvaluationContext evaluationContext = evaluator.createEvaluationContext(joinPoint.getThis(),
+                var evaluationContext = evaluator.createEvaluationContext(joinPoint.getThis(),
                                                                                         joinPoint.getThis().getClass(),
                                                                                         method, joinPoint.getArgs()
                 );
                 evaluationContext.setVariable(RESULT_VARIABLE, result);
-                AnnotatedElementKey methodKey = new AnnotatedElementKey(method, joinPoint.getThis().getClass());
+                var methodKey = new AnnotatedElementKey(method, joinPoint.getThis().getClass());
                 return evaluator.condition(condition, methodKey, evaluationContext, returnType);
             } catch (SpelEvaluationException ex) {
                 LOG.warn("Error evaluating LogAudit annotation expression:{} on method:{}",

@@ -27,12 +27,11 @@ public class FeatureToggleService {
     private final String userName;
     private static final HashMap<String, String> getRequestMap = new HashMap<>();
     private static final HashMap<String, String> postRequestMap = new HashMap<>();
-    private static final HashMap<String, String> deleteRequestMap = new HashMap<>();
 
     static {
         //Any new end point need to be placed in respective map.
         getRequestMap.put("/am/role-assignments/fetchFlagStatus","get-db-drools-flag");
-        getRequestMap.put("/am/role-assignments/createFeatureFlag","get-db-drools-flag");
+        postRequestMap.put("/am/role-assignments/createFeatureFlag","get-db-drools-flag");
     }
 
     @Autowired
@@ -69,11 +68,7 @@ public class FeatureToggleService {
                 }
                 break;
             case DELETE:
-                if (deleteRequestMap.get(uri) != null) {
-                    return deleteRequestMap.get(uri);
-                }
                 break;
-
             default:
         }
         return null;
