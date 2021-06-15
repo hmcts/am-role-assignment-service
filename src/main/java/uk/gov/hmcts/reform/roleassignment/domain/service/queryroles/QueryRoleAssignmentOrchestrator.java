@@ -72,7 +72,7 @@ public class QueryRoleAssignmentOrchestrator {
      */
     private ResponseEntity<RoleAssignmentResource> prepareQueryResponse(long startTime,
                                                                         List<Assignment> assignmentList) {
-        HttpHeaders responseHeaders = new HttpHeaders();
+        var responseHeaders = new HttpHeaders();
         responseHeaders.add(
             "Total-Records",
             Long.toString(persistenceService.getTotalRecords())

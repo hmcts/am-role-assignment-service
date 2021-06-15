@@ -104,7 +104,7 @@ public class PersistenceService {
     public RequestEntity persistRequest(Request request) {
 
         //Prepare request entity
-        RequestEntity requestEntity = persistenceUtil.convertRequestToEntity(request);
+        var requestEntity = persistenceUtil.convertRequestToEntity(request);
 
 
         //Persist the request entity
@@ -138,7 +138,7 @@ public class PersistenceService {
     @Transactional
     public void persistActorCache(Collection<RoleAssignment> roleAssignments) {
         roleAssignments.forEach(roleAssignment -> {
-            ActorCacheEntity actorCacheEntity = persistenceUtil
+            var actorCacheEntity = persistenceUtil
                 .convertActorCacheToEntity(prepareActorCache(roleAssignment));
             ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
             if (existingActorCache != null) {
@@ -154,7 +154,7 @@ public class PersistenceService {
 
     @NotNull
     private ActorCache prepareActorCache(RoleAssignment roleAssignment) {
-        ActorCache actorCache = new ActorCache();
+        var actorCache = new ActorCache();
         actorCache.setActorId(roleAssignment.getActorId());
         return actorCache;
     }

@@ -21,7 +21,7 @@ public class CorrelationInterceptorUtil  {
     }
 
     private String getCorrelationIdFromHeader(final HttpServletRequest request) {
-        String correlationId = "";
+        var correlationId = "";
         if (StringUtils.isBlank(request.getHeader(Constants.CORRELATION_ID_HEADER_NAME))) {
             correlationId = generateUniqueCorrelationId();
         } else {
