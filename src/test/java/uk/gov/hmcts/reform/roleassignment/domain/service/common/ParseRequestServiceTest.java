@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -228,7 +229,8 @@ class ParseRequestServiceTest {
         assignmentRequest.getRequest().setCreated(null);
         assignmentRequest.getRequest().setRequestType(null);
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> roleAssignment.setCreated(null));
-        AssignmentRequest result = sut.parseRequest(assignmentRequest, requestType);
+        AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
+        AssignmentRequest result = sut.parseRequest(assignmentRequestSpy, requestType);
 
         sut.removeCorrelationLog();
 
@@ -240,6 +242,7 @@ class ParseRequestServiceTest {
         assertEquals(CREATED, result.getRequest().getStatus());
         assertEquals(requestType, result.getRequest().getRequestType());
         assertNotNull(result.getRequest().getRequestType());
+        assertFalse(result.getRequest().isByPassOrgDroolRule());
         assertNotNull(result.getRequest().getCreated());
         assertNotNull(result.getRequestedRoles());
         assertTrue(result.getRequestedRoles().size() > 1);
@@ -250,6 +253,7 @@ class ParseRequestServiceTest {
             assertEquals(Status.CREATE_REQUESTED, requestedRole.getStatus());
             assertNotNull(requestedRole.getCreated());
         });
+        verify(assignmentRequestSpy, times(3)).getRequestedRoles();
         verify(securityUtilsMock, times(1)).getServiceName();
         verify(securityUtilsMock, times(1)).getUserId();
         verify(correlationInterceptorUtilMock, times(1))
