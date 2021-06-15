@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,7 +41,8 @@ public abstract class Assignment {
     private String reference; //need to map from request
     private Integer statusSequence; //this will be populated from status entity. Need to extend status entity.
     private Status status; //this will be set by app default = created
-    private ZonedDateTime created; //this will be set by app
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private ZonedDateTime created;
     private String log; //this will be set app based on drool validation rule name on individual assignments.
     private Map<String, JsonNode> attributes;
     private JsonNode notes;
