@@ -69,7 +69,7 @@ public class GetAssignmentController {
         ResponseEntity<RoleAssignmentResource> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
             actorId
         );
-        HttpHeaders responseHeaders = new HttpHeaders();
+        var responseHeaders = new HttpHeaders();
         RoleAssignmentResource body = responseEntity.getBody();
 
         if (body != null && CollectionUtils.isNotEmpty(body.getRoleAssignmentResponse())) {

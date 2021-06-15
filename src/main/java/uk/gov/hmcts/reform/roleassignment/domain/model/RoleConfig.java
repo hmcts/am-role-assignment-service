@@ -8,11 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.type.CollectionType;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 @Slf4j
@@ -37,7 +35,7 @@ public class RoleConfig {
      */
     private static void setRoleNameAndCategory(RoleConfigRole role) {
         String roleName = role.getName();
-        RoleCategory roleCategory = role.getCategory();
+        var roleCategory = role.getCategory();
         role.getPatterns().forEach(
             p -> {
                 p.setRoleName(roleName);
@@ -47,7 +45,7 @@ public class RoleConfig {
 
     private static RoleConfig buildRoleConfig() {
         InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream("role.json");
-        CollectionType listType = JacksonUtils.MAPPER.getTypeFactory().constructCollectionType(
+        var listType = JacksonUtils.MAPPER.getTypeFactory().constructCollectionType(
             ArrayList.class,
             RoleConfigRole.class
         );
