@@ -1,8 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import com.launchdarkly.sdk.server.LDClient;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
@@ -24,7 +24,7 @@ class FeatureToggleServiceTest {
     LDClient ldClient = mock(LDClient.class);
 
     @Mock
-    HttpServletRequest request  = mock(HttpServletRequest.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
 
     @InjectMocks
     FeatureToggleService featureToggleService = new FeatureToggleService(ldClient, "user");
@@ -60,7 +60,7 @@ class FeatureToggleServiceTest {
     @ParameterizedTest
     @CsvSource({
         "/am/role-assignments/fetchFlagStatus,GET,get-db-drools-flag",
-        "/am/role-assignments/createFeatureFlag,GET,get-db-drools-flag"
+        "/am/role-assignments/createFeatureFlag,POST,get-db-drools-flag"
     })
     void getLdFlagGetCase(String url, String method, String flag) {
         when(request.getRequestURI()).thenReturn(url);
@@ -72,7 +72,7 @@ class FeatureToggleServiceTest {
 
     @ParameterizedTest
     @CsvSource({
-        "/am/role-assignments/createFeatureFlag,GET,get-db-drools-flag"
+        "/am/role-assignments/createFeatureFlag,POST,get-db-drools-flag"
     })
     void getLdFlagGet_RoleAssignmentCase(String url, String method, String flag) {
         when(request.getRequestURI()).thenReturn(url);
