@@ -82,7 +82,7 @@ public class PersistenceUtil {
             .classification(roleAssignment.getClassification() != null ? roleAssignment.getClassification()
                 .toString() : null)
             .beginTime(roleAssignment.getBeginTime() != null ? roleAssignment.getBeginTime() : null)
-            .endTime(roleAssignment.getEndTime() != null ? roleAssignment.getEndTime(): null)
+            .endTime(roleAssignment.getEndTime() != null ? roleAssignment.getEndTime() : null)
             .created(roleAssignment.getCreated())
             .grantType(roleAssignment.getGrantType() != null ? roleAssignment.getGrantType().toString() : null)
             .roleName(roleAssignment.getRoleName())
