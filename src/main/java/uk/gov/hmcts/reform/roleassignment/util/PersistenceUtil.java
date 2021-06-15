@@ -81,9 +81,9 @@ public class PersistenceUtil {
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
             .classification(roleAssignment.getClassification() != null ? roleAssignment.getClassification()
                 .toString() : null)
-            .beginTime(roleAssignment.getBeginTime() != null ? roleAssignment.getBeginTime() : null)
-            .endTime(roleAssignment.getEndTime() != null ? roleAssignment.getEndTime() : null)
-            .created(roleAssignment.getCreated())
+            .beginTime(roleAssignment.getBeginTime() != null ? roleAssignment.getBeginTime().toLocalDateTime() : null)
+            .endTime(roleAssignment.getEndTime() != null ? roleAssignment.getEndTime().toLocalDateTime() : null)
+            .created(roleAssignment.getCreated().toLocalDateTime())
             .grantType(roleAssignment.getGrantType() != null ? roleAssignment.getGrantType().toString() : null)
             .roleName(roleAssignment.getRoleName())
             .roleType(roleAssignment.getRoleType() != null ? roleAssignment.getRoleType().toString() : null)
@@ -146,9 +146,12 @@ public class PersistenceUtil {
             .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
             .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(
                 roleAssignmentEntity.getRoleCategory()) : null)
-            .beginTime(roleAssignmentEntity.getBeginTime() != null ? roleAssignmentEntity.getBeginTime() : null)
-            .endTime(roleAssignmentEntity.getEndTime() != null ? roleAssignmentEntity.getEndTime() : null)
-            .created(roleAssignmentEntity.getCreated())
+            .beginTime(roleAssignmentEntity.getBeginTime() != null ? roleAssignmentEntity.getBeginTime()
+                .atZone(ZoneId.of(
+                "UTC")) : null)
+            .endTime(roleAssignmentEntity.getEndTime() != null ? roleAssignmentEntity.getEndTime().atZone(ZoneId.of(
+                "UTC"))  : null)
+            .created(roleAssignmentEntity.getCreated().atZone(ZoneId.of("UTC")) )
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
             .authorisations(roleAssignmentEntity.getAuthorisations() != null && roleAssignmentEntity
                 .getAuthorisations().length != 0
@@ -187,9 +190,12 @@ public class PersistenceUtil {
             .roleType(RoleType.valueOf(roleAssignmentEntity.getRoleType()))
             .roleCategory(roleAssignmentEntity.getRoleCategory() != null ? RoleCategory.valueOf(
                 roleAssignmentEntity.getRoleCategory()) : null)
-            .beginTime(roleAssignmentEntity.getBeginTime() != null ? roleAssignmentEntity.getBeginTime() : null)
-            .endTime(roleAssignmentEntity.getEndTime() != null ? roleAssignmentEntity.getEndTime() : null)
-            .created(roleAssignmentEntity.getCreated())
+            .beginTime(roleAssignmentEntity.getBeginTime() != null ? roleAssignmentEntity.getBeginTime()
+                .atZone(ZoneId.of(
+                "UTC"))  : null)
+            .endTime(roleAssignmentEntity.getEndTime() != null ? roleAssignmentEntity.getEndTime().atZone(ZoneId.of(
+                "UTC"))  : null)
+            .created(roleAssignmentEntity.getCreated().atZone(ZoneId.of("UTC")) )
             .attributes(JacksonUtils.convertValue(roleAssignmentEntity.getAttributes()))
             .authorisations(roleAssignmentEntity.getAuthorisations() != null && roleAssignmentEntity
                 .getAuthorisations().length != 0

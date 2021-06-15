@@ -36,6 +36,7 @@ import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -311,10 +312,10 @@ public class TestDataBuilder {
             .actorId(model.getActorId())
             .actorIdType(model.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(model.getAttributes()))
-            .beginTime(model.getBeginTime())
+            .beginTime(model.getBeginTime().toLocalDateTime())
             .classification(model.getClassification().toString())
-            .endTime(model.getEndTime())
-            .created(model.getCreated())
+            .endTime(model.getEndTime().toLocalDateTime())
+            .created(model.getCreated().toLocalDateTime())
             .grantType(model.getGrantType().toString())
             .roleName(model.getRoleName())
             .roleType(model.getRoleType().toString())
@@ -368,9 +369,9 @@ public class TestDataBuilder {
             .grantType(GrantType.STANDARD.name())
             .roleCategory(RoleCategory.JUDICIAL.name())
             .readOnly(true)
-            .beginTime(ZonedDateTime.now().plusDays(1))
-            .endTime(ZonedDateTime.now().plusMonths(2))
-            .created(ZonedDateTime.now())
+            .beginTime(now().plusDays(1))
+            .endTime(now().plusMonths(2))
+            .created(now())
             .attributes(buildAttributesFromFile("attributes.json"))
             .build();
     }
@@ -418,10 +419,10 @@ public class TestDataBuilder {
             .actorId(roleAssignment.getActorId())
             .actorIdType(roleAssignment.getActorIdType().toString())
             .attributes(JacksonUtils.convertValueJsonNode(roleAssignment.getAttributes()))
-            .beginTime(roleAssignment.getBeginTime())
+            .beginTime(roleAssignment.getBeginTime().toLocalDateTime())
             .classification(roleAssignment.getClassification().toString())
-            .endTime(roleAssignment.getEndTime())
-            .created(roleAssignment.getCreated())
+            .endTime(roleAssignment.getEndTime().toLocalDateTime())
+            .created(roleAssignment.getCreated().toLocalDateTime())
             .grantType(roleAssignment.getGrantType().toString())
             .roleName(roleAssignment.getRoleName())
             .roleType(roleAssignment.getRoleType().toString())
