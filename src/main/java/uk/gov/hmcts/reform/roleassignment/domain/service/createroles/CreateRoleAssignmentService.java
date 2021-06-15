@@ -145,7 +145,7 @@ public class CreateRoleAssignmentService {
         long startTime = System.currentTimeMillis();
         logger.debug("rejectDeleteRequest execution started at {}", startTime);
 
-        Request request = parsedAssignmentRequest.getRequest();
+        var request = parsedAssignmentRequest.getRequest();
         //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
 
         insertRequestedRole(existingAssignmentRequest, Status.DELETE_REJECTED, rejectedAssignmentIds);
@@ -299,7 +299,7 @@ public class CreateRoleAssignmentService {
                     requestedAssignment.setLog("Create requested with replace: "
                                                    + assignmentRequest.getRequest().isReplaceExisting());
                 }
-                HistoryEntity entity = persistenceUtil.prepareHistoryEntityForPersistance(
+                var entity = persistenceUtil.prepareHistoryEntityForPersistance(
                     requestedAssignment,
                     assignmentRequest.getRequest()
                 );
@@ -476,7 +476,7 @@ public class CreateRoleAssignmentService {
         List<RoleAssignment> newRoleAssignments = new ArrayList<>();
 
         for (RoleAssignment roleAssignment : parsedAssignmentRequest.getRequestedRoles()) {
-            RoleAssignmentSubset roleAssignmentSubset = RoleAssignmentSubset.builder().build();
+            var roleAssignmentSubset = RoleAssignmentSubset.builder().build();
             BeanUtils.copyProperties(roleAssignmentSubset, roleAssignment);
 
             if (needToCreateRoleAssignments.contains(roleAssignmentSubset)) {
@@ -518,7 +518,7 @@ public class CreateRoleAssignmentService {
     @NotNull
     public AssignmentRequest retrieveExistingAssignments(AssignmentRequest parsedAssignmentRequest) {
 
-        Request request = parsedAssignmentRequest.getRequest();
+        var request = parsedAssignmentRequest.getRequest();
         List<RoleAssignment> existingAssignments = persistenceService.getAssignmentsByProcess(
             request.getProcess(),
             request.getReference(),

@@ -44,7 +44,7 @@ public class ValidationUtil {
                 strDate
             ));
         }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
+        var simpleDateFormat = new SimpleDateFormat(Constants.DATE_PATTERN);
         simpleDateFormat.setLenient(false);
         Date javaDate;
         try {
@@ -64,7 +64,7 @@ public class ValidationUtil {
     }
 
     public static void compareDateOrder(String beginTime, String endTime) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_PATTERN);
+        var sdf = new SimpleDateFormat(Constants.DATE_PATTERN);
         Date beginTimeP = sdf.parse(beginTime);
         Date endTimeP = sdf.parse(endTime);
 
@@ -95,7 +95,7 @@ public class ValidationUtil {
     }
 
     public static void compareRoleType(String roleType) {
-        boolean valid = false;
+        var valid = false;
         for (RoleType realRole : RoleType.values()) {
             if (realRole.name().equalsIgnoreCase(roleType)) {
                 valid = true;
