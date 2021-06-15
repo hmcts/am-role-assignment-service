@@ -51,7 +51,7 @@ public abstract class Assignment {
     }
 
     public void setAttribute(String key, String value) {
-        JsonNode valueNode = JacksonUtils.convertValueJsonNode(value);
+        var valueNode = JacksonUtils.convertValueJsonNode(value);
         attributes.put(key, valueNode);
     }
 }
