@@ -84,4 +84,15 @@ public class FeatureConditionEvaluationTest {
         );
     }
 
+    @Test
+    public void expectExceptionForFlagDiable() throws Exception {
+        when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint");
+        when(request.getMethod()).thenReturn("GET");
+        when(featureToggleService.getLaunchDarklyFlag(any())).thenReturn("get-ld-flag");
+        when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(false);
+        when(featureToggleService.isValidFlag(any())).thenReturn(true);
+        Assertions.assertThrows(ForbiddenException.class, () ->
+            featureConditionEvaluation.preHandle(request, response, object)
+        );
+    }
 }
