@@ -40,6 +40,6 @@ public class QueryRequest {
     @Singular("hasAttributes")
     private final List<String> hasAttributes;
 
-    private boolean readOnly;
+    private Boolean readOnly;
 
 }
