@@ -261,9 +261,9 @@ public class PersistenceService {
                                                                           boolean existingFlag) {
 
         long startTime = System.currentTimeMillis();
-        Specification<RoleAssignmentEntity> finalQuery = null;
+        Specification finalQuery = null;
         if (CollectionUtils.isNotEmpty(queryRequests.getQueryRequests())) {
-            Specification<RoleAssignmentEntity> initialQuery = Specification.where(
+            Specification initialQuery = Specification.where(
                 searchByActorIds(queryRequests.getQueryRequests().get(0).getActorId()))
                 .and(searchByGrantType(queryRequests.getQueryRequests().get(0).getGrantType()))
                 .and(searchByValidDate(queryRequests.getQueryRequests().get(0).getValidAt()))
@@ -274,13 +274,13 @@ public class PersistenceService {
                 .and(searchByRoleCategories(queryRequests.getQueryRequests().get(0).getRoleCategory()))
                 .and(searchByAuthorisations(queryRequests.getQueryRequests().get(0).getAuthorisations()))
                 .and(searchByHasAttributes(queryRequests.getQueryRequests().get(0).getHasAttributes()))
-                .and(searchByReadOnly(queryRequests.getQueryRequests().get(0).isReadOnly()));
+                .and(searchByReadOnly(queryRequests.getQueryRequests().get(0).getReadOnly()));
 
 
             if (queryRequests.getQueryRequests().size() > 1) {
-                for (var i = 1; i < queryRequests.getQueryRequests().size(); i++) {
-                    finalQuery = initialQuery.or(searchByRoleName(queryRequests.getQueryRequests().get(i)
-                                                                      .getRoleName())
+                for (int i = 1; i < queryRequests.getQueryRequests().size(); i++) {
+                    finalQuery = initialQuery.or(
+                            searchByRoleName(queryRequests.getQueryRequests().get(i).getRoleName())
                            .and(searchByHasAttributes(queryRequests.getQueryRequests().get(i).getHasAttributes()))
                            .and(searchByAuthorisations(queryRequests.getQueryRequests().get(i).getAuthorisations()))
                            .and(searchByActorIds(queryRequests.getQueryRequests().get(i).getActorId()))
@@ -290,7 +290,7 @@ public class PersistenceService {
                            .and(searchByRoleType(queryRequests.getQueryRequests().get(i).getRoleType()))
                            .and(searchByClassification(queryRequests.getQueryRequests().get(i).getClassification()))
                            .and(searchByRoleCategories(queryRequests.getQueryRequests().get(i).getRoleCategory()))
-                           .and(searchByReadOnly(queryRequests.getQueryRequests().get(i).isReadOnly())));
+                           .and(searchByReadOnly(queryRequests.getQueryRequests().get(i).getReadOnly())));
 
                 }
             } else {

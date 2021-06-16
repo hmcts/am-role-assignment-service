@@ -176,8 +176,12 @@ public final class RoleAssignmentEntitySpecifications {
 
     }
 
-    public static Specification<RoleAssignmentEntity> searchByReadOnly(boolean readOnly) {
+    public static Specification<RoleAssignmentEntity> searchByReadOnly(Boolean readOnly) {
 
+        if (readOnly == null) {
+            return null;
+
+        }
         return (root, query, builder) -> builder.equal(root.get("readOnly"),readOnly);
 
 
