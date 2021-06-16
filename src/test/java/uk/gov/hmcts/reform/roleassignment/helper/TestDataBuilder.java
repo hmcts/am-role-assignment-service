@@ -153,7 +153,7 @@ public class TestDataBuilder {
             .process(("process"))
             .statusSequence(10)
             .status(status)
-            .created(timeStamp)
+            .created(ZonedDateTime.now())
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile("attributes.json")))
             .notes(buildNotesFromFile())
             .authorisations(Collections.emptyList())
@@ -178,7 +178,7 @@ public class TestDataBuilder {
             .process(("new process"))
             .statusSequence(10)
             .status(status)
-            .created(timeStamp)
+            .created(ZonedDateTime.now())
             .attributes(JacksonUtils.convertValue(buildAttributesFromFile("attributes.json")))
             .notes(buildNotesFromFile())
             .build();
@@ -373,7 +373,7 @@ public class TestDataBuilder {
             .roleCategory(RoleCategory.JUDICIAL.name())
             .readOnly(true)
             .beginTime(now().plusDays(1))
-            .endTime(now().plusMonths(2))
+            .endTime(now().plusMonths(1))
             .created(now())
             .attributes(buildAttributesFromFile("attributes.json"))
             .build();
