@@ -261,9 +261,9 @@ public class PersistenceService {
                                                                           boolean existingFlag) {
 
         long startTime = System.currentTimeMillis();
-        Specification finalQuery = null;
+        Specification<RoleAssignmentEntity> finalQuery = null;
         if (CollectionUtils.isNotEmpty(queryRequests.getQueryRequests())) {
-            Specification initialQuery = Specification.where(
+            Specification<RoleAssignmentEntity> initialQuery = Specification.where(
                 searchByActorIds(queryRequests.getQueryRequests().get(0).getActorId()))
                 .and(searchByGrantType(queryRequests.getQueryRequests().get(0).getGrantType()))
                 .and(searchByValidDate(queryRequests.getQueryRequests().get(0).getValidAt()))
@@ -278,12 +278,12 @@ public class PersistenceService {
 
 
             if (queryRequests.getQueryRequests().size() > 1) {
-                for (int i = 1; i < queryRequests.getQueryRequests().size(); i++) {
+                for (var i = 1; i < queryRequests.getQueryRequests().size(); i++) {
                     finalQuery = initialQuery.or(
-                            searchByRoleName(queryRequests.getQueryRequests().get(i).getRoleName())
+                            searchByActorIds(queryRequests.getQueryRequests().get(i).getActorId())
+                           .and(searchByRoleName(queryRequests.getQueryRequests().get(i).getRoleName()))
                            .and(searchByHasAttributes(queryRequests.getQueryRequests().get(i).getHasAttributes()))
                            .and(searchByAuthorisations(queryRequests.getQueryRequests().get(i).getAuthorisations()))
-                           .and(searchByActorIds(queryRequests.getQueryRequests().get(i).getActorId()))
                            .and(searchByGrantType(queryRequests.getQueryRequests().get(i).getGrantType()))
                            .and(searchByValidDate(queryRequests.getQueryRequests().get(i).getValidAt()))
                            .and(searchByAttributes(queryRequests.getQueryRequests().get(i).getAttributes()))

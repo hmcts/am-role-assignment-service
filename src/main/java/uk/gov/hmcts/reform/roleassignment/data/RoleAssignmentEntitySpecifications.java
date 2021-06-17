@@ -17,7 +17,7 @@ public final class RoleAssignmentEntitySpecifications {
 
     public static Specification<RoleAssignmentEntity> searchByActorIds(List<String> actorIds) {
         if (actorIds == null || actorIds.isEmpty()) {
-            return null;
+            return Specification.not(null);
         }
         return (root, query, builder) -> builder.or(actorIds
                                                         .stream()
