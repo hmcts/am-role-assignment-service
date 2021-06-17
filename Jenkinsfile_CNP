@@ -51,6 +51,7 @@ def branchesToSync = ['demo', 'perftest']
 
 // Vars needed for functional and smoke tests to run against AKS
 env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
+env.IDAM_API_URL_BASE = "https://idam-api.aat.platform.hmcts.net"
 env.IDAM_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 env.DEFINITION_STORE_HOST = "http://ccd-definition-store-api-aat.service.core-compute-aat.internal"
 env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
