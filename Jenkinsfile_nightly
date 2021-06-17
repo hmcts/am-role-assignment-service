@@ -77,6 +77,8 @@ withNightlyPipeline(type, product, component) {
   env.MICROSERVICE_NAME = "am_role_assignment_service"
   env.EXTERNAL_FLAG_QUERY_PATH = "am/role-assignments/fetchFlagStatus?flagName="
   env.IDAM_API_URL_BASE = "https://idam-api.aat.platform.hmcts.net"
+  env.CCD_API_GATEWAY_OAUTH2_CLIENT_ID = "ccd_gateway"
+  env.CCD_API_GATEWAY_OAUTH2_REDIRECT_URL = "https://www-ccd.aat.platform.hmcts.net/oauth2redirect"
   env.Rules = params.SecurityRules
 
   overrideVaultEnvironments(vaultOverrides)
