@@ -90,7 +90,7 @@ public class RoleAssignmentEntitySpecificationsTest {
         List<String> actorId = null;
 
         Specification<RoleAssignmentEntity> spec = RoleAssignmentEntitySpecifications.searchByActorIds(actorId);
-        assertThat(spec).isNull();
+        assertThat(spec).isNotNull();
 
 
     }
@@ -100,7 +100,7 @@ public class RoleAssignmentEntitySpecificationsTest {
         List<String> actorId = Collections.emptyList();
 
         Specification<RoleAssignmentEntity> spec = RoleAssignmentEntitySpecifications.searchByActorIds(actorId);
-        assertThat(spec).isNull();
+        assertThat(spec).isNotNull();
 
 
 
