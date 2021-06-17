@@ -63,6 +63,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -902,6 +903,22 @@ class PersistenceServiceTest {
         assertNotNull(flagConfigEntity);
 
     }
+
+    @Test
+    public void getFlagStatus_False() {
+        String flagName = "iac_1_0";
+        String env = "pr";
+        FlagConfig flagConfig = FlagConfig.builder()
+            .env("pr")
+            .flagName("iac_1_0")
+            .serviceName("iac")
+            .status(Boolean.FALSE)
+            .build();
+        when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
+        boolean response = sut.getStatusByParam(flagName, env);
+        assertFalse(response);
+    }
+
 
     @Test
     void postRoleAssignmentsByOneQueryRequest() throws IOException {
