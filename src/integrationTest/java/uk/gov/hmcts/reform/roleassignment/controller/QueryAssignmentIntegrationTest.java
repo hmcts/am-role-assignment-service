@@ -13,6 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
@@ -143,6 +144,20 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
                                                      .content(mapper.writeValueAsBytes(queryRequest)))
                                                      .andExpect(status().isOk())
             .andExpect(jsonPath("$.roleAssignmentResponse").isEmpty())
+            .andReturn();
+    }
+
+    @Test
+    public void retrieveRoleAssignmentsByQueryRequestV2_withoutBody() throws Exception {
+
+        logger.info("Retrieve Role Assignments without Body");
+
+        mockMvc.perform(post(URL)
+                            .contentType(V2.MediaType.POST_ASSIGNMENTS))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().is(400))
+            .andExpect(jsonPath("$.errorDescription")
+                           .value("Input for Request body parameter is not valid"))
             .andReturn();
     }
 
