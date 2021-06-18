@@ -46,7 +46,7 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentIntegrationTest.class);
 
-    final String URL = "/am/role-assignments/query";
+    private static final String URL = "/am/role-assignments/query";
 
     private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445613";
 
@@ -189,9 +189,7 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
             .andExpect(jsonPath("$.roleAssignmentResponse[0].roleType")
                            .value(queryRequest.getRoleType().get(0)))
             .andReturn();
-        JsonNode responseJsonNode = new ObjectMapper().readValue(result.getResponse().getContentAsString(),JsonNode.class);
-        assertFalse(responseJsonNode.get("roleAssignmentResponse").isEmpty());
-        assertEquals(3, responseJsonNode.get("roleAssignmentResponse").size());
+
     }
 
     @Test
@@ -209,7 +207,8 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
                                                      .accept(V2.MediaType.POST_ASSIGNMENTS))
             .andExpect(status().isOk())
             .andReturn();
-        JsonNode responseJsonNode = new ObjectMapper().readValue(result.getResponse().getContentAsString(),JsonNode.class);
+        JsonNode responseJsonNode = new ObjectMapper()
+            .readValue(result.getResponse().getContentAsString(),JsonNode.class);
         assertFalse(responseJsonNode.get("roleAssignmentResponse").isEmpty());
         assertEquals(2, responseJsonNode.get("roleAssignmentResponse").size());
     }
