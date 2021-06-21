@@ -97,11 +97,12 @@ class QueryRoleAssignmentOrchestratorTest {
                                                                           false))
             .thenReturn(Collections.emptyList());
         when(persistenceServiceMock.getTotalRecords()).thenReturn(Long.valueOf(10));
-        ResponseEntity<RoleAssignmentResource> result = sut.retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
-                                                                                                  1,
-                                                                                                  2,
-                                                                                                  "id",
-                                                                                                  "asc");
+        ResponseEntity<RoleAssignmentResource> result = sut
+            .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
+                                                            1,
+                                                             2,
+                                                              "id",
+                                                              "asc");
         assertNotNull(result);
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getBody());
