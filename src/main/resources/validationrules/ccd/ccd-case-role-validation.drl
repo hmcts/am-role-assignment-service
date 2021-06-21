@@ -1,0 +1,67 @@
+package validationrules.iac;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
+import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
+
+/*
+ * CCD case roles can be created by client request originated from ccd service.
+ */
+
+rule "ccd_create_case_roles"
+when
+
+    $rq: Request(clientId == "am_role_assignment_service")
+    $ra: RoleAssignment(
+             roleName == "barrister",
+             roleCategory == RoleCategory.PROFESSIONAL || roleCategory == RoleCategory.CITIZEN,
+             roleType == RoleType.CASE,
+             status == Status.CREATE_REQUESTED,
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+
+    $c:  Case(
+              id == $caseId,
+              jurisdiction == "PUBLICLAW",
+              caseTypeId == "CARE_SUPERVISION_EPO")
+then
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : ccd_create_case_roles");
+    update($ra);
+    logMsg("Rule : ccd_create_case_roles");
+end;
+
+
+/*
+ * CCD case roles can be deleted by client request originated from ccd service.
+ */
+
+rule "ccd_delete_case_roles"
+when
+    $rq: Request(clientId == "am_role_assignment_service")
+    $ra: RoleAssignment(
+             roleName == "barrister",
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleCategory == RoleCategory.PROFESSIONAL || roleCategory == RoleCategory.CITIZEN,
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+    $c:  Case(
+              id == $caseId,
+              jurisdiction == "PUBLICLAW",
+              caseTypeId == "CARE_SUPERVISION_EPO")
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : ccd_delete_case_roles");
+    update($ra);
+    logMsg("Rule : ccd_delete_case_roles");
+end;
