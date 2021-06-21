@@ -9,7 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequests;
+import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -85,7 +85,7 @@ class QueryRoleAssignmentOrchestratorTest {
             .actorId(actorId)
             .roleType(roleType)
             .build();
-        QueryRequests queryRequests  =  QueryRequests.builder()
+        MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
             .queryRequests(Arrays.asList(queryRequest))
             .build();
 
@@ -97,7 +97,7 @@ class QueryRoleAssignmentOrchestratorTest {
                                                                           false))
             .thenReturn(Collections.emptyList());
         when(persistenceServiceMock.getTotalRecords()).thenReturn(Long.valueOf(10));
-        ResponseEntity<RoleAssignmentResource> result = sut.retrieveRoleAssignmentsByMultipleQueryRequest(queryRequests,
+        ResponseEntity<RoleAssignmentResource> result = sut.retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
                                                                                                   1,
                                                                                                   2,
                                                                                                   "id",

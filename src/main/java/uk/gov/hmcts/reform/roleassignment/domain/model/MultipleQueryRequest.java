@@ -11,6 +11,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QueryRequests {
+public class MultipleQueryRequest {
     private List<QueryRequest> queryRequests;
 }
