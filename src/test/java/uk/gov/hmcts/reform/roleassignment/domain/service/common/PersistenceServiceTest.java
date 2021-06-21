@@ -32,7 +32,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequests;
+import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -924,7 +924,7 @@ class PersistenceServiceTest {
             .roleType(roleType)
             .build();
 
-        QueryRequests queryRequests  =  QueryRequests.builder()
+        MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
             .queryRequests(Arrays.asList(queryRequest))
             .build();
 
@@ -945,7 +945,7 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
             .thenReturn(TestDataBuilder.buildRoleAssignment(LIVE));
 
-        List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByMultipleQueryRequest(queryRequests,
+        List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
                                                                                                           1,
                                                                                                   1, "id",
                                                                                                   "desc",
@@ -986,7 +986,7 @@ class PersistenceServiceTest {
             .roleName(roleName)
             .build();
 
-        QueryRequests queryRequests  =  QueryRequests.builder()
+        MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
             .queryRequests(Arrays.asList(queryRequest1,queryRequest2))
             .build();
 
@@ -1007,7 +1007,7 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
             .thenReturn(TestDataBuilder.buildRoleAssignment(LIVE));
 
-        List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByMultipleQueryRequest(queryRequests,
+        List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
                                                                                                           1,
                                                                                                           1,
                                                                                                           "id",

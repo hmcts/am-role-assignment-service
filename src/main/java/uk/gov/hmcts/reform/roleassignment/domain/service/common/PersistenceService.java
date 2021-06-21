@@ -29,7 +29,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequests;
+import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
@@ -254,7 +254,7 @@ public class PersistenceService {
 
 
     @SuppressWarnings("unchecked")
-    public List<Assignment> retrieveRoleAssignmentsByMultipleQueryRequest(QueryRequests queryRequests,
+    public List<Assignment> retrieveRoleAssignmentsByMultipleQueryRequest(MultipleQueryRequest multipleQueryRequest,
                                                                           Integer pageNumber,
                                                                           Integer size, String sort,
                                                                           String direction,
@@ -262,35 +262,35 @@ public class PersistenceService {
 
         long startTime = System.currentTimeMillis();
         Specification<RoleAssignmentEntity> finalQuery = null;
-        if (CollectionUtils.isNotEmpty(queryRequests.getQueryRequests())) {
+        if (CollectionUtils.isNotEmpty(multipleQueryRequest.getQueryRequests())) {
             Specification<RoleAssignmentEntity> initialQuery = Specification.where(
-                searchByActorIds(queryRequests.getQueryRequests().get(0).getActorId()))
-                .and(searchByGrantType(queryRequests.getQueryRequests().get(0).getGrantType()))
-                .and(searchByValidDate(queryRequests.getQueryRequests().get(0).getValidAt()))
-                .and(searchByAttributes(queryRequests.getQueryRequests().get(0).getAttributes()))
-                .and(searchByRoleType(queryRequests.getQueryRequests().get(0).getRoleType()))
-                .and(searchByRoleName(queryRequests.getQueryRequests().get(0).getRoleName()))
-                .and(searchByClassification(queryRequests.getQueryRequests().get(0).getClassification()))
-                .and(searchByRoleCategories(queryRequests.getQueryRequests().get(0).getRoleCategory()))
-                .and(searchByAuthorisations(queryRequests.getQueryRequests().get(0).getAuthorisations()))
-                .and(searchByHasAttributes(queryRequests.getQueryRequests().get(0).getHasAttributes()))
-                .and(searchByReadOnly(queryRequests.getQueryRequests().get(0).getReadOnly()));
+                searchByActorIds(multipleQueryRequest.getQueryRequests().get(0).getActorId()))
+                .and(searchByGrantType(multipleQueryRequest.getQueryRequests().get(0).getGrantType()))
+                .and(searchByValidDate(multipleQueryRequest.getQueryRequests().get(0).getValidAt()))
+                .and(searchByAttributes(multipleQueryRequest.getQueryRequests().get(0).getAttributes()))
+                .and(searchByRoleType(multipleQueryRequest.getQueryRequests().get(0).getRoleType()))
+                .and(searchByRoleName(multipleQueryRequest.getQueryRequests().get(0).getRoleName()))
+                .and(searchByClassification(multipleQueryRequest.getQueryRequests().get(0).getClassification()))
+                .and(searchByRoleCategories(multipleQueryRequest.getQueryRequests().get(0).getRoleCategory()))
+                .and(searchByAuthorisations(multipleQueryRequest.getQueryRequests().get(0).getAuthorisations()))
+                .and(searchByHasAttributes(multipleQueryRequest.getQueryRequests().get(0).getHasAttributes()))
+                .and(searchByReadOnly(multipleQueryRequest.getQueryRequests().get(0).getReadOnly()));
 
 
-            if (queryRequests.getQueryRequests().size() > 1) {
-                for (var i = 1; i < queryRequests.getQueryRequests().size(); i++) {
+            if (multipleQueryRequest.getQueryRequests().size() > 1) {
+                for (var i = 1; i < multipleQueryRequest.getQueryRequests().size(); i++) {
                     finalQuery = initialQuery.or(
-                            searchByActorIds(queryRequests.getQueryRequests().get(i).getActorId())
-                           .and(searchByRoleName(queryRequests.getQueryRequests().get(i).getRoleName()))
-                           .and(searchByHasAttributes(queryRequests.getQueryRequests().get(i).getHasAttributes()))
-                           .and(searchByAuthorisations(queryRequests.getQueryRequests().get(i).getAuthorisations()))
-                           .and(searchByGrantType(queryRequests.getQueryRequests().get(i).getGrantType()))
-                           .and(searchByValidDate(queryRequests.getQueryRequests().get(i).getValidAt()))
-                           .and(searchByAttributes(queryRequests.getQueryRequests().get(i).getAttributes()))
-                           .and(searchByRoleType(queryRequests.getQueryRequests().get(i).getRoleType()))
-                           .and(searchByClassification(queryRequests.getQueryRequests().get(i).getClassification()))
-                           .and(searchByRoleCategories(queryRequests.getQueryRequests().get(i).getRoleCategory()))
-                           .and(searchByReadOnly(queryRequests.getQueryRequests().get(i).getReadOnly())));
+                            searchByActorIds(multipleQueryRequest.getQueryRequests().get(i).getActorId())
+                           .and(searchByRoleName(multipleQueryRequest.getQueryRequests().get(i).getRoleName()))
+                           .and(searchByHasAttributes(multipleQueryRequest.getQueryRequests().get(i).getHasAttributes()))
+                           .and(searchByAuthorisations(multipleQueryRequest.getQueryRequests().get(i).getAuthorisations()))
+                           .and(searchByGrantType(multipleQueryRequest.getQueryRequests().get(i).getGrantType()))
+                           .and(searchByValidDate(multipleQueryRequest.getQueryRequests().get(i).getValidAt()))
+                           .and(searchByAttributes(multipleQueryRequest.getQueryRequests().get(i).getAttributes()))
+                           .and(searchByRoleType(multipleQueryRequest.getQueryRequests().get(i).getRoleType()))
+                           .and(searchByClassification(multipleQueryRequest.getQueryRequests().get(i).getClassification()))
+                           .and(searchByRoleCategories(multipleQueryRequest.getQueryRequests().get(i).getRoleCategory()))
+                           .and(searchByReadOnly(multipleQueryRequest.getQueryRequests().get(i).getReadOnly())));
 
                 }
             } else {

@@ -9,7 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequests;
+import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
@@ -130,16 +130,16 @@ class QueryAssignmentControllerTest {
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
             .build();
-        QueryRequests queryRequests  =  QueryRequests.builder()
+        MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
             .queryRequests(Arrays.asList(queryRequest))
             .build();
 
         ResponseEntity<RoleAssignmentResource> expectedResponse
             = TestDataBuilder.buildResourceRoleAssignmentResponse(Status.LIVE);
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-            .retrieveRoleAssignmentsByMultipleQueryRequest(queryRequests, 0, 20, "id", "desc");
+            .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest, 0, 20, "id", "desc");
         ResponseEntity<RoleAssignmentResource> response = sut
-            .retrieveRoleAssignmentsByQueryRequestV2("", 0, 20, "id", "desc", queryRequests);
+            .retrieveRoleAssignmentsByQueryRequestV2("", 0, 20, "id", "desc", multipleQueryRequest);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedResponse.getBody(), response.getBody());
@@ -155,12 +155,12 @@ class QueryAssignmentControllerTest {
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
             .build();
-        QueryRequests queryRequests  =  QueryRequests.builder()
+        MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
             .queryRequests(Arrays.asList(queryRequest))
             .build();
         ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-            .retrieveRoleAssignmentsByMultipleQueryRequest(queryRequests, 0, 20, "roleType", "desc");
+            .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest, 0, 20, "roleType", "desc");
 
         ResponseEntity<RoleAssignmentResource> response = sut.retrieveRoleAssignmentsByQueryRequestV2(
             "",
@@ -168,7 +168,7 @@ class QueryAssignmentControllerTest {
             20,
             "roleType",
             "desc",
-            queryRequests
+                multipleQueryRequest
         );
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
@@ -181,12 +181,12 @@ class QueryAssignmentControllerTest {
         QueryRequest queryRequest = QueryRequest.builder()
             .roleType(roleType)
             .build();
-        QueryRequests queryRequests  =  QueryRequests.builder()
+        MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
             .queryRequests(Arrays.asList(queryRequest))
             .build();
         ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-            .retrieveRoleAssignmentsByMultipleQueryRequest(queryRequests, 0, 20, "id", "asc");
+            .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest, 0, 20, "id", "asc");
 
         ResponseEntity<RoleAssignmentResource> response = sut.retrieveRoleAssignmentsByQueryRequestV2(
             "",
@@ -194,7 +194,7 @@ class QueryAssignmentControllerTest {
             20,
             "id",
             "asc",
-            queryRequests
+                multipleQueryRequest
         );
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 

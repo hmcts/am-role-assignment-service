@@ -5,6 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequests;
+import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
@@ -74,6 +76,7 @@ public class QueryAssignmentController {
                                   @RequestHeader(value = "direction", required = false) String direction,
                                   @Validated @RequestBody(required = true) QueryRequest queryRequest) {
         long startTime = System.currentTimeMillis();
+        logger.info("Inside Single query request method");
         ResponseEntity<RoleAssignmentResource> response = queryRoleAssignmentOrchestrator
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
         logger.debug(
@@ -113,12 +116,16 @@ public class QueryAssignmentController {
         @RequestHeader(value = "size", required = false) Integer size,
         @RequestHeader(value = "sort", required = false) String sort,
         @RequestHeader(value = "direction", required = false) String direction,
-        @Validated @RequestBody(required = true) QueryRequests queryRequests) {
+        @Validated @RequestBody(required = true)   MultipleQueryRequest multipleQueryRequest) {
+
+        if(CollectionUtils.isEmpty(multipleQueryRequest.getQueryRequests())){
+            throw new BadRequestException("Request Payload is invalid");
+        }
 
         long startTime = System.currentTimeMillis();
         logger.info("Inside Multiple query request method");
         ResponseEntity<RoleAssignmentResource> response = queryRoleAssignmentOrchestrator
-            .retrieveRoleAssignmentsByMultipleQueryRequest(queryRequests, pageNumber, size, sort, direction);
+            .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest, pageNumber, size, sort, direction);
         logger.debug(
             " >> retrieveRoleAssignmentsByQueryRequestV2 execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
