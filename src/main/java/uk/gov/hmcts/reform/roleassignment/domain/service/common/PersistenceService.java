@@ -280,16 +280,20 @@ public class PersistenceService {
             if (multipleQueryRequest.getQueryRequests().size() > 1) {
                 for (var i = 1; i < multipleQueryRequest.getQueryRequests().size(); i++) {
                     finalQuery = initialQuery.or(
-                            searchByActorIds(multipleQueryRequest.getQueryRequests().get(i).getActorId())
+                          searchByActorIds(multipleQueryRequest.getQueryRequests().get(i).getActorId())
                            .and(searchByRoleName(multipleQueryRequest.getQueryRequests().get(i).getRoleName()))
-                           .and(searchByHasAttributes(multipleQueryRequest.getQueryRequests().get(i).getHasAttributes()))
-                           .and(searchByAuthorisations(multipleQueryRequest.getQueryRequests().get(i).getAuthorisations()))
+                           .and(searchByHasAttributes(multipleQueryRequest.getQueryRequests().get(i)
+                                                          .getHasAttributes()))
+                           .and(searchByAuthorisations(multipleQueryRequest.getQueryRequests()
+                                                           .get(i).getAuthorisations()))
                            .and(searchByGrantType(multipleQueryRequest.getQueryRequests().get(i).getGrantType()))
                            .and(searchByValidDate(multipleQueryRequest.getQueryRequests().get(i).getValidAt()))
                            .and(searchByAttributes(multipleQueryRequest.getQueryRequests().get(i).getAttributes()))
                            .and(searchByRoleType(multipleQueryRequest.getQueryRequests().get(i).getRoleType()))
-                           .and(searchByClassification(multipleQueryRequest.getQueryRequests().get(i).getClassification()))
-                           .and(searchByRoleCategories(multipleQueryRequest.getQueryRequests().get(i).getRoleCategory()))
+                           .and(searchByClassification(multipleQueryRequest.getQueryRequests().get(i)
+                                                           .getClassification()))
+                           .and(searchByRoleCategories(multipleQueryRequest.getQueryRequests()
+                                                           .get(i).getRoleCategory()))
                            .and(searchByReadOnly(multipleQueryRequest.getQueryRequests().get(i).getReadOnly())));
 
                 }

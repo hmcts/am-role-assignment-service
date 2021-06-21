@@ -945,11 +945,12 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
             .thenReturn(TestDataBuilder.buildRoleAssignment(LIVE));
 
-        List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
-                                                                                                          1,
-                                                                                                  1, "id",
-                                                                                                  "desc",
-                                                                                            false
+        List<? extends Assignment> roleAssignmentList = sut
+            .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
+                                                                       1,
+                                                                       1, "id",
+                                                                       "desc",
+                                                                       false
         );
         assertNotNull(roleAssignmentList);
         assertFalse(roleAssignmentList.isEmpty());
@@ -1007,12 +1008,13 @@ class PersistenceServiceTest {
         when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
             .thenReturn(TestDataBuilder.buildRoleAssignment(LIVE));
 
-        List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
-                                                                                                          1,
-                                                                                                          1,
-                                                                                                          "id",
-                                                                                             "desc",
-                                                                                                          false
+        List<? extends Assignment> roleAssignmentList = sut
+            .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
+                                                                             1,
+                                                                             1,
+                                                                             "id",
+                                                                             "desc",
+                                                                             false
         );
         assertNotNull(roleAssignmentList);
         assertFalse(roleAssignmentList.isEmpty());
