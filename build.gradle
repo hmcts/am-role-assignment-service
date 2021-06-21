@@ -389,7 +389,7 @@ dependencies {
   testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  testImplementation 'com.github.hmcts:befta-fw:extend-feature-flag-framework-SNAPSHOT'
+  testImplementation 'com.github.hmcts:befta-fw:8.0.12'
 
   //implementation 'com.github.hmcts:befta-fw:7.0.2-am-1385'
   //compile fileTree(dir: 'lib', include: 'befta-fw-5.11.0.jar')
