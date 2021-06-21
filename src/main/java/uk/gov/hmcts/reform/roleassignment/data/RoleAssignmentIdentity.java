@@ -22,7 +22,9 @@ import java.util.UUID;
 public class RoleAssignmentIdentity implements Serializable {
 
     private UUID id;
+
     private String status;
+
     private UUID requestEntity;
 }
 
