@@ -4,7 +4,6 @@ Feature: F-009 : Post Role Assignments Advance Query Request
   Background:
     Given an appropriate test context as detailed in the test data source
 
-
   @S-183
   Scenario: must successfully receive Role Assignments without specific page number
     Given a user with [an active IDAM profile with full permissions],
