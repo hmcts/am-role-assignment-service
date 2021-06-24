@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.befta;
 
 import uk.gov.hmcts.befta.DefaultTestAutomationAdapter;
-import uk.gov.hmcts.befta.dse.ccd.TestDataLoaderToDefinitionStore;
 import uk.gov.hmcts.befta.player.BackEndFunctionalTestScenarioContext;
 
 import java.util.Date;
@@ -9,7 +8,6 @@ import java.util.UUID;
 
 public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAdapter {
     public static RoleAssignmentTestAutomationAdapter INSTANCE = new RoleAssignmentTestAutomationAdapter();
-    private TestDataLoaderToDefinitionStore loader = new TestDataLoaderToDefinitionStore(this);
 
     @Override
     public Object calculateCustomValue(BackEndFunctionalTestScenarioContext scenarioContext, Object key) {
