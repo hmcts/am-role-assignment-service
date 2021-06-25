@@ -4,191 +4,777 @@
   "_extends_": "F-007_Test_Data_Base",
   "expectedResponse": {
     "_extends_": "Common_200_Response",
-    "body": {
-      "arrayInMap": [
-        {
-          "name": "judge",
-          "label": "Judge - Sample role (Only for Testing)",
-          "description": "Judicial office holder able to do judicial case work",
-          "category": "JUDICIAL",
-          "patterns": [
-            {
-              "roleType": {
-                "mandatory": true,
-                "values": [
-                  "ORGANISATION"
-                ]
-              },
-              "grantType": {
-                "mandatory": true,
-                "values": [
-                  "STANDARD"
-                ]
-              },
-              "classification": {
-                "mandatory": true,
-                "values": [
-                  "PUBLIC",
-                  "PRIVATE"
-                ]
-              },
-              "attributes": {
-                "region": {
-                  "mandatory": true,
-                  "values": [
-                    "north-east",
-                    "south-east"
-                  ]
-                },
-                "jurisdiction": {
-                  "mandatory": true,
-                  "values": [
-                    "divorce",
-                    "IA"
-                  ]
-                }
-              }
+    "body" : {
+      "arrayInMap" : [ {
+        "name" : "judge",
+        "label" : "Judge - Sample role (Only for Testing)",
+        "description" : "Judicial office holder able to do judicial case work",
+        "category" : "JUDICIAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "ORGANISATION" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "STANDARD" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "PUBLIC", "PRIVATE" ]
+          },
+          "attributes" : {
+            "region" : {
+              "mandatory" : true,
+              "values" : [ "north-east", "south-east" ]
             },
-            {
-              "roleType": {
-                "mandatory": true,
-                "values": [
-                  "CASE"
-                ]
-              },
-              "grantType": {
-                "mandatory": true,
-                "values": [
-                  "SPECIFIC",
-                  "CHALLENGED"
-                ]
-              },
-              "classification": {
-                "mandatory": true,
-                "values": [
-                  "PUBLIC"
-                ]
-              },
-              "beginTime": {
-                "mandatory": true
-              },
-              "attributes": {
-                "caseId": {
-                  "mandatory": true
-                }
-              }
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "divorce", "IA" ]
             }
-          ]
-        },
-        {
-          "name": "tribunal-caseworker",
-          "label": "Tribunal Caseworker",
-          "description": "Tribunal caseworker",
-          "category": "LEGAL_OPERATIONS",
-          "patterns": [
-            {
-              "roleType": {
-                "mandatory": true,
-                "values": [
-                  "ORGANISATION"
-                ]
-              },
-              "grantType": {
-                "mandatory": true,
-                "values": [
-                  "STANDARD"
-                ]
-              },
-              "classification": {
-                "mandatory": true,
-                "values": [
-                  "PUBLIC",
-                  "PRIVATE"
-                ]
-              },
-              "attributes": {
-                "jurisdiction": {
-                  "mandatory": true,
-                  "values": [
-                    "IA"
-                  ]
-                },
-                "primaryLocation": {
-                  "mandatory": true
-                }
-              }
+          }
+        }, {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC", "CHALLENGED" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "PUBLIC" ]
+          },
+          "beginTime" : {
+            "mandatory" : true
+          },
+          "attributes" : {
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "tribunal-caseworker",
+        "label" : "Tribunal Caseworker",
+        "description" : "Tribunal caseworker",
+        "category" : "LEGAL_OPERATIONS",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "ORGANISATION" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "STANDARD" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "PUBLIC", "PRIVATE" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "IA" ]
             },
-            {
-              "roleType": {
-                "mandatory": true,
-                "values": [
-                  "CASE"
-                ]
-              },
-              "grantType": {
-                "mandatory": true,
-                "values": [
-                  "SPECIFIC"
-                ]
-              },
-              "classification": {
-                "mandatory": true
-              },
-              "attributes": {
-                "jurisdiction" : {
-                  "mandatory" : true
-                },
-                "caseType" : {
-                  "mandatory" : true
-                },
-                "caseId" : {
-                  "mandatory" : true
-                }
-              }
+            "primaryLocation" : {
+              "mandatory" : true
             }
-          ]
-        },
-        {
-          "name": "senior-tribunal-caseworker",
-          "label": "Senior Tribunal Caseworker",
-          "description": "Senior Tribunal caseworker",
-          "category": "LEGAL_OPERATIONS",
-          "patterns": [
-            {
-              "roleType": {
-                "mandatory": true,
-                "values": [
-                  "ORGANISATION"
-                ]
-              },
-              "grantType": {
-                "mandatory": true,
-                "values": [
-                  "STANDARD"
-                ]
-              },
-              "classification": {
-                "mandatory": true,
-                "values": [
-                  "PUBLIC",
-                  "PRIVATE"
-                ]
-              },
-              "attributes": {
-                "jurisdiction": {
-                  "mandatory": true,
-                  "values": [
-                    "IA"
-                  ]
-                },
-                "primaryLocation": {
-                  "mandatory": true
-                }
-              }
+          }
+        }, {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true
+            },
+            "caseType" : {
+              "mandatory" : true
+            },
+            "caseId" : {
+              "mandatory" : true
             }
-          ]
-        }
-      ]
+          }
+        } ]
+      }, {
+        "name" : "senior-tribunal-caseworker",
+        "label" : "Senior Tribunal Caseworker",
+        "description" : "Senior Tribunal caseworker",
+        "category" : "LEGAL_OPERATIONS",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "ORGANISATION" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "STANDARD" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "PUBLIC", "PRIVATE" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "IA" ]
+            },
+            "primaryLocation" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "petitioner's-solicitor",
+        "label" : "Petitioner's Solicitor",
+        "description" : " Petitioner's Solicitor",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "DIVORCE" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "DIVORCE" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "respondent's-solicitor",
+        "label" : "Respondent's Solicitor",
+        "description" : "Respondent's Solicitor",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "DIVORCE" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "DIVORCE" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "barrister",
+        "label" : "Barrister",
+        "description" : "Barrister",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "cafcass-solicitor",
+        "label" : " Cafcass Solicitor",
+        "description" : " Cafcass Solicitor",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "external-professional-solicitor",
+        "label" : " External Professional Solicitor",
+        "description" : " External Professional Solicitor",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "la-barrister",
+        "label" : " LA Barrister",
+        "description" : " LA Barrister",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "managing-local-authority",
+        "label" : "Managing Local Authority",
+        "description" : "Managing Local Authority",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "ls-solicitor",
+        "label" : "LA Solicitor",
+        "description" : "LA Solicitor",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "solicitor",
+        "label" : "Solicitor",
+        "description" : "Solicitor",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "solicitor-a",
+        "label" : "Solicitor A",
+        "description" : "Solicitor A",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "solicitor-b",
+        "label" : "Solicitor B",
+        "description" : "Solicitor B",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "solicitor-c",
+        "label" : "Solicitor C",
+        "description" : "Solicitor C",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "solicitor-d",
+        "label" : "Solicitor D",
+        "description" : "Solicitor D",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "solicitor-e",
+        "label" : "Solicitor E",
+        "description" : "Solicitor E",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "solicitor-f",
+        "label" : "Solicitor F",
+        "description" : "Solicitor F",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "solicitor-g",
+        "label" : "Solicitor G",
+        "description" : "Solicitor G",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "solicitor-h",
+        "label" : "Solicitor H",
+        "description" : "Solicitor H",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "solicitor-i",
+        "label" : "Solicitor I",
+        "description" : "Solicitor I",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "solicitor-j",
+        "label" : "Solicitor J",
+        "description" : "Solicitor J",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "PUBLICLAW" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "CARE_SUPERVISION_EPO" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      }, {
+        "name" : "legal-representative",
+        "label" : "Legal Representative",
+        "description" : "Legal Representative",
+        "category" : "PROFESSIONAL",
+        "patterns" : [ {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "RESTRICTED" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "IA" ]
+            },
+            "caseType" : {
+              "mandatory" : true,
+              "values" : [ "Asylum" ]
+            },
+            "caseId" : {
+              "mandatory" : true
+            }
+          }
+        } ]
+      } ]
     }
   }
 }
