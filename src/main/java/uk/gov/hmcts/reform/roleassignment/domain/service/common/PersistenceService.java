@@ -74,7 +74,6 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private ActorCacheRepository actorCacheRepository;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
-    private Page<RoleAssignmentEntity> pageRoleAssignmentEntities;
     private FlagConfigRepository flagConfigRepository;
 
     @Value("${roleassignment.query.sortcolumn}")
@@ -217,9 +216,9 @@ public class PersistenceService {
                                                                   String direction,
                                                                   boolean existingFlag) {
 
-        long startTime = System.currentTimeMillis();
 
-        pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
+
+        Page<RoleAssignmentEntity> pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(Objects.requireNonNull(
                 Objects.requireNonNull(
                     Objects.requireNonNull(
@@ -249,7 +248,9 @@ public class PersistenceService {
             )
         );
 
-        return prepareQueryRequestResponse(existingFlag, startTime);
+        ThreadSafePage.pageHolder.set(pageRoleAssignmentEntities);
+
+        return prepareQueryRequestResponse(existingFlag);
     }
 
 
@@ -260,7 +261,7 @@ public class PersistenceService {
                                                                           String direction,
                                                                           boolean existingFlag) {
 
-        long startTime = System.currentTimeMillis();
+
         Specification<RoleAssignmentEntity> finalQuery = null;
         if (CollectionUtils.isNotEmpty(multipleQueryRequest.getQueryRequests())) {
             Specification<RoleAssignmentEntity> initialQuery = Specification.where(
@@ -304,7 +305,7 @@ public class PersistenceService {
         }
 
 
-        pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
+        Page<RoleAssignmentEntity> pageRoleAssignmentEntities  = roleAssignmentRepository.findAll(
             finalQuery,
             PageRequest.of(
                 (pageNumber != null
@@ -317,20 +318,22 @@ public class PersistenceService {
                 )
             )
         );
+        ThreadSafePage.pageHolder.set(pageRoleAssignmentEntities);
 
-        return prepareQueryRequestResponse(existingFlag, startTime);
+        return prepareQueryRequestResponse(existingFlag);
     }
 
-    private List<Assignment> prepareQueryRequestResponse(boolean existingFlag, long startTime) {
+    private List<Assignment> prepareQueryRequestResponse(boolean existingFlag) {
+        long startTime = System.currentTimeMillis();
         List<Assignment> roleAssignmentList;
         if (!existingFlag) {
-            roleAssignmentList = pageRoleAssignmentEntities.stream()
+            roleAssignmentList = ThreadSafePage.pageHolder.get().stream()
                 .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
                 .collect(Collectors.toList());
 
 
         } else {
-            roleAssignmentList = pageRoleAssignmentEntities.stream()
+            roleAssignmentList = ThreadSafePage.pageHolder.get().stream()
                 .map(role -> persistenceUtil.convertEntityToExistingRoleAssignment(role))
                 .collect(Collectors.toList());
 
@@ -357,7 +360,7 @@ public class PersistenceService {
     }
 
     public long getTotalRecords() {
-        return pageRoleAssignmentEntities != null ? pageRoleAssignmentEntities.getTotalElements() : Long.valueOf(0);
+        return ThreadSafePage.pageHolder.get() != null ? ThreadSafePage.pageHolder.get().getTotalElements() : Long.valueOf(0);
 
     }
 

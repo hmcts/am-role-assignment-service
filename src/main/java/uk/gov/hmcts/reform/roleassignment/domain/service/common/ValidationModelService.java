@@ -16,11 +16,13 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -33,6 +35,9 @@ public class ValidationModelService {
 
     @Value("${launchdarkly.sdk.environment}")
     private String environment;
+
+    @Value("${roleassignment.query.size}")
+    private int defaultSize;
 
 
     public ValidationModelService(StatelessKieSession kieSession,
@@ -92,16 +97,31 @@ public class ValidationModelService {
             .validAt(LocalDateTime.now())
             .build();
 
-        return persistenceService.retrieveRoleAssignmentsByQueryRequest(
+        List<List<Assignment>> assignmentRecords =  new ArrayList<>();
+
+        assignmentRecords.add(persistenceService.retrieveRoleAssignmentsByQueryRequest(
             queryRequest,
             0,
             0,
             null,
             null,
-            true
+            true)
 
         );
+      long totalRecords = persistenceService.getTotalRecords();
 
+        double pageNumber = (double) totalRecords / (double) defaultSize;
+        for (int page = 1; page < pageNumber; page++){
+            assignmentRecords.add(persistenceService.retrieveRoleAssignmentsByQueryRequest(
+                queryRequest,
+                page,
+                0,
+                null,
+                null,
+                true));
+
+        }
+     return  assignmentRecords.stream().flatMap(Collection::stream).collect(Collectors.toList());
 
     }
 
@@ -161,7 +181,7 @@ public class ValidationModelService {
      * This utility method is used to capture the log in drools.
      */
     public static void logMsg(final String message) {
-        log.debug(message);
+        log.info(message);
     }
 
     private void getFlagValuesFromDB(Map<String, Boolean> droolFlagStates) {
