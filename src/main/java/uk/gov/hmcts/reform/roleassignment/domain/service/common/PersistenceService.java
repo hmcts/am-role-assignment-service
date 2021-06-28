@@ -58,7 +58,6 @@ import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecif
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByValidDate;
 
 @Service
-@RequestScope
 public class PersistenceService {
 
     private static final Logger logger = LoggerFactory.getLogger(PersistenceService.class);
