@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
     host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
     @VersionSelector(tag = "master")})
-@TestPropertySource(properties = {"org.request.byPassOrgDroolRule=true"})
+@TestPropertySource(properties = {"org.request.byPassOrgDroolRule=true", "roleassignment.query.size=20"})
 @Import(RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
 public class CreateRoleAssignmentProviderTest {
