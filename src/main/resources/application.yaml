@@ -72,7 +72,7 @@ spring:
           batch_versioned_data: true
           lob:
             non_contextual_creation: true
-    
+
   flyway.enabled: ${ENABLE_DB_MIGRATE:true}
   flyway.locations: classpath:db/migration
   datasource:

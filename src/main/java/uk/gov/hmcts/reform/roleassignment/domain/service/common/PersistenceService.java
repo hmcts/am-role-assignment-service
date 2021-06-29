@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -28,8 +27,8 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
@@ -58,7 +57,6 @@ import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecif
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByValidDate;
 
 @Service
-@RequestScope
 public class PersistenceService {
 
     private static final Logger logger = LoggerFactory.getLogger(PersistenceService.class);
@@ -74,7 +72,6 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private ActorCacheRepository actorCacheRepository;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
-    private Page<RoleAssignmentEntity> pageRoleAssignmentEntities;
     private FlagConfigRepository flagConfigRepository;
 
     @Value("${roleassignment.query.sortcolumn}")
@@ -217,9 +214,9 @@ public class PersistenceService {
                                                                   String direction,
                                                                   boolean existingFlag) {
 
-        long startTime = System.currentTimeMillis();
 
-        pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
+
+        Page<RoleAssignmentEntity> pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(Objects.requireNonNull(
                 Objects.requireNonNull(
                     Objects.requireNonNull(
@@ -249,7 +246,9 @@ public class PersistenceService {
             )
         );
 
-        return prepareQueryRequestResponse(existingFlag, startTime);
+        PageHolder.holder.set(pageRoleAssignmentEntities);
+
+        return prepareQueryRequestResponse(existingFlag);
     }
 
 
@@ -260,7 +259,7 @@ public class PersistenceService {
                                                                           String direction,
                                                                           boolean existingFlag) {
 
-        long startTime = System.currentTimeMillis();
+
         Specification<RoleAssignmentEntity> finalQuery = null;
         if (CollectionUtils.isNotEmpty(multipleQueryRequest.getQueryRequests())) {
             Specification<RoleAssignmentEntity> initialQuery = Specification.where(
@@ -304,7 +303,7 @@ public class PersistenceService {
         }
 
 
-        pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
+        Page<RoleAssignmentEntity> pageRoleAssignmentEntities  = roleAssignmentRepository.findAll(
             finalQuery,
             PageRequest.of(
                 (pageNumber != null
@@ -317,20 +316,22 @@ public class PersistenceService {
                 )
             )
         );
+        PageHolder.holder.set(pageRoleAssignmentEntities);
 
-        return prepareQueryRequestResponse(existingFlag, startTime);
+        return prepareQueryRequestResponse(existingFlag);
     }
 
-    private List<Assignment> prepareQueryRequestResponse(boolean existingFlag, long startTime) {
+    private List<Assignment> prepareQueryRequestResponse(boolean existingFlag) {
+        long startTime = System.currentTimeMillis();
         List<Assignment> roleAssignmentList;
         if (!existingFlag) {
-            roleAssignmentList = pageRoleAssignmentEntities.stream()
+            roleAssignmentList = PageHolder.holder.get().stream()
                 .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
                 .collect(Collectors.toList());
 
 
         } else {
-            roleAssignmentList = pageRoleAssignmentEntities.stream()
+            roleAssignmentList = PageHolder.holder.get().stream()
                 .map(role -> persistenceUtil.convertEntityToExistingRoleAssignment(role))
                 .collect(Collectors.toList());
 
@@ -357,7 +358,8 @@ public class PersistenceService {
     }
 
     public long getTotalRecords() {
-        return pageRoleAssignmentEntities != null ? pageRoleAssignmentEntities.getTotalElements() : Long.valueOf(0);
+        return PageHolder.holder.get() != null ? PageHolder.holder.get()
+            .getTotalElements() : Long.valueOf(0);
 
     }
 
