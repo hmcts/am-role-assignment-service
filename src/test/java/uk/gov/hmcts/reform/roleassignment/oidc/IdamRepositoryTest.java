@@ -11,6 +11,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -276,8 +277,9 @@ class IdamRepositoryTest {
 
         String token = "eyJhbGciOiJIUzUxMiJ9.Eim7hdYejtBbWXnqCf1gntbYpWHRX8BRzm4zIC_oszmC3D5QlNmkIetVPcMINg";
         String userId = "4dc7dd3c-3fb5-4611-bbde-5101a97681e0";
-
-        ResponseEntity<List<Object>> responseEntity = new ResponseEntity<List<Object>>(HttpStatus.OK);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+        ResponseEntity<List<Object>> responseEntity = new ResponseEntity<List<Object>>(headers, HttpStatus.OK);
 
         doReturn(responseEntity)
             .when(restTemplate)
@@ -286,9 +288,10 @@ class IdamRepositoryTest {
                 eq(HttpMethod.GET),
                 isA(HttpEntity.class),
                 (ParameterizedTypeReference<?>) any(ParameterizedTypeReference.class));
+        ResponseEntity<List<Object>> response = idamRepository.searchUserByUserId(token, userId);
 
-        assertNotNull(idamRepository.searchUserByUserId(token, userId));
-
+        assertNotNull(response);
+        assertNotNull(response.getHeaders());
     }
 
     @Test

@@ -483,6 +483,7 @@ class CreateRoleAssignmentOrchestratorTest {
     @Test
     void createRoleAssignment_NeedToRetainAndCreate() throws Exception {
         prepareRequestWhenReplaceExistingTrue();
+        assignmentRequest = Mockito.spy(assignmentRequest);
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> roleAssignment
             .setAuthorisations(Arrays.asList("dev")));
         ((List<RoleAssignment>) assignmentRequest.getRequestedRoles()).get(1).setRoleName("sdsdsd");
@@ -520,6 +521,8 @@ class CreateRoleAssignmentOrchestratorTest {
 
 
         //assert values
+        verify(assignmentRequest, times(1)).setRequestedRoles(any());
+        assertEquals(result.getRequestedRoles(), assignmentRequest.getRequestedRoles());
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         verify(parseRequestService, times(1))

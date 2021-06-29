@@ -904,6 +904,22 @@ class PersistenceServiceTest {
     }
 
     @Test
+    public void getFlagStatus_False() {
+        String flagName = "iac_1_0";
+        String env = "pr";
+        FlagConfig flagConfig = FlagConfig.builder()
+            .env("pr")
+            .flagName("iac_1_0")
+            .serviceName("iac")
+            .status(Boolean.FALSE)
+            .build();
+        when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
+        boolean response = sut.getStatusByParam(flagName, env);
+        assertFalse(response);
+    }
+
+
+    @Test
     void postRoleAssignmentsByOneQueryRequest() throws IOException {
 
 
