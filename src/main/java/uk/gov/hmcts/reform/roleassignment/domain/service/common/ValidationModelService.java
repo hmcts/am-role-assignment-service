@@ -109,9 +109,12 @@ public class ValidationModelService {
 
         );
         long totalRecords = persistenceService.getTotalRecords();
+        double pageNumber = 0;
+        if (defaultSize > 0) {
+            pageNumber = (double) totalRecords / (double) defaultSize;
+        }
 
-        double pageNumber = (double) totalRecords / (double) defaultSize;
-        for (int page = 1; page < pageNumber; page++) {
+        for (var page = 1; page < pageNumber; page++) {
             assignmentRecords.add(persistenceService.retrieveRoleAssignmentsByQueryRequest(
                 queryRequest,
                 page,
