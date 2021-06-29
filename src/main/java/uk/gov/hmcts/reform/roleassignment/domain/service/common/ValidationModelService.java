@@ -108,10 +108,10 @@ public class ValidationModelService {
             true)
 
         );
-      long totalRecords = persistenceService.getTotalRecords();
+        long totalRecords = persistenceService.getTotalRecords();
 
         double pageNumber = (double) totalRecords / (double) defaultSize;
-        for (int page = 1; page < pageNumber; page++){
+        for (int page = 1; page < pageNumber; page++) {
             assignmentRecords.add(persistenceService.retrieveRoleAssignmentsByQueryRequest(
                 queryRequest,
                 page,
@@ -121,7 +121,7 @@ public class ValidationModelService {
                 true));
 
         }
-     return  assignmentRecords.stream().flatMap(Collection::stream).collect(Collectors.toList());
+        return  assignmentRecords.stream().flatMap(Collection::stream).collect(Collectors.toList());
 
     }
 
@@ -181,7 +181,7 @@ public class ValidationModelService {
      * This utility method is used to capture the log in drools.
      */
     public static void logMsg(final String message) {
-        log.info(message);
+        log.debug(message);
     }
 
     private void getFlagValuesFromDB(Map<String, Boolean> droolFlagStates) {

@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -28,8 +27,8 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
@@ -247,7 +246,7 @@ public class PersistenceService {
             )
         );
 
-        ThreadSafePage.pageHolder.set(pageRoleAssignmentEntities);
+        PageHolder.holder.set(pageRoleAssignmentEntities);
 
         return prepareQueryRequestResponse(existingFlag);
     }
@@ -317,7 +316,7 @@ public class PersistenceService {
                 )
             )
         );
-        ThreadSafePage.pageHolder.set(pageRoleAssignmentEntities);
+        PageHolder.holder.set(pageRoleAssignmentEntities);
 
         return prepareQueryRequestResponse(existingFlag);
     }
@@ -326,13 +325,13 @@ public class PersistenceService {
         long startTime = System.currentTimeMillis();
         List<Assignment> roleAssignmentList;
         if (!existingFlag) {
-            roleAssignmentList = ThreadSafePage.pageHolder.get().stream()
+            roleAssignmentList = PageHolder.holder.get().stream()
                 .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
                 .collect(Collectors.toList());
 
 
         } else {
-            roleAssignmentList = ThreadSafePage.pageHolder.get().stream()
+            roleAssignmentList = PageHolder.holder.get().stream()
                 .map(role -> persistenceUtil.convertEntityToExistingRoleAssignment(role))
                 .collect(Collectors.toList());
 
@@ -359,7 +358,8 @@ public class PersistenceService {
     }
 
     public long getTotalRecords() {
-        return ThreadSafePage.pageHolder.get() != null ? ThreadSafePage.pageHolder.get().getTotalElements() : Long.valueOf(0);
+        return PageHolder.holder.get() != null ? PageHolder.holder.get()
+            .getTotalElements() : Long.valueOf(0);
 
     }
 
