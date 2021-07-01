@@ -27,6 +27,7 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -48,6 +49,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELET
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildRequestedRoleCollection;
 
 @RunWith(MockitoJUnitRunner.class)
 class DeleteRoleAssignmentOrchestratorTest {
@@ -348,6 +350,23 @@ class DeleteRoleAssignmentOrchestratorTest {
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.deleteRoleAssignmentByProcessAndReference(PROCESS, " ")
         );
+    }
+
+    @Test
+    @DisplayName("should get 204 when role assignment records delete  successful by multiple query request")
+    void shouldDeleteRoleAssignmentByMultipleQueryRequest() throws Exception {
+
+        //Set the status approved of all requested role manually for drool validation process
+        setApprovedStatusByDrool();
+        mockRequest();
+
+        mockHistoryEntity();
+
+        ResponseEntity<Void> response = sut.deleteRoleAssignmentByMultipleQueryRequest(buildRequestedRoleCollection(Status.LIVE));
+        assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
+        assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
     }
 
     private void assertion() throws Exception {
