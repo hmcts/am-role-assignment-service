@@ -12,21 +12,34 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
+import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.versions.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
 
-@RunWith(MockitoJUnitRunner.class)
+
 class DeleteAssignmentControllerTest {
 
-    @Mock
+
     private DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator =
         mock(DeleteRoleAssignmentOrchestrator.class);
+
+    private  QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator =
+        mock(QueryRoleAssignmentOrchestrator.class);
 
     @InjectMocks
     private DeleteAssignmentController sut = new DeleteAssignmentController(deleteRoleAssignmentOrchestrator);
@@ -83,5 +96,36 @@ class DeleteAssignmentControllerTest {
             sut.deleteRoleAssignment(null, PROCESS, null));
     }
 
+
+    @Test
+    @DisplayName("should get 204 when role assignment records delete by Multiple Query Request successful")
+    void shouldDeleteRoleAssignmentByQueryRequest() throws Exception {
+
+        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .roleType(roleType)
+            .build();
+        MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
+            .queryRequests(Arrays.asList(queryRequest))
+            .build();
+
+        ResponseEntity<RoleAssignmentResource> expectedResponse
+            = TestDataBuilder.buildResourceRoleAssignmentResponse(Status.LIVE);
+        doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
+            .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest, 0, 20, "id", "desc");
+
+        when(deleteRoleAssignmentOrchestrator
+                 .deleteRoleAssignmentsByMultipleRequest(expectedResponse.getBody().getRoleAssignmentResponse()))
+            .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
+
+        ResponseEntity<?> response = sut
+            .deleteRoleAssignmentByMultipleQueryRequest(multipleQueryRequest);
+
+        assertAll(
+            () -> assertNotNull(response),
+            () -> assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode())
+        );
+    }
 
 }
