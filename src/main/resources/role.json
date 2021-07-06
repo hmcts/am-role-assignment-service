@@ -152,7 +152,7 @@
   {
     "name":  "petitioner's-solicitor",
     "label": "Petitioner's Solicitor",
-    "description": " Petitioner's Solicitor",
+    "description": "Petitioner's Solicitor",
     "category": "PROFESSIONAL",
     "patterns": [
       {
@@ -256,8 +256,8 @@
   },
   {
     "name":  "cafcass-solicitor",
-    "label": " Cafcass Solicitor",
-    "description": " Cafcass Solicitor",
+    "label": "Cafcass Solicitor",
+    "description": "Cafcass Solicitor",
     "category": "PROFESSIONAL",
     "patterns": [
       {
@@ -291,8 +291,8 @@
   },
   {
     "name":  "external-professional-solicitor",
-    "label": " External Professional Solicitor",
-    "description": " External Professional Solicitor",
+    "label": "External Professional Solicitor",
+    "description": "External Professional Solicitor",
     "category": "PROFESSIONAL",
     "patterns": [
       {
@@ -326,8 +326,8 @@
   },
   {
     "name":  "la-barrister",
-    "label": " LA Barrister",
-    "description": " LA Barrister",
+    "label": "LA Barrister",
+    "description": "LA Barrister",
     "category": "PROFESSIONAL",
     "patterns": [
       {
@@ -395,7 +395,7 @@
     ]
   },
   {
-    "name":  "ls-solicitor",
+    "name":  "la-solicitor",
     "label": "LA Solicitor",
     "description": "LA Solicitor",
     "category": "PROFESSIONAL",
