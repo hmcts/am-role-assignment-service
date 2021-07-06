@@ -1,3 +1,4 @@
+-- Postgres Function to insert bulk assignment records
 drop type if exists roleCategories;
 create type roleCategories as enum('PROFESSIONAL', 'JUDICIAL','LEGAL_OPERATIONS');
 
@@ -8,11 +9,11 @@ create type professionalRoles as enum('petitioner''s-solicitor', 'respondent''s-
                           'solicitor-i', 'solicitor-j');
 
 drop type if exists staffRoles;
-create type staffRoles as enum('tribunal-caseworker', 'senior-tribunal-caseworker');
+create type staffRoles as enum('tribunal-caseworker');
 
-create or replace procedure insert_bulk_assignments()
-language plpgsql
-as $$
+--create function insert_bulk_assignments() RETURNS void AS $$
+CREATE or replace FUNCTION insert_bulk_assignments()
+RETURNS void AS $$
 declare
 	assignmentId uuid;
 	actorId uuid;
@@ -22,7 +23,8 @@ declare
 	roleCategory text;
 	finalRole text;
 begin
-	FOR counter IN 1..300000
+	--300000
+	FOR counter IN 1..3
 loop
 	--Generate random UUID for Actor
 	actorId := uuid_in(md5(random()::text || clock_timestamp()::text)::cstring);
@@ -70,6 +72,16 @@ loop
 	(actor_id, etag, json_response)
 	VALUES(actorId, 0, '[{}]');
 
-	COMMIT;
+
 END LOOP;
-end;$$
+exception when others then
+	begin
+
+	end;
+end;
+$$ LANGUAGE plpgsql;
+
+--Invoke Function
+--select insert_bulk_assignments();
+--select count(*) FROM role_assignment; --11103 --11131-- 4,668,640
+--select count(*) from actor_cache_control; --7947 --7950 -- 307,950
