@@ -4,21 +4,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +20,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.versions.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
@@ -98,7 +91,7 @@ class DeleteAssignmentControllerTest {
 
 
     @Test
-    @DisplayName("should get 204 when role assignment records delete by Multiple Query Request successful")
+    @DisplayName("should get 200 when role assignment records delete by Multiple Query Request successful")
     void shouldDeleteRoleAssignmentByQueryRequest() throws Exception {
 
         List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
@@ -110,21 +103,19 @@ class DeleteAssignmentControllerTest {
             .queryRequests(Arrays.asList(queryRequest))
             .build();
 
-        ResponseEntity<RoleAssignmentResource> expectedResponse
-            = TestDataBuilder.buildResourceRoleAssignmentResponse(Status.LIVE);
-        doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
-            .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest, 0, 20, "id", "desc");
+
+
 
         when(deleteRoleAssignmentOrchestrator
-                 .deleteRoleAssignmentsByMultipleRequest(expectedResponse.getBody().getRoleAssignmentResponse()))
-            .thenReturn(ResponseEntity.status(HttpStatus.NO_CONTENT).build());
+                 .deleteRoleAssignmentByQuery(multipleQueryRequest))
+            .thenReturn(ResponseEntity.status(HttpStatus.OK).build());
 
         ResponseEntity<?> response = sut
-            .deleteRoleAssignmentByMultipleQueryRequest(multipleQueryRequest);
+            .deleteRoleAssignmentsByQuery("003352d0-e699-48bc-b6f5-5810411e68af",multipleQueryRequest);
 
         assertAll(
             () -> assertNotNull(response),
-            () -> assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode())
+            () -> assertEquals(HttpStatus.OK, response.getStatusCode())
         );
     }
 
