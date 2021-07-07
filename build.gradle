@@ -192,6 +192,16 @@ task runProviderPactVerification(type: Test) {
   systemProperty 'pact.provider.version', project.pacticipantVersion
 }
 
+task runAndPublishConsumerPactTests(type: Test, description: 'Publish pact test to broker.', group: 'Verification') {
+  useJUnitPlatform()
+  testClassesDirs = sourceSets.contractTest.output.classesDirs
+  classpath = sourceSets.contractTest.runtimeClasspath
+  include "uk/gov/hmcts/reform/roleassignment/**"
+  systemProperty 'pact.rootDir', "pacts"
+}
+
+runAndPublishConsumerPactTests.finalizedBy pactPublish
+
 runProviderPactVerification.dependsOn contract
 
 runProviderPactVerification.finalizedBy pactVerify
@@ -438,6 +448,16 @@ dependencies {
   contractTestCompile group: 'au.com.dius.pact.provider', name: 'junit5', version: versions.pact_version
   contractTestCompile group: 'au.com.dius.pact.provider', name: 'spring', version: versions.pact_version
   contractTestCompile group: 'au.com.dius.pact.provider', name: 'junit5spring', version: versions.pact_version
+
+  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'spring', version: versions.pact_version
+  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5spring', version: versions.pact_version
+
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'spring', version: versions.pact_version
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5spring', version: versions.pact_version
 
 
   contractTestCompile sourceSets.main.runtimeClasspath
