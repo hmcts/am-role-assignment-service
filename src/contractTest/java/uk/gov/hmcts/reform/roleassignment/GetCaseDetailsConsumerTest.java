@@ -30,6 +30,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 
 import java.util.Map;
 
+import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
