@@ -37,5 +37,7 @@ public final class Constants {
     public static final String INTEGER = "Integer";
     public static final String REQUEST_BODY = "Request body";
     public static final String SERVICE_AUTHORIZATION2 = "ServiceAuthorization";
+    public static final String DELETE_BY_QUERY = "Delete Request Initiated by Multiple Query Request";
+
 
 }

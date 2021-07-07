@@ -12,10 +12,13 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -37,7 +40,10 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -48,8 +54,8 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELET
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
-import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildRequestedRoleCollection;
 
 @RunWith(MockitoJUnitRunner.class)
 class DeleteRoleAssignmentOrchestratorTest {
@@ -97,7 +103,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         ResponseEntity response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        verify(persistenceService,times(1)).updateRequest(any(RequestEntity.class));
+        verify(persistenceService, times(1)).updateRequest(any(RequestEntity.class));
     }
 
     @Test
@@ -114,8 +120,10 @@ class DeleteRoleAssignmentOrchestratorTest {
         )).thenReturn(Collections.emptyList());
         mockHistoryEntity();
 
-        ResponseEntity<Void> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS,
-                                                                                                     REFERENCE);
+        ResponseEntity<Void> response = sut.deleteRoleAssignmentByProcessAndReference(
+            PROCESS,
+            REFERENCE
+        );
         assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
         assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
@@ -139,8 +147,10 @@ class DeleteRoleAssignmentOrchestratorTest {
         )).thenReturn(roleAssignmentList);
         mockHistoryEntity();
 
-        ResponseEntity<Void> response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS,
-                                                                                      REFERENCE);
+        ResponseEntity<Void> response = sut.deleteRoleAssignmentByProcessAndReference(
+            PROCESS,
+            REFERENCE
+        );
         assertNotNull(sut.getRequest().getId());
         assertEquals("Assignment Request Log", requestEntity.getLog());
         assertNotNull(response);
@@ -223,8 +233,8 @@ class DeleteRoleAssignmentOrchestratorTest {
         sut.setRequestEntity(requestEntity);
         sut.checkAllDeleteApproved(assignmentRequest, assignmentRequest.getRequest().getAssignerId());
         assertEquals(1, assignmentRequest.getRequestedRoles().size());
-        assertEquals(REJECTED.toString(),sut.getRequestEntity().getStatus());
-        assertEquals(assignmentRequest.getRequest().getLog(),sut.getRequestEntity().getLog());
+        assertEquals(REJECTED.toString(), sut.getRequestEntity().getStatus());
+        assertEquals(assignmentRequest.getRequest().getLog(), sut.getRequestEntity().getLog());
 
     }
 
@@ -302,7 +312,7 @@ class DeleteRoleAssignmentOrchestratorTest {
                 }
             }
         ), "actorId");
-        assertEquals(DELETE_REJECTED,roleAssignment.getStatus());
+        assertEquals(DELETE_REJECTED, roleAssignment.getStatus());
         verify(persistenceService, times(0)).deleteRoleAssignmentByActorId(any());
         verify(persistenceService, times(0)).persistActorCache(any());
         verify(persistenceService, times(2)).updateRequest(any(RequestEntity.class));
@@ -315,9 +325,11 @@ class DeleteRoleAssignmentOrchestratorTest {
         //Set the status approved of all requested role manually for drool validation process
         setApprovedStatusByDrool();
         mockRequest();
-        when(persistenceService.getAssignmentsByProcess(PROCESS,
-                                                        REFERENCE,
-                                                        Status.LIVE.toString()))
+        when(persistenceService.getAssignmentsByProcess(
+            PROCESS,
+            REFERENCE,
+            Status.LIVE.toString()
+        ))
             .thenReturn(new ArrayList<>() {
                 {
                     add(RoleAssignment.builder().status(DELETE_APPROVED).build());
@@ -328,9 +340,9 @@ class DeleteRoleAssignmentOrchestratorTest {
         mockHistoryEntity();
         ResponseEntity response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
-        verify(validationModelService,times(1)).validateRequest(any(AssignmentRequest.class));
-        verify(persistenceService,times(3)).updateRequest(any(RequestEntity.class));
-        verify(persistenceService,times(2)).persistHistoryEntities(any());
+        verify(validationModelService, times(1)).validateRequest(any(AssignmentRequest.class));
+        verify(persistenceService, times(3)).updateRequest(any(RequestEntity.class));
+        verify(persistenceService, times(2)).persistHistoryEntities(any());
 
     }
 
@@ -353,19 +365,40 @@ class DeleteRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    @DisplayName("should get 204 when role assignment records delete  successful by multiple query request")
+    @DisplayName("should get 200 when role assignment records delete  successful by multiple query request")
     void shouldDeleteRoleAssignmentByMultipleQueryRequest() throws Exception {
-
         //Set the status approved of all requested role manually for drool validation process
         setApprovedStatusByDrool();
         mockRequest();
+        doReturn(TestDataBuilder.buildRequestedRoleCollection(LIVE)).when(persistenceService)
+            .retrieveRoleAssignmentsByQueryRequest(
+                any(),
+                anyInt(),
+                anyInt(),
+                any(),
+                any(),
+                anyBoolean()
+        );
+        when(persistenceService.getTotalRecords()).thenReturn(21L);
+        ReflectionTestUtils.setField(
+            sut,
+            "defaultSize", 20
 
+        );
         mockHistoryEntity();
+        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
 
-        ResponseEntity<Void> response = sut.deleteRoleAssignmentByMultipleQueryRequest(buildRequestedRoleCollection(Status.LIVE));
+        QueryRequest queryRequest = QueryRequest.builder()
+            .roleType(roleType)
+            .build();
+        MultipleQueryRequest multipleQueryRequest = MultipleQueryRequest.builder()
+            .queryRequests(Arrays.asList(queryRequest))
+            .build();
+
+        ResponseEntity<Void> response = sut.deleteRoleAssignmentByQuery(multipleQueryRequest);
         assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
         assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
     }
 
