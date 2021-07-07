@@ -431,4 +431,53 @@ class DeleteRoleAssignmentOrchestratorTest {
         )).thenReturn(historyEntity);
     }
 
+    @Test
+    @DisplayName("should get 200 when role assignment records delete  successful")
+    void shouldDeleteRoleAssignmentByQueryRequest() throws Exception {
+
+        //Set the status approved of all requested role manually for drool validation process
+        setApprovedStatusByDrool();
+        mockRequest();
+
+
+        doReturn(Collections.emptyList()).when(persistenceService)
+            .retrieveRoleAssignmentsByMultipleQueryRequest(
+                any(),
+                anyInt(),
+                anyInt(),
+                any(),
+                any(),
+                anyBoolean()
+        );
+        mockHistoryEntity();
+
+        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .roleType(roleType)
+            .build();
+        MultipleQueryRequest multipleQueryRequest = MultipleQueryRequest.builder()
+            .queryRequests(Arrays.asList(queryRequest))
+            .build();
+
+        ResponseEntity<Void> response = sut.deleteRoleAssignmentByQuery(multipleQueryRequest);
+        assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
+        assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+    }
+
+    @Test
+    @DisplayName("should throw 400 when query request empty")
+    void shouldThrowBadRequestWhenQueryRequestEmpty() throws Exception {
+        mockRequest();
+        MultipleQueryRequest multipleQueryRequest = MultipleQueryRequest.builder()
+            .queryRequests(Collections.emptyList())
+            .build();
+
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.deleteRoleAssignmentByQuery(multipleQueryRequest)
+        );
+    }
+
 }
