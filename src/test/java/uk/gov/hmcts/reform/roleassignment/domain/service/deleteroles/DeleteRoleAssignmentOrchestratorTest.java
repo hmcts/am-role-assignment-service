@@ -365,13 +365,13 @@ class DeleteRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    @DisplayName("should get 200 when role assignment records delete  successful by multiple query request")
-    void shouldDeleteRoleAssignmentByMultipleQueryRequest() throws Exception {
+    @DisplayName("should throw 422 when any record is rejected for deletion")
+    void shouldThrowUnProcessExceptionByMultipleQueryRequest() throws Exception {
         //Set the status approved of all requested role manually for drool validation process
         setApprovedStatusByDrool();
         mockRequest();
         doReturn(TestDataBuilder.buildRequestedRoleCollection(LIVE)).when(persistenceService)
-            .retrieveRoleAssignmentsByQueryRequest(
+            .retrieveRoleAssignmentsByMultipleQueryRequest(
                 any(),
                 anyInt(),
                 anyInt(),
@@ -396,9 +396,10 @@ class DeleteRoleAssignmentOrchestratorTest {
             .build();
 
         ResponseEntity<Void> response = sut.deleteRoleAssignmentByQuery(multipleQueryRequest);
-        assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
-        assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
+        verify(validationModelService, times(1)).validateRequest(any(AssignmentRequest.class));
+        verify(persistenceService, times(3)).updateRequest(any(RequestEntity.class));
+        verify(persistenceService, times(2)).persistHistoryEntities(any());
 
     }
 
