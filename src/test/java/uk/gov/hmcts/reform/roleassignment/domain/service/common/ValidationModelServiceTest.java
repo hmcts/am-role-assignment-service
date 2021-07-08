@@ -33,6 +33,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 
 class ValidationModelServiceTest {
@@ -136,6 +137,38 @@ class ValidationModelServiceTest {
         List<? extends Assignment> existingRecords = sut.getCurrentRoleAssignmentsForActors(actorIds);
         assertNotNull(existingRecords);
         assertEquals(2, existingRecords.size());
+
+
+    }
+
+    @Test
+    void shouldExecuteQueryParamForMultipleCaseRole() throws IOException {
+
+        Set<String> actorIds = new HashSet<>();
+
+        actorIds.add("123e4567-e89b-42d3-a456-556642445678");
+        actorIds.add("4dc7dd3c-3fb5-4611-bbde-5101a97681e1");
+
+        doReturn(TestDataBuilder.buildRequestedRoleCollection(LIVE)).when(persistenceService)
+            .retrieveRoleAssignmentsByQueryRequest(
+                any(),
+                anyInt(),
+                anyInt(),
+                any(),
+                any(),
+                anyBoolean()
+        );
+        when(persistenceService.getTotalRecords()).thenReturn(21L);
+        ReflectionTestUtils.setField(
+            sut,
+            "defaultSize", 20
+
+        );
+
+
+        List<? extends Assignment> existingRecords = sut.getCurrentRoleAssignmentsForActors(actorIds);
+        assertNotNull(existingRecords);
+        assertEquals(4, existingRecords.size());
 
 
     }
