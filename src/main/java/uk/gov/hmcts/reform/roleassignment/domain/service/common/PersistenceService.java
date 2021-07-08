@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -26,6 +27,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -47,13 +49,14 @@ import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecif
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByAuthorisations;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByClassification;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByGrantType;
+import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByHasAttributes;
+import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByReadOnly;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByRoleCategories;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByRoleName;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByRoleType;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByValidDate;
 
 @Service
-@RequestScope
 public class PersistenceService {
 
     private static final Logger logger = LoggerFactory.getLogger(PersistenceService.class);
@@ -69,7 +72,6 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private ActorCacheRepository actorCacheRepository;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
-    private Page<RoleAssignmentEntity> pageRoleAssignmentEntities;
     private FlagConfigRepository flagConfigRepository;
 
     @Value("${roleassignment.query.sortcolumn}")
@@ -212,10 +214,9 @@ public class PersistenceService {
                                                                   String direction,
                                                                   boolean existingFlag) {
 
-        long startTime = System.currentTimeMillis();
-        List<Assignment> roleAssignmentList;
 
-        pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
+
+        Page<RoleAssignmentEntity> pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(Objects.requireNonNull(
                 Objects.requireNonNull(
                     Objects.requireNonNull(
@@ -245,15 +246,95 @@ public class PersistenceService {
             )
         );
 
+        PageHolder.holder.set(pageRoleAssignmentEntities);
+
+        return prepareQueryRequestResponse(existingFlag);
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public List<Assignment> retrieveRoleAssignmentsByMultipleQueryRequest(MultipleQueryRequest multipleQueryRequest,
+                                                                          Integer pageNumber,
+                                                                          Integer size, String sort,
+                                                                          String direction,
+                                                                          boolean existingFlag) {
+
+
+        Specification<RoleAssignmentEntity> finalQuery = null;
+        if (CollectionUtils.isNotEmpty(multipleQueryRequest.getQueryRequests())) {
+            Specification<RoleAssignmentEntity> initialQuery = Specification.where(
+                searchByActorIds(multipleQueryRequest.getQueryRequests().get(0).getActorId()))
+                .and(searchByGrantType(multipleQueryRequest.getQueryRequests().get(0).getGrantType()))
+                .and(searchByValidDate(multipleQueryRequest.getQueryRequests().get(0).getValidAt()))
+                .and(searchByAttributes(multipleQueryRequest.getQueryRequests().get(0).getAttributes()))
+                .and(searchByRoleType(multipleQueryRequest.getQueryRequests().get(0).getRoleType()))
+                .and(searchByRoleName(multipleQueryRequest.getQueryRequests().get(0).getRoleName()))
+                .and(searchByClassification(multipleQueryRequest.getQueryRequests().get(0).getClassification()))
+                .and(searchByRoleCategories(multipleQueryRequest.getQueryRequests().get(0).getRoleCategory()))
+                .and(searchByAuthorisations(multipleQueryRequest.getQueryRequests().get(0).getAuthorisations()))
+                .and(searchByHasAttributes(multipleQueryRequest.getQueryRequests().get(0).getHasAttributes()))
+                .and(searchByReadOnly(multipleQueryRequest.getQueryRequests().get(0).getReadOnly()));
+
+
+            if (multipleQueryRequest.getQueryRequests().size() > 1) {
+                for (var i = 1; i < multipleQueryRequest.getQueryRequests().size(); i++) {
+                    finalQuery = initialQuery.or(
+                          searchByActorIds(multipleQueryRequest.getQueryRequests().get(i).getActorId())
+                           .and(searchByRoleName(multipleQueryRequest.getQueryRequests().get(i).getRoleName()))
+                           .and(searchByHasAttributes(multipleQueryRequest.getQueryRequests().get(i)
+                                                          .getHasAttributes()))
+                           .and(searchByAuthorisations(multipleQueryRequest.getQueryRequests()
+                                                           .get(i).getAuthorisations()))
+                           .and(searchByGrantType(multipleQueryRequest.getQueryRequests().get(i).getGrantType()))
+                           .and(searchByValidDate(multipleQueryRequest.getQueryRequests().get(i).getValidAt()))
+                           .and(searchByAttributes(multipleQueryRequest.getQueryRequests().get(i).getAttributes()))
+                           .and(searchByRoleType(multipleQueryRequest.getQueryRequests().get(i).getRoleType()))
+                           .and(searchByClassification(multipleQueryRequest.getQueryRequests().get(i)
+                                                           .getClassification()))
+                           .and(searchByRoleCategories(multipleQueryRequest.getQueryRequests()
+                                                           .get(i).getRoleCategory()))
+                           .and(searchByReadOnly(multipleQueryRequest.getQueryRequests().get(i).getReadOnly())));
+
+                }
+            } else {
+                finalQuery = initialQuery;
+            }
+
+        }
+
+
+        Page<RoleAssignmentEntity> pageRoleAssignmentEntities  = roleAssignmentRepository.findAll(
+            finalQuery,
+            PageRequest.of(
+                (pageNumber != null
+                    && pageNumber > 0) ? pageNumber : 0,
+                (size != null
+                    && size > 0) ? size : defaultSize,
+                Sort.by(
+                    (direction != null) ? Sort.Direction.fromString(direction) : Sort.DEFAULT_DIRECTION,
+                    (sort != null) ? sort : sortColumn
+                )
+            )
+        );
+        PageHolder.holder.set(pageRoleAssignmentEntities);
+
+        return prepareQueryRequestResponse(existingFlag);
+    }
+
+    private List<Assignment> prepareQueryRequestResponse(boolean existingFlag) {
+        long startTime = System.currentTimeMillis();
+        List<Assignment> roleAssignmentList;
         if (!existingFlag) {
-            roleAssignmentList = pageRoleAssignmentEntities.stream()
+            roleAssignmentList = PageHolder.holder.get().stream()
                 .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
                 .collect(Collectors.toList());
 
+
         } else {
-            roleAssignmentList = pageRoleAssignmentEntities.stream()
+            roleAssignmentList = PageHolder.holder.get().stream()
                 .map(role -> persistenceUtil.convertEntityToExistingRoleAssignment(role))
                 .collect(Collectors.toList());
+
 
         }
 
@@ -262,6 +343,7 @@ public class PersistenceService {
             System.currentTimeMillis(),
             Math.subtractExact(System.currentTimeMillis(), startTime)
         );
+
         return roleAssignmentList;
     }
 
@@ -276,7 +358,8 @@ public class PersistenceService {
     }
 
     public long getTotalRecords() {
-        return pageRoleAssignmentEntities != null ? pageRoleAssignmentEntities.getTotalElements() : Long.valueOf(0);
+        return PageHolder.holder.get() != null ? PageHolder.holder.get()
+            .getTotalElements() : Long.valueOf(0);
 
     }
 

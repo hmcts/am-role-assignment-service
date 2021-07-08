@@ -21,7 +21,7 @@ import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.CreatedTimeComparator;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
-import uk.gov.hmcts.reform.roleassignment.v1.V1;
+import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
 import java.text.ParseException;
 import java.time.ZoneOffset;

@@ -248,6 +248,7 @@ sonarqube {
       "src/main/java/uk/gov/hmcts/reform/roleassignment/*Application.java," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/config/**," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/data/**," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/domain/service/common/PageHolder.java," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/domain/model/**"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
