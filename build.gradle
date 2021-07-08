@@ -185,6 +185,7 @@ task contract(type: Test) {
 }
 
 task runProviderPactVerification(type: Test) {
+  useJUnitPlatform()
   logger.lifecycle("Runs provider pact Tests")
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
