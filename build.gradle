@@ -181,7 +181,7 @@ task contract(type: Test) {
   useJUnitPlatform()
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
-  include "uk/gov/hmcts/reform/roleassignment/**"
+  include "uk/gov/hmcts/reform/roleassignment/*ConsumerTest*"
   exclude "uk/gov/hmcts/reform/roleassignment/*ProviderTest*"
 }
 
@@ -207,6 +207,17 @@ runAndPublishConsumerPactTests.finalizedBy pactPublish
 runProviderPactVerification.dependsOn contract
 
 runProviderPactVerification.finalizedBy pactVerify
+
+pact {
+  broker {
+    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:9292'
+  }
+  publish {
+    pactDirectory = 'pacts'
+    version = project.pacticipantVersion
+    tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
+  }
+}
 
 jacocoTestReport {
   executionData(test)
