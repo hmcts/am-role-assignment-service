@@ -13,6 +13,7 @@ import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
@@ -32,6 +33,7 @@ import static org.mockito.Mockito.when;
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
     host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
     @VersionSelector(tag = "master")})
+@TestPropertySource(properties = {"roleassignment.query.size=20"})
 @Import(RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
 public class GetActorByIdRoleAssignmentProviderTest {
