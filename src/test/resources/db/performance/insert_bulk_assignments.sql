@@ -12,7 +12,7 @@ drop type if exists staffRoles;
 create type staffRoles as enum('tribunal-caseworker');
 
 --create function insert_bulk_assignments() RETURNS void AS $$
-CREATE or replace FUNCTION insert_bulk_assignments()
+CREATE or replace FUNCTION insert_bulk_assignments(numberOfActors INT, numberOfRecords INT)
 RETURNS void AS $$
 declare
 	assignmentId uuid;
@@ -24,7 +24,7 @@ declare
 	finalRole text;
 begin
 	--300000
-	FOR counter IN 1..3
+	FOR counter IN 1..numberOfActors
 loop
 	--Generate random UUID for Actor
 	actorId := uuid_in(md5(random()::text || clock_timestamp()::text)::cstring);
@@ -58,13 +58,13 @@ loop
 			END IF;
 
 
-			FOR counter IN 1..number_of_assignments
+			FOR counter IN 1..numberOfRecords
 		    loop
 		    	--Generate random UUID for assignmentId
 		    	assignmentId := uuid_in(md5(random()::text || clock_timestamp()::text)::cstring);
 		        INSERT INTO public.role_assignment
 				(id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-				VALUES(assignmentId, 'IDAM', actorId, 'CASE', finalRole, 'RESTRICTED', 'SPECIFIC', roleCategory, false, '2021-08-01 00:00:00.000', null, '{"caseId": "1234567890123456", "caseType": "Asylum", "jurisdiction": "IA"}', '2020-07-26 23:39:13.835');
+				VALUES(assignmentId, 'IDAM', actorId, 'CASE', finalRole, 'RESTRICTED', 'SPECIFIC', roleCategory, false, '2021-01-01 00:00:00.000', null, '{"caseId": "1234567890123456", "caseType": "Asylum", "jurisdiction": "IA"}', now());
 		    end loop;
 	end;
 	-- Insert actor cache records
@@ -81,7 +81,16 @@ exception when others then
 end;
 $$ LANGUAGE plpgsql;
 
---Invoke Function
---select insert_bulk_assignments();
---select count(*) FROM role_assignment; --11103 --11131-- 4,668,640
---select count(*) from actor_cache_control; --7947 --7950 -- 307,950
+--test select insert_bulk_assignments(1, 1);
+--select insert_bulk_assignments(18, 1024);
+--select insert_bulk_assignments(60, 512);
+--select insert_bulk_assignments(268, 256);
+--select insert_bulk_assignments(576, 128);
+--select insert_bulk_assignments(1568, 64);
+--select insert_bulk_assignments(4924, 32);
+--select insert_bulk_assignments(13398, 16);
+--select insert_bulk_assignments(25380, 8);
+--select insert_bulk_assignments(46660, 4);
+--select insert_bulk_assignments(221450, 2);
+--select insert_bulk_assignments(1780686, 1);
+
