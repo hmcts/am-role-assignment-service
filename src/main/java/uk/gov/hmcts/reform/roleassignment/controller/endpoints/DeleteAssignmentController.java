@@ -136,6 +136,7 @@ public class DeleteAssignmentController {
 
     @PostMapping(
         path = "/am/role-assignments/query/delete",
+        consumes = "application/json",
         produces = V1.MediaType.DELETE_ASSIGNMENTS
     )
     @ResponseStatus(code = HttpStatus.OK)
