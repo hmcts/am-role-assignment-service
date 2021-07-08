@@ -182,6 +182,7 @@ task contract(type: Test) {
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
   include "uk/gov/hmcts/reform/roleassignment/**"
+  exclude "uk/gov/hmcts/reform/roleassignment/*ProviderTest*"
 }
 
 task runProviderPactVerification(type: Test) {
@@ -190,6 +191,7 @@ task runProviderPactVerification(type: Test) {
   classpath = sourceSets.contractTest.runtimeClasspath
   systemProperty 'pact.verifier.publishResults', System.getProperty('pact.verifier.publishResults')
   systemProperty 'pact.provider.version', project.pacticipantVersion
+  exclude "uk/gov/hmcts/reform/roleassignment/*ConsumerTest*"
 }
 
 task runAndPublishConsumerPactTests(type: Test, description: 'Publish pact test to broker.', group: 'Verification') {
@@ -458,6 +460,8 @@ dependencies {
   contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
   contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'spring', version: versions.pact_version
   contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5spring', version: versions.pact_version
+
+  contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot
 
 
   contractTestCompile sourceSets.main.runtimeClasspath
