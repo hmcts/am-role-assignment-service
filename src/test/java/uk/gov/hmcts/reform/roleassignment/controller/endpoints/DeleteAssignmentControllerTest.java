@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.roleassignment.v1.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
+import static uk.gov.hmcts.reform.roleassignment.versions.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
 
 @RunWith(MockitoJUnitRunner.class)
 class DeleteAssignmentControllerTest {
