@@ -292,7 +292,7 @@ public class DeleteRoleAssignmentOrchestrator {
     }
 
     @SuppressWarnings("unchecked")
-    public ResponseEntity<Void> deleteRoleAssignmentByQuery(MultipleQueryRequest multipleQueryRequest) {
+    public ResponseEntity<Void> deleteRoleAssignmentsByQuery(MultipleQueryRequest multipleQueryRequest) {
 
         //1. create the request Object
         if (CollectionUtils.isNotEmpty(multipleQueryRequest.getQueryRequests())) {
