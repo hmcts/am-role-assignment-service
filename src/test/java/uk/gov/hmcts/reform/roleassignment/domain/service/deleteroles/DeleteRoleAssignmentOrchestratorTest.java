@@ -395,7 +395,7 @@ class DeleteRoleAssignmentOrchestratorTest {
             .queryRequests(Arrays.asList(queryRequest))
             .build();
 
-        ResponseEntity<Void> response = sut.deleteRoleAssignmentByQuery(multipleQueryRequest);
+        ResponseEntity<Void> response = sut.deleteRoleAssignmentsByQuery(multipleQueryRequest);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
         verify(validationModelService, times(1)).validateRequest(any(AssignmentRequest.class));
         verify(persistenceService, times(3)).updateRequest(any(RequestEntity.class));
@@ -460,7 +460,7 @@ class DeleteRoleAssignmentOrchestratorTest {
             .queryRequests(Arrays.asList(queryRequest))
             .build();
 
-        ResponseEntity<Void> response = sut.deleteRoleAssignmentByQuery(multipleQueryRequest);
+        ResponseEntity<Void> response = sut.deleteRoleAssignmentsByQuery(multipleQueryRequest);
         assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
         assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -476,7 +476,7 @@ class DeleteRoleAssignmentOrchestratorTest {
             .build();
 
         Assertions.assertThrows(BadRequestException.class, () ->
-            sut.deleteRoleAssignmentByQuery(multipleQueryRequest)
+            sut.deleteRoleAssignmentsByQuery(multipleQueryRequest)
         );
     }
 
