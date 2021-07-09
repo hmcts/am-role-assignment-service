@@ -136,15 +136,14 @@ public class DeleteAssignmentController {
 
     @PostMapping(
         path = "/am/role-assignments/query/delete",
-        consumes = V1.MediaType.DELETE_ASSIGNMENTS_BY_QUERY,
-        produces = V1.MediaType.DELETE_ASSIGNMENTS
+        produces = V1.MediaType.POST_DELETE_ASSIGNMENTS_BY_QUERY_REQUEST
     )
     @ResponseStatus(code = HttpStatus.OK)
-    @ApiOperation("Deletes the role assignment by query.")
+    @ApiOperation("Deletes the role assignments by query.")
     @ApiResponses({
         @ApiResponse(
             code = 200,
-            message = "Valid"
+            message = "The assignment records have been deleted."
         ),
         @ApiResponse(
             code = 400,
@@ -174,7 +173,7 @@ public class DeleteAssignmentController {
         long startTime = System.currentTimeMillis();
         logger.info("Inside the Delete role assignment records by multiple query request method");
         ResponseEntity<Void> responseEntity = deleteRoleAssignmentOrchestrator
-            .deleteRoleAssignmentByQuery(multipleQueryRequest);
+            .deleteRoleAssignmentsByQuery(multipleQueryRequest);
         logger.debug(
             " >> deleteRoleAssignmentsByQuery execution finished at {} .Time taken = {} milliseconds",
             System.currentTimeMillis(),

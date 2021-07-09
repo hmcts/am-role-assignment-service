@@ -107,7 +107,7 @@ class DeleteAssignmentControllerTest {
 
 
         when(deleteRoleAssignmentOrchestrator
-                 .deleteRoleAssignmentByQuery(multipleQueryRequest))
+                 .deleteRoleAssignmentsByQuery(multipleQueryRequest))
             .thenReturn(ResponseEntity.status(HttpStatus.OK).build());
 
         ResponseEntity<?> response = sut
