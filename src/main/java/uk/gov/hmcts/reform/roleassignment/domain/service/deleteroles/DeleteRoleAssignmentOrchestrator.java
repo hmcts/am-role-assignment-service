@@ -35,6 +35,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.DELETE_BY_QUERY;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NO_RECORDS;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.PROCESS;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.REFERENCE;
 
 @Service
 @RequestScope
@@ -296,7 +299,8 @@ public class DeleteRoleAssignmentOrchestrator {
 
         //1. create the request Object
         if (CollectionUtils.isNotEmpty(multipleQueryRequest.getQueryRequests())) {
-            request = parseRequestService.prepareDeleteRequest("", "", "", "");
+            request = parseRequestService.prepareDeleteRequest(PROCESS, REFERENCE,
+                                                               "", "");
             request.setLog(DELETE_BY_QUERY);
             assignmentRequest = new AssignmentRequest(request, Collections.emptyList());
         } else {
@@ -317,6 +321,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
         if (requestedRoles.isEmpty()) {
             requestEntity.setStatus(Status.APPROVED.toString());
+            requestEntity.setLog(NO_RECORDS);
             persistenceService.updateRequest(requestEntity);
             return new ResponseEntity<>(responseHeaders, HttpStatus.OK);
         } else {
