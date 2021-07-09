@@ -150,7 +150,7 @@
     ]
   },
   {
-    "name":  "petitioner's-solicitor",
+    "name":  "[PETSOLICITOR]",
     "label": "Petitioner's Solicitor",
     "description": "Petitioner's Solicitor",
     "category": "PROFESSIONAL",
@@ -185,7 +185,7 @@
     ]
   },
   {
-    "name":  "respondent's-solicitor",
+    "name":  "[RESPSOLICITOR]",
     "label": "Respondent's Solicitor",
     "description": "Respondent's Solicitor",
     "category": "PROFESSIONAL",
@@ -220,7 +220,7 @@
     ]
   },
   {
-    "name":  "barrister",
+    "name":  "[BARRISTER]",
     "label": "Barrister",
     "description": "Barrister",
     "category": "PROFESSIONAL",
@@ -255,7 +255,7 @@
     ]
   },
   {
-    "name":  "cafcass-solicitor",
+    "name":  "[CAFCASSSOLICITOR]",
     "label": "Cafcass Solicitor",
     "description": "Cafcass Solicitor",
     "category": "PROFESSIONAL",
@@ -290,7 +290,7 @@
     ]
   },
   {
-    "name":  "external-professional-solicitor",
+    "name":  "[EPSMANAGING]",
     "label": "External Professional Solicitor",
     "description": "External Professional Solicitor",
     "category": "PROFESSIONAL",
@@ -325,7 +325,7 @@
     ]
   },
   {
-    "name":  "la-barrister",
+    "name":  "[LABARRISTER]",
     "label": "LA Barrister",
     "description": "LA Barrister",
     "category": "PROFESSIONAL",
@@ -360,7 +360,7 @@
     ]
   },
   {
-    "name":  "managing-local-authority",
+    "name":  "[LAMANAGING]",
     "label": "Managing Local Authority",
     "description": "Managing Local Authority",
     "category": "PROFESSIONAL",
@@ -395,7 +395,7 @@
     ]
   },
   {
-    "name":  "la-solicitor",
+    "name":  "[LASOLICITOR]",
     "label": "LA Solicitor",
     "description": "LA Solicitor",
     "category": "PROFESSIONAL",
@@ -430,7 +430,7 @@
     ]
   },
   {
-    "name":  "solicitor",
+    "name":  "[SOLICITOR]",
     "label": "Solicitor",
     "description": "Solicitor",
     "category": "PROFESSIONAL",
@@ -465,7 +465,7 @@
     ]
   },
   {
-    "name":  "solicitor-a",
+    "name":  "[SOLICITORA]",
     "label": "Solicitor A",
     "description": "Solicitor A",
     "category": "PROFESSIONAL",
@@ -500,7 +500,7 @@
     ]
   },
   {
-    "name":  "solicitor-b",
+    "name":  "[SOLICITORB]",
     "label": "Solicitor B",
     "description": "Solicitor B",
     "category": "PROFESSIONAL",
@@ -535,7 +535,7 @@
     ]
   },
   {
-    "name":  "solicitor-c",
+    "name":  "[SOLICITORC]",
     "label": "Solicitor C",
     "description": "Solicitor C",
     "category": "PROFESSIONAL",
@@ -570,7 +570,7 @@
     ]
   },
   {
-    "name":  "solicitor-d",
+    "name":  "[SOLICITORD]",
     "label": "Solicitor D",
     "description": "Solicitor D",
     "category": "PROFESSIONAL",
@@ -605,7 +605,7 @@
     ]
   },
   {
-    "name":  "solicitor-e",
+    "name":  "[SOLICITORE]",
     "label": "Solicitor E",
     "description": "Solicitor E",
     "category": "PROFESSIONAL",
@@ -640,7 +640,7 @@
     ]
   },
   {
-    "name":  "solicitor-f",
+    "name":  "[SOLICITORF]",
     "label": "Solicitor F",
     "description": "Solicitor F",
     "category": "PROFESSIONAL",
@@ -675,7 +675,7 @@
     ]
   },
   {
-    "name":  "solicitor-g",
+    "name":  "[SOLICITORG]",
     "label": "Solicitor G",
     "description": "Solicitor G",
     "category": "PROFESSIONAL",
@@ -710,7 +710,7 @@
     ]
   },
   {
-    "name":  "solicitor-h",
+    "name":  "[SOLICITORH]",
     "label": "Solicitor H",
     "description": "Solicitor H",
     "category": "PROFESSIONAL",
@@ -745,7 +745,7 @@
     ]
   },
   {
-    "name":  "solicitor-i",
+    "name":  "[SOLICITORI]",
     "label": "Solicitor I",
     "description": "Solicitor I",
     "category": "PROFESSIONAL",
@@ -780,7 +780,7 @@
     ]
   },
   {
-    "name":  "solicitor-j",
+    "name":  "[SOLICITORJ]",
     "label": "Solicitor J",
     "description": "Solicitor J",
     "category": "PROFESSIONAL",
@@ -815,7 +815,7 @@
     ]
   },
   {
-    "name": "legal-representative",
+    "name": "[LEGALREPRESENTATIVE]",
     "label": "Legal Representative",
     "description": "Legal Representative",
     "category": "PROFESSIONAL",
@@ -841,6 +841,138 @@
           "caseType": {
             "mandatory": true,
             "values": ["Asylum"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "[CREATOR]",
+    "label": "Creator",
+    "description": "Creator Role for Professional users",
+    "category": "PROFESSIONAL",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "[CREATOR]",
+    "label": "Creator",
+    "description": "Creator Role for Citizen users",
+    "category": "CITIZEN",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "[CREATOR]",
+    "label": "Creator",
+    "description": "Creator Role for Judicial users",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "[CREATOR]",
+    "label": "Creator",
+    "description": "Creator Role for Staff users",
+    "category": "LEGAL_OPERATIONS",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
