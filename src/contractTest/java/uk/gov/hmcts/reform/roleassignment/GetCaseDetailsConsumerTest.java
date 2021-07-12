@@ -61,8 +61,8 @@ public class GetCaseDetailsConsumerTest {
     public RequestResponsePact executeGetCaseDetailsAndGet200 (PactDslWithProvider builder) {
 
         return builder
-            .given("A case with provided caseId is available in CCD data store service")
-            .uponReceiving("CCD data store takes s2s/auth token and returns case deatils information")
+            .given("A Get Case is requested")
+            .uponReceiving("CCD data store takes s2s/auth token and caseId, then returns case detail information")
             .path(CCD_GET_CASE_DETAILS)
             .method(HttpMethod.GET.toString())
             .willRespondWith()
@@ -85,14 +85,14 @@ public class GetCaseDetailsConsumerTest {
         JSONObject jsonResponse = new JSONObject(actualResponseBody);
         JSONArray ccdResponse = (JSONArray) jsonResponse.get("ccdResponse");
         JSONObject first = (JSONObject) ccdResponse.get(0);
-        assertThat(first.get("caseId"), equalTo(CASE_ID));
+        assertThat(first.get("id"), equalTo(CASE_ID));
     }
 
     private DslPart createResponse() {
         return newJsonBody(o -> o
             .minArrayLike("ccdResponse", 1, 1,
                           ccdResponse -> ccdResponse
-                              .stringValue("id", "1234")
+                              .stringValue("id", CASE_ID)
                               .stringValue("case_type", "IA")
                               .stringValue("jurasdiction", "Asylum")
             )).build();
