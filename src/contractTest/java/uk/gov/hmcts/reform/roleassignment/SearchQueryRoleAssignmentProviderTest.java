@@ -39,6 +39,7 @@ import static org.mockito.Mockito.when;
 public class SearchQueryRoleAssignmentProviderTest {
 
     private static final String ACTOR_ID = "234873";
+    private static final String ACTOR_ID_ADV = "14a21569-eb80-4681-b62c-6ae2ed069e5f";
 
     @Autowired
     private PersistenceService persistenceService;
@@ -106,7 +107,7 @@ public class SearchQueryRoleAssignmentProviderTest {
 
     private void initAdvancedMock() throws Exception {
         List<Assignment> roleAssignments =
-            TestDataBuilder.buildMultiAssignmentList(Status.LIVE, ACTOR_ID, "attributes_orm_orgrole.json");
+            TestDataBuilder.buildMultiAssignmentList(Status.LIVE, ACTOR_ID_ADV, "attributes_orm_orgrole.json");
 
         roleAssignments.get(1).setRoleName("tribunal-caseworker");
 
