@@ -22,7 +22,7 @@ import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
-import uk.gov.hmcts.reform.roleassignment.v1.V1;
+import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
 import java.text.ParseException;
 
