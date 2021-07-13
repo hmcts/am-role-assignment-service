@@ -111,7 +111,8 @@ public class SearchQueryRoleAssignmentProviderTest {
 
         roleAssignments.get(1).setRoleName("tribunal-caseworker");
 
-        when(persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(any(), any(), any(), any(), any(), anyBoolean()))
+        when(persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
+            any(), any(), any(), any(), any(), anyBoolean()))
             .thenReturn(roleAssignments);
     }
 }
