@@ -84,7 +84,7 @@ public class CreateRoleAssignmentOrchestrator {
             createRoleAssignmentService.setRequestEntity(requestEntity);
             createRoleAssignmentService.setIncomingRequest(request);
 
-            //Check replace existing true/false
+            //Check replace existing true or false
             if (request.isReplaceExisting()) {
                 long replaceExisting = System.currentTimeMillis();
                 logger.debug("replaceExisting Inner Method execution started at {}", replaceExisting);
@@ -113,6 +113,7 @@ public class CreateRoleAssignmentOrchestrator {
                             parsedAssignmentRequest
                         );
                     }
+                    
 
                     //8. Call the persistence to copy assignment records to RoleAssignmentLive table
                     if (!createRoleAssignmentService.needToCreateRoleAssignments.isEmpty()
