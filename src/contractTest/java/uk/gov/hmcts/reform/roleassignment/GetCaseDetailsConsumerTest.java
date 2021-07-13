@@ -10,7 +10,6 @@ import au.com.dius.pact.core.model.annotations.Pact;
 import au.com.dius.pact.core.model.annotations.PactFolder;
 import com.google.common.collect.Maps;
 import groovy.util.logging.Slf4j;
-import io.restassured.http.ContentType;
 import net.serenitybdd.rest.SerenityRest;
 import org.apache.http.client.fluent.Executor;
 import org.jetbrains.annotations.NotNull;
@@ -26,14 +25,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 
 import java.util.Map;
 
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 @ExtendWith(PactConsumerTestExt.class)
@@ -58,7 +55,7 @@ public class GetCaseDetailsConsumerTest {
     }
 
     @Pact(provider = "ccdDataStoreAPI_Cases", consumer = "accessMgmt_roleAssignmentService")
-    public RequestResponsePact executeGetCaseDetailsAndGet200 (PactDslWithProvider builder) {
+    public RequestResponsePact executeGetCaseDetailsAndGet200(PactDslWithProvider builder) {
 
         return builder
             .given("A Get Case is requested")
@@ -91,10 +88,10 @@ public class GetCaseDetailsConsumerTest {
     private DslPart createResponse() {
         return newJsonBody(o -> o
             .minArrayLike("ccdResponse", 1, 1,
-                          ccdResponse -> ccdResponse
-                              .stringValue("id", CASE_ID)
-                              .stringValue("case_type", "IA")
-                              .stringValue("jurasdiction", "Asylum")
+                ccdResponse -> ccdResponse
+                    .stringValue("id", CASE_ID)
+                    .stringValue("case_type", "IA")
+                    .stringValue("jurasdiction", "Asylum")
             )).build();
     }
 
@@ -102,7 +99,8 @@ public class GetCaseDetailsConsumerTest {
     private Map<String, String> getResponseHeaders() {
         Map<String, String> responseHeaders = Maps.newHashMap();
         responseHeaders.put("Content-Type",
-                            "application/vnd.uk.gov.hmcts.role-assignment-service.get-assignments+json;charset=UTF-8;version=1.0");
+                            "application/vnd.uk.gov.hmcts.role-assignment-service.get-assignments+json;charset=UTF-8;"
+                                + "version=1.0");
         return responseHeaders;
     }
 
