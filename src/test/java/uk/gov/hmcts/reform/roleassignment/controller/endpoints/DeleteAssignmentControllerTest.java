@@ -4,15 +4,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
+import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,12 +24,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.versions.V1.Error.BAD_REQUEST_MISSING_PARAMETERS;
 
-@RunWith(MockitoJUnitRunner.class)
+
 class DeleteAssignmentControllerTest {
 
-    @Mock
+
     private DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator =
         mock(DeleteRoleAssignmentOrchestrator.class);
+
+    private  QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator =
+        mock(QueryRoleAssignmentOrchestrator.class);
 
     @InjectMocks
     private DeleteAssignmentController sut = new DeleteAssignmentController(deleteRoleAssignmentOrchestrator);
@@ -83,5 +89,34 @@ class DeleteAssignmentControllerTest {
             sut.deleteRoleAssignment(null, PROCESS, null));
     }
 
+
+    @Test
+    @DisplayName("should get 200 when role assignment records delete by Multiple Query Request successful")
+    void shouldDeleteRoleAssignmentByQueryRequest() throws Exception {
+
+        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .roleType(roleType)
+            .build();
+        MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
+            .queryRequests(Arrays.asList(queryRequest))
+            .build();
+
+
+
+
+        when(deleteRoleAssignmentOrchestrator
+                 .deleteRoleAssignmentsByQuery(multipleQueryRequest))
+            .thenReturn(ResponseEntity.status(HttpStatus.OK).build());
+
+        ResponseEntity<?> response = sut
+            .deleteRoleAssignmentsByQuery("003352d0-e699-48bc-b6f5-5810411e68af",multipleQueryRequest);
+
+        assertAll(
+            () -> assertNotNull(response),
+            () -> assertEquals(HttpStatus.OK, response.getStatusCode())
+        );
+    }
 
 }

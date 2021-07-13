@@ -15,6 +15,8 @@ public final class V1 {
                                                        + ".create-assignments+json;charset=UTF-8;version=1.0";
         public static final String DELETE_ASSIGNMENTS = SERVICE
                                                        + ".delete-assignments+json;charset=UTF-8;version=1.0";
+        public static final String POST_DELETE_ASSIGNMENTS_BY_QUERY_REQUEST = SERVICE
+            + ".post-assignments-delete-request+json;charset=UTF-8;version=1.0";
         public static final String GET_ASSIGNMENTS = SERVICE
             + ".get-assignments+json;charset=UTF-8;version=1.0";
         public static final String GET_ROLES = SERVICE

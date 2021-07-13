@@ -1,18 +1,22 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
 import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -22,11 +26,18 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelS
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.DELETE_BY_QUERY;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NO_RECORDS;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.PROCESS;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.REFERENCE;
 
 @Service
 @RequestScope
@@ -41,6 +52,8 @@ public class DeleteRoleAssignmentOrchestrator {
     private RequestEntity requestEntity;
     AssignmentRequest assignmentRequest;
     private Request request;
+    @Value("${roleassignment.query.size}")
+    private int defaultSize;
 
     public Request getRequest() {
         return request;
@@ -66,7 +79,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
     @Transactional
     public ResponseEntity<Void> deleteRoleAssignmentByProcessAndReference(String process,
-                                                                            String reference) {
+                                                                          String reference) {
         long startTime = System.currentTimeMillis();
         logger.debug("deleteRoleAssignmentByProcessAndReference execution started at {}", startTime);
 
@@ -143,7 +156,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
     @NotNull
     private ResponseEntity<Void> performOtherStepsForDelete(String actorId,
-                                                                 List<RoleAssignment> requestedRoles) {
+                                                            List<RoleAssignment> requestedRoles) {
         long startTime = System.currentTimeMillis();
         logger.debug("performOtherStepsForDelete execution started at {}", startTime);
 
@@ -204,7 +217,7 @@ public class DeleteRoleAssignmentOrchestrator {
         persistenceService.updateRequest(requestEntity);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
         // decision block
         long startTime = System.currentTimeMillis();
@@ -279,6 +292,86 @@ public class DeleteRoleAssignmentOrchestrator {
         requestEntity.setLog(assignmentRequest.getRequest().getLog());
         persistenceService.updateRequest(requestEntity);
 
+    }
+
+    @SuppressWarnings("unchecked")
+    public ResponseEntity<Void> deleteRoleAssignmentsByQuery(MultipleQueryRequest multipleQueryRequest) {
+
+        //1. create the request Object
+        if (CollectionUtils.isNotEmpty(multipleQueryRequest.getQueryRequests())) {
+            request = parseRequestService.prepareDeleteRequest(PROCESS, REFERENCE,
+                                                               "", "");
+            request.setLog(DELETE_BY_QUERY);
+            assignmentRequest = new AssignmentRequest(request, Collections.emptyList());
+        } else {
+            throw new BadRequestException(V1.Error.BAD_REQUEST_MISSING_PARAMETERS);
+
+        }
+
+        //2. Call persistence service to store only the request
+        persistInitialRequestForDelete();
+
+        //3. retrieve all assignment records by multiple query
+        List<Assignment> requestedRoles = fetchRoleAssignmentsByMultipleQuery(multipleQueryRequest);
+        var responseHeaders = new HttpHeaders();
+        responseHeaders.add(
+            "Total-Records",
+            Long.toString(persistenceService.getTotalRecords())
+        );
+
+        if (requestedRoles.isEmpty()) {
+            requestEntity.setStatus(Status.APPROVED.toString());
+            requestEntity.setLog(NO_RECORDS);
+            persistenceService.updateRequest(requestEntity);
+            return new ResponseEntity<>(responseHeaders, HttpStatus.OK);
+        } else {
+            //update the records status from Live to Delete_requested for drool to approve it.
+            requestedRoles.stream().forEach(roleAssignment -> roleAssignment.setStatus(Status.DELETE_REQUESTED));
+        }
+
+        //Perform others delete steps
+        ResponseEntity<Void> responseEntity = performOtherStepsForDelete(
+            "",
+            (List<RoleAssignment>) (List<?>) requestedRoles
+        );
+        if (responseEntity.getStatusCode() == HttpStatus.NO_CONTENT) {
+            return  new ResponseEntity<>(responseHeaders, HttpStatus.OK);
+        }
+
+        return responseEntity;
+
+    }
+
+    private List<Assignment> fetchRoleAssignmentsByMultipleQuery(MultipleQueryRequest multipleQueryRequest) {
+        List<List<Assignment>> assignmentRecords = new ArrayList<>();
+        assignmentRecords.add(persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
+            multipleQueryRequest,
+            0,
+            0,
+            null,
+            null,
+            false
+                              )
+
+        );
+        long totalRecords = persistenceService.getTotalRecords();
+        double pageNumber = 0;
+        if (defaultSize > 0) {
+            pageNumber = (double) totalRecords / (double) defaultSize;
+        }
+
+        for (var page = 1; page < pageNumber; page++) {
+            assignmentRecords.add(persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
+                multipleQueryRequest,
+                page,
+                0,
+                null,
+                null,
+                false
+            ));
+
+        }
+        return assignmentRecords.stream().flatMap(Collection::stream).collect(Collectors.toList());
     }
 
 
