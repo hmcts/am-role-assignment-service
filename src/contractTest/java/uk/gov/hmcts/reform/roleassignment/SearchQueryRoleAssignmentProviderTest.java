@@ -16,18 +16,17 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.QueryAssignmentController;
-import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
-
-import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @Provider("am_roleAssignment_queryAssignment")
@@ -40,6 +39,7 @@ import java.util.List;
 public class SearchQueryRoleAssignmentProviderTest {
 
     private static final String ACTOR_ID = "234873";
+    private static final String ACTOR_ID_ADV = "14a21569-eb80-4681-b62c-6ae2ed069e5f";
 
     @Autowired
     private PersistenceService persistenceService;
@@ -103,19 +103,16 @@ public class SearchQueryRoleAssignmentProviderTest {
 
         when(persistenceService.retrieveRoleAssignmentsByQueryRequest(any(), any(), any(), any(), any(), anyBoolean()))
             .thenReturn(roleAssignments);
-        when(persistenceService.getActorCacheEntity(ACTOR_ID)).thenReturn(ActorCacheEntity.builder().actorId(ACTOR_ID)
-                                                                              .etag(1L).build());
     }
 
     private void initAdvancedMock() throws Exception {
         List<Assignment> roleAssignments =
-            TestDataBuilder.buildMultiAssignmentList(Status.LIVE, ACTOR_ID, "attributes_orm_orgrole.json");
+            TestDataBuilder.buildMultiAssignmentList(Status.LIVE, ACTOR_ID_ADV, "attributes_orm_orgrole.json");
 
         roleAssignments.get(1).setRoleName("tribunal-caseworker");
 
-        when(persistenceService.retrieveRoleAssignmentsByQueryRequest(any(), any(), any(), any(), any(), anyBoolean()))
+        when(persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
+            any(), any(), any(), any(), any(), anyBoolean()))
             .thenReturn(roleAssignments);
-        when(persistenceService.getActorCacheEntity(ACTOR_ID)).thenReturn(ActorCacheEntity.builder().actorId(ACTOR_ID)
-                                                                              .etag(1L).build());
     }
 }
