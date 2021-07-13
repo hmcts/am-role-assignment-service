@@ -76,7 +76,7 @@ loop
 END LOOP;
 exception when others then
 	begin
-
+      raise exception 'Exception occured due to unknown issue';
 	end;
 end;
 $$ LANGUAGE plpgsql;
