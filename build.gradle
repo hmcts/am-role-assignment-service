@@ -181,7 +181,8 @@ task contract(type: Test) {
   useJUnitPlatform()
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
-  include "uk/gov/hmcts/reform/roleassignment/**"
+  include "uk/gov/hmcts/reform/roleassignment/*ConsumerTest*"
+  exclude "uk/gov/hmcts/reform/roleassignment/*ProviderTest*"
 }
 
 task runProviderPactVerification(type: Test) {
@@ -191,11 +192,33 @@ task runProviderPactVerification(type: Test) {
   classpath = sourceSets.contractTest.runtimeClasspath
   systemProperty 'pact.verifier.publishResults', System.getProperty('pact.verifier.publishResults')
   systemProperty 'pact.provider.version', project.pacticipantVersion
+  exclude "uk/gov/hmcts/reform/roleassignment/*ConsumerTest*"
 }
+
+task runAndPublishConsumerPactTests(type: Test, description: 'Publish pact test to broker.', group: 'Verification') {
+  useJUnitPlatform()
+  testClassesDirs = sourceSets.contractTest.output.classesDirs
+  classpath = sourceSets.contractTest.runtimeClasspath
+  include "uk/gov/hmcts/reform/roleassignment/**"
+  systemProperty 'pact.rootDir', "pacts"
+}
+
+runAndPublishConsumerPactTests.finalizedBy pactPublish
 
 runProviderPactVerification.dependsOn contract
 
 runProviderPactVerification.finalizedBy pactVerify
+
+pact {
+  broker {
+    pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:9292'
+  }
+  publish {
+    pactDirectory = 'pacts'
+    version = project.pacticipantVersion
+    tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
+  }
+}
 
 jacocoTestReport {
   executionData(test)
@@ -441,6 +464,16 @@ dependencies {
   contractTestCompile group: 'au.com.dius.pact.provider', name: 'spring', version: versions.pact_version
   contractTestCompile group: 'au.com.dius.pact.provider', name: 'junit5spring', version: versions.pact_version
 
+  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+  contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+  contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+
+  contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.3.2")
+  contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
+  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.3.2')
+  contractTestImplementation('org.springframework.boot:spring-boot-starter-test')
 
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
