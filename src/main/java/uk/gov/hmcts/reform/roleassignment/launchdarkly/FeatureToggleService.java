@@ -32,6 +32,7 @@ public class FeatureToggleService {
         //Any new end point need to be placed in respective map.
         getRequestMap.put("/am/role-assignments/fetchFlagStatus","get-db-drools-flag");
         postRequestMap.put("/am/role-assignments/createFeatureFlag","get-db-drools-flag");
+        postRequestMap.put("/am/role-assignments/query/delete","advance_delete_api_flag");
     }
 
     @Autowired
