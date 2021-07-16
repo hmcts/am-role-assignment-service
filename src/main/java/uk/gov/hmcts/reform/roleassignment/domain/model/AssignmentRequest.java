@@ -13,6 +13,7 @@ import java.util.Collection;
 public class AssignmentRequest {
     @JsonProperty(value = "roleRequest")
     private Request request;
+
     @JsonProperty(value = "requestedRoles")
     private Collection<RoleAssignment> requestedRoles;
 }
