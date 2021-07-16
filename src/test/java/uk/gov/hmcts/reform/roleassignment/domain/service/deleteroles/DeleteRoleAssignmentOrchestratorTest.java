@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.pitest.util.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -56,6 +57,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELET
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NO_RECORDS;
 
 @RunWith(MockitoJUnitRunner.class)
 class DeleteRoleAssignmentOrchestratorTest {
@@ -464,7 +466,9 @@ class DeleteRoleAssignmentOrchestratorTest {
         assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
         assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(NO_RECORDS, requestEntity.getLog());
 
+        verify(persistenceService, times(1)).updateRequest(any(RequestEntity.class));
     }
 
     @Test
