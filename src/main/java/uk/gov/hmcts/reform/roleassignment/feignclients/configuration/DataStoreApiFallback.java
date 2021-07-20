@@ -16,24 +16,22 @@ public class DataStoreApiFallback implements DataStoreApi {
 
     @Override
     public Case getCaseDataV2(String caseId) {
-        Case dummyCase = null;
-
-        if (caseId.equals("1234567890123456")) {
-            dummyCase = Case.builder().id(caseId)
-            .caseTypeId("CARE_SUPERVISION_EPO")
-            .jurisdiction("PUBLICLAW")
-            .build();
-        } else if (caseId.equals("1114567890123456")) {
-            dummyCase = Case.builder().id(caseId)
-            .caseTypeId("DIVORCE")
-            .jurisdiction("DIVORCE")
-            .build();
-        } else {
-            dummyCase = Case.builder().id(caseId)
-            .caseTypeId("Asylum")
-            .jurisdiction("IA")
-            .build();
+        switch (caseId) {
+            case "1234567890123456":
+                return Case.builder().id(caseId)
+                    .caseTypeId("CARE_SUPERVISION_EPO")
+                    .jurisdiction("PUBLICLAW")
+                    .build();
+            case "1114567890123456":
+                return Case.builder().id(caseId)
+                    .caseTypeId("DIVORCE")
+                    .jurisdiction("DIVORCE")
+                    .build();
+            default:
+                return Case.builder().id(caseId)
+                    .caseTypeId("Asylum")
+                    .jurisdiction("IA")
+                    .build();
         }
-        return dummyCase;
     }
 }
