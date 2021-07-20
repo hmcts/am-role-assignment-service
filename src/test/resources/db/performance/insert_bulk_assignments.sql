@@ -1,15 +1,17 @@
 -- Postgres Function to insert bulk assignment records
 drop type if exists roleCategories;
-create type roleCategories as enum('PROFESSIONAL', 'JUDICIAL','LEGAL_OPERATIONS');
+create type roleCategories as enum('PROFESSIONAL', 'JUDICIAL','LEGAL_OPERATIONS', 'CITIZEN');
 
 drop type if exists professionalRoles;
-create type professionalRoles as enum('petitioner''s-solicitor', 'respondent''s-solicitor','ls-solicitor', 'legal-representative', 'barrister', 'cafcass-solicitor', 'external-professional-solicitor', 'la-barrister',
-                          'managing-local-authority', 'solicitor', 'solicitor-a', 'solicitor-b',
-                          'solicitor-c', 'solicitor-d', 'solicitor-e', 'solicitor-f', 'solicitor-g', 'solicitor-h',
-                          'solicitor-i', 'solicitor-j');
+create type professionalRoles as enum('[PETSOLICITOR]', '[RESPSOLICITOR]', '[BARRISTER]', '[CAFCASSSOLICITOR]',  '[EPSMANAGING]',  '[LABARRISTER]', '[LAMANAGING]', '[LASOLICITOR]',
+   '[SOLICITOR]', '[SOLICITORA]', '[SOLICITORB]', '[SOLICITORC]', '[SOLICITORD]', '[SOLICITORE]', '[SOLICITORF]', '[SOLICITORG]', '[SOLICITORH]',
+   '[SOLICITORI]', '[SOLICITORJ]', '[LEGALREPRESENTATIVE]', '[CREATOR]');
 
 drop type if exists staffRoles;
-create type staffRoles as enum('tribunal-caseworker');
+create type staffRoles as enum('tribunal-caseworker', '[CREATOR]');
+
+drop type if exists judgeRoles;
+create type judgeRoles as enum('judge', '[CREATOR]');
 
 --create function insert_bulk_assignments() RETURNS void AS $$
 CREATE or replace FUNCTION insert_bulk_assignments(numberOfActors INT, numberOfRecords INT)
@@ -20,6 +22,7 @@ declare
 	number_of_assignments INT;
 	professionalRole text;
 	staffRole text;
+	judgeRole text;
 	roleCategory text;
 	finalRole text;
 begin
@@ -41,15 +44,22 @@ loop
 			--Fetch random role from enum for Staff category
 			SELECT roleName into staffRole FROM ( SELECT unnest(enum_range(NULL::staffRoles)) as roleName ) sub ORDER BY random() LIMIT 1;
 
+			--Fetch random role from enum for Judicial category
+			SELECT roleName into judgeRole FROM ( SELECT unnest(enum_range(NULL::judgeRoles)) as roleName ) sub ORDER BY random() LIMIT 1;
 
 			IF roleCategory = 'PROFESSIONAL'
 			THEN
 				finalRole = professionalRole;
 			END IF;
 
+			IF roleCategory = 'CITIZEN'
+			THEN
+				finalRole = '[CREATOR]';
+			END IF;
+
 			IF roleCategory = 'JUDICIAL'
 			THEN
-				finalRole = 'judge';
+				finalRole = judgeRole;
 			END IF;
 
 			IF roleCategory = 'LEGAL_OPERATIONS'
@@ -81,7 +91,7 @@ exception when others then
 end;
 $$ LANGUAGE plpgsql;
 
---test select insert_bulk_assignments(1, 1);
+select insert_bulk_assignments(10, 10);
 --select insert_bulk_assignments(18, 1024);
 --select insert_bulk_assignments(60, 512);
 --select insert_bulk_assignments(268, 256);
@@ -93,4 +103,3 @@ $$ LANGUAGE plpgsql;
 --select insert_bulk_assignments(46660, 4);
 --select insert_bulk_assignments(221450, 2);
 --select insert_bulk_assignments(1780686, 1);
-
