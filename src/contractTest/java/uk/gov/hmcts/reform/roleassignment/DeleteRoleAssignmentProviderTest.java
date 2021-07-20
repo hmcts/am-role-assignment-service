@@ -82,6 +82,12 @@ public class DeleteRoleAssignmentProviderTest {
         setInitMockPr();
     }
 
+    @State({"Delete the set of selected role assignments as per given delete by query request"})
+    public void advanceDeleteQueryWithSuccess() throws Exception {
+        setInitMockAdvanceDelete();
+    }
+
+
     private void setInitMockId() throws IOException {
         Request deleteRequest = TestDataBuilder.buildRequest(Status.LIVE, false);
         List<RoleAssignment> roleAssignmentList = TestDataBuilder
@@ -102,5 +108,12 @@ public class DeleteRoleAssignmentProviderTest {
         when(persistenceService.persistRequest(any())).thenReturn(TestDataBuilder.buildRequestEntity(deleteRequest));
         when(persistenceService.getAssignmentsByProcess("p2", "r2", Status.LIVE.toString()))
             .thenReturn(roleAssignmentList);
+    }
+
+    private void setInitMockAdvanceDelete() throws IOException {
+        Request deleteRequest = TestDataBuilder.buildRequest(Status.LIVE, false);
+
+        when(securityUtils.getServiceName()).thenReturn("am_org_role_mapping_service");
+        when(persistenceService.persistRequest(any())).thenReturn(TestDataBuilder.buildRequestEntity(deleteRequest));
     }
 }
