@@ -1,16 +1,12 @@
 {
-  "title": "must successfully delete single Query Request",
-  "_guid_": "S-191",
+  "title": "must successfully receive the delete records count in headers",
+  "_guid_": "S-194",
   "_extends_": "F-010_Test_Data_Base",
   "specs": [
-    "contains list of single search query",
-    "contains Correlation Id"
+    "contains list of single search query"
   ],
 
   "request": {
-    "headers": {
-      "x-correlation-id": "3007fff8-b78e-41b4-8ceb-03034d9c74ab"
-    },
     "body": {
       "queryRequests": [
         {
@@ -26,6 +22,9 @@
   },
 
   "expectedResponse": {
-    "_extends_": "Common_200_Response"
+    "_extends_": "Common_200_Response",
+    "headers": {
+      "Total-Records": "2"
+    }
   }
 }
