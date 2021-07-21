@@ -120,7 +120,9 @@ public class DeleteRoleAssignmentProviderTest {
     }
 
     private void initCommonMocks() {
-        when(persistenceService.persistRequest(any())).thenReturn(TestDataBuilder.buildRequestEntity(deleteRequest()));
+        when(persistenceService.persistRequest(any()))
+            .thenReturn(TestDataBuilder.buildRequestEntity(
+                TestDataBuilder.buildRequest(Status.LIVE, false)));
         when(securityUtils.getServiceName()).thenReturn("am_org_role_mapping_service");
         when(persistenceService.getStatusByParam(FeatureFlagEnum.IAC_1_0.getValue(), "pr")).thenReturn(true);
         when(securityUtils.getUserId()).thenReturn(AUTH_USER_ID);
@@ -144,10 +146,6 @@ public class DeleteRoleAssignmentProviderTest {
         return TestDataBuilder
             .buildRoleAssignmentList_Custom(Status.LIVE,"1234",
                                             "attributesCase.json", RoleType.CASE, "tribunal-caseworker");
-    }
-
-    private Request deleteRequest() {
-        return TestDataBuilder.buildRequest(Status.LIVE, false);
     }
 
     public RequestEntity createEntity() {
