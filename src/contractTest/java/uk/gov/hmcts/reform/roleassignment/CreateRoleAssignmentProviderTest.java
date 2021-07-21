@@ -71,15 +71,6 @@ public class CreateRoleAssignmentProviderTest {
     private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
 
     @Autowired
-    private RetrieveDataService retrieveDataService;
-
-    @Autowired
-    private RetrieveDataService getRetrieveDataService;
-
-    @Autowired
-    private CacheManager cacheManager;
-
-    @Autowired
     private DataStoreApi dataStoreApi;
 
 
