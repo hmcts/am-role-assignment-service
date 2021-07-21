@@ -135,13 +135,29 @@ public class DeleteRoleAssignmentProviderTest {
     private void setInitMockPr() throws IOException {
         Request deleteRequest = TestDataBuilder.buildRequest(Status.LIVE, false);
         List<RoleAssignment> roleAssignmentList = TestDataBuilder
-            .buildRoleAssignmentList_Custom(Status.LIVE,"1234","attributes.json", RoleType.CASE,
+            .buildRoleAssignmentList_Custom(Status.LIVE,"1234","attributesCase.json", RoleType.CASE,
                                             "tribunal-caseworker");
 
         when(securityUtils.getServiceName()).thenReturn("am_org_role_mapping_service");
         when(persistenceService.persistRequest(any())).thenReturn(TestDataBuilder.buildRequestEntity(deleteRequest));
         when(persistenceService.getAssignmentsByProcess("p2", "r2", Status.LIVE.toString()))
             .thenReturn(roleAssignmentList);
+        when(persistenceService.getStatusByParam(FeatureFlagEnum.IAC_1_0.getValue(), "pr")).thenReturn(true);
+        when(securityUtils.getUserId()).thenReturn("3168da13-00b3-41e3-81fa-cbc71ac28a0f");
+
+        JsonNode attributes = buildAttributesFromFile("attributesCase.json");
+        Map<String, JsonNode> attributeMap = JacksonUtils.convertValue(attributes);
+        List<Assignment> assignmentList  = new ArrayList<>();
+        assignmentList.add(ExistingRoleAssignment.builder().actorId("3168da13-00b3-41e3-81fa-cbc71ac28a0f")
+                               .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
+                               .status(Status.APPROVED).build());
+        when(persistenceService.persistRequest(any())).thenReturn(createEntity());
+        doReturn(assignmentList).when(persistenceService)
+            .retrieveRoleAssignmentsByQueryRequest(any(), anyInt(), anyInt(), any(), any(), anyBoolean());
+        when(persistenceService.getTotalRecords()).thenReturn(1L);
+
+        when(dataStoreApi.getCaseDataV2(anyString())).thenReturn(Case.builder().id("1212121212121213").jurisdiction(
+            "IA").caseTypeId("Asylum").build());
     }
 
     public RequestEntity createEntity() {
@@ -155,4 +171,5 @@ public class DeleteRoleAssignmentProviderTest {
             .build();
 
     }
+
 }
