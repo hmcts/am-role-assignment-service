@@ -22,7 +22,6 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
