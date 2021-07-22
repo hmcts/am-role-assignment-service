@@ -133,7 +133,6 @@ public class CreateRoleAssignmentOrchestrator {
                     System.currentTimeMillis(),
                     Math.subtractExact(System.currentTimeMillis(), replaceExisting)
                 );
-
             } else {
                 long newAssignment = System.currentTimeMillis();
                 //Save requested role in history table with CREATED and Approved Status
