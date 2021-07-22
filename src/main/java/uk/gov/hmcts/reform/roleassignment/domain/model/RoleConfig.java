@@ -1,7 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -44,20 +47,9 @@ public class RoleConfig {
     }
 
     private static RoleConfig buildRoleConfig() {
-        InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream("role.json");
-        var listType = JacksonUtils.MAPPER.getTypeFactory().constructCollectionType(
-            ArrayList.class,
-            RoleConfigRole.class
-        );
-        List<RoleConfigRole> allRoles = new ArrayList<>();
-        try {
-            allRoles = JacksonUtils.MAPPER.readValue(input, listType);
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
+        List<RoleConfigRole> allRoles = JacksonUtils.getConfiguredRoles().get("roles");
         allRoles.forEach(RoleConfig::setRoleNameAndCategory);
         return new RoleConfig(allRoles);
     }
-
 
 }

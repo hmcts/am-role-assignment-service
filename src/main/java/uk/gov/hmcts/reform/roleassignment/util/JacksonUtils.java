@@ -7,10 +7,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
@@ -20,8 +21,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +38,10 @@ import java.util.UUID;
 @Named
 @Singleton
 public class JacksonUtils {
+
+    private static final Logger LOG = LoggerFactory.getLogger(JacksonUtils.class);
+
+
 
     private JacksonUtils() {
     }
@@ -104,16 +112,22 @@ public class JacksonUtils {
 
     static {
 
-        InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream("role.json");
-        CollectionType listType = MAPPER.getTypeFactory().constructCollectionType(
+        var listType = JacksonUtils.MAPPER.getTypeFactory().constructCollectionType(
             ArrayList.class,
             RoleConfigRole.class
         );
-        List<RoleConfigRole> allRoles = null;
+        List<RoleConfigRole> allRoles = new ArrayList<>();
         try {
-            allRoles = MAPPER.readValue(input, listType);
-        } catch (IOException e) {
-            log.error(e.getMessage());
+            Path dirPath = Paths.get(JacksonUtils.class.getClassLoader().getResource("roleconfig").toURI());
+            Files.walk(dirPath).filter(Files::isRegularFile).forEach(f -> {
+                try {
+                    allRoles.addAll(JacksonUtils.MAPPER.readValue(Files.newInputStream(f), listType));
+                } catch (IOException e) {
+                    LOG.error(e.getMessage());
+                }
+            });
+        } catch (IOException | URISyntaxException e) {
+            LOG.error(e.getMessage());
         }
         configuredRoles.put("roles", allRoles);
 
