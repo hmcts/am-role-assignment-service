@@ -1,0 +1,94 @@
+[
+  {
+    "name": "tribunal-caseworker",
+    "label": "Tribunal Caseworker",
+    "description": "Tribunal caseworker",
+    "category": "LEGAL_OPERATIONS",
+    "patterns": [
+      {
+
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+
+      },
+      {
+
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+
+      }
+    ]
+  },
+  {
+    "name": "senior-tribunal-caseworker",
+    "label": "Senior Tribunal Caseworker",
+    "description": "Senior Tribunal caseworker",
+    "category": "LEGAL_OPERATIONS",
+    "patterns": [
+      {
+
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+
+      }
+    ]
+  }
+]
