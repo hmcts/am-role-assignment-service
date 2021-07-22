@@ -24,7 +24,7 @@
   "expectedResponse": {
     "_extends_": "Common_200_Response",
     "headers": {
-      "Total-Records": "100"
+      "Total-Records": "2"
     }
   }
 }
