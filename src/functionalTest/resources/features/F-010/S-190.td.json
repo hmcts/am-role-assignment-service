@@ -16,12 +16,12 @@
       "queryRequests": [
         {
           "attributes": {
-            "primaryLocation": ["abc"]
+            "primaryLocation": ["S190abc"]
           }
         },
         {
           "attributes": {
-            "primaryLocation": ["abc"],
+            "primaryLocation": ["S190abc"],
             "jurisdiction": ["IA"]
           }
         }
