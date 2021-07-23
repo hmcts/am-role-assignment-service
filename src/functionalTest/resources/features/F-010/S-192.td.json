@@ -14,7 +14,7 @@
           "hasAttributes": ["region"],
           "roleCategory": ["LEGAL_OPERATIONS"],
           "attributes": {
-            "primaryLocation": ["abc"],
+            "primaryLocation": ["S192ABC"],
             "jurisdiction": ["IA"]
           }
         }
