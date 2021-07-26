@@ -17,6 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.QueryAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
@@ -98,8 +99,10 @@ public class SearchQueryRoleAssignmentProviderTest {
 
     private void setInitiMock(boolean hasMultipleAssignments) throws Exception {
         List<Assignment> roleAssignments = (hasMultipleAssignments == true)
-            ? TestDataBuilder.buildMultiAssignmentList(Status.LIVE, ACTOR_ID, "attributes_orm_orgrole.json")
-            : TestDataBuilder.buildAssignmentList(Status.LIVE, ACTOR_ID, "attributes_orm_orgrole.json");
+            ? TestDataBuilder.buildMultiAssignmentList(Status.LIVE, ACTOR_ID, "attributes_orm_orgrole.json",
+                                                       RoleType.ORGANISATION, "senior-tribunal-caseworker")
+            : TestDataBuilder.buildAssignmentList(Status.LIVE, ACTOR_ID, "attributes_orm_orgrole.json",
+                                                  RoleType.ORGANISATION, "senior-tribunal-caseworker");
 
         when(persistenceService.retrieveRoleAssignmentsByQueryRequest(any(), any(), any(), any(), any(), anyBoolean()))
             .thenReturn(roleAssignments);
@@ -107,7 +110,8 @@ public class SearchQueryRoleAssignmentProviderTest {
 
     private void initAdvancedMock() throws Exception {
         List<Assignment> roleAssignments =
-            TestDataBuilder.buildMultiAssignmentList(Status.LIVE, ACTOR_ID_ADV, "attributes_orm_orgrole.json");
+            TestDataBuilder.buildMultiAssignmentList(Status.LIVE, ACTOR_ID_ADV, "attributes_orm_orgrole.json",
+                                                     RoleType.ORGANISATION, "senior-tribunal-caseworker");
 
         roleAssignments.get(1).setRoleName("tribunal-caseworker");
 

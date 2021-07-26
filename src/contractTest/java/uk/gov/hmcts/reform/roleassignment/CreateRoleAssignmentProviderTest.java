@@ -8,6 +8,7 @@ import au.com.dius.pact.provider.junitsupport.State;
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
 import au.com.dius.pact.provider.junitsupport.loader.VersionSelector;
 import au.com.dius.pact.provider.spring.junit5.MockMvcTestTarget;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,23 +18,40 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
+import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreApi;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildAttributesFromFile;
 
 @ExtendWith(SpringExtension.class)
 @Provider("am_roleAssignment_createAssignment")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
     host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
     @VersionSelector(tag = "master")})
-@TestPropertySource(properties = {"org.request.byPassOrgDroolRule=true", "roleassignment.query.size=20"})
+@TestPropertySource(properties = {"org.request.byPassOrgDroolRule=true", "roleassignment.query.size=20",
+    "spring.cache.type=none", "launchdarkly.sdk.environment=pr"})
 @Import(RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
 public class CreateRoleAssignmentProviderTest {
@@ -49,6 +67,10 @@ public class CreateRoleAssignmentProviderTest {
 
     @Autowired
     private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
+
+    @Autowired
+    private DataStoreApi dataStoreApi;
+
 
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider.class)
@@ -87,8 +109,22 @@ public class CreateRoleAssignmentProviderTest {
 
     private void setInitMock() {
 
+        JsonNode attributes = buildAttributesFromFile("attributesCase.json");
+        Map<String, JsonNode> attributeMap = JacksonUtils.convertValue(attributes);
+        List<Assignment> assignmentList  = new ArrayList<>();
+        assignmentList.add(ExistingRoleAssignment.builder().actorId("14a21569-eb80-4681-b62c-6ae2ed069e5f")
+                               .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
+                               .status(Status.APPROVED).build());
+        assignmentList.add(ExistingRoleAssignment.builder().actorId("3168da13-00b3-41e3-81fa-cbc71ac28a0f")
+                               .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
+                               .status(Status.APPROVED).build());
         when(persistenceService.persistRequest(any())).thenReturn(createEntity());
-        when(securityUtils.getUserId()).thenReturn("14a21569-eb80-4681-b62c-6ae2ed069e2f");
+        doReturn(assignmentList).when(persistenceService)
+            .retrieveRoleAssignmentsByQueryRequest(any(), anyInt(), anyInt(), any(), any(), anyBoolean());
+        when(persistenceService.getStatusByParam(FeatureFlagEnum.IAC_1_0.getValue(), "pr")).thenReturn(true);
+        when(dataStoreApi.getCaseDataV2(anyString())).thenReturn(Case.builder().id("1212121212121213").jurisdiction(
+            "IA").caseTypeId("Asylum").build());
+        when(securityUtils.getUserId()).thenReturn("3168da13-00b3-41e3-81fa-cbc71ac28a0f");
         when(correlationInterceptorUtil.preHandle(any())).thenReturn("14a21569-eb80-4681-b62c-6ae2ed069e2d");
     }
 
@@ -99,6 +135,7 @@ public class CreateRoleAssignmentProviderTest {
             .authenticatedUserId("3168da13-00b3-41e3-81fa-cbc71ac28a0f")
             .clientId("am_org_role_mapping_service")
             .created(LocalDateTime.now())
+            .status(Status.APPROVED.toString())
             .build();
 
     }
