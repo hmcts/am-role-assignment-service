@@ -18,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
@@ -72,7 +73,8 @@ public class GetActorByIdRoleAssignmentProviderTest {
     private void setInitiMock() throws Exception {
         String actorId = "23486";
         List<RoleAssignment> roleAssignments
-            = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE, actorId, "attributes_orm_orgrole.json");
+            = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE, actorId, "attributes_orm_orgrole.json",
+                                                             RoleType.ORGANISATION, "senior-tribunal-caseworker");
 
         when(persistenceService.getAssignmentsByActor(anyString())).thenReturn(roleAssignments);
         when(persistenceService.getActorCacheEntity(actorId)).thenReturn(ActorCacheEntity.builder().actorId(actorId)

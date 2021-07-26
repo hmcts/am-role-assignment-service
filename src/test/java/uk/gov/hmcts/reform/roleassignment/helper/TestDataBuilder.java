@@ -88,15 +88,16 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static RoleAssignment buildRoleAssignment_CustomActorId(Status status, String actorId, String path)
+    public static RoleAssignment buildRoleAssignment_CustomActorId(Status status, String actorId, String path,
+                                                                   RoleType roleType, String roleName)
         throws IOException {
         ZonedDateTime timeStamp = ZonedDateTime.now();
         return RoleAssignment.builder()
             .id(UUID.fromString("3ed4f960-e50b-4127-af30-47821d5799f7"))
             .actorId(actorId)
             .actorIdType(ActorIdType.IDAM)
-            .roleType(RoleType.ORGANISATION)
-            .roleName("senior-tribunal-caseworker")
+            .roleType(roleType)
+            .roleName(roleName)
             .classification(Classification.PRIVATE)
             .grantType(GrantType.STANDARD)
             .roleCategory(RoleCategory.LEGAL_OPERATIONS)
@@ -113,25 +114,28 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static List<RoleAssignment> buildRoleAssignmentList_Custom(Status status, String actorId, String path)
+    public static List<RoleAssignment> buildRoleAssignmentList_Custom(Status status, String actorId, String path,
+                                                                      RoleType roleType, String roleName)
         throws IOException {
         List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path));
+        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path, roleType, roleName));
         return requestedRoles;
     }
 
-    public static List<Assignment> buildAssignmentList(Status status, String actorId, String path)
+    public static List<Assignment> buildAssignmentList(Status status, String actorId, String path, RoleType roleType,
+                                                       String roleName)
         throws IOException {
         List<Assignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path));
+        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path, roleType, roleName));
         return requestedRoles;
     }
 
-    public static List<Assignment> buildMultiAssignmentList(Status status, String actorId, String path)
+    public static List<Assignment> buildMultiAssignmentList(Status status, String actorId, String path,
+                                                            RoleType roleType, String roleName)
         throws IOException {
         List<Assignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path));
-        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path));
+        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path, roleType, roleName));
+        requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path, roleType, roleName));
         return requestedRoles;
     }
 
@@ -211,7 +215,8 @@ public class TestDataBuilder {
         Status roleStatus, String actorId) throws Exception {
         return ResponseEntity.status(HttpStatus.OK)
             .body(new RoleAssignmentResource(Arrays.asList(buildRoleAssignment_CustomActorId(
-                roleStatus, actorId,"attributes.json")), actorId));
+                roleStatus, actorId,"attributes.json", RoleType.ORGANISATION,
+                "senior-tribunal-caseworker")), actorId));
     }
 
     public static Collection<RoleAssignment> buildRequestedRoleCollection(Status status) throws IOException {
