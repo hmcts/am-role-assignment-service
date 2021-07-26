@@ -14,6 +14,7 @@ import java.util.Map;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 @Slf4j
@@ -25,11 +26,11 @@ public class RoleConfig {
     private final Map<String,RoleConfigRole> roleConfigByRoleName = new HashMap<>();
 
     private RoleConfig(Collection<RoleConfigRole> roles) {
-        roles.forEach(r -> roleConfigByRoleName.put(r.getName(), r));
+        roles.forEach(r -> roleConfigByRoleName.put(String.join("_", r.getName(), r.getCategory().name()), r));
     }
 
-    public RoleConfigRole get(String roleName) {
-        return roleConfigByRoleName.get(roleName);
+    public RoleConfigRole get(String roleName, RoleCategory roleCategory) {
+        return roleConfigByRoleName.get(String.join("_", roleName, roleCategory.name()));
     }
 
     /**
