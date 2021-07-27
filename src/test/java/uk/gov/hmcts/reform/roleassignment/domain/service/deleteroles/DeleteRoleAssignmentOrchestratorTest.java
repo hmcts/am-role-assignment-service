@@ -218,7 +218,6 @@ class DeleteRoleAssignmentOrchestratorTest {
         verify(persistenceService, times(2)).deleteRoleAssignmentByActorId(any());
         verify(persistenceService, times(1)).persistActorCache(any());
         verify(persistenceService, times(2)).updateRequest(any(RequestEntity.class));
-        //delete_approved
     }
 
     @Test
