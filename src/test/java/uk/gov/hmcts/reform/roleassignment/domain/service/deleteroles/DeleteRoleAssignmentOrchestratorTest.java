@@ -180,48 +180,8 @@ class DeleteRoleAssignmentOrchestratorTest {
         assertEquals(DELETE_REQUESTED, assignment.getStatus());
         assertEquals(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"), requestEntity.getId());
         verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
-        //this one
-        //needs delete_approved status
     }
 
-//    @Test
-//    @DisplayName("should delete records from role_assignment table for a valid Assignment Id")
-//    void shouldDeleteRecordsFromRoleAssignment_NoContentStatus() throws Exception {
-//
-//        //Set the status approved of all requested role manually for drool validation process
-//        String assignmentId = UUID.randomUUID().toString();
-//
-//        //setApprovedStatusByDrool();
-//        mockRequest();
-//        when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
-//        RoleAssignment assignment = TestDataBuilder.buildRoleAssignment(DELETE_APPROVED);
-//        assignmentRequest.getRequestedRoles().forEach(roleAssignment1 -> {
-//            roleAssignment1.setStatus(DELETE_APPROVED);
-//        });
-//        when(persistenceService.getAssignmentById(any())).thenReturn(List.of(assignment));
-//
-//        //mockHistoryEntity();
-////        when(validationModelService.validateRequest2_0(assignmentRequest, System.currentTimeMillis()))
-////            .thenCallRealMethod();
-////        when(validationModelService.runRules)
-//        when(persistenceUtil.prepareHistoryEntityForPersistance(
-//            roleAssignment,
-//            assignmentRequest.getRequest()
-//        )).thenReturn(historyEntity);
-//
-//        Set<HistoryEntity> historyEntities = new HashSet<>();
-//        historyEntities.add(historyEntity);
-//        requestEntity.setHistoryEntities(historyEntities);
-//        sut.setRequestEntity(requestEntity);
-//        sut.checkAllDeleteApproved(assignmentRequest, assignmentRequest.getRequest().getAssignerId());
-//        ResponseEntity<?> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
-//        assertEquals(DELETE_REQUESTED, assignment.getStatus());
-//        verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
-//
-//        //this one
-//        //needs delete_approved status
-//    }
-//
     @Test
     @DisplayName("should delete records from role_assignment table for a valid Assignment Id")
     void shouldDeleteRecordsFromRoleAssignment() throws Exception {
@@ -463,7 +423,6 @@ class DeleteRoleAssignmentOrchestratorTest {
         verify(validationModelService, times(1)).validateRequest(any(AssignmentRequest.class));
         verify(persistenceService, times(3)).updateRequest(any(RequestEntity.class));
         verify(persistenceService, times(2)).persistHistoryEntities(any());
-        //this one has !requestedRoles.isEmpty()
 
     }
 
