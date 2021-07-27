@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -129,7 +130,8 @@ class DeleteRoleAssignmentOrchestratorTest {
         setApprovedStatusByDrool();
         mockRequest();
         List<RoleAssignment> roleAssignmentList = TestDataBuilder
-            .buildRoleAssignmentList_Custom(DELETE_APPROVED, "1234", "attributes.json");
+            .buildRoleAssignmentList_Custom(DELETE_APPROVED, "1234", "attributes.json",
+                                            RoleType.ORGANISATION, "senior-tribunal-caseworker");
         when(persistenceService.getAssignmentsByProcess(
             PROCESS,
             REFERENCE,
