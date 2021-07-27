@@ -27,7 +27,7 @@ class JacksonUtilsTest {
     void verifyStaticBlockFileNotFound() {
         MockedStatic<Files> classMock = Mockito.mockStatic(Files.class);
         classMock.when(() -> Files.walk(any(Path.class))).thenThrow(IOException.class);
-        assertNotNull(JacksonUtils.getConfiguredRoles().get("roles").size());
+        assertNotNull(JacksonUtils.getConfiguredRoles().get("roles"));
         classMock.close();
     }
 
@@ -35,7 +35,7 @@ class JacksonUtilsTest {
     void verifyStaticBlockStreamFailed() {
         MockedStatic<Files> classMock = Mockito.mockStatic(Files.class);
         classMock.when(() -> Files.newInputStream(any(Path.class))).thenThrow(IOException.class);
-        assertNotNull(JacksonUtils.getConfiguredRoles().get("roles").size());
+        assertNotNull(JacksonUtils.getConfiguredRoles().get("roles"));
         classMock.close();
     }
 }
