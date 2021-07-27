@@ -29,6 +29,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
@@ -184,6 +185,12 @@ class PersistenceServiceTest {
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
         verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
         verify(entityManager, times(1)).flush();
+    }
+
+    @Test
+    void actorCache() throws IOException {
+        ActorCache actorCache = sut.prepareActorCache(TestDataBuilder.buildRoleAssignment(LIVE));
+        assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9c", actorCache.getActorId());
     }
 
     @Test

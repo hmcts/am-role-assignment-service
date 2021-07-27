@@ -40,6 +40,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -57,6 +58,8 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELET
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.DELETE_BY_QUERY;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NO_RECORDS;
 
 @RunWith(MockitoJUnitRunner.class)
 class DeleteRoleAssignmentOrchestratorTest {
@@ -177,6 +180,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         ResponseEntity<?> response = sut.deleteRoleAssignmentByAssignmentId(assignmentId);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
         assertEquals(DELETE_REQUESTED, assignment.getStatus());
+        assertEquals(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"), requestEntity.getId());
         verify(persistenceService, times(1)).getAssignmentById(UUID.fromString(assignmentId));
     }
 
@@ -367,6 +371,24 @@ class DeleteRoleAssignmentOrchestratorTest {
     }
 
     @Test
+    @DisplayName("should throw 400 when process doesn't exist")
+    void shouldThrowBadRequestWhenProcessNotExist() throws Exception {
+        mockRequest();
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.deleteRoleAssignmentByProcessAndReference(null, REFERENCE)
+        );
+    }
+
+    @Test
+    @DisplayName("should throw 400 when process blank")
+    void shouldThrowBadRequestWhenProcessBlank() throws Exception {
+        mockRequest();
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.deleteRoleAssignmentByProcessAndReference(" ", REFERENCE)
+        );
+    }
+
+    @Test
     @DisplayName("should throw 422 when any record is rejected for deletion")
     void shouldThrowUnProcessExceptionByMultipleQueryRequest() throws Exception {
         //Set the status approved of all requested role manually for drool validation process
@@ -466,7 +488,11 @@ class DeleteRoleAssignmentOrchestratorTest {
         assertEquals(APPROVED.toString(), sut.getRequestEntity().getStatus());
         assertEquals(sut.getRequest().getId(), sut.getRequestEntity().getId());
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getHeaders().containsKey("Total-Records"));
+        assertEquals(DELETE_BY_QUERY, sut.getRequest().getLog());
+        assertEquals(NO_RECORDS, requestEntity.getLog());
 
+        verify(persistenceService, times(1)).updateRequest(any(RequestEntity.class));
     }
 
     @Test
