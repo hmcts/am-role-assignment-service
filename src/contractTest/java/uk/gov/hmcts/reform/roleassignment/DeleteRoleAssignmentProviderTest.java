@@ -22,6 +22,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -104,18 +105,9 @@ public class DeleteRoleAssignmentProviderTest {
     }
 
     @State({"Delete the set of selected role assignments as per given delete by query request"})
-    public void advanceDeleteQueryWithSuccess() throws Exception {
+    public void advanceDeleteQueryWithSuccess() {
         setInitMockAdvanceDelete();
     }
-
-
-    private void setInitMockId() throws IOException {
-        Request deleteRequest = TestDataBuilder.buildRequest(Status.LIVE, false);
-        List<RoleAssignment> roleAssignmentList = TestDataBuilder
-            .buildRoleAssignmentList_Custom(Status.LIVE,"1234","attributes.json");
-
-        when(securityUtils.getServiceName()).thenReturn("am_org_role_mapping_service");
-        when(persistenceService.persistRequest(any())).thenReturn(TestDataBuilder.buildRequestEntity(deleteRequest));
 
     private void initMocksId() throws IOException {
         initCommonMocks();
@@ -160,13 +152,13 @@ public class DeleteRoleAssignmentProviderTest {
                                             "attributesCase.json", RoleType.CASE, "tribunal-caseworker");
     }
 
-    private void setInitMockAdvanceDelete() throws IOException {
+    private void setInitMockAdvanceDelete() {
         Request deleteRequest = TestDataBuilder.buildRequest(Status.LIVE, false);
 
         when(securityUtils.getServiceName()).thenReturn("am_org_role_mapping_service");
         when(persistenceService.persistRequest(any())).thenReturn(TestDataBuilder.buildRequestEntity(deleteRequest));
     }
-      
+
     public RequestEntity createEntity() {
         return RequestEntity.builder()
             .correlationId("123")
