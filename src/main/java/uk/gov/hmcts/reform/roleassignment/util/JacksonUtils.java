@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.google.common.io.Resources;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
@@ -20,9 +21,15 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -118,19 +125,72 @@ public class JacksonUtils {
         );
         List<RoleConfigRole> allRoles = new ArrayList<>();
         try {
-            Path dirPath = Paths.get(JacksonUtils.class.getClassLoader().getResource("roleconfig").toURI());
-            Files.walk(dirPath).filter(Files::isRegularFile).forEach(f -> {
+            final String ROOT = "roleconfig";
+            Path dirPath = getRootPath("roleconfig");
+            List<RoleConfigRole> allRoles1 = readfiles(listType, dirPath);
+            allRoles.addAll(allRoles1);
+            dirPath = getRootPath1("roleconfig");
+            List<RoleConfigRole> allRoles2 = readfiles(listType, dirPath);
+            allRoles.addAll(allRoles2);
+
+            List<String> files = getRootPath2(ROOT);
+            files.forEach(f -> {
                 try {
-                    allRoles.addAll(JacksonUtils.MAPPER.readValue(Files.newInputStream(f), listType));
+                    allRoles.addAll(JacksonUtils.MAPPER.readValue(JacksonUtils.class.getClassLoader()
+                                                  .getResourceAsStream(ROOT + File.separator + f), listType));
                 } catch (IOException e) {
                     LOG.error(e.getMessage());
                 }
             });
+
         } catch (IOException | URISyntaxException e) {
             LOG.error(e.getMessage());
         }
+        LOG.info("Loaded {} roles from drool", allRoles.size());
         configuredRoles.put("roles", allRoles);
+    }
 
+    private static List<RoleConfigRole> readfiles(com.fasterxml.jackson.databind.type.CollectionType listType,
+                                                  Path dirPath) throws IOException {
+        List<RoleConfigRole> allRoles = new ArrayList<>();
+        Files.walk(dirPath).filter(Files::isRegularFile).forEach(f -> {
+            try {
+                allRoles.addAll(JacksonUtils.MAPPER.readValue(Files.newInputStream(f), listType));
+            } catch (IOException e) {
+                LOG.error(e.getMessage());
+            }
+        });
+        System.out.println(dirPath + "=====" + allRoles.size());
+        return allRoles;
+    }
 
+    private static Path getRootPath(String root) throws URISyntaxException, IOException {
+        URL url = JacksonUtils.class.getClassLoader().getResource(root);
+        System.out.println("***Path:" + url);
+        URI uri = url.toURI();
+        System.out.println("Path.uri:" + uri);
+        System.out.println("Path.uri:" + Paths.get(uri));
+        Path dirPath = FileSystems.getDefault().getPath(uri.getPath());
+        System.out.println("dirPath:" + dirPath);
+        return dirPath;
+    }
+
+    private static Path getRootPath1(String root) throws URISyntaxException, IOException {
+        System.out.println("***Path:" + JacksonUtils.class.getClassLoader().getResource(root));
+        URI uri = JacksonUtils.class.getClassLoader().getResource(root).toURI();
+        System.out.println("Path.uri:" + uri);
+        final String[] array = uri.toString().split("!");
+        final FileSystem fs = array.length > 1 ? FileSystems.newFileSystem(URI.create(array[0]),new HashMap<>()) :
+            FileSystems.getDefault();
+        Path dirPath = fs.getPath(array[array.length - 1]);
+        System.out.println("dirPath:" + dirPath);
+
+        return dirPath;
+    }
+
+    private static List<String> getRootPath2(String root) throws IOException {
+        URL url = JacksonUtils.class.getClassLoader().getResource(root);
+        System.out.println("***Path:" + url);
+        return Resources.readLines(url, Charset.defaultCharset());
     }
 }
