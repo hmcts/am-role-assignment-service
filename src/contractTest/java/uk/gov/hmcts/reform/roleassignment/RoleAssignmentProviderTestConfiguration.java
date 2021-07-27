@@ -65,7 +65,8 @@ public class RoleAssignmentProviderTestConfiguration {
     @MockBean
     private CacheManager cacheManager;
 
-
+    @Bean
+    @Primary
     public RetrieveDataService getRetrieveDataService() {
         return new RetrieveDataService(dataStoreApi, cacheManager);
     }
