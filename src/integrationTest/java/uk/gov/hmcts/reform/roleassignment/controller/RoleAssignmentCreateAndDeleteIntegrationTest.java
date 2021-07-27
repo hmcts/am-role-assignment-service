@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
+import com.google.protobuf.StringValue;
+import io.restassured.http.ContentType;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -242,6 +245,50 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
         assertAssignmentRecords();
 
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
+        {"classpath:sql/role_assignment_clean_up.sql",
+            "classpath:sql/insert_assignment_records_to_delete.sql"})
+    public void shouldDeleteRoleAssignmentsByAdvancedQuery() throws Exception {
+
+        logger.info(" Method shouldDeleteRoleAssignmentsByAssignmentId starts : ");
+        logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
+        logger.info(" LIVE table record count before delete by query request : {}", getAssignmentRecordsCount());
+        final String url = "/am/role-assignments/query/delete";
+
+
+
+        mockMvc.perform(post(url)
+                            .contentType("application/json")
+                            .content(createRoleAssignmentRequestAdvanceDelete())
+                            .headers(getHttpHeaders())
+        )
+            .andExpect(status().is(HttpStatus.OK.value()))
+            .andReturn();
+
+        logger.info(" History record count after create assignment request : {}", getHistoryRecordsCount());
+        logger.info(" LIVE table record count after delete by query request : {}", getAssignmentRecordsCount());
+
+        List<String> statusList = getStatusFromHistory();
+        assertEquals(3, statusList.size());
+        assertEquals(CREATED, statusList.get(0));
+        assertEquals(APPROVED, statusList.get(1));
+        assertEquals(LIVE, statusList.get(2));
+        assertEquals(DELETE_APPROVED, statusList.get(3));
+        assertEquals(DELETED, statusList.get(4));
+
+    }
+
+    private String createRoleAssignmentRequestAdvanceDelete() {
+
+        return "{\"queryRequests\":[{\"actorId\":[\"23e4567-e89b-42d3-a456-556642445612\"]},"
+            + "{\"roleName\": [\"judge\"]},"
+            + "{\"roleType\": [\"CASE\"]},"
+            + "{\"attributes\": {"
+            + "\"caseId\": [\"1234567890123456\"]}}"
+            + "]}";
     }
 
     private void assertAssignmentRecords() {
