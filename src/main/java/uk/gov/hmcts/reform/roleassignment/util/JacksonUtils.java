@@ -32,7 +32,6 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -126,12 +125,6 @@ public class JacksonUtils {
         List<RoleConfigRole> allRoles = new ArrayList<>();
         try {
             final String ROOT = "roleconfig";
-            Path dirPath = getRootPath("roleconfig");
-            List<RoleConfigRole> allRoles1 = readfiles(listType, dirPath);
-            allRoles.addAll(allRoles1);
-            dirPath = getRootPath1("roleconfig");
-            List<RoleConfigRole> allRoles2 = readfiles(listType, dirPath);
-            allRoles.addAll(allRoles2);
 
             List<String> files = getRootPath2(ROOT);
             files.forEach(f -> {
@@ -142,6 +135,13 @@ public class JacksonUtils {
                     LOG.error(e.getMessage());
                 }
             });
+
+            Path dirPath = getRootPath("roleconfig");
+            List<RoleConfigRole> allRoles1 = readfiles(listType, dirPath);
+            allRoles.addAll(allRoles1);
+            dirPath = getRootPath1("roleconfig");
+            List<RoleConfigRole> allRoles2 = readfiles(listType, dirPath);
+            allRoles.addAll(allRoles2);
 
         } catch (IOException | URISyntaxException e) {
             LOG.error(e.getMessage());
@@ -169,7 +169,6 @@ public class JacksonUtils {
         System.out.println("***Path:" + url);
         URI uri = url.toURI();
         System.out.println("Path.uri:" + uri);
-        System.out.println("Path.uri:" + Paths.get(uri));
         Path dirPath = FileSystems.getDefault().getPath(uri.getPath());
         System.out.println("dirPath:" + dirPath);
         return dirPath;
