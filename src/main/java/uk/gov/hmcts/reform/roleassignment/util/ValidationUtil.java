@@ -141,7 +141,7 @@ public class ValidationUtil {
     }
 
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
-        List<String> rolesName = JacksonUtils.getConfiguredRoles().get("roles").stream()
+        List<String> rolesName = JacksonUtils.getConfiguredRoles().stream()
             .map(RoleConfigRole::getName).collect(
             Collectors.toList());
 

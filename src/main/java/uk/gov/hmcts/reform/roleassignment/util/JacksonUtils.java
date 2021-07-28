@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
@@ -44,12 +43,9 @@ public class JacksonUtils {
 
     private static final Logger LOG = LoggerFactory.getLogger(JacksonUtils.class);
 
-    private static final String ROLES_DIR = "roleconfig";
-
     private JacksonUtils() {
     }
 
-    @Getter
     private static final Map<String, List<RoleConfigRole>> configuredRoles = new HashMap<>();
 
     public static final JsonFactory jsonFactory = JsonFactory.builder()
@@ -63,6 +59,10 @@ public class JacksonUtils {
         .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
         .build();
 
+
+    public static List<RoleConfigRole> getConfiguredRoles() {
+        return configuredRoles.get("roles");
+    }
 
     public static Map<String, JsonNode> convertValue(Object from) {
         return MAPPER.convertValue(from, new TypeReference<HashMap<String, JsonNode>>() {
@@ -140,7 +140,7 @@ public class JacksonUtils {
     }
 
     private static Path getAbsolutePath() throws URISyntaxException, IOException {
-        URI uri = JacksonUtils.class.getClassLoader().getResource(ROLES_DIR).toURI();
+        URI uri = JacksonUtils.class.getClassLoader().getResource(Constants.ROLES_DIR).toURI();
         LOG.debug("Filtering ROOT dir {}", uri);
 
         final String[] array = uri.toString().split("!");
