@@ -1,20 +1,19 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.getroles;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @Service
@@ -45,15 +44,8 @@ public class RetrieveRoleAssignmentOrchestrator {
         );
     }
 
-    public JsonNode getListOfRoles() throws IOException {
-        var mapper = new ObjectMapper();
-        JsonNode rootNode;
-        InputStream input = RetrieveRoleAssignmentOrchestrator.class.getClassLoader()
-            .getResourceAsStream(Constants.ROLES_JSON);
-        assert input != null;
-        rootNode = mapper.readTree(input);
-
-        return rootNode;
+    public List<RoleConfigRole> getListOfRoles() throws IOException {
+        return JacksonUtils.getConfiguredRoles();
     }
 
     public long retrieveETag(String actorId) {
