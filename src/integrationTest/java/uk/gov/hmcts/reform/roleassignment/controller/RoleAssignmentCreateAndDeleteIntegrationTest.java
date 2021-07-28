@@ -252,6 +252,8 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     public void shouldDeleteSingleRoleAssignmentByAdvancedQuery() throws Exception {
 
         assertEquals(Integer.valueOf(1), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(3), getHistoryRecordsCount());
+
 
         logger.info(" Method shouldDeleteRoleAssignmentsByAssignmentId starts : ");
         logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
@@ -272,6 +274,8 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         logger.info(" LIVE table record count after delete by query request : {}", getAssignmentRecordsCount());
 
         assertEquals(Integer.valueOf(0), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(5), getHistoryRecordsCount());
+
 
         List<String> statusList = getStatusFromHistory();
         assertEquals(5, statusList.size());
@@ -290,6 +294,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     public void shouldDeleteMultipleRoleAssignmentByAdvancedQuery() throws Exception {
 
         assertEquals(Integer.valueOf(3), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
 
         logger.info(" Method shouldDeleteRoleAssignmentsByAssignmentId starts : ");
         logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
@@ -308,6 +313,8 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         logger.info(" LIVE table record count after delete by query request : {}", getAssignmentRecordsCount());
 
         assertEquals(Integer.valueOf(0), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(15), getHistoryRecordsCount());
+
 
         List<String> statusList = getStatusFromHistory();
         assertEquals(5, statusList.size());
@@ -326,6 +333,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     public void shouldDeleteSomeRoleAssignmentsByAdvancedQuery() throws Exception {
 
         assertEquals(Integer.valueOf(3), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
 
         logger.info(" Method shouldDeleteRoleAssignmentsByAssignmentId starts : ");
         logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
@@ -344,6 +352,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         logger.info(" LIVE table record count after delete by query request : {}", getAssignmentRecordsCount());
 
         assertEquals(Integer.valueOf(2), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(11), getHistoryRecordsCount());
 
         List<String> statusList = getStatusFromHistory();
         assertEquals(5, statusList.size());
