@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +43,7 @@ public class RoleConfig {
     }
 
     private static RoleConfig buildRoleConfig() {
-        List<RoleConfigRole> allRoles = JacksonUtils.getConfiguredRoles();
+        List<RoleConfigRole> allRoles = new ArrayList<>(JacksonUtils.getConfiguredRoles());
         allRoles.forEach(RoleConfig::setRoleNameAndCategory);
         return new RoleConfig(allRoles);
     }
