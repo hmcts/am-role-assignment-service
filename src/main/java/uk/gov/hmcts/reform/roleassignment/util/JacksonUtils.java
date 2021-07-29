@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -35,6 +36,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Named
@@ -128,7 +132,8 @@ public class JacksonUtils {
         try {
             Path dirPath = getAbsolutePath();
             LOG.info("Roles absolute path is {}", dirPath);
-            Files.walk(dirPath).filter(Files::isRegularFile).forEach(f -> {
+
+            listFilesInOrder(dirPath).stream().filter(Files::isRegularFile).forEachOrdered(f -> {
                 try {
                     LOG.debug("Reading role {}", f);
                     allRoles.addAll(MAPPER.readValue(Files.newInputStream(f), listType));
@@ -142,6 +147,20 @@ public class JacksonUtils {
         }
         LOG.info("Loaded {} roles from drool", allRoles.size());
         return allRoles;
+    }
+
+    private static List<Path> listFilesInOrder(final Path dirPath) throws IOException {
+        try (final Stream<Path> fileStream = Files.walk(dirPath)) {
+            return fileStream
+                .map(Path::toFile)
+                .collect(Collectors.toMap(Function.identity(), File::getName))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .map(File::toPath)  // remove this line if you would rather work with a List<File> instead of List<Path>
+                .collect(Collectors.toList());
+        }
     }
 
     private static Path getAbsolutePath() throws URISyntaxException, IOException {
