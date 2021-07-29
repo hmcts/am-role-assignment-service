@@ -257,6 +257,12 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         assertEquals(Integer.valueOf(1), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(3), getHistoryRecordsCount());
 
+        assertEquals(Integer.valueOf(1), getStatusCount(CREATED));
+        assertEquals(Integer.valueOf(1), getStatusCount(APPROVED));
+        assertEquals(Integer.valueOf(1), getStatusCount(LIVE));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETE_APPROVED));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETED));
+
         mockMvc.perform(post(ADV_DELETE_URL)
                             .contentType(JSON_CONTENT_TYPE)
                             .content(createRoleAssignmentRequestAdvanceDelete())
@@ -285,6 +291,12 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         assertEquals(Integer.valueOf(3), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
 
+        assertEquals(Integer.valueOf(3), getStatusCount(CREATED));
+        assertEquals(Integer.valueOf(3), getStatusCount(APPROVED));
+        assertEquals(Integer.valueOf(3), getStatusCount(LIVE));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETE_APPROVED));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETED));
+
         mockMvc.perform(post(ADV_DELETE_URL)
                             .contentType(JSON_CONTENT_TYPE)
                             .content(createRoleAssignmentRequestAdvanceDeleteMultiple())
@@ -312,6 +324,12 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
         assertEquals(Integer.valueOf(3), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
+
+        assertEquals(Integer.valueOf(3), getStatusCount(CREATED));
+        assertEquals(Integer.valueOf(3), getStatusCount(APPROVED));
+        assertEquals(Integer.valueOf(3), getStatusCount(LIVE));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETE_APPROVED));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETED));
 
         mockMvc.perform(post(ADV_DELETE_URL)
                             .contentType(JSON_CONTENT_TYPE)
