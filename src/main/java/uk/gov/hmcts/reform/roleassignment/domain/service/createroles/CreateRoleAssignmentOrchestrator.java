@@ -159,7 +159,6 @@ public class CreateRoleAssignmentOrchestrator {
             );
 
         }
-
     }
 
     private void flushGlobalVariables() {
