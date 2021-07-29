@@ -42,7 +42,7 @@ public class RoleConfig {
     }
 
     private static RoleConfig buildRoleConfig() {
-        List<RoleConfigRole> allRoles = List.copyOf(JacksonUtils.getConfiguredRoles());
+        List<RoleConfigRole> allRoles = JacksonUtils.getRoleConfigs();
         allRoles.forEach(RoleConfig::setRoleNameAndCategory);
         return new RoleConfig(allRoles);
     }

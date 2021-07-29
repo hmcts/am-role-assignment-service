@@ -114,7 +114,12 @@ public class JacksonUtils {
     }
 
     static {
-        var listType = JacksonUtils.MAPPER.getTypeFactory().constructCollectionType(
+        List<RoleConfigRole> allRoles = getRoleConfigs();
+        configuredRoles.put("roles", allRoles);
+    }
+
+    public static List<RoleConfigRole> getRoleConfigs() {
+        var listType = MAPPER.getTypeFactory().constructCollectionType(
             ArrayList.class,
             RoleConfigRole.class
         );
@@ -126,7 +131,7 @@ public class JacksonUtils {
             Files.walk(dirPath).filter(Files::isRegularFile).forEach(f -> {
                 try {
                     LOG.debug("Reading role {}", f);
-                    allRoles.addAll(JacksonUtils.MAPPER.readValue(Files.newInputStream(f), listType));
+                    allRoles.addAll(MAPPER.readValue(Files.newInputStream(f), listType));
                 } catch (IOException e) {
                     LOG.error(e.getMessage());
                 }
@@ -136,7 +141,7 @@ public class JacksonUtils {
             LOG.error(e.getMessage());
         }
         LOG.info("Loaded {} roles from drool", allRoles.size());
-        configuredRoles.put("roles", allRoles);
+        return allRoles;
     }
 
     private static Path getAbsolutePath() throws URISyntaxException, IOException {
