@@ -61,6 +61,9 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         + "(SELECT id FROM role_assignment_history WHERE actor_id = ?)";
     private static final String GET_ASSIGNMENT_STATUS_QUERY = "SELECT status FROM role_assignment_history "
         + "WHERE actor_id = ? ORDER BY created";
+    private static final String GET_STATUS_COUNT_QUERY = "SELECT COUNT(*) FROM role_assignment_history "
+        + "WHERE status =";
+    private static final String ADV_DELETE_URL = "/am/role-assignments/query/delete";
     public static final String CREATED = "CREATED";
     public static final String APPROVED = "APPROVED";
     public static final String LIVE = "LIVE";
@@ -254,36 +257,22 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         assertEquals(Integer.valueOf(1), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(3), getHistoryRecordsCount());
 
-
-        logger.info(" Method shouldDeleteRoleAssignmentsByAssignmentId starts : ");
-        logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
-        logger.info(" LIVE table record count before delete by query request : {}", getAssignmentRecordsCount());
-        final String url = "/am/role-assignments/query/delete";
-
-
-
-        mockMvc.perform(post(url)
-                            .contentType("application/json")
+        mockMvc.perform(post(ADV_DELETE_URL)
+                            .contentType(JSON_CONTENT_TYPE)
                             .content(createRoleAssignmentRequestAdvanceDelete())
                             .headers(getHttpHeaders())
         )
             .andExpect(status().is(HttpStatus.OK.value()))
             .andReturn();
 
-        logger.info(" History record count after create assignment request : {}", getHistoryRecordsCount());
-        logger.info(" LIVE table record count after delete by query request : {}", getAssignmentRecordsCount());
-
         assertEquals(Integer.valueOf(0), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(5), getHistoryRecordsCount());
 
-
-        List<String> statusList = getStatusFromHistory();
-        assertEquals(5, statusList.size());
-        assertEquals(CREATED, statusList.get(0));
-        assertEquals(APPROVED, statusList.get(1));
-        assertEquals(LIVE, statusList.get(2));
-        assertEquals(DELETE_APPROVED, statusList.get(3));
-        assertEquals(DELETED, statusList.get(4));
+        assertEquals(Integer.valueOf(1), getStatusCount(CREATED));
+        assertEquals(Integer.valueOf(1), getStatusCount(APPROVED));
+        assertEquals(Integer.valueOf(1), getStatusCount(LIVE));
+        assertEquals(Integer.valueOf(1), getStatusCount(DELETE_APPROVED));
+        assertEquals(Integer.valueOf(1), getStatusCount(DELETED));
 
     }
 
@@ -296,33 +285,22 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         assertEquals(Integer.valueOf(3), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
 
-        logger.info(" Method shouldDeleteRoleAssignmentsByAssignmentId starts : ");
-        logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
-        logger.info(" LIVE table record count before delete by query request : {}", getAssignmentRecordsCount());
-        final String url = "/am/role-assignments/query/delete";
-
-        mockMvc.perform(post(url)
-                            .contentType("application/json")
+        mockMvc.perform(post(ADV_DELETE_URL)
+                            .contentType(JSON_CONTENT_TYPE)
                             .content(createRoleAssignmentRequestAdvanceDeleteMultiple())
                             .headers(getHttpHeaders())
         )
             .andExpect(status().is(HttpStatus.OK.value()))
             .andReturn();
 
-        logger.info(" History record count after create assignment request : {}", getHistoryRecordsCount());
-        logger.info(" LIVE table record count after delete by query request : {}", getAssignmentRecordsCount());
-
         assertEquals(Integer.valueOf(0), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(15), getHistoryRecordsCount());
 
-
-        List<String> statusList = getStatusFromHistory();
-        assertEquals(5, statusList.size());
-        assertEquals(CREATED, statusList.get(0));
-        assertEquals(APPROVED, statusList.get(1));
-        assertEquals(LIVE, statusList.get(2));
-        assertEquals(DELETE_APPROVED, statusList.get(3));
-        assertEquals(DELETED, statusList.get(4));
+        assertEquals(Integer.valueOf(3), getStatusCount(CREATED));
+        assertEquals(Integer.valueOf(3), getStatusCount(APPROVED));
+        assertEquals(Integer.valueOf(3), getStatusCount(LIVE));
+        assertEquals(Integer.valueOf(3), getStatusCount(DELETE_APPROVED));
+        assertEquals(Integer.valueOf(3), getStatusCount(DELETED));
 
     }
 
@@ -335,32 +313,22 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         assertEquals(Integer.valueOf(3), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
 
-        logger.info(" Method shouldDeleteRoleAssignmentsByAssignmentId starts : ");
-        logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
-        logger.info(" LIVE table record count before delete by query request : {}", getAssignmentRecordsCount());
-        final String url = "/am/role-assignments/query/delete";
-
-        mockMvc.perform(post(url)
-                            .contentType("application/json")
+        mockMvc.perform(post(ADV_DELETE_URL)
+                            .contentType(JSON_CONTENT_TYPE)
                             .content(createRoleAssignmentRequestAdvanceDelete())
                             .headers(getHttpHeaders())
         )
             .andExpect(status().is(HttpStatus.OK.value()))
             .andReturn();
 
-        logger.info(" History record count after create assignment request : {}", getHistoryRecordsCount());
-        logger.info(" LIVE table record count after delete by query request : {}", getAssignmentRecordsCount());
-
         assertEquals(Integer.valueOf(2), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(11), getHistoryRecordsCount());
 
-        List<String> statusList = getStatusFromHistory();
-        assertEquals(5, statusList.size());
-        assertEquals(CREATED, statusList.get(0));
-        assertEquals(APPROVED, statusList.get(1));
-        assertEquals(LIVE, statusList.get(2));
-        assertEquals(DELETE_APPROVED, statusList.get(3));
-        assertEquals(DELETED, statusList.get(4));
+        assertEquals(Integer.valueOf(3), getStatusCount(CREATED));
+        assertEquals(Integer.valueOf(3), getStatusCount(APPROVED));
+        assertEquals(Integer.valueOf(3), getStatusCount(LIVE));
+        assertEquals(Integer.valueOf(1), getStatusCount(DELETE_APPROVED));
+        assertEquals(Integer.valueOf(1), getStatusCount(DELETED));
 
     }
 
@@ -413,6 +381,10 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     public List<String> getStatusFromHistory() {
         return template.queryForList(GET_ASSIGNMENT_STATUS_QUERY, new Object[]{ACTOR_ID}, String.class);
+    }
+
+    public Integer getStatusCount(String status) {
+        return template.queryForObject(GET_STATUS_COUNT_QUERY + "'" + status + "'", Integer.class);
     }
 
     public String getActorFromAssignmentTable() {
