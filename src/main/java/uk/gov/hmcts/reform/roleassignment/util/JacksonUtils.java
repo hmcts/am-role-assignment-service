@@ -130,10 +130,10 @@ public class JacksonUtils {
 
         List<RoleConfigRole> allRoles = new ArrayList<>();
         try {
-            Path dirPath = getAbsolutePath();
+            Path dirPath = getAbsolutePath(Constants.ROLES_DIR);
             LOG.info("Roles absolute path is {}", dirPath);
 
-            listFilesInOrder(dirPath).stream().filter(Files::isRegularFile).forEachOrdered(f -> {
+            Files.walk(dirPath).filter(Files::isRegularFile).sorted().forEachOrdered(f -> {
                 try {
                     LOG.debug("Reading role {}", f);
                     allRoles.addAll(MAPPER.readValue(Files.newInputStream(f), listType));
@@ -145,13 +145,17 @@ public class JacksonUtils {
         } catch (IOException | URISyntaxException e) {
             LOG.error(e.getMessage());
         }
+
         LOG.info("Loaded {} roles from drool", allRoles.size());
         return allRoles;
     }
 
     private static List<Path> listFilesInOrder(final Path dirPath) throws IOException {
-        try (final Stream<Path> fileStream = Files.walk(dirPath)) {
-            return fileStream
+
+        try (final Stream<Path> fileStream = Files.walk(dirPath).filter(Files::isRegularFile)) {
+            //fileStream.map(Path::toFile).sorted().collect(Collectors.toList()).forEach(System.out::println);
+            fileStream.sorted().collect(Collectors.toList()).forEach(System.out::println);
+            return Files.walk(dirPath)
                 .map(Path::toFile)
                 .collect(Collectors.toMap(Function.identity(), File::getName))
                 .entrySet()
@@ -163,8 +167,8 @@ public class JacksonUtils {
         }
     }
 
-    private static Path getAbsolutePath() throws URISyntaxException, IOException {
-        URI uri = JacksonUtils.class.getClassLoader().getResource(Constants.ROLES_DIR).toURI();
+    private static Path getAbsolutePath(String path) throws URISyntaxException, IOException {
+        URI uri = JacksonUtils.class.getClassLoader().getResource(path).toURI();
         LOG.debug("Filtering ROOT dir {}", uri);
 
         final String[] array = uri.toString().split("!");
