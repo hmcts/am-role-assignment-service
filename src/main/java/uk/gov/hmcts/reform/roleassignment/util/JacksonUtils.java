@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -81,7 +82,7 @@ public class JacksonUtils {
     }
 
     public static TypeReference<HashMap<String, JsonNode>> getHashMapTypeReference() {
-        return new TypeReference<HashMap<String, JsonNode>>() {
+        return new TypeReference<>() {
         };
     }
 
@@ -127,7 +128,8 @@ public class JacksonUtils {
     public static List<RoleConfigRole> getRoleConfigs() {
         List<RoleConfigRole> allRoles = null;
         try {
-            URI uri = JacksonUtils.class.getClassLoader().getResource(Constants.ROLES_DIR).toURI();
+            URI uri = Objects.requireNonNull(JacksonUtils.class.getClassLoader().getResource(Constants.ROLES_DIR))
+                .toURI();
             LOG.debug("Roles absolute dir is {}", uri);
 
             final String[] array = uri.toString().split("!");
@@ -142,11 +144,8 @@ public class JacksonUtils {
         } catch (IOException | URISyntaxException e) {
             LOG.error(e.getMessage());
         }
-        assert allRoles != null;
 
-        allRoles.forEach(role -> role.getPatterns().forEach(p -> System.out.println(
-            Arrays.toString(p.getRoleType().getValues().toArray()))));
-        LOG.info("Loaded {} roles from drool", allRoles.size());
+        LOG.info("Loaded {} roles from drool", Objects.requireNonNull(allRoles).size());
         return allRoles;
     }
 
