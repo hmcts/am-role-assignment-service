@@ -773,6 +773,28 @@
         "patterns" : [ {
           "roleType" : {
             "mandatory" : true,
+            "values" : [ "ORGANISATION" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "STANDARD" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "PRIVATE", "PUBLIC" ]
+          },
+          "attributes" : {
+            "jurisdiction" : {
+              "mandatory" : true,
+              "values" : [ "IA" ]
+            },
+            "primaryLocation" : {
+              "mandatory" : true
+            }
+          }
+        }, {
+          "roleType" : {
+            "mandatory" : true,
             "values" : [ "CASE" ]
           },
           "grantType" : {
@@ -793,28 +815,6 @@
               "mandatory" : true
             }
           }
-        }, {
-          "roleType" : {
-            "mandatory" : true,
-            "values" : [ "ORGANISATION" ]
-          },
-          "grantType" : {
-            "mandatory" : true,
-            "values" : [ "STANDARD" ]
-          },
-          "classification" : {
-            "mandatory" : true,
-            "values" : [ "PUBLIC", "PRIVATE" ]
-          },
-          "attributes" : {
-            "jurisdiction" : {
-              "mandatory" : true,
-              "values" : [ "IA" ]
-            },
-            "primaryLocation" : {
-              "mandatory" : true
-            }
-          }
         } ]
       }, {
         "name" : "senior-tribunal-caseworker",
@@ -832,7 +832,7 @@
           },
           "classification" : {
             "mandatory" : true,
-            "values" : [ "PUBLIC", "PRIVATE" ]
+            "values" : [ "PRIVATE", "PUBLIC" ]
           },
           "attributes" : {
             "jurisdiction" : {
@@ -850,27 +850,6 @@
         "description" : "Judicial office holder able to do judicial case work",
         "category" : "JUDICIAL",
         "patterns" : [ {
-        "roleType" : {
-          "mandatory" : true,
-          "values" : [ "CASE" ]
-        },
-        "grantType" : {
-          "mandatory" : true,
-          "values" : [ "SPECIFIC", "CHALLENGED" ]
-        },
-        "classification" : {
-          "mandatory" : true,
-          "values" : [ "PUBLIC" ]
-        },
-        "beginTime" : {
-          "mandatory" : true
-        },
-        "attributes" : {
-          "caseId" : {
-            "mandatory" : true
-          }
-        }
-      },{
           "roleType" : {
             "mandatory" : true,
             "values" : [ "ORGANISATION" ]
@@ -881,7 +860,7 @@
           },
           "classification" : {
             "mandatory" : true,
-            "values" : [ "PUBLIC", "PRIVATE" ]
+            "values" : [ "PRIVATE", "PUBLIC" ]
           },
           "attributes" : {
             "region" : {
@@ -891,6 +870,27 @@
             "jurisdiction" : {
               "mandatory" : true,
               "values" : [ "IA", "divorce" ]
+            }
+          }
+        }, {
+          "roleType" : {
+            "mandatory" : true,
+            "values" : [ "CASE" ]
+          },
+          "grantType" : {
+            "mandatory" : true,
+            "values" : [ "SPECIFIC", "CHALLENGED" ]
+          },
+          "classification" : {
+            "mandatory" : true,
+            "values" : [ "PUBLIC" ]
+          },
+          "beginTime" : {
+            "mandatory" : true
+          },
+          "attributes" : {
+            "caseId" : {
+              "mandatory" : true
             }
           }
         } ]

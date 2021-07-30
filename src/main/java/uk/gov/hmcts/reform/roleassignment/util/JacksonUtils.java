@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -60,6 +62,10 @@ public class JacksonUtils {
         .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
         .build();
 
+    public static final CollectionType listType = MAPPER.getTypeFactory().constructCollectionType(
+        ArrayList.class,
+        RoleConfigRole.class
+    );
 
     public static List<RoleConfigRole> getConfiguredRoles() {
         return configuredRoles.get("roles");
@@ -115,45 +121,46 @@ public class JacksonUtils {
     }
 
     static {
-        List<RoleConfigRole> allRoles = getRoleConfigs();
-        configuredRoles.put("roles", allRoles);
+        configuredRoles.put("roles", getRoleConfigs());
     }
 
     public static List<RoleConfigRole> getRoleConfigs() {
-        var listType = MAPPER.getTypeFactory().constructCollectionType(
-            ArrayList.class,
-            RoleConfigRole.class
-        );
-
-        List<RoleConfigRole> allRoles = new ArrayList<>();
+        List<RoleConfigRole> allRoles = null;
         try {
-            Path dirPath = getAbsolutePath();
-            LOG.info("Roles absolute path is {}", dirPath);
+            URI uri = JacksonUtils.class.getClassLoader().getResource(Constants.ROLES_DIR).toURI();
+            LOG.debug("Roles absolute dir is {}", uri);
 
-            Files.walk(dirPath).filter(Files::isRegularFile).sorted(Comparator.comparing(Path::toString)).forEach(f -> {
-                try {
-                    LOG.debug("Reading role {}", f);
-                    allRoles.addAll(MAPPER.readValue(Files.newInputStream(f), listType));
-                } catch (IOException e) {
-                    LOG.error(e.getMessage());
+            final String[] array = uri.toString().split("!");
+            if (array.length > 1) {
+                try (FileSystem fileSystems = FileSystems.newFileSystem(URI.create(array[0]), new HashMap<>())) {
+                    Path dirPath = fileSystems.getPath(array[1], Arrays.copyOfRange(array, 2, array.length));
+                    allRoles = readFiles(dirPath);
                 }
-            });
-
+            } else {
+                allRoles = readFiles(Paths.get(uri));
+            }
         } catch (IOException | URISyntaxException e) {
             LOG.error(e.getMessage());
         }
+        assert allRoles != null;
 
+        allRoles.forEach(role -> role.getPatterns().forEach(p -> System.out.println(
+            Arrays.toString(p.getRoleType().getValues().toArray()))));
         LOG.info("Loaded {} roles from drool", allRoles.size());
         return allRoles;
     }
 
-    private static Path getAbsolutePath() throws URISyntaxException, IOException {
-        URI uri = JacksonUtils.class.getClassLoader().getResource(Constants.ROLES_DIR).toURI();
-        LOG.debug("Filtering ROOT dir {}", uri);
-
-        final String[] array = uri.toString().split("!");
-        return array.length > 1 ? FileSystems.newFileSystem(URI.create(array[0]), new HashMap<>())
-            .getPath(array[1], Arrays.copyOfRange(array, 2, array.length)) : Paths.get(uri);
+    private static List<RoleConfigRole> readFiles(Path dirPath) throws IOException {
+        List<RoleConfigRole> allRoles = new ArrayList<>();
+        Files.walk(dirPath).filter(Files::isRegularFile).sorted(Comparator.comparing(Path::toString)).forEach(f -> {
+            try {
+                LOG.debug("Reading role {}", f);
+                allRoles.addAll(MAPPER.readValue(Files.newInputStream(f), listType));
+            } catch (IOException e) {
+                LOG.error(e.getMessage());
+            }
+        });
+        return allRoles;
     }
 
 }
