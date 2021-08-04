@@ -112,7 +112,7 @@ idam:
     microservice: am_role_assignment_service
     url: ${IDAM_S2S_URL:http://localhost:4502}
   s2s-authorised:
-    services: ${ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES:ccd_gw,am_role_assignment_service,am_org_role_mapping_service,xui_webapp}
+    services: ${ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES:ccd_gw,am_role_assignment_service,am_org_role_mapping_service,xui_webapp,aac_manage_case_assignment,ccd_data}
   api.url: ${IDAM_USER_URL:http://localhost:5000}
   client:
     id: ${ROLE_ASSIGNMENT_IDAM_CLIENT_ID:am_docker}
@@ -160,7 +160,7 @@ roleassignment:
      sortcolumn: roleName
 org :
   request:
-    byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:true}
+    byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:false}
 
 logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:INFO}
 
