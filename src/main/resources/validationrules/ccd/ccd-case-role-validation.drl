@@ -12,6 +12,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigPattern;
 
 /*
  * CCD case roles can be created by client request originated from ccd service.
@@ -208,4 +210,42 @@ then
     $ra.log("Delete approved : ccd_delete_case_roles_creator");
     update($ra);
     logMsg("Rule : ccd_delete_case_roles_creator");
+end;
+
+
+rule "approve_any_case_role"
+salience -900
+when
+$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+         $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             attributes["jurisdiction"] != null,
+             attributes["caseType"] != null,
+             attributes["caseId"] != null)
+         not RoleConfigPattern(
+             roleName == $ra.roleName)
+then
+    $ra.setStatus(Status.APPROVED);
+    $ra.log("Approved : approve_any_case_role");
+    update($ra);
+    logMsg("Rule : approve_any_case_role");
+end;
+
+rule "approve_any_case_role_delete"
+salience -1000
+when
+$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+         $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.CASE,
+             attributes["caseId"] != null)
+         not RoleConfigPattern(
+             roleName == $ra.roleName)
+
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Approved : approve_any_case_role_delete");
+    update($ra);
+    logMsg("Rule : approve_any_case_role_delete");
 end;
