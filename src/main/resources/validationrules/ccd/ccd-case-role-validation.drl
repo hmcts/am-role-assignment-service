@@ -216,7 +216,7 @@ end;
 rule "approve_any_case_role"
 salience -900
 when
-$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+$rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_assignment"))
          $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
@@ -235,7 +235,7 @@ end;
 rule "approve_any_case_role_delete"
 salience -1000
 when
-$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+$rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_assignment"))
          $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
