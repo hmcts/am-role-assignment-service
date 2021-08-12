@@ -196,7 +196,7 @@ end;
 
 rule "ccd_delete_case_roles_creator"
 when
-    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+    //$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
     $ra: RoleAssignment(
              roleName == "[CREATOR]",
              roleCategory in (RoleCategory.PROFESSIONAL, RoleCategory.CITIZEN,
@@ -213,10 +213,11 @@ then
 end;
 
 
-rule "approve_any_case_role"
+rule "ccd_create_case_roles_any"
 salience -900
 when
-$rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_assignment"))
+$rq: Request(byPassOrgDroolRule)
+//$rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_assignment"))
          $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
@@ -227,15 +228,16 @@ $rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_ass
              roleName == $ra.roleName)
 then
     $ra.setStatus(Status.APPROVED);
-    $ra.log("Approved : approve_any_case_role");
+    $ra.log("Approved through bypass : ccd_create_case_roles_any");
     update($ra);
-    logMsg("Rule : approve_any_case_role");
+    logMsg("Rule : ccd_create_case_roles_any");
 end;
 
-rule "approve_any_case_role_delete"
-salience -1000
+rule "ccd_delete_case_roles_any"
+salience -900
 when
-$rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_assignment"))
+$rq: Request(byPassOrgDroolRule)
+//$rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_assignment"))
          $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
@@ -245,7 +247,7 @@ $rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_ass
 
 then
     $ra.setStatus(Status.DELETE_APPROVED);
-    $ra.log("Approved : approve_any_case_role_delete");
+    $ra.log("Approved through bypass: ccd_delete_case_roles_any");
     update($ra);
-    logMsg("Rule : approve_any_case_role_delete");
+    logMsg("Rule : ccd_delete_case_roles_any");
 end;
