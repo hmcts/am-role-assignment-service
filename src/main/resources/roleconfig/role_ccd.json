@@ -20,12 +20,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["DIVORCE"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["DIVORCE"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -55,12 +53,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["DIVORCE"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["DIVORCE"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -90,12 +86,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -125,12 +119,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -160,12 +152,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -195,12 +185,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -230,12 +218,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -265,12 +251,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -300,12 +284,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -335,12 +317,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -370,12 +350,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -405,12 +383,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -440,12 +416,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -475,12 +449,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -510,12 +482,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -545,12 +515,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -580,12 +548,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -615,12 +581,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -650,12 +614,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -685,12 +647,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["Asylum"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
