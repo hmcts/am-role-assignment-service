@@ -146,7 +146,7 @@ when
         ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
-            roleName in ("tribunal-caseworker", "senior-tribunal-caseworker", "case-allocator"),
+             roleName in ("tribunal-caseworker", "senior-tribunal-caseworker", "case-allocator"),
              attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
 
 then
