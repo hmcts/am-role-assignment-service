@@ -222,7 +222,7 @@ $rq: Request(byPassOrgDroolRule)
          $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
-             attributes["caseId"] != null)
+             attributes["caseId"] != null  && $caseId : attributes["caseId"].asText())
          not RoleConfigPattern(
              roleName == $ra.roleName)
      $c:  Case(id == $caseId)
