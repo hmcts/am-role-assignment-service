@@ -213,6 +213,7 @@ then
 end;
 
 
+
 rule "ccd_create_case_roles_any"
 salience -900
 when
@@ -221,8 +222,6 @@ $rq: Request(byPassOrgDroolRule)
          $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
-             attributes["jurisdiction"] != null,
-             attributes["caseType"] != null,
              attributes["caseId"] != null)
          not RoleConfigPattern(
              roleName == $ra.roleName)
