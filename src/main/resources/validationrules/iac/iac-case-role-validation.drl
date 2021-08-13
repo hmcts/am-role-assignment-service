@@ -104,17 +104,17 @@ when
              id == $caseId,
              jurisdiction == "IA",
              caseTypeId == "Asylum")
-         ExistingRoleAssignment(
-             actorId == $ra.actorId,
-             roleType == RoleType.ORGANISATION,
-             roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+    ExistingRoleAssignment(
+            actorId == $ra.actorId,
+            roleType == RoleType.ORGANISATION,
+            roleName in ("tribunal-caseworker", "senior-tribunal-caseworker", "case-allocator"),
+            attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 
-         ExistingRoleAssignment(
-             actorId == $rq.assignerId,
-             roleType == RoleType.ORGANISATION,
-             roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+    ExistingRoleAssignment(
+            actorId == $rq.assignerId,
+            roleType == RoleType.ORGANISATION,
+            roleName in ("tribunal-caseworker", "senior-tribunal-caseworker", "case-allocator"),
+            attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 
 then
     $ra.setAttribute("jurisdiction", $c.getJurisdiction());
@@ -146,7 +146,7 @@ when
         ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
-             roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
+            roleName in ("tribunal-caseworker", "senior-tribunal-caseworker", "case-allocator"),
              attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
 
 then
