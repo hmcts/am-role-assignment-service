@@ -225,7 +225,10 @@ $rq: Request(byPassOrgDroolRule)
              attributes["caseId"] != null)
          not RoleConfigPattern(
              roleName == $ra.roleName)
+     $c:  Case(id == $caseId)
 then
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
     $ra.setStatus(Status.APPROVED);
     $ra.log("Approved through bypass : ccd_create_case_roles_any");
     update($ra);
