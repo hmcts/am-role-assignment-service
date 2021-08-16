@@ -319,6 +319,7 @@ dependencies {
   implementation (group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0') {
     exclude group: 'org.glassfish', module: 'jakarta.el'
   }
+  implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.5.1'
 
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   compile group: 'org.json', name: 'json', version: '20210307'
