@@ -304,12 +304,16 @@ repositories {
 
 
 dependencies {
-  compile(group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot)
+  implementation('org.springframework.boot:spring-boot-starter-web') {
+    exclude group: 'org.glassfish', module: 'jakarta.el'
+  }
   compile(group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBoot)
   compile(group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot)
   compile(group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot)
   compile(group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot)
-  compile(group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0')
+  implementation (group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0') {
+    exclude group: 'org.glassfish', module: 'jakarta.el'
+  }
 
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   compile group: 'org.json', name: 'json', version: '20210307'
@@ -348,7 +352,9 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.5.RELEASE'
-  compile('org.springframework.boot:spring-boot-starter-hateoas')
+  implementation('org.springframework.boot:spring-boot-starter-hateoas') {
+    exclude group: 'org.glassfish', module: 'jakarta.el'
+  }
   compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
 
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.0.10'
