@@ -22,6 +22,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -103,6 +104,11 @@ public class DeleteRoleAssignmentProviderTest {
         initMocksPr();
     }
 
+    @State({"Delete the set of selected role assignments as per given delete by query request"})
+    public void advanceDeleteQueryWithSuccess() {
+        setInitMockAdvanceDelete();
+    }
+
     private void initMocksId() throws IOException {
         initCommonMocks();
         when(persistenceService.getAssignmentById(UUID.fromString(ASSIGNMENT_ID)))
@@ -144,6 +150,13 @@ public class DeleteRoleAssignmentProviderTest {
         return TestDataBuilder
             .buildRoleAssignmentList_Custom(Status.LIVE,"1234",
                                             "attributesCase.json", RoleType.CASE, "tribunal-caseworker");
+    }
+
+    private void setInitMockAdvanceDelete() {
+        Request deleteRequest = TestDataBuilder.buildRequest(Status.LIVE, false);
+
+        when(securityUtils.getServiceName()).thenReturn("am_org_role_mapping_service");
+        when(persistenceService.persistRequest(any())).thenReturn(TestDataBuilder.buildRequestEntity(deleteRequest));
     }
 
     public RequestEntity createEntity() {

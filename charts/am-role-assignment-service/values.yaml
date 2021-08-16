@@ -35,3 +35,4 @@ java:
     ENABLE_FEIGN_HYSTRIX: false
     ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: ras-validation-system@hmcts.net
     APPLICATION_LOGGING_LEVEL: INFO
+    BYPASS_ORG_DROOL_RULE: false
