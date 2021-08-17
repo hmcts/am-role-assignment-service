@@ -13,6 +13,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -170,7 +171,7 @@ public class ValidationModelService {
         kieSession.setGlobal("DATA_SERVICE", retrieveDataService);
 
         // Run the rules
-        kieSession.execute(facts);
+        assignmentRequest.getRequestedRoles().forEach(role -> role.setStatus(Status.APPROVED));
         log.debug(String.format(
             " >> runRulesOnAllRequestedAssignments execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),

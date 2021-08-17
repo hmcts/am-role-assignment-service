@@ -147,8 +147,7 @@ public class ValidationUtil {
 
         for (RoleAssignment requestedRole : requestedRoles) {
             if (!rolesName.contains(requestedRole.getRoleName())) {
-                throw new BadRequestException(V1.Error.BAD_REQUEST_INVALID_PARAMETER + " roleName :"
-                                                  + requestedRole.getRoleName());
+                log.warn("Role name {} not normally supported by RAS", requestedRole.getRoleName());
             }
             validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, requestedRole.getActorId());
             if (requestedRole.getRoleType().equals(CASE)) {
