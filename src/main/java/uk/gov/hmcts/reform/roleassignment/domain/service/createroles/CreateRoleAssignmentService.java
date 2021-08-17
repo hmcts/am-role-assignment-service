@@ -207,8 +207,6 @@ public class CreateRoleAssignmentService {
 
         insertRequestedRole(parsedAssignmentRequest, Status.CREATE_REQUESTED, emptyUUIds);
 
-        validationModelService.validateRequest(parsedAssignmentRequest);
-
         //Save requested role in history table with APPROVED/REJECTED Status
         for (RoleAssignment requestedAssignment : parsedAssignmentRequest.getRequestedRoles()) {
             requestEntity.getHistoryEntities().add(persistenceUtil.prepareHistoryEntityForPersistance(
@@ -533,9 +531,6 @@ public class CreateRoleAssignmentService {
     }
 
     private void evaluateDeleteAssignments(AssignmentRequest existingAssignmentRequest) {
-
-        //calling drools rules for validation
-        validationModelService.validateRequest(existingAssignmentRequest);
 
         // we are mocking delete rejected status
         insertExistingRecordsAfterDroolValidation(existingAssignmentRequest);
