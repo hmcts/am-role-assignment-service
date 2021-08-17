@@ -122,7 +122,6 @@ public class ValidationUtil {
             || (assignmentRequest.getRequest().isReplaceExisting()
             && !assignmentRequest.getRequestedRoles().isEmpty())) {
             isRequestedRolesEmpty(assignmentRequest.getRequestedRoles());
-            validateRequestedRoles(assignmentRequest.getRequestedRoles());
         }
     }
 
