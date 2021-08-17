@@ -171,7 +171,13 @@ public class ValidationModelService {
         kieSession.setGlobal("DATA_SERVICE", retrieveDataService);
 
         // Run the rules
-        assignmentRequest.getRequestedRoles().forEach(role -> role.setStatus(Status.APPROVED));
+        assignmentRequest.getRequestedRoles().forEach(role -> {
+            if (role.getStatus() == Status.DELETE_REQUESTED) {
+                role.setStatus(Status.DELETE_APPROVED);
+            } else {
+                role.setStatus(Status.APPROVED);
+            }
+        });
         log.debug(String.format(
             " >> runRulesOnAllRequestedAssignments execution finished at %s . Time taken = %s milliseconds",
             System.currentTimeMillis(),

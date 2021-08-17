@@ -274,34 +274,6 @@ class ValidationUtilTest {
     }
 
     @Test
-    void shouldValidateAssignmentRequest_clf_InvalidRoleRequests() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
-                                                                                     false);
-        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            requestedRole.setRoleName("commander");
-        }
-
-        Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateAssignmentRequest(assignmentRequest)
-        );
-    }
-
-    @Test
-    void shouldValidateAssignmentRequest_clf_InvalidBeginTime() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
-                                                                                     false);
-        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            requestedRole.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC).minusDays(1L));
-            requestedRole.setRoleName("solicitor");
-        }
-
-
-        Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateAssignmentRequest(assignmentRequest)
-        );
-    }
-
-    @Test
     void shouldValidateAssignmentRequest_clf_InvalidEndTime() throws IOException {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
                                                                                      false);

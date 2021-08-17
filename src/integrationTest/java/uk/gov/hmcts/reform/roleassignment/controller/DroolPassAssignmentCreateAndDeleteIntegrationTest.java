@@ -132,27 +132,6 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
         {"classpath:sql/role_assignment_clean_up.sql"
 
         })
-    public void shouldRejectRoleAssignmentsWithWrongClientId() throws Exception {
-        AssignmentRequest assignmentRequest = buildDroolRuleBypassRequest();
-        assignmentRequest.getRequest().setClientId("wrong_am_org_role_mapping_service");
-        logger.info(" assignmentRequest :  {}", mapper.writeValueAsString(assignmentRequest));
-        final String url = "/am/role-assignments";
-
-
-        mockMvc.perform(post(url)
-                            .contentType(JSON_CONTENT_TYPE)
-                            .headers(getHttpHeaders())
-                            .content(mapper.writeValueAsBytes(assignmentRequest))
-        ).andExpect(status().is(422))
-         .andExpect(jsonPath("$.roleAssignmentResponse.roleRequest.status").value("REJECTED"))
-         .andReturn();
-    }
-
-    @Test
-    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
-        {"classpath:sql/role_assignment_clean_up.sql"
-
-        })
     public void shouldCreateRoleAssignmentsWithCorrectClientId() throws Exception {
         AssignmentRequest assignmentRequest = buildDroolRuleBypassRequest();
         logger.info(" assignmentRequest :  {}", mapper.writeValueAsString(assignmentRequest));
