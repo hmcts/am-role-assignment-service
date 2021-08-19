@@ -22,7 +22,6 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
         }
     }
 
-
     private Object generateCaseId() {
         long currentTime = new Date().getTime();
         String time = Long.toString(currentTime);
