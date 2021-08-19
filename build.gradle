@@ -367,7 +367,9 @@ dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: '2.4.5'
 
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
-  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+  implementation ('org.springframework.boot:spring-boot-starter-oauth2-client') {
+    exclude group: 'com.nimbusds', module: 'lang-tag'
+  }
 
   implementation "org.springframework.security:spring-security-web"
   implementation "org.springframework.security:spring-security-config"
