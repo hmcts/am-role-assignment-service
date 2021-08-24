@@ -14,6 +14,7 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleName": "SupremeCourtJudge"
         }
       ]
