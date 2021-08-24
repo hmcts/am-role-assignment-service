@@ -146,10 +146,12 @@ public class ValidationUtil {
             Collectors.toList());
 
         for (RoleAssignment requestedRole : requestedRoles) {
-           /* if (!rolesName.contains(requestedRole.getRoleName())) {
+            /*
+           if (!rolesName.contains(requestedRole.getRoleName())) {
                 throw new BadRequestException(V1.Error.BAD_REQUEST_INVALID_PARAMETER + " roleName :"
                                                   + requestedRole.getRoleName());
-            }*/
+            }
+            */
             validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, requestedRole.getActorId());
             if (requestedRole.getRoleType().equals(CASE)) {
                 validateId(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
