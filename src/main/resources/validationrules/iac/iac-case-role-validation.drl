@@ -98,7 +98,7 @@ when
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
-             roleName == "tribunal-caseworker",
+             roleName in ("tribunal-caseworker", "case-manager", "case-allocator"),
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
              id == $caseId,
@@ -137,7 +137,7 @@ when
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
-             roleName == "tribunal-caseworker",
+             roleName in ("tribunal-caseworker", "case-manager", "case-allocator"),
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
          Case(
              id == $caseId,
