@@ -241,9 +241,6 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["IA"]
-          },
-          "primaryLocation": {
-            "mandatory": true
           }
         }
       }
