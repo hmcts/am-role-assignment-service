@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo ${TEST_URL}
-zap-api-scan.py -t ${TEST_URL}/v2/api-docs -f openapi -S -d -u ${SecurityRules} -P 1001 -l FAIL
+zap-api-scan.py -t ${TEST_URL}/v2/api-docs -f openapi -S -d -u ${SecurityRules} -P 1001 -l FAIL -J report.json -r api-report.html
 cat zap.out
 echo "ZAP has successfully started"
 curl --fail http://0.0.0.0:1001/OTHER/core/other/jsonreport/?formMethod=GET --output report.json
