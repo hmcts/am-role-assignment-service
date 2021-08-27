@@ -1,5 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -7,11 +12,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 @Slf4j
 public class RoleConfig {
@@ -22,11 +22,11 @@ public class RoleConfig {
     private final Map<String,RoleConfigRole> roleConfigByRoleName = new HashMap<>();
 
     private RoleConfig(Collection<RoleConfigRole> roles) {
-        roles.forEach(r -> roleConfigByRoleName.put(r.getName(), r));
+        roles.forEach(r -> roleConfigByRoleName.put(String.join("_", r.getName(), r.getCategory().name()), r));
     }
 
-    public RoleConfigRole get(String roleName) {
-        return roleConfigByRoleName.get(roleName);
+    public RoleConfigRole get(String roleName, RoleCategory roleCategory) {
+        return roleConfigByRoleName.get(String.join("_", roleName, roleCategory.name()));
     }
 
     /**

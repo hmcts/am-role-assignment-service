@@ -25,11 +25,12 @@ when
 
          RoleAssignment(
              status == Status.CREATE_APPROVED,
-             $roleName : roleName)
-    $rc: RoleConfig(get($roleName) != null)
+             $roleName : roleName,
+             $roleCategory : roleCategory)
+    $rc: RoleConfig(get($roleName, $roleCategory) != null)
          not RoleConfigPattern(roleName == $roleName)
 then
-    for (RoleConfigPattern pattern : $rc.get($roleName).getPatterns()) {
+    for (RoleConfigPattern pattern : $rc.get($roleName, $roleCategory).getPatterns()) {
         insert(pattern);
         logMsg("Rule : load_role_config_patterns :: " + pattern);
     }
