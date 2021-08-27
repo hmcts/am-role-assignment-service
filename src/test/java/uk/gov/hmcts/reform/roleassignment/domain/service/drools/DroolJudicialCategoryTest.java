@@ -78,6 +78,8 @@ class DroolJudicialCategoryTest extends DroolBase {
     void shouldApprovedRequestedRoleForOrg() {
 
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setClientId("not_am_org_role_mapping_service");
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
