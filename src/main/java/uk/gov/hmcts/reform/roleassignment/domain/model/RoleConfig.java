@@ -3,12 +3,13 @@ package uk.gov.hmcts.reform.roleassignment.domain.model;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
-import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.getRoleConfigs;
 
 @Slf4j
 public class RoleConfig {
@@ -41,7 +42,7 @@ public class RoleConfig {
     }
 
     private static RoleConfig buildRoleConfig() {
-        List<RoleConfigRole> allRoles = JacksonUtils.getRoleConfigs();
+        List<RoleConfigRole> allRoles = getRoleConfigs();
         allRoles.forEach(RoleConfig::setRoleNameAndCategory);
         return new RoleConfig(allRoles);
     }
