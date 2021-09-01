@@ -19,26 +19,19 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigPattern;
  * CCD case roles can be created by client request originated from ccd service.
  */
 
-rule "ccd_create_case_roles_solicitor"
+rule "ccd_create_case_roles"
 when
-    //$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
     $ra: RoleAssignment(
-             roleName in ("[BARRISTER]", "[CAFCASSSOLICITOR]", "[EPSMANAGING]", "[LABARRISTER]",
-                          "[LAMANAGING]", "[LASOLICITOR]", "[SOLICITOR]", "[SOLICITORA]", "[SOLICITORB]",
-                          "[SOLICITORC]", "[SOLICITORD]", "[SOLICITORE]", "[SOLICITORF]", "[SOLICITORG]", "[SOLICITORH]",
-                          "[SOLICITORI]", "[SOLICITORJ]", "[CREATOR]"),
-             roleCategory == RoleCategory.PROFESSIONAL,
-             roleType == RoleType.CASE,
              status == Status.CREATE_REQUESTED,
-             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-
-    $c:  Case(
-              id == $caseId)
+             roleType == RoleType.CASE,
+             roleCategory in (RoleCategory.PROFESSIONAL, RoleCategory.CITIZEN),
+             attributes["jurisdiction"] != null,
+             attributes["caseType"] != null,
+             attributes["caseId"] != null)
 then
-    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
-    $ra.setAttribute("caseType", $c.getCaseTypeId());
     $ra.setStatus(Status.CREATE_APPROVED);
-    $ra.log("Stage 1 approved : ccd_create_case_roles_solicitor");
+    $ra.log("Stage 1 approved : ccd_create_case_roles");
     update($ra);
     logMsg("Rule : ccd_create_case_roles");
 end;
@@ -48,121 +41,21 @@ end;
  * CCD case roles can be deleted by client request originated from ccd service.
  */
 
-rule "ccd_delete_case_roles_solicitor"
+rule "ccd_delete_case_roles"
 when
-    //$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
     $ra: RoleAssignment(
-             roleName in ("[BARRISTER]", "[CAFCASSSOLICITOR]", "[EPSMANAGING]", "[LABARRISTER]",
-                          "[LAMANAGING]", "[LASOLICITOR]", "[SOLICITOR]", "[SOLICITORA]", "[SOLICITORB]",
-                          "[SOLICITORC]", "[SOLICITORD]", "[SOLICITORE]", "[SOLICITORF]", "[SOLICITORG]", "[SOLICITORH]",
-                          "[SOLICITORI]", "[SOLICITORJ]", "[CREATOR]"),
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
-             roleCategory == RoleCategory.PROFESSIONAL,
-             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-    $c:  Case(
-              id == $caseId)
+             roleCategory in (RoleCategory.PROFESSIONAL, RoleCategory.CITIZEN),
+             attributes["jurisdiction"] != null,
+             attributes["caseType"] != null,
+             attributes["caseId"] != null)
 then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : ccd_delete_case_roles");
     update($ra);
-    logMsg("Rule : ccd_delete_case_roles_solicitor");
-end;
-
-/*
- * CCD case roles can be created by client request originated from ccd service.
- */
-
-rule "ccd_create_case_roles_petitioners"
-when
-    //$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
-    $ra: RoleAssignment(
-             roleName in ("[PETSOLICITOR]", "[RESPSOLICITOR]"),
-             roleCategory == RoleCategory.PROFESSIONAL,
-             roleType == RoleType.CASE,
-             status == Status.CREATE_REQUESTED,
-             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-
-    $c:  Case(
-              id == $caseId)
-then
-    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
-    $ra.setAttribute("caseType", $c.getCaseTypeId());
-    $ra.setStatus(Status.CREATE_APPROVED);
-    $ra.log("Stage 1 approved : ccd_create_case_roles_petitioners");
-    update($ra);
-    logMsg("Rule : ccd_create_case_roles_petitioners");
-end;
-
-
-/*
- * CCD case roles can be deleted by client request originated from ccd service.
- */
-
-rule "ccd_delete_case_roles_petitioners"
-when
-    //$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
-    $ra: RoleAssignment(
-             roleName in ("[PETSOLICITOR]", "[RESPSOLICITOR]"),
-             status == Status.DELETE_REQUESTED,
-             roleType == RoleType.CASE,
-             roleCategory == RoleCategory.PROFESSIONAL,
-             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-    $c:  Case(
-              id == $caseId)
-then
-    $ra.setStatus(Status.DELETE_APPROVED);
-    $ra.log("Delete approved : ccd_delete_case_roles_petitioners");
-    update($ra);
-    logMsg("Rule : ccd_delete_case_roles_petitioners");
-end;
-
-/*
- * CCD case roles can be created by client request originated from ccd service.
- */
-
-rule "ccd_create_case_roles_representative"
-when
-    //$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
-    $ra: RoleAssignment(
-             roleName == "[LEGALREPRESENTATIVE]",
-             roleCategory == RoleCategory.PROFESSIONAL,
-             roleType == RoleType.CASE,
-             status == Status.CREATE_REQUESTED,
-             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-
-    $c:  Case(
-              id == $caseId)
-then
-    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
-    $ra.setAttribute("caseType", $c.getCaseTypeId());
-    $ra.setStatus(Status.CREATE_APPROVED);
-    $ra.log("Stage 1 approved : ccd_create_case_roles_representative");
-    update($ra);
-    logMsg("Rule : ccd_create_case_roles_representative");
-end;
-
-
-/*
- * CCD case roles can be deleted by client request originated from ccd service.
- */
-
-rule "ccd_delete_case_roles_representative"
-when
-    //$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
-    $ra: RoleAssignment(
-             roleName == "[LEGALREPRESENTATIVE]",
-             status == Status.DELETE_REQUESTED,
-             roleType == RoleType.CASE,
-             roleCategory == RoleCategory.PROFESSIONAL,
-             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-    $c:  Case(
-              id == $caseId)
-then
-    $ra.setStatus(Status.DELETE_APPROVED);
-    $ra.log("Delete approved : ccd_delete_case_roles_representative");
-    update($ra);
-    logMsg("Rule : ccd_delete_case_roles_representative");
+    logMsg("Rule : ccd_delete_case_roles");
 end;
 
 /*
@@ -171,18 +64,16 @@ end;
 
 rule "ccd_create_case_roles_creator"
 when
-    //$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
     $ra: RoleAssignment(
              roleName == "[CREATOR]",
-             roleCategory in (RoleCategory.PROFESSIONAL, RoleCategory.CITIZEN,
-                              RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS),
+             roleCategory in (RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS, RoleCategory.ADMIN),
              roleType == RoleType.CASE,
              status == Status.CREATE_REQUESTED,
-             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-    $c:  Case(id == $caseId)
+             attributes["jurisdiction"] != null,
+             attributes["caseType"] != null,
+             attributes["caseId"] != null)
 then
-    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
-    $ra.setAttribute("caseType", $c.getCaseTypeId());
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Stage 1 approved : ccd_create_case_roles_creator");
     update($ra);
@@ -196,15 +87,15 @@ end;
 
 rule "ccd_delete_case_roles_creator"
 when
-    //$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
     $ra: RoleAssignment(
              roleName == "[CREATOR]",
-             roleCategory in (RoleCategory.PROFESSIONAL, RoleCategory.CITIZEN,
-                              RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS),
+             roleCategory in (RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS, RoleCategory.ADMIN),
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
-             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-    $c:  Case(id == $caseId)
+             attributes["jurisdiction"] != null,
+             attributes["caseType"] != null,
+             attributes["caseId"] != null)
 then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : ccd_delete_case_roles_creator");
@@ -217,18 +108,15 @@ end;
 rule "ccd_create_case_roles_any"
 salience -900
 when
-$rq: Request(byPassOrgDroolRule)
-//$rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_assignment"))
-         $ra: RoleAssignment(
-             status == Status.CREATE_REQUESTED,
-             roleType == RoleType.CASE,
-             attributes["caseId"] != null  && $caseId : attributes["caseId"].asText())
-         not RoleConfigPattern(
-             roleName == $ra.roleName)
-     $c:  Case(id == $caseId)
+    $rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_assignment"))
+           $ra: RoleAssignment(
+               status == Status.CREATE_REQUESTED,
+               roleType == RoleType.CASE,
+               attributes["jurisdiction"] != null,
+               attributes["caseType"] != null,
+               attributes["caseId"] != null)
+           not RoleConfigPattern(roleName == $ra.roleName)
 then
-    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
-    $ra.setAttribute("caseType", $c.getCaseTypeId());
     $ra.setStatus(Status.APPROVED);
     $ra.log("Approved through bypass : ccd_create_case_roles_any");
     update($ra);
@@ -238,15 +126,14 @@ end;
 rule "ccd_delete_case_roles_any"
 salience -900
 when
-$rq: Request(byPassOrgDroolRule)
-//$rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_assignment"))
+$rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_assignment"))
          $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
+             attributes["jurisdiction"] != null,
+             attributes["caseType"] != null,
              attributes["caseId"] != null)
-         not RoleConfigPattern(
-             roleName == $ra.roleName)
-
+         not RoleConfigPattern(roleName == $ra.roleName)
 then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Approved through bypass: ccd_delete_case_roles_any");
