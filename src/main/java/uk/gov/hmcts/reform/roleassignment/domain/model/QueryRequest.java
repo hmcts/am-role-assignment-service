@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.Value;
+import uk.gov.hmcts.reform.roleassignment.util.CustomLowerCaseDeserializer;
 
 import java.time.LocalDateTime;
 import java.util.List;

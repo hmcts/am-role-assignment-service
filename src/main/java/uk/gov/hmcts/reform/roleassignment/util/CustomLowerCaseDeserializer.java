@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.roleassignment.domain.model;
+package uk.gov.hmcts.reform.roleassignment.util;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
