@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import java.io.IOException;
 import java.util.List;
 
-public class CustomLowerCaseDeserializer extends JsonDeserializer<List> {
+public class CustomLowerCaseDeserializer extends JsonDeserializer<List<String>> {
     @Override
     public List<String> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         List<String> roles = p.readValueAs(new TypeReference<List<String>>(){});
