@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -53,5 +54,10 @@ public abstract class Assignment {
     public void setAttribute(String key, String value) {
         var valueNode = JacksonUtils.convertValueJsonNode(value);
         attributes.put(key, valueNode);
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = StringUtils.trimToNull(StringUtils.lowerCase(roleName));
+
     }
 }
