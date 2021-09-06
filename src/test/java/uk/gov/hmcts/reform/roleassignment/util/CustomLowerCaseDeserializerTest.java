@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CustomLowerCaseDeserializerTest {
+class CustomLowerCaseDeserializerTest {
     private ObjectMapper mapper;
     private CustomLowerCaseDeserializer deserializer;
 
