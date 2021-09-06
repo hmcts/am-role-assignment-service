@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.model;
 
 
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class QueryRequest {
     @Singular("roleType")
     private final List<String> roleType;
     @Singular("roleName")
+    @JsonDeserialize(using = CustomLowerCaseDeserializer.class)
     private final List<String> roleName;
     @Singular("classification")
     private final List<String> classification;
