@@ -111,8 +111,8 @@ public class JacksonUtils {
             BeanUtils.copyProperties(subset, roleAssignment);
             if (roleAssignment.getRoleType().equals(RoleType.CASE)) {
                 //Remove the caseType and jurisdiction entries as it was added by application.
-                subset.getAttributes().remove("jurisdiction");
-                subset.getAttributes().remove("caseType");
+                //subset.getAttributes().remove("jurisdiction");
+                //subset.getAttributes().remove("caseType");
             }
             roleAssignmentSubsets.put(roleAssignment.getId(), subset);
         }

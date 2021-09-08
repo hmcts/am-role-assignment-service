@@ -27,7 +27,7 @@ when
              roleType == RoleType.CASE,
              roleCategory in (RoleCategory.PROFESSIONAL, RoleCategory.CITIZEN),
              attributes["jurisdiction"] != null,
-             attributes["caseTypeId"] != null,
+             attributes["caseType"] != null,
              attributes["caseId"] != null)
 then
     $ra.setStatus(Status.CREATE_APPROVED);
@@ -49,7 +49,7 @@ when
              roleType == RoleType.CASE,
              roleCategory in (RoleCategory.PROFESSIONAL, RoleCategory.CITIZEN),
              attributes["jurisdiction"] != null,
-             attributes["caseTypeId"] != null,
+             attributes["caseType"] != null,
              attributes["caseId"] != null)
 then
     $ra.setStatus(Status.DELETE_APPROVED);
@@ -71,7 +71,7 @@ when
              roleType == RoleType.CASE,
              status == Status.CREATE_REQUESTED,
              attributes["jurisdiction"] != null,
-             attributes["caseTypeId"] != null,
+             attributes["caseType"] != null,
              attributes["caseId"] != null)
 then
     $ra.setStatus(Status.CREATE_APPROVED);
@@ -94,7 +94,7 @@ when
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
              attributes["jurisdiction"] != null,
-             attributes["caseTypeId"] != null,
+             attributes["caseType"] != null,
              attributes["caseId"] != null)
 then
     $ra.setStatus(Status.DELETE_APPROVED);
@@ -113,7 +113,7 @@ when
                status == Status.CREATE_REQUESTED,
                roleType == RoleType.CASE,
                attributes["jurisdiction"] != null,
-               attributes["caseTypeId"] != null,
+               attributes["caseType"] != null,
                attributes["caseId"] != null)
            not RoleConfigPattern(roleName == $ra.roleName)
 then
@@ -131,7 +131,7 @@ $rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_ass
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
              attributes["jurisdiction"] != null,
-             attributes["caseTypeId"] != null,
+             attributes["caseType"] != null,
              attributes["caseId"] != null)
          not RoleConfigPattern(roleName == $ra.roleName)
 then
