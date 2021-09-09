@@ -89,8 +89,7 @@
           "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
@@ -241,6 +240,134 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["IA"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "lead-judge",
+    "label": "Lead Judge",
+    "description": "Lead Judge role for judicial users",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-judge",
+    "label": "Hearing Judge",
+    "description": "Hearing Judge role for judicial users",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "ftpa-judge",
+    "label": "FTPA Judge",
+    "description": "FTPA Judge role for judicial users",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-panel-judge",
+    "label": "Hearing Panel Judge",
+    "description": "Hearing Panel Judge role for judicial users",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
           }
         }
       }
