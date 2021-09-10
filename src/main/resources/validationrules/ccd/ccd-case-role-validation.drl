@@ -21,7 +21,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigPattern;
 
 rule "ccd_create_case_roles"
 when
-    //$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.CCD_1_0.getValue())
+    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
@@ -43,7 +44,8 @@ end;
 
 rule "ccd_delete_case_roles"
 when
-    //$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.CCD_1_0.getValue())
+    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
@@ -64,7 +66,8 @@ end;
 
 rule "ccd_create_case_roles_creator"
 when
-    //$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.CCD_1_0.getValue())
+    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
     $ra: RoleAssignment(
              roleName == "[CREATOR]",
              roleCategory in (RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS, RoleCategory.ADMIN),
@@ -87,7 +90,8 @@ end;
 
 rule "ccd_delete_case_roles_creator"
 when
-    //$rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.CCD_1_0.getValue())
+    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
     $ra: RoleAssignment(
              roleName == "[CREATOR]",
              roleCategory in (RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS, RoleCategory.ADMIN),
@@ -108,6 +112,7 @@ end;
 rule "ccd_create_case_roles_any"
 salience -900
 when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.CCD_1_0.getValue())
     $rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_assignment"))
            $ra: RoleAssignment(
                status == Status.CREATE_REQUESTED,
@@ -126,6 +131,7 @@ end;
 rule "ccd_delete_case_roles_any"
 salience -900
 when
+$f:  FeatureFlag(status && flagName == FeatureFlagEnum.CCD_1_0.getValue())
 $rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_assignment"))
          $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
