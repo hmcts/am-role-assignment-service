@@ -84,21 +84,20 @@ then
     logMsg("Rule : ia_caseworker_delete_case_roles");
 end;
 
-
 /*
  * IAC case worker case roles can be created by any existing tribunal caseworker
  * or senior tribunal case worker, and can also only be assigned to users with
  * one of those two roles (this includes self-assignment).
  */
-rule "ia_caseworker_create_case_roles_v11"
+rule "ia_tribunal_caseworker_create_case_roles_v11"
 when
     $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
     $rq: Request(assignerId == authenticatedUserId)
-
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
-             roleName in ("tribunal-caseworker", "case-manager", "case-allocator"),
+             roleCategory == RoleCategory.LEGAL_OPERATIONS,
+             roleName in ("tribunal-caseworker"),
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
              id == $caseId,
@@ -107,37 +106,36 @@ when
     ExistingRoleAssignment(
             actorId == $ra.actorId,
             roleType == RoleType.ORGANISATION,
-            roleName in ("tribunal-caseworker", "senior-tribunal-caseworker", "case-allocator"),
+            roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
+            roleCategory == RoleCategory.LEGAL_OPERATIONS,
             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
-
     ExistingRoleAssignment(
             actorId == $rq.assignerId,
             roleType == RoleType.ORGANISATION,
-            roleName in ("tribunal-caseworker", "senior-tribunal-caseworker", "case-allocator"),
+            roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
+            roleCategory == RoleCategory.LEGAL_OPERATIONS,
             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
-
 then
     $ra.setAttribute("jurisdiction", $c.getJurisdiction());
     $ra.setAttribute("caseType", $c.getCaseTypeId());
     $ra.setStatus(Status.CREATE_APPROVED);
-    $ra.log("Stage 1 approved : ia_caseworker_create_case_roles_v11");
+    $ra.log("Stage 1 approved : ia_tribunal_caseworker_create_case_roles_v11");
     update($ra);
-    logMsg("Rule : ia_caseworker_create_case_roles_v11");
+    logMsg("Rule : ia_tribunal_caseworker_create_case_roles_v11");
 end;
-
 /*
  * IAC case worker case roles can be deleted by any existing tribunal casworker
  * or senior tribunal case worker.
  */
-rule "ia_caseworker_delete_case_roles_v11"
+rule "ia_tribunal_caseworker_delete_case_roles_v11"
 when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
-    $rq: Request(
-             assignerId == authenticatedUserId)
+    $rq: Request(assignerId == authenticatedUserId)
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
-             roleName in ("tribunal-caseworker", "case-manager", "case-allocator"),
+             roleName in ("tribunal-caseworker"),
+             roleCategory == RoleCategory.LEGAL_OPERATIONS,
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
          Case(
              id == $caseId,
@@ -146,12 +144,152 @@ when
         ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
-             roleName in ("tribunal-caseworker", "senior-tribunal-caseworker", "case-allocator"),
+             roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
+             roleCategory == RoleCategory.LEGAL_OPERATIONS,
              attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
-
 then
     $ra.setStatus(Status.DELETE_APPROVED);
-    $ra.log("Delete approved : ia_caseworker_delete_case_roles_v11");
+    $ra.log("Delete approved : ia_tribunal_caseworker_delete_case_roles_v11");
     update($ra);
-    logMsg("Rule : ia_caseworker_delete_case_roles_v11");
+    logMsg("Rule : ia_tribunal_caseworker_delete_case_roles_v11");
+end;
+
+/*
+ * IAC case manager case role can be created by any existing case-allocator,
+ * and can also only be assigned to users having
+ * one of these two org roles (tribunal-caseworker & senior-tribunal-caseworker).
+ */
+rule "ia_case_manager_create_case_roles_v11"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
+    $rq: Request(assignerId == authenticatedUserId)
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName in ("case-manager"),
+             roleCategory == RoleCategory.LEGAL_OPERATIONS,
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+    $c:  Case(
+             id == $caseId,
+             jurisdiction == "IA",
+             caseTypeId == "Asylum")
+    ExistingRoleAssignment(
+            actorId == $ra.actorId,
+            roleType == RoleType.ORGANISATION,
+            roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
+            roleCategory == RoleCategory.LEGAL_OPERATIONS,
+            attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+    ExistingRoleAssignment(
+            actorId == $rq.assignerId,
+            roleType == RoleType.ORGANISATION,
+            roleName in ("case-allocator"),
+            roleCategory == RoleCategory.LEGAL_OPERATIONS,
+            attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+then
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : ia_case_manager_create_case_roles_v11");
+    update($ra);
+    logMsg("Rule : ia_case_manager_create_case_roles_v11");
+end;
+
+/*
+ * IAC case-manager case roles can be deleted by any existing case-allocator user.
+ */
+rule "ia_case_manager_delete_case_roles_v11"
+when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
+    $rq: Request(assignerId == authenticatedUserId)
+    $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName in ("case-manager"),
+             roleCategory == RoleCategory.LEGAL_OPERATIONS,
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+         Case(
+             id == $caseId,
+             jurisdiction == "IA",
+             caseTypeId == "Asylum")
+        ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("case-allocator"),
+             roleCategory == RoleCategory.LEGAL_OPERATIONS,
+             attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : ia_case_manager_delete_case_roles_v11");
+    update($ra);
+    logMsg("Rule : ia_case_manager_delete_case_roles_v11");
+end;
+
+/*
+ * IAC case allocator case role can be created by any existing case-allocator,
+ * and can also only be assigned to users having
+ * case-allocator org role..
+ */
+rule "ia_case_allocator_create_case_roles_v11"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
+    $rq: Request(assignerId == authenticatedUserId)
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName in ("case-allocator"),
+             roleCategory == RoleCategory.LEGAL_OPERATIONS,
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+    $c:  Case(
+             id == $caseId,
+             jurisdiction == "IA",
+             caseTypeId == "Asylum")
+    ExistingRoleAssignment(
+            actorId == $ra.actorId,
+            roleType == RoleType.ORGANISATION,
+            roleName in ("case-allocator"),
+            roleCategory == RoleCategory.LEGAL_OPERATIONS,
+            attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+    ExistingRoleAssignment(
+            actorId == $rq.assignerId,
+            roleType == RoleType.ORGANISATION,
+            roleName in ("case-allocator"),
+            roleCategory == RoleCategory.LEGAL_OPERATIONS,
+            attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+then
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : ia_case_allocator_create_case_roles_v11");
+    update($ra);
+    logMsg("Rule : ia_case_allocator_create_case_roles_v11");
+end;
+
+/*
+ * IAC case-allocator case roles can be deleted by any existing case-allocator user.
+ */
+rule "ia_case_allocator_delete_case_roles_v11"
+when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
+    $rq: Request(assignerId == authenticatedUserId)
+    $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName in ("case-allocator"),
+             roleCategory == RoleCategory.LEGAL_OPERATIONS,
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+         Case(
+             id == $caseId,
+             jurisdiction == "IA",
+             caseTypeId == "Asylum")
+        ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("case-allocator"),
+             roleCategory == RoleCategory.LEGAL_OPERATIONS,
+             attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : ia_case_allocator_delete_case_roles_v11");
+    update($ra);
+    logMsg("Rule : ia_case_allocator_delete_case_roles_v11");
 end;
