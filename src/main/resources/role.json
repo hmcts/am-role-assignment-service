@@ -74,8 +74,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
+            "mandatory": true
           }
         }
       },
@@ -126,8 +125,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
+            "mandatory": true
           }
         }
       }
@@ -394,8 +392,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
+            "mandatory": true
           },
           "primaryLocation": {
             "mandatory": true
@@ -480,8 +477,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
+            "mandatory": true
           },
           "primaryLocation": {
             "mandatory": true
@@ -498,8 +494,7 @@
           "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
@@ -536,8 +531,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
+            "mandatory": true
           },
           "primaryLocation": {
             "mandatory": true
@@ -584,6 +578,188 @@
     "label": "HMCTS Legal Operations",
     "description": "HMCTS Legal Operations role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hmcts-admin",
+    "label": "HMCTS Admin",
+    "description": "HMCTS admin role for admin users",
+    "category": "ADMIN",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for admin users",
+    "category": "ADMIN",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "task-supervisor",
+    "label": "Task Supervisor",
+    "description": "Task Supervisor role for admin users",
+    "category": "ADMIN",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-centre-admin",
+    "label": "Hearing Centre Admin",
+    "description": "Hearing Centre Admin role for admin users",
+    "category": "ADMIN",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "national-business-centre",
+    "label": "National Business Centre",
+    "description": "National Business Centre role for admin users",
+    "category": "ADMIN",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "ctsc",
+    "label": "CTSC",
+    "description": "CTSC role for admin users",
+    "category": "ADMIN",
     "patterns": [
       {
         "roleType": {

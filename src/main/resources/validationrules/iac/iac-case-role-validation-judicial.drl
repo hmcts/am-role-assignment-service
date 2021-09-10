@@ -25,6 +25,7 @@ when
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              roleName == "lead-judge",
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
              id == $caseId,
@@ -34,11 +35,13 @@ when
              actorId == $ra.actorId,
              roleType == RoleType.ORGANISATION,
              roleName in ("leadership-judge"),
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
          ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
              roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 then
     $ra.setAttribute("jurisdiction", $c.getJurisdiction());
@@ -61,6 +64,7 @@ when
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              roleName == "hearing-judge",
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
              id == $caseId,
@@ -70,11 +74,13 @@ when
              actorId == $ra.actorId,
              roleType == RoleType.ORGANISATION,
              roleName in ("senior-judge", "judge", "fee-paid-judge"),
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
          ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
              roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 then
     $ra.setAttribute("jurisdiction", $c.getJurisdiction());
@@ -97,6 +103,7 @@ when
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              roleName == "ftpa-judge",
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
              id == $caseId,
@@ -106,11 +113,13 @@ when
              actorId == $ra.actorId,
              roleType == RoleType.ORGANISATION,
              roleName in ("senior-judge", "judge"),
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
          ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
              roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 then
     $ra.setAttribute("jurisdiction", $c.getJurisdiction());
@@ -133,6 +142,7 @@ when
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              roleName == "hearing-panel-judge",
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
              id == $caseId,
@@ -142,11 +152,13 @@ when
              actorId == $ra.actorId,
              roleType == RoleType.ORGANISATION,
              roleName in ("senior-judge", "judge", "fee-paid-judge"),
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
          ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
              roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 then
     $ra.setAttribute("jurisdiction", $c.getJurisdiction());
@@ -169,6 +181,7 @@ when
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              roleName == "case-allocator",
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
              id == $caseId,
@@ -178,11 +191,13 @@ when
              actorId == $ra.actorId,
              roleType == RoleType.ORGANISATION,
              roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
          ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
              roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 then
     $ra.setAttribute("jurisdiction", $c.getJurisdiction());
@@ -205,6 +220,7 @@ when
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
              roleName in ("lead-judge", "hearing-judge", "ftpa-judge", "hearing-panel-judge", "case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
          Case(
              id == $caseId,
@@ -214,6 +230,7 @@ when
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
              roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
              attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
 then
     $ra.setStatus(Status.DELETE_APPROVED);
