@@ -40,9 +40,11 @@ class StaffCategoryCaseTest extends DroolBase {
         featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                        "senior-tribunal-caseworker"),
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "tribunal-caseworker")));
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> {
             assertEquals(Status.APPROVED, ra.getStatus());
@@ -61,7 +63,8 @@ class StaffCategoryCaseTest extends DroolBase {
         featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(
-            requestedRole1.getActorId(),"senior-tribunal-caseworker")
+            requestedRole1.getActorId(),"senior-tribunal-caseworker",
+            RoleCategory.LEGAL_OPERATIONS)
         ));
 
         //assertion
@@ -80,9 +83,12 @@ class StaffCategoryCaseTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(), "tribunal-caseworker"),
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "senior-tribunal-caseworker")));
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -102,9 +108,11 @@ class StaffCategoryCaseTest extends DroolBase {
         featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "senior-tribunal-caseworker"),
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "23",
-                                                          "tribunal-caseworker")));
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
@@ -121,9 +129,12 @@ class StaffCategoryCaseTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(), "tribunal-caseworker"),
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "judge")));
+                                                          "judge",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -145,13 +156,15 @@ class StaffCategoryCaseTest extends DroolBase {
 
         ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
             requestedRole1.getActorId(),
-            "tribunal-caseworker"
+            "tribunal-caseworker",
+            RoleCategory.LEGAL_OPERATIONS
         );
 
         ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
             assignmentRequest.getRequest()
                 .getAssignerId(),
-            "senior-tribunal-caseworker"
+            "senior-tribunal-caseworker",
+            RoleCategory.LEGAL_OPERATIONS
         );
         existingRequesterAssignment1.getAttributes().put("jurisdiction", convertValueJsonNode("CMC"));
 
@@ -186,11 +199,15 @@ class StaffCategoryCaseTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(), "tribunal-caseworker"),
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(requestedRole2.getActorId(),
-                                                          "senior-tribunal-caseworker"),
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "tribunal-caseworker")));
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -208,9 +225,12 @@ class StaffCategoryCaseTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(), "tribunal-caseworker"),
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "senior-tribunal-caseworker")));
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -231,9 +251,9 @@ class StaffCategoryCaseTest extends DroolBase {
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          role2),
+                                                          role2, RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          role3)));
+                                                          role3, RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -243,14 +263,18 @@ class StaffCategoryCaseTest extends DroolBase {
 
     @Test
     void shouldRejectCaseValidationForTCW_RequesterSCTW_WrongAssignerID_S005() {
-        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, "tribunal-caseworker",
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS,
+                                                             "tribunal-caseworker",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "12",
-                                                          "senior-tribunal-caseworker")));
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -265,9 +289,12 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "senior-tribunal-caseworker")));
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -282,9 +309,11 @@ class StaffCategoryCaseTest extends DroolBase {
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "tribunal-caseworker"),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "senior-tribunal-caseworker")));
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -299,9 +328,12 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              "1234567890123457", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "senior-tribunal-caseworker")));
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
@@ -316,9 +348,11 @@ class StaffCategoryCaseTest extends DroolBase {
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "tribunal-caseworker"),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "senior-tribunal-caseworker")));
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
             assertEquals(Status.REJECTED, roleAssignment.getStatus()));
@@ -339,9 +373,12 @@ class StaffCategoryCaseTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "senior-tribunal-caseworker")));
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
@@ -358,9 +395,12 @@ class StaffCategoryCaseTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "senior-tribunal-caseworker")));
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
@@ -374,9 +414,12 @@ class StaffCategoryCaseTest extends DroolBase {
                                                              "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),"tribunal-caseworker"),
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "senior-tribunal-caseworker")));
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
@@ -391,7 +434,8 @@ class StaffCategoryCaseTest extends DroolBase {
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
         executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "senior-tribunal-caseworker")));
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
@@ -400,15 +444,18 @@ class StaffCategoryCaseTest extends DroolBase {
 
     @Test
     void shouldRejectCaseDeleteRequestedRole_WrongAssignerId_S018() {
-        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, "tribunal-caseworker",
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS,
+                                                             "tribunal-caseworker",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "tribunal-caseworker"),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "99",
-                                                          "senior-tribunal-caseworker")));
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -429,11 +476,13 @@ class StaffCategoryCaseTest extends DroolBase {
 
         ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
             requestedRole1.getActorId(),
-            "tribunal-caseworker"
+            "tribunal-caseworker",
+            RoleCategory.LEGAL_OPERATIONS
         );
 
         ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
-            assignmentRequest.getRequest().getAssignerId(), "tribunal-caseworker");
+            assignmentRequest.getRequest().getAssignerId(), "tribunal-caseworker",
+            RoleCategory.LEGAL_OPERATIONS);
 
         existingRequesterAssignment1.getAttributes().put("jurisdiction", convertValueJsonNode("CMC"));
 
@@ -462,9 +511,11 @@ class StaffCategoryCaseTest extends DroolBase {
         featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "senior-tribunal-caseworker"),
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "tribunal-caseworker")));
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(Status.APPROVED, roleAssignment.getStatus());
@@ -483,9 +534,11 @@ class StaffCategoryCaseTest extends DroolBase {
         featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "tribunal-caseworker"),
+                                                          "tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "senior-tribunal-caseworker")));
+                                                          "senior-tribunal-caseworker",
+                                                          RoleCategory.LEGAL_OPERATIONS)));
         buildExecuteKieSession();
 
         //assertion
