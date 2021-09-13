@@ -358,7 +358,7 @@ dependencies {
   }
   compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
 
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.0.10'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.0.11'
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.50'
   compile group: 'org.hibernate', name: 'hibernate-core', version: '5.5.6'
 
