@@ -77,8 +77,8 @@ spring:
   flyway.locations: classpath:db/migration
   datasource:
     url: jdbc:postgresql://${ROLE_ASSIGNMENT_DB_HOST:localhost}:${ROLE_ASSIGNMENT_DB_PORT:5451}/${ROLE_ASSIGNMENT_DB_NAME:role_assignment}${ROLE_ASSIGNMENT_DB_OPTIONS:?stringtype=unspecified&reWriteBatchedInserts=true}
-    username: ${ROLE_ASSIGNMENT_DB_USERNAME:am}
-    password: ${ROLE_ASSIGNMENT_DB_PASSWORD:am}
+    username: ${ROLE_ASSIGNMENT_DB_USERNAME:}
+    password: ${ROLE_ASSIGNMENT_DB_PASSWORD:}
     properties:
       charSet: UTFh-8
     hikari:
