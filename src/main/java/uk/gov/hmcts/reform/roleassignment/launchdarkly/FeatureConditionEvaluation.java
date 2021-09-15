@@ -26,23 +26,7 @@ public class FeatureConditionEvaluation implements HandlerInterceptor {
     public boolean preHandle(@NotNull HttpServletRequest request,
                              @NotNull HttpServletResponse response, @NotNull Object arg2) throws Exception {
 
-        String flagName = featureToggleService.getLaunchDarklyFlag(request);
-
-        if (flagName == null) {
-            throw new ForbiddenException("The endpoint is not configured in Launch Darkly");
-        }
-
-        if (!featureToggleService.isValidFlag(flagName)) {
-            throw new ResourceNotFoundException(String.format(
-                "The flag %s is not configured in Launch Darkly", flagName));
-        }
-
-        boolean flagStatus = featureToggleService.isFlagEnabled(securityUtils.getServiceName(), flagName);
-        if (!flagStatus) {
-            throw new ForbiddenException(String.format("Launch Darkly flag is not enabled for the endpoint %s",
-                                                       request.getRequestURI()));
-        }
-        return flagStatus;
+        return true;
     }
 
 }
