@@ -8,9 +8,10 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
@@ -20,13 +21,22 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,10 +45,11 @@ import java.util.UUID;
 @Singleton
 public class JacksonUtils {
 
+    private static final Logger LOG = LoggerFactory.getLogger(JacksonUtils.class);
+
     private JacksonUtils() {
     }
 
-    @Getter
     private static final Map<String, List<RoleConfigRole>> configuredRoles = new HashMap<>();
 
     public static final JsonFactory jsonFactory = JsonFactory.builder()
@@ -52,6 +63,14 @@ public class JacksonUtils {
         .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
         .build();
 
+    public static final CollectionType listType = MAPPER.getTypeFactory().constructCollectionType(
+        ArrayList.class,
+        RoleConfigRole.class
+    );
+
+    public static List<RoleConfigRole> getConfiguredRoles() {
+        return configuredRoles.get("roles");
+    }
 
     public static Map<String, JsonNode> convertValue(Object from) {
         return MAPPER.convertValue(from, new TypeReference<HashMap<String, JsonNode>>() {
@@ -63,7 +82,7 @@ public class JacksonUtils {
     }
 
     public static TypeReference<HashMap<String, JsonNode>> getHashMapTypeReference() {
-        return new TypeReference<HashMap<String, JsonNode>>() {
+        return new TypeReference<>() {
         };
     }
 
@@ -92,8 +111,8 @@ public class JacksonUtils {
             BeanUtils.copyProperties(subset, roleAssignment);
             if (roleAssignment.getRoleType().equals(RoleType.CASE)) {
                 //Remove the caseType and jurisdiction entries as it was added by application.
-                subset.getAttributes().remove("jurisdiction");
-                subset.getAttributes().remove("caseType");
+                //subset.getAttributes().remove("jurisdiction");
+                //subset.getAttributes().remove("caseType");
             }
             roleAssignmentSubsets.put(roleAssignment.getId(), subset);
         }
@@ -103,20 +122,44 @@ public class JacksonUtils {
     }
 
     static {
+        configuredRoles.put("roles", getRoleConfigs());
+    }
 
-        InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream("role.json");
-        CollectionType listType = MAPPER.getTypeFactory().constructCollectionType(
-            ArrayList.class,
-            RoleConfigRole.class
-        );
+    public static List<RoleConfigRole> getRoleConfigs() {
         List<RoleConfigRole> allRoles = null;
         try {
-            allRoles = MAPPER.readValue(input, listType);
-        } catch (IOException e) {
-            log.error(e.getMessage());
+            URI uri = Objects.requireNonNull(JacksonUtils.class.getClassLoader().getResource(Constants.ROLES_DIR))
+                .toURI();
+            LOG.debug("Roles absolute dir is {}", uri);
+
+            final String[] array = uri.toString().split("!");
+            if (array.length > 1) {
+                try (FileSystem fileSystems = FileSystems.newFileSystem(URI.create(array[0]), new HashMap<>())) {
+                    Path dirPath = fileSystems.getPath(array[1], Arrays.copyOfRange(array, 2, array.length));
+                    allRoles = readFiles(dirPath);
+                }
+            } else {
+                allRoles = readFiles(Paths.get(uri));
+            }
+        } catch (IOException | URISyntaxException e) {
+            LOG.error(e.getMessage());
         }
-        configuredRoles.put("roles", allRoles);
 
-
+        LOG.info("Loaded {} roles from drool", Objects.requireNonNull(allRoles).size());
+        return allRoles;
     }
+
+    private static List<RoleConfigRole> readFiles(Path dirPath) throws IOException {
+        List<RoleConfigRole> allRoles = new ArrayList<>();
+        Files.walk(dirPath).filter(Files::isRegularFile).sorted(Comparator.comparing(Path::toString)).forEach(f -> {
+            try {
+                LOG.debug("Reading role {}", f);
+                allRoles.addAll(MAPPER.readValue(Files.newInputStream(f), listType));
+            } catch (IOException e) {
+                LOG.error(e.getMessage());
+            }
+        });
+        return allRoles;
+    }
+
 }
