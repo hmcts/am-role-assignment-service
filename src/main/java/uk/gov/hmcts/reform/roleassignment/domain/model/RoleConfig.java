@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.getRoleConfigs;
+import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.getConfiguredRoles;
 
 @Slf4j
 public class RoleConfig {
@@ -42,7 +42,7 @@ public class RoleConfig {
     }
 
     private static RoleConfig buildRoleConfig() {
-        List<RoleConfigRole> allRoles = getRoleConfigs();
+        List<RoleConfigRole> allRoles = getConfiguredRoles();
         allRoles.forEach(RoleConfig::setRoleNameAndCategory);
         return new RoleConfig(allRoles);
     }
