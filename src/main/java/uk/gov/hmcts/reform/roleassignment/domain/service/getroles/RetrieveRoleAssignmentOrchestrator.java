@@ -13,7 +13,6 @@ import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -44,7 +43,7 @@ public class RetrieveRoleAssignmentOrchestrator {
         );
     }
 
-    public List<RoleConfigRole> getListOfRoles() throws IOException {
+    public List<RoleConfigRole> getListOfRoles() {
         return JacksonUtils.getConfiguredRoles();
     }
 
