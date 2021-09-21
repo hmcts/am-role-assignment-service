@@ -23,7 +23,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
-import java.io.IOException;
 import java.util.List;
 
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.GET_ASSIGNMENTS_BY_ACTOR;
@@ -101,7 +100,7 @@ public class GetAssignmentController {
         )
     })
     public ResponseEntity<List<RoleConfigRole>> getListOfRoles(@RequestHeader(value = "x-correlation-id",
-        required = false) String correlationId) throws IOException {
+        required = false) String correlationId)  {
         List<RoleConfigRole> rootNode = retrieveRoleAssignmentService.getListOfRoles();
         return ResponseEntity.status(HttpStatus.OK).body(rootNode);
     }
