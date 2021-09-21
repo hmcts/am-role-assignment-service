@@ -115,6 +115,26 @@ public abstract class DroolBase {
             .build();
     }
 
+    RoleAssignment getRequestedCaseRole_2(RoleCategory roleCategory,
+                                          String roleName,
+                                          GrantType grantType,
+                                          RoleType roleType,
+                                          Classification classification) {
+        return RoleAssignment.builder()
+            .id(UUID.randomUUID())
+            .actorId(UUID.randomUUID().toString())
+            .actorIdType(ActorIdType.IDAM)
+            .roleCategory(roleCategory)
+            .roleType(roleType)
+            .roleName(roleName)
+            .grantType(grantType)
+            .classification(classification)
+            .readOnly(true)
+            .status(CREATE_REQUESTED)
+            .attributes(new HashMap<String, JsonNode>())
+            .build();
+    }
+
     RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType,
                                         String attributeKey, String attributeVal, Status status) {
         RoleAssignment ra = RoleAssignment.builder()
