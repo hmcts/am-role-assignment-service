@@ -240,10 +240,13 @@ pitest {
   excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
                      'uk.gov.hmcts.reform.roleassignment.config.*',
                      'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot',
+                     'uk.gov.hmcts.reform.roleassignment.util.JacksonUtils',
                      'uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest',
                      'uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType',
                      'uk.gov.hmcts.reform.roleassignment.data.*',
-                     'uk.gov.hmcts.reform.roleassignment.domain.model.*']
+                     'uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback',
+
+  ]
   excludedMethods = ['getListOfRoles', 'removeCorrelationLog', 'getExitCode', 'validateDateTime', 'requestInterceptor']
   threads = 15
   outputFormats = ['XML', 'HTML']
@@ -272,7 +275,9 @@ sonarqube {
       "src/main/java/uk/gov/hmcts/reform/roleassignment/config/**," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/data/**," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/domain/service/common/PageHolder.java," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/domain/model/**"
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/domain/model/**," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/util/JacksonUtils.java," +
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/feignclients/configuration/DataStoreApiFallback.java"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.junit.repoGetAssignmentControllerrtPaths", "${project.buildDir}/test-results/junit-platform"
@@ -412,6 +417,7 @@ dependencies {
 
   pitest 'org.pitest:pitest-junit5-plugin:0.12'
 
+  testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.11.2'
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit
   testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: versions.junit
   testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junit
