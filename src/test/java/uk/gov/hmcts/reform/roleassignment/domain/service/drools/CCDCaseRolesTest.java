@@ -193,7 +193,7 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Test
-    void shouldRejectCaseRoleCreation_enableByPassDroolRule_diableFlag() {
+    void shouldRejectCaseRoleCreation_enableByPassDroolRule_disableFlag() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.PROFESSIONAL, "[PETSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
