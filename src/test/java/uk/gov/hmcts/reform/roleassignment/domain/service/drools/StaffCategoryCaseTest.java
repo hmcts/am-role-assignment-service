@@ -33,14 +33,14 @@ class StaffCategoryCaseTest extends DroolBase {
     void shouldApproveCaseRequestedRoles_RequesterOrgRoleTCW_S001() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, "tribunal-caseworker",
                                                              SPECIFIC, "caseId",
-                                                                "1234567890123456", CREATE_REQUESTED);
+                                                             "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                        "senior-tribunal-caseworker"),
+                                                          "senior-tribunal-caseworker"),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
                                                           "tribunal-caseworker")));
         //assertion
@@ -305,7 +305,7 @@ class StaffCategoryCaseTest extends DroolBase {
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-            assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
@@ -321,7 +321,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                           "senior-tribunal-caseworker")));
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-            assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
@@ -345,7 +345,7 @@ class StaffCategoryCaseTest extends DroolBase {
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-            assertEquals(Status.APPROVED, roleAssignment.getStatus()));
+                                                          assertEquals(Status.APPROVED, roleAssignment.getStatus()));
     }
 
     @Test
@@ -364,7 +364,7 @@ class StaffCategoryCaseTest extends DroolBase {
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-            assertEquals(Status.APPROVED, roleAssignment.getStatus()));
+                                                          assertEquals(Status.APPROVED, roleAssignment.getStatus()));
     }
 
     @Test
@@ -380,7 +380,7 @@ class StaffCategoryCaseTest extends DroolBase {
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-            assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
@@ -395,7 +395,7 @@ class StaffCategoryCaseTest extends DroolBase {
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
-            assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
