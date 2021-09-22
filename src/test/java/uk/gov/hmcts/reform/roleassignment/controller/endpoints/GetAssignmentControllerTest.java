@@ -39,7 +39,7 @@ class GetAssignmentControllerTest {
     }
 
     @Test
-    void getListOfRoles() throws Exception {
+    void getListOfRoles() {
         ResponseEntity<List<RoleConfigRole>> response = sut.getListOfRoles("123e4567-e89b-42d3-a456-556642445555");
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
