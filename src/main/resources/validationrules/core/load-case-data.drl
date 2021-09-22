@@ -22,7 +22,8 @@ rule "load_case_data_for_role_assignments_with_case_ids"
 when
     $ra: RoleAssignment(
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-             not Case(id == $caseId)
+     not Case(id == $caseId)
+     not Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
 then
   try {
   	insert(DATA_SERVICE.getCaseById($caseId));
