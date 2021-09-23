@@ -119,7 +119,8 @@ public abstract class DroolBase {
                                           String roleName,
                                           GrantType grantType,
                                           RoleType roleType,
-                                          Classification classification) {
+                                          Classification classification,
+                                          Status status) {
         return RoleAssignment.builder()
             .id(UUID.randomUUID())
             .actorId(UUID.randomUUID().toString())
@@ -130,7 +131,7 @@ public abstract class DroolBase {
             .grantType(grantType)
             .classification(classification)
             .readOnly(true)
-            .status(CREATE_REQUESTED)
+            .status(status)
             .attributes(new HashMap<String, JsonNode>())
             .build();
     }

@@ -52,80 +52,18 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
     }
 
     @Test
-    void shouldApproveRequestedRoleForCase_CaseAllocator() {
+    void shouldDeleteApprovedRequestedRoleForCase_Judge() {
 
         RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
-                                                                "case-allocator",
+                                                                "judge",
                                                                 GrantType.SPECIFIC,
                                                                 RoleType.CASE,
-                                                                Classification.PUBLIC
-                                                                );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-        requestedRole1.getAttributes().put("caseTypeId", convertValueJsonNode("Asylum"));
-
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        //Execute Kie session
-        buildExecuteKieSession();
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.APPROVED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
-    }
-
-    @Test
-    void shouldApproveRequestedRoleForCase_TaskSupervisor() {
-
-        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "task-supervisor",
-                                                              GrantType.STANDARD);
+                                                                Classification.PUBLIC,
+                                                                Status.DELETE_REQUESTED);
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
 
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(requestedRole1);
-
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        //Execute Kie session
-        buildExecuteKieSession();
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.APPROVED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
-    }
-
-    @Test
-    void shouldApproveRequestedRoleForCase_MoreJudges() {
-
-        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "lead-judge",
-                                                              GrantType.SPECIFIC);
-        RoleAssignment requestedRole2 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "hearing-judge",
-                                                              GrantType.SPECIFIC);
-        RoleAssignment requestedRole3 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "ftpa-judge",
-                                                              GrantType.SPECIFIC);
-        RoleAssignment requestedRole4 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "hearing-panel-judge",
-                                                              GrantType.SPECIFIC);
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole2.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole3.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole4.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        requestedRoles.add(requestedRole2);
-        requestedRoles.add(requestedRole3);
-        requestedRoles.add(requestedRole4);
 
         assignmentRequest.setRequestedRoles(requestedRoles);
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
@@ -139,7 +77,383 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
                                                                    assertEquals(
+                                                                       Status.DELETE_APPROVED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldApproveRequestedRoleForCase_CaseAllocator() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
+                                                                "case-allocator",
+                                                                GrantType.SPECIFIC,
+                                                                RoleType.CASE,
+                                                                Classification.PUBLIC,
+                                                                Status.CREATE_REQUESTED
+                                                                );
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.setRequestedRoles(requestedRoles);
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
                                                                        Status.APPROVED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldDeleteApprovedRequestedRoleForCase_CaseAllocator() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
+                                                                "case-allocator",
+                                                                GrantType.SPECIFIC,
+                                                                RoleType.CASE,
+                                                                Classification.PUBLIC,
+                                                                Status.DELETE_REQUESTED);
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.setRequestedRoles(requestedRoles);
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.DELETE_APPROVED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldApproveRequestedRoleForCase_TaskSupervisor() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
+                                                                "task-supervisor",
+                                                                GrantType.STANDARD,
+                                                                RoleType.ORGANISATION,
+                                                                Classification.PUBLIC,
+                                                                Status.CREATE_REQUESTED);
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.setRequestedRoles(requestedRoles);
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.APPROVED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldApproveRequestedRoleForCase_DifferentJudgeRoles() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "lead-judge",
+                                                              GrantType.SPECIFIC);
+        RoleAssignment requestedRole2 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "hearing-judge",
+                                                              GrantType.SPECIFIC);
+        RoleAssignment requestedRole3 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "ftpa-judge",
+                                                              GrantType.SPECIFIC);
+        RoleAssignment requestedRole4 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "hearing-panel-judge",
+                                                              GrantType.SPECIFIC);
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+
+        requestedRole2.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole2.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        requestedRole2.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+
+        requestedRole3.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole3.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        requestedRole3.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+
+        requestedRole4.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole4.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        requestedRole4.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+        requestedRoles.add(requestedRole2);
+        requestedRoles.add(requestedRole3);
+        requestedRoles.add(requestedRole4);
+
+        assignmentRequest.setRequestedRoles(requestedRoles);
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.APPROVED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldDeleteApprovedRequestedRoleForCase_DifferentJudgeRoles() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL, "lead-judge",
+                                                                GrantType.SPECIFIC, RoleType.CASE,
+                                                                Classification.PUBLIC,
+                                                                Status.DELETE_REQUESTED);
+        RoleAssignment requestedRole2 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL, "hearing-judge",
+                                                                GrantType.SPECIFIC, RoleType.CASE,
+                                                                Classification.PUBLIC,
+                                                                Status.DELETE_REQUESTED);
+        RoleAssignment requestedRole3 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL, "ftpa-judge",
+                                                                GrantType.SPECIFIC, RoleType.CASE,
+                                                                Classification.PUBLIC,
+                                                                Status.DELETE_REQUESTED);
+        RoleAssignment requestedRole4 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL, "hearing-panel-judge",
+                                                                GrantType.SPECIFIC, RoleType.CASE,
+                                                                Classification.PUBLIC,
+                                                                Status.DELETE_REQUESTED);
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+
+        requestedRole2.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole2.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        requestedRole2.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+
+        requestedRole3.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole3.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        requestedRole3.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+
+        requestedRole4.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole4.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        requestedRole4.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+        requestedRoles.add(requestedRole2);
+        requestedRoles.add(requestedRole3);
+        requestedRoles.add(requestedRole4);
+
+        assignmentRequest.setRequestedRoles(requestedRoles);
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.DELETE_APPROVED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectRequestedRoleForWrongData_GrantType() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
+                                                                "judge",
+                                                                GrantType.STANDARD,
+                                                                RoleType.CASE,
+                                                                Classification.PUBLIC,
+                                                                Status.CREATE_REQUESTED);
+        //GrantType should be SPECIFIC or CHALLENGED
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.setRequestedRoles(requestedRoles);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+
+            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectRequestedRoleForWrongData_RoleType() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
+                                                                "lead-judge",
+                                                                GrantType.SPECIFIC,
+                                                                RoleType.ORGANISATION,
+                                                                Classification.PUBLIC,
+                                                                Status.CREATE_REQUESTED
+        );
+        //RoleType should be CASE for lead-judge
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.setRequestedRoles(requestedRoles);
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectRequestedRoleForWrongData_Classification() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
+                                                                "judge",
+                                                                GrantType.SPECIFIC,
+                                                                RoleType.CASE,
+                                                                Classification.PRIVATE,
+                                                                Status.CREATE_REQUESTED);
+        //Classification should be PUBLIC
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.setRequestedRoles(requestedRoles);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+
+            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+
+    @Test
+    void shouldRejectRequestedRoleForNullMandatoryField_BeginTime() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL,
+                                                                "judge",
+                                                                GrantType.SPECIFIC);
+        //BeginTime is a mandatory field - not provided
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.setRequestedRoles(requestedRoles);
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectRequestedRoleForNullMandatoryFiled_Jurisdiction() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
+                                                                "case-allocator",
+                                                                GrantType.SPECIFIC,
+                                                                RoleType.CASE,
+                                                                Classification.PUBLIC,
+                                                                Status.CREATE_REQUESTED);
+        //Jurisdiction is a mandatory field - not provided
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.setRequestedRoles(requestedRoles);
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
+    void shouldRejectRequestedRoleForNullMandatoryField_CaseId() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "judge", GrantType.SPECIFIC);
+
+        //CaseId is a mandatory field - not provided
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.setRequestedRoles(requestedRoles);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+
+            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
                                                                        roleAssignment.getStatus()
                                                                    )
         );
