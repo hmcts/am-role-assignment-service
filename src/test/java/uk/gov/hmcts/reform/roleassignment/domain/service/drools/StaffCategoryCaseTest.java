@@ -550,16 +550,16 @@ class StaffCategoryCaseTest extends DroolBase {
     }
 
     @Test
-    @DisplayName("Approve the case-manager, case-allocator roles with assigner is case-allocator and actioned by " +
-        "parametered user")
+    @DisplayName("Approve the case-manager, case-allocator roles with assigner is case-allocator and actioned by "
+        + "parametered user")
     void shouldAcceptCaseRolesCreation_V1_1() {
         verifyCreateCaseRole_V1_1("case-manager","tribunal-caseworker");
         verifyCreateCaseRole_V1_1("case-manager","senior-tribunal-caseworker");
         verifyCreateCaseRole_V1_1("case-allocator","case-allocator");
     }
 
-    @DisplayName("Approve the case-manager, case-allocator roles with assigner is case-allocator and actioned by " +
-        "parametered user")
+    @DisplayName("Approve the case-manager, case-allocator roles with assigner is case-allocator and actioned by "
+        + "parametered user")
     private void verifyCreateCaseRole_V1_1(String roleName, String existingRole) {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, roleName,
                                                              SPECIFIC, "caseId",
@@ -615,8 +615,8 @@ class StaffCategoryCaseTest extends DroolBase {
     }
 
     @Test
-    @DisplayName("Reject creation of the case-manager role actioned by neither TCW nor STCW." +
-        "expected Actioned by case-allocator")
+    @DisplayName("Reject creation of the case-manager role actioned by neither TCW nor STCW."
+        + "expected Actioned by case-allocator")
     void shouldRejectCaseManagerRole_NoTCW_NoSTCW() {
 
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, "case-manager",
