@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -21,7 +22,6 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.CHALLENGED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRoleForIAC;
@@ -550,13 +550,17 @@ class StaffCategoryCaseTest extends DroolBase {
     }
 
     @Test
-    void shouldAcceptCaseValidationForCaseRoles_V1_1() {
-        verifyCreateCaseRole_V1_1("case-manager", Status.APPROVED, "tribunal-caseworker");
-        verifyCreateCaseRole_V1_1("case-manager", Status.APPROVED, "senior-tribunal-caseworker");
-        verifyCreateCaseRole_V1_1("case-allocator", Status.APPROVED, "case-allocator");
+    @DisplayName("Approve the case-manager, case-allocator roles with assigner is case-allocator and actioned by " +
+        "parametered user")
+    void shouldAcceptCaseRolesCreation_V1_1() {
+        verifyCreateCaseRole_V1_1("case-manager","tribunal-caseworker");
+        verifyCreateCaseRole_V1_1("case-manager","senior-tribunal-caseworker");
+        verifyCreateCaseRole_V1_1("case-allocator","case-allocator");
     }
 
-    private void verifyCreateCaseRole_V1_1(String roleName, Status status, String existingRole) {
+    @DisplayName("Approve the case-manager, case-allocator roles with assigner is case-allocator and actioned by " +
+        "parametered user")
+    private void verifyCreateCaseRole_V1_1(String roleName, String existingRole) {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, roleName,
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
@@ -576,17 +580,18 @@ class StaffCategoryCaseTest extends DroolBase {
                                                           RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(status, ra.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
     }
 
     @Test
-    void shouldRejectCaseValidationForCaseRoles() {
-        verifyCreateCaseRole_V1_0("case-manager", Status.REJECTED, "tribunal-caseworker");
-        verifyCreateCaseRole_V1_0("case-manager", Status.REJECTED, "senior-tribunal-caseworker");
-        verifyCreateCaseRole_V1_0("case-allocator", Status.REJECTED, "case-allocator");
+    @DisplayName("Reject the case-manager, case-allocator roles with disabled IAC_1_1 flag")
+    void shouldRejectCaseRolesCreation_disableFlag() {
+        verifyCreateCaseRole_V1_0("case-manager", "tribunal-caseworker");
+        verifyCreateCaseRole_V1_0("case-manager", "senior-tribunal-caseworker");
+        verifyCreateCaseRole_V1_0("case-allocator", "case-allocator");
     }
 
-    private void verifyCreateCaseRole_V1_0(String roleName, Status status, String existingRole) {
+    private void verifyCreateCaseRole_V1_0(String roleName, String existingRole) {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, roleName,
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
@@ -606,11 +611,13 @@ class StaffCategoryCaseTest extends DroolBase {
                                                           RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(status, ra.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
     }
 
     @Test
-    void shouldRejectCaseValidationForCaseManagerRole_NoTCW_NoSTCW() {
+    @DisplayName("Reject creation of the case-manager role actioned by neither TCW nor STCW." +
+        "expected Actioned by case-allocator")
+    void shouldRejectCaseManagerRole_NoTCW_NoSTCW() {
 
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, "case-manager",
                                                              SPECIFIC, "caseId",
@@ -623,7 +630,10 @@ class StaffCategoryCaseTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "case-allocator",
+                                                          RoleCategory.LEGAL_OPERATIONS),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
                                                           "case-allocator",
                                                           RoleCategory.LEGAL_OPERATIONS)));
 
@@ -632,7 +642,29 @@ class StaffCategoryCaseTest extends DroolBase {
     }
 
     @Test
-    void shouldRejectCaseValidationForCaseAllocatorRole_actionByTCW() {
+    @DisplayName("Reject creation of the case-manager role with no assigner. expected assigner is case-allocator")
+    void shouldRejectCaseManagerRoleCreation_NoAssigner() {
+
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, "case-manager",
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+                                                     "caseType", convertValueJsonNode("Asylum"),
+                                                     "caseId", convertValueJsonNode("1234567890123456")));
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of());
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+    }
+
+    @Test
+    @DisplayName("Reject creation of the case-allocator role actioned by TCW. expected is case-allocator")
+    void shouldRejectCaseAllocatorRoleCreation_actionByTCW() {
 
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, "case-allocator",
                                                              SPECIFIC, "caseId",
@@ -657,13 +689,13 @@ class StaffCategoryCaseTest extends DroolBase {
     }
 
     @Test
+    @DisplayName("Accept the delete case-manager, case-allocator role Assigner as case-allocator.")
     void shouldAcceptDeleteCaseRoles_V1_1() {
-        verifyDeleteCaseRole_V1_1("case-manager", Status.DELETE_APPROVED);
-        verifyDeleteCaseRole_V1_1("case-manager", Status.DELETE_APPROVED);
-        verifyDeleteCaseRole_V1_1("case-allocator", Status.DELETE_APPROVED);
+        verifyDeleteCaseRole_V1_1("case-manager");
+        verifyDeleteCaseRole_V1_1("case-allocator");
     }
 
-    private void verifyDeleteCaseRole_V1_1(String roleName, Status status) {
+    private void verifyDeleteCaseRole_V1_1(String roleName) {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, roleName,
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
@@ -680,18 +712,18 @@ class StaffCategoryCaseTest extends DroolBase {
                                                           RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(status, ra.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
     }
 
     @Test
-    void shouldRejectDeleteCaseRoles_V1_0() {
-        verifyDeleteCaseRole_V1_0("case-manager", Status.DELETE_REJECTED, "tribunal-caseworker");
-        verifyDeleteCaseRole_V1_0("case-manager", Status.DELETE_REJECTED,
-                                  "senior-tribunal-caseworker");
-        verifyDeleteCaseRole_V1_0("case-allocator", Status.DELETE_REJECTED, "case-allocator");
+    @DisplayName("Reject delete the case-manager, case-allocator roles with disabled IAC_1_1 flag")
+    void shouldRejectDeleteCaseRoles_V1_0_diabledFlag() {
+        verifyDeleteCaseRole_V1_0("case-manager", "tribunal-caseworker");
+        verifyDeleteCaseRole_V1_0("case-manager", "senior-tribunal-caseworker");
+        verifyDeleteCaseRole_V1_0("case-allocator","case-allocator");
     }
 
-    private void verifyDeleteCaseRole_V1_0(String roleName, Status status, String existingRole) {
+    private void verifyDeleteCaseRole_V1_0(String roleName, String existingRole) {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, roleName,
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
@@ -711,11 +743,12 @@ class StaffCategoryCaseTest extends DroolBase {
                                                           RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(status, ra.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
     }
 
     @Test
-    void shouldRejectDeleteCaseAllocatorRole_V1_1_actionByTCW() {
+    @DisplayName("Reject deletion of the case-allocator role without existing Assigner. Expected is case-allocator")
+    void shouldRejectDeleteCaseAllocatorRole_V1_1_noExistingAssigner() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, "case-allocator",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
@@ -727,7 +760,27 @@ class StaffCategoryCaseTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+        executeDroolRules(List.of());
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
+    }
+
+    @Test
+    @DisplayName("Reject deletion of the case-allocator role with Assigner as TCW. Expected assigned is case-allocator")
+    void shouldRejectDeleteCaseAllocatorRole_V1_1_assignerAsTCW() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, "case-allocator",
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", DELETE_REQUESTED);
+        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+                                                     "caseType", convertValueJsonNode("Asylum"),
+                                                     "caseId", convertValueJsonNode("1234567890123456")));
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
                                                           "tribunal-caseworker",
                                                           RoleCategory.LEGAL_OPERATIONS)));
 
