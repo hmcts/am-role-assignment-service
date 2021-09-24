@@ -586,7 +586,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["STANDARD"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
