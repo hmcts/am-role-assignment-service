@@ -332,3 +332,37 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
     And a successful call [to delete role assignments just created above] as in [S-204_DeleteDataForRoleAssignmentsForOrgRoles].
+
+  @S-205
+  @FeatureToggle(IAC:iac_1_1=on)
+  Scenario: must successfully create hearing-panel-judge Case Role Assignment
+    Given a user with [an active IDAM profile with full permissions],
+    And a user [Befta1 - who is the actor for requested role],
+    And a successful call [to create org role assignments for actors & requester] as in [S-205_Org_Role_Creation],
+    When a request is prepared with appropriate values,
+    And the request [contains ReplaceExisting is false and reference set to caseId],
+    And the request [contains case-allocator org role as assigner],
+    And the request [contains fee-paid-judge org role as assignee],
+    And the request [contains hearing-panel-judge case role assignment],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
+    And a successful call [to delete role assignments just created above] as in [S-205_DeleteDataForRoleAssignmentsForOrgRoles].
+
+  @S-206
+  @FeatureToggle(IAC:iac_1_1=on)
+  Scenario: must successfully create case-allocator Case Role Assignment
+    Given a user with [an active IDAM profile with full permissions],
+    And a user [Befta1 - who is the actor for requested role],
+    And a successful call [to create org role assignments for actors & requester] as in [S-206_Org_Role_Creation],
+    When a request is prepared with appropriate values,
+    And the request [contains ReplaceExisting is false and reference set to caseId],
+    And the request [contains case-allocator org role as assigner],
+    And the request [contains case-allocator org role as assignee],
+    And the request [contains case-allocator case role assignment],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
+    And a successful call [to delete role assignments just created above] as in [S-206_DeleteDataForRoleAssignmentsForOrgRoles].
