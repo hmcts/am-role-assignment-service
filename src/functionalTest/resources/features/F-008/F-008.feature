@@ -125,7 +125,7 @@ Feature: F-008 : Create And Replace Staff Role Assignments
     And a successful call [to create org role assignments for actors & requester] as in [S-201_Org_Role_Creation],
     When a request is prepared with appropriate values,
     And the request [contains ReplaceExisting is false and reference set to caseId],
-    And the request [contains Case Allocator case role assignment],
+    And the request [contains case-manager case role assignment],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
     And the response has all other details as expected,

@@ -1,11 +1,13 @@
 {
-  "title": "must successfully create case-manager Case Role Assignment",
-  "_guid_": "S-201",
-  "_extends_": "F-008_Test_Data_Base",
+  "title": "must successfully create hearing-judge Case Role Assignment",
+  "_guid_": "S-203",
+  "_extends_": "F-001_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
     "Befta1 - who is the actor for requested role",
-    "contains case-manager case role assignment"
+    "contains case-allocator org role as assigner",
+    "contains senior-judge org role as assignee",
+    "contains hearing-judge case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -17,14 +19,14 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/case-manager"
+        "reference": "1607103938250138/hearing-judge"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta1][id]}",
-          "roleName": "case-manager",
-          "roleCategory": "LEGAL_OPERATIONS",
+          "roleName": "hearing-judge",
+          "roleCategory": "JUDICIAL",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
           "attributes":
@@ -48,14 +50,14 @@
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
           "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "replaceExisting": true
+          "replaceExisting": false
         },
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][befta1][id]}",
-            "roleName": "case-manager",
-            "roleCategory": "LEGAL_OPERATIONS",
+            "roleName": "hearing-judge",
+            "roleCategory": "JUDICIAL",
             "roleType": "CASE",
             "grantType": "SPECIFIC",
             "attributes":
