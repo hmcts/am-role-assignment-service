@@ -193,6 +193,12 @@ task runProviderPactVerification(type: Test) {
   systemProperty 'pact.provider.version', project.pacticipantVersion
 }
 
+task fortifyScan(type: JavaExec)  {
+  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+  classpath += sourceSets.test.runtimeClasspath
+  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
+}
+
 runProviderPactVerification.dependsOn contract
 
 runProviderPactVerification.finalizedBy pactVerify
@@ -349,7 +355,7 @@ dependencies {
 
   //Added for S2S and User Authentication
   compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.reformS2sClient
-  compile group: 'com.google.guava', name: 'guava', version: '30.1-jre'
+  compile group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
   compile group: 'javax.inject', name: 'javax.inject', version: '1'
   compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.swagger2Version
   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.swagger2Version
@@ -427,6 +433,7 @@ dependencies {
   testCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+  testCompile 'com.github.hmcts:fortify-client:1.2.0:all'
 
   smokeTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
