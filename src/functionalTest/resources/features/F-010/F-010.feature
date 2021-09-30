@@ -67,3 +67,16 @@ Feature: F-010 : Post Role Assignments Delete Query Request
 #    Then a positive response is received,
 #    And the response has all other details as expected,
 #    And a successful call [to delete role assignments just created above] as in [S-106_DeleteDataForRoleAssignmentsForOrgRoles].
+
+  @S-218
+  Scenario: must successfully delete role assignments with role name case insensitivity
+    Given a user with [an active IDAM profile with full permissions],
+    And a successful call [to create org role assignments for actors & requester] as in [S-218_Multiple_Org_Role_Creation],
+    When a request is prepared with appropriate values,
+    And the request [contains list of multiple search queries],
+    And the request [contains one role name with upper case chars],
+    And the request [contains other role name with combination of upper and lower case chars],
+    And it is submitted to call the [Post Role Assignments Delete Query Request] operation of [Role Assignment Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [S-218_DeleteDataForRoleAssignmentsForOrgRoles].

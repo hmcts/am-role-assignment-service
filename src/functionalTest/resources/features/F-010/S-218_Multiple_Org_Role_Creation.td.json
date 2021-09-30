@@ -1,41 +1,46 @@
 {
-  "title": "must successfully create multiple Role Assignments with role name case insensitivity",
-  "_guid_": "S-216",
-  "_extends_": "F-008_Test_Data_Base",
+  "_guid_": "S-218_Multiple_Org_Role_Creation",
+  "_extends_": "F-010_Test_Data_Base-Create",
   "specs": [
-    "contains multiple Role Assignments with replace existing set to false",
-    "Befta1 - who is the actor for requested role",
-    "contains one role name with upper case chars",
-    "contains other role name with combination of upper and lower case chars"
+    "to create org role assignments for actors & requester",
+    "Befta1 - who is the actor for requested role"
   ],
+  "users": {
+    "invokingUser": {
+      "username": "TEST_AM_USER6_BEFTA@test.local",
+      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+    }
+  },
   "request": {
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "${[scenarioContext][testData][users][befta1][id]}"
+        "reference": "${[scenarioContext][customValues][generateUUID]}"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "roleName": "TRIBUNAL-CASEWORKER",
+          "roleName": "tribunal-caseworker",
           "roleCategory": "LEGAL_OPERATIONS",
+          "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "IA",
-            "primaryLocation": "abc"
+            "primaryLocation": "S218abc"
 
           }
         },
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "roleName": "senior-Tribunal-CASEWORKER",
+          "roleName": "senior-tribunal-caseworker",
           "roleCategory": "LEGAL_OPERATIONS",
+          "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "IA",
-            "primaryLocation": "abc"
+            "primaryLocation": "S218abc"
 
           }
         }
@@ -57,26 +62,29 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
+            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD",
             "roleCategory": "LEGAL_OPERATIONS",
             "roleName": "tribunal-caseworker",
             "attributes":
             {
               "jurisdiction": "IA",
-              "primaryLocation": "abc"
-
+              "primaryLocation": "S218abc"
             }
           },
           {
             "_extends_": "ResponseRequestedRole",
+            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD",
             "roleCategory": "LEGAL_OPERATIONS",
             "roleName": "senior-tribunal-caseworker",
             "attributes":
             {
               "jurisdiction": "IA",
-              "primaryLocation": "abc"
-
+              "primaryLocation": "S218abc"
             }
-
           }
         ]
       }

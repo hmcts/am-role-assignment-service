@@ -1,5 +1,5 @@
 {
-  "title": "must successfully receive Role Assignments with list of multiple queries",
+  "title": "must successfully receive Role Assignments with role name case insensitivity",
   "_guid_": "S-217",
   "_extends_": "F-009_Test_Data_Base",
   "specs": [
