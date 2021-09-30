@@ -4,7 +4,7 @@ buildscript {
     }
   dependencies {
     classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.12")
-    classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
+    classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.7.0'
   }
 }
 
@@ -191,6 +191,12 @@ task runProviderPactVerification(type: Test) {
   classpath = sourceSets.contractTest.runtimeClasspath
   systemProperty 'pact.verifier.publishResults', System.getProperty('pact.verifier.publishResults')
   systemProperty 'pact.provider.version', project.pacticipantVersion
+}
+
+task fortifyScan(type: JavaExec)  {
+  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+  classpath += sourceSets.test.runtimeClasspath
+  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
 
 runProviderPactVerification.dependsOn contract
@@ -400,7 +406,7 @@ dependencies {
   testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junit
 
   testCompile group: 'org.pitest', name: 'pitest', version: versions.pitest
-  testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.7'
+  testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.7.0'
   testCompile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
@@ -427,6 +433,7 @@ dependencies {
   testCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+  testCompile 'com.github.hmcts:fortify-client:1.2.0:all'
 
   smokeTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
