@@ -23,31 +23,6 @@ import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJ
 class DroolJudicialCategoryOrgRoleTest extends DroolBase {
 
     @Test
-    void shouldRejectCaseValidationForRequestedRoleMisssingCaseId() {
-
-        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "judge", GrantType.SPECIFIC);
-
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-
-        assignmentRequest.setRequestedRoles(requestedRoles);
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
-        });
-
-        //Execute Kie session
-        buildExecuteKieSession();
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.REJECTED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
-    }
-
-    @Test
     void shouldApprovedRequestedRoleForOrg() {
 
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());

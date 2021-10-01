@@ -91,6 +91,31 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
     }
 
     @Test
+    void shouldRejectCaseValidationForRequestedRoleMisssingCaseId() {
+
+        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "judge", GrantType.SPECIFIC);
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+
+        assignmentRequest.setRequestedRoles(requestedRoles);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @Test
     void shouldApproveRequestedRoleForCase_CaseAllocator() {
 
         RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
