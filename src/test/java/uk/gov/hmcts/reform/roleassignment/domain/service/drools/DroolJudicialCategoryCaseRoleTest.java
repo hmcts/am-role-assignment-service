@@ -21,6 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRoleForIAC;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
@@ -66,7 +67,7 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
                                                                 GrantType.SPECIFIC,
                                                                 RoleType.CASE,
                                                                 Classification.PUBLIC,
-                                                                Status.DELETE_REQUESTED);
+                                                                DELETE_REQUESTED);
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(requestedRole1);
@@ -128,7 +129,7 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
                                                                 GrantType.SPECIFIC,
                                                                 RoleType.CASE,
                                                                 Classification.PUBLIC,
-                                                                Status.DELETE_REQUESTED);
+                                                                DELETE_REQUESTED);
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
         requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
         requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
@@ -237,19 +238,19 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
         RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL, "lead-judge",
                                                                 GrantType.SPECIFIC, RoleType.CASE,
                                                                 Classification.PUBLIC,
-                                                                Status.DELETE_REQUESTED);
+                                                                DELETE_REQUESTED);
         RoleAssignment requestedRole2 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL, "hearing-judge",
                                                                 GrantType.SPECIFIC, RoleType.CASE,
                                                                 Classification.PUBLIC,
-                                                                Status.DELETE_REQUESTED);
+                                                                DELETE_REQUESTED);
         RoleAssignment requestedRole3 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL, "ftpa-judge",
                                                                 GrantType.SPECIFIC, RoleType.CASE,
                                                                 Classification.PUBLIC,
-                                                                Status.DELETE_REQUESTED);
+                                                                DELETE_REQUESTED);
         RoleAssignment requestedRole4 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL, "hearing-panel-judge",
                                                                 GrantType.SPECIFIC, RoleType.CASE,
                                                                 Classification.PUBLIC,
-                                                                Status.DELETE_REQUESTED);
+                                                                DELETE_REQUESTED);
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
         requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
         requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
