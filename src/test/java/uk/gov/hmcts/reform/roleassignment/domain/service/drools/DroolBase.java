@@ -115,6 +115,25 @@ public abstract class DroolBase {
             .build();
     }
 
+    RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType,
+                                        String attributeKey, String attributeVal, Status status) {
+        RoleAssignment ra = RoleAssignment.builder()
+            .id(UUID.randomUUID())
+            .actorId(UUID.randomUUID().toString())
+            .actorIdType(ActorIdType.IDAM)
+            .roleCategory(roleCategory)
+            .roleType(RoleType.CASE)
+            .roleName(roleName)
+            .grantType(grantType)
+            .classification(Classification.PUBLIC)
+            .readOnly(true)
+            .status(status)
+            .attributes(new HashMap<String, JsonNode>())
+            .build();
+        ra.setAttribute(attributeKey, attributeVal);
+        return ra;
+    }
+
     RoleAssignment getRequestedCaseRole_2(RoleCategory roleCategory,
                                           String roleName,
                                           GrantType grantType,
@@ -134,25 +153,6 @@ public abstract class DroolBase {
             .status(status)
             .attributes(new HashMap<String, JsonNode>())
             .build();
-    }
-
-    RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType,
-                                        String attributeKey, String attributeVal, Status status) {
-        RoleAssignment ra = RoleAssignment.builder()
-            .id(UUID.randomUUID())
-            .actorId(UUID.randomUUID().toString())
-            .actorIdType(ActorIdType.IDAM)
-            .roleCategory(roleCategory)
-            .roleType(RoleType.CASE)
-            .roleName(roleName)
-            .grantType(grantType)
-            .classification(Classification.PUBLIC)
-            .readOnly(true)
-            .status(status)
-            .attributes(new HashMap<String, JsonNode>())
-            .build();
-        ra.setAttribute(attributeKey, attributeVal);
-        return ra;
     }
 
     void buildExecuteKieSession() {
