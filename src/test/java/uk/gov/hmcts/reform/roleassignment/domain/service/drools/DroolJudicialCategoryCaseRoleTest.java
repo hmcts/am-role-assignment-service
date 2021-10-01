@@ -21,9 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRoleForIAC;
-import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -153,40 +151,39 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
     }
 
     //Commented out for now as DroolRule is missing for 'task-supervisor'
-//    @Test
-//    void shouldApproveRequestedRoleForCase_TaskSupervisor() {
-//
-//        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
-//                                                                "task-supervisor",
-//                                                                GrantType.STANDARD,
-//                                                                RoleType.ORGANISATION,
-//                                                                Classification.PUBLIC,
-//                                                                Status.CREATE_REQUESTED);
-//        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-//        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-//        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
-//
-//        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
-//            .status(true).build();
-//        featureFlags.add(featureFlag);
-//
-//        List<RoleAssignment> requestedRoles = new ArrayList<>();
-//        requestedRoles.add(requestedRole1);
-//
-//        assignmentRequest.setRequestedRoles(requestedRoles);
-//
-//        //Execute Kie session
-//        buildExecuteKieSession();
-//
-//        //assertion
-//        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-//                                                                   assertEquals(
-//                                                                       Status.APPROVED,
-//                                                                       roleAssignment.getStatus()
-//                                                                   )
-//        );
-//    }
-
+    //    @Test
+    //    void shouldApproveRequestedRoleForCase_TaskSupervisor() {
+    //
+    //        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
+    //                                                                "task-supervisor",
+    //                                                                GrantType.STANDARD,
+    //                                                                RoleType.ORGANISATION,
+    //                                                                Classification.PUBLIC,
+    //                                                                Status.CREATE_REQUESTED);
+    //        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+    //        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+    //        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+    //
+    //        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
+    //            .status(true).build();
+    //        featureFlags.add(featureFlag);
+    //
+    //        List<RoleAssignment> requestedRoles = new ArrayList<>();
+    //        requestedRoles.add(requestedRole1);
+    //
+    //        assignmentRequest.setRequestedRoles(requestedRoles);
+    //
+    //        //Execute Kie session
+    //        buildExecuteKieSession();
+    //
+    //        //assertion
+    //        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+    //                                                                   assertEquals(
+    //                                                                       Status.APPROVED,
+    //                                                                       roleAssignment.getStatus()
+    //                                                                   )
+    //        );
+    //    }
     @Test
     void shouldApproveRequestedRoleForCase_DifferentJudgeRoles() {
 
@@ -512,25 +509,25 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
         });
     }
 
-//    @Test
-//    void shouldRejectRequestedRoleForDelete_WrongExistingRoleID() {
-//        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "judge",
-//                                                             SPECIFIC, "caseId",
-//                                                             "1234567890123456", DELETE_REQUESTED);
-//
-//        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-//        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
-//            .status(true).build();
-//        featureFlags.add(featureFlag);
-//
-//        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "23",
-//                                                          "judge",
-//                                                          RoleCategory.JUDICIAL)));
-//        //assertion
-//        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-//            assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
-//        });
-//    }
+    //    @Test
+    //    void shouldRejectRequestedRoleForDelete_WrongExistingRoleID() {
+    //        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "judge",
+    //                                                             SPECIFIC, "caseId",
+    //                                                             "1234567890123456", DELETE_REQUESTED);
+    //
+    //        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+    //        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
+    //            .status(true).build();
+    //        featureFlags.add(featureFlag);
+    //
+    //        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "23",
+    //                                                          "judge",
+    //                                                          RoleCategory.JUDICIAL)));
+    //        //assertion
+    //        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+    //            assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
+    //        });
+    //    }
 
     private void executeDroolRules(List<ExistingRoleAssignment> existingRoleAssignments) {
         // facts must contain all affected role assignments
