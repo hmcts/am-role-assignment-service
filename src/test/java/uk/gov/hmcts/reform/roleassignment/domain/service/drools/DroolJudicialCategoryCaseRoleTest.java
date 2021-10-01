@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
@@ -18,6 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRoleForIAC;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
@@ -461,5 +466,81 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
                                                                        roleAssignment.getStatus()
                                                                    )
         );
+    }
+
+    @Test
+    void shouldRejectRequestedRoleForCreate_IACFlagFalse() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "judge",
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
+            .status(false).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "judge",
+                                                          RoleCategory.JUDICIAL)));
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+        });
+    }
+
+    @Test
+    void shouldRejectRequestedRoleForCreate_WrongExistingRoleID() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "judge",
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "23",
+                                                          "judge",
+                                                          RoleCategory.JUDICIAL)));
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+        });
+    }
+
+//    @Test
+//    void shouldRejectRequestedRoleForDelete_WrongExistingRoleID() {
+//        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "judge",
+//                                                             SPECIFIC, "caseId",
+//                                                             "1234567890123456", DELETE_REQUESTED);
+//
+//        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+//        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
+//            .status(true).build();
+//        featureFlags.add(featureFlag);
+//
+//        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "23",
+//                                                          "judge",
+//                                                          RoleCategory.JUDICIAL)));
+//        //assertion
+//        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+//            assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
+//        });
+//    }
+
+    private void executeDroolRules(List<ExistingRoleAssignment> existingRoleAssignments) {
+        // facts must contain all affected role assignments
+        facts.addAll(assignmentRequest.getRequestedRoles());
+
+        // facts must contain all existing role assignments
+        facts.addAll(existingRoleAssignments);
+
+        // facts must contain the request
+        facts.add(assignmentRequest.getRequest());
+
+        facts.addAll(featureFlags);
+
+        // Run the rules
+        kieSession.execute(facts);
     }
 }
