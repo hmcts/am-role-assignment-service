@@ -19,7 +19,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
  */
 rule "ia_lead_judge_create_case_roles"
 when
-    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
     $rq: Request(assignerId == authenticatedUserId) //Is it still required, need to check from Jon.
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
@@ -58,7 +58,7 @@ end;
  */
 rule "ia_hearing_judge_create_case_roles"
 when
-    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
     $rq: Request(assignerId == authenticatedUserId) //Is it still required, need to check from Jon.
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
@@ -97,7 +97,7 @@ end;
  */
 rule "ia_ftpa_judge_create_case_roles"
 when
-    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
     $rq: Request(assignerId == authenticatedUserId) //Is it still required, need to check from Jon.
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
@@ -136,7 +136,7 @@ end;
  */
 rule "ia_hearing_panel_judge_create_case_roles"
 when
-    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
     $rq: Request(assignerId == authenticatedUserId) //Is it still required, need to check from Jon.
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
@@ -175,7 +175,7 @@ end;
  */
 rule "ia_case_allocator_create_case_roles"
 when
-    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
     $rq: Request(assignerId == authenticatedUserId) //Is it still required, need to check from Jon.
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
@@ -213,7 +213,7 @@ end;
  */
 rule "ia_judicial_delete_case_roles"
 when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
     $rq: Request(
              assignerId == authenticatedUserId)
     $ra: RoleAssignment(
