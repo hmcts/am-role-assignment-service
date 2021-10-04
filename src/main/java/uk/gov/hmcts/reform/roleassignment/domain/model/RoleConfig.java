@@ -40,6 +40,7 @@ public class RoleConfig {
             p -> {
                 p.setRoleName(roleName);
                 p.setRoleCategory(roleCategory);
+                p.setSubstantive(role.isSubstantive());
             });
     }
 

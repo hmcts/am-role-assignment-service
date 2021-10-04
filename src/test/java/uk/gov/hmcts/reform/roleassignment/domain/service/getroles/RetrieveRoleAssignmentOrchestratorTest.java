@@ -27,6 +27,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
@@ -129,6 +130,6 @@ class RetrieveRoleAssignmentOrchestratorTest {
     void getListOfRoles() throws IOException {
         JsonNode roles = sut.getListOfRoles();
         assertNotNull(roles);
-        assertEquals(3, roles.size());
+        assertTrue(roles.size() > 2);
     }
 }
