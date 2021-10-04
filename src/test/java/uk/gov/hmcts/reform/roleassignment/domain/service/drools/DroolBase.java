@@ -6,6 +6,7 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
@@ -79,6 +80,22 @@ public abstract class DroolBase {
         kieSession.execute(facts);
 
 
+    }
+
+    void executeDroolRules(List<ExistingRoleAssignment> existingRoleAssignments) {
+        // facts must contain all affected role assignments
+        facts.addAll(assignmentRequest.getRequestedRoles());
+
+        // facts must contain all existing role assignments
+        facts.addAll(existingRoleAssignments);
+
+        // facts must contain the request
+        facts.add(assignmentRequest.getRequest());
+
+        facts.addAll(featureFlags);
+
+        // Run the rules
+        kieSession.execute(facts);
     }
 
 
