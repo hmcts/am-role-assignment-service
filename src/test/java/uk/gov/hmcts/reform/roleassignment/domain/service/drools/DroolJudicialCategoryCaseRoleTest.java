@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.CHALLENGED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
@@ -34,497 +35,488 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getReque
 class DroolJudicialCategoryCaseRoleTest extends DroolBase {
 
     @Test
-    void shouldApproveRequestedRoleForCase_Judge() {
+    void shouldApproveRequestedRoleForCase_CaseAllocator() {
 
-        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "judge", GrantType.SPECIFIC);
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
+                                                                "case-allocator",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", CREATE_REQUESTED);
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        assignmentRequest.setRequestedRoles(requestedRoles);
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                  "case-allocator",
+                                                  RoleCategory.JUDICIAL)));
 
-            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> {
+            assertEquals(Status.APPROVED, ra.getStatus());
         });
-
-        //Execute Kie session
-        buildExecuteKieSession();
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.APPROVED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
-    }
-
-    @Test
-    void shouldDeleteApprovedRequestedRoleForCase_Judge() {
-
-        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
-                                                                "judge",
-                                                                GrantType.SPECIFIC,
-                                                                RoleType.CASE,
-                                                                Classification.PUBLIC,
-                                                                DELETE_REQUESTED);
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-
-        assignmentRequest.setRequestedRoles(requestedRoles);
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-
-            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
-        });
-
-        //Execute Kie session
-        buildExecuteKieSession();
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.DELETE_APPROVED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
-    }
-
-    @Test
-    void shouldRejectCaseValidationForRequestedRoleMisssingCaseId() {
-
-        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "judge", GrantType.SPECIFIC);
-
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-
-        assignmentRequest.setRequestedRoles(requestedRoles);
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
-        });
-
-        //Execute Kie session
-        buildExecuteKieSession();
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.REJECTED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
-    }
-
-    @Test
-    void shouldApproveRequestedRoleForCase_CaseAllocator() {
-
-        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
-                                                                "case-allocator",
-                                                                GrantType.SPECIFIC,
-                                                                RoleType.CASE,
-                                                                Classification.PUBLIC,
-                                                                Status.CREATE_REQUESTED
-                                                                );
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
-
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        //Execute Kie session
-        buildExecuteKieSession();
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.APPROVED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
     }
 
     @Test
     void shouldDeleteApprovedRequestedRoleForCase_CaseAllocator() {
 
-        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
                                                                 "case-allocator",
-                                                                GrantType.SPECIFIC,
-                                                                RoleType.CASE,
-                                                                Classification.PUBLIC,
-                                                                DELETE_REQUESTED);
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", DELETE_REQUESTED);
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        //Execute Kie session
-        buildExecuteKieSession();
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.DELETE_APPROVED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
+        assignmentRequest.getRequestedRoles().forEach(ra -> {
+            assertEquals(Status.DELETE_APPROVED, ra.getStatus());
+        });
     }
 
     @Test
-    void shouldApproveRequestedRoleForCase_DifferentJudgeRoles() {
+    void shouldApproveRequestedRoleForCase_JudgeRoles_Lead_Hearing() {
 
-        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "lead-judge",
-                                                              GrantType.SPECIFIC);
-        RoleAssignment requestedRole2 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "hearing-judge",
-                                                              GrantType.SPECIFIC);
-        RoleAssignment requestedRole3 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "ftpa-judge",
-                                                              GrantType.SPECIFIC);
-        RoleAssignment requestedRole4 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "hearing-panel-judge",
-                                                              GrantType.SPECIFIC);
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
+                                                                "lead-judge",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", CREATE_REQUESTED);
+        RoleAssignment requestedRole2 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
+                                                                "hearing-judge",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", CREATE_REQUESTED);
 
-        requestedRole2.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole2.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-        requestedRole2.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1, requestedRole2));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
-        requestedRole3.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole3.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-        requestedRole3.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
-
-        requestedRole4.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole4.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-        requestedRole4.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
-
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        requestedRoles.add(requestedRole2);
-        requestedRoles.add(requestedRole3);
-        requestedRoles.add(requestedRole4);
-
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        //Execute Kie session
-        buildExecuteKieSession();
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "leadership-judge",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(requestedRole2.getActorId(),
+                                                          "judge",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.APPROVED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
+        assignmentRequest.getRequestedRoles().forEach(ra -> {
+            assertEquals(Status.APPROVED, ra.getStatus());
+        });
     }
 
     @Test
-    void shouldDeleteApprovedRequestedRoleForCase_DifferentJudgeRoles() {
+    void shouldApproveRequestedRoleForCase_JudgeRoles_Ftpa_HearingPanel() {
 
-        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL, "lead-judge",
-                                                                GrantType.SPECIFIC, RoleType.CASE,
-                                                                Classification.PUBLIC,
-                                                                DELETE_REQUESTED);
-        RoleAssignment requestedRole2 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL, "hearing-judge",
-                                                                GrantType.SPECIFIC, RoleType.CASE,
-                                                                Classification.PUBLIC,
-                                                                DELETE_REQUESTED);
-        RoleAssignment requestedRole3 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL, "ftpa-judge",
-                                                                GrantType.SPECIFIC, RoleType.CASE,
-                                                                Classification.PUBLIC,
-                                                                DELETE_REQUESTED);
-        RoleAssignment requestedRole4 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL, "hearing-panel-judge",
-                                                                GrantType.SPECIFIC, RoleType.CASE,
-                                                                Classification.PUBLIC,
-                                                                DELETE_REQUESTED);
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
 
-        requestedRole2.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole2.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-        requestedRole2.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
+                                                                "ftpa-judge",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", CREATE_REQUESTED);
+        RoleAssignment requestedRole2 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
+                                                                "hearing-panel-judge",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", CREATE_REQUESTED);
 
-        requestedRole3.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole3.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-        requestedRole3.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1, requestedRole2));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
-        requestedRole4.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole4.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-        requestedRole4.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
-
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-        requestedRoles.add(requestedRole2);
-        requestedRoles.add(requestedRole3);
-        requestedRoles.add(requestedRole4);
-
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        //Execute Kie session
-        buildExecuteKieSession();
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "judge",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(requestedRole2.getActorId(),
+                                                          "judge",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.DELETE_APPROVED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
+        assignmentRequest.getRequestedRoles().forEach(ra -> {
+            assertEquals(Status.APPROVED, ra.getStatus());
+        });
+    }
+
+    @Test
+    void shouldDeleteApprovedRequestedRoleForCase_LeadJudge() {
+
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
+                                                                "lead-judge",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", DELETE_REQUESTED);
+
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "lead-judge",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL)));
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> {
+            assertEquals(Status.DELETE_APPROVED, ra.getStatus());
+        });
+    }
+
+    @Test
+    void shouldDeleteApprovedRequestedRoleForCase_HearingJudge() {
+
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
+                                                                "hearing-judge",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", DELETE_REQUESTED);
+
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "hearing-judge",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL)));
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> {
+            assertEquals(Status.DELETE_APPROVED, ra.getStatus());
+        });
+    }
+
+    @Test
+    void shouldDeleteApprovedRequestedRoleForCase_FtpaJudge() {
+
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
+                                                                "ftpa-judge",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", DELETE_REQUESTED);
+
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "ftpa-judge",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL)));
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> {
+            assertEquals(Status.DELETE_APPROVED, ra.getStatus());
+        });
+    }
+
+    @Test
+    void shouldDeleteApprovedRequestedRoleForCase_HearingPanelJudge() {
+
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
+                                                                "hearing-panel-judge",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", DELETE_REQUESTED);
+
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "hearing-panel-judge",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL)));
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> {
+            assertEquals(Status.DELETE_APPROVED, ra.getStatus());
+        });
+    }
+
+    @Test
+    void shouldRejectRequestedRole_WrongRequesterRoleName() {
+
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
+                                                                "hearing-panel-judge",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", CREATE_REQUESTED);
+
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "hearing-panel-judge",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "Hearing-panel-judge",
+                                                          RoleCategory.JUDICIAL)));
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> {
+            assertEquals(Status.REJECTED, ra.getStatus());
+        });
     }
 
     @Test
     void shouldRejectRequestedRoleForWrongData_GrantType() {
 
-        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
-                                                                "judge",
-                                                                GrantType.STANDARD,
-                                                                RoleType.CASE,
-                                                                Classification.PUBLIC,
-                                                                Status.CREATE_REQUESTED);
-        //GrantType should be SPECIFIC or CHALLENGED
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-
-        assignmentRequest.setRequestedRoles(requestedRoles);
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-
-            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
-        });
-
-        //Execute Kie session
-        buildExecuteKieSession();
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.REJECTED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
-    }
-
-    @Test
-    void shouldRejectRequestedRoleForWrongData_RoleType() {
-
-        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
-                                                                "lead-judge",
-                                                                GrantType.SPECIFIC,
-                                                                RoleType.ORGANISATION,
-                                                                Classification.PUBLIC,
-                                                                Status.CREATE_REQUESTED
-        );
-        //RoleType should be CASE for lead-judge
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
-
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        //Execute Kie session
-        buildExecuteKieSession();
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.REJECTED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
-    }
-
-    @Test
-    void shouldRejectRequestedRoleForWrongData_Classification() {
-
-        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
-                                                                "judge",
-                                                                GrantType.SPECIFIC,
-                                                                RoleType.CASE,
-                                                                Classification.PRIVATE,
-                                                                Status.CREATE_REQUESTED);
-        //Classification should be PUBLIC
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-
-        assignmentRequest.setRequestedRoles(requestedRoles);
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-
-            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
-        });
-
-        //Execute Kie session
-        buildExecuteKieSession();
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.REJECTED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
-    }
-
-
-    @Test
-    void shouldRejectRequestedRoleForNullMandatoryField_BeginTime() {
-
-        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL,
-                                                                "judge",
-                                                                GrantType.SPECIFIC);
-        //BeginTime is a mandatory field - not provided
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
-
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        //Execute Kie session
-        buildExecuteKieSession();
-
-        //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.REJECTED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
-    }
-
-    @Test
-    void shouldRejectRequestedRoleForNullMandatoryFiled_Jurisdiction() {
-
-        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
                                                                 "case-allocator",
-                                                                GrantType.SPECIFIC,
-                                                                RoleType.CASE,
-                                                                Classification.PUBLIC,
-                                                                Status.CREATE_REQUESTED);
-        //Jurisdiction is a mandatory field - not provided
-        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
+                                                                CHALLENGED, "caseId",
+                                                                "1234567890123456", CREATE_REQUESTED);
 
-        List<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(requestedRole1);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
-        assignmentRequest.setRequestedRoles(requestedRoles);
-
-        //Execute Kie session
-        buildExecuteKieSession();
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.REJECTED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
-        );
+        assignmentRequest.getRequestedRoles().forEach(ra -> {
+            assertEquals(Status.REJECTED, ra.getStatus());
+        });
     }
 
     @Test
-    void shouldRejectRequestedRoleForNullMandatoryField_CaseId() {
+    void shouldRejectRequestedRole_WrongAssignerID() {
 
-        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "judge", GrantType.SPECIFIC);
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
+                                                                "case-allocator",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", CREATE_REQUESTED);
 
-        //CaseId is a mandatory field - not provided
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "12",
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL)));
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+        });
+    }
+
+    @Test
+    void shouldRejectRequestedRoleForDelete_WrongAssignerID() {
+
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
+                                                                "case-allocator",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", DELETE_REQUESTED);
+
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "12",
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL)));
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
+        });
+    }
+
+    @Test
+    void shouldRejectRequestedRole_MissingCaseId() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "case-allocator",
+                                                             SPECIFIC);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL)));
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+        });
+    }
+
+    @Test
+    void shouldRejectCaseValidation_MissingExistingRA() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL, "lead-judge",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+
+        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL)));
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+    }
+
+    @Test
+    void shouldRejectRequestedRoleF_WrongRequesterJurisdiction() {
+
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "case-allocator",
+                                                             SPECIFIC);
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
 
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(requestedRole1);
-
         assignmentRequest.setRequestedRoles(requestedRoles);
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
 
-            roleAssignment.setBeginTime(ZonedDateTime.now(ZoneOffset.UTC));
-        });
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
 
-        //Execute Kie session
-        buildExecuteKieSession();
+        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
+            requestedRole1.getActorId(),
+            "case-allocator",
+            RoleCategory.JUDICIAL
+        );
+
+        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
+            assignmentRequest.getRequest().getAssignerId(), "case-allocator",
+            RoleCategory.JUDICIAL);
+
+        existingRequesterAssignment1.getAttributes().put("jurisdiction", convertValueJsonNode("CMC"));
+
+        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
+        existingRoleAssignments.add(existingActorAssignment1);
+        existingRoleAssignments.add(existingRequesterAssignment1);
+
+        // facts must contain the request
+        executeDroolRules(existingRoleAssignments);
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.REJECTED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+        });
+    }
+
+    @Test
+    void shouldRejectRequestedRoleF_WrongAssigneeJurisdiction() {
+
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "lead-judge",
+                                                             SPECIFIC);
+        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+
+        List<RoleAssignment> requestedRoles = new ArrayList<>();
+        requestedRoles.add(requestedRole1);
+        assignmentRequest.setRequestedRoles(requestedRoles);
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
+            requestedRole1.getActorId(),
+            "leadership-judge",
+            RoleCategory.JUDICIAL
         );
+
+        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
+            assignmentRequest.getRequest().getAssignerId(), "case-allocator",
+            RoleCategory.JUDICIAL);
+
+        existingActorAssignment1.getAttributes().put("jurisdiction", convertValueJsonNode("CMC"));
+
+        List<ExistingRoleAssignment> existingRoleAssignments = new ArrayList<>();
+        existingRoleAssignments.add(existingActorAssignment1);
+        existingRoleAssignments.add(existingRequesterAssignment1);
+
+        // facts must contain the request
+        executeDroolRules(existingRoleAssignments);
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+        });
     }
 
     @Test
     void shouldRejectRequestedRoleForCreate_IACFlagFalse() {
-        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL, "judge",
-                                                             SPECIFIC, "caseId",
-                                                             "1234567890123456", CREATE_REQUESTED);
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
+                                                                "case-allocator",
+                                                                SPECIFIC, "caseId",
+                                                                "1234567890123456", CREATE_REQUESTED);
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
             .status(false).build();
         featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "judge",
+                                                          "case-allocator",
+                                                          RoleCategory.JUDICIAL),
+                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "case-allocator",
                                                           RoleCategory.JUDICIAL)));
+
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+        assignmentRequest.getRequestedRoles().forEach(ra -> {
+            assertEquals(Status.REJECTED, ra.getStatus());
         });
     }
-
-    @Test
-    void shouldRejectRequestedRoleForCreate_WrongExistingRoleID() {
-        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL, "judge",
-                                                             SPECIFIC, "caseId",
-                                                             "1234567890123456", CREATE_REQUESTED);
-
-        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
-        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "23",
-                                                          "judge",
-                                                          RoleCategory.JUDICIAL)));
-        //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
-    }
-
-    //    @Test
-    //    void shouldRejectRequestedRoleForDelete_WrongExistingRoleID() {
-    //        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "judge",
-    //                                                             SPECIFIC, "caseId",
-    //                                                             "1234567890123456", DELETE_REQUESTED);
-    //
-    //        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-    //        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
-    //            .status(true).build();
-    //        featureFlags.add(featureFlag);
-    //
-    //        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "23",
-    //                                                          "judge",
-    //                                                          RoleCategory.JUDICIAL)));
-    //        //assertion
-    //        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-    //            assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
-    //        });
-    //    }
 
     private void executeDroolRules(List<ExistingRoleAssignment> existingRoleAssignments) {
         // facts must contain all affected role assignments
