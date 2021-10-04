@@ -42,7 +42,7 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(requestedRole1);
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
