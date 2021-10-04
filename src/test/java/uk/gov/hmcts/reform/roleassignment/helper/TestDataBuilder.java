@@ -583,8 +583,11 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static RoleAssignment getRequestedCaseRole_ra(RoleCategory roleCategory, String roleName, GrantType grantType,
-                                        String attributeKey, String attributeVal, Status status) {
+    public static RoleAssignment getRequestedCaseRole_ra(RoleCategory roleCategory, String roleName,
+                                                         GrantType grantType,
+                                                         String attributeKey,
+                                                         String attributeVal,
+                                                         Status status) {
         RoleAssignment ra = RoleAssignment.builder()
             .id(UUID.randomUUID())
             .actorId(UUID.randomUUID().toString())
