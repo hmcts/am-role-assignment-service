@@ -80,3 +80,4 @@ Feature: F-010 : Post Role Assignments Delete Query Request
     Then a positive response is received,
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [S-218_DeleteDataForRoleAssignmentsForOrgRoles].
+
