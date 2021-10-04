@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
+import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public abstract class DroolBase {
         featureFlags = new ArrayList<>();
 
         //build assignmentRequest
-        assignmentRequest = getAssignmentRequest()
+        assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
 
         // facts must contain the role config, for access to the patterns
@@ -80,79 +81,6 @@ public abstract class DroolBase {
         this.kieSession = kieContainer.newStatelessKieSession("role-assignment-validation-session");
         this.kieSession.setGlobal("DATA_SERVICE", retrieveDataService);
 
-    }
-
-    private AssignmentRequest.AssignmentRequestBuilder getAssignmentRequest() {
-        return AssignmentRequest.builder().request(Request.builder()
-                                                       .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
-                                                       .authenticatedUserId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
-                                                       .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
-                                                       .assignerId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
-                                                       .requestType(RequestType.CREATE)
-                                                       .reference("4772dc44-268f-4d0c-8f83-f0fb662aac84")
-                                                       .process(("p2"))
-                                                       .replaceExisting(true)
-                                                       .status(Status.CREATED)
-                                                       .created(ZonedDateTime.now())
-                                                       .build());
-
-
-    }
-
-    RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType) {
-        return RoleAssignment.builder()
-            .id(UUID.randomUUID())
-            .actorId(UUID.randomUUID().toString())
-            .actorIdType(ActorIdType.IDAM)
-            .roleCategory(roleCategory)
-            .roleType(RoleType.CASE)
-            .roleName(roleName)
-            .grantType(grantType)
-            .classification(Classification.PUBLIC)
-            .readOnly(true)
-            .status(CREATE_REQUESTED)
-            .attributes(new HashMap<String, JsonNode>())
-            .build();
-    }
-
-    RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType,
-                                        String attributeKey, String attributeVal, Status status) {
-        RoleAssignment ra = RoleAssignment.builder()
-            .id(UUID.randomUUID())
-            .actorId(UUID.randomUUID().toString())
-            .actorIdType(ActorIdType.IDAM)
-            .roleCategory(roleCategory)
-            .roleType(RoleType.CASE)
-            .roleName(roleName)
-            .grantType(grantType)
-            .classification(Classification.PUBLIC)
-            .readOnly(true)
-            .status(status)
-            .attributes(new HashMap<String, JsonNode>())
-            .build();
-        ra.setAttribute(attributeKey, attributeVal);
-        return ra;
-    }
-
-    RoleAssignment getRequestedCaseRole_2(RoleCategory roleCategory,
-                                          String roleName,
-                                          GrantType grantType,
-                                          RoleType roleType,
-                                          Classification classification,
-                                          Status status) {
-        return RoleAssignment.builder()
-            .id(UUID.randomUUID())
-            .actorId(UUID.randomUUID().toString())
-            .actorIdType(ActorIdType.IDAM)
-            .roleCategory(roleCategory)
-            .roleType(roleType)
-            .roleName(roleName)
-            .grantType(grantType)
-            .classification(classification)
-            .readOnly(true)
-            .status(status)
-            .attributes(new HashMap<String, JsonNode>())
-            .build();
     }
 
     void buildExecuteKieSession() {
