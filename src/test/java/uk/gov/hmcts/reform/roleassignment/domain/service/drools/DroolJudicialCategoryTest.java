@@ -41,11 +41,10 @@ class DroolJudicialCategoryTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.APPROVED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
+            }
         );
     }
 
@@ -93,11 +92,10 @@ class DroolJudicialCategoryTest extends DroolBase {
         //Execute Kie session
         buildExecuteKieSession();
 
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.APPROVED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            assertEquals(Status.APPROVED,roleAssignment.getStatus());
+            assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
+            }
         );
     }
 

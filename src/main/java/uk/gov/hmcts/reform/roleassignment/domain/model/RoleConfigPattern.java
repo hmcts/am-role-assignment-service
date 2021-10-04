@@ -21,6 +21,7 @@ public class RoleConfigPattern {
     private final RoleConfigConstraint<String> beginTime;
     private final RoleConfigConstraint<String> endTime;
     private final Map<String, RoleConfigConstraint<String>> attributes;
+    private boolean substantive;
 
     public boolean attributesMatch(Map<String, JsonNode> roleAttributes) {
         return attributes.entrySet().stream().allMatch(entry -> entry.getValue()
