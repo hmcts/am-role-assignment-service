@@ -24,6 +24,11 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREAT
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRoleForIAC;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole_2;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole_ra;
+
+
 
 @RunWith(MockitoJUnitRunner.class)
 class DroolJudicialCategoryCaseRoleTest extends DroolBase {
@@ -31,7 +36,7 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
     @Test
     void shouldApproveRequestedRoleForCase_Judge() {
 
-        RoleAssignment requestedRole1 =  getRequestedCaseRole(RoleCategory.JUDICIAL, "judge", GrantType.SPECIFIC);
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "judge", GrantType.SPECIFIC);
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
 
         List<RoleAssignment> requestedRoles = new ArrayList<>();
@@ -176,40 +181,6 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
         );
     }
 
-    //Commented out for now as DroolRule is missing for 'task-supervisor'
-    //    @Test
-    //    void shouldApproveRequestedRoleForCase_TaskSupervisor() {
-    //
-    //        RoleAssignment requestedRole1 =  getRequestedCaseRole_2(RoleCategory.JUDICIAL,
-    //                                                                "task-supervisor",
-    //                                                                GrantType.STANDARD,
-    //                                                                RoleType.ORGANISATION,
-    //                                                                Classification.PUBLIC,
-    //                                                                Status.CREATE_REQUESTED);
-    //        requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
-    //        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
-    //        requestedRole1.getAttributes().put("caseType", convertValueJsonNode("Asylum"));
-    //
-    //        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_0.getValue())
-    //            .status(true).build();
-    //        featureFlags.add(featureFlag);
-    //
-    //        List<RoleAssignment> requestedRoles = new ArrayList<>();
-    //        requestedRoles.add(requestedRole1);
-    //
-    //        assignmentRequest.setRequestedRoles(requestedRoles);
-    //
-    //        //Execute Kie session
-    //        buildExecuteKieSession();
-    //
-    //        //assertion
-    //        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-    //                                                                   assertEquals(
-    //                                                                       Status.APPROVED,
-    //                                                                       roleAssignment.getStatus()
-    //                                                                   )
-    //        );
-    //    }
     @Test
     void shouldApproveRequestedRoleForCase_DifferentJudgeRoles() {
 
@@ -497,7 +468,7 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
 
     @Test
     void shouldRejectRequestedRoleForCreate_IACFlagFalse() {
-        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "judge",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL, "judge",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
 
@@ -517,7 +488,7 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
 
     @Test
     void shouldRejectRequestedRoleForCreate_WrongExistingRoleID() {
-        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "judge",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL, "judge",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
 
