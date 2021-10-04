@@ -32,6 +32,11 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
                                 @NotNull HttpServletResponse response, @NotNull Object handler,
                                 @Nullable Exception ex) {
         long startTime = System.currentTimeMillis();
+        try {
+            ValidationUtil.compareHttpMethods(request.getMethod());
+        } catch (Exception e) {  // Ignoring audit failures
+            log.error("Error while auditing the request data:{}", e.getMessage());
+        }
         if (applicationParams.isAuditLogEnabled() && hasAuditAnnotation(handler)) {
             log.debug("afterCompletion execution started at {}", startTime);
             if (!applicationParams.getAuditLogIgnoreStatuses().contains(response.getStatus())) {
