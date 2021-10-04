@@ -549,19 +549,5 @@ class StaffCategoryCaseTest extends DroolBase {
         });
     }
 
-    private void executeDroolRules(List<ExistingRoleAssignment> existingRoleAssignments) {
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
 
-        // facts must contain all existing role assignments
-        facts.addAll(existingRoleAssignments);
-
-        // facts must contain the request
-        facts.add(assignmentRequest.getRequest());
-
-        facts.addAll(featureFlags);
-
-        // Run the rules
-        kieSession.execute(facts);
-    }
 }
