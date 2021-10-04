@@ -190,14 +190,12 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             roleAssignment.setRoleName("tribunal-caseworker");
             roleAssignment.setGrantType(STANDARD);
             roleAssignment.setStatus(CREATE_REQUESTED);
-            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("CMC"));
             roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
         });
         buildExecuteKieSession();
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals("\"CMC\"", roleAssignment.getAttributes().get("jurisdiction").toString());
             assertEquals(Status.REJECTED, roleAssignment.getStatus());
         });
     }
