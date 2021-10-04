@@ -599,9 +599,6 @@
           "values": ["PUBLIC", "PRIVATE"]
         },
         "attributes": {
-          "jurisdiction": {
-            "mandatory": true
-          },
           "primaryLocation": {
             "mandatory": true
           }
@@ -629,9 +626,6 @@
           "values": ["PRIVATE"]
         },
         "attributes": {
-          "jurisdiction": {
-            "mandatory": true
-          },
           "primaryLocation": {
             "mandatory": true
           }
