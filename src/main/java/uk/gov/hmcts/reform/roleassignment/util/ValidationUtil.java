@@ -9,6 +9,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.HttpMethods;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
@@ -80,7 +81,7 @@ public class ValidationUtil {
         }
     }
 
-    public static boolean sanitiseCorrelationId(String inputString) {
+    public static String sanitiseCorrelationId(String inputString) {
         if (inputString != null && !inputString.isEmpty() && !Pattern.matches(Constants.UUID_PATTERN, inputString)) {
             throw new BadRequestException(
                 String.format(
@@ -88,7 +89,7 @@ public class ValidationUtil {
                     inputString
                 ));
         }
-        return true;
+        return inputString;
     }
 
     public static void compareRoleType(String roleType) {
@@ -103,6 +104,21 @@ public class ValidationUtil {
             throw new BadRequestException(
                 String.format("The Role Type parameter supplied: %s is not valid", roleType));
         }
+    }
+
+    public static String compareHttpMethods(String httpMethod) {
+        var valid = false;
+        for (HttpMethods realMethod : HttpMethods.values()) {
+            if (realMethod.name().equalsIgnoreCase(httpMethod)) {
+                valid = true;
+                break;
+            }
+        }
+        if (!valid) {
+            throw new BadRequestException(
+                String.format("The Http Method parameter supplied: %s is not valid", httpMethod));
+        }
+        return httpMethod;
     }
 
     public static void isRequestedRolesEmpty(Collection<?>... inputList) {

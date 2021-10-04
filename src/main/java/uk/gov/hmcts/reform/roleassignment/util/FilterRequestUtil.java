@@ -25,7 +25,8 @@ public class FilterRequestUtil extends OncePerRequestFilter {
                                     HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
 
-        final String correlationId = correlationInterceptorUtil.preHandle(request);
+        final String correlationId =
+            ValidationUtil.sanitiseCorrelationId(correlationInterceptorUtil.preHandle(request));
 
         var mutableRequest = new MutableHttpServletRequest(request);
 

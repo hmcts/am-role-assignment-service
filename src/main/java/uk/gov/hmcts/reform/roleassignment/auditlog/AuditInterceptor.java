@@ -10,6 +10,7 @@ import uk.gov.hmcts.reform.roleassignment.ApplicationParams;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContext;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContextHolder;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest;
+import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,7 +62,8 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
                                                HttpServletRequest request, HttpServletResponse response) {
         AuditContext context = (auditContext != null) ? auditContext : new AuditContext();
         context.setHttpStatus(response.getStatus());
-        context.setHttpMethod(request.getMethod());
+        String httpMethod = ValidationUtil.compareHttpMethods(request.getMethod());
+        context.setHttpMethod(httpMethod);
         context.setRequestPath(request.getRequestURI());
         if (LOG.isDebugEnabled()) {
             context.setRequestPayload(new MutableHttpServletRequest(request).getBodyAsString());
