@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.helper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -52,6 +53,7 @@ import java.util.UUID;
 import static java.time.LocalDateTime.now;
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.ROLES_JSON;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @Setter
@@ -262,7 +264,16 @@ public class TestDataBuilder {
     }
 
     public static List<RoleConfigRole> buildRolesFromFile() throws IOException {
-        return JacksonUtils.getConfiguredRoles();
+        try (InputStream input = TestDataBuilder.class.getClassLoader().getResourceAsStream(ROLES_JSON)) {
+            CollectionType listType = new ObjectMapper().getTypeFactory().constructCollectionType(
+                ArrayList.class,
+                RoleConfigRole.class
+            );
+            assert input != null;
+            return new ObjectMapper().readValue(input, listType);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static RequestEntity buildRequestEntity(Request request) {

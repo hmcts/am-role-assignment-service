@@ -392,8 +392,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
+            "mandatory": true
           },
           "primaryLocation": {
             "mandatory": true
@@ -478,8 +477,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
+            "mandatory": true
           },
           "primaryLocation": {
             "mandatory": true
@@ -533,8 +531,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
+            "mandatory": true
           },
           "primaryLocation": {
             "mandatory": true
@@ -563,13 +560,10 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
+            "mandatory": true
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["Asylum"]
-
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -599,6 +593,9 @@
           "values": ["PUBLIC", "PRIVATE"]
         },
         "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
           "primaryLocation": {
             "mandatory": true
           }
@@ -619,13 +616,16 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["BASIC"]
+          "values": ["STANDARD"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["PRIVATE"]
+          "values": ["PUBLIC", "PRIVATE"]
         },
         "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
           "primaryLocation": {
             "mandatory": true
           }

@@ -21,8 +21,10 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "roleType": "CASE",
+          "grantType": "STANDARD",
           "attributes": {
-            "region": "north-west"
+          "caseId": "1607103938250138"
           }
         }
       ]
@@ -44,8 +46,10 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
             "attributes": {
-              "region": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][region]}"
+              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}"
             },
             "status": "REJECTED"
           }
