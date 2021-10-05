@@ -9,7 +9,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.util.List;
 import java.util.Map;
