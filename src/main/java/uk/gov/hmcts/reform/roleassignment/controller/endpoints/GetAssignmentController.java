@@ -1,7 +1,6 @@
 
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -20,10 +19,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
-import java.io.IOException;
+import java.util.List;
 
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.GET_ASSIGNMENTS_BY_ACTOR;
 
@@ -99,9 +99,9 @@ public class GetAssignmentController {
             response = Object.class
         )
     })
-    public ResponseEntity<JsonNode> getListOfRoles(@RequestHeader(value = "x-correlation-id",
-        required = false) String correlationId) throws IOException {
-        JsonNode rootNode = retrieveRoleAssignmentService.getListOfRoles();
+    public ResponseEntity<List<RoleConfigRole>> getListOfRoles(@RequestHeader(value = "x-correlation-id",
+        required = false) String correlationId)  {
+        List<RoleConfigRole> rootNode = retrieveRoleAssignmentService.getListOfRoles();
         return ResponseEntity.status(HttpStatus.OK).body(rootNode);
     }
 }
