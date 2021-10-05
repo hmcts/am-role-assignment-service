@@ -95,9 +95,9 @@ class CCDCaseRolesTest extends DroolBase {
 
     @Test
     public void shouldApproveDummyCaseRoleCreationWithDummyRoleName_CCD_1_0_enableByPassDroolRule() {
-        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.PROFESSIONAL, "[DUMMYSOLICITOR]",
-                                                             SPECIFIC, "caseId",
-                                                             "1234567890123456", CREATE_REQUESTED);
+        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
+                                                            "[DUMMYSOLICITOR]", SPECIFIC, "caseId",
+                                                           "1234567890123456", CREATE_REQUESTED);
         requestedRole1.setClassification(Classification.PUBLIC);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
                                                      "caseType", convertValueJsonNode("Asylum"),
@@ -196,9 +196,9 @@ class CCDCaseRolesTest extends DroolBase {
 
     @Test
     public void shouldApproveDeleteDummyCaseRolesWithDummyRoleName_enableByPassDroolRule() {
-        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.PROFESSIONAL, "[DUMMYSOLICITOR]",
-                                                             SPECIFIC, "caseId",
-                                                             "1234567890123456", DELETE_REQUESTED);
+        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
+                                                             "[DUMMYSOLICITOR]", SPECIFIC, "caseId",
+                                                           "1234567890123456", DELETE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
                                                      "caseType", convertValueJsonNode("Asylum"),
