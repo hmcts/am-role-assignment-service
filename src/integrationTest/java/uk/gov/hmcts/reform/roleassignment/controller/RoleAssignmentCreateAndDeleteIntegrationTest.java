@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -49,6 +50,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 
+@TestPropertySource(properties = {"dbFeature.flags.enable=iac_jrd_1_0"})
 public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentCreateAndDeleteIntegrationTest.class);
@@ -123,7 +125,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             "userInfo", userInfo
 
         );
-        Case retrievedCase = Case.builder().id("1234")
+        Case retrievedCase = Case.builder().id("1234567890123456")
             .caseTypeId("Asylum")
             .jurisdiction("IA")
             .build();
@@ -131,10 +133,8 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     }
 
     @Test
-    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
-        {"classpath:sql/role_assignment_clean_up.sql"
-
-            })
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+        scripts = {"classpath:sql/role_assignment_clean_up.sql","classpath:sql/insert_role_assignment_to_create.sql"})
     public void shouldCreateRoleAssignmentsWithReplaceExistingTrue() throws Exception {
         logger.info(" History record count before create assignment request {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count before create assignment request {}", getAssignmentRecordsCount());
@@ -158,7 +158,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         assertEquals(CREATE_REQUESTED.toString(), statusList.get(0));
         assertEquals(APPROVED, statusList.get(1));
         assertEquals(LIVE, statusList.get(2));
-        assertEquals(1, getAssignmentRecordsCount().longValue());
+        assertEquals(4, getAssignmentRecordsCount().longValue());
         assertEquals(ACTOR_ID, getActorFromAssignmentTable());
         logger.info(" History record count after create request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count after create assignment request: {}", getAssignmentRecordsCount());
@@ -193,7 +193,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         assertEquals(APPROVED, newStatusList.get(5));
         assertEquals(DELETED, newStatusList.get(6));
         assertEquals(LIVE, newStatusList.get(7));
-        assertEquals(1, getAssignmentRecordsCount().longValue());
+        assertEquals(4, getAssignmentRecordsCount().longValue());
         assertEquals(ACTOR_ID, getActorFromAssignmentTable());
         logger.info(" History record count after create request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count after create assignment request : {}", getAssignmentRecordsCount());
@@ -254,7 +254,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             "classpath:sql/insert_assignment_records_to_delete.sql"})
     public void shouldDeleteSingleRoleAssignmentByAdvancedQuery() throws Exception {
 
-        assertEquals(Integer.valueOf(1), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(2), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(3), getHistoryRecordsCount());
 
         assertEquals(Integer.valueOf(1), getStatusCount(CREATED));
@@ -271,7 +271,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             .andExpect(status().is(HttpStatus.OK.value()))
             .andReturn();
 
-        assertEquals(Integer.valueOf(0), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(1), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(5), getHistoryRecordsCount());
 
         assertEquals(Integer.valueOf(1), getStatusCount(CREATED));
@@ -287,8 +287,17 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         {"classpath:sql/role_assignment_clean_up.sql",
             "classpath:sql/insert_multiple_assignments_to_delete.sql"})
     public void shouldDeleteMultipleRoleAssignmentByAdvancedQuery() throws Exception {
-
-        assertEquals(Integer.valueOf(3), getAssignmentRecordsCount());
+        Case retrievedCase1 = Case.builder().id("1234567890123457")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .build();
+        Case retrievedCase2 = Case.builder().id("1234567890123458")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .build();
+        doReturn(retrievedCase1).when(retrieveDataService).getCaseById("1234567890123457");
+        doReturn(retrievedCase2).when(retrieveDataService).getCaseById("1234567890123458");
+        assertEquals(Integer.valueOf(4), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
 
         assertEquals(Integer.valueOf(3), getStatusCount(CREATED));
@@ -305,7 +314,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             .andExpect(status().is(HttpStatus.OK.value()))
             .andReturn();
 
-        assertEquals(Integer.valueOf(0), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(1), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(15), getHistoryRecordsCount());
 
         assertEquals(Integer.valueOf(3), getStatusCount(CREATED));
@@ -322,7 +331,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             "classpath:sql/insert_multiple_assignments_to_delete.sql"})
     public void shouldDeleteSomeRoleAssignmentsByAdvancedQuery() throws Exception {
 
-        assertEquals(Integer.valueOf(3), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(4), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
 
         assertEquals(Integer.valueOf(3), getStatusCount(CREATED));
@@ -339,7 +348,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             .andExpect(status().is(HttpStatus.OK.value()))
             .andReturn();
 
-        assertEquals(Integer.valueOf(2), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(3), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(11), getHistoryRecordsCount());
 
         assertEquals(Integer.valueOf(3), getStatusCount(CREATED));
@@ -353,7 +362,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     private String createRoleAssignmentRequestAdvanceDelete() {
 
         return "{\"queryRequests\":[{\"actorId\":[\"23e4567-e89b-42d3-a456-556642445612\"]},"
-            + "{\"roleName\": [\"judge\"]},"
+            + "{\"roleName\": [\"lead-judge\"]},"
             + "{\"roleType\": [\"CASE\"]},"
             + "{\"attributes\": {"
             + "\"caseId\": [\"1234567890123456\"]}}"
@@ -362,7 +371,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     private String createRoleAssignmentRequestAdvanceDeleteMultiple() {
         return "{\"queryRequests\":["
-            + "{\"roleName\": [\"judge\"]},"
+            + "{\"roleName\": [\"lead-judge\"]},"
             + "{\"roleType\": [\"CASE\"]}"
             + "]}";
     }

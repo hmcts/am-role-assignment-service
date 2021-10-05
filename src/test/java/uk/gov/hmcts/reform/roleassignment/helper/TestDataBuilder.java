@@ -487,7 +487,7 @@ public class TestDataBuilder {
             .actorId("123e4567-e89b-42d3-a456-556642445612")
             .actorIdType(ActorIdType.IDAM)
             .roleType(RoleType.CASE)
-            .roleName("judge")
+            .roleName("lead-judge")
             .classification(Classification.PUBLIC)
             .grantType(GrantType.SPECIFIC)
             .roleCategory(RoleCategory.JUDICIAL)
