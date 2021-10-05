@@ -115,7 +115,7 @@ when
     $f:  FeatureFlag(status && flagName == FeatureFlagEnum.CCD_1_0.getValue())
     $rq: Request(byPassOrgDroolRule && clientId in ("ccd_data", "aac_manage_case_assignment"))
            $ra: RoleAssignment(
-               status == Status.CREATE_REQUESTED,
+               status in (Status.CREATE_REQUESTED,Status.CREATE_APPROVED),
                roleType == RoleType.CASE,
                attributes["jurisdiction"] != null,
                attributes["caseType"] != null,
