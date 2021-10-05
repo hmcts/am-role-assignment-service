@@ -97,7 +97,7 @@ when
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              roleCategory == RoleCategory.LEGAL_OPERATIONS,
-             roleName in ("tribunal-caseworker"),
+             roleName == "tribunal-caseworker",
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
              id == $caseId,
@@ -134,7 +134,7 @@ when
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
-             roleName in ("tribunal-caseworker"),
+             roleName == "tribunal-caseworker",
              roleCategory == RoleCategory.LEGAL_OPERATIONS,
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
          Case(
@@ -166,7 +166,7 @@ when
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
-             roleName in ("case-manager"),
+             roleName == "case-manager",
              roleCategory == RoleCategory.LEGAL_OPERATIONS,
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
@@ -182,7 +182,7 @@ when
     ExistingRoleAssignment(
             actorId == $rq.assignerId,
             roleType == RoleType.ORGANISATION,
-            roleName in ("case-allocator"),
+            roleName == "case-allocator",
             roleCategory == RoleCategory.LEGAL_OPERATIONS,
             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 then
@@ -204,7 +204,7 @@ when
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
-             roleName in ("case-manager"),
+             roleName == "case-manager",
              roleCategory == RoleCategory.LEGAL_OPERATIONS,
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
          Case(
@@ -214,7 +214,7 @@ when
         ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
-             roleName in ("case-allocator"),
+             roleName == "case-allocator",
              roleCategory == RoleCategory.LEGAL_OPERATIONS,
              attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
 then
