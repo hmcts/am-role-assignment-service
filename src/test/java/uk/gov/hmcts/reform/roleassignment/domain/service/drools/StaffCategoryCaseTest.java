@@ -12,7 +12,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
-import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -564,7 +563,7 @@ class StaffCategoryCaseTest extends DroolBase {
     @DisplayName("Approve the case-manager, case-allocator roles with assigner is case-allocator and actioned by "
         + "parametered user")
     private void verifyCreateCaseRole_V1_1(String roleName, String existingRole) {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, roleName,
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, roleName,
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
@@ -595,7 +594,7 @@ class StaffCategoryCaseTest extends DroolBase {
     }
 
     private void verifyCreateCaseRole_V1_0(String roleName, String existingRole) {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, roleName,
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, roleName,
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
@@ -622,8 +621,8 @@ class StaffCategoryCaseTest extends DroolBase {
         + "expected Actioned by case-allocator")
     void shouldRejectCaseManagerRole_NoTCW_NoSTCW() {
 
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS,
-                                                              "case-manager", SPECIFIC, "caseId",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, "case-manager",
+                                                             SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
                                                      "caseType", convertValueJsonNode("Asylum"),
@@ -648,8 +647,8 @@ class StaffCategoryCaseTest extends DroolBase {
     @DisplayName("Reject creation of the case-manager role with no assigner. expected assigner is case-allocator")
     void shouldRejectCaseManagerRoleCreation_NoAssigner() {
 
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS,
-                                                               "case-manager", SPECIFIC, "caseId",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, "case-manager",
+                                                             SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
                                                      "caseType", convertValueJsonNode("Asylum"),
@@ -669,8 +668,8 @@ class StaffCategoryCaseTest extends DroolBase {
     @DisplayName("Reject creation of the case-allocator role actioned by TCW. expected is case-allocator")
     void shouldRejectCaseAllocatorRoleCreation_actionByTCW() {
 
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS,
-                                                              "case-allocator", SPECIFIC, "caseId",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, "case-allocator",
+                                                             SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
                                                      "caseType", convertValueJsonNode("Asylum"),
@@ -695,7 +694,7 @@ class StaffCategoryCaseTest extends DroolBase {
     @DisplayName("Reject creation of the case-allocator role with wrong Category. expected is LEGAL_OPERATIONS")
     void shouldRejectCaseAllocatorRoleCreation_withWrongMappingFields() {
 
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.ADMIN, "case-allocator",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.ADMIN, "case-allocator",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
@@ -725,7 +724,7 @@ class StaffCategoryCaseTest extends DroolBase {
     }
 
     private void verifyDeleteCaseRole_V1_1(String roleName) {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, roleName,
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, roleName,
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
@@ -747,7 +746,7 @@ class StaffCategoryCaseTest extends DroolBase {
     @Test
     @DisplayName("Reject the delete case-allocator with wrong Category.")
     void shouldRejectDeleteCaseAllocatorRoles_withWrongCategory() {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.ADMIN, "case-allocator",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.ADMIN, "case-allocator",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
@@ -775,9 +774,9 @@ class StaffCategoryCaseTest extends DroolBase {
     }
 
     private void verifyDeleteCaseRole_V1_0(String roleName, String existingRole) {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, roleName,
-                                                                                SPECIFIC, "caseId",
-                                                                                "1234567890123456", DELETE_REQUESTED);
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, roleName,
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", DELETE_REQUESTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
                                                      "caseType", convertValueJsonNode("Asylum"),
                                                      "caseId", convertValueJsonNode("1234567890123456")));
@@ -800,8 +799,8 @@ class StaffCategoryCaseTest extends DroolBase {
     @Test
     @DisplayName("Reject deletion of the case-allocator role without existing Assigner. Expected is case-allocator")
     void shouldRejectDeleteCaseAllocatorRole_V1_1_noExistingAssigner() {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS,
-                                                              "case-allocator", SPECIFIC, "caseId",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, "case-allocator",
+                                                             SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
                                                      "caseType", convertValueJsonNode("Asylum"),
@@ -820,8 +819,8 @@ class StaffCategoryCaseTest extends DroolBase {
     @Test
     @DisplayName("Reject deletion of the case-allocator role with Assigner as TCW. Expected assigned is case-allocator")
     void shouldRejectDeleteCaseAllocatorRole_V1_1_assignerAsTCW() {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS,
-                                                               "case-allocator", SPECIFIC, "caseId",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, "case-allocator",
+                                                             SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
                                                      "caseType", convertValueJsonNode("Asylum"),
