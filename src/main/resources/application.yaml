@@ -25,7 +25,7 @@ management:
         time-to-live: 1s
   endpoints:
     health:
-      sensitive: false
+      sensitive: true
     web:
       base-path: /
       exposure:
