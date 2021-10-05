@@ -512,12 +512,14 @@ public class TestDataBuilder {
 
     }
 
-    public static ExistingRoleAssignment buildExistingRoleForIAC(String actorId, String roleName) {
+    public static ExistingRoleAssignment buildExistingRoleForIAC(String actorId, String roleName,
+                                                                 RoleCategory roleCategory) {
         Map<String,JsonNode> attributes = new HashMap<>();
         attributes.put("jurisdiction",convertValueJsonNode("IA"));
         return ExistingRoleAssignment.builder()
             .actorId(actorId)
             .roleType(RoleType.ORGANISATION)
+            .roleCategory(roleCategory)
             .roleName(roleName)
             .attributes(attributes)
             .build();

@@ -21,7 +21,7 @@ when
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.ORGANISATION,
-             roleCategory == RoleCategory.LEGAL_OPERATIONS)
+             roleCategory in (RoleCategory.LEGAL_OPERATIONS, RoleCategory.JUDICIAL, RoleCategory.ADMIN) )
 then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Create approved : staff_organisational_role_mapping_service_create");
@@ -37,11 +37,10 @@ end;
 rule "staff_organisational_role_mapping_service_delete"
 when
     $rq: Request(byPassOrgDroolRule || clientId == "am_org_role_mapping_service")
-
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.ORGANISATION,
-             roleCategory == RoleCategory.LEGAL_OPERATIONS)
+             roleCategory in (RoleCategory.LEGAL_OPERATIONS, RoleCategory.JUDICIAL, RoleCategory.ADMIN) )
 then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : staff_organisational_role_mapping_service_delete");
