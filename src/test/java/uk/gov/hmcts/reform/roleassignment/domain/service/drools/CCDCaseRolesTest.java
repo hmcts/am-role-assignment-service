@@ -18,13 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole_ra;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @RunWith(MockitoJUnitRunner.class)
 class CCDCaseRolesTest extends DroolBase {
     @Test
     void shouldRejectCaseRequestedRolesForUnauthoriseRequest() {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
                                    "[PETSOLICITOR]", SPECIFIC, "caseId",
                                  "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
@@ -52,7 +53,7 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     private void verifyCreateCaseRequestedRole_CCD_1_0(String roleName, String clientId, RoleCategory category) {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(category, roleName,
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(category, roleName,
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
@@ -73,7 +74,7 @@ class CCDCaseRolesTest extends DroolBase {
 
     @Test
     public void shouldApproveDummyCaseRoleCreation_CCD_1_0_enableByPassDroolRule() {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
@@ -95,7 +96,7 @@ class CCDCaseRolesTest extends DroolBase {
 
     @Test
     public void shouldApproveDummyCaseRoleCreationWithDummyRoleName_CCD_1_0_enableByPassDroolRule() {
-        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.PROFESSIONAL, "[DUMMYSOLICITOR]",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL, "[DUMMYSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.setClassification(Classification.PUBLIC);
@@ -117,7 +118,7 @@ class CCDCaseRolesTest extends DroolBase {
 
     @Test
     public void shouldRejectDummyCaseRoleCreation_CCD_1_0_disableByPassDroolRule() {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
@@ -153,7 +154,7 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     private void verifyDeleteCaseRequestRole_CCD_1_0(String roleName, String clientId, RoleCategory category) {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(category, roleName,
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(category, roleName,
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
@@ -174,7 +175,7 @@ class CCDCaseRolesTest extends DroolBase {
 
     @Test
     public void shouldApproveDeleteDummyCaseRoles_enableByPassDroolRule() {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
@@ -196,7 +197,7 @@ class CCDCaseRolesTest extends DroolBase {
 
     @Test
     public void shouldApproveDeleteDummyCaseRolesWithDummyRoleName_enableByPassDroolRule() {
-        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.PROFESSIONAL, "[DUMMYSOLICITOR]",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL, "[DUMMYSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
@@ -218,7 +219,7 @@ class CCDCaseRolesTest extends DroolBase {
 
     @Test
     public void shouldRejectDeleteDummyCaseRoles_disableByPassDroolRule() {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
@@ -240,7 +241,7 @@ class CCDCaseRolesTest extends DroolBase {
 
     @Test
     void shouldRejectCaseRoleCreation_enableByPassDroolRule_disableFlag() {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
                                                                "[PETSOLICITOR]", SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
@@ -262,7 +263,7 @@ class CCDCaseRolesTest extends DroolBase {
 
     @Test
     void shouldApproveCaseRoleCreation_enableByPassDroolRule_enableFlag() {
-        RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
                                                                "[PETSOLICITOR]", SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
