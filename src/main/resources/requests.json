@@ -4,7 +4,7 @@
 			{
 				"id": "request1",
 				"correlationId": "request1",
-				"clientId": "am_org_role_mapping_service",
+				"clientId": "client1",
 				"authenticatedUserId": "system1",
 				"requestorId": "judge1",
 				"action": "CREATE",
