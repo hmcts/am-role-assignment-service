@@ -74,8 +74,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
+            "mandatory": true
           }
         }
       },
@@ -89,8 +88,7 @@
           "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
@@ -127,8 +125,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
+            "mandatory": true
           }
         }
       }
@@ -241,6 +238,134 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["IA"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "lead-judge",
+    "label": "Lead Judge",
+    "description": "Lead Judge role for judicial users",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-judge",
+    "label": "Hearing Judge",
+    "description": "Hearing Judge role for judicial users",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "ftpa-judge",
+    "label": "FTPA Judge",
+    "description": "FTPA Judge role for judicial users",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-panel-judge",
+    "label": "Hearing Panel Judge",
+    "description": "Hearing Panel Judge role for judicial users",
+    "category": "JUDICIAL",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
           }
         }
       }
@@ -371,8 +496,7 @@
           "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
@@ -439,10 +563,13 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["Asylum"]
+
           },
           "caseId": {
             "mandatory": true
@@ -457,6 +584,182 @@
     "label": "HMCTS Legal Operations",
     "description": "HMCTS Legal Operations role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hmcts-admin",
+    "label": "HMCTS Admin",
+    "description": "HMCTS admin role for admin users",
+    "category": "ADMIN",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PRIVATE"]
+        },
+        "attributes": {
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for admin users",
+    "category": "ADMIN",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "task-supervisor",
+    "label": "Task Supervisor",
+    "description": "Task Supervisor role for admin users",
+    "category": "ADMIN",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-centre-admin",
+    "label": "Hearing Centre Admin",
+    "description": "Hearing Centre Admin role for admin users",
+    "category": "ADMIN",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "national-business-centre",
+    "label": "National Business Centre",
+    "description": "National Business Centre role for admin users",
+    "category": "ADMIN",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "ctsc",
+    "label": "CTSC",
+    "description": "CTSC role for admin users",
+    "category": "ADMIN",
     "patterns": [
       {
         "roleType": {

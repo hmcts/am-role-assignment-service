@@ -36,6 +36,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
@@ -725,7 +726,9 @@ class PersistenceServiceTest {
 
 
         when(persistenceUtil.convertEntityToExistingRoleAssignment(page.iterator().next()))
-            .thenReturn(TestDataBuilder.buildExistingRoleForIAC("123e4567-e89b-42d3-a456-556642445678", "judge"));
+            .thenReturn(TestDataBuilder.buildExistingRoleForIAC("123e4567-e89b-42d3-a456-556642445678",
+                                                                "judge",
+                                                                RoleCategory.JUDICIAL));
 
         List<Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1,
                                                                                         1, "id",
