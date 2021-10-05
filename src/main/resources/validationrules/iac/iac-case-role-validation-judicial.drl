@@ -1,0 +1,240 @@
+package validationrules.iac;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
+import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
+
+/*
+ * IAC "lead-judge" case roles can be created by any existing "case-allocator" user
+ * and can also only be assigned to users having "leadership-judge" role.
+ */
+rule "ia_lead_judge_create_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
+    $rq: Request(assignerId == authenticatedUserId) //Is it still required, need to check from Jon.
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName == "lead-judge",
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+    $c:  Case(
+             id == $caseId,
+             jurisdiction == "IA",
+             caseTypeId == "Asylum")
+         ExistingRoleAssignment(
+             actorId == $ra.actorId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("leadership-judge"),
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+         ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+then
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : ia_lead_judge_create_case_roles");
+    update($ra);
+    logMsg("Rule : ia_lead_judge_create_case_roles");
+end;
+
+/*
+ * IAC "hearing-judge" case roles can be created by any existing "case-allocator" user
+ * and can also only be assigned to users having "senior-judge" or "judge" or "fee-paid-judge" role.
+ */
+rule "ia_hearing_judge_create_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
+    $rq: Request(assignerId == authenticatedUserId) //Is it still required, need to check from Jon.
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName == "hearing-judge",
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+    $c:  Case(
+             id == $caseId,
+             jurisdiction == "IA",
+             caseTypeId == "Asylum")
+         ExistingRoleAssignment(
+             actorId == $ra.actorId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("senior-judge", "judge", "fee-paid-judge"),
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+         ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+then
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : ia_hearing_judge_create_case_roles");
+    update($ra);
+    logMsg("Rule : ia_hearing_judge_create_case_roles");
+end;
+
+/*
+ * IAC "ftpa-judge" case roles can be created by any existing "case-allocator" user
+ * and can also only be assigned to users having "senior-judge" or "judge" role.
+ */
+rule "ia_ftpa_judge_create_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
+    $rq: Request(assignerId == authenticatedUserId) //Is it still required, need to check from Jon.
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName == "ftpa-judge",
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+    $c:  Case(
+             id == $caseId,
+             jurisdiction == "IA",
+             caseTypeId == "Asylum")
+         ExistingRoleAssignment(
+             actorId == $ra.actorId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("senior-judge", "judge"),
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+         ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+then
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : ia_ftpa_judge_create_case_roles");
+    update($ra);
+    logMsg("Rule : ia_ftpa_judge_create_case_roles");
+end;
+
+/*
+ * IAC "hearing-panel-judge" case roles can be created by any existing "case-allocator" user
+ * and can also only be assigned to users having "senior-judge" or "judge" or "fee-paid-judge" role.
+ */
+rule "ia_hearing_panel_judge_create_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
+    $rq: Request(assignerId == authenticatedUserId) //Is it still required, need to check from Jon.
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName == "hearing-panel-judge",
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+    $c:  Case(
+             id == $caseId,
+             jurisdiction == "IA",
+             caseTypeId == "Asylum")
+         ExistingRoleAssignment(
+             actorId == $ra.actorId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("senior-judge", "judge", "fee-paid-judge"),
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+         ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+then
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : ia_hearing_panel_judge_create_case_roles");
+    update($ra);
+    logMsg("Rule : ia_hearing_panel_judge_create_case_roles");
+end;
+
+/*
+ * IAC "case-allocator" case roles can be created by any existing "case-allocator" user
+ * and can also only be assigned to users having "case-allocator" role.
+ */
+rule "ia_case_allocator_create_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
+    $rq: Request(assignerId == authenticatedUserId) //Is it still required, need to check from Jon.
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName == "case-allocator",
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+    $c:  Case(
+             id == $caseId,
+             jurisdiction == "IA",
+             caseTypeId == "Asylum")
+         ExistingRoleAssignment(
+             actorId == $ra.actorId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+         ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+then
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : ia_case_allocator_create_case_roles");
+    update($ra);
+    logMsg("Rule : ia_case_allocator_create_case_roles");
+end;
+
+/*
+ * IAC judicial case roles can be deleted by any existing "case-allocator" user.
+ */
+rule "ia_judicial_delete_case_roles"
+when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
+    $rq: Request(
+             assignerId == authenticatedUserId)
+    $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName in ("lead-judge", "hearing-judge", "ftpa-judge", "hearing-panel-judge", "case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+         Case(
+             id == $caseId,
+             jurisdiction == "IA",
+             caseTypeId == "Asylum")
+        ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("case-allocator"),
+             roleCategory == RoleCategory.JUDICIAL,
+             attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : ia_judicial_delete_case_roles");
+    update($ra);
+    logMsg("Rule : ia_judicial_delete_case_roles");
+end;
