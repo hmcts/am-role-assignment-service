@@ -1,0 +1,114 @@
+{
+  "title": "must successfully create single Role Assignment with only mandatory fields",
+  "_guid_": "S-114",
+  "_extends_": "F-001_Test_Data_Base",
+  "specs": [
+    "contains a single Role Assignment",
+    "originates from the CCD system",
+    "has database flag for CCD system enabled",
+    "Befta2 - who is the assigner",
+    "Befta2 - who invokes the API",
+    "Befta1 - who is the actor for requested role"
+  ],
+  "request": {
+    "headers": {
+      "Authorization": "[[DEFAULT_AUTO_VALUE]]",
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForCcd]}",
+      "X-Correlation-ID": "003352d0-e699-48bc-b6f5-5810411e60af",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "${[scenarioContext][testData][users][befta1][id]}"
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "roleType": "CASE",
+          "roleName": "[PETSOLICITOR]",
+          "roleCategory": "PROFESSIONAL",
+          "classification": "RESTRICTED",
+          "grantType": "SPECIFIC",
+          "readOnly": false,
+          "attributes": {
+            "caseId": "1571055359725273",
+            "jurisdiction": "IA",
+            "caseType": "Asylum"
+          },
+          "authorisations": [
+            "test125"
+          ]
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "id": "[[ANYTHING_PRESENT]]",
+          "authenticatedUserId": "db0e2600-611f-4eb2-af0b-6a60f2954b30",
+          "correlationId": "003352d0-e699-48bc-b6f5-5810411e60af",
+          "assignerId": "db0e2600-611f-4eb2-af0b-6a60f2954b30",
+          "requestType": "CREATE",
+          "process": "businessProcess1",
+          "reference": "4f8bb8dd-5fa5-4a96-aa3e-84bb8f10ddd8",
+          "replaceExisting": false,
+          "status": "APPROVED",
+          "created": "[[ANYTHING_PRESENT]]",
+          "log": "Request has been approved",
+          "byPassOrgDroolRule": false
+        },
+        "requestedRoles": [
+          {
+            "id": "[[ANYTHING_PRESENT]]",
+            "actorIdType": "IDAM",
+            "actorId": "4f8bb8dd-5fa5-4a96-aa3e-84bb8f10ddd8",
+            "roleType": "CASE",
+            "roleName": "[PETSOLICITOR]",
+            "classification": "RESTRICTED",
+            "grantType": "SPECIFIC",
+            "roleCategory": "PROFESSIONAL",
+            "readOnly": false,
+            "beginTime": "2021-01-01T00:00:00Z",
+            "endTime": "2023-01-01T00:00:00Z",
+            "process": "businessProcess1",
+            "reference": "4f8bb8dd-5fa5-4a96-aa3e-84bb8f10ddd8",
+            "status": "LIVE",
+            "created": "[[ANYTHING_PRESENT]]",
+            "log": "Create requested with replace: false\nStage 1 approved : ccd_create_case_roles\nApproved : validate_role_assignment_against_patterns",
+            "attributes": {
+              "jurisdiction": "IA",
+              "region": "south-east",
+              "contractType": "SALARIED",
+              "caseId": "1571055359725273",
+              "caseType": "Asylum"
+            },
+            "notes": [
+              {
+                "userId": "003352d0-e699-48bc-b6f5-5810411e60ag",
+                "time": "2020-01-01T00:00Z",
+                "comment": "Need Access to case number 1234567890123456 for a month"
+              },
+              {
+                "userId": "52aa3810-af1f-11ea-b3de-0242ac130004",
+                "time": "2020-01-02T00:00Z",
+                "comment": "Access granted for 6 months"
+              }
+            ],
+            "authorisations": [
+              "test125"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

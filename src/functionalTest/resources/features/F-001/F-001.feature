@@ -281,3 +281,18 @@ Feature: F-001 : Create Role Assignments
     Then a positive response is received,
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
+
+  @S-114
+  Scenario: must successfully create single Role Assignment for CCD Case roles having role category as professional.
+    Given an appropriate test context as detailed in the test data source,
+    And a user [Befta2 - who invokes the API],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta2 - who is the assigner],
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment],
+    And the request [originates from the CCD system],
+    And the request [has database flag for CCD system enabled],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
