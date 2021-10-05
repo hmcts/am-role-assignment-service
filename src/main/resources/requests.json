@@ -18,7 +18,7 @@
 					"actorIdType": "IDAM_USER_ID",
 					"actorId": "3434343",
 					"roleType": "ORGANISATIONAL_ROLE",
-					"roleName": "lead-judge",
+					"roleName": "leadership-judge",
 					"classification": "PUBLIC",
 					"grantType": "STANDARD",
 					"readOnly": false,
