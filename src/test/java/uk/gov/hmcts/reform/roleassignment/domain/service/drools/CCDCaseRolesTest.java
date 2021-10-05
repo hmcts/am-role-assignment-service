@@ -94,6 +94,28 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Test
+    public void shouldApproveDummyCaseRoleCreationWithDummyRoleName_CCD_1_0_enableByPassDroolRule() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.PROFESSIONAL, "[DUMMYSOLICITOR]",
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        requestedRole1.setClassification(Classification.PUBLIC);
+        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+                                                     "caseType", convertValueJsonNode("Asylum"),
+                                                     "caseId", convertValueJsonNode("1234567890123456")));
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        assignmentRequest.getRequest().setClientId("ccd_data");
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        buildExecuteKieSession();
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+    }
+
+    @Test
     public void shouldRejectDummyCaseRoleCreation_CCD_1_0_disableByPassDroolRule() {
         RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
                                                              SPECIFIC, "caseId",
@@ -127,6 +149,7 @@ class CCDCaseRolesTest extends DroolBase {
                                             RoleCategory.LEGAL_OPERATIONS);
         verifyDeleteCaseRequestRole_CCD_1_0("[CREATOR]", "aac_manage_case_assignment",
                                             RoleCategory.CITIZEN);
+        verifyDeleteCaseRequestRole_CCD_1_0("[DUMMYCREATOR]", "ccd_data", RoleCategory.PROFESSIONAL);
     }
 
     private void verifyDeleteCaseRequestRole_CCD_1_0(String roleName, String clientId, RoleCategory category) {
@@ -152,6 +175,28 @@ class CCDCaseRolesTest extends DroolBase {
     @Test
     public void shouldApproveDeleteDummyCaseRoles_enableByPassDroolRule() {
         RoleAssignment requestedRole1 = TestDataBuilder.getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", DELETE_REQUESTED);
+        requestedRole1.setClassification(Classification.RESTRICTED);
+        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+                                                     "caseType", convertValueJsonNode("Asylum"),
+                                                     "caseId", convertValueJsonNode("1234567890123456")));
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        assignmentRequest.getRequest().setClientId("ccd_data");
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        buildExecuteKieSession();
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
+    }
+
+    @Test
+    public void shouldApproveDeleteDummyCaseRolesWithDummyRoleName_enableByPassDroolRule() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.PROFESSIONAL, "[DUMMYSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
