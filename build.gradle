@@ -193,12 +193,6 @@ task runProviderPactVerification(type: Test) {
   systemProperty 'pact.provider.version', project.pacticipantVersion
 }
 
-task fortifyScan(type: JavaExec)  {
-  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
-  classpath += sourceSets.test.runtimeClasspath
-  jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
-}
-
 runProviderPactVerification.dependsOn contract
 
 runProviderPactVerification.finalizedBy pactVerify
@@ -223,13 +217,10 @@ pitest {
   excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
                      'uk.gov.hmcts.reform.roleassignment.config.*',
                      'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot',
-                     'uk.gov.hmcts.reform.roleassignment.util.JacksonUtils',
                      'uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest',
                      'uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType',
                      'uk.gov.hmcts.reform.roleassignment.data.*',
-                     'uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback',
-
-  ]
+                     'uk.gov.hmcts.reform.roleassignment.domain.model.*']
   excludedMethods = ['getListOfRoles', 'removeCorrelationLog', 'getExitCode', 'validateDateTime', 'requestInterceptor']
   threads = 15
   outputFormats = ['XML', 'HTML']
@@ -258,9 +249,7 @@ sonarqube {
       "src/main/java/uk/gov/hmcts/reform/roleassignment/config/**," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/data/**," +
       "src/main/java/uk/gov/hmcts/reform/roleassignment/domain/service/common/PageHolder.java," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/domain/model/**," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/util/JacksonUtils.java," +
-      "src/main/java/uk/gov/hmcts/reform/roleassignment/feignclients/configuration/DataStoreApiFallback.java"
+      "src/main/java/uk/gov/hmcts/reform/roleassignment/domain/model/**"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.junit.repoGetAssignmentControllerrtPaths", "${project.buildDir}/test-results/junit-platform"
@@ -400,7 +389,6 @@ dependencies {
 
   pitest 'org.pitest:pitest-junit5-plugin:0.12'
 
-  testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.11.2'
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit
   testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: versions.junit
   testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junit
@@ -414,7 +402,7 @@ dependencies {
   testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
-  testImplementation 'com.github.hmcts:befta-fw:8.4.0'
+  testImplementation 'com.github.hmcts:befta-fw:fix-env-extend-befta-fw-SNAPSHOT'
 
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.5.RELEASE'
 
@@ -433,7 +421,6 @@ dependencies {
   testCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testCompile 'com.github.hmcts:fortify-client:1.2.0:all'
 
   smokeTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity

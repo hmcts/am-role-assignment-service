@@ -14,33 +14,15 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleName": "SupremeCourtJudge"
         }
       ]
     }
   },
   "expectedResponse": {
-    "responseCode": 422,
-    "responseMessage": "Unprocessable Entity",
-    "headers": {
-      "Content-Length": "[[ANYTHING_PRESENT]]",
-      "Content-Type": "application/json"
-    },
-    "body": {
-      "roleAssignmentResponse": {
-        "roleRequest": {
-          "_extends_": "ResponseRoleRequest",
-          "status": "REJECTED"
-        },
-        "requestedRoles": [
-          {
-            "_extends_": "ResponseRequestedRole",
-            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
-            "status": "REJECTED"
-          }
-        ]
-      }
+    "_extends_": "BadRequestResponse",
+    "body" : {
+      "errorDescription" :  "[[ANYTHING_PRESENT]]"
     }
   }
 }
