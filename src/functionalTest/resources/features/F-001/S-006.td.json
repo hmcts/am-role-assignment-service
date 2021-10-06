@@ -36,7 +36,7 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
+            "roleName": "supremecourtjudge",
             "status": "REJECTED"
           }
         ]
