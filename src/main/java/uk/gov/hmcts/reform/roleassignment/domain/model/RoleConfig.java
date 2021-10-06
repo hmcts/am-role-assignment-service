@@ -3,15 +3,13 @@ package uk.gov.hmcts.reform.roleassignment.domain.model;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
-import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.getRoleConfigs;
 
 @Slf4j
 public class RoleConfig {
@@ -45,20 +43,9 @@ public class RoleConfig {
     }
 
     private static RoleConfig buildRoleConfig() {
-        InputStream input = JacksonUtils.class.getClassLoader().getResourceAsStream("role.json");
-        var listType = JacksonUtils.MAPPER.getTypeFactory().constructCollectionType(
-            ArrayList.class,
-            RoleConfigRole.class
-        );
-        List<RoleConfigRole> allRoles = new ArrayList<>();
-        try {
-            allRoles = JacksonUtils.MAPPER.readValue(input, listType);
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
+        List<RoleConfigRole> allRoles = getRoleConfigs();
         allRoles.forEach(RoleConfig::setRoleNameAndCategory);
         return new RoleConfig(allRoles);
     }
-
 
 }
