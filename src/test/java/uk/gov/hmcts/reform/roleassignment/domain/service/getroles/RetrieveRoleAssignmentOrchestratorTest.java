@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.getroles;
 
-
-import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +14,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
@@ -128,7 +127,7 @@ class RetrieveRoleAssignmentOrchestratorTest {
 
     @Test
     void getListOfRoles() throws IOException {
-        JsonNode roles = sut.getListOfRoles();
+        List<RoleConfigRole> roles = sut.getListOfRoles();
         assertNotNull(roles);
         assertTrue(roles.size() > 2);
     }
