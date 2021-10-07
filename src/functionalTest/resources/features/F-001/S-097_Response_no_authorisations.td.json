@@ -4,7 +4,7 @@
   "actorIdType" : "IDAM",
   "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
   "roleType": "CASE",
-  "roleName" : "judge",
+  "roleName" : "lead-judge",
   "classification" : "PUBLIC",
   "grantType": "SPECIFIC",
   "roleCategory":"JUDICIAL",
