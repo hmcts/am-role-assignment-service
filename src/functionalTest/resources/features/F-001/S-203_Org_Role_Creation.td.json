@@ -15,7 +15,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "Org_Role_For_Multiple_Actors"
+        "reference": "S_203_Org_Role_For_Multiple_Actors"
       },
       "requestedRoles": [
         {
