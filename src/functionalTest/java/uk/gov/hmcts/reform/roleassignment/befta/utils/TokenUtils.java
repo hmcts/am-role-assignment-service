@@ -11,14 +11,14 @@ import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 public class TokenUtils {
 
     public String generateServiceToken(UserTokenProviderConfig config) {
-       String serviceAuth = authTokenGenerator(
+        String serviceAuth = authTokenGenerator(
             config.getSecret(),
             config.getMicroService(),
             generateServiceAuthorisationApi(config.getS2sUrl())
         ).generate();
-       return serviceAuth;
-
+        return serviceAuth;
     }
+
     public ServiceAuthorisationApi generateServiceAuthorisationApi(final String s2sUrl) {
         return Feign.builder()
             .encoder(new JacksonEncoder())
