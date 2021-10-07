@@ -1,6 +1,6 @@
 {
   "title": "must successfully create single Role Assignment with only mandatory fields",
-  "_guid_": "S-114",
+  "_guid_": "S-126",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
     "contains a single Role Assignment",
@@ -20,14 +20,15 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "${[scenarioContext][testData][users][befta1][id]}"
+        "reference": "${[scenarioContext][testData][users][befta1][id]}",
+        "byPassOrgDroolRule": true
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleType": "CASE",
-          "roleName": "[PETSOLICITOR]",
+          "roleName": "[CREATOR]",
           "roleCategory": "PROFESSIONAL",
           "classification": "RESTRICTED",
           "grantType": "SPECIFIC",

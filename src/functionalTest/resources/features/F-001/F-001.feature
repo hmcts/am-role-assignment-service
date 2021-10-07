@@ -298,4 +298,176 @@ Feature: F-001 : Create Role Assignments
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
     And the response has all other details as expected,
-    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId].
+
+  @S-115
+  Scenario: must reject create Role Assignment for CCD Case roles having role category as professional and invalid clientId.
+    Given an appropriate test context as detailed in the test data source,
+    And a user [Befta2 - who invokes the API],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta2 - who is the assigner],
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment],
+    And the request [originates from the CCD system],
+    And the request [has database flag for CCD system enabled],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a negative response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
+    Then a negative response is received.
+
+  @S-116
+  Scenario: must successfully create single Role Assignment for CCD Case roles having role category as Judicial.
+    Given an appropriate test context as detailed in the test data source,
+    And a user [Befta2 - who invokes the API],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta2 - who is the assigner],
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment],
+    And the request [originates from the CCD system],
+    And the request [has database flag for CCD system enabled],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId].
+
+  @S-117
+  Scenario: must reject create Role Assignment for CCD Case roles having role category as Judicial and invalid clientId.
+    Given an appropriate test context as detailed in the test data source,
+    And a user [Befta2 - who invokes the API],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta2 - who is the assigner],
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment],
+    And the request [originates from the CCD system],
+    And the request [has database flag for CCD system enabled],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a negative response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
+    Then a negative response is received.
+
+  @S-118
+  Scenario: must successfully create single Role Assignment for CCD Case roles having role category as LEGAL_OPERATIONS.
+    Given an appropriate test context as detailed in the test data source,
+    And a user [Befta2 - who invokes the API],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta2 - who is the assigner],
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment],
+    And the request [originates from the CCD system],
+    And the request [has database flag for CCD system enabled],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId].
+
+  @S-119
+  Scenario: must reject create Role Assignment for CCD Case roles having role category as LEGAL_OPERATIONS and invalid clientId.
+    Given an appropriate test context as detailed in the test data source,
+    And a user [Befta2 - who invokes the API],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta2 - who is the assigner],
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment],
+    And the request [originates from the CCD system],
+    And the request [has database flag for CCD system enabled],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a negative response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
+    Then a negative response is received.
+
+  @S-121
+  Scenario: must successfully create single Role Assignment for CCD Case roles having role category as ADMIN.
+    Given an appropriate test context as detailed in the test data source,
+    And a user [Befta2 - who invokes the API],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta2 - who is the assigner],
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment],
+    And the request [originates from the CCD system],
+    And the request [has database flag for CCD system enabled],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId].
+
+  @S-122
+  Scenario: must reject create Role Assignment for CCD Case roles having role category as ADMIN and invalid clientId.
+    Given an appropriate test context as detailed in the test data source,
+    And a user [Befta2 - who invokes the API],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta2 - who is the assigner],
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment],
+    And the request [originates from the CCD system],
+    And the request [has database flag for CCD system enabled],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a negative response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
+    Then a negative response is received.
+
+  @S-123
+  Scenario: must successfully create single Role Assignment for CCD Case roles having role category as CITIZEN.
+    Given an appropriate test context as detailed in the test data source,
+    And a user [Befta2 - who invokes the API],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta2 - who is the assigner],
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment],
+    And the request [originates from the CCD system],
+    And the request [has database flag for CCD system enabled],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId].
+
+  @S-124
+  Scenario: must reject create Role Assignment for CCD Case roles having role category as CITIZEN and invalid clientId.
+    Given an appropriate test context as detailed in the test data source,
+    And a user [Befta2 - who invokes the API],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta2 - who is the assigner],
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment],
+    And the request [originates from the CCD system],
+    And the request [has database flag for CCD system enabled],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a negative response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
+    Then a negative response is received.
+
+  @S-125
+  Scenario: must successfully create single Role Assignment for CCD Case dummy roles with byPassOrgDroolRule.
+    Given an appropriate test context as detailed in the test data source,
+    And a user [Befta2 - who invokes the API],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta2 - who is the assigner],
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment],
+    And the request [originates from the CCD system],
+    And the request [has database flag for CCD system enabled],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId],
+    Then a positive response is received.
+
+  @S-126
+  Scenario: must successfully create single Role Assignment for CCD Case roles with byPassOrgDroolRule.
+    Given an appropriate test context as detailed in the test data source,
+    And a user [Befta2 - who invokes the API],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta2 - who is the assigner],
+    When a request is prepared with appropriate values,
+    And the request [contains a single Role Assignment],
+    And the request [originates from the CCD system],
+    And the request [has database flag for CCD system enabled],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId],
+    Then a positive response is received.
