@@ -1,6 +1,6 @@
 {
   "title": "must successfully create single Role Assignment with only mandatory fields",
-  "_guid_": "S-114",
+  "_guid_": "S-124",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
     "contains a single Role Assignment",
@@ -13,7 +13,7 @@
   "request": {
     "headers": {
       "Authorization": "[[DEFAULT_AUTO_VALUE]]",
-      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForCcd]}",
+      "ServiceAuthorization": "[[DEFAULT_AUTO_VALUE]]",
       "X-Correlation-ID": "003352d0-e699-48bc-b6f5-5810411e60af",
       "Content-Type": "application/json"
     },
@@ -27,11 +27,10 @@
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleType": "CASE",
-          "roleName": "[PETSOLICITOR]",
-          "roleCategory": "PROFESSIONAL",
+          "roleName": "[CREATOR]",
+          "roleCategory": "CITIZEN",
           "classification": "RESTRICTED",
           "grantType": "SPECIFIC",
-          "readOnly": false,
           "attributes": {
             "caseId": "1571055359725273",
             "jurisdiction": "IA",
@@ -45,7 +44,8 @@
     }
   },
   "expectedResponse": {
-    "_extends_": "Common_201_Response",
+    "responseCode": 422,
+    "responseMessage": "Unprocessable Entity",
     "headers": {
       "Content-Length": "[[ANYTHING_PRESENT]]",
       "Content-Type": "application/json"
@@ -54,10 +54,7 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "requestType": "CREATE",
-          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "status": "APPROVED"
+          "status": "REJECTED"
         },
         "requestedRoles": [
           {
@@ -67,8 +64,7 @@
             "classification": "RESTRICTED",
             "grantType": "SPECIFIC",
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "status": "LIVE",
+            "status": "REJECTED",
             "attributes": {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "caseId": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",

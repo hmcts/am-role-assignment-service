@@ -1,6 +1,6 @@
 {
   "title": "must successfully create single Role Assignment with only mandatory fields",
-  "_guid_": "S-114",
+  "_guid_": "S-123",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
     "contains a single Role Assignment",
@@ -27,8 +27,8 @@
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleType": "CASE",
-          "roleName": "[PETSOLICITOR]",
-          "roleCategory": "PROFESSIONAL",
+          "roleName": "[CREATOR]",
+          "roleCategory": "CITIZEN",
           "classification": "RESTRICTED",
           "grantType": "SPECIFIC",
           "readOnly": false,
