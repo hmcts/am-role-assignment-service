@@ -38,7 +38,7 @@
           "_extends_": "ResponseRoleAssignment",
           "actorId": "[[ANYTHING_PRESENT]]",
           "roleCategory" : "LEGAL_OPERATIONS",
-          "roleName" : "[[ANYTHING_PRESENT]]",
+          "roleName" : "senior-tribunal-caseworker",
           "attributes" : {
             "contractType" : "SALARIED",
             "primaryLocation" : "abc",
@@ -50,7 +50,7 @@
           "_extends_": "ResponseRoleAssignment",
           "actorId": "[[ANYTHING_PRESENT]]",
           "roleCategory" : "LEGAL_OPERATIONS",
-          "roleName" : "[[ANYTHING_PRESENT]]",
+          "roleName" : "tribunal-caseworker",
           "attributes" : {
             "contractType" : "SALARIED",
             "primaryLocation" : "abc",
