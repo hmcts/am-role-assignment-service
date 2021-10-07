@@ -3,7 +3,7 @@
       "actorIdType": "IDAM",
       "actorId": "123e4567-e89b-42d3-a456-556642445674",
       "roleType": "CASE",
-      "roleName": "judge",
+      "roleName": "lead-judge",
       "roleCategory": "JUDICIAL",
       "classification": "PUBLIC",
       "grantType": "SPECIFIC",
