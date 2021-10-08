@@ -29,6 +29,9 @@ def secrets = [
     secret('test-am-user2-befta-pwd', 'TEST_AM_USER2_BEFTA_PWD'),
     secret('test-am-user3-befta-pwd', 'TEST_AM_USER3_BEFTA_PWD'),
     secret('role-assignment-service-IDAM-CLIENT-SECRET', 'OAUTH2_CLIENT_SECRET')
+  ],
+  'ccd-${env}': [
+    secret('ccd-data-s2s-secret', 'CCD_DATA_S2S_SECRET')
   ]
 ]
 
