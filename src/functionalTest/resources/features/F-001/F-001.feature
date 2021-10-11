@@ -441,7 +441,7 @@ Feature: F-001 : Create Role Assignments
     Then a negative response is received.
 
   @S-125
-  Scenario: must successfully create single Role Assignment for CCD Case dummy roles with byPassOrgDroolRule.
+  Scenario: must successfully create single Role Assignment for CCD Case dummy roles with byPassOrgDroolRule true.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
     And a user [Befta1 - who is the actor for requested role],
@@ -457,7 +457,7 @@ Feature: F-001 : Create Role Assignments
     Then a positive response is received.
 
   @S-126
-  Scenario: must successfully create single Role Assignment for CCD Case roles with byPassOrgDroolRule.
+  Scenario: must successfully create single Role Assignment for CCD Case roles with byPassOrgDroolRule true.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
     And a user [Befta1 - who is the actor for requested role],
