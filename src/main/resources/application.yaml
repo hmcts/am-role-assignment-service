@@ -166,5 +166,5 @@ logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:DEBUG}
 
 dbFeature:
   flags:
-    enable: ${DB_FEATURE_FLAG_ENABLE:iac_1_0}
-    disable: ${DB_FEATURE_FLAG_DISABLE:iac_1_1}
+    enable: ${DB_FEATURE_FLAG_ENABLE:}
+    disable: ${DB_FEATURE_FLAG_DISABLE:}
