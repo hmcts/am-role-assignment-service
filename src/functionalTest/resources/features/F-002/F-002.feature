@@ -105,3 +105,15 @@ Feature: F-002 : Delete Role Assignments by Process and Reference
     Then a positive response is received,
     And the response has all other details as expected.
 
+  @S-035
+  Scenario: must successfully delete single CCD Role Assignment by Process
+    Given a user with [an active IDAM profile with full permissions],
+    And a user [Befta2 - who invokes the API],
+    And a user [Befta1 - who is the actor for requested role],
+    And a user [Befta2 - who is the assigner],
+    And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignmentByServiceId],
+    When a request is prepared with appropriate values,
+    And the request [contains Process and Reference associated with single Role Assignment],
+    And it is submitted to call the [Delete Role Assignments by Process] operation of [Role Assignment Service],
+    Then a positive response is received,
+    And the response has all other details as expected.
