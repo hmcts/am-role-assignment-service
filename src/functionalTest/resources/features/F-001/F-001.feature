@@ -18,23 +18,10 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
   @S-002
-  @FeatureToggle(IAC:iac_jrd_1_0=on)
   Scenario: must successfully create multiple Role Assignments
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
     And the request [contains multiple Role Assignments],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
-    Then a positive response is received,
-    And the response has all other details as expected,
-    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
-
-  @S-003
-  @FeatureToggle(IAC:iac_jrd_1_0=on)
-  Scenario: must successfully create single Role Assignment with RoleTypeId as case
-    Given a user with [an active IDAM profile with full permissions],
-    When a request is prepared with appropriate values,
-    And the request [contains a single Role Assignment],
-    And the request [contains RoleTypeId as 'CASE'],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
     And the response has all other details as expected,
@@ -221,17 +208,6 @@ Feature: F-001 : Create Role Assignments
     Given a user with [an active IDAM profile with full permissions],
     When a request is prepared with appropriate values,
     And the request [contains multiple Role Assignments with more than two authorisations],
-    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
-    Then a positive response is received,
-    And the response has all other details as expected,
-    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
-
-  @S-097
-  @FeatureToggle(IAC:iac_jrd_1_0=on)
-  Scenario: must successfully create Role Assignments without Authorisations
-    Given a user with [an active IDAM profile with full permissions],
-    When a request is prepared with appropriate values,
-    And the request [contains no Authorisations],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
     And the response has all other details as expected,
@@ -471,3 +447,88 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId],
     Then a positive response is received.
+
+  @S-202
+  @FeatureToggle(RAS:iac_jrd_1_0=on)
+  Scenario: must successfully create lead-judge Case Role Assignment
+    Given a user with [an active IDAM profile with full permissions],
+    And a user [Befta1 - who is the actor for requested role],
+    And a successful call [to create org role assignments for actors & requester] as in [S-202_Org_Role_Creation],
+    When a request is prepared with appropriate values,
+    And the request [contains ReplaceExisting is false and reference set to caseId],
+    And the request [contains case-allocator org role as assigner],
+    And the request [contains leadership-judge org role as assignee],
+    And the request [contains lead-judge case role assignment],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
+    And a successful call [to delete role assignments just created above] as in [S-202_DeleteDataForRoleAssignmentsForOrgRoles].
+
+  @S-203
+  @FeatureToggle(RAS:iac_jrd_1_0=on)
+  Scenario: must successfully create hearing-judge Case Role Assignment
+    Given a user with [an active IDAM profile with full permissions],
+    And a user [Befta1 - who is the actor for requested role],
+    And a successful call [to create org role assignments for actors & requester] as in [S-203_Org_Role_Creation],
+    When a request is prepared with appropriate values,
+    And the request [contains ReplaceExisting is false and reference set to caseId],
+    And the request [contains case-allocator org role as assigner],
+    And the request [contains senior-judge org role as assignee],
+    And the request [contains hearing-judge case role assignment],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
+    And a successful call [to delete role assignments just created above] as in [S-203_DeleteDataForRoleAssignmentsForOrgRoles].
+
+  @S-204
+  @FeatureToggle(RAS:iac_jrd_1_0=on)
+  Scenario: must successfully create ftpa-judge Case Role Assignment
+    Given a user with [an active IDAM profile with full permissions],
+    And a user [Befta1 - who is the actor for requested role],
+    And a successful call [to create org role assignments for actors & requester] as in [S-204_Org_Role_Creation],
+    When a request is prepared with appropriate values,
+    And the request [contains ReplaceExisting is false and reference set to caseId],
+    And the request [contains case-allocator org role as assigner],
+    And the request [contains judge org role as assignee],
+    And the request [contains ftpa-judge case role assignment],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
+    And a successful call [to delete role assignments just created above] as in [S-204_DeleteDataForRoleAssignmentsForOrgRoles].
+
+  @S-205
+  @FeatureToggle(RAS:iac_jrd_1_0=on)
+  Scenario: must successfully create hearing-panel-judge Case Role Assignment
+    Given a user with [an active IDAM profile with full permissions],
+    And a user [Befta1 - who is the actor for requested role],
+    And a successful call [to create org role assignments for actors & requester] as in [S-205_Org_Role_Creation],
+    When a request is prepared with appropriate values,
+    And the request [contains ReplaceExisting is false and reference set to caseId],
+    And the request [contains case-allocator org role as assigner],
+    And the request [contains fee-paid-judge org role as assignee],
+    And the request [contains hearing-panel-judge case role assignment],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
+    And a successful call [to delete role assignments just created above] as in [S-205_DeleteDataForRoleAssignmentsForOrgRoles].
+
+  @S-206
+  @FeatureToggle(RAS:iac_jrd_1_0=on)
+  Scenario: must successfully create case-allocator Case Role Assignment
+    Given a user with [an active IDAM profile with full permissions],
+    And a user [Befta1 - who is the actor for requested role],
+    And a successful call [to create org role assignments for actors & requester] as in [S-206_Org_Role_Creation],
+    When a request is prepared with appropriate values,
+    And the request [contains ReplaceExisting is false and reference set to caseId],
+    And the request [contains case-allocator org role as assigner],
+    And the request [contains case-allocator org role as assignee],
+    And the request [contains case-allocator case role assignment],
+    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+    Then a positive response is received,
+    And the response has all other details as expected,
+    And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
+    And a successful call [to delete role assignments just created above] as in [S-206_DeleteDataForRoleAssignmentsForOrgRoles].
