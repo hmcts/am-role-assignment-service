@@ -785,5 +785,125 @@
         }
       }
     ]
+  },
+  {
+    "name": "conflict-of-interest",
+    "label": "Conflict of Interest",
+    "description": "Conflict of Interest role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": [
+            "CASE"
+          ]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": [
+            "EXCLUDED"
+          ]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": [
+            "RESTRICTED"
+          ]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "conflict-of-interest",
+    "label": "Conflict of Interest",
+    "description": "Conflict of Interest role for staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": [
+            "CASE"
+          ]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": [
+            "EXCLUDED"
+          ]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": [
+            "RESTRICTED"
+          ]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "conflict-of-interest",
+    "label": "Conflict of Interest",
+    "description": "Conflict of Interest role for admin users",
+    "category": "ADMIN",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": [
+            "CASE"
+          ]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": [
+            "EXCLUDED"
+          ]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": [
+            "RESTRICTED"
+          ]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
