@@ -102,7 +102,7 @@ Feature: F-008 : Create And Replace Staff Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-106_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-201
-  @FeatureToggle(IAC:iac_1_1=on)
+  @FeatureToggle(RAS:iac_1_1=on)
   Scenario: must successfully create case-manager Case Role Assignment
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -117,7 +117,7 @@ Feature: F-008 : Create And Replace Staff Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-201_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-207
-  @FeatureToggle(IAC:iac_1_1=on)
+  @FeatureToggle(RAS:iac_1_1=on)
   Scenario: must successfully create case-allocator Case Role Assignment
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
