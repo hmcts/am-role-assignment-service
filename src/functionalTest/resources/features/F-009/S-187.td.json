@@ -29,22 +29,12 @@
       "roleAssignmentResponse" : [
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][body][queryRequests][0][actorId][0]}",
-          "roleType" : "${[scenarioContext][childContexts][S-187_CreationDataForRoleAssignment][testData][request][body][requestedRoles][0][roleType]}",
-          "grantType" : "${[scenarioContext][childContexts][S-187_CreationDataForRoleAssignment][testData][request][body][requestedRoles][0][grantType]}",
-          "attributes": {
-            "caseId": "${[scenarioContext][childContexts][S-187_CreationDataForRoleAssignment][testData][request][body][requestedRoles][0][attributes][caseId]}"
-          }
+          "actorId": "${}${[scenarioContext][testData][request][body][queryRequests][0][actorId][0]}"
         },
 
         {
           "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][body][queryRequests][0][actorId][0]}",
-          "roleType" : "${[scenarioContext][childContexts][S-187_CreationDataForRoleAssignment][testData][request][body][requestedRoles][1][roleType]}",
-          "grantType" : "${[scenarioContext][childContexts][S-187_CreationDataForRoleAssignment][testData][request][body][requestedRoles][1][grantType]}",
-          "attributes": {
-            "caseId": "${[scenarioContext][childContexts][S-187_CreationDataForRoleAssignment][testData][request][body][requestedRoles][1][attributes][caseId]}"
-          }
+          "actorId": "${}${[scenarioContext][testData][request][body][queryRequests][0][actorId][0]}"
         }
       ]
     }
