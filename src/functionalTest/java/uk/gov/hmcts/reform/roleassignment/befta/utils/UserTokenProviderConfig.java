@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.befta.utils;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,6 +10,7 @@ import uk.gov.hmcts.reform.roleassignment.util.EnvironmentVariableUtils;
 @Getter
 @Setter
 @ToString
+@Builder
 public class UserTokenProviderConfig {
 
     String idamURL;

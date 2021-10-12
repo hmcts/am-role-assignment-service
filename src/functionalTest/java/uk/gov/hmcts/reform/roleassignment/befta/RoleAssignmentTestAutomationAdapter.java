@@ -5,6 +5,7 @@ import uk.gov.hmcts.befta.DefaultTestAutomationAdapter;
 import uk.gov.hmcts.befta.player.BackEndFunctionalTestScenarioContext;
 import uk.gov.hmcts.reform.roleassignment.befta.utils.TokenUtils;
 import uk.gov.hmcts.reform.roleassignment.befta.utils.UserTokenProviderConfig;
+import uk.gov.hmcts.reform.roleassignment.util.EnvironmentVariableUtils;
 
 import java.util.Date;
 import java.util.UUID;
@@ -35,9 +36,11 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
     }
 
     private UserTokenProviderConfig buildCcdSpecificConfig() {
-        UserTokenProviderConfig config = new UserTokenProviderConfig();
-        config.setMicroService("ccd_data");
-        config.setSecret(System.getenv("CCD_DATA_S2S_SECRET"));
-        return config;
+        return UserTokenProviderConfig.builder()
+            .microService("ccd_data")
+            .secret(System.getenv("CCD_DATA_S2S_SECRET"))
+            .s2sUrl(EnvironmentVariableUtils.getRequiredVariable("IDAM_S2S_URL"))
+            .build();
+
     }
 }
