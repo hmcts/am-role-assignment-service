@@ -36,11 +36,10 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
     }
 
     private UserTokenProviderConfig buildCcdSpecificConfig() {
-        return UserTokenProviderConfig.builder()
-            .microService("ccd_data")
-            .secret(System.getenv("CCD_DATA_S2S_SECRET"))
-            .s2sUrl(EnvironmentVariableUtils.getRequiredVariable("IDAM_S2S_URL"))
-            .build();
-
+        UserTokenProviderConfig config = new UserTokenProviderConfig();
+        config.setMicroService("ccd_data");
+        config.setSecret(System.getenv("CCD_DATA_S2S_SECRET"));
+        config.setS2sUrl(EnvironmentVariableUtils.getRequiredVariable("IDAM_S2S_URL"));
+        return config;
     }
 }
