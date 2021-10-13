@@ -140,9 +140,6 @@ public class ValidationUtil {
     public static void validateRequestedRoles(Collection<RoleAssignment> requestedRoles) throws ParseException {
 
         for (RoleAssignment requestedRole : requestedRoles) {
-            if (!rolesName.contains(requestedRole.getRoleName())) {
-                log.warn("Role name {} not normally supported by RAS", requestedRole.getRoleName());
-            }
             validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, requestedRole.getActorId());
             if (requestedRole.getRoleType().equals(CASE)) {
                 validateId(Constants.NUMBER_PATTERN, requestedRole.getAttributes().get("caseId").textValue());
