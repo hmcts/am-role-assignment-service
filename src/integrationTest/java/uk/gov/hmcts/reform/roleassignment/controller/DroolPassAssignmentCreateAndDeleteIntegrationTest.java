@@ -52,7 +52,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREAT
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
-@TestPropertySource(properties = {"org.request.byPassOrgDroolRule=false"})
+@TestPropertySource(properties = {"org.request.byPassOrgDroolRule=false", "dbFeature.flags.enable=iac_jrd_1_0"})
 public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     private static final Logger logger =
@@ -119,7 +119,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
             "userInfo", userInfo
 
         );
-        Case retrievedCase = Case.builder().id("1234")
+        Case retrievedCase = Case.builder().id("1234567890123456")
             .caseTypeId("Asylum")
             .jurisdiction("IA")
             .build();
