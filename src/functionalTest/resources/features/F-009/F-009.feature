@@ -40,7 +40,6 @@ Feature: F-009 : Post Role Assignments Advance Query Request
     And a successful call [to delete role assignments just created above] as in [F-006_DeleteDataForMultipleRoleAssignments].
 
   @S-187
-  @FeatureToggle(IAC:iac_jrd_1_0=on)
   Scenario: must successfully receive Role Assignments with optional headers
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [S-187_CreationDataForRoleAssignment],
