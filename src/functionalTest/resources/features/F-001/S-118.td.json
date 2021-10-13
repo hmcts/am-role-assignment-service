@@ -1,5 +1,5 @@
 {
-  "title": "must successfully create single Role Assignment with only mandatory fields",
+  "title": "must successfully create single Role Assignment for CCD Case roles having role category as ADMIN",
   "_guid_": "S-118",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
@@ -28,7 +28,7 @@
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleType": "CASE",
           "roleName": "[CREATOR]",
-          "roleCategory": "LEGAL_OPERATIONS",
+          "roleCategory": "ADMIN",
           "classification": "RESTRICTED",
           "grantType": "SPECIFIC",
           "attributes": {

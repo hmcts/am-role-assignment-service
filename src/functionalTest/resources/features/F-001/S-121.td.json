@@ -1,5 +1,5 @@
 {
-  "title": "must successfully create single Role Assignment with only mandatory fields",
+  "title": "must successfully create single Role Assignment for CCD Case dummy roles with byPassOrgDroolRule true",
   "_guid_": "S-121",
   "_extends_": "F-001_Test_Data_Base",
   "specs": [
@@ -20,17 +20,19 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "${[scenarioContext][testData][users][befta1][id]}"
+        "reference": "${[scenarioContext][testData][users][befta1][id]}",
+        "byPassOrgDroolRule": true
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleType": "CASE",
-          "roleName": "[CREATOR]",
-          "roleCategory": "ADMIN",
+          "roleName": "[DUMMYCREATOR]",
+          "roleCategory": "PROFESSIONAL",
           "classification": "RESTRICTED",
           "grantType": "SPECIFIC",
+          "readOnly": false,
           "attributes": {
             "caseId": "1571055359725273",
             "jurisdiction": "IA",
