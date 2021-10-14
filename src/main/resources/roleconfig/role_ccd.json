@@ -684,7 +684,7 @@
     "label": "Creator",
     "description": "Creator Role for Professional users",
     "category": "PROFESSIONAL",
-    "substantive": true,
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
