@@ -72,7 +72,8 @@
             "attributes": {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "caseId": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
-              "caseType": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}"
+              "caseType": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}",
+              "substantive" : "N"
             },
             "authorisations": [
               "test125"
