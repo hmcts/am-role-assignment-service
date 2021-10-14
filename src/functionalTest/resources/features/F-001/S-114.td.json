@@ -63,7 +63,7 @@
           {
             "_extends_": "ResponseRequestedRole",
             "roleType": "CASE",
-            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
+            "roleName" : "[petsolicitor]",
             "classification": "RESTRICTED",
             "grantType": "SPECIFIC",
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
