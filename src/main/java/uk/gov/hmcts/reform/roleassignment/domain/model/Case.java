@@ -19,13 +19,13 @@ import java.util.Map;
 public class Case {
 
     @JsonProperty("id")
-    private String reference;
+    private String id;
 
     @JsonProperty("jurisdiction")
     private String jurisdiction;
 
     @JsonProperty("case_type")
-    private String caseType;
+    private String caseTypeId;
 
     @JsonProperty("created_on")
     private LocalDateTime createdOn;
