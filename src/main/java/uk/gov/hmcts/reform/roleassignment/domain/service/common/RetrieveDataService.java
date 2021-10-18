@@ -43,7 +43,7 @@ public class RetrieveDataService {
                 .getNativeCache();
             log.info("Retrieving case details, current size of cache: {}", nativeCache.estimatedSize());
         }
-        log.info("The datastore object is: ");
+        log.info("The datastore object is: " + dataStoreApi.getCaseDataV2(caseId).toString());
         log.info(dataStoreApi.getCaseDataV2(caseId).toString());
         return dataStoreApi.getCaseDataV2(caseId);
     }
