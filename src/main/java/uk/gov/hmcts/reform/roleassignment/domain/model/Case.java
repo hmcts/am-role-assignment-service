@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 
 @Data
 @Getter
@@ -17,5 +18,9 @@ public class Case {
 
     @JsonProperty("case_type")
     private String caseTypeId;
+
+    private Classification classification;
+    private String region;
+    private String baseLocation;
 
 }
