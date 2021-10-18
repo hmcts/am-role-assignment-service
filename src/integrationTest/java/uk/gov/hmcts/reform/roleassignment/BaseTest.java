@@ -64,7 +64,6 @@ public abstract class BaseTest {
                 .setPort(0)
                 .start();
         }
-        
 
         @Bean
         public DataSource dataSource(@Autowired EmbeddedPostgres pg) throws Exception {
