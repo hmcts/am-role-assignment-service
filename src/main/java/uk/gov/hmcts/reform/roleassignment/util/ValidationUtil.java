@@ -178,6 +178,6 @@ public class ValidationUtil {
     }
 
     public static boolean csvContains(String value, String csv) {
-        return Arrays.stream(csv.split(",")).map(String::trim).anyMatch(v -> value.equals(v));
+        return Arrays.stream(csv.split(",")).map(String::trim).anyMatch(value::equals);
     }
 }
