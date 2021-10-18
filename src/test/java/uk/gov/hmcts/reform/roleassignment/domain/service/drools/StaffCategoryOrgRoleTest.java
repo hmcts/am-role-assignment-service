@@ -44,6 +44,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             assertEquals(APPROVED, roleAssignment.getStatus());
             assertEquals("tribunal-caseworker", roleAssignment.getRoleName());
+            assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
         });
     }
 
@@ -68,6 +69,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             assertEquals(APPROVED, roleAssignment.getStatus());
             assertEquals("senior-tribunal-caseworker", roleAssignment.getRoleName());
+            assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
         });
     }
 
@@ -329,4 +331,28 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         });
     }
 
+    @Test
+    void shouldApproveOrgRequestedRoleForSTCW_withoutSubstantive() {
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName("task-supervisor");
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(CREATE_REQUESTED);
+
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode("abc"));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            assertEquals(APPROVED, roleAssignment.getStatus());
+            assertEquals("task-supervisor", roleAssignment.getRoleName());
+            assertEquals("N", roleAssignment.getAttributes().get("substantive").asText());
+        });
+    }
 }

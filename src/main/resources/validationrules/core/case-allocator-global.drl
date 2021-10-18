@@ -6,8 +6,10 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.CaseAllocatorApproval;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
@@ -45,12 +47,14 @@ when
              roleName == "case-allocator",
              classification.isAtLeast($c.classification),  /// TBC: this needs some code support to make it easy
              attributes["jurisdiction"] == $c.jurisdiction,
-             attributes["caseType"] == null || attributes["caseType"] == $c.caseType,
+             attributes["caseType"] == null || attributes["caseType"] == $c.caseTypeId,
              attributes["caseId"] == null || attributes["caseId"] == $c.id,
              attributes["region"] == null || attributes["region"] == $c.region,
              attributes["baseLocation"] == null || attributes["baseLocation"] == $c.baseLocation,
-             attributes["allocatedRoleCategory"] == null || ValidationUtil.csvContains($ra.roleCategory, attributes["allocatedRoleCategory"]),
-             attributes["allocatedRole"] == null || ValidationUtil.csvContains($ra.roleName, attributes["allocatedRole"]))
+             attributes["allocatedRoleCategory"] == null ||
+             ValidationUtil.csvContains($ra.roleCategory.toString(), attributes["allocatedRoleCategory"].asText()),
+             attributes["allocatedRole"] == null ||
+             ValidationUtil.csvContains($ra.roleName, attributes["allocatedRole"].asText()))
 then
     $ra.setAttribute("jurisdiction", $c.getJurisdiction());
     $ra.setAttribute("caseType", $c.getCaseTypeId());
@@ -59,7 +63,6 @@ then
     update($ra);
     logMsg("Rule : case_allocator_approve_create_case_role");
 end;
-
 
 rule "case_allocator_approve_delete_case_role"
 when
@@ -70,7 +73,7 @@ when
     //   - with SPECIFIC or EXCLUDED grant type
     //   - with a case ID
     $ra: RoleAssignment(
-             status == Status.CREATE_REQUESTED,
+             status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
              grantType in (GrantType.SPECIFIC, GrantType.EXCLUDED),
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
@@ -90,10 +93,12 @@ when
              attributes["jurisdiction"] == $ra.attributes["jurisdiction"],
              attributes["caseType"] == null || attributes["caseType"] == $ra.attributes["caseType"],
              attributes["caseId"] == null || attributes["caseId"] == $ra.attributes["caseId"],
-             attributes["region"] == null || attributes["region"] == $ra.attributes.["region"],
+             attributes["region"] == null || attributes["region"] == $ra.attributes["region"],
              attributes["baseLocation"] == null || attributes["baseLocation"] == $ra.attributes["baseLocation"],
-             attributes["allocatedRoleCategory"] == null || csvContains($ra.roleCategory, attributes["allocatedRoleCategory"]),
-             attributes["allocatedRole"] == null || csvContains($ra.roleName, attributes["allocatedRole"]))
+             attributes["allocatedRoleCategory"] == null ||
+             ValidationUtil.csvContains($ra.roleCategory.toString(), attributes["allocatedRoleCategory"].asText()),
+             attributes["allocatedRole"] == null ||
+             ValidationUtil.csvContains($ra.roleName, attributes["allocatedRole"].asText()))
 then
     insert(new CaseAllocatorApproval($ra));
     $ra.log("Case Allocator approved : case_allocator_approve_delete_case_role");
@@ -106,7 +111,6 @@ end;
  * and delete exclusions, and for users to be able to create conflicts of interest for themselves.
  */
 
-
 rule "case_allocator_create_conflict_of_interest"
 when
     // The case allocator rule has already succeeded for this role assignment,
@@ -116,12 +120,11 @@ when
         roleAssignment.roleName == "conflict-of-interest")
 then
     // Set approved status
-    $ca.roleAssignment.setStatus(Status.CREATE_APPROVED);
-    $ca.roleAssignment.log("Stage 1 approved : case_allocator_create_conflict_of_interest");
-    update($ca.roleAssignment);
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : case_allocator_create_conflict_of_interest");
+    update($ca.getRoleAssignment());
     logMsg("Rule : case_allocator_create_conflict_of_interest");
 end;
-
 
 rule "case_allocator_delete_conflict_of_interest"
 when
@@ -129,9 +132,9 @@ when
         roleAssignment.status == Status.DELETE_REQUESTED,
         roleAssignment.roleName == "conflict-of-interest")
 then
-    $ca.roleAssignment.setStatus(Status.DELETE_APPROVED);
-    $ca.roleAssignment.log("Stage 1 approved : case_allocator_delete_conflict_of_interest");
-    update($ca.roleAssignment);
+    $ca.getRoleAssignment().setStatus(Status.DELETE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : case_allocator_delete_conflict_of_interest");
+    update($ca.getRoleAssignment());
     logMsg("Rule : case_allocator_delete_conflict_of_interest");
 end;
 
@@ -141,15 +144,12 @@ end;
 
 rule "self_create_conflict_of_interest"
 when
-when
     // Only allow requests where the assigner is also the authenticated user
-    $rq: Request(
-            assignerId == authenticatedUserId),
+    $rq: Request(assignerId == authenticatedUserId)
     // When the request is to create a role assignment:
     //   - for the requesting user
     //   - a case role
     //   - role name conflict-of-interest
-
     //   - with a case ID
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
@@ -158,8 +158,7 @@ when
              roleName == "conflict-of-interest",
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     // And there is a case with that ID
-    $c:  Case(
-             id == $caseId)
+    $c:  Case(id == $caseId)
 then
     $ra.setAttribute("jurisdiction", $c.getJurisdiction());
     $ra.setAttribute("caseType", $c.getCaseTypeId());
@@ -167,48 +166,4 @@ then
     $ra.log("Stage 1 approved : self_create_conflict_of_interest");
     update($ra);
     logMsg("Rule : self_create_conflict_of_interest");
-end;
-
-
-/*
- * Service rules for creating and deleting role assignments need only trigger based on
- * CaseAllocatorApproved objects, and need only add the service-specific constraints
- * (expected to be constraints on the existing role assignments required for the assignee, not the assigner).
- */
-
-
-rule "ia_case_allocator_create_case_role"
-when
-    $ca: CaseAllocatorApproved(
-                 status == Status.CREATE_REQUESTED,
-                 roleAssignment.attributes["jurisdiction"] == "IA",
-                 roleAssignment.roleName in ("tribunal-caseworker", "case-manager")
-         ExistingRoleAssignment(
-                 actorId == $ca.roleAssignment.actorId,
-                 roleType == RoleType.ORGANISATION,
-                 roleName == "tribunal-caseworker")
-then
-    $ca.roleAssignment.setStatus(Status.CREATE_APPROVED);
-    $ra.log("Stage 1 approved : ia_case_allocator_create_case_role");
-    update($ca.roleAssignment);
-    logMsg("Rule : ia_case_allocator_create_case_role");
-end;
-
-/*
- * Services must also complete the deletion of case roles, but this is not expected to
- * have additional conditions once the case allocator rule has succeeded:.
- */
-
-
-rule "ia_case_allocator_delete_case_role"
-when
-    $ca: CaseAllocatorApproved(
-        status == Status.DELETE_REQUESTED,
-        roleAssignment.attributes["jurisdiction"] == "IA")
-    )
-then
-    $ca.roleAssignment.setStatus(Status.DELETE_APPROVED);
-    $ra.log("Stage 1 approved : ia_case_allocator_delete_case_role");
-    update($ra);
-    logMsg("Rule : ia_case_allocator_delete_case_role");
 end;
