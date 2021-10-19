@@ -29,8 +29,7 @@ when
              grantType in (GrantType.SPECIFIC, GrantType.EXCLUDED),
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     // And there is a case with that ID
-    $c:  Case(
-             id == $caseId)
+    $c:  Case(id == $caseId)
     // And the *assigner* has an existing role assignment
     //   - with name case-allocator
     //   - of any role type (not restricted to organisational roles)
@@ -45,12 +44,12 @@ when
          ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleName == "case-allocator",
-             classification.isAtLeast($c.classification),  /// TBC: this needs some code support to make it easy
+             classification.isAtLeast($c.securityClassification),  /// TBC: this needs some code support to make it easy
              attributes["jurisdiction"] == $c.jurisdiction,
              attributes["caseType"] == null || attributes["caseType"] == $c.caseTypeId,
              attributes["caseId"] == null || attributes["caseId"] == $c.id,
-             attributes["region"] == null || attributes["region"] == $c.region,
-             attributes["baseLocation"] == null || attributes["baseLocation"] == $c.baseLocation,
+             attributes["region"] == null || attributes["region"] == $c.getRegion(),
+             attributes["baseLocation"] == null || attributes["baseLocation"] == $c.getBaseLocation(),
              attributes["allocatedRoleCategory"] == null ||
              ValidationUtil.csvContains($ra.roleCategory.toString(), attributes["allocatedRoleCategory"].asText()),
              attributes["allocatedRole"] == null ||

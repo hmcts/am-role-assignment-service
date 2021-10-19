@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,8 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CaseTest {
 
 
-    private Case caseData = new Case("1234", "IA", "Asylum",
-                                     Classification.PUBLIC, "regon1", "baseLocation1");
+    private Case caseData = Case.builder().id("1234")
+        .jurisdiction("IA")
+        .caseTypeId("Asylum")
+        .build();
+
 
     @BeforeEach
     public void setUp() {
