@@ -34,7 +34,7 @@
           "grantType": "SPECIFIC",
           "readOnly": false,
           "attributes": {
-            "caseId": "1571055359725273",
+            "caseId": "1607103938250138",
             "jurisdiction": "IA",
             "caseType": "Asylum"
           },
@@ -73,7 +73,8 @@
             "attributes": {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "caseId": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
-              "caseType": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}"
+              "caseType": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}",
+              "substantive" : "N"
             },
             "authorisations": [
               "test125"

@@ -150,7 +150,8 @@ class StaffCategoryCaseTest extends DroolBase {
     @Test
     void shouldRejectRequestedRoleForDelete_WrongExistingAttributeValue_S020() {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.LEGAL_OPERATIONS, "tribunal-caseworker",
-                                                             SPECIFIC);
+                                                             SPECIFIC
+        );
         requestedRole1.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
         requestedRole1.setStatus(DELETE_REQUESTED);
 
@@ -239,6 +240,7 @@ class StaffCategoryCaseTest extends DroolBase {
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
         });
     }
 
@@ -523,6 +525,7 @@ class StaffCategoryCaseTest extends DroolBase {
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
         });
     }
 
