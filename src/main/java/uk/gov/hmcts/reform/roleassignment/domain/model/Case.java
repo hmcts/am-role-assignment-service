@@ -10,6 +10,8 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 @Data
 @Getter
@@ -17,6 +19,10 @@ import java.util.Map;
 @Builder
 @ToString
 public class Case {
+
+    public static final String CASE_MANAGEMENT_LOCATION = "caseManagementLocation";
+    public static final String BASE_LOCATION = "baseLocation";
+    public static final String REGION = "region";
 
     @JsonProperty("id")
     private String id;
@@ -48,5 +54,26 @@ public class Case {
 
     @JsonProperty("data_classification")
     private Map<String, JsonNode> dataClassification;
+
+    public String getRegion() {
+        if (Objects.nonNull(data) && Objects.nonNull(data.get(CASE_MANAGEMENT_LOCATION))) {
+            Optional<JsonNode> caseManagementLocation = Optional.ofNullable(data.get(CASE_MANAGEMENT_LOCATION));
+            if (caseManagementLocation.isPresent() && Objects.nonNull(caseManagementLocation.get().get(REGION))) {
+                return caseManagementLocation.get().get(REGION).asText();
+            }
+        }
+        return "";
+    }
+
+    public String getBaseLocation() {
+        if (Objects.nonNull(data) && Objects.nonNull(data.get(CASE_MANAGEMENT_LOCATION))) {
+            Optional<JsonNode> caseManagementLocation = Optional.ofNullable(data.get(CASE_MANAGEMENT_LOCATION));
+            if (caseManagementLocation.isPresent() &&
+                Objects.nonNull(caseManagementLocation.get().get(BASE_LOCATION))) {
+                return caseManagementLocation.get().get(BASE_LOCATION).asText();
+            }
+        }
+        return "";
+    }
 
 }
