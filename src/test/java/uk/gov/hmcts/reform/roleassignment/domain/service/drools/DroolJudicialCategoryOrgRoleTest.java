@@ -34,11 +34,10 @@ class DroolJudicialCategoryOrgRoleTest extends DroolBase {
         //Execute Kie session
         buildExecuteKieSession();
 
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
-                                                                   assertEquals(
-                                                                       Status.APPROVED,
-                                                                       roleAssignment.getStatus()
-                                                                   )
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            assertEquals(Status.APPROVED,roleAssignment.getStatus());
+            assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
+            }
         );
     }
 
