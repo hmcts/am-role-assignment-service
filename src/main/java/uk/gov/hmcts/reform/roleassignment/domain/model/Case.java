@@ -68,8 +68,8 @@ public class Case {
     public String getBaseLocation() {
         if (Objects.nonNull(data) && Objects.nonNull(data.get(CASE_MANAGEMENT_LOCATION))) {
             Optional<JsonNode> caseManagementLocation = Optional.ofNullable(data.get(CASE_MANAGEMENT_LOCATION));
-            if (caseManagementLocation.isPresent() &&
-                Objects.nonNull(caseManagementLocation.get().get(BASE_LOCATION))) {
+            if (caseManagementLocation.isPresent()
+                && Objects.nonNull(caseManagementLocation.get().get(BASE_LOCATION))) {
                 return caseManagementLocation.get().get(BASE_LOCATION).asText();
             }
         }
