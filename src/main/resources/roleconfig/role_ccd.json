@@ -4,6 +4,7 @@
     "label": "Petitioner's Solicitor",
     "description": "Petitioner's Solicitor",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -37,6 +38,7 @@
     "label": "Respondent's Solicitor",
     "description": "Respondent's Solicitor",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -70,6 +72,7 @@
     "label": "Barrister",
     "description": "Barrister",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -103,6 +106,7 @@
     "label": "Cafcass Solicitor",
     "description": "Cafcass Solicitor",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -136,6 +140,7 @@
     "label": "External Professional Solicitor",
     "description": "External Professional Solicitor",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -169,6 +174,7 @@
     "label": "LA Barrister",
     "description": "LA Barrister",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -202,6 +208,7 @@
     "label": "Managing Local Authority",
     "description": "Managing Local Authority",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -235,6 +242,7 @@
     "label": "LA Solicitor",
     "description": "LA Solicitor",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -268,6 +276,7 @@
     "label": "Solicitor",
     "description": "Solicitor",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -301,6 +310,7 @@
     "label": "Solicitor A",
     "description": "Solicitor A",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -334,6 +344,7 @@
     "label": "Solicitor B",
     "description": "Solicitor B",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -367,6 +378,7 @@
     "label": "Solicitor C",
     "description": "Solicitor C",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -400,6 +412,7 @@
     "label": "Solicitor D",
     "description": "Solicitor D",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -433,6 +446,7 @@
     "label": "Solicitor E",
     "description": "Solicitor E",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -466,6 +480,7 @@
     "label": "Solicitor F",
     "description": "Solicitor F",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -499,6 +514,7 @@
     "label": "Solicitor G",
     "description": "Solicitor G",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -532,6 +548,7 @@
     "label": "Solicitor H",
     "description": "Solicitor H",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -565,6 +582,7 @@
     "label": "Solicitor I",
     "description": "Solicitor I",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -598,6 +616,7 @@
     "label": "Solicitor J",
     "description": "Solicitor J",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -631,6 +650,7 @@
     "label": "Legal Representative",
     "description": "Legal Representative",
     "category": "PROFESSIONAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -664,6 +684,7 @@
     "label": "Creator",
     "description": "Creator Role for Professional users",
     "category": "PROFESSIONAL",
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
@@ -697,6 +718,7 @@
     "label": "Creator",
     "description": "Creator Role for Citizen users",
     "category": "CITIZEN",
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
@@ -730,6 +752,7 @@
     "label": "Creator",
     "description": "Creator Role for Judicial users",
     "category": "JUDICIAL",
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
@@ -763,6 +786,7 @@
     "label": "Creator",
     "description": "Creator Role for Staff users",
     "category": "LEGAL_OPERATIONS",
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
