@@ -15,6 +15,7 @@
   "attributes": {
     "contractType": "SALARIED",
     "jurisdiction": "divorce",
-    "region": "south-east"
+    "region": "south-east",
+    "substantive": "Y"
   }
 }

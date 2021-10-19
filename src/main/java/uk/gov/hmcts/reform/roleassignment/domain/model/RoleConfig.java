@@ -31,19 +31,20 @@ public class RoleConfig {
      * Copy the role name and category into each of the patterns
      * for the given role.
      */
-    private static void setRoleNameAndCategory(RoleConfigRole role) {
+    private static void setCommonFields(RoleConfigRole role) {
         String roleName = role.getName();
         var roleCategory = role.getCategory();
         role.getPatterns().forEach(
             p -> {
                 p.setRoleName(roleName);
                 p.setRoleCategory(roleCategory);
+                p.setSubstantive(role.isSubstantive());
             });
     }
 
     private static RoleConfig buildRoleConfig() {
         List<RoleConfigRole> allRoles = getRoleConfigs();
-        allRoles.forEach(RoleConfig::setRoleNameAndCategory);
+        allRoles.forEach(RoleConfig::setCommonFields);
         return new RoleConfig(allRoles);
     }
 
