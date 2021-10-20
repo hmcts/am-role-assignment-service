@@ -9,6 +9,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
@@ -45,6 +46,7 @@ public abstract class DroolBase {
         Case caseObj = Case.builder().id("1234567890123456")
             .caseTypeId("Asylum")
             .jurisdiction("IA")
+            .securityClassification(Classification.PUBLIC)
             .build();
         doReturn(caseObj).when(retrieveDataService).getCaseById("1234567890123456");
 
@@ -52,6 +54,7 @@ public abstract class DroolBase {
         Case caseObj1 = Case.builder().id("1234567890123457")
             .caseTypeId("Not Asylum")
             .jurisdiction("IA")
+            .securityClassification(Classification.PUBLIC)
             .build();
         doReturn(caseObj1).when(retrieveDataService).getCaseById("1234567890123457");
 
@@ -59,6 +62,7 @@ public abstract class DroolBase {
         Case caseObj2 = Case.builder().id("1234567890123458")
             .caseTypeId("Asylum")
             .jurisdiction("Not IA")
+            .securityClassification(Classification.PUBLIC)
             .build();
         doReturn(caseObj2).when(retrieveDataService).getCaseById("1234567890123458");
 
