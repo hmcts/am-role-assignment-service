@@ -516,12 +516,14 @@ public class TestDataBuilder {
                                                                  RoleCategory roleCategory) {
         Map<String,JsonNode> attributes = new HashMap<>();
         attributes.put("jurisdiction",convertValueJsonNode("IA"));
-        attributes.put("caseTypeId",convertValueJsonNode("Assylum"));
+        attributes.put("caseTypeId",convertValueJsonNode("Asylum"));
         return ExistingRoleAssignment.builder()
             .actorId(actorId)
             .roleType(RoleType.ORGANISATION)
             .roleCategory(roleCategory)
             .roleName(roleName)
+            .classification(Classification.PUBLIC)
+            .grantType(GrantType.STANDARD)
             .attributes(attributes)
             .build();
 

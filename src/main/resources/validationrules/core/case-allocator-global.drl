@@ -44,8 +44,8 @@ when
          ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleName == "case-allocator",
-             classification.isAtLeast($c.securityClassification),  /// TBC: this needs some code support to make it easy
-             attributes["jurisdiction"].asText() == $c.jurisdiction,
+             $c.securityClassification != null && classification.isAtLeast($c.securityClassification),  /// TBC: this needs some code support to make it easy
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == $c.jurisdiction,
              attributes["caseType"] == null || attributes["caseType"].asText() == $c.caseTypeId,
              attributes["caseId"] == null || attributes["caseId"].asText() == $c.id,
              attributes["region"] == null || attributes["region"].asText() == $c.getRegion(),
@@ -91,11 +91,11 @@ when
          ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleName == "case-allocator",
-             attributes["jurisdiction"].asText() == $ra.attributes["jurisdiction"].asText(),
-             attributes["caseType"] == null || attributes["caseType"].asText() == $ra.attributes["caseType"].asText(),
-             attributes["caseId"] == null || attributes["caseId"].asText() == $ra.attributes["caseId"].asText(),
-             attributes["region"] == null || attributes["region"].asText() == $ra.attributes["region"].asText(),
-             attributes["baseLocation"] == null || attributes["baseLocation"].asText() == $ra.attributes["baseLocation"].asText(),
+             attributes["jurisdiction"] == $ra.attributes["jurisdiction"],
+             attributes["caseType"] == null || attributes["caseType"] == $ra.attributes["caseType"],
+             attributes["caseId"] == null || attributes["caseId"] == $ra.attributes["caseId"],
+             attributes["region"] == null || attributes["region"] == $ra.attributes["region"],
+             attributes["baseLocation"] == null || attributes["baseLocation"] == $ra.attributes["baseLocation"],
              attributes["allocatedRoleCategory"] == null ||
              ValidationUtil.csvContains($ra.roleCategory.toString(), attributes["allocatedRoleCategory"].asText()),
              attributes["allocatedRole"] == null ||
