@@ -287,7 +287,7 @@ when
              roleType == RoleType.ORGANISATION,
              roleName in ("case-allocator"),
              roleCategory == RoleCategory.LEGAL_OPERATIONS,
-             attributes["jurisdiction"]!=null,attributes["jurisdiction"].asText() == "IA")
+             attributes["jurisdiction"]!=null && attributes["jurisdiction"].asText() == "IA")
 then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : ia_case_allocator_delete_case_roles_v11");
@@ -300,6 +300,9 @@ end;
  * Service rules for creating and deleting role assignments need only trigger based on
  * CaseAllocatorApproved objects, and need only add the service-specific constraints
  * (expected to be constraints on the existing role assignments required for the assignee, not the assigner).
+ * The case roles ("case-manager", "tribunal-caseworker") other than "case-allocator" can be created if
+ * CaseAllocatorApproval entity is available along with existing assignment of assignee having
+ * "tribunal-caseworker" org role.
  */
 
 
@@ -308,12 +311,14 @@ when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
-                 roleAssignment.attributes["jurisdiction"] == "IA",
+                 roleAssignment.attributes["jurisdiction"].asText() == "IA",
                  roleAssignment.roleName in ("tribunal-caseworker", "case-manager"))
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName == "tribunal-caseworker")
+                 roleName == "tribunal-caseworker",
+                 roleCategory == $ca.getRoleAssignment().roleCategory,
+                 attributes["jurisdiction"].asText() == "IA")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : ia_case_allocator_create_case_role");
@@ -322,8 +327,32 @@ then
 end;
 
 /*
- * Services must also complete the deletion of case roles, but this is not expected to
- * have additional conditions once the case allocator rule has succeeded:.
+ * The "case-allocator" case role can be created if CaseAllocatorApproval entity is available along with
+ * existing assignment of assignee having case "case-allocator" org role.
+ */
+
+rule "ia_case_allocator_approved_create_case_allocator_role_v11"
+when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "IA",
+                 roleAssignment.roleName == "case-allocator")
+         ExistingRoleAssignment(
+                 actorId == $ca.roleAssignment.actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName == "case-allocator",
+                 roleCategory == $ca.getRoleAssignment().roleCategory,
+                 attributes["jurisdiction"].asText() == "IA")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : ia_case_allocator_approved_create_case_allocator_role_v11");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : ia_case_allocator_approved_create_case_allocator_role_v11");
+end;
+
+/*
+ * The case roles can be deleted if CaseAllocatorApproval entity is available for requested role assignment.
  */
 
 
@@ -332,7 +361,7 @@ when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
     $ca: CaseAllocatorApproval(
         roleAssignment.status == Status.DELETE_REQUESTED,
-        roleAssignment.attributes["jurisdiction"] == "IA")
+        roleAssignment.attributes["jurisdiction"].asText() == "IA")
 then
     $ca.getRoleAssignment().setStatus(Status.DELETE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : ia_case_allocator_delete_case_role");
