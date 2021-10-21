@@ -239,13 +239,7 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
-          }
+          "values": ["PRIVATE"]
         }
       }
     ]
@@ -613,12 +607,7 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "primaryLocation": {
-            "mandatory": true
-          }
+          "values": ["PRIVATE"]
         }
       }
     ]
@@ -642,11 +631,6 @@
         "classification": {
           "mandatory": true,
           "values": ["PRIVATE"]
-        },
-        "attributes": {
-          "primaryLocation": {
-            "mandatory": true
-          }
         }
       }
     ]
