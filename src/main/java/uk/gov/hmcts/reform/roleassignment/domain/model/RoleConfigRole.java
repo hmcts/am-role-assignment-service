@@ -14,5 +14,6 @@ public class RoleConfigRole {
     private final String label;
     private final String description;
     private final RoleCategory category;
+    private final boolean substantive;
     private final LinkedHashSet<RoleConfigPattern> patterns;
 }
