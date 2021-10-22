@@ -4,6 +4,7 @@
     "label": "Judge",
     "description": "Judge role for judicial users",
     "category": "JUDICIAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -58,6 +59,7 @@
     "label": "Case Allocator",
     "description": "Case Allocator role for judicial users",
     "category": "JUDICIAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -109,6 +111,7 @@
     "label": "Task Supervisor",
     "description": "Task Supervisor role for judicial users",
     "category": "JUDICIAL",
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
@@ -136,6 +139,7 @@
     "label": "Senior Judge",
     "description": "Senior Judge role for judicial users",
     "category": "JUDICIAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -164,6 +168,7 @@
     "label": "Leadership Judge",
     "description": "Leadership Judge role for judicial users",
     "category": "JUDICIAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -192,6 +197,7 @@
     "label": "Fee Paid Judge",
     "description": "Fee Paid Judge role for judicial users",
     "category": "JUDICIAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -220,6 +226,7 @@
     "label": "HMCTS Judiciary",
     "description": "HMCTS Judiciary role for judicial users",
     "category": "JUDICIAL",
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
@@ -228,7 +235,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["STANDARD"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
@@ -248,6 +255,7 @@
     "label": "Lead Judge",
     "description": "Lead Judge role for judicial users",
     "category": "JUDICIAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -280,6 +288,7 @@
     "label": "Hearing Judge",
     "description": "Hearing Judge role for judicial users",
     "category": "JUDICIAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -312,6 +321,7 @@
     "label": "FTPA Judge",
     "description": "FTPA Judge role for judicial users",
     "category": "JUDICIAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -344,6 +354,7 @@
     "label": "Hearing Panel Judge",
     "description": "Hearing Panel Judge role for judicial users",
     "category": "JUDICIAL",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -376,6 +387,7 @@
     "label": "Tribunal Caseworker",
     "description": "Tribunal caseworker role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -431,6 +443,7 @@
     "label": "Senior Tribunal Caseworker",
     "description": "Senior Tribunal caseworker role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -462,6 +475,7 @@
     "label": "Case Allocator",
     "description": "Case Allocator role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -517,6 +531,7 @@
     "label": "Task Supervisor",
     "description": "Task Supervisor role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
@@ -548,6 +563,7 @@
     "label": "Case Manager",
     "description": "Case Manager role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -584,6 +600,7 @@
     "label": "HMCTS Legal Operations",
     "description": "HMCTS Legal Operations role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
@@ -611,6 +628,7 @@
     "label": "HMCTS Admin",
     "description": "HMCTS admin role for admin users",
     "category": "ADMIN",
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
@@ -638,6 +656,7 @@
     "label": "Case Allocator",
     "description": "Case Allocator role for admin users",
     "category": "ADMIN",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -668,6 +687,7 @@
     "label": "Task Supervisor",
     "description": "Task Supervisor role for admin users",
     "category": "ADMIN",
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
@@ -698,6 +718,7 @@
     "label": "Hearing Centre Admin",
     "description": "Hearing Centre Admin role for admin users",
     "category": "ADMIN",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -729,6 +750,7 @@
     "label": "National Business Centre",
     "description": "National Business Centre role for admin users",
     "category": "ADMIN",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -760,6 +782,7 @@
     "label": "CTSC",
     "description": "CTSC role for admin users",
     "category": "ADMIN",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {

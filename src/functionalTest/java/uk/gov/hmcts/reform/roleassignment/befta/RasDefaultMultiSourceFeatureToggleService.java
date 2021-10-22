@@ -15,7 +15,7 @@ public class RasDefaultMultiSourceFeatureToggleService extends DefaultMultiSourc
     @SuppressWarnings("unchecked")
     public ScenarioFeatureToggleInfo getToggleStatusFor(Scenario toggleable) {
         ScenarioFeatureToggleInfo scenarioFeatureToggleInfo = new ScenarioFeatureToggleInfo();
-        //@FeatureToggle(LD:feature_id_1=on) @FeatureToggle(IAC:feature_id_2=off)
+        //@FeatureToggle(LD:feature_id_1=on) @FeatureToggle(RAS:feature_id_2=off)
         toggleable.getSourceTagNames().stream().filter(tag -> tag.contains(LAUNCH_DARKLY_FLAG)).forEach(tag -> {
             String domain = null;
             String id = null;
