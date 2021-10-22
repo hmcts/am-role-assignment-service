@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-// all of the fields from CCD case details
 public class Case {
     private String id;
 
