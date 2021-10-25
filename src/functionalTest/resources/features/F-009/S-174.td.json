@@ -33,6 +33,7 @@
           "readOnly" : false,
           "attributes" : {
             "contractType" : "Salaried",
+            "contractType" : "Salaried",
             "primaryLocation" : "abc",
             "jurisdiction" : "IA"
           }
