@@ -102,7 +102,7 @@ when
              ValidationUtil.csvContains($ra.roleCategory.toString(), attributes["allocatedRoleCategory"].asText()),
              attributes["allocatedRole"] == null ||
              ValidationUtil.csvContains($ra.roleName, attributes["allocatedRole"].asText()))
-    //   - that CaseAllocatorApproval entity doesn't exist for the same assignment record, this is required  to avoid infinite loop.
+    //   - that CaseAllocatorApproval entity doesn't exist for the same assignment record, this is required to avoid infinite loop.
          not CaseAllocatorApproval(roleAssignment.id == $ra.id)
 then
     insert(new CaseAllocatorApproval($ra));
