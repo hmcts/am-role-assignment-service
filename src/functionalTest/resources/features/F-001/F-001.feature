@@ -326,7 +326,7 @@ Feature: F-001 : Create Role Assignments
 
   @S-118
   @FeatureToggle(RAS:ccd_1_0=on) @FeatureToggle(RAS:ccd_bypass_1_0=on)
-  Scenario: must successfully create single Role Assignment for CCD Case roles having role category as ADMIN.
+  Scenario: must successfully create single Role Assignment for CCD Case roles having valid role with dummy jurisdiction.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
     And a user [Befta1 - who is the actor for requested role],
@@ -358,7 +358,7 @@ Feature: F-001 : Create Role Assignments
 
   @S-121
   @FeatureToggle(RAS:ccd_bypass_1_0=on)
-  Scenario: must successfully create single Role Assignment for CCD Case dummy roles with valid jurisdiction.
+  Scenario: must successfully create single Role Assignment for CCD Case dummy roles with dummy jurisdiction.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
     And a user [Befta1 - who is the actor for requested role],
