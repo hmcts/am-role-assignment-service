@@ -77,14 +77,11 @@ class CCDCaseRolesTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
-        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
-                                                     "caseType", convertValueJsonNode("Asylum"),
-                                                     "caseId", convertValueJsonNode("1234567890123456")));
+        requestedRole1.getAttributes().put("jurisdiction", convertValueJsonNode("BEFTA_MASTER"));
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         assignmentRequest.getRequest().setClientId("ccd_data");
-        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_BYPASS_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -99,14 +96,14 @@ class CCDCaseRolesTest extends DroolBase {
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.setClassification(Classification.PUBLIC);
-        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("AUTOTEST1"),
                                                      "caseType", convertValueJsonNode("Asylum"),
                                                      "caseId", convertValueJsonNode("1234567890123456")));
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         assignmentRequest.getRequest().setClientId("ccd_data");
         assignmentRequest.getRequest().setByPassOrgDroolRule(true);
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_BYPASS_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -173,51 +170,49 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Test
-    public void shouldApproveDeleteDummyCaseRoles_enableByPassDroolRule() {
+    public void shouldApproveDeleteDummyCaseRoles_enableCcdBypassFlag() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
-        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("AUTOTEST1"),
                                                      "caseType", convertValueJsonNode("Asylum"),
                                                      "caseId", convertValueJsonNode("1234567890123456")));
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         assignmentRequest.getRequest().setClientId("ccd_data");
-        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_BYPASS_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
         buildExecuteKieSession();
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
     }
 
     @Test
-    public void shouldApproveDeleteDummyCaseRolesWithDummyRoleName_enableByPassDroolRule() {
+    public void shouldApproveDeleteDummyCaseRolesWithDummyRoleName_enableCcdBypassFlag() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL, "[DUMMYSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
-        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("AUTOTEST1"),
                                                      "caseType", convertValueJsonNode("Asylum"),
                                                      "caseId", convertValueJsonNode("1234567890123456")));
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         assignmentRequest.getRequest().setClientId("ccd_data");
-        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_BYPASS_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
         buildExecuteKieSession();
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
     }
 
     @Test
-    public void shouldRejectDeleteDummyCaseRoles_disableByPassDroolRule() {
+    public void shouldRejectDeleteDummyCaseRoles_invalidJurisdiction() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
@@ -227,9 +222,8 @@ class CCDCaseRolesTest extends DroolBase {
                                                      "caseId", convertValueJsonNode("1234567890123456")));
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         assignmentRequest.getRequest().setClientId("ccd_data");
-        assignmentRequest.getRequest().setByPassOrgDroolRule(false);
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_BYPASS_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -239,19 +233,18 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Test
-    void shouldRejectCaseRoleCreation_enableByPassDroolRule_disableFlag() {
+    void shouldRejectCaseRoleCreation_disableCcdBypassFlag() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
                                                                "[PETSOLICITOR]", SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
         requestedRole1.setClassification(Classification.RESTRICTED);
-        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("AUTOTEST1"),
                                                      "caseType", convertValueJsonNode("Asylum"),
                                                      "caseId", convertValueJsonNode("1234567890123456")));
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         assignmentRequest.getRequest().setClientId("ccd_data");
-        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_BYPASS_1_0.getValue())
             .status(false).build();
         featureFlags.add(featureFlag);
 
@@ -271,7 +264,6 @@ class CCDCaseRolesTest extends DroolBase {
                                                      "caseId", convertValueJsonNode("1234567890123456")));
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         assignmentRequest.getRequest().setClientId("ccd_data");
-        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
 
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
             .status(true).build();
