@@ -17,9 +17,8 @@
   "created":"[[ANYTHING_PRESENT]]",
   "log":"[[ANYTHING_PRESENT]]",
   "attributes" : {
-    "jurisdiction" : "divorce",
-    "region" : "south-east",
-    "contractType": "SALARIED",
+    "jurisdiction" : "IA",
+    "contractType": "Salaried",
     "substantive": "Y"
   },
   "notes" : [ {
