@@ -593,6 +593,7 @@ public class TestDataBuilder {
             .attributes(new HashMap<String, JsonNode>())
             .build();
         ra.setAttribute(attributeKey, attributeVal);
+        ra.setAttribute("jurisdiction","IA");
         return ra;
     }
 

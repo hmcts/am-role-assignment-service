@@ -520,7 +520,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                           "senior-tribunal-caseworker",
                                                           RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "tribunal-caseworker",
+                                                          "case-allocator",
                                                           RoleCategory.LEGAL_OPERATIONS)));
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -540,11 +540,11 @@ class StaffCategoryCaseTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "tribunal-caseworker",
+        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker",
                                                           RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "senior-tribunal-caseworker",
+                                                          "case-allocator",
                                                           RoleCategory.LEGAL_OPERATIONS)));
         buildExecuteKieSession();
 
@@ -559,7 +559,7 @@ class StaffCategoryCaseTest extends DroolBase {
         + "parametered user")
     void shouldAcceptCaseRolesCreation_V1_1() {
         verifyCreateCaseRole_V1_1("case-manager","tribunal-caseworker");
-        verifyCreateCaseRole_V1_1("case-manager","senior-tribunal-caseworker");
+        verifyCreateCaseRole_V1_1("tribunal-caseworker","senior-tribunal-caseworker");
         verifyCreateCaseRole_V1_1("case-allocator","case-allocator");
     }
 
