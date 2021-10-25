@@ -116,7 +116,7 @@ when
      $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
      // It can be to create or delete a role assignment, but only for one of a fixed list of dummy jurisdictions.
      $ra: RoleAssignment(
-         status in (Status.CREATE_REQUESTED, Status.DELETE_REQUESTED),
+         status in (Status.CREATE_REQUESTED, Status.DELETE_REQUESTED, Status.CREATE_APPROVED),
          attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("J1","J2","J3","BEFTA_MASTER",
                     "BEFTA_JURISDICTION_1","BEFTA_JURISDICTION_2","BEFTA_JURISDICTION_3","AUTOTEST1","AUTOTEST2"))
 then
