@@ -20,13 +20,9 @@
           "values": ["PUBLIC","PRIVATE"]
         },
         "attributes": {
-          "region": {
-            "mandatory": true,
-            "values": ["north-east","south-east"]
-          },
           "jurisdiction": {
             "mandatory": true,
-            "values": ["divorce","IA"]
+            "values": ["IA"]
           }
         }
       }
