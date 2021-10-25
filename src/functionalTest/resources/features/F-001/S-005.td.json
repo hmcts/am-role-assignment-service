@@ -22,7 +22,7 @@
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "attributes": {
-            "region": "north-west"
+            "jurisdiction": "divorce"
           }
         }
       ]
@@ -45,7 +45,7 @@
           {
             "_extends_": "ResponseRequestedRole",
             "attributes": {
-              "region": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][region]}"
+              "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}"
             },
             "status": "REJECTED"
           }
