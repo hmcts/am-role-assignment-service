@@ -325,7 +325,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId].
 
   @S-118
-  @FeatureToggle(RAS:ccd_1_0=on)
+  @FeatureToggle(RAS:ccd_bypass_1_0=on)
   Scenario: must successfully create single Role Assignment for CCD Case roles having role category as ADMIN.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
@@ -357,7 +357,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId].
 
   @S-121
-  @FeatureToggle(RAS:ccd_1_0=on)
+  @FeatureToggle(RAS:ccd_bypass_1_0=on)
   Scenario: must successfully create single Role Assignment for CCD Case dummy roles with byPassOrgDroolRule true.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
