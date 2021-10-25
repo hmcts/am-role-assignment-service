@@ -358,7 +358,7 @@ Feature: F-001 : Create Role Assignments
 
   @S-121
   @FeatureToggle(RAS:ccd_bypass_1_0=on)
-  Scenario: must successfully create single Role Assignment for CCD Case dummy roles with byPassOrgDroolRule true.
+  Scenario: must successfully create single Role Assignment for CCD Case dummy roles with valid jurisdiction.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
     And a user [Befta1 - who is the actor for requested role],
