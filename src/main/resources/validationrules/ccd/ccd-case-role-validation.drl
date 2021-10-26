@@ -114,7 +114,7 @@ when
      $f:  FeatureFlag(status && flagName == FeatureFlagEnum.CCD_BYPASS_1_0.getValue())
      // The request must come from the data store or AAC microservices.
      $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
-     // It can be to create or delete a role assignment, but only for one of a fixed list of dummy jurisdictions.
+     // It can be to create a role assignment, but only for one of a fixed list of dummy jurisdictions.
      $ra: RoleAssignment(
          status in (Status.CREATE_REQUESTED, Status.CREATE_APPROVED),
          attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("J1","J2","J3","BEFTA_MASTER",
@@ -131,19 +131,15 @@ end;
 
 rule "approve_any_dummy_jurisdiction_delete"
 when
-     // The drool bypass flag for ccd must be enabled.
      $f:  FeatureFlag(status && flagName == FeatureFlagEnum.CCD_BYPASS_1_0.getValue())
-     // The request must come from the data store or AAC microservices.
      $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
-     // It can be to create or delete a role assignment, but only for one of a fixed list of dummy jurisdictions.
      $ra: RoleAssignment(
-         status in (Status.DELETE_REQUESTED),
+         status == Status.DELETE_REQUESTED,
          attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("J1","J2","J3","BEFTA_MASTER",
                     "BEFTA_JURISDICTION_1","BEFTA_JURISDICTION_2","BEFTA_JURISDICTION_3","AUTOTEST1","AUTOTEST2"))
 then
-    // Bypass the configuration check rule by setting the 'finally approved' status.
     $ra.setStatus(Status.DELETE_APPROVED);
-    $ra.log("Approved : approve_any_dummy_jurisdiction_delete: " + $ra.getAttributes().get("jurisdiction")
+    $ra.log("Delete approved : approve_any_dummy_jurisdiction_delete: " + $ra.getAttributes().get("jurisdiction")
                                                                                 .asText() + "/" + $ra.getRoleName());
     update($ra);
     logMsg("Rule : approve_any_dummy_jurisdiction_delete");
