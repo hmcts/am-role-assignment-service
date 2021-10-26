@@ -520,7 +520,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                           "senior-tribunal-caseworker",
                                                           RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "tribunal-caseworker",
+                                                          "case-allocator",
                                                           RoleCategory.LEGAL_OPERATIONS)));
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -540,11 +540,11 @@ class StaffCategoryCaseTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "tribunal-caseworker",
+        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
+                                                          "senior-tribunal-caseworker",
                                                           RoleCategory.LEGAL_OPERATIONS),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "senior-tribunal-caseworker",
+                                                          "case-allocator",
                                                           RoleCategory.LEGAL_OPERATIONS)));
         buildExecuteKieSession();
 
@@ -559,7 +559,7 @@ class StaffCategoryCaseTest extends DroolBase {
         + "parametered user")
     void shouldAcceptCaseRolesCreation_V1_1() {
         verifyCreateCaseRole_V1_1("case-manager","tribunal-caseworker");
-        verifyCreateCaseRole_V1_1("case-manager","senior-tribunal-caseworker");
+        verifyCreateCaseRole_V1_1("tribunal-caseworker","senior-tribunal-caseworker");
         verifyCreateCaseRole_V1_1("case-allocator","case-allocator");
     }
 
@@ -747,8 +747,8 @@ class StaffCategoryCaseTest extends DroolBase {
     }
 
     @Test
-    @DisplayName("Reject the delete case-allocator with wrong Category.")
-    void shouldRejectDeleteCaseAllocatorRoles_withWrongCategory() {
+    @DisplayName("Approve the delete case-allocator with different role Category.")
+    void shouldApproveDeleteCaseAllocatorRoles_withDifferentCategory() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.ADMIN, "case-allocator",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
@@ -765,7 +765,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                           RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
     }
 
     @Test

@@ -32,10 +32,21 @@
           "roleName" : "[[ANYTHING_PRESENT]]",
           "readOnly" : false,
           "attributes" : {
-            "contractType" : "SALARIED",
+            "contractType" : "Salaried",
+            "contractType" : "Salaried",
             "primaryLocation" : "abc",
-            "jurisdiction" : "IA",
-            "region" : "south-east"
+            "jurisdiction" : "IA"
+          }
+        },
+        {
+          "_extends_": "ResponseRoleAssignment",
+          "actorId": "[[ANYTHING_PRESENT]]",
+          "roleCategory" : "LEGAL_OPERATIONS",
+          "roleName" : "[[ANYTHING_PRESENT]]",
+          "attributes" : {
+            "contractType" : "Salaried",
+            "primaryLocation" : "abc",
+            "jurisdiction" : "IA"
           }
         },
         {
@@ -45,10 +56,9 @@
           "roleName" : "[[ANYTHING_PRESENT]]",
           "readOnly" : false,
           "attributes" : {
-            "contractType" : "SALARIED",
+            "contractType" : "Salaried",
             "primaryLocation" : "abc",
-            "jurisdiction" : "IA",
-            "region" : "south-east"
+            "jurisdiction" : "IA"
           }
         }
       ]

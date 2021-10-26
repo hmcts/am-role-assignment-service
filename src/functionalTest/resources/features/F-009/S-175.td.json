@@ -33,9 +33,8 @@
           "roleName" : "[[ANYTHING_PRESENT]]",
           "readOnly" : false,
           "attributes" : {
-            "contractType" : "SALARIED",
-            "jurisdiction" : "divorce",
-            "region" : "south-east"
+            "contractType" : "Salaried",
+            "jurisdiction" : "IA"
           }
         },
         {
@@ -45,9 +44,8 @@
           "roleName" : "[[ANYTHING_PRESENT]]",
           "readOnly" : false,
           "attributes" : {
-            "contractType" : "SALARIED",
-            "jurisdiction" : "divorce",
-            "region" : "south-east"
+            "contractType" : "Salaried",
+            "jurisdiction" : "IA"
           }
         }
       ]
