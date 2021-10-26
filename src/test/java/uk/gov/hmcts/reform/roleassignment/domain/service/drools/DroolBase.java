@@ -46,7 +46,7 @@ public abstract class DroolBase {
         Case caseObj = Case.builder().id("1234567890123456")
             .caseTypeId("Asylum")
             .jurisdiction("IA")
-            .classification(Classification.PUBLIC)
+            .securityClassification(Classification.PUBLIC)
             .build();
         doReturn(caseObj).when(retrieveDataService).getCaseById("1234567890123456");
 
@@ -69,7 +69,7 @@ public abstract class DroolBase {
         Case caseObj3 = Case.builder().id("1234567890123459")
             .jurisdiction("CMC")
             .caseTypeId("Asylum")
-            .classification(Classification.PUBLIC)
+            .securityClassification(Classification.PUBLIC)
             .build();
         doReturn(caseObj3).when(retrieveDataService).getCaseById("1234567890123459");
 
