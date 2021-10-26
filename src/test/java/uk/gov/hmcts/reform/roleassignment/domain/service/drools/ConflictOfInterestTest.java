@@ -344,6 +344,30 @@ class ConflictOfInterestTest extends DroolBase {
         });
     }
 
+    @Test
+    void doNot_createConflictRole_with_CaseAllocator_Cmc_LegalOps() throws IOException {
+
+        assignmentRequest = TestDataBuilder.getAssignmentRequest()
+            .build();
+        assignmentRequest
+            .setRequestedRoles(
+                Collections.singletonList(
+                    TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.LEGAL_OPERATIONS)));
+
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.getAttributes().clear();
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+            roleAssignment.setActorId("4772dc44-268f-4d0c-8f83-f0fb662aac90");
+        });
+
+        executeDroolRules(Collections.singletonList(
+            TestDataBuilder.buildExistingRoleForConflict("CMC", RoleCategory.LEGAL_OPERATIONS)));
+
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(REJECTED, roleAssignment.getStatus());
+        });
+    }
+
     //Do Not Delete
 
     @Test
