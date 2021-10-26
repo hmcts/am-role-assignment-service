@@ -44,8 +44,7 @@ when
          ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleName == "case-allocator",
-             roleCategory == $ra.roleCategory,
-             $c.securityClassification != null && classification.isAtLeast($c.securityClassification),  /// TBC: this needs some code support to make it easy
+             $c.securityClassification != null && classification.isAtLeast($c.securityClassification),
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == $c.jurisdiction,
              attributes["caseType"] == null || attributes["caseType"].asText() == $c.caseTypeId,
              attributes["caseId"] == null || attributes["caseId"].asText() == $c.id,
@@ -92,7 +91,6 @@ when
          ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleName == "case-allocator",
-             roleCategory == $ra.roleCategory,
              attributes["jurisdiction"] == $ra.attributes["jurisdiction"],
              attributes["caseType"] == null || attributes["caseType"] == $ra.attributes["caseType"],
              attributes["caseId"] == null || attributes["caseId"] == $ra.attributes["caseId"],
