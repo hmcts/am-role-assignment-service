@@ -187,7 +187,7 @@ class CCDCaseRolesTest extends DroolBase {
 
         buildExecuteKieSession();
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
     }
 
     @Test
@@ -208,7 +208,7 @@ class CCDCaseRolesTest extends DroolBase {
 
         buildExecuteKieSession();
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
     }
 
     @Test
