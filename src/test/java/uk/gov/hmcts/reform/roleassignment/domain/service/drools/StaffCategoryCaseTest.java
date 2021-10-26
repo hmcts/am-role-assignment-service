@@ -747,8 +747,8 @@ class StaffCategoryCaseTest extends DroolBase {
     }
 
     @Test
-    @DisplayName("Reject the delete case-allocator with wrong Category.")
-    void shouldRejectDeleteCaseAllocatorRoles_withWrongCategory() {
+    @DisplayName("Approve the delete case-allocator with different role Category.")
+    void shouldApproveDeleteCaseAllocatorRoles_withDifferentCategory() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.ADMIN, "case-allocator",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
@@ -765,7 +765,7 @@ class StaffCategoryCaseTest extends DroolBase {
                                                           RoleCategory.LEGAL_OPERATIONS)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
     }
 
     @Test
