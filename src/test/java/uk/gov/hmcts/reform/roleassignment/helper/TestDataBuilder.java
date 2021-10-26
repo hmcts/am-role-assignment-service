@@ -527,6 +527,23 @@ public class TestDataBuilder {
 
     }
 
+    public static ExistingRoleAssignment buildExistingRoleForConflict(String actorId) {
+        Map<String,JsonNode> attributes = new HashMap<>();
+        attributes.put("jurisdiction",convertValueJsonNode("IA"));
+        //attributes.put("caseType",convertValueJsonNode("Asylum"));
+//        attributes.put("allocatedRoleCategory", convertValueJsonNode(RoleCategory.JUDICIAL));
+//        attributes.put("allocatedRole", convertValueJsonNode("lead-judge"));
+        return ExistingRoleAssignment.builder()
+            .actorId(actorId)
+//            .roleType(RoleType.CASE)
+//            .roleCategory(RoleCategory.JUDICIAL)
+            .roleName("case-allocator")
+            .classification(Classification.PUBLIC)
+            .attributes(attributes)
+            .build();
+
+    }
+
     public static List<RoleAssignment> getRequestedOrgRole() {
         return Arrays.asList(RoleAssignment.builder()
                                  .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))

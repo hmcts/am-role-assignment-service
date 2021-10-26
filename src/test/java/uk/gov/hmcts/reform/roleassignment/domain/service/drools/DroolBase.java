@@ -9,6 +9,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
@@ -45,6 +46,7 @@ public abstract class DroolBase {
         Case caseObj = Case.builder().id("1234567890123456")
             .caseTypeId("Asylum")
             .jurisdiction("IA")
+            .classification(Classification.PUBLIC)
             .build();
         doReturn(caseObj).when(retrieveDataService).getCaseById("1234567890123456");
 
