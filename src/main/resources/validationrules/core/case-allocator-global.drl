@@ -44,7 +44,7 @@ when
          ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleName == "case-allocator",
-             $c.classification != null && classification.isAtLeast($c.classification),
+             $c.securityClassification != null && classification.isAtLeast($c.securityClassification),
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == $c.jurisdiction,
              attributes["caseType"] == null || attributes["caseType"].asText() == $c.caseTypeId,
              attributes["caseId"] == null || attributes["caseId"].asText() == $c.id,
