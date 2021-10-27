@@ -11,7 +11,7 @@
     "body": {
       "queryRequests": [
         {
-          "hasAttributes": ["region"],
+          "hasAttributes": ["jurisdiction"],
           "roleCategory": ["LEGAL_OPERATIONS"],
           "attributes": {
             "primaryLocation": ["abc"],
@@ -32,10 +32,9 @@
           "roleCategory" : "LEGAL_OPERATIONS",
           "roleName" : "[[ANYTHING_PRESENT]]",
           "attributes" : {
-            "contractType" : "SALARIED",
+            "contractType" : "Salaried",
             "primaryLocation" : "abc",
-            "jurisdiction" : "IA",
-            "region" : "south-east"
+            "jurisdiction" : "IA"
           }
         },
         {
@@ -44,10 +43,9 @@
           "roleCategory" : "LEGAL_OPERATIONS",
           "roleName" : "[[ANYTHING_PRESENT]]",
           "attributes" : {
-            "contractType" : "SALARIED",
+            "contractType" : "Salaried",
             "primaryLocation" : "abc",
-            "jurisdiction" : "IA",
-            "region" : "south-east"
+            "jurisdiction" : "IA"
           }
         }
       ]
