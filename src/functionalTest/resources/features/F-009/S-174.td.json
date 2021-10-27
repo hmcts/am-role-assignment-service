@@ -32,10 +32,9 @@
           "roleName" : "[[ANYTHING_PRESENT]]",
           "readOnly" : false,
           "attributes" : {
-            "contractType" : "SALARIED",
+            "contractType" : "Salaried",
             "primaryLocation" : "abc",
-            "jurisdiction" : "IA",
-            "region" : "south-east"
+            "jurisdiction" : "IA"
           }
         },
         {
@@ -45,10 +44,9 @@
           "roleName" : "[[ANYTHING_PRESENT]]",
           "readOnly" : false,
           "attributes" : {
-            "contractType" : "SALARIED",
+            "contractType" : "Salaried",
             "primaryLocation" : "abc",
-            "jurisdiction" : "IA",
-            "region" : "south-east"
+            "jurisdiction" : "IA"
           }
         }
       ]
