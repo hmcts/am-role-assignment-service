@@ -10,9 +10,8 @@
   "readOnly": false,
   "attributes":
   {
-    "jurisdiction": "divorce",
-    "region": "south-east",
-    "contractType": "SALARIED"
+    "jurisdiction": "IA",
+    "contractType": "Salaried"
   },
   "notes":
   [
