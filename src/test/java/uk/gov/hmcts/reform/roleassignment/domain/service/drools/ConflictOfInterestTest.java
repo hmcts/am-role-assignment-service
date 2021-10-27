@@ -371,7 +371,7 @@ class ConflictOfInterestTest extends DroolBase {
     //Do Not Delete
 
     @Test
-    void doNot_deleteConflictRole_Ia_Judicial_with_CaseAllocator_Ia_Admin() throws IOException {
+    void doNot_deleteConflictRole_Ia_Judicial_with_CaseAllocator_Cmc_Admin() throws IOException {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
