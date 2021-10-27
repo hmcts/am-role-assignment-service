@@ -24,12 +24,12 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "IA",
+                 roleAssignment.attributes["caseType"].asText() == "Asylum",
                  roleAssignment.roleName in ("lead-judge"))
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
                  roleName in ("leadership-judge"),
-                 roleCategory == $ca.getRoleAssignment().roleCategory,
                  attributes["jurisdiction"].asText() == "IA")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -49,12 +49,12 @@ when
    $ca: CaseAllocatorApproval(
                 roleAssignment.status == Status.CREATE_REQUESTED,
                 roleAssignment.attributes["jurisdiction"].asText() == "IA",
+                 roleAssignment.attributes["caseType"].asText() == "Asylum",
                 roleAssignment.roleName in ("hearing-judge"))
         ExistingRoleAssignment(
                 actorId == $ca.getRoleAssignment().actorId,
                 roleType == RoleType.ORGANISATION,
                 roleName in ("senior-judge", "judge", "fee-paid-judge"),
-                roleCategory == $ca.getRoleAssignment().roleCategory,
                 attributes["jurisdiction"].asText() == "IA")
 then
    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -74,12 +74,12 @@ when
   $ca: CaseAllocatorApproval(
                roleAssignment.status == Status.CREATE_REQUESTED,
                roleAssignment.attributes["jurisdiction"].asText() == "IA",
+                 roleAssignment.attributes["caseType"].asText() == "Asylum",
                roleAssignment.roleName in ("ftpa-judge"))
        ExistingRoleAssignment(
                actorId == $ca.getRoleAssignment().actorId,
                roleType == RoleType.ORGANISATION,
                roleName in ("senior-judge", "judge"),
-               roleCategory == $ca.getRoleAssignment().roleCategory,
                attributes["jurisdiction"].asText() == "IA")
 then
   $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -99,12 +99,12 @@ when
   $ca: CaseAllocatorApproval(
                roleAssignment.status == Status.CREATE_REQUESTED,
                roleAssignment.attributes["jurisdiction"].asText() == "IA",
+               roleAssignment.attributes["caseType"].asText() == "Asylum",
                roleAssignment.roleName in ("hearing-panel-judge"))
        ExistingRoleAssignment(
                actorId == $ca.getRoleAssignment().actorId,
                roleType == RoleType.ORGANISATION,
                roleName in ("senior-judge", "judge", "fee-paid-judge"),
-               roleCategory == $ca.getRoleAssignment().roleCategory,
                attributes["jurisdiction"].asText() == "IA")
 then
   $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -124,12 +124,12 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "IA",
+                 roleAssignment.attributes["caseType"].asText() == "Asylum",
                  roleAssignment.roleName == "case-allocator")
          ExistingRoleAssignment(
                  actorId == $ca.roleAssignment.actorId,
                  roleType == RoleType.ORGANISATION,
                  roleName == "case-allocator",
-                 roleCategory == $ca.getRoleAssignment().roleCategory,
                  attributes["jurisdiction"].asText() == "IA")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
