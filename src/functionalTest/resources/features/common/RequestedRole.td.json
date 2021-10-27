@@ -12,9 +12,8 @@
   "endTime" : "2023-01-01T00:00:00Z",
   "attributes":
   {
-    "jurisdiction": "divorce",
-    "region": "south-east",
-    "contractType": "SALARIED",
+    "jurisdiction": "IA",
+    "contractType": "Salaried",
     "substantive": "Y"
   },
   "notes":
