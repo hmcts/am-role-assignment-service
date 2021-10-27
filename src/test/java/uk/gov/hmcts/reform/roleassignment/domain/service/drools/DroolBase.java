@@ -66,6 +66,13 @@ public abstract class DroolBase {
             .build();
         doReturn(caseObj2).when(retrieveDataService).getCaseById("1234567890123458");
 
+        Case caseObj3 = Case.builder().id("1234567890123459")
+            .jurisdiction("CMC")
+            .caseTypeId("Asylum")
+            .securityClassification(Classification.PUBLIC)
+            .build();
+        doReturn(caseObj3).when(retrieveDataService).getCaseById("1234567890123459");
+
         // Set up the rule engine for validation.
         KieServices ks = KieServices.Factory.get();
         KieContainer kieContainer = ks.getKieClasspathContainer();
