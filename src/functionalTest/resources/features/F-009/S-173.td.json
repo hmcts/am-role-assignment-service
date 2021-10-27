@@ -33,7 +33,6 @@
           "roleName" : "[[ANYTHING_PRESENT]]",
           "attributes" : {
             "contractType" : "Salaried",
-            "contractType" : "Salaried",
             "primaryLocation" : "abc",
             "jurisdiction" : "IA"
           }
