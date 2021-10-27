@@ -1,0 +1,77 @@
+{
+  "title": "must successfully create conflict-of-interest Case Role Assignment for other Actor",
+  "_guid_": "S-209",
+  "_extends_": "F-008_Test_Data_Base",
+  "specs": [
+    "contains ReplaceExisting is false and reference set to caseId",
+    "Befta1 - who is the actor for requested role",
+    "Befta2 - who is the requester for requested role",
+    "contains conflict-of-interest case role assignment"
+  ],
+  "users": {
+    "invokingUser": {
+      "username": "TEST_AM_USER6_BEFTA@test.local",
+      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+    }
+  },
+  "request": {
+    "body": {
+      "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1607103938250138/conflict-of-interest",
+        "replaceExisting": false
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+          "roleName": "conflict-of-interest",
+          "roleCategory": "LEGAL_OPERATIONS",
+          "roleType": "CASE",
+          "grantType": "EXCLUDED",
+          "classification": "RESTRICTED",
+          "attributes":
+          {
+            "caseId" : "1607103938250138",
+            "jurisdiction": "IA",
+            "caseType": "Asylum"
+          }
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest",
+          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "replaceExisting": false
+        },
+        "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+            "roleName": "conflict-of-interest",
+            "roleCategory": "LEGAL_OPERATIONS",
+            "roleType": "CASE",
+            "grantType": "EXCLUDED",
+            "classification": "RESTRICTED",
+            "attributes":
+            {
+              "caseId" : "1607103938250138",
+              "jurisdiction" : "IA",
+              "caseType" : "Asylum",
+              "substantive" : "N"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
