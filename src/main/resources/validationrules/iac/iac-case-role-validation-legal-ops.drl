@@ -101,12 +101,12 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "IA",
-                 roleAssignment.roleName in ("case-manager"))
+                 roleAssignment.attributes["caseType"].asText() == "Asylum",
+                 roleAssignment.roleName == "case-manager" )
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName == "tribunal-caseworker",
-                 roleCategory == $ca.getRoleAssignment().roleCategory,
+                 roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
                  attributes["jurisdiction"].asText() == "IA")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -125,12 +125,12 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "IA",
-                 roleAssignment.roleName in ("tribunal-caseworker"))
+                 roleAssignment.attributes["caseType"].asText() == "Asylum",
+                 roleAssignment.roleName == "tribunal-caseworker")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
                  roleName in ("tribunal-caseworker","senior-tribunal-caseworker"),
-                 roleCategory == $ca.getRoleAssignment().roleCategory,
                  attributes["jurisdiction"].asText() == "IA")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -151,12 +151,12 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "IA",
+                 roleAssignment.attributes["caseType"].asText() == "Asylum",
                  roleAssignment.roleName == "case-allocator")
          ExistingRoleAssignment(
                  actorId == $ca.roleAssignment.actorId,
                  roleType == RoleType.ORGANISATION,
                  roleName == "case-allocator",
-                 roleCategory == $ca.getRoleAssignment().roleCategory,
                  attributes["jurisdiction"].asText() == "IA")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
