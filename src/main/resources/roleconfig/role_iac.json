@@ -20,35 +20,9 @@
           "values": ["PUBLIC","PRIVATE"]
         },
         "attributes": {
-          "region": {
-            "mandatory": true,
-            "values": ["north-east","south-east"]
-          },
           "jurisdiction": {
             "mandatory": true,
-            "values": ["divorce","IA"]
-          }
-        }
-      },
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["CASE"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC","CHALLENGED"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "beginTime": {
-          "mandatory": true
-        },
-        "attributes": {
-          "caseId": {
-            "mandatory": true
+            "values": ["IA"]
           }
         }
       }
@@ -239,12 +213,11 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
+          "values": ["PRIVATE"]
         },
         "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
+          "contractType": {
+            "mandatory": true
           }
         }
       }
@@ -613,7 +586,7 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
+          "values": ["PRIVATE"]
         },
         "attributes": {
           "primaryLocation": {
