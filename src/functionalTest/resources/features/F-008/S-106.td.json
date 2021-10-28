@@ -18,7 +18,8 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/tribunal-caseworker"
+        "reference": "1607103938250138/tribunal-caseworker",
+        "replaceExisting": false
       },
       "requestedRoles": [
         {
@@ -59,7 +60,7 @@
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
           "reference": "1607103938250138/tribunal-caseworker",
-          "replaceExisting": true
+          "replaceExisting": false
         },
         "requestedRoles": [
           {

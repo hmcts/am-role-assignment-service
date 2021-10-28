@@ -107,7 +107,7 @@ when
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
                  roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
-                 attributes["jurisdiction"].asText() == "IA")
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : ia_case_allocator_approved_create_case_manager_role_v11");
@@ -131,7 +131,7 @@ when
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
                  roleName in ("tribunal-caseworker","senior-tribunal-caseworker"),
-                 attributes["jurisdiction"].asText() == "IA")
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : ia_case_allocator_approved_create_tribunal_caseworker_role_v11");
@@ -157,7 +157,7 @@ when
                  actorId == $ca.roleAssignment.actorId,
                  roleType == RoleType.ORGANISATION,
                  roleName == "case-allocator",
-                 attributes["jurisdiction"].asText() == "IA")
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : ia_case_allocator_approved_create_case_allocator_role_v11");
@@ -170,15 +170,15 @@ end;
  */
 
 
-rule "ia_case_allocator_approved_delete_case_role_v11"
+rule "ia_staff_case_allocator_approved_delete_case_role_v11"
 when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
     $ca: CaseAllocatorApproval(
-        roleAssignment.status == Status.DELETE_REQUESTED,
-        roleAssignment.attributes["jurisdiction"].asText() == "IA")
+                roleAssignment.status == Status.DELETE_REQUESTED,
+                roleAssignment.attributes["jurisdiction"].asText() == "IA")
 then
     $ca.getRoleAssignment().setStatus(Status.DELETE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : ia_case_allocator_delete_case_role");
+    $ca.getRoleAssignment().log("Stage 1 approved : ia_staff_case_allocator_approved_delete_case_role_v11");
     update($ca.getRoleAssignment());
-    logMsg("Rule : ia_case_allocator_delete_case_role");
+    logMsg("Rule : ia_staff_case_allocator_approved_delete_case_role_v11");
 end;
