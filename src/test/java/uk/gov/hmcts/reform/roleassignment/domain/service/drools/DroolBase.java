@@ -39,9 +39,6 @@ public abstract class DroolBase {
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
 
-        // facts must contain the role config, for access to the patterns
-        facts.add(RoleConfig.getRoleConfig());
-
         //mock the retrieveDataService to fetch the Case Object
         Case caseObj = Case.builder().id("1234567890123456")
             .caseTypeId("Asylum")
@@ -49,6 +46,13 @@ public abstract class DroolBase {
             .securityClassification(Classification.PUBLIC)
             .build();
         doReturn(caseObj).when(retrieveDataService).getCaseById("1234567890123456");
+
+        Case caseObj0 = Case.builder().id("9234567890123456")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .securityClassification(Classification.PRIVATE)
+            .build();
+        doReturn(caseObj0).when(retrieveDataService).getCaseById("9234567890123456");
 
         //mock the retrieveDataService to fetch the Case Object with incorrect type ID
         Case caseObj1 = Case.builder().id("1234567890123457")
@@ -82,6 +86,8 @@ public abstract class DroolBase {
     }
 
     void buildExecuteKieSession() {
+        // facts must contain the role config, for access to the patterns
+        facts.add(RoleConfig.getRoleConfig());
         // facts must contain the request
         facts.add(assignmentRequest.getRequest());
         facts.addAll(featureFlags);
@@ -90,10 +96,13 @@ public abstract class DroolBase {
         // Run the rules
         kieSession.execute(facts);
 
-
+        facts.clear();
+        featureFlags.clear();
     }
 
     void executeDroolRules(List<ExistingRoleAssignment> existingRoleAssignments) {
+        // facts must contain the role config, for access to the patterns
+        facts.add(RoleConfig.getRoleConfig());
         // facts must contain all affected role assignments
         facts.addAll(assignmentRequest.getRequestedRoles());
 
@@ -107,6 +116,10 @@ public abstract class DroolBase {
 
         // Run the rules
         kieSession.execute(facts);
+
+        //flush the facts/flags so parameterised tests can run multiple executions
+        facts.clear();
+        featureFlags.clear();
     }
 
 
