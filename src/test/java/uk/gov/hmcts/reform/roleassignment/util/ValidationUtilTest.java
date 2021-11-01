@@ -415,4 +415,18 @@ class ValidationUtilTest {
             ValidationUtil.validateCaseId("123456789012345")
         );
     }
+
+    @Test
+    void shouldFindTheExistingValue_CsvContains() {
+        String str1 = "abc";
+        String str2 = "abc,def,xyz";
+        assertTrue(ValidationUtil.csvContains(str1,str2));
+    }
+
+    @Test
+    void shouldNotFindNonExistingValue_CsvContains() {
+        String str1 = "mnp";
+        String str2 = "abc,def,xyz";
+        assertFalse(ValidationUtil.csvContains(str1,str2));
+    }
 }
