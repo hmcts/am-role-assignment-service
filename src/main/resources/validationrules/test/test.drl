@@ -1,6 +1,7 @@
 package validationrules.test;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.CaseAllocatorApproval;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
@@ -63,5 +64,13 @@ when
 	$f:  FeatureFlag()
 then
 	logMsg("We have a feature flag for " + $f.getFlagName() + " : " + $f);
+end;
+
+rule "case_allocator_approval"
+salience 1000
+when
+	$ca:  CaseAllocatorApproval()
+then
+	logMsg("We have a CaseAllocatorApproval  for " + $ca.getRoleAssignment());
 end;
 

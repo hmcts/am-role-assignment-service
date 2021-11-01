@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.feignclients.configuration;
 
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreApi;
 
 @Component
@@ -31,6 +32,7 @@ public class DataStoreApiFallback implements DataStoreApi {
                 return Case.builder().id(caseId)
                     .caseTypeId("Asylum")
                     .jurisdiction("IA")
+                    .securityClassification(Classification.PUBLIC)
                     .build();
         }
     }
