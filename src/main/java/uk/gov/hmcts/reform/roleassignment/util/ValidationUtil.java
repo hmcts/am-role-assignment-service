@@ -16,6 +16,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -174,5 +175,9 @@ public class ValidationUtil {
         if (caseId.length() != 16) {
             throw new BadRequestException(V1.Error.INVALID_CASE_ID);
         }
+    }
+
+    public static boolean csvContains(String value, String csv) {
+        return Arrays.stream(csv.split(",")).map(String::trim).anyMatch(value::equals);
     }
 }
