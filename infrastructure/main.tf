@@ -86,3 +86,20 @@ resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
   value         = module.role-assignment-database.postgresql_database
   key_vault_id  = data.azurerm_key_vault.am_key_vault.id
 }
+
+module "role-assignment-database-v11" {
+  source             = "git@github.com:hmcts/cnp-module-postgres?ref=master"
+  name               = join("-", [local.app_full_name, "postgres-db", "v11"])
+  product            = var.product
+  component          = var.component
+  location           = var.location
+  env                = var.env
+  subscription       = var.subscription
+  postgresql_user    = var.postgresql_user
+  database_name      = var.database_name
+  storage_mb         = var.database_storage_mb
+  sku_name           = var.database_sku_name
+  sku_capacity       = var.database_sku_capacity
+  common_tags        = var.common_tags
+  postgresql_version = "11"
+}
