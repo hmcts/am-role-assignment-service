@@ -16,6 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -108,6 +109,15 @@ public class JacksonUtils {
         for (RoleAssignment roleAssignment : assignmentRequest.getRequestedRoles()) {
             subset = RoleAssignmentSubset.builder().build();
             BeanUtils.copyProperties(subset, roleAssignment);
+            if (roleAssignment.getRoleType().equals(RoleType.CASE)) {
+                //Remove the caseType and jurisdiction entries as it was added by application and
+                // breaks the duplicate identification logic
+                subset.getAttributes().remove("jurisdiction");
+                subset.getAttributes().remove("caseType");
+            } else {
+                // similarly remove the substantive flag from the subset entity
+                subset.getAttributes().remove("substantive");
+            }
             roleAssignmentSubsets.put(roleAssignment.getId(), subset);
         }
 
