@@ -587,7 +587,7 @@ class CreateRoleAssignmentOrchestratorTest {
         AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
 
         //assert values
-        verify(assignmentRequest, times(3)).setRequestedRoles(any());
+        verify(assignmentRequest, times(2)).setRequestedRoles(any());
         assertEquals(result.getRequestedRoles(), assignmentRequest.getRequestedRoles());
         assertEquals(assignmentRequest, result);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -595,7 +595,7 @@ class CreateRoleAssignmentOrchestratorTest {
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
         verify(persistenceService, times(1))
             .persistRequest(any(Request.class));
-        verify(persistenceUtil, times(1))
+        verify(persistenceUtil, times(3))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(prepareResponseService, times(1))
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
