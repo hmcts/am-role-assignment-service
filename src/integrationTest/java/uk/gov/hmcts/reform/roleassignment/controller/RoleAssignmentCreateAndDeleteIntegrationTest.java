@@ -134,7 +134,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         doReturn(retrievedCase).when(retrieveDataService).getCaseById(anyString());
     }
 
-    @Test
+    //@Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
         scripts = {"classpath:sql/role_assignment_clean_up.sql","classpath:sql/insert_role_assignment_to_create.sql"})
     public void shouldCreateRoleAssignmentsWithReplaceExistingTrue() throws Exception {
