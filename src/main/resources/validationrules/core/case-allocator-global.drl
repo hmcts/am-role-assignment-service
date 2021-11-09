@@ -91,7 +91,7 @@ when
          ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleName == "case-allocator",
-             attributes["jurisdiction"] == $ra.attributes["jurisdiction"],
+             attributes["jurisdiction"] != null && attributes["jurisdiction"] == $ra.attributes["jurisdiction"],
              attributes["caseType"] == null || attributes["caseType"] == $ra.attributes["caseType"],
              attributes["caseId"] == null || attributes["caseId"] == $ra.attributes["caseId"],
              attributes["region"] == null || attributes["region"] == $ra.attributes["region"],
