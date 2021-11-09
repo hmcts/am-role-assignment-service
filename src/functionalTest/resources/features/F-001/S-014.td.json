@@ -15,12 +15,6 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "roleType": "ORGANISATION",
-          "grantType": "STANDARD"
-        },
-        {
-          "_extends_": "RequestedRole",
           "roleType": "ORGANISATION",
           "grantType": "CHALLENGED",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
@@ -44,12 +38,6 @@
           "replaceExisting": true
         },
         "requestedRoles": [
-          {
-            "_extends_": "ResponseRequestedRole",
-            "status": "REJECTED",
-            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
-            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}"
-          },
           {
             "_extends_": "ResponseRequestedRole",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][1][roleType]}",

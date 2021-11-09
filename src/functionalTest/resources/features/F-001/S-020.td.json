@@ -49,7 +49,10 @@
             "status": "REJECTED",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
             "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
-            "actorId": "${}${[scenarioContext][testData][request][body][requestedRoles][0][actorId]}"
+            "actorId": "${}${[scenarioContext][testData][request][body][requestedRoles][0][actorId]}",
+            "attributes" : {
+              "substantive" : "Y"
+            }
           },
           {
             "_extends_": "ResponseRequestedRole",
