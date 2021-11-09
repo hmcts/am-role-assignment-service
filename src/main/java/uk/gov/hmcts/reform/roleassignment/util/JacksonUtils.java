@@ -17,6 +17,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.io.IOException;
@@ -110,6 +112,9 @@ public class JacksonUtils {
             BeanUtils.copyProperties(subset, (RoleAssignment) SerializationUtils.clone(roleAssignment));
             // similarly remove the substantive flag from the subset entity
             subset.getAttributes().remove("substantive");
+            if (roleAssignment.getRoleType().equals(RoleType.CASE)) {
+                subset.getAttributes().remove("caseType");
+            }
 
             roleAssignmentSubsets.put(roleAssignment.getId(), subset);
         }
