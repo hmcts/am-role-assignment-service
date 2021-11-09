@@ -34,7 +34,10 @@
         "requestedRoles": [
           {
             "_extends_": "S-101_Response_without_time",
-            "actorId": "${}${[scenarioContext][testData][request][body][requestedRoles][0][actorId]}"
+            "actorId": "${}${[scenarioContext][testData][request][body][requestedRoles][0][actorId]}",
+            "attributes": {
+              "substantive" : "Y"
+            }
           }
         ]
       }

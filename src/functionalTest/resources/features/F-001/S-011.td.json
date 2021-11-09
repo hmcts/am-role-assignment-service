@@ -36,7 +36,10 @@
           {
             "_extends_": "ResponseRequestedRole",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
-            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}"
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "attributes": {
+              "substantive" : "Y"
+            }
           }
         ]
       }

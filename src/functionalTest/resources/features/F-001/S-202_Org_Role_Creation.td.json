@@ -65,7 +65,8 @@
             "roleName": "case-allocator",
             "attributes":
             {
-              "jurisdiction": "IA"
+              "jurisdiction": "IA",
+              "substantive" : "Y"
             }
           },
           {
@@ -77,7 +78,8 @@
             "roleName": "leadership-judge",
             "attributes":
             {
-              "jurisdiction": "IA"
+              "jurisdiction": "IA",
+              "substantive" : "Y"
             }
           }
         ]

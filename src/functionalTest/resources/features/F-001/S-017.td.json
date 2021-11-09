@@ -44,14 +44,20 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][requestedRoles][0][actorId]}",
-            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "attributes": {
+              "substantive" : "Y"
+            }
           },
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][requestedRoles][1][actorId]}",
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "roleType": "ORGANISATION",
-            "grantType": "STANDARD"
+            "grantType": "STANDARD",
+            "attributes": {
+              "substantive" : "Y"
+            }
           }
         ]
       }

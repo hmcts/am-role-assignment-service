@@ -62,7 +62,8 @@
             "attributes":
             {
               "jurisdiction": "IA",
-              "primaryLocation": "dcb"
+              "primaryLocation": "dcb",
+              "substantive" : "Y"
             }
           },
           {
@@ -74,7 +75,6 @@
               "jurisdiction": "IA",
               "primaryLocation": "abc"
             }
-
           }
         ]
       }

@@ -40,13 +40,19 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "authorisations" : ["CCD","ExUI","SSIC", "RefData"]
+            "authorisations" : ["CCD","ExUI","SSIC", "RefData"],
+            "attributes": {
+              "substantive" : "Y"
+            }
           },
           {
             "_extends_": "ResponseRequestedRole",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
-            "authorisations" : ["IAC","Divorce","DocumentStore","Video Hearings"]
+            "authorisations" : ["IAC","Divorce","DocumentStore","Video Hearings"],
+            "attributes": {
+              "substantive" : "Y"
+            }
           }
         ]
       }

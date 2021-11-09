@@ -35,7 +35,10 @@
 
         "requestedRoles": [
           {
-            "_extends_": "ResponseRequestedRole"
+            "_extends_": "ResponseRequestedRole",
+            "attributes": {
+              "substantive" : "Y"
+            }
           }
         ]
       }

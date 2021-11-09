@@ -35,17 +35,26 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "123e4567-e89b-42d3-a456-000000000011",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "attributes": {
+              "substantive" : "Y"
+            }
           },
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "123e4567-e89b-42d3-a456-000000000012",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "attributes": {
+              "substantive" : "Y"
+            }
           },
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "123e4567-e89b-42d3-a456-000000000013",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "attributes": {
+              "substantive" : "Y"
+            }
           }
         ]
       }

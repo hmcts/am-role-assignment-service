@@ -40,7 +40,10 @@
           {
             "_extends_": "ResponseRequestedRole",
             "roleType": "ORGANISATION",
-            "grantType": "STANDARD"
+            "grantType": "STANDARD",
+            "attributes": {
+              "substantive" : "Y"
+            }
           }
         ]
       }

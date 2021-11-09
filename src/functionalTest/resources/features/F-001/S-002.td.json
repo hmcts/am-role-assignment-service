@@ -37,12 +37,18 @@
         },
         "requestedRoles": [
           {
-            "_extends_": "ResponseRequestedRole"
+            "_extends_": "ResponseRequestedRole",
+            "attributes": {
+              "substantive" : "Y"
+            }
           },
           {
             "_extends_": "ResponseRequestedRole",
             "roleType": "ORGANISATION",
-            "grantType": "STANDARD"
+            "grantType": "STANDARD",
+            "attributes": {
+              "substantive" : "Y"
+            }
           }
         ]
       }

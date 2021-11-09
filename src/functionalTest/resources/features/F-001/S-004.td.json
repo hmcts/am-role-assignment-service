@@ -36,8 +36,8 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][1][roleType]}",
-            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
             "status": "REJECTED"
           }
         ]

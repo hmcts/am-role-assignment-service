@@ -81,7 +81,8 @@
             "attributes":
             {
               "jurisdiction": "IA",
-              "primaryLocation": "abc"
+              "primaryLocation": "abc",
+              "substantive" : "Y"
             }
           },
           {
@@ -94,7 +95,8 @@
             "attributes":
             {
               "jurisdiction": "IA",
-              "primaryLocation": "abc"
+              "primaryLocation": "abc",
+              "substantive" : "Y"
             }
           },
           {
@@ -107,7 +109,8 @@
             "attributes":
             {
               "jurisdiction": "IA",
-              "primaryLocation": "abc"
+              "primaryLocation": "abc",
+              "substantive" : "Y"
             }
           }
         ]

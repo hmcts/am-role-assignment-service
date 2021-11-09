@@ -30,7 +30,10 @@
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "authorisations": ["Dev","Test"]
+            "authorisations": ["Dev","Test"],
+            "attributes": {
+              "substantive" : "Y"
+            }
           }
         ]
       }

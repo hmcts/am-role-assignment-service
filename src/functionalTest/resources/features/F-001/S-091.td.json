@@ -40,13 +40,19 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "authorisations" : ["CCD"]
+            "authorisations" : ["CCD"],
+            "attributes": {
+              "substantive" : "Y"
+            }
           },
           {
             "_extends_": "ResponseRequestedRole",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
-            "authorisations" : ["IAC"]
+            "authorisations" : ["IAC"],
+            "attributes": {
+              "substantive" : "Y"
+            }
           }
         ]
       }

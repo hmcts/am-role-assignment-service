@@ -40,12 +40,18 @@
         },
         "requestedRoles": [
           {
-            "_extends_": "ResponseRequestedRole"
+            "_extends_": "ResponseRequestedRole",
+            "attributes": {
+              "substantive" : "Y"
+            }
           },
           {
             "_extends_": "ResponseRequestedRole",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][1][roleType]}",
-            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}"
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
+            "attributes": {
+              "substantive" : "Y"
+            }
           }
         ]
       }
