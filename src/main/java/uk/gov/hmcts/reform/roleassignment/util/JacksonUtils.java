@@ -114,6 +114,7 @@ public class JacksonUtils {
                 // breaks the duplicate identification logic
                 subset.getAttributes().remove("jurisdiction");
                 subset.getAttributes().remove("caseType");
+                subset.getAttributes().remove("substantive");
             } else {
                 // similarly remove the substantive flag from the subset entity
                 subset.getAttributes().remove("substantive");
