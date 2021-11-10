@@ -103,9 +103,9 @@ module "role-assignment-database-v11" {
   subscription       = var.subscription
   postgresql_user    = var.postgresql_user
   database_name      = var.database_name
-  storage_mb         = var.database_storage_mb
-  sku_name           = var.database_sku_name
-  sku_capacity       = var.database_sku_capacity
+  storage_mb         = "102400"
+  sku_name           = "GP_Gen5_8"
+  sku_capacity       = "8"
   common_tags        = var.common_tags
   postgresql_version = "11"
 }
