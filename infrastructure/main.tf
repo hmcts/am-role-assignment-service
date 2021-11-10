@@ -87,6 +87,12 @@ resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
   key_vault_id  = data.azurerm_key_vault.am_key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "POSTGRES-PASS-V11" {
+  name          = join("-", [var.component, "POSTGRES-PASS-V11"])
+  value         = module.role-assignment-database-v11.postgresql_password
+  key_vault_id  = data.azurerm_key_vault.am_key_vault.id
+}
+
 module "role-assignment-database-v11" {
   source             = "git@github.com:hmcts/cnp-module-postgres?ref=master"
   name               = join("-", [local.app_full_name, "postgres-db", "v11"])
@@ -97,9 +103,9 @@ module "role-assignment-database-v11" {
   subscription       = var.subscription
   postgresql_user    = var.postgresql_user
   database_name      = var.database_name
-  storage_mb         = var.database_storage_mb
-  sku_name           = var.database_sku_name
-  sku_capacity       = var.database_sku_capacity
+  storage_mb         = "102400"
+  sku_name           = "GP_Gen5_8"
+  sku_capacity       = "8"
   common_tags        = var.common_tags
   postgresql_version = "11"
 }
