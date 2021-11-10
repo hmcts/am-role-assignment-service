@@ -87,7 +87,7 @@ resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
   key_vault_id  = data.azurerm_key_vault.am_key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "POSTGRES-PASS" {
+resource "azurerm_key_vault_secret" "POSTGRES-PASS-V11" {
   name          = join("-", [var.component, "POSTGRES-PASS-V11"])
   value         = module.role-assignment-database-v11.postgresql_password
   key_vault_id  = data.azurerm_key_vault.am_key_vault.id
