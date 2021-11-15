@@ -349,7 +349,7 @@ dependencies {
   //Dependent on drools Jar. Can be removed CVE-2021-26291
   implementation group: 'org.apache.maven', name: 'maven-core', version: '3.8.1'
 
-  compile group: 'org.flywaydb', name: 'flyway-core', version: '5.2.4'
+  compile group: 'org.flywaydb', name: 'flyway-core', version: '8.0.4'
 
   //Added for Spring Security Implementation
   compile(group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBoot)
