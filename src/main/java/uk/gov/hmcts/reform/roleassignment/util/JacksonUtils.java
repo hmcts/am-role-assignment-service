@@ -114,6 +114,7 @@ public class JacksonUtils {
             subset.getAttributes().remove("substantive");
             if (roleAssignment.getRoleType().equals(RoleType.CASE)) {
                 subset.getAttributes().remove("caseType");
+                subset.getAttributes().remove("jurisdiction");
             }
 
             roleAssignmentSubsets.put(roleAssignment.getId(), subset);
