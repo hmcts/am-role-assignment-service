@@ -112,9 +112,9 @@ public class JacksonUtils {
             BeanUtils.copyProperties(subset, (RoleAssignment) SerializationUtils.clone(roleAssignment));
             // similarly remove the substantive flag from the subset entity
             subset.getAttributes().remove("substantive");
-            if (roleAssignment.getRoleType().equals(RoleType.CASE) &&
-                ("ccd_data,aac_manage_case_assignment".contains(assignmentRequest.getRequest().getClientId()) == false)
-                ) {
+            if (roleAssignment.getRoleType().equals(RoleType.CASE)
+                && ("ccd_data,aac_manage_case_assignment".contains(assignmentRequest
+                                                                       .getRequest().getClientId()) == false)) {
                 subset.getAttributes().remove("caseType");
                 subset.getAttributes().remove("jurisdiction");
             }
