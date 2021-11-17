@@ -35,7 +35,7 @@
         },
         "requestedRoles": [
           {
-            "_extends_": "ResponseRequestedRole",
+            "_extends_": "ResponseRequestedRoleWithoutSubstantive",
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "status": "REJECTED"
           }
