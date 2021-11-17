@@ -43,7 +43,7 @@
         },
         "requestedRoles": [
           {
-            "_extends_": "ResponseRequestedRole",
+            "_extends_": "ResponseRequestedRoleWithoutSubstantive",
             "attributes": {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}"
             },

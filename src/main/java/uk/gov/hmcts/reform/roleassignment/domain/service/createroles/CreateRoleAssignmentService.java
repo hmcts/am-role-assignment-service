@@ -353,8 +353,6 @@ public class CreateRoleAssignmentService {
             commonRecords
         );
 
-
-        // prepare tempList from incoming requested roles
         return MapUtils.isNotEmpty(needToDeleteRoleAssignments)
             || CollectionUtils.isNotEmpty(needToCreateRoleAssignments);
     }
