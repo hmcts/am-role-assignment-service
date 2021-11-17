@@ -60,7 +60,7 @@
         },
         "requestedRoles": [
           {
-            "_extends_": "ResponseRequestedRole",
+            "_extends_": "ResponseRequestedRoleWithoutSubstantive",
             "roleType": "CASE",
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "classification": "RESTRICTED",
