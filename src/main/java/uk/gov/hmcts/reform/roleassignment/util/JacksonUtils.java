@@ -10,12 +10,14 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -107,10 +109,16 @@ public class JacksonUtils {
         Map<UUID, RoleAssignmentSubset> roleAssignmentSubsets = new HashMap<>();
         for (RoleAssignment roleAssignment : assignmentRequest.getRequestedRoles()) {
             subset = RoleAssignmentSubset.builder().build();
-            BeanUtils.copyProperties(subset, roleAssignment);
+            BeanUtils.copyProperties(subset, (RoleAssignment) SerializationUtils.clone(roleAssignment));
+            // similarly remove the substantive flag from the subset entity
+            subset.getAttributes().remove("substantive");
+            if (roleAssignment.getRoleType().equals(RoleType.CASE)) {
+                subset.getAttributes().remove("caseType");
+                subset.getAttributes().remove("jurisdiction");
+            }
+
             roleAssignmentSubsets.put(roleAssignment.getId(), subset);
         }
-
         return roleAssignmentSubsets;
 
     }

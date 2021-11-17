@@ -64,7 +64,7 @@
         },
         "requestedRoles": [
           {
-            "_extends_": "ResponseRequestedRole",
+            "_extends_": "ResponseRequestedRoleWithoutSubstantive",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "classification": "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
