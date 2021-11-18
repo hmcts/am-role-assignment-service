@@ -134,19 +134,23 @@ public class PersistenceService {
 
     @Transactional
     public void persistActorCache(Collection<RoleAssignment> roleAssignments) {
-        roleAssignments.forEach(roleAssignment -> {
-            var actorCacheEntity = persistenceUtil
-                .convertActorCacheToEntity(prepareActorCache(roleAssignment));
-            ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
-            if (existingActorCache != null) {
-                actorCacheEntity.setEtag(existingActorCache.getEtag());
-                entityManager.merge(actorCacheEntity);
-            } else {
-                entityManager.persist(actorCacheEntity);
-            }
-        });
-        entityManager.flush();
-
+        try {
+            roleAssignments.forEach(roleAssignment -> {
+                var actorCacheEntity = persistenceUtil
+                    .convertActorCacheToEntity(prepareActorCache(roleAssignment));
+                ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
+                if (existingActorCache != null) {
+                    actorCacheEntity.setEtag(existingActorCache.getEtag());
+                    entityManager.merge(actorCacheEntity);
+                } else {
+                    entityManager.persist(actorCacheEntity);
+                }
+            });
+            entityManager.flush();
+        } catch (Exception exception) {
+            logger.debug("SqlConflict observed on the actor cache entity. ");
+            logger.debug("The eTag might not be updated:: {} ", exception.getMessage());
+        }
     }
 
     @NotNull
