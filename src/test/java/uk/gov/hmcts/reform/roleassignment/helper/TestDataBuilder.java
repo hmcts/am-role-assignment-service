@@ -83,6 +83,7 @@ public class TestDataBuilder {
             .replaceExisting(replaceExisting)
             .status(status)
             .created(ZonedDateTime.now())
+            .clientId("am_role_assignment_service")
             .build();
     }
 
