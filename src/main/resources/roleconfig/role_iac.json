@@ -360,7 +360,7 @@
     "label": "Tribunal Caseworker",
     "description": "Tribunal caseworker role for staff users",
     "category": "LEGAL_OPERATIONS",
-    "substantive": true,
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
@@ -448,7 +448,7 @@
     "label": "Case Allocator",
     "description": "Case Allocator role for staff users",
     "category": "LEGAL_OPERATIONS",
-    "substantive": true,
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
