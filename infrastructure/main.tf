@@ -35,24 +35,6 @@ resource "azurerm_key_vault_secret" "am_role_assignment_service_s2s_secret" {
   key_vault_id  = data.azurerm_key_vault.am_key_vault.id
 }
 
-
-module "role-assignment-database" {
-  source          = "git@github.com:hmcts/cnp-module-postgres?ref=master"
-  name            = join("-", [local.app_full_name, "postgres-db"])
-  product         = var.product
-  component       = var.component
-  location        = var.location
-  env             = var.env
-  subscription    = var.subscription
-  postgresql_user = var.postgresql_user
-  database_name   = var.database_name
-  storage_mb      = var.database_storage_mb
-  sku_name        = var.database_sku_name
-  sku_capacity    = var.database_sku_capacity
-  common_tags     = var.common_tags
-  postgresql_version = "9.6"
-}
-
 ////////////////////////////////
 // Populate Vault with DB info
 ////////////////////////////////
@@ -103,9 +85,9 @@ module "role-assignment-database-v11" {
   subscription       = var.subscription
   postgresql_user    = var.postgresql_user
   database_name      = var.database_name
-  storage_mb         = "102400"
-  sku_name           = "GP_Gen5_8"
-  sku_capacity       = "8"
+  storage_mb         = var.database_storage_mb
+  sku_name           = var.database_sku_name
+  sku_capacity       = var.database_sku_capacity
   common_tags        = var.common_tags
   postgresql_version = "11"
 }
