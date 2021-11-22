@@ -74,7 +74,8 @@
             {
               "caseId" : "1607103938250138",
               "jurisdiction" : "IA",
-              "caseType" : "Asylum"
+              "caseType" : "Asylum",
+              "substantive": "N"
             }
           },
           {
@@ -88,10 +89,9 @@
             {
               "caseId" : "1607103938250138",
               "jurisdiction" : "IA",
-              "caseType" : "Asylum"
-
+              "caseType" : "Asylum",
+              "substantive": "N"
             }
-
           }
         ]
       }
