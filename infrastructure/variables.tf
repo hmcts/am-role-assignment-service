@@ -48,13 +48,13 @@ variable "database_name" {
 
 variable "database_sku_name" {
   type    = string
-  default = "GP_Gen5_2"
+  default = "GP_Gen5_8"
 }
 
 variable "database_sku_capacity" {
-  default = "2"
+  default = "8"
 }
 
 variable "database_storage_mb" {
-  default = "51200"
+  default = "102400"
 }
