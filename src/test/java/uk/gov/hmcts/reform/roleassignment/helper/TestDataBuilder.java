@@ -83,6 +83,7 @@ public class TestDataBuilder {
             .replaceExisting(replaceExisting)
             .status(status)
             .created(ZonedDateTime.now())
+            .clientId("am_role_assignment_service")
             .build();
     }
 
@@ -489,6 +490,26 @@ public class TestDataBuilder {
             .build();
     }
 
+    public static RoleAssignment buildRoleAssignmentForConflict(RoleCategory roleCategory) throws IOException {
+        ZonedDateTime timeStamp = ZonedDateTime.now(ZoneOffset.UTC);
+        return RoleAssignment.builder()
+            .actorId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+            .actorIdType(ActorIdType.IDAM)
+            .roleType(RoleType.CASE)
+            .roleName("conflict-of-interest")
+            .status(CREATE_REQUESTED)
+            .classification(Classification.RESTRICTED)
+            .grantType(GrantType.EXCLUDED)
+            .roleCategory(roleCategory)
+            .readOnly(false)
+            .beginTime(timeStamp.plusDays(1))
+            .endTime(timeStamp.plusMonths(1))
+            .notes(buildNotesFromFile())
+            .attributes(JacksonUtils.convertValue(buildAttributesFromFile("attributes.json")))
+            .authorisations(Collections.emptyList())
+            .build();
+    }
+
     public static QueryRequest createQueryRequest() {
         Map<String, List<String>> attributes = new HashMap<>();
         List<String> regions = Arrays.asList("London", "JAPAN");
@@ -516,12 +537,29 @@ public class TestDataBuilder {
                                                                  RoleCategory roleCategory) {
         Map<String,JsonNode> attributes = new HashMap<>();
         attributes.put("jurisdiction",convertValueJsonNode("IA"));
-        attributes.put("caseTypeId",convertValueJsonNode("Assylum"));
+        attributes.put("caseTypeId",convertValueJsonNode("Asylum"));
         return ExistingRoleAssignment.builder()
             .actorId(actorId)
             .roleType(RoleType.ORGANISATION)
             .roleCategory(roleCategory)
             .roleName(roleName)
+            .classification(Classification.PUBLIC)
+            .grantType(GrantType.STANDARD)
+            .attributes(attributes)
+            .build();
+
+    }
+
+    public static ExistingRoleAssignment buildExistingRoleForConflict(String juris, RoleCategory roleCategory) {
+        Map<String,JsonNode> attributes = new HashMap<>();
+        attributes.put("jurisdiction", convertValueJsonNode(juris));
+        return ExistingRoleAssignment.builder()
+            .actorId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+            .roleType(RoleType.ORGANISATION)
+            .roleCategory(roleCategory)
+            .grantType(GrantType.STANDARD)
+            .roleName("case-allocator")
+            .classification(Classification.PUBLIC)
             .attributes(attributes)
             .build();
 
@@ -591,6 +629,7 @@ public class TestDataBuilder {
             .attributes(new HashMap<String, JsonNode>())
             .build();
         ra.setAttribute(attributeKey, attributeVal);
+        ra.setAttribute("jurisdiction","IA");
         return ra;
     }
 

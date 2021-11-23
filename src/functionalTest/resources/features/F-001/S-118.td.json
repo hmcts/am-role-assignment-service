@@ -33,7 +33,7 @@
           "grantType": "SPECIFIC",
           "attributes": {
             "caseId": "1607103938250138",
-            "jurisdiction": "IA",
+            "jurisdiction": "AUTOTEST1",
             "caseType": "Asylum"
           },
           "authorisations": [
@@ -60,7 +60,7 @@
         },
         "requestedRoles": [
           {
-            "_extends_": "ResponseRequestedRole",
+            "_extends_": "ResponseRequestedRoleWithoutSubstantive",
             "roleType": "CASE",
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "classification": "RESTRICTED",
