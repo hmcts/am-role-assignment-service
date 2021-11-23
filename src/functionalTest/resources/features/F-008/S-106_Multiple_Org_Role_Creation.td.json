@@ -29,20 +29,30 @@
           {
             "jurisdiction": "IA",
             "primaryLocation": "abc"
-
           }
         },
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "roleName": "senior-tribunal-caseworker",
+          "roleName": "tribunal-caseworker",
           "roleCategory": "LEGAL_OPERATIONS",
           "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "IA",
             "primaryLocation": "abc"
-
+          }
+        },
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "roleName": "case-allocator",
+          "roleCategory": "LEGAL_OPERATIONS",
+          "beginTime" : "2020-09-01T00:00:00Z",
+          "attributes":
+          {
+            "jurisdiction": "IA",
+            "primaryLocation": "abc"
           }
         }
       ]
@@ -63,11 +73,11 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+            "actorId": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "LEGAL_OPERATIONS",
-            "roleName": "tribunal-caseworker",
+            "roleName": "[[ANYTHING_PRESENT]]",
             "attributes":
             {
               "jurisdiction": "IA",
@@ -76,11 +86,24 @@
           },
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "actorId": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "LEGAL_OPERATIONS",
-            "roleName": "senior-tribunal-caseworker",
+            "roleName": "[[ANYTHING_PRESENT]]",
+            "attributes":
+            {
+              "jurisdiction": "IA",
+              "primaryLocation": "abc"
+            }
+          },
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "[[ANYTHING_PRESENT]]",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD",
+            "roleCategory": "LEGAL_OPERATIONS",
+            "roleName": "[[ANYTHING_PRESENT]]",
             "attributes":
             {
               "jurisdiction": "IA",

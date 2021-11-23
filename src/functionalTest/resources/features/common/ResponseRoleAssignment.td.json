@@ -13,9 +13,8 @@
   "endTime": "[[ANYTHING_PRESENT]]",
   "created": "[[ANYTHING_PRESENT]]",
   "attributes": {
-    "contractType": "SALARIED",
-    "jurisdiction": "divorce",
-    "region": "south-east",
+    "contractType": "Salaried",
+    "jurisdiction": "IA",
     "substantive": "Y"
   }
 }

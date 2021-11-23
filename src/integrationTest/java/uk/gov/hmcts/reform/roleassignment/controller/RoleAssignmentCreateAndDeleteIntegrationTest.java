@@ -27,6 +27,7 @@ import uk.gov.hmcts.reform.roleassignment.MockUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -128,6 +129,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         Case retrievedCase = Case.builder().id("1234567890123456")
             .caseTypeId("Asylum")
             .jurisdiction("IA")
+            .securityClassification(Classification.PUBLIC)
             .build();
         doReturn(retrievedCase).when(retrieveDataService).getCaseById(anyString());
     }
