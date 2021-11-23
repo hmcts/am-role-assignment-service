@@ -13,7 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CaseTest {
 
 
-    private Case caseData = new Case("1234", "IA", "Asylum");
+    private Case caseData = Case.builder().id("1234")
+        .jurisdiction("IA")
+        .caseTypeId("Asylum")
+        .build();
+
 
     @BeforeEach
     public void setUp() {
