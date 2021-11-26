@@ -1766,5 +1766,107 @@
         }
       }
     ]
+  },
+  {
+    "name":  "[respsolicitor]",
+    "label": "Respondent's Solicitor",
+    "description": "Respondent's Solicitor",
+    "category": "PROFESSIONAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[Respsolicitor]",
+    "label": "Respondent's Solicitor",
+    "description": "Respondent's Solicitor",
+    "category": "PROFESSIONAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[RespSolicitor]",
+    "label": "Respondent's Solicitor",
+    "description": "Respondent's Solicitor",
+    "category": "PROFESSIONAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
