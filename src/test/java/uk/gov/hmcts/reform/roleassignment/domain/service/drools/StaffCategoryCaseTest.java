@@ -243,7 +243,7 @@ class StaffCategoryCaseTest extends DroolBase {
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
+            assertEquals("N", roleAssignment.getAttributes().get("substantive").asText());
         });
     }
 
@@ -528,7 +528,7 @@ class StaffCategoryCaseTest extends DroolBase {
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
+            assertEquals("N", roleAssignment.getAttributes().get("substantive").asText());
         });
     }
 
