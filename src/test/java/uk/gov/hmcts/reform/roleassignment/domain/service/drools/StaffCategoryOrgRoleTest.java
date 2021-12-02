@@ -44,7 +44,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             assertEquals(APPROVED, roleAssignment.getStatus());
             assertEquals("tribunal-caseworker", roleAssignment.getRoleName());
-            assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
+            assertEquals("N", roleAssignment.getAttributes().get("substantive").asText());
         });
     }
 

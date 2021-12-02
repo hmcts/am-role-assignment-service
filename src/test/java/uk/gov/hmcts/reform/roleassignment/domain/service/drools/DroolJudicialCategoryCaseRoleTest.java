@@ -51,7 +51,7 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
+            assertEquals("N", roleAssignment.getAttributes().get("substantive").asText());
         });
     }
 

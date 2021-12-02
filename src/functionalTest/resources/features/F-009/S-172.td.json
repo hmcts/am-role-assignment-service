@@ -40,7 +40,8 @@
           "attributes" : {
             "contractType" : "Salaried",
             "primaryLocation" : "abc",
-            "jurisdiction" : "IA"
+            "jurisdiction" : "IA",
+            "substantive": "N"
           }
         },
         {
@@ -51,7 +52,8 @@
           "attributes" : {
             "contractType" : "Salaried",
             "primaryLocation" : "abc",
-            "jurisdiction" : "IA"
+            "jurisdiction" : "IA",
+            "substantive": "N"
           }
         },
         {
@@ -62,7 +64,8 @@
           "attributes" : {
             "contractType" : "Salaried",
             "primaryLocation" : "abc",
-            "jurisdiction" : "IA"
+            "jurisdiction" : "IA",
+            "substantive": "N"
           }
         }
       ]
