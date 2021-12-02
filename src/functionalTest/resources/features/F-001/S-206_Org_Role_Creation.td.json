@@ -65,8 +65,7 @@
             "roleName": "case-allocator",
             "attributes":
             {
-              "jurisdiction": "IA",
-              "substantive" : "N"
+              "jurisdiction": "IA"
             }
           },
           {
@@ -78,8 +77,7 @@
             "roleName": "case-allocator",
             "attributes":
             {
-              "jurisdiction": "IA",
-              "substantive" : "N"
+              "jurisdiction": "IA"
             }
           }
         ]
