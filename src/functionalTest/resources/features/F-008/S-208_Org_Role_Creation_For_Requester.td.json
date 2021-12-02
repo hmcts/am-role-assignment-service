@@ -55,7 +55,8 @@
             "attributes":
             {
               "jurisdiction": "IA",
-              "primaryLocation": "208"
+              "primaryLocation": "208",
+              "substantive": "N"
             }
           }
         ]
