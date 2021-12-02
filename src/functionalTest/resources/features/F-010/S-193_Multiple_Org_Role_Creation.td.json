@@ -70,7 +70,8 @@
             "attributes":
             {
               "jurisdiction": "IA",
-              "primaryLocation": "S193ABC"
+              "primaryLocation": "S193ABC",
+              "substantive": "N"
             }
           },
           {
