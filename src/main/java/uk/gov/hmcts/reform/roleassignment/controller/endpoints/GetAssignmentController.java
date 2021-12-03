@@ -84,7 +84,7 @@ public class GetAssignmentController {
             .body(body);
     }
 
-    //**************** Get role configurations API ***************
+    //***************** Get role configurations API ***************
 
     @GetMapping(
         path = "/am/role-assignments/roles",
