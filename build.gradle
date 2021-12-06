@@ -329,7 +329,7 @@ dependencies {
   implementation group: 'org.springframework', name: 'spring-core', version: '5.3.12'
 
   compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
-  compile group: 'org.json', name: 'json', version: '20210307'
+  compile group: 'org.json', name: 'json', version: '20211205'
 
   // drools engine dependency
   compile(group: 'org.drools', name: 'drools-core', version: versions.drools) {
