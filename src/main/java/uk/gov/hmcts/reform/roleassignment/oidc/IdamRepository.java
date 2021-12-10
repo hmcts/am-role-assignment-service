@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.oidc;
 
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
 import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
@@ -26,6 +28,7 @@ import java.util.List;
 import static java.util.Objects.requireNonNull;
 import static org.springframework.http.HttpMethod.GET;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.BEARER;
+
 
 @Component
 @Slf4j
@@ -66,7 +69,14 @@ public class IdamRepository {
                 .getNativeCache();
             log.info("generating Bearer Token, current size of cache: {}", nativeCache.estimatedSize());
         }
-        return idamApi.retrieveUserInfo(BEARER + jwtToken);
+        try {
+            return idamApi.retrieveUserInfo(BEARER + jwtToken);
+        }catch (FeignException.Unauthorized fu){
+                 log.info("its  FeignException ", fu.getStackTrace());
+            throw new ResponseStatusException(
+                HttpStatus.UNAUTHORIZED, "kindly provide correct token", fu);
+        }
+
     }
 
     public UserDetails getUserByUserId(String jwtToken, String userId) {
