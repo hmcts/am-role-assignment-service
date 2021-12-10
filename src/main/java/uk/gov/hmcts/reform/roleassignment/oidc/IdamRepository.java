@@ -71,11 +71,10 @@ public class IdamRepository {
         }
         try {
             return idamApi.retrieveUserInfo(BEARER + jwtToken);
-        }catch (FeignException.Unauthorized fu){
-                 log.info("its  FeignException ", fu.getStackTrace());
+        }catch (FeignException.Unauthorized feigenunauthorized){
+                 log.info("its  FeignException ", feigenunauthorized.getStackTrace());
             throw new ResponseStatusException(
-                HttpStatus.UNAUTHORIZED, "kindly provide correct token ", fu);
-            //test
+                HttpStatus.UNAUTHORIZED, "kindly provide correct token ", feigenunauthorized);
         }
 
     }
