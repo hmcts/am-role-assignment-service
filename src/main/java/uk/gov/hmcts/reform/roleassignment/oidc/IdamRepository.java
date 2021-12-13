@@ -72,7 +72,7 @@ public class IdamRepository {
         try {
             return idamApi.retrieveUserInfo(BEARER + jwtToken);
         }catch (FeignException.Unauthorized feigenunauthorized){
-                 log.error("its  FeignException retrive user info ", feigenunauthorized.getStackTrace());
+                 log.error("its  FeignException retrive user info ", feigenunauthorized.getMessage());
             throw new ResponseStatusException(
                 HttpStatus.UNAUTHORIZED, "kindly provide correct token ", feigenunauthorized);
         }
@@ -83,7 +83,7 @@ public class IdamRepository {
        try{
         return idamApi.getUserByUserId(BEARER + jwtToken, userId);
        }catch (FeignException.Unauthorized feigenunauthorized){
-           log.error("its  FeignException get user by id ", feigenunauthorized.getStackTrace());
+           log.error("its  FeignException get user by id ", feigenunauthorized.getMessage());
            throw new ResponseStatusException(
                HttpStatus.UNAUTHORIZED, "kindly provide correct token ", feigenunauthorized);
        }
