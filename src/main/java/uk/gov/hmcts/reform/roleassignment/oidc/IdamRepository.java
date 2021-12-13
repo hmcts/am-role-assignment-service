@@ -72,7 +72,7 @@ public class IdamRepository {
         try {
             return idamApi.retrieveUserInfo(BEARER + jwtToken);
         }catch (FeignException.Unauthorized feigenunauthorized){
-                 log.info("its  FeignException ", feigenunauthorized.getStackTrace());
+                 log.error("its  FeignException ", feigenunauthorized.getStackTrace());
             throw new ResponseStatusException(
                 HttpStatus.UNAUTHORIZED, "kindly provide correct token ", feigenunauthorized);
         }
