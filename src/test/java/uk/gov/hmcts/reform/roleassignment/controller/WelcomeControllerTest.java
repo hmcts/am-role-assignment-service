@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -16,9 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceServi
 
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(MockitoJUnitRunner.class)
 class WelcomeControllerTest {
@@ -54,12 +51,4 @@ class WelcomeControllerTest {
         assertFalse(Objects.requireNonNull(responseEntity.getBody()).isLocked());
     }
 
-
-    @Test
-    void verifyUncoveredException() {
-        ResponseEntity<String> responseEntity = sut.getException("unProcessableEntity");
-        Assertions.assertNull(responseEntity,"");
-
-
-    }
 }
