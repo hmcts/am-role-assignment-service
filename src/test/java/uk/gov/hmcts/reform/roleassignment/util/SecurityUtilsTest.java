@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,10 +18,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
+import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,15 +35,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION;
 
-
 class SecurityUtilsTest {
 
     @Mock
     private final AuthTokenGenerator authTokenGenerator = mock(AuthTokenGenerator.class);
 
-    @Mock
-    private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter =
-        mock(JwtGrantedAuthoritiesConverter.class);
+    private final IdamRepository idamRepositoryMock = mock(IdamRepository.class);
 
     @Mock
     Authentication authentication = Mockito.mock(Authentication.class);
@@ -54,8 +51,10 @@ class SecurityUtilsTest {
     @InjectMocks
     private final SecurityUtils securityUtils = new SecurityUtils(
         authTokenGenerator,
-        jwtGrantedAuthoritiesConverter
+        idamRepositoryMock
     );
+
+    private static final String USER_JWT = "Bearer 8gf364fg367f67";
 
     private final String serviceAuthorization = "Bearer eyJhbGciOiJIUzUxMiJ9"
         + ".eyJzdWIiOiJjY2RfZ3ciLCJleHAiOjE1OTQ2ODQ5MTF9"
@@ -72,12 +71,15 @@ class SecurityUtilsTest {
         collection.add("string");
         Map<String, Object> headers = new HashMap<>();
         headers.put("header", "head");
-        Jwt jwt = new Jwt(serviceAuthorizationNoBearer, Instant.now(), Instant.now().plusSeconds(10),headers, headers);
+        Jwt jwt =   Jwt.withTokenValue(USER_JWT)
+            .claim("aClaim", "aClaim")
+            .claim("aud", Lists.newArrayList("ccd_gateway"))
+            .header("aHeader", "aHeader")
+            .build();
         Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
         when(securityContext.getAuthentication().getPrincipal()).thenReturn(jwt);
-        when(jwtGrantedAuthoritiesConverter.getUserInfo())
-            .thenReturn(TestDataBuilder.buildUserInfo(USER_ID));
+        when(idamRepositoryMock.getUserInfo(USER_JWT)).thenReturn(TestDataBuilder.buildUserInfo(USER_ID));
         when(authTokenGenerator.generate()).thenReturn(serviceAuthorization);
     }
 
@@ -93,11 +95,6 @@ class SecurityUtilsTest {
     }
 
     @Test
-    void getUserRoles() throws IOException {
-        assertNotNull(securityUtils.getUserRoles());
-    }
-
-    @Test
     void getUserRolesHeader() throws IOException {
         assertNotNull(securityUtils.getUserRolesHeader());
     }
@@ -106,22 +103,17 @@ class SecurityUtilsTest {
     void getUserToken() throws IOException {
         String result = securityUtils.getUserToken();
         assertNotNull(result);
-        assertTrue(result.contains("eyJhbG"));
+        assertTrue(result.contains(USER_JWT));
     }
 
     @Test
     void getAuthorizationHeaders() throws IOException {
-        Jwt jwt = Mockito.mock(Jwt.class);
-        when(authentication.getPrincipal()).thenReturn(jwt);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        when(securityUtils.getUserToken()).thenReturn("ERFDTYGBYTBTYKGF:K");
         HttpHeaders result = securityUtils.authorizationHeaders();
         assertEquals(serviceAuthorization, Objects.requireNonNull(result.get(SERVICE_AUTHORIZATION)).get(0));
         assertEquals(USER_ID, Objects.requireNonNull(result.get("user-id")).get(0));
         assertEquals("", Objects.requireNonNull(Objects.requireNonNull(result.get("user-roles")).get(0)));
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
-        assertEquals("Bearer ERFDTYGBYTBTYKGF:K", securityUtils.getUserBearerToken());
+        assertEquals(USER_JWT, securityUtils.getUserToken());
     }
 
     @Test

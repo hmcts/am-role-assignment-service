@@ -9,11 +9,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
-import static org.mockito.ArgumentMatchers.anyString;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,6 +16,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
 
 @RunWith(MockitoJUnitRunner.class)
 class JwtGrantedAuthoritiesConverterTest {
@@ -93,7 +92,6 @@ class JwtGrantedAuthoritiesConverterTest {
         Collection<GrantedAuthority> authorities = sut.convert(jwt);
         assertNotNull(authorities);
         assertEquals(1, authorities.size());
-        assertEquals(sut.getUserInfo(), userInfo);
     }
 
     public static Jwt buildJwt(String tokenName) {
