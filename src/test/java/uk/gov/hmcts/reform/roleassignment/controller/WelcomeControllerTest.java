@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -57,6 +58,8 @@ class WelcomeControllerTest {
     @Test
     void verifyUncoveredException() {
         ResponseEntity<String> responseEntity = sut.getException("unProcessableEntity");
-        assertNull(responseEntity);
+        Assertions.assertNull(responseEntity,"");
+
+
     }
 }
