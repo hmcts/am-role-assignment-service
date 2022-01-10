@@ -16,9 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceServi
 
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(MockitoJUnitRunner.class)
 class WelcomeControllerTest {
