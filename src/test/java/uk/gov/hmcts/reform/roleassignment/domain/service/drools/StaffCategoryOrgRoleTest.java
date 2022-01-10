@@ -24,8 +24,6 @@ import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJ
 @RunWith(MockitoJUnitRunner.class)
 class StaffCategoryOrgRoleTest extends DroolBase {
 
-    private static Object test_obj = null;
-
     @Test
     void shouldApproveOrgRequestedRoleForTCW_S001() {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
