@@ -46,7 +46,6 @@ class AuditServiceTest {
     public static final String ROLE_NAME = "ADMIN";
     public static final String CORRELATION_ID = "CORRELATION-1";
     public static final String REQUEST_PAYLOAD = "PAYLOAD-1";
-    private static Object test_obj = null;
 
 
     @Mock
