@@ -8,7 +8,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
