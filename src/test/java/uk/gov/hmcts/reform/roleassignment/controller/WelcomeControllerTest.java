@@ -51,4 +51,10 @@ class WelcomeControllerTest {
         assertFalse(Objects.requireNonNull(responseEntity.getBody()).isLocked());
     }
 
+
+    @Test
+    void verifyUncoveredException() {
+        ResponseEntity<String> responseEntity = sut.getException("unProcessableEntity");
+        assertNull(responseEntity);
+    }
 }
