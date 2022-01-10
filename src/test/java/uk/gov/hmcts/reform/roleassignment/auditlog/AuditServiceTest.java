@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,6 +46,8 @@ class AuditServiceTest {
     public static final String ROLE_NAME = "ADMIN";
     public static final String CORRELATION_ID = "CORRELATION-1";
     public static final String REQUEST_PAYLOAD = "PAYLOAD-1";
+    private static Object test_obj = null;
+
 
     @Mock
     private SecurityUtils securityUtils;
@@ -131,6 +134,6 @@ class AuditServiceTest {
         verify(auditRepository).save(captor.capture());
 
         assertThat(captor.getValue().getHttpStatus(), is(equalTo(403)));
-        assertThat(captor.getValue().getOperationType(), is(equalTo(null)));
+        Assert.assertNull(captor.getValue().getOperationType());
     }
 }

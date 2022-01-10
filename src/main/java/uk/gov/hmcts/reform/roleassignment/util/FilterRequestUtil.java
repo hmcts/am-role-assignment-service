@@ -32,6 +32,7 @@ public class FilterRequestUtil extends OncePerRequestFilter {
         String whiteList = Constants.UUID_PATTERN;
         boolean match = Pattern.matches(whiteList, correlationId);
 
+
         if (!match) {
             throw new BadRequestException(
                 String.format(
@@ -41,7 +42,8 @@ public class FilterRequestUtil extends OncePerRequestFilter {
         } else {
             //adding the id to the request header so subsequent calls do not generate new unique id's
             mutableRequest.putHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
-            response.addHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
+//            response.addHeader(Constants.CORRELATION_ID_HEADER_NAME, correlationId);
+
         }
 
         filterChain.doFilter(mutableRequest, response);

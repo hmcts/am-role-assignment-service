@@ -8,10 +8,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
@@ -22,6 +19,8 @@ import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJ
 
 @RunWith(MockitoJUnitRunner.class)
 class StaffCategoryOrgRoleTest extends DroolBase {
+
+    private static Object test_obj = null;
 
     @Test
     void shouldApproveOrgRequestedRoleForTCW_S001() {
@@ -177,7 +176,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(null, roleAssignment.getAttributes().get("jurisdiction"));
+            assertNull(roleAssignment.getAttributes().get("jurisdiction"));
             assertEquals(Status.REJECTED, roleAssignment.getStatus());
         });
     }
@@ -218,7 +217,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(null, roleAssignment.getAttributes().get("primaryLocation"));
+            assertNull(roleAssignment.getAttributes().get("primaryLocation"));
             assertEquals(Status.REJECTED, roleAssignment.getStatus());
         });
     }
@@ -308,7 +307,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(null, roleAssignment.getRoleType());
+            assertNull(roleAssignment.getRoleType());
             assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
         });
     }
