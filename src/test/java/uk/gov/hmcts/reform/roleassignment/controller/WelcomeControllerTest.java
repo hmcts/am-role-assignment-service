@@ -14,8 +14,9 @@ import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 
 import java.util.Objects;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @RunWith(MockitoJUnitRunner.class)
 class WelcomeControllerTest {
@@ -55,6 +56,7 @@ class WelcomeControllerTest {
     @Test
     void verifyUncoveredException() {
         ResponseEntity<String> responseEntity = sut.getException("unProcessableEntity");
-        assertNull(responseEntity);
+        assert responseEntity == null;
+
     }
 }
