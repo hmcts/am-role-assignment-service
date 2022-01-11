@@ -366,7 +366,8 @@ class IdamRepositoryTest {
         when(cacheManager.getCache(anyString())).thenReturn(caffeineCacheMock);
         when(caffeineCacheMock.getNativeCache()).thenReturn(cache);
         when(cache.estimatedSize()).thenReturn(anyLong());
-        when(idamRepository.getUserInfo("invalid token")).thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+        when(idamRepository.getUserInfo("invalid token")).
+            thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
 
         assertThrows(ResponseStatusException.class, () -> idamRepository.getUserInfo("invalid token"));
     }
