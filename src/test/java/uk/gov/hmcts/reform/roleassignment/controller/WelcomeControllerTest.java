@@ -49,6 +49,7 @@ class WelcomeControllerTest {
         ResponseEntity<DatabaseChangelogLockEntity> responseEntity = sut.dbReleaseLock();
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertFalse(Objects.requireNonNull(responseEntity.getBody()).isLocked());
+
     }
 
 
