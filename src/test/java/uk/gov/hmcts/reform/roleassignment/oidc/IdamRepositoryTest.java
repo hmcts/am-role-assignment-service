@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.oidc;
 
+import feign.*;
+import feign.FeignException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +25,7 @@ import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
+import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -365,9 +368,8 @@ class IdamRepositoryTest {
         when(idamApi.retrieveUserInfo(anyString())).thenReturn(userInfo);
         when(cacheManager.getCache(anyString())).thenReturn(caffeineCacheMock);
         when(caffeineCacheMock.getNativeCache()).thenReturn(cache);
-        when(cache.estimatedSize()).thenReturn(anyLong());
-        when(idamRepository.getUserInfo("invalid token"))
-            .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+        FeignException.Unauthorized unauthorized = mock(FeignException.Unauthorized.class);
+        when(idamRepository.getUserInfo("invalid token")).thenThrow(unauthorized);
 
         assertThrows(ResponseStatusException.class, () -> idamRepository.getUserInfo("invalid token"));
     }
@@ -375,8 +377,8 @@ class IdamRepositoryTest {
 
     @Test
     void getUserByUserIdException() {
-
-        when(idamApi.getUserByUserId(any(), any())).thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+        FeignException.Unauthorized unauthorized = mock(FeignException.Unauthorized.class);
+        when(idamApi.getUserByUserId(any(), any())).thenThrow(unauthorized);
 
         assertThrows(
             ResponseStatusException.class,
