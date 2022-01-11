@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import com.auth0.jwt.JWT;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
-import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
+import uk.gov.hmcts.reform.idam.client.models.UserInfo;
+import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -20,18 +21,18 @@ import static uk.gov.hmcts.reform.roleassignment.util.Constants.BEARER;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION;
 
 @Service
+@Slf4j
 public class SecurityUtils {
 
     private final AuthTokenGenerator authTokenGenerator;
-    private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter;
-
+    private final IdamRepository idamRepository;
 
     @Autowired
     public SecurityUtils(final AuthTokenGenerator authTokenGenerator,
-                         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter
+                         IdamRepository idamRepository
                          ) {
         this.authTokenGenerator = authTokenGenerator;
-        this.jwtGrantedAuthoritiesConverter = jwtGrantedAuthoritiesConverter;
+        this.idamRepository = idamRepository;
 
     }
 
@@ -51,19 +52,19 @@ public class SecurityUtils {
         return BEARER + getUserToken();
     }
 
+    public UserInfo getUserInfo() {
+        UserInfo userInfo = idamRepository.getUserInfo(getUserToken());
+        if (userInfo != null) {
+            log.info("SecurityUtils retrieved user info from idamRepository. User Id={}. Roles={}.",
+                     userInfo.getUid(),
+                     userInfo.getRoles());
+        }
+        return userInfo;
+    }
 
     public String getUserId() {
-        return jwtGrantedAuthoritiesConverter.getUserInfo().getUid();
+        return getUserInfo().getUid();
     }
-
-    public UserRoles getUserRoles() {
-        var userInfo = jwtGrantedAuthoritiesConverter.getUserInfo();
-        return UserRoles.builder()
-            .uid(userInfo.getUid())
-            .roles(userInfo.getRoles())
-            .build();
-    }
-
 
     public String getUserToken() {
         var jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
