@@ -19,10 +19,7 @@ public class LoggerAuditRepository implements AuditRepository {
 
     @Override
     public void save(final AuditEntry auditEntry) {
-        try {
-            LOG.info("Message {}", logFormatter.format(auditEntry));
-        }catch (Exception e){
-            LOG.error("Error {}",e.getMessage());
-        }
+        String msg = logFormatter.format(auditEntry);
+        LOG.info(msg);
     }
 }
