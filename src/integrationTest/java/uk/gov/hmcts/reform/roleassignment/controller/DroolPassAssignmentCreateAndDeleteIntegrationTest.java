@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -33,7 +32,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
-import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
+import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.inject.Inject;
@@ -73,8 +72,8 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     @Inject
     private WebApplicationContext wac;
 
-    @Inject
-    private JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter;
+    @MockBean
+    private IdamRepository idamRepository;
 
     @Autowired
     private DataSource ds;
@@ -98,7 +97,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     public void setUp() throws Exception {
         template = new JdbcTemplate(ds);
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         String uid = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
         UserRoles roles = UserRoles.builder()
             .uid(uid)
@@ -114,11 +113,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
             .uid("6b36bfc6-bb21-11ea-b3de-0242ac130006")
             .sub("emailId@a.com")
             .build();
-        ReflectionTestUtils.setField(
-            jwtGrantedAuthoritiesConverter,
-            "userInfo", userInfo
-
-        );
+        doReturn(userInfo).when(idamRepository).getUserInfo(anyString());
         Case retrievedCase = Case.builder().id("1234567890123456")
             .caseTypeId("Asylum")
             .jurisdiction("IA")
@@ -170,7 +165,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
         assignmentRequest.getRequest().setRequestType(RequestType.CREATE);
         assignmentRequest.getRequest().setStatus(CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
