@@ -33,7 +33,7 @@
     "label": "Case Allocator",
     "description": "Case Allocator role for judicial users",
     "category": "JUDICIAL",
-    "substantive": true,
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
@@ -360,7 +360,7 @@
     "label": "Tribunal Caseworker",
     "description": "Tribunal caseworker role for staff users",
     "category": "LEGAL_OPERATIONS",
-    "substantive": true,
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
@@ -448,7 +448,7 @@
     "label": "Case Allocator",
     "description": "Case Allocator role for staff users",
     "category": "LEGAL_OPERATIONS",
-    "substantive": true,
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
@@ -629,7 +629,7 @@
     "label": "Case Allocator",
     "description": "Case Allocator role for admin users",
     "category": "ADMIN",
-    "substantive": true,
+    "substantive": false,
     "patterns": [
       {
         "roleType": {
