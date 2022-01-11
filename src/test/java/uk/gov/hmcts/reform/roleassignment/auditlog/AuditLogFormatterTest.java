@@ -22,7 +22,7 @@ class AuditLogFormatterTest {
         assertEquals("LA-AM-RAS dateTime:2020-12-05 10:30:45,"
                          + "operationType:CREAT_CASE,"
                          + "invokingService:test_invokingService,"
-                         + "endpointCalled:GET test_path,"
+                         + "endpointCalled:test_path,"
                          + "operationalOutcome:200", result);
     }
 
