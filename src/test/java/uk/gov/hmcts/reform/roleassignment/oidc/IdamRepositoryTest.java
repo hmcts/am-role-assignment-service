@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
@@ -352,5 +353,33 @@ class IdamRepositoryTest {
         ResponseEntity<List<Object>> actualResponse = idamRepository.searchUserByUserId(token, userId);
         assertNull(actualResponse);
 
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void getUserInfoException() {
+        UserInfo userInfo = mock(UserInfo.class);
+        CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
+        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+
+        when(idamApi.retrieveUserInfo(anyString())).thenReturn(userInfo);
+        when(cacheManager.getCache(anyString())).thenReturn(caffeineCacheMock);
+        when(caffeineCacheMock.getNativeCache()).thenReturn(cache);
+        when(cache.estimatedSize()).thenReturn(anyLong());
+        when(idamRepository.getUserInfo("invalid token")).thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+
+        assertThrows(ResponseStatusException.class, () -> idamRepository.getUserInfo("invalid token"));
+    }
+
+
+    @Test
+    void getUserByUserIdException() {
+
+        when(idamApi.getUserByUserId(any(), any())).thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+
+        assertThrows(
+            ResponseStatusException.class,
+            () -> idamRepository.getUserByUserId("invalid token", "testuserid")
+        );
     }
 }
