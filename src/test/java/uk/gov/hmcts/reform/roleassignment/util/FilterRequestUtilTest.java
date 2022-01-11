@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -65,7 +64,7 @@ class FilterRequestUtilTest {
         verify(correlationInterceptorUtil, times(1))
             .preHandle(any(HttpServletRequest.class));
         verify(filterChain).doFilter(any(ServletRequest.class), any(ServletResponse.class));
-        verify(httpServletResponse).addHeader(anyString(), anyString());
+        //verify(httpServletResponse).addHeader(anyString(), anyString());
     }
 
     @Test
