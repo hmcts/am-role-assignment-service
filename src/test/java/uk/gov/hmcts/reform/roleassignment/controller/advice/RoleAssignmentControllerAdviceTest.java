@@ -156,33 +156,6 @@ class RoleAssignmentControllerAdviceTest {
                                                                 Locale.ENGLISH).format(new Date()));
     }
 
-    @Test
-    void testInvalidRequest() {
-        Assertions.assertThrows(InvalidRequest.class, () ->
-            welcomeController.getException("invalidRequest")
-        );
-    }
-
-    @Test
-    void testResourceNotFoundException() {
-        Assertions.assertThrows(ResourceNotFoundException.class, () ->
-            welcomeController.getException("resourceNotFoundException")
-        );
-    }
-
-    @Test
-    void testHttpMessageConversionException() {
-        Assertions.assertThrows(HttpMessageConversionException.class, () ->
-            welcomeController.getException("httpMessageConversionException")
-        );
-    }
-
-    @Test
-    void testBadRequestException() {
-        Assertions.assertThrows(BadRequestException.class, () ->
-            welcomeController.getException("badRequestException")
-        );
-    }
 
     @Test
     void notReadableException_RoleType() {
