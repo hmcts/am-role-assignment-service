@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
@@ -177,7 +178,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(null, roleAssignment.getAttributes().get("jurisdiction"));
+            assertNull(roleAssignment.getAttributes().get("jurisdiction"));
             assertEquals(Status.REJECTED, roleAssignment.getStatus());
         });
     }
@@ -218,7 +219,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(null, roleAssignment.getAttributes().get("primaryLocation"));
+            assertNull(roleAssignment.getAttributes().get("primaryLocation"));
             assertEquals(Status.REJECTED, roleAssignment.getStatus());
         });
     }
@@ -308,7 +309,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
 
         //assertion
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(null, roleAssignment.getRoleType());
+            assertNull(roleAssignment.getRoleType());
             assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
         });
     }
