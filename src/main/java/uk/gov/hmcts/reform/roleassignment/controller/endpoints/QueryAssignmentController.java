@@ -63,7 +63,7 @@ public class QueryAssignmentController {
 
     })
     @LogAudit(operationType = SEARCH_ASSIGNMENTS,
-        id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).searchAssignmentIds(#result)",
+        size = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).sizeOfAssignments(#result)",
         correlationId = "#corsrelationId",
         requestPayload = "#auditContextWith.requestPayload"
     )
@@ -106,7 +106,7 @@ public class QueryAssignmentController {
 
     })
     @LogAudit(operationType = SEARCH_ASSIGNMENTS,
-        id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).searchAssignmentIds(#result)",
+        size = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).sizeOfAssignments(#result)",
         correlationId = "#corsrelationId",
         requestPayload = "#auditContextWith.requestPayload")
     public ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByQueryRequestV2(

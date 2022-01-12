@@ -48,6 +48,7 @@ public class AuditAspectTest {
         assertThat(context.getActorId()).isEqualTo(ACTOR_ID);
         assertThat(context.getAuditOperationType()).isEqualTo(GET_ASSIGNMENTS_BY_ACTOR);
         assertThat(context.getAssignmentId()).isEqualTo(ID);
+        assertThat(context.getAssignmentSize()).isEqualTo(1);
         assertThat(context.getRoleName()).isEqualTo(ROLE_NAME);
 
     }

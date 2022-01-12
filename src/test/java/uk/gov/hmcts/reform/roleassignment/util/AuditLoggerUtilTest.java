@@ -184,4 +184,13 @@ public class AuditLoggerUtilTest {
         List<UUID> assignmentIds = AuditLoggerUtil.searchAssignmentIds(ResponseEntity.ok().build());
         assertEquals(0, assignmentIds.size());
     }
+
+    @Test
+    public void shouldReturnSizeOfAssignments() {
+        ResponseEntity<RoleAssignmentResource> responseEntity = ResponseEntity
+            .ok(new RoleAssignmentResource((List<? extends Assignment>) assignmentRequest.getRequestedRoles()));
+        String assignmentSize = AuditLoggerUtil.sizeOfAssignments(responseEntity);
+        assertNotNull(assignmentSize);
+        assertThat(assignmentSize).isEqualTo("2");
+    }
 }
