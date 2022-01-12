@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.jdbc.BatchFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -145,8 +148,11 @@ public class PersistenceService {
                 entityManager.persist(actorCacheEntity);
             }
         });
-        entityManager.flush();
-
+        try {
+            entityManager.flush();
+        }catch (BatchFailedException exception){
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"An error occurred running the query on the database",exception);
+        }
     }
 
     @NotNull
