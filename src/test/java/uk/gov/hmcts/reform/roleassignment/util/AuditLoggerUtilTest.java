@@ -1,7 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
@@ -20,6 +21,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 
 public class AuditLoggerUtilTest {
@@ -30,7 +32,7 @@ public class AuditLoggerUtilTest {
     private ResponseEntity<RoleAssignmentResource> roleAssignmentResponseEntity;
     private RoleAssignmentResource roleAssignmentResource;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, CREATED,
                                                                    false
@@ -192,5 +194,12 @@ public class AuditLoggerUtilTest {
         String assignmentSize = AuditLoggerUtil.sizeOfAssignments(responseEntity);
         assertNotNull(assignmentSize);
         assertThat(assignmentSize).isEqualTo("2");
+    }
+
+    @Test
+    public void shouldReturnNullAsSizeOfAssignments() {
+        ResponseEntity<RoleAssignmentResource> responseEntity = ResponseEntity.ok().build();
+        String assignmentSize = AuditLoggerUtil.sizeOfAssignments(responseEntity);
+        assertNull(assignmentSize);
     }
 }

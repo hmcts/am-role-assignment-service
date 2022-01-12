@@ -126,7 +126,7 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
                                                  .contentType(JSON_CONTENT_TYPE)
                                                  .headers(getHttpHeaders("2", "roleCategory"))
                                                  .content(mapper.writeValueAsBytes(QueryRequest.builder().build())))
-            //.andExpect(status().isOk())
+            .andExpect(status().isOk())
             .andReturn();
         JsonNode responseJsonNode = new ObjectMapper().readValue(result.getResponse().getContentAsString(),
                                                            JsonNode.class);
