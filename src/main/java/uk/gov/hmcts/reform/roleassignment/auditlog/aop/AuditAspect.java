@@ -42,6 +42,7 @@ public class AuditAspect {
             String roleName = getValue(joinPoint, logAudit.roleName(), result, String.class);
             String assignerId = getValue(joinPoint, logAudit.assignerId(), result, String.class);
             String id = getValue(joinPoint, logAudit.id(), result, String.class);
+            Integer size = getValue(joinPoint, logAudit.size(), result, Integer.class);
             String actorId = getValue(joinPoint, logAudit.actorId(), result, String.class);
             String process = getValue(joinPoint, logAudit.process(), result, String.class);
             String reference = getValue(joinPoint, logAudit.reference(), result, String.class);
@@ -56,6 +57,7 @@ public class AuditAspect {
                                                    .process(process)
                                                    .reference(reference)
                                                    .correlationId(correlationId)
+                                                   .assignmentSize(size)
                                                    .build());
         }
 

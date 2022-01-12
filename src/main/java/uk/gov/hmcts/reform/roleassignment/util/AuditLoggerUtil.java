@@ -105,4 +105,12 @@ public class AuditLoggerUtil {
         }
         return List.of();
     }
+
+    public static String sizeOfAssignments(final ResponseEntity<RoleAssignmentResource> response) {
+        var roleAssignmentResource = response.getBody();
+        if (roleAssignmentResource != null) {
+            return String.valueOf(roleAssignmentResource.getRoleAssignmentResponse().size());
+        }
+        return null;
+    }
 }

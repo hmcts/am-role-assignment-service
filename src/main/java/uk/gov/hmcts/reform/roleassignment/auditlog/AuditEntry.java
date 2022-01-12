@@ -22,6 +22,7 @@ public class AuditEntry {
     private String path;
     private String correlationId;
     private String requestPayload;
+    private Integer assignmentSize;
 
 
 }
