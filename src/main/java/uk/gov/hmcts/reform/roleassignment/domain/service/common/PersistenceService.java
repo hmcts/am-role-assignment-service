@@ -155,6 +155,7 @@ public class PersistenceService {
         }
     }
 
+
     @NotNull
     protected ActorCache prepareActorCache(RoleAssignment roleAssignment) {
         var actorCache = new ActorCache();

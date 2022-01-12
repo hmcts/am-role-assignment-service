@@ -1049,5 +1049,6 @@ class PersistenceServiceTest {
     void persistActorCacheException(){
         BatchFailedException new_exception = mock(BatchFailedException.class);
         doThrow(new_exception).when(entityManager).flush();
+
     }
 }
