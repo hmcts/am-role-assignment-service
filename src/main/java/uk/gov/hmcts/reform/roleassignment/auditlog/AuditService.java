@@ -46,7 +46,7 @@ public class AuditService {
         entry.setAuthenticatedUserId(securityUtils.getUserId());
         entry.setCorrelationId(auditContext.getCorrelationId());
         entry.setRequestPayload(auditContext.getRequestPayload());
-
+        entry.setAssignmentSize(auditContext.getAssignmentSize());
         auditRepository.save(entry);
 
     }
