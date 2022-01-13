@@ -34,16 +34,16 @@ public class AuditLoggerUtil {
         return List.of();
     }
 
-    public static List<String> buildActorIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
+    public static Set<String> buildActorIds(final ResponseEntity<RoleAssignmentRequestResource> response) {
         if (response.getBody() instanceof RoleAssignmentRequestResource) {
             var roleAssignmentRequestResource = response.getBody();
             if (roleAssignmentRequestResource != null) {
                 return roleAssignmentRequestResource.getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
                     .map(RoleAssignment::getActorId)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
             }
         }
-        return List.of();
+        return Set.of();
     }
 
     public static List<String> buildRoleNames(final ResponseEntity<RoleAssignmentRequestResource> response) {
@@ -85,14 +85,14 @@ public class AuditLoggerUtil {
         return List.of();
     }
 
-    public static List<String> getActorIds(final ResponseEntity<RoleAssignmentResource> response) {
+    public static Set<String> getActorIds(final ResponseEntity<RoleAssignmentResource> response) {
         var roleAssignmentResource = response.getBody();
         if (roleAssignmentResource != null) {
             return roleAssignmentResource.getRoleAssignmentResponse().stream().limit(10)
                 .map(Assignment::getActorId)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
         }
-        return List.of();
+        return Set.of();
     }
 
     public static List<UUID> searchAssignmentIds(final ResponseEntity<RoleAssignmentResource> response) {
