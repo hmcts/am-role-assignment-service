@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
@@ -65,7 +66,6 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.mock;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -123,7 +123,7 @@ class PersistenceServiceTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -954,7 +954,7 @@ class PersistenceServiceTest {
             .build();
 
         MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
-            .queryRequests(Arrays.asList(queryRequest))
+            .queryRequests(Collections.singletonList(queryRequest))
             .build();
 
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
@@ -1054,9 +1054,12 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void persistActorCacheException() {
-        BatchFailedException exception = mock(BatchFailedException.class);
-        doThrow(exception).when(entityManager).flush();
-        assertThrows(BatchFailedException.class, () -> entityManager.flush());
+    void persistActorCacheException() throws IOException {
+        doThrow(BatchFailedException.class).when(entityManager).flush();
+
+        Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
+
+        assertThrows(ResponseStatusException.class, () ->
+            sut.persistActorCache(roleAssignments));
     }
 }
