@@ -56,7 +56,7 @@ public class GetAssignmentController {
         )
     })
     @LogAudit(operationType = GET_ASSIGNMENTS_BY_ACTOR,
-        id = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).getAssignmentIds(#result)",
+        size = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).sizeOfAssignments(#result)",
         actorId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).getActorIds(#result)",
         correlationId = "#correlationId")
     public ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByActorId(

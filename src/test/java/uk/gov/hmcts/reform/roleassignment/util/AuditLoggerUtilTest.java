@@ -1,7 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
@@ -20,6 +21,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 
 public class AuditLoggerUtilTest {
@@ -30,7 +32,7 @@ public class AuditLoggerUtilTest {
     private ResponseEntity<RoleAssignmentResource> roleAssignmentResponseEntity;
     private RoleAssignmentResource roleAssignmentResource;
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, CREATED,
                                                                    false
@@ -76,19 +78,18 @@ public class AuditLoggerUtilTest {
     @Test
     public void checkActorIds() {
 
-        List<String> expectedIds = Arrays.asList(
-            "21334a2b-79ce-44eb-9168-2d49a744be9c",
+        Set<String> expectedIds = Set.of(
             "21334a2b-79ce-44eb-9168-2d49a744be9c"
         );
 
-        List<String> actorIds = AuditLoggerUtil.buildActorIds(responseEntity);
+        Set<String> actorIds = AuditLoggerUtil.buildActorIds(responseEntity);
         assertNotNull(actorIds);
         assertThat(actorIds).isEqualTo(expectedIds);
     }
 
     @Test
     public void checkActorIdsNullResponse() {
-        List<String> actorIds = AuditLoggerUtil.buildActorIds(ResponseEntity.ok().build());
+        Set<String> actorIds = AuditLoggerUtil.buildActorIds(ResponseEntity.ok().build());
         assertEquals(0, actorIds.size());
     }
 
@@ -150,18 +151,17 @@ public class AuditLoggerUtilTest {
     @Test
     public void shouldReturnActorIds() {
 
-        List<String> expectedActorIds = Arrays.asList(
-            "21334a2b-79ce-44eb-9168-2d49a744be9c",
+        Set<String> expectedActorIds = Set.of(
             "21334a2b-79ce-44eb-9168-2d49a744be9c");
 
-        List<String> actorIds = AuditLoggerUtil.getActorIds(roleAssignmentResponseEntity);
+        Set<String> actorIds = AuditLoggerUtil.getActorIds(roleAssignmentResponseEntity);
         assertNotNull(actorIds);
         assertThat(actorIds).isEqualTo(expectedActorIds);
     }
 
     @Test
     public void shouldReturnEmptyActorIds() {
-        List<String> actorIds = AuditLoggerUtil.getActorIds(ResponseEntity.ok().build());
+        Set<String> actorIds = AuditLoggerUtil.getActorIds(ResponseEntity.ok().build());
         assertEquals(0, actorIds.size());
     }
 
@@ -183,5 +183,21 @@ public class AuditLoggerUtilTest {
     public void shouldReturnEmptyAssignmentIdsForSearch() {
         List<UUID> assignmentIds = AuditLoggerUtil.searchAssignmentIds(ResponseEntity.ok().build());
         assertEquals(0, assignmentIds.size());
+    }
+
+    @Test
+    public void shouldReturnSizeOfAssignments() {
+        ResponseEntity<RoleAssignmentResource> responseEntity = ResponseEntity
+            .ok(new RoleAssignmentResource((List<? extends Assignment>) assignmentRequest.getRequestedRoles()));
+        String assignmentSize = AuditLoggerUtil.sizeOfAssignments(responseEntity);
+        assertNotNull(assignmentSize);
+        assertThat(assignmentSize).isEqualTo("2");
+    }
+
+    @Test
+    public void shouldReturnNullAsSizeOfAssignments() {
+        ResponseEntity<RoleAssignmentResource> responseEntity = ResponseEntity.ok().build();
+        String assignmentSize = AuditLoggerUtil.sizeOfAssignments(responseEntity);
+        assertNull(assignmentSize);
     }
 }
