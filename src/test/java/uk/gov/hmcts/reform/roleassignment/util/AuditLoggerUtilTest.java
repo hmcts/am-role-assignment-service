@@ -78,19 +78,18 @@ public class AuditLoggerUtilTest {
     @Test
     public void checkActorIds() {
 
-        List<String> expectedIds = Arrays.asList(
-            "21334a2b-79ce-44eb-9168-2d49a744be9c",
+        Set<String> expectedIds = Set.of(
             "21334a2b-79ce-44eb-9168-2d49a744be9c"
         );
 
-        List<String> actorIds = AuditLoggerUtil.buildActorIds(responseEntity);
+        Set<String> actorIds = AuditLoggerUtil.buildActorIds(responseEntity);
         assertNotNull(actorIds);
         assertThat(actorIds).isEqualTo(expectedIds);
     }
 
     @Test
     public void checkActorIdsNullResponse() {
-        List<String> actorIds = AuditLoggerUtil.buildActorIds(ResponseEntity.ok().build());
+        Set<String> actorIds = AuditLoggerUtil.buildActorIds(ResponseEntity.ok().build());
         assertEquals(0, actorIds.size());
     }
 
@@ -152,18 +151,17 @@ public class AuditLoggerUtilTest {
     @Test
     public void shouldReturnActorIds() {
 
-        List<String> expectedActorIds = Arrays.asList(
-            "21334a2b-79ce-44eb-9168-2d49a744be9c",
+        Set<String> expectedActorIds = Set.of(
             "21334a2b-79ce-44eb-9168-2d49a744be9c");
 
-        List<String> actorIds = AuditLoggerUtil.getActorIds(roleAssignmentResponseEntity);
+        Set<String> actorIds = AuditLoggerUtil.getActorIds(roleAssignmentResponseEntity);
         assertNotNull(actorIds);
         assertThat(actorIds).isEqualTo(expectedActorIds);
     }
 
     @Test
     public void shouldReturnEmptyActorIds() {
-        List<String> actorIds = AuditLoggerUtil.getActorIds(ResponseEntity.ok().build());
+        Set<String> actorIds = AuditLoggerUtil.getActorIds(ResponseEntity.ok().build());
         assertEquals(0, actorIds.size());
     }
 
