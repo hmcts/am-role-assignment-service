@@ -149,12 +149,15 @@ public class PersistenceService {
             }
         });
         try {
+
             entityManager.flush();
-        }catch (BatchFailedException exception){
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"An error occurred running the query on the database",exception);
+
+        } catch (BatchFailedException exception){
+
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Error occurred, querying on the database",exception);
+
         }
     }
-
 
     @NotNull
     protected ActorCache prepareActorCache(RoleAssignment roleAssignment) {
