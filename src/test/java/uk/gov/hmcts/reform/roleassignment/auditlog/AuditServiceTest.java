@@ -92,6 +92,7 @@ class AuditServiceTest {
             .roleName(ROLE_NAME)
             .correlationId(CORRELATION_ID)
             .requestPayload(REQUEST_PAYLOAD)
+            .assignmentSize(1)
             .build();
         AuditContext auditContextSpy = Mockito.spy(auditContext);
         auditService.audit(auditContextSpy);
@@ -117,7 +118,7 @@ class AuditServiceTest {
         assertThat(entry.getInvokingService(), is(equalTo((SERVICE_NAME))));
         assertThat(entry.getOperationType(), is(equalTo(AuditOperationType.CREATE_ASSIGNMENTS.getLabel())));
         assertThat(entry.getRequestPayload(), is(equalTo(auditContextSpy.getRequestPayload())));
-
+        assertThat(entry.getAssignmentSize(), is(equalTo(1)));
     }
 
     @Test
