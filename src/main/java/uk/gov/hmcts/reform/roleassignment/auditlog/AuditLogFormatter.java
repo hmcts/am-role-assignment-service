@@ -19,6 +19,7 @@ public class AuditLogFormatter {
             .append(getPair("operationType", entry.getOperationType()))
             .append(getPair("assignerId", entry.getAssignerId()))
             .append(getPair("assignmentId", entry.getAssignmentId()))
+            .append(getPair("assignmentSize", String.valueOf(entry.getAssignmentSize())))
             .append(getPair("invokingService", entry.getInvokingService()))
             .append(getPair("endpointCalled", entry.getPath()))
             .append(getPair("operationalOutcome", String.valueOf(entry.getHttpStatus())))

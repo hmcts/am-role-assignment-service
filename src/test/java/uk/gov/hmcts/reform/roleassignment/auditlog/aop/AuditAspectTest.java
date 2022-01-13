@@ -1,7 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog.aop;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
 import org.springframework.aop.framework.AopProxy;
 import org.springframework.aop.framework.DefaultAopProxyFactory;
@@ -25,7 +26,7 @@ public class AuditAspectTest {
     private final AuditAspect aspect = new AuditAspect();
     private TestController controllerProxy;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         AspectJProxyFactory aspectJProxyFactory = new AspectJProxyFactory(new TestController());
         aspectJProxyFactory.addAspect(aspect);
@@ -48,6 +49,7 @@ public class AuditAspectTest {
         assertThat(context.getActorId()).isEqualTo(ACTOR_ID);
         assertThat(context.getAuditOperationType()).isEqualTo(GET_ASSIGNMENTS_BY_ACTOR);
         assertThat(context.getAssignmentId()).isEqualTo(ID);
+        assertThat(context.getAssignmentSize()).isEqualTo(1);
         assertThat(context.getRoleName()).isEqualTo(ROLE_NAME);
 
     }
@@ -82,11 +84,12 @@ public class AuditAspectTest {
         public static final String JURISDICTION = "PROBATE";
 
         @LogAudit(operationType = AuditOperationType.GET_ASSIGNMENTS_BY_ACTOR, actorId
-            = "#actorId", id = "#result.id", roleName = "#roleName")
+            = "#actorId", id = "#result.id", roleName = "#roleName", size = "#result.log")
         public RoleAssignment retrieveRoleAssignmentByActorId(String actorId, String roleName) {
 
             return RoleAssignment.builder()
                 .id(UUID.fromString(ID))
+                .log("1")
                 .roleName(roleName).build();
         }
 
