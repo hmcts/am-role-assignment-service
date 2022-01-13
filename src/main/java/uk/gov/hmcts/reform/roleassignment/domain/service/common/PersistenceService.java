@@ -152,9 +152,9 @@ public class PersistenceService {
 
             entityManager.flush();
 
-        } catch (BatchFailedException exception){
+        } catch (BatchFailedException exception) {
 
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Error occurred, querying on the database",exception);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Error occurred, querying db",exception);
 
         }
     }
