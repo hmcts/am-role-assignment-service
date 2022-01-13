@@ -159,6 +159,12 @@ class IdamRepositoryTest {
     }
 
     @Test
+    void getUserInfo_HandleHttpResponse() {
+        FeignException.Unauthorized exception = mock(FeignException.Unauthorized.class);
+        when(idamApi.retrieveUserInfo(null)).thenThrow(exception);
+    }
+
+    @Test
     void getUserRolesBlankResponse() throws IOException {
         String userId = "003352d0-e699-48bc-b6f5-5810411e60af";
         UserDetails userDetails = UserDetails.builder().email("black@betty.com").forename("ram").surname("jam").id(
@@ -324,7 +330,6 @@ class IdamRepositoryTest {
         assertNotNull(actualResponse);
         assertEquals(HttpStatus.OK, actualResponse.getStatusCode());
 
-
     }
 
     @Test
@@ -372,7 +377,6 @@ class IdamRepositoryTest {
         assertThrows(ResponseStatusException.class, () -> idamRepository.getUserInfo("invalid token"));
     }
 
-
     @Test
     void getUserByUserIdException() {
         FeignException.Unauthorized unauthorized = mock(FeignException.Unauthorized.class);
@@ -382,5 +386,10 @@ class IdamRepositoryTest {
             ResponseStatusException.class,
             () -> idamRepository.getUserByUserId("invalid token", "testuserid")
         );
+    }
+
+    @Test
+    void getHttpHeaders() {
+        assertThrows(NullPointerException.class, () -> idamRepository.searchUserByUserId(null, null));
     }
 }
