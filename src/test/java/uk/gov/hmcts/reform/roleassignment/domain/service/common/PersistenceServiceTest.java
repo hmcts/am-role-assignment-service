@@ -337,9 +337,11 @@ class PersistenceServiceTest {
         when(roleAssignmentRepository.findByActorId(id))
             .thenReturn(null);
 
-        Assertions.assertThrows(NullPointerException.class, () ->
+        Assertions.assertThrows(ResponseStatusException.class, () ->
             sut.getAssignmentsByActor(id)
         );
+
+
 
         verify(roleAssignmentRepository, times(1))
             .findByActorId(id);
