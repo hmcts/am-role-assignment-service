@@ -106,10 +106,8 @@ public class PersistenceService {
         //Prepare request entity
         var requestEntity = persistenceUtil.convertRequestToEntity(request);
 
-
         //Persist the request entity
         return requestRepository.save(requestEntity);
-
 
     }
 
@@ -167,9 +165,13 @@ public class PersistenceService {
     }
 
     @Transactional
-    public ActorCacheEntity getActorCacheEntity(String actorId) {
-
-        return actorCacheRepository.findByActorId(actorId);
+    public ActorCacheEntity getActorCacheEntity(String actorId) throws InterruptedException {
+        try {
+            return actorCacheRepository.findByActorId(actorId);
+        } catch (Throwable t) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                                              "Error interrupted SQL call getActorCacheEntity", t);
+        }
     }
 
     public List<RoleAssignment> getAssignmentsByProcess(String process, String reference, String status) {
@@ -208,13 +210,16 @@ public class PersistenceService {
     }
 
     @Transactional
-    public List<RoleAssignment> getAssignmentsByActor(String actorId) {
-
-        Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
-        //convert into model class
-        return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
-            .collect(Collectors.toList());
-
+    public List<RoleAssignment> getAssignmentsByActor(String actorId) throws InterruptedException {
+        try {
+            Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
+            //convert into model class
+            return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+                .collect(Collectors.toList());
+        } catch (Throwable t) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                                              "Error interrupted SQL call getAssignmentsByActor", t);
+        }
     }
 
 
@@ -369,7 +374,7 @@ public class PersistenceService {
 
     public long getTotalRecords() {
         return PageHolder.holder.get() != null ? PageHolder.holder.get()
-            .getTotalElements() : Long.valueOf(0);
+            .getTotalElements() : 0L;
 
     }
 

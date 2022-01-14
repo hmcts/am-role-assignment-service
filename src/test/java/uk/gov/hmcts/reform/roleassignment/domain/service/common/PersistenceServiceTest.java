@@ -224,7 +224,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getActorCacheEntity() throws IOException {
+    void getActorCacheEntity() throws IOException, InterruptedException {
         String id = UUID.randomUUID().toString();
         ActorCacheEntity actorCacheEntity = TestDataBuilder.buildActorCacheEntity();
         when(actorCacheRepository.findByActorId(id)).thenReturn(actorCacheEntity);
@@ -232,6 +232,16 @@ class PersistenceServiceTest {
         assertEquals(actorCacheEntity, result);
         verify(actorCacheRepository, times(1)).findByActorId(id);
     }
+
+    @Test
+    void getActorCacheEntityException() throws IOException {
+        doThrow(BatchFailedException.class).when(actorCacheRepository).findByActorId(any());
+        Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
+        assertThrows(ResponseStatusException.class, () ->
+            sut.getActorCacheEntity(UUID.randomUUID().toString()));
+    }
+
+
 
     @Test
     void getExistingRoleByProcessAndReference() throws IOException {
@@ -300,7 +310,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getAssignmentsByActor() throws IOException {
+    void getAssignmentsByActor() throws IOException, InterruptedException {
         String id = UUID.randomUUID().toString();
         Set<RoleAssignmentEntity> roleAssignmentEntitySet = new HashSet<>();
         roleAssignmentEntitySet.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
@@ -335,6 +345,12 @@ class PersistenceServiceTest {
             .findByActorId(id);
     }
 
+    @Test
+    void  getAssignmentsByActorException() {
+        doThrow(ResponseStatusException.class).when(roleAssignmentRepository).findByActorId(any());
+        assertThrows(ResponseStatusException.class, () ->
+            sut.getAssignmentsByActor(UUID.randomUUID().toString()));
+    }
 
     @Test
     void getAssignmentById() throws IOException {
@@ -1062,4 +1078,6 @@ class PersistenceServiceTest {
         assertThrows(ResponseStatusException.class, () ->
             sut.persistActorCache(roleAssignments));
     }
+
+
 }
