@@ -35,7 +35,7 @@ class GetAssignmentControllerTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -46,7 +46,7 @@ class GetAssignmentControllerTest {
     }
 
     @Test
-    void shouldGetRoleAssignmentResourceWithOutBody() {
+    void shouldGetRoleAssignmentResourceWithOutBody() throws InterruptedException {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.OK).body(null);
 
@@ -59,7 +59,7 @@ class GetAssignmentControllerTest {
     }
 
     @Test
-    void shouldGetRoleAssignmentResourceWithOutRoleAssignment() {
+    void shouldGetRoleAssignmentResourceWithOutRoleAssignment() throws InterruptedException {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.OK)
             .body(new RoleAssignmentResource(null, ""));
