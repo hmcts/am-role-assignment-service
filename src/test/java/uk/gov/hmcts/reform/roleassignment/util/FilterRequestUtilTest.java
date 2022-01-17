@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -77,5 +77,17 @@ class FilterRequestUtilTest {
         );
         verify(correlationInterceptorUtil, times(1))
             .preHandle(any(HttpServletRequest.class));
+    }
+
+    @Test
+    void doFilterInternalException() throws IOException {
+        when(correlationInterceptorUtil.preHandle(any(HttpServletRequest.class)))
+            .thenReturn("a5cff648-84b6-404d-83d6-f86b526cc59b");
+
+        doThrow(IOException.class).when(httpServletRequest).getInputStream();
+
+        Assertions.assertThrows(IOException.class, () ->
+            sut.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
+        );
     }
 }
