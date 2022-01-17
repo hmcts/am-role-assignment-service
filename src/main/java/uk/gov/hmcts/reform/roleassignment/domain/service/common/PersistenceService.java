@@ -177,10 +177,10 @@ public class PersistenceService {
     public ActorCacheEntity getActorCacheEntity(String actorId) {
         try {
             return actorCacheRepository.findByActorId(actorId);
-        } catch (SQLException exception) {
+        } catch (SQLException sqlException) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
                                               "Error: SQL call in getActorCacheEntity() was interrupted or blocked.",
-                                              exception);
+                                              sqlException);
         }
     }
 
