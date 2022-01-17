@@ -64,7 +64,7 @@ public class GetAssignmentController {
                                  required = false) String correlationId,
                                 @RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch,
                                  @ApiParam(value = "Actor Id ", required = true)
-                       @PathVariable("actorId") String actorId) throws InterruptedException {
+                       @PathVariable("actorId") String actorId) {
 
         ResponseEntity<RoleAssignmentResource> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
             actorId

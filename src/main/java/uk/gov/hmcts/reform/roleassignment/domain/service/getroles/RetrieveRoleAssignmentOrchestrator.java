@@ -34,7 +34,7 @@ public class RetrieveRoleAssignmentOrchestrator {
     //4. Call persistence to fetch requested assignment records
     //5. Call prepare response to make HATEOUS based response.
 
-    public ResponseEntity<RoleAssignmentResource> getAssignmentsByActor(String actorId) throws InterruptedException {
+    public ResponseEntity<RoleAssignmentResource> getAssignmentsByActor(String actorId) {
         ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, actorId);
         List<? extends Assignment> assignments = persistenceService.getAssignmentsByActor(actorId);
         return prepareResponseService.prepareRetrieveRoleResponse(
@@ -47,7 +47,7 @@ public class RetrieveRoleAssignmentOrchestrator {
         return JacksonUtils.getConfiguredRoles();
     }
 
-    public long retrieveETag(String actorId) throws InterruptedException {
+    public long retrieveETag(String actorId) {
         var entity = persistenceService.getActorCacheEntity(actorId);
         return entity.getEtag();
     }
