@@ -46,7 +46,7 @@ class GetAssignmentControllerTest {
     }
 
     @Test
-    void shouldGetRoleAssignmentResourceWithOutBody() throws InterruptedException {
+    void shouldGetRoleAssignmentResourceWithOutBody() {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.OK).body(null);
 
@@ -59,7 +59,7 @@ class GetAssignmentControllerTest {
     }
 
     @Test
-    void shouldGetRoleAssignmentResourceWithOutRoleAssignment() throws InterruptedException {
+    void shouldGetRoleAssignmentResourceWithOutRoleAssignment() {
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
         ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.OK)
             .body(new RoleAssignmentResource(null, ""));

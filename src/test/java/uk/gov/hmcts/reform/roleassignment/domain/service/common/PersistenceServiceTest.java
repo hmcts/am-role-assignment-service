@@ -236,10 +236,11 @@ class PersistenceServiceTest {
 
     @Test
     void getActorCacheEntityException() throws IOException, SQLException {
+        String uuid = UUID.randomUUID().toString();
         doThrow(BatchFailedException.class).when(actorCacheRepository).findByActorId(any());
         Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
-        assertThrows(ResponseStatusException.class, () ->
-            sut.getActorCacheEntity(UUID.randomUUID().toString()));
+        assertThrows(BatchFailedException.class, () ->
+            sut.getActorCacheEntity(uuid));
     }
 
 
@@ -338,11 +339,9 @@ class PersistenceServiceTest {
         when(roleAssignmentRepository.findByActorId(id))
             .thenReturn(null);
 
-        Assertions.assertThrows(ResponseStatusException.class, () ->
+        Assertions.assertThrows(NullPointerException.class, () ->
             sut.getAssignmentsByActor(id)
         );
-
-
 
         verify(roleAssignmentRepository, times(1))
             .findByActorId(id);
