@@ -38,8 +38,6 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
 import java.sql.SQLException;
-import java.sql.SQLNonTransientConnectionException;
-import java.sql.SQLNonTransientException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -146,7 +144,8 @@ public class PersistenceService {
                 existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
             } catch (SQLException sqlException) {
                 throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                                                  "Error: SQL call in getActorCacheEntity() was interrupted or blocked.",
+                                                  "Error: SQL call in getActorCacheEntity() "
+                                                      + "was interrupted or blocked.",
                                                   sqlException);
             }
             if (existingActorCache != null) {
@@ -227,9 +226,9 @@ public class PersistenceService {
             //convert into model class
             return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
                 .collect(Collectors.toList());
-        } catch (Throwable t) {
+        } catch (SQLException sqlException) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                                              "Error interrupted SQL call getAssignmentsByActor", t);
+                                              "Error interrupted SQL call getAssignmentsByActor", sqlException);
         }
     }
 
