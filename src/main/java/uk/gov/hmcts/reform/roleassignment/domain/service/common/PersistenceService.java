@@ -37,6 +37,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
+import java.sql.SQLException;
+import java.sql.SQLNonTransientConnectionException;
+import java.sql.SQLNonTransientException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -138,7 +141,14 @@ public class PersistenceService {
         roleAssignments.forEach(roleAssignment -> {
             var actorCacheEntity = persistenceUtil
                 .convertActorCacheToEntity(prepareActorCache(roleAssignment));
-            ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
+            ActorCacheEntity existingActorCache = null;
+            try {
+                existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
+            } catch (SQLException sqlException) {
+                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                                                  "Error: SQL call in getActorCacheEntity() was interrupted or blocked.",
+                                                  sqlException);
+            }
             if (existingActorCache != null) {
                 actorCacheEntity.setEtag(existingActorCache.getEtag());
                 entityManager.merge(actorCacheEntity);
@@ -165,12 +175,13 @@ public class PersistenceService {
     }
 
     @Transactional
-    public ActorCacheEntity getActorCacheEntity(String actorId) throws InterruptedException {
+    public ActorCacheEntity getActorCacheEntity(String actorId) {
         try {
             return actorCacheRepository.findByActorId(actorId);
-        } catch (Throwable t) {
+        } catch (SQLException sqlException) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                                              "Error interrupted SQL call getActorCacheEntity", t);
+                                              "Error: SQL call in getActorCacheEntity() was interrupted or blocked.",
+                                              sqlException);
         }
     }
 
@@ -210,7 +221,7 @@ public class PersistenceService {
     }
 
     @Transactional
-    public List<RoleAssignment> getAssignmentsByActor(String actorId) throws InterruptedException {
+    public List<RoleAssignment> getAssignmentsByActor(String actorId) {
         try {
             Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
             //convert into model class

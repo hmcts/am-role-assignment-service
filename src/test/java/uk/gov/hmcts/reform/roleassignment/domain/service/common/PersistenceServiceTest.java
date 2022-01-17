@@ -48,6 +48,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -173,7 +174,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void persistActorCache() throws IOException {
+    void persistActorCache() throws IOException, SQLException {
         RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(LIVE);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.createObjectNode();
@@ -200,7 +201,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void persistActorCache_nullEntity() throws IOException {
+    void persistActorCache_nullEntity() throws IOException, SQLException {
         RoleAssignment roleAssignment = Mockito.spy(TestDataBuilder.buildRoleAssignment(LIVE));
         roleAssignment.setActorId(null);
         ObjectMapper mapper = new ObjectMapper();
@@ -224,7 +225,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getActorCacheEntity() throws IOException, InterruptedException {
+    void getActorCacheEntity() throws IOException, SQLException {
         String id = UUID.randomUUID().toString();
         ActorCacheEntity actorCacheEntity = TestDataBuilder.buildActorCacheEntity();
         when(actorCacheRepository.findByActorId(id)).thenReturn(actorCacheEntity);
@@ -234,7 +235,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getActorCacheEntityException() throws IOException {
+    void getActorCacheEntityException() throws IOException, SQLException {
         doThrow(BatchFailedException.class).when(actorCacheRepository).findByActorId(any());
         Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
         assertThrows(ResponseStatusException.class, () ->
@@ -310,7 +311,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getAssignmentsByActor() throws IOException, InterruptedException {
+    void getAssignmentsByActor() throws IOException {
         String id = UUID.randomUUID().toString();
         Set<RoleAssignmentEntity> roleAssignmentEntitySet = new HashSet<>();
         roleAssignmentEntitySet.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
