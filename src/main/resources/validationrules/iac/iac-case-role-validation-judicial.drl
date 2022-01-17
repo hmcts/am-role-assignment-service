@@ -288,8 +288,8 @@ when
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
-             roleName == "specific-access-judiciary",
-             roleCategory == RoleCategory.JUDICIAL,
+             roleName == "specific-access-judicial",
+             roleCategory in (RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS, RoleCategory.ADMIN),
              grantType == GrantType.SPECIFIC,
              notes != null && notes.size > 0, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
