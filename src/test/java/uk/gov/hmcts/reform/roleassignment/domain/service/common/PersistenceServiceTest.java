@@ -311,7 +311,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getAssignmentsByActor() throws IOException {
+    void getAssignmentsByActor() throws IOException, SQLException {
         String id = UUID.randomUUID().toString();
         Set<RoleAssignmentEntity> roleAssignmentEntitySet = new HashSet<>();
         roleAssignmentEntitySet.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
@@ -333,7 +333,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getAssignmentsByActor_NPE() {
+    void getAssignmentsByActor_NPE() throws SQLException {
         String id = UUID.randomUUID().toString();
         when(roleAssignmentRepository.findByActorId(id))
             .thenReturn(null);
@@ -349,7 +349,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void  getAssignmentsByActorException() {
+    void  getAssignmentsByActorException() throws SQLException {
         doThrow(ResponseStatusException.class).when(roleAssignmentRepository).findByActorId(any());
         assertThrows(ResponseStatusException.class, () ->
             sut.getAssignmentsByActor(UUID.randomUUID().toString()));
