@@ -2,6 +2,7 @@ package validationrules.iac;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -12,6 +13,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
+
+import java.time.ZonedDateTime;
 
 /*
  * IAC "lead-judge" case roles can be created by any existing "case-allocator" user
@@ -154,4 +157,167 @@ then
    $ca.getRoleAssignment().log("Stage 1 approved : ia_judicial_case_allocator_approved_delete_case_role_v11");
    update($ca.getRoleAssignment());
    logMsg("Rule : ia_judicial_case_allocator_approved_delete_case_role_v11");
+end;
+
+/*
+ * The below rules are required for Specific and Challenged access
+ * It will be toggled on with new IAC_2_0 DB flag.
+ */
+
+/*
+ * IAC "specific-access-requested" case roles self creation user
+ */
+rule "create_specific_access_requested_case_role"
+when
+    $rq: Request(
+             // The assigner must be the current user.
+             assignerId == authenticatedUserId,
+             process == "specific-access",
+             reference != null)
+    $ra: RoleAssignment(
+             actorId == $rq.authenticatedUserId,
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName == "specific-access-requested",
+             grantType == GrantType.SPECIFIC,
+             notes != null && notes.size > 0, /* Make sure there is at least one note with content in it */
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
+             attributes["requestedRole"] != null && attributes["requestedRole"].asText() == "specific-access-judicial")
+    $c:  Case(
+             id == $caseId)
+    $e: ExistingRoleAssignment(
+             actorId == $ra.actorId,
+             roleType == RoleType.ORGANISATION,
+             roleCategory == $ra.roleCategory,
+             grantType in (GrantType.STANDARD, GrantType.BASIC),
+             endTime == null || endTime.isAfter(ZonedDateTime.now()),
+             beginTime == null || !beginTime.isAfter(ZonedDateTime.now()))
+then
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : create_specific_access_requested_case_role");
+    update($ra);
+    logMsg("Rule : create_specific_access_requested_case_role");
+end;
+
+/*
+ * IAC "specific-access" case roles self deletion
+ */
+rule "delete_specific_access_requested_case_role"
+when
+    $rq: Request(
+             // The assignee and the assigner must be the current user.
+             assignerId == authenticatedUserId,
+             process == "specific-access",
+             reference != null)
+    $ra: RoleAssignment(
+             actorId == $rq.authenticatedUserId,
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName in ("specific-access-requested", "specific-access-granted", "specific-access-denied"))
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Stage 1 approved : delete_specific_access_requested_case_role");
+    update($ra);
+    logMsg("Rule : delete_specific_access_requested_case_role");
+end;
+
+/*
+ * IAC "specific-access" case roles self deletion
+ */
+rule "create_specific_access_granted_or_denied_case_role"
+when
+    $rq: Request(
+             clientId == "exui_specific_access_orchestrator",
+             process == "specific-access",
+             reference != null)
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName in ("specific-access-granted", "specific-access-denied"),
+             classification in (Classification.PRIVATE, Classification.RESTRICTED),//Need clarification
+             grantType in (GrantType.BASIC, GrantType.SPECIFIC),//Need clarification
+             readOnly == true,
+             endTime != null,
+             notes != null && notes.size > 0, /* Make sure there is at least one note with content in it */
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+    $c:  Case(
+             id == $caseId)
+    $e: ExistingRoleAssignment(
+             actorId == $ra.actorId,
+             roleType == RoleType.CASE,
+             roleName == "specific-access-requested",
+             roleCategory == $ra.roleCategory,
+             attributes["requestedRole"] != null && attributes["requestedRole"] == $ra.attributes["requestedRole"])
+then
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : create_specific_access_granted_or_denied_case_role");
+    update($ra);
+    logMsg("Rule : create_specific_access_granted_or_denied_case_role");
+end;
+
+
+rule "delete_specific_access_granted_or_denied_case_role"
+when
+    $rq: Request(
+             clientId == "exui_specific_access_orchestrator",
+             process == "specific-access",
+             reference != null)
+    $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName == "specific-access-requested")
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Stage 1 approved : delete_specific_access_granted_or_denied_case_role");
+    update($ra);
+    logMsg("Rule : delete_specific_access_granted_or_denied_case_role");
+end;
+
+
+rule "case_allocator_create_specific_access_case_role"
+when
+    $rq: Request(
+             // The assigner must be the current user.
+             assignerId == authenticatedUserId,
+             process == "specific-access",
+             reference != null)
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName == "specific-access-judiciary",
+             roleCategory == RoleCategory.JUDICIAL,
+             grantType == GrantType.SPECIFIC,
+             notes != null && notes.size > 0, /* Make sure there is at least one note with content in it */
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("IA"))
+    $c:  Case(
+             id == $caseId)
+    $e: ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName == "case-allocator",
+             grantType == GrantType.STANDARD,
+             classification.isAtLeast($ra.classification),
+             endTime == null || endTime.isAfter(ZonedDateTime.now()),
+             beginTime == null || !beginTime.isAfter(ZonedDateTime.now()),
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == $c.jurisdiction,
+             attributes["caseType"] == null || attributes["caseType"].asText() == $c.caseTypeId,
+             attributes["region"] == null || attributes["region"].asText() != $c.getRegion(),
+             attributes["baseLocation"] == null || attributes["baseLocation"].asText() != $c.getBaseLocation(),
+             attributes["managedRoleCategory"] == null || attributes["managedRoleCategory"].asText() == $ra.roleCategory.toString(),
+             attributes["managedRole"] == null || attributes["managedRole"].asText() == $ra.roleName)
+then
+    // We copy the authorisations to allow the case config to require an authorisation
+    // for (particularly judicial) role mappings
+    $ra.setAuthorisations($e.getAuthorisations());
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : case_allocator_create_specific_access_case_role");
+    update($ra);
+    logMsg("Rule : case_allocator_create_specific_access_case_role");
 end;
