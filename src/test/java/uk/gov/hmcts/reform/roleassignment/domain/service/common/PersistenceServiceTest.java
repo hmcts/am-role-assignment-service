@@ -235,11 +235,10 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getActorCacheEntityException() throws IOException, SQLException {
+    void getActorCacheEntityException() throws SQLException {
         String uuid = UUID.randomUUID().toString();
-        doThrow(BatchFailedException.class).when(actorCacheRepository).findByActorId(any());
-        Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
-        assertThrows(BatchFailedException.class, () ->
+        doThrow(SQLException.class).when(actorCacheRepository).findByActorId(any());
+        assertThrows(ResponseStatusException.class, () ->
             sut.getActorCacheEntity(uuid));
     }
 
@@ -349,7 +348,7 @@ class PersistenceServiceTest {
 
     @Test
     void  getAssignmentsByActorException() throws SQLException {
-        doThrow(ResponseStatusException.class).when(roleAssignmentRepository).findByActorId(any());
+        doThrow(SQLException.class).when(roleAssignmentRepository).findByActorId(any());
         assertThrows(ResponseStatusException.class, () ->
             sut.getAssignmentsByActor(UUID.randomUUID().toString()));
     }
@@ -1074,6 +1073,16 @@ class PersistenceServiceTest {
     @Test
     void persistActorCacheException() throws IOException {
         doThrow(BatchFailedException.class).when(entityManager).flush();
+
+        Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
+
+        assertThrows(ResponseStatusException.class, () ->
+            sut.persistActorCache(roleAssignments));
+    }
+
+    @Test
+    void persistActorCacheSqlException() throws IOException, SQLException {
+        doThrow(SQLException.class).when(actorCacheRepository).findByActorId(any());
 
         Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
 
