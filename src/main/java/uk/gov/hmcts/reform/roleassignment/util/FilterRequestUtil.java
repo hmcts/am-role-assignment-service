@@ -10,10 +10,8 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.regex.Pattern;
 
 @Component
@@ -24,8 +22,7 @@ public class FilterRequestUtil extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request,
-                                    HttpServletResponse response, FilterChain filterChain)
-        throws ServletException, IOException {
+                                    HttpServletResponse response, FilterChain filterChain) {
 
         final String correlationId = correlationInterceptorUtil.preHandle(request);
 

@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 
 import javax.servlet.FilterChain;
@@ -80,13 +81,15 @@ class FilterRequestUtilTest {
     }
 
     @Test
-    void doFilterInternalException() throws IOException {
+    void doFilterInternalException() throws IOException, ServletException {
         when(correlationInterceptorUtil.preHandle(any(HttpServletRequest.class)))
             .thenReturn("a5cff648-84b6-404d-83d6-f86b526cc59b");
 
-        doThrow(IOException.class).when(httpServletRequest).getInputStream();
+        when(httpServletRequest.getInputStream()).thenReturn(request.getInputStream());
 
-        Assertions.assertThrows(IOException.class, () ->
+        doThrow(ServletException.class).when(filterChain).doFilter(any(), any());
+
+        Assertions.assertThrows(ResponseStatusException.class, () ->
             sut.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
         );
     }
