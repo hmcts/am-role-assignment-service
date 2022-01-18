@@ -179,8 +179,8 @@ when
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              roleName == "specific-access-requested",
-             grantType == GrantType.SPECIFIC,
-             notes != null && notes.size > 0, /* Make sure there is at least one note with content in it */
+             grantType == GrantType.BASIC,
+             notes != null && notes.size > 0 && notes.size > 0, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
              attributes["requestedRole"] != null && attributes["requestedRole"].asText() == "specific-access-judicial")
     $c:  Case(
@@ -229,18 +229,18 @@ end;
 rule "create_specific_access_granted_or_denied_case_role"
 when
     $rq: Request(
-             clientId == "exui_specific_access_orchestrator",
+             clientId == "xui_webapp",
              process == "specific-access",
              reference != null)
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              roleName in ("specific-access-granted", "specific-access-denied"),
-             classification in (Classification.PRIVATE, Classification.RESTRICTED),//Need clarification
-             grantType in (GrantType.BASIC, GrantType.SPECIFIC),//Need clarification
+             classification == Classification.PRIVATE,
+             grantType == GrantType.BASIC,
              readOnly == true,
              endTime != null,
-             notes != null && notes.size > 0, /* Make sure there is at least one note with content in it */
+             notes != null && notes.size > 0 && notes.toString() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
              id == $caseId)
@@ -263,7 +263,7 @@ end;
 rule "delete_specific_access_granted_or_denied_case_role"
 when
     $rq: Request(
-             clientId == "exui_specific_access_orchestrator",
+             clientId == "xui_webapp",
              process == "specific-access",
              reference != null)
     $ra: RoleAssignment(
@@ -290,8 +290,8 @@ when
              roleType == RoleType.CASE,
              roleName == "specific-access-judicial",
              roleCategory in (RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS, RoleCategory.ADMIN),
-             grantType == GrantType.SPECIFIC,
-             notes != null && notes.size > 0, /* Make sure there is at least one note with content in it */
+             grantType == GrantType.BASIC,
+             notes != null && notes.size > 0 && notes.toString() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("IA"))
     $c:  Case(

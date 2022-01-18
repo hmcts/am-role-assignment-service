@@ -903,8 +903,8 @@
     ]
   },
   {
-    "name": "specific-access-judicial",
-    "label": "Specific Access (judicial)",
+    "name": "specific-access-judiciary",
+    "label": "Specific Access (judiciary)",
     "description": "Specific access for judicial users.",
     "category": "JUDICIAL",
     "substantive": false,
@@ -916,11 +916,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
@@ -950,11 +950,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PRIVATE"]
         },
         "endTime": {
           "mandatory": true
@@ -990,11 +990,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PRIVATE"]
         },
         "endTime": {
           "mandatory": true
@@ -1030,11 +1030,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PRIVATE"]
         },
         "endTime": {
           "mandatory": true
@@ -1057,8 +1057,8 @@
     ]
   },
   {
-    "name": "specific-access-staff",
-    "label": "Specific Access (staff)",
+    "name": "specific-access-legal-operations",
+    "label": "Specific Access (legal-operations)",
     "description": "Specific access for staff users.",
     "category": "LEGAL_OPERATIONS",
     "substantive": false,
@@ -1070,11 +1070,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
@@ -1104,11 +1104,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PRIVATE"]
         },
         "endTime": {
           "mandatory": true
@@ -1144,11 +1144,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PRIVATE"]
         },
         "endTime": {
           "mandatory": true
@@ -1184,11 +1184,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PRIVATE"]
         },
         "endTime": {
           "mandatory": true
@@ -1224,11 +1224,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
@@ -1258,11 +1258,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PRIVATE"]
         },
         "endTime": {
           "mandatory": true
@@ -1298,11 +1298,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PRIVATE"]
         },
         "endTime": {
           "mandatory": true
@@ -1338,11 +1338,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PRIVATE"]
         },
         "endTime": {
           "mandatory": true
