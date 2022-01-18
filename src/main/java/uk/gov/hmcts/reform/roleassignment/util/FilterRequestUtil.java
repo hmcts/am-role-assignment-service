@@ -2,16 +2,16 @@ package uk.gov.hmcts.reform.roleassignment.util;
 
 import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.regex.Pattern;
 
 @Component
@@ -22,8 +22,7 @@ public class FilterRequestUtil extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request,
-                                    HttpServletResponse response, FilterChain filterChain)
-        throws ServletException, IOException {
+                                    HttpServletResponse response, FilterChain filterChain) {
 
         final String correlationId = correlationInterceptorUtil.preHandle(request);
 
@@ -46,6 +45,10 @@ public class FilterRequestUtil extends OncePerRequestFilter {
 
         }
 
-        filterChain.doFilter(mutableRequest, response);
+        try {
+            filterChain.doFilter(mutableRequest, response);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error occurred in filter chain ", e);
+        }
     }
 }
