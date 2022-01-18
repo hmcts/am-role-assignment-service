@@ -81,7 +81,7 @@ public class ValidationModelService {
         }
         // facts needs assignee roles for creates, not for deletes (?)
         if (assignmentRequest.getRequest().getRequestType() == RequestType.CREATE) {
-            assignmentRequest.getRequestedRoles().stream().forEach(r -> userIds.add(r.getActorId()));
+            assignmentRequest.getRequestedRoles().forEach(r -> userIds.add(r.getActorId()));
         }
 
         //replacing the logic to make single db call using dynamic search api.
@@ -109,6 +109,9 @@ public class ValidationModelService {
 
         );
         long totalRecords = persistenceService.getTotalRecords();
+        if (totalRecords > 100) {
+            log.warn("Fetched assignments for the actor have {} total records", totalRecords);
+        }
         double pageNumber = 0;
         if (defaultSize > 0) {
             pageNumber = (double) totalRecords / (double) defaultSize;

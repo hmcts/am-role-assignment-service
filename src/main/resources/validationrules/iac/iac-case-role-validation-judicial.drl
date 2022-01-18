@@ -169,6 +169,7 @@ end;
  */
 rule "create_specific_access_requested_case_role"
 when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
     $rq: Request(
              // The assigner must be the current user.
              assignerId == authenticatedUserId,
@@ -180,9 +181,9 @@ when
              roleType == RoleType.CASE,
              roleName == "specific-access-requested",
              grantType == GrantType.BASIC,
-             notes != null && notes.size > 0 && notes.size > 0, /* Make sure there is at least one note with content in it */
+             notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
-             attributes["requestedRole"] != null && attributes["requestedRole"].asText() == "specific-access-judicial")
+             attributes["requestedRole"] != null && attributes["requestedRole"].asText() == "specific-access-judiciary")
     $c:  Case(
              id == $caseId)
     $e: ExistingRoleAssignment(
@@ -206,6 +207,7 @@ end;
  */
 rule "delete_specific_access_requested_case_role"
 when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
     $rq: Request(
              // The assignee and the assigner must be the current user.
              assignerId == authenticatedUserId,
@@ -224,10 +226,11 @@ then
 end;
 
 /*
- * IAC "specific-access" case roles self deletion
+ * IAC "specific-access" case approval or denied roles
  */
 rule "create_specific_access_granted_or_denied_case_role"
 when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
     $rq: Request(
              clientId == "xui_webapp",
              process == "specific-access",
@@ -240,7 +243,7 @@ when
              grantType == GrantType.BASIC,
              readOnly == true,
              endTime != null,
-             notes != null && notes.size > 0 && notes.toString() > 5, /* Make sure there is at least one note with content in it */
+             notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
              id == $caseId)
@@ -259,9 +262,12 @@ then
     logMsg("Rule : create_specific_access_granted_or_denied_case_role");
 end;
 
-
+/*
+ * IAC "specific-access-requested" case deletion
+ */
 rule "delete_specific_access_granted_or_denied_case_role"
 when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
     $rq: Request(
              clientId == "xui_webapp",
              process == "specific-access",
@@ -277,9 +283,12 @@ then
     logMsg("Rule : delete_specific_access_granted_or_denied_case_role");
 end;
 
-
+/*
+ * IAC "specific-access-judiciary" case creation and case-allocator as a assigner
+ */
 rule "case_allocator_create_specific_access_case_role"
 when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
     $rq: Request(
              // The assigner must be the current user.
              assignerId == authenticatedUserId,
@@ -288,10 +297,10 @@ when
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
-             roleName == "specific-access-judicial",
+             roleName == "specific-access-judiciary",
              roleCategory in (RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS, RoleCategory.ADMIN),
              grantType == GrantType.BASIC,
-             notes != null && notes.size > 0 && notes.toString() > 5, /* Make sure there is at least one note with content in it */
+             notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("IA"))
     $c:  Case(
