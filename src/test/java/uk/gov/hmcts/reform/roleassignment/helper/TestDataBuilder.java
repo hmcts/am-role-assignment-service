@@ -594,6 +594,37 @@ public class TestDataBuilder {
 
     }
 
+    public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecificAccess(
+        String process, String roleName, RoleCategory roleCategory, HashMap<String, JsonNode> attributes) {
+
+        return AssignmentRequest.builder()
+            .request(Request.builder()
+               .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
+               .authenticatedUserId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+               .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
+               .assignerId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+               .requestType(RequestType.CREATE)
+               .reference("reference")
+               .process(process)
+               .replaceExisting(true)
+               .created(ZonedDateTime.now())
+               .build())
+            .requestedRoles(Collections.singletonList(
+                RoleAssignment.builder()
+                    .actorId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+                    .status(CREATE_REQUESTED)
+                    .roleType(RoleType.CASE)
+                    .roleName(roleName)
+                    .roleCategory(roleCategory)
+                    .grantType(GrantType.BASIC)
+                    .classification(Classification.PRIVATE)
+                    .endTime(ZonedDateTime.now().plusDays(1L))
+                    .notes(convertValueJsonNode(List.of("Access required for reasons")))
+                    .attributes(attributes)
+                    .build()
+            ));
+    }
+
     public static RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType) {
         return RoleAssignment.builder()
             .id(UUID.randomUUID())
