@@ -595,7 +595,7 @@ public class TestDataBuilder {
     }
 
     public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecificAccess(
-        String process, String roleName, HashMap<String, JsonNode> attributes) {
+        String process, String roleName, RoleCategory roleCategory, HashMap<String, JsonNode> attributes) {
 
         return AssignmentRequest.builder()
             .request(Request.builder()
@@ -615,7 +615,7 @@ public class TestDataBuilder {
                     .status(CREATE_REQUESTED)
                     .roleType(RoleType.CASE)
                     .roleName(roleName)
-                    .roleCategory(RoleCategory.JUDICIAL)
+                    .roleCategory(roleCategory)
                     .grantType(GrantType.BASIC)
                     .classification(Classification.PRIVATE)
                     .endTime(ZonedDateTime.now().plusDays(1L))

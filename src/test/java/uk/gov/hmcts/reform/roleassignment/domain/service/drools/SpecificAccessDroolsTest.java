@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -27,10 +25,10 @@ class SpecificAccessDroolsTest extends DroolBase {
         HashMap<String, JsonNode> attr = new HashMap<>();
         attr.put("caseId", convertValueJsonNode("1234567890123456"));
         attr.put("requestedRole", convertValueJsonNode("specific-access-judiciary"));
-        attr.put("caseType", convertValueJsonNode("Asylum"));
-        attr.put("jurisdiction", convertValueJsonNode("IA"));
+        attr.put("caseType", convertValueJsonNode("NotIA"));
+        attr.put("jurisdiction", convertValueJsonNode("NotAsylum"));
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecificAccess(
-            "specific-access", "specific-access-requested", attr).build();
+            "specific-access", "specific-access-requested", RoleCategory.JUDICIAL, attr).build();
 
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
             .status(true).build();
@@ -46,6 +44,6 @@ class SpecificAccessDroolsTest extends DroolBase {
             Assertions.assertEquals("IA", roleAssignment.getAttributes().get("jurisdiction").asText());
             Assertions.assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
         });
-
     }
+
 }
