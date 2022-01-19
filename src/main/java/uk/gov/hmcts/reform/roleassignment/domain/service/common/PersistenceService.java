@@ -11,8 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -34,6 +36,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -103,10 +106,8 @@ public class PersistenceService {
         //Prepare request entity
         var requestEntity = persistenceUtil.convertRequestToEntity(request);
 
-
         //Persist the request entity
         return requestRepository.save(requestEntity);
-
 
     }
 
@@ -137,7 +138,15 @@ public class PersistenceService {
         roleAssignments.forEach(roleAssignment -> {
             var actorCacheEntity = persistenceUtil
                 .convertActorCacheToEntity(prepareActorCache(roleAssignment));
-            ActorCacheEntity existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
+            ActorCacheEntity existingActorCache = null;
+            try {
+                existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
+            } catch (SQLException sqlException) {
+                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                                                  "Error: SQL call in getActorCacheEntity() "
+                                                      + "was interrupted or blocked.",
+                                                  sqlException);
+            }
             if (existingActorCache != null) {
                 actorCacheEntity.setEtag(existingActorCache.getEtag());
                 entityManager.merge(actorCacheEntity);
@@ -145,8 +154,15 @@ public class PersistenceService {
                 entityManager.persist(actorCacheEntity);
             }
         });
-        entityManager.flush();
+        try {
 
+            entityManager.flush();
+
+        } catch (Exception exception) {
+
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Error occurred, querying db",exception);
+
+        }
     }
 
     @NotNull
@@ -158,8 +174,13 @@ public class PersistenceService {
 
     @Transactional
     public ActorCacheEntity getActorCacheEntity(String actorId) {
-
-        return actorCacheRepository.findByActorId(actorId);
+        try {
+            return actorCacheRepository.findByActorId(actorId);
+        } catch (SQLException sqlException) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                                              "Error: SQL call in getActorCacheEntity() was interrupted or blocked.",
+                                              sqlException);
+        }
     }
 
     public List<RoleAssignment> getAssignmentsByProcess(String process, String reference, String status) {
@@ -199,12 +220,15 @@ public class PersistenceService {
 
     @Transactional
     public List<RoleAssignment> getAssignmentsByActor(String actorId) {
-
-        Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
-        //convert into model class
-        return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
-            .collect(Collectors.toList());
-
+        try {
+            Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
+            //convert into model class
+            return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+                .collect(Collectors.toList());
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                                              "SQL Error at getAssignmentsByActor call", exception);
+        }
     }
 
 
@@ -359,7 +383,7 @@ public class PersistenceService {
 
     public long getTotalRecords() {
         return PageHolder.holder.get() != null ? PageHolder.holder.get()
-            .getTotalElements() : Long.valueOf(0);
+            .getTotalElements() : 0L;
 
     }
 
