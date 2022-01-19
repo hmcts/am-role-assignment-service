@@ -225,9 +225,9 @@ public class PersistenceService {
             //convert into model class
             return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
                 .collect(Collectors.toList());
-        } catch (SQLException sqlException) {
+        } catch (Exception exception) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                                              "Error interrupted SQL call getAssignmentsByActor", sqlException);
+                                              "SQL Error at getAssignmentsByActor call", exception);
         }
     }
 
