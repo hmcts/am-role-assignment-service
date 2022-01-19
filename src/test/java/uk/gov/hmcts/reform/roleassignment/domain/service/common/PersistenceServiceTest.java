@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hibernate.jdbc.BatchFailedException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,6 +42,7 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -1072,7 +1072,7 @@ class PersistenceServiceTest {
 
     @Test
     void persistActorCacheException() throws IOException {
-        doThrow(BatchFailedException.class).when(entityManager).flush();
+        doThrow(OptimisticLockException.class).when(entityManager).flush();
 
         Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
 
