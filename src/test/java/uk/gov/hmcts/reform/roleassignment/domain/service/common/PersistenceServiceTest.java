@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
@@ -41,11 +42,13 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -59,15 +62,18 @@ import java.util.Set;
 import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 
@@ -118,7 +124,7 @@ class PersistenceServiceTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -168,7 +174,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void persistActorCache() throws IOException {
+    void persistActorCache() throws IOException, SQLException {
         RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(LIVE);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.createObjectNode();
@@ -195,7 +201,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void persistActorCache_nullEntity() throws IOException {
+    void persistActorCache_nullEntity() throws IOException, SQLException {
         RoleAssignment roleAssignment = Mockito.spy(TestDataBuilder.buildRoleAssignment(LIVE));
         roleAssignment.setActorId(null);
         ObjectMapper mapper = new ObjectMapper();
@@ -219,7 +225,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getActorCacheEntity() throws IOException {
+    void getActorCacheEntity() throws IOException, SQLException {
         String id = UUID.randomUUID().toString();
         ActorCacheEntity actorCacheEntity = TestDataBuilder.buildActorCacheEntity();
         when(actorCacheRepository.findByActorId(id)).thenReturn(actorCacheEntity);
@@ -227,6 +233,16 @@ class PersistenceServiceTest {
         assertEquals(actorCacheEntity, result);
         verify(actorCacheRepository, times(1)).findByActorId(id);
     }
+
+    @Test
+    void getActorCacheEntityException() throws SQLException {
+        String uuid = UUID.randomUUID().toString();
+        doThrow(SQLException.class).when(actorCacheRepository).findByActorId(any());
+        assertThrows(ResponseStatusException.class, () ->
+            sut.getActorCacheEntity(uuid));
+    }
+
+
 
     @Test
     void getExistingRoleByProcessAndReference() throws IOException {
@@ -295,7 +311,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getAssignmentsByActor() throws IOException {
+    void getAssignmentsByActor() throws IOException, SQLException {
         String id = UUID.randomUUID().toString();
         Set<RoleAssignmentEntity> roleAssignmentEntitySet = new HashSet<>();
         roleAssignmentEntitySet.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
@@ -317,12 +333,12 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getAssignmentsByActor_NPE() {
+    void getAssignmentsByActor_NPE() throws SQLException {
         String id = UUID.randomUUID().toString();
         when(roleAssignmentRepository.findByActorId(id))
             .thenReturn(null);
 
-        Assertions.assertThrows(NullPointerException.class, () ->
+        Assertions.assertThrows(Exception.class, () ->
             sut.getAssignmentsByActor(id)
         );
 
@@ -330,6 +346,12 @@ class PersistenceServiceTest {
             .findByActorId(id);
     }
 
+    @Test
+    void  getAssignmentsByActorException() throws SQLException {
+        doThrow(SQLException.class).when(roleAssignmentRepository).findByActorId(any());
+        assertThrows(ResponseStatusException.class, () ->
+            sut.getAssignmentsByActor(UUID.randomUUID().toString()));
+    }
 
     @Test
     void getAssignmentById() throws IOException {
@@ -949,7 +971,7 @@ class PersistenceServiceTest {
             .build();
 
         MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
-            .queryRequests(Arrays.asList(queryRequest))
+            .queryRequests(Collections.singletonList(queryRequest))
             .build();
 
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
@@ -1047,4 +1069,26 @@ class PersistenceServiceTest {
             .convertEntityToRoleAssignment(page.iterator().next());
 
     }
+
+    @Test
+    void persistActorCacheException() throws IOException {
+        doThrow(OptimisticLockException.class).when(entityManager).flush();
+
+        Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
+
+        assertThrows(ResponseStatusException.class, () ->
+            sut.persistActorCache(roleAssignments));
+    }
+
+    @Test
+    void persistActorCacheSqlException() throws IOException, SQLException {
+        doThrow(SQLException.class).when(actorCacheRepository).findByActorId(any());
+
+        Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
+
+        assertThrows(ResponseStatusException.class, () ->
+            sut.persistActorCache(roleAssignments));
+    }
+
+
 }
