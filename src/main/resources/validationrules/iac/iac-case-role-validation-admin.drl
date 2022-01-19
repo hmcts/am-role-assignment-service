@@ -1,0 +1,106 @@
+package validationrules.iac;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.CaseAllocatorApproval;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
+import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
+
+/*
+ * The below rules are required for Specific and Challenged access
+ * It will be toggled on with new IAC_2_0 DB flag.
+ */
+
+/*
+ * IAC "specific-access-requested" case roles self creation user
+ */
+rule "create_specific_access_requested_admin_case_role"
+when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+    $rq: Request(
+             // The assigner must be the current user.
+             assignerId == authenticatedUserId,
+             process == "specific-access",
+             reference != null)
+    $ra: RoleAssignment(
+             actorId == $rq.authenticatedUserId,
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName == "specific-access-requested",
+             grantType == GrantType.BASIC,
+             notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
+             attributes["requestedRole"] != null && attributes["requestedRole"].asText() == "specific-access-admin")
+    $c:  Case(
+             id == $caseId)
+    $e: ExistingRoleAssignment(
+             actorId == $ra.actorId,
+             roleType == RoleType.ORGANISATION,
+             roleCategory == $ra.roleCategory,
+             grantType in (GrantType.STANDARD, GrantType.BASIC),
+             endTime == null || endTime.isAfter(ZonedDateTime.now()),
+             beginTime == null || !beginTime.isAfter(ZonedDateTime.now()))
+then
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : create_specific_access_requested_admin_case_role");
+    update($ra);
+    logMsg("Rule : create_specific_access_requested_admin_case_role");
+end;
+
+/*
+ * IAC "specific-access-admin" case creation and case-allocator as a assigner
+ */
+rule "case_allocator_create_specific_access_admin_case_role"
+when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+    $rq: Request(
+             // The assigner must be the current user.
+             assignerId == authenticatedUserId,
+             process == "specific-access",
+             reference != null)
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName == "specific-access-admin",
+             roleCategory == RoleCategory.ADMIN,
+             grantType == GrantType.BASIC,
+             notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("IA"))
+    $c:  Case(
+             id == $caseId)
+    $e: ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION,
+             roleName == "case-allocator",
+             grantType == GrantType.STANDARD,
+             classification.isAtLeast($ra.classification),
+             endTime == null || endTime.isAfter(ZonedDateTime.now()),
+             beginTime == null || !beginTime.isAfter(ZonedDateTime.now()),
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == $c.jurisdiction,
+             attributes["caseType"] == null || attributes["caseType"].asText() == $c.caseTypeId,
+             attributes["region"] == null || attributes["region"].asText() != $c.getRegion(),
+             attributes["baseLocation"] == null || attributes["baseLocation"].asText() != $c.getBaseLocation(),
+             attributes["managedRoleCategory"] == null || attributes["managedRoleCategory"].asText() == $ra.roleCategory.toString(),
+             attributes["managedRole"] == null || attributes["managedRole"].asText() == $ra.roleName)
+then
+    // We copy the authorisations to allow the case config to require an authorisation
+    // for (particularly judicial) role mappings
+    $ra.setAuthorisations($e.getAuthorisations());
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : case_allocator_create_specific_access_admin_case_role");
+    update($ra);
+    logMsg("Rule : case_allocator_create_specific_access_admin_case_role");
+end;
