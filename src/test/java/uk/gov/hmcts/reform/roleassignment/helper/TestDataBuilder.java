@@ -565,6 +565,23 @@ public class TestDataBuilder {
 
     }
 
+    public static ExistingRoleAssignment buildExistingRoleForDrools(String actorId, String roleName,
+                                                                    RoleCategory roleCategory,
+                                                                    Map<String,JsonNode> attributes,
+                                                                    Classification classification,
+                                                                    GrantType grantType) {
+        return ExistingRoleAssignment.builder()
+            .actorId(actorId)
+            .roleType(RoleType.ORGANISATION)
+            .roleCategory(roleCategory)
+            .roleName(roleName)
+            .classification(classification)
+            .grantType(grantType)
+            .attributes(attributes)
+            .build();
+
+    }
+
     public static List<RoleAssignment> getRequestedOrgRole() {
         return Arrays.asList(RoleAssignment.builder()
                                  .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
@@ -595,7 +612,12 @@ public class TestDataBuilder {
     }
 
     public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecificAccess(
-        String process, String roleName, RoleCategory roleCategory, HashMap<String, JsonNode> attributes) {
+        String process,
+        String roleName,
+        RoleCategory roleCategory,
+        HashMap<String, JsonNode> attributes,
+        Classification classification,
+        GrantType grantType) {
 
         return AssignmentRequest.builder()
             .request(Request.builder()
@@ -616,8 +638,8 @@ public class TestDataBuilder {
                     .roleType(RoleType.CASE)
                     .roleName(roleName)
                     .roleCategory(roleCategory)
-                    .grantType(GrantType.BASIC)
-                    .classification(Classification.PRIVATE)
+                    .grantType(grantType)
+                    .classification(classification)
                     .endTime(ZonedDateTime.now().plusDays(1L))
                     .notes(convertValueJsonNode(List.of("Access required for reasons")))
                     .attributes(attributes)
