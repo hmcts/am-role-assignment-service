@@ -1057,8 +1057,8 @@
     ]
   },
   {
-    "name": "specific-access-legal-operations",
-    "label": "Specific Access (legal-operations)",
+    "name": "specific-access-legal-ops",
+    "label": "Specific Access (legal-ops)",
     "description": "Specific access for staff users.",
     "category": "LEGAL_OPERATIONS",
     "substantive": false,
