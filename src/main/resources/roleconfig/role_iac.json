@@ -940,7 +940,7 @@
     ]
   },
   {
-    "name": "challenged-access-legal-operations",
+    "name": "challenged-access-legal-ops",
     "label": "Challenged Access (legal-operations)",
     "description": "Challenged access for staff users.",
     "category": "LEGAL_OPERATIONS",

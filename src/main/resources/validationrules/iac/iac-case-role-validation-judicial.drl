@@ -169,6 +169,7 @@ end;
  */
 rule "challenged_access_create_case_role_judiciary"
 when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
     $rq: Request(
              // The assigner must be the current user.
              assignerId == authenticatedUserId,
@@ -191,19 +192,19 @@ when
              roleType == RoleType.ORGANISATION,
              roleCategory == $ra.roleCategory,
              grantType == GrantType.STANDARD,
-             classification.isAtLeast($ra.classification),
+             classification.isAtLeast($c.securityClassification),
              endTime == null || endTime.isAfter(ZonedDateTime.now()),
              beginTime == null || !beginTime.isAfter(ZonedDateTime.now()),
-             attributes["substantive"] != null && attributes["substantive"] == "Y",
-             attributes["jurisdiction"] != null && attributes["jurisdiction"] == $c.jurisdiction,
-             attributes["caseType"] == null || attributes["caseType"] == $c.caseTypeId,
-             attributes["region"] == null || attributes["region"] != $c.region,
-             attributes["baseLocation"] == null || attributes["baseLocation"] != $c.baseLocation)
+             attributes["substantive"] != null && attributes["substantive"].asText() == "Y",
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == $c.jurisdiction,
+             attributes["caseType"] == null || attributes["caseType"].asText() == $c.caseTypeId,
+             attributes["region"] == null || attributes["region"].asText() != $c.region,
+             attributes["baseLocation"] == null || attributes["baseLocation"].asText() != $c.baseLocation)
 then
     // The classification of $e has already been checked, so access to the case is OK.
     // We set $ra.classification to match the case - if the case is further restricted,
     // then the user will need to request challenged access again, if they still can.
-    $ra.setClassification($ra.getClassification());
+    $ra.setClassification($c.getSecurityClassification());
     // We copy the authorisations to allow the case config to require an authorisation
     // for (particularly judicial) role mappings
     $ra.setAuthorisations($e.getAuthorisations());
