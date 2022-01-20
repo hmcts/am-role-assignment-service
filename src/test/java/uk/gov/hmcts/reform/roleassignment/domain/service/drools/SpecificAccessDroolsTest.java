@@ -46,7 +46,6 @@ class SpecificAccessDroolsTest extends DroolBase {
         });
     }
 
-
     @Test
     void shouldGrantAccessFor_SpecificAccessLegalOps() {
 
