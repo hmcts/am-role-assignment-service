@@ -941,7 +941,7 @@
   },
   {
     "name": "challenged-access-legal-operations",
-    "label": "Challenged Access (staff)",
+    "label": "Challenged Access (legal-operations)",
     "description": "Challenged access for staff users.",
     "category": "LEGAL_OPERATIONS",
     "substantive": false,
