@@ -11,10 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -36,7 +35,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -141,11 +139,9 @@ public class PersistenceService {
             ActorCacheEntity existingActorCache = null;
             try {
                 existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
-            } catch (SQLException sqlException) {
-                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                                                  "Error: SQL call in getActorCacheEntity() "
-                                                      + "was interrupted or blocked.",
-                                                  sqlException);
+            } catch (Exception sqlException) {
+                throw new UnprocessableEntityException("Error during SQL call actorCache"
+                                                      + " was interrupted or blocked. " + sqlException);
             }
             if (existingActorCache != null) {
                 actorCacheEntity.setEtag(existingActorCache.getEtag());
@@ -160,7 +156,7 @@ public class PersistenceService {
 
         } catch (Exception exception) {
 
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,"Error occurred, querying db",exception);
+            throw new UnprocessableEntityException("Error occurred flush: " + exception.getMessage());
 
         }
     }
@@ -176,10 +172,9 @@ public class PersistenceService {
     public ActorCacheEntity getActorCacheEntity(String actorId) {
         try {
             return actorCacheRepository.findByActorId(actorId);
-        } catch (SQLException sqlException) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                                              "Error: SQL call in getActorCacheEntity() was interrupted or blocked.",
-                                              sqlException);
+        } catch (Exception sqlException) {
+            throw new UnprocessableEntityException("Error: SQL call actorCache was interrupted or "
+                                                       + "blocked. " + sqlException.getMessage());
         }
     }
 
@@ -225,9 +220,9 @@ public class PersistenceService {
             //convert into model class
             return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
                 .collect(Collectors.toList());
-        } catch (Exception exception) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                                              "SQL Error at getAssignmentsByActor call", exception);
+        } catch (Exception sqlException) {
+            throw new UnprocessableEntityException("SQL Error get by actor id: "
+                                                       + sqlException.getMessage());
         }
     }
 
