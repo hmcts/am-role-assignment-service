@@ -15,7 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 
 import java.time.ZonedDateTime;
-
+import java.time.temporal.ChronoUnit;
 /*
  * IAC "lead-judge" case roles can be created by any existing "case-allocator" user
  * and can also only be assigned to users having "leadership-judge" role.
@@ -167,22 +167,22 @@ end;
 /*
  * IAC "challenged-access" case roles self creation user
  */
-rule "challenged_access_create_case_role"
+rule "challenged_access_create_case_role_judiciary"
 when
     $rq: Request(
              // The assigner must be the current user.
              assignerId == authenticatedUserId,
-             process = "challenged-access",
+             process == "challenged-access",
              reference != null)
     $ra: RoleAssignment(
-             actorId = $rq.authenticatedUserId,
+             actorId == $rq.authenticatedUserId,
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
-             roleName == "challenged-access-XXXXX",
-             roleCategory == RoleCategory.XXXXX,
+             roleName == "challenged-access-judiciary",
+             roleCategory == RoleCategory.JUDICIAL,
              grantType == GrantType.CHALLENGED,
-             !endTime.isAfter(ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(1))
-             notes != null && notes.toString() > 5 /* Make sure there is at least one note with content in it */
+             endTime != null && !endTime.isAfter(ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(1)),
+             notes != null && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
              id == $caseId)
@@ -191,25 +191,25 @@ when
              roleType == RoleType.ORGANISATION,
              roleCategory == $ra.roleCategory,
              grantType == GrantType.STANDARD,
-             classification.isAtLeast($c.classification),
+             classification.isAtLeast($ra.classification),
              endTime == null || endTime.isAfter(ZonedDateTime.now()),
-             startTime == null || !startTime.isAfter(ZonedDateTime.now()),
-             substantive == "Y",
+             beginTime == null || !beginTime.isAfter(ZonedDateTime.now()),
+             attributes["substantive"] != null && attributes["substantive"] == "Y",
              attributes["jurisdiction"] != null && attributes["jurisdiction"] == $c.jurisdiction,
-             attributes["caseType"] == null || attributes["caseType"] == $c.caseType,
+             attributes["caseType"] == null || attributes["caseType"] == $c.caseTypeId,
              attributes["region"] == null || attributes["region"] != $c.region,
              attributes["baseLocation"] == null || attributes["baseLocation"] != $c.baseLocation)
 then
     // The classification of $e has already been checked, so access to the case is OK.
     // We set $ra.classification to match the case - if the case is further restricted,
     // then the user will need to request challenged access again, if they still can.
-    $ra.setClassification($c.getClassification());
+    $ra.setClassification($ra.getClassification());
     // We copy the authorisations to allow the case config to require an authorisation
     // for (particularly judicial) role mappings
     $ra.setAuthorisations($e.getAuthorisations());
     $ra.setAttribute("caseType", $c.getCaseTypeId());
     $ra.setStatus(Status.CREATE_APPROVED);
-    $ra.log("Stage 1 approved : challenged_access_create_case_role_XXXXX");
+    $ra.log("Stage 1 approved : challenged_access_create_case_role_judiciary");
     update($ra);
-    logMsg("Rule : challenged_access_create_case_role_XXXXX");
+    logMsg("Rule : challenged_access_create_case_role_judiciary");
 end;
