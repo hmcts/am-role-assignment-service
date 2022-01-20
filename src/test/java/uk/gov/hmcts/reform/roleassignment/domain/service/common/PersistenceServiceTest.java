@@ -16,8 +16,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -238,7 +238,7 @@ class PersistenceServiceTest {
     void getActorCacheEntityException() throws SQLException {
         String uuid = UUID.randomUUID().toString();
         doThrow(SQLException.class).when(actorCacheRepository).findByActorId(any());
-        assertThrows(ResponseStatusException.class, () ->
+        assertThrows(UnprocessableEntityException.class, () ->
             sut.getActorCacheEntity(uuid));
     }
 
@@ -349,7 +349,7 @@ class PersistenceServiceTest {
     @Test
     void  getAssignmentsByActorException() throws SQLException {
         doThrow(SQLException.class).when(roleAssignmentRepository).findByActorId(any());
-        assertThrows(ResponseStatusException.class, () ->
+        assertThrows(UnprocessableEntityException.class, () ->
             sut.getAssignmentsByActor(UUID.randomUUID().toString()));
     }
 
@@ -1076,7 +1076,7 @@ class PersistenceServiceTest {
 
         Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
 
-        assertThrows(ResponseStatusException.class, () ->
+        assertThrows(UnprocessableEntityException.class, () ->
             sut.persistActorCache(roleAssignments));
     }
 
@@ -1086,7 +1086,7 @@ class PersistenceServiceTest {
 
         Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
 
-        assertThrows(ResponseStatusException.class, () ->
+        assertThrows(UnprocessableEntityException.class, () ->
             sut.persistActorCache(roleAssignments));
     }
 
