@@ -569,15 +569,17 @@ public class TestDataBuilder {
                                                                     RoleCategory roleCategory,
                                                                     Map<String,JsonNode> attributes,
                                                                     Classification classification,
-                                                                    GrantType grantType) {
+                                                                    GrantType grantType,
+                                                                    RoleType roleType) {
         return ExistingRoleAssignment.builder()
             .actorId(actorId)
-            .roleType(RoleType.ORGANISATION)
+            .roleType(roleType)
             .roleCategory(roleCategory)
             .roleName(roleName)
             .classification(classification)
             .grantType(grantType)
             .attributes(attributes)
+            .authorisations(List.of("CCD","ExUI","SSIC", "RefData"))
             .build();
 
     }
@@ -617,28 +619,33 @@ public class TestDataBuilder {
         RoleCategory roleCategory,
         HashMap<String, JsonNode> attributes,
         Classification classification,
-        GrantType grantType) {
+        GrantType grantType,
+        Status status,
+        String clientId,
+        boolean readOnly) {
 
         return AssignmentRequest.builder()
             .request(Request.builder()
-               .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
-               .authenticatedUserId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
-               .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
-               .assignerId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
-               .requestType(RequestType.CREATE)
-               .reference("reference")
-               .process(process)
-               .replaceExisting(true)
-               .created(ZonedDateTime.now())
-               .build())
+                         .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
+                         .authenticatedUserId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+                         .clientId(clientId)
+                         .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
+                         .assignerId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+                         .requestType(RequestType.CREATE)
+                         .reference("reference")
+                         .process(process)
+                         .replaceExisting(true)
+                         .created(ZonedDateTime.now())
+                         .build())
             .requestedRoles(Collections.singletonList(
                 RoleAssignment.builder()
                     .actorId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
-                    .status(CREATE_REQUESTED)
+                    .status(status)
                     .roleType(RoleType.CASE)
                     .roleName(roleName)
                     .roleCategory(roleCategory)
                     .grantType(grantType)
+                    .readOnly(readOnly)
                     .classification(classification)
                     .endTime(ZonedDateTime.now().plusDays(1L))
                     .notes(convertValueJsonNode(List.of("Access required for reasons")))
