@@ -174,6 +174,38 @@ class ValidationModelServiceTest {
     }
 
     @Test
+    void shouldLogWhenTotalRecordsExceed100() throws IOException {
+
+        Set<String> actorIds = new HashSet<>();
+
+        actorIds.add("123e4567-e89b-42d3-a456-556642445678");
+        actorIds.add("4dc7dd3c-3fb5-4611-bbde-5101a97681e1");
+
+        doReturn(TestDataBuilder.buildRequestedRoleCollection(LIVE)).when(persistenceService)
+            .retrieveRoleAssignmentsByQueryRequest(
+                any(),
+                anyInt(),
+                anyInt(),
+                any(),
+                any(),
+                anyBoolean()
+            );
+        when(persistenceService.getTotalRecords()).thenReturn(2200L);
+        ReflectionTestUtils.setField(
+            sut,
+            "defaultSize", 20
+
+        );
+
+
+        List<? extends Assignment> existingRecords = sut.getCurrentRoleAssignmentsForActors(actorIds);
+        assertNotNull(existingRecords);
+        assertEquals(220, existingRecords.size());
+
+
+    }
+
+    @Test
     void shouldLogMsg() {
         Mockito.doNothing().when(logger).debug(any());
         ValidationModelService.logMsg("1234567890123456");
