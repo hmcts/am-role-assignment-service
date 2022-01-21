@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
@@ -35,12 +36,17 @@ public class RetrieveRoleAssignmentOrchestrator {
     //5. Call prepare response to make HATEOUS based response.
 
     public ResponseEntity<RoleAssignmentResource> getAssignmentsByActor(String actorId) {
-        ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, actorId);
-        List<? extends Assignment> assignments = persistenceService.getAssignmentsByActor(actorId);
-        return prepareResponseService.prepareRetrieveRoleResponse(
-            assignments,
-            actorId
-        );
+        try {
+            ValidationUtil.validateId(Constants.NUMBER_TEXT_HYPHEN_PATTERN, actorId);
+            List<? extends Assignment> assignments = persistenceService.getAssignmentsByActor(actorId);
+            return prepareResponseService.prepareRetrieveRoleResponse(
+                assignments,
+                actorId
+            );
+        } catch (Exception sqlException) {
+            throw new UnprocessableEntityException("SQL Error get assignments by actor id: "
+                                                       + sqlException.getMessage());
+        }
     }
 
     public List<RoleConfigRole> getListOfRoles() {
