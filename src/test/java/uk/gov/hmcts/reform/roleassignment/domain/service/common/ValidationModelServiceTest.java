@@ -189,12 +189,11 @@ class ValidationModelServiceTest {
                 any(),
                 any(),
                 anyBoolean()
-            );
+        );
         when(persistenceService.getTotalRecords()).thenReturn(2200L);
         ReflectionTestUtils.setField(
             sut,
             "defaultSize", 20
-
         );
 
 
