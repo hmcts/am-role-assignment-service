@@ -215,7 +215,7 @@ when
              roleType == RoleType.ORGANISATION,
              roleName == "case-allocator",
              grantType == GrantType.STANDARD,
-             classification.isAtLeast($ra.classification),
+             classification.isAtLeast($c.securityClassification),
              endTime == null || endTime.isAfter(ZonedDateTime.now()),
              beginTime == null || !beginTime.isAfter(ZonedDateTime.now()),
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == $c.jurisdiction,

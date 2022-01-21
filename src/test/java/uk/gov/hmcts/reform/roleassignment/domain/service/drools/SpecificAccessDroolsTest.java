@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
@@ -37,8 +38,8 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                                                  "specific-access-requested",
                                                                                  RoleCategory.JUDICIAL,
                                                                                  roleAssignmentAttributes,
-                                                                                 Classification.PRIVATE,
-                                                                                 GrantType.BASIC,
+                                                                                 Classification.RESTRICTED,
+                                                                                 GrantType.SPECIFIC,
                                                                                  Status.CREATE_REQUESTED,
                                                                                  "anyClient",
                                                                                  false).build();
@@ -174,8 +175,8 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                                                  "specific-access-judiciary",
                                                                                  RoleCategory.JUDICIAL,
                                                                                  roleAssignmentAttributes,
-                                                                                 Classification.PRIVATE,
-                                                                                 GrantType.BASIC,
+                                                                                 Classification.RESTRICTED,
+                                                                                 GrantType.SPECIFIC,
                                                                                  Status.CREATE_REQUESTED,
                                                                                  "anyClient",
                                                                                  false).build();
@@ -224,8 +225,8 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                                                  "specific-access-requested",
                                                                                  RoleCategory.LEGAL_OPERATIONS,
                                                                                  roleAssignmentAttributes,
-                                                                                 Classification.PRIVATE,
-                                                                                 GrantType.BASIC,
+                                                                                 Classification.RESTRICTED,
+                                                                                 GrantType.SPECIFIC,
                                                                                  Status.CREATE_REQUESTED,
                                                                                  "anyClient",
                                                                                  false).build();
@@ -268,8 +269,8 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                                                  "specific-access-legal-ops",
                                                                                  RoleCategory.LEGAL_OPERATIONS,
                                                                                  attr,
-                                                                                 Classification.PRIVATE,
-                                                                                 GrantType.BASIC,
+                                                                                 Classification.RESTRICTED,
+                                                                                 GrantType.SPECIFIC,
                                                                                  Status.CREATE_REQUESTED,
                                                                                  "anyClient",false).build();
 
@@ -283,19 +284,20 @@ class SpecificAccessDroolsTest extends DroolBase {
         existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
         existingAttributes.put("managedRoleCategory", convertValueJsonNode("LEGAL_OPERATIONS"));
         existingAttributes.put("managedRole", convertValueJsonNode("specific-access-legal-ops"));
-
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                                                  "case-allocator",
-                                                                  RoleCategory.LEGAL_OPERATIONS,
-                                                                  existingAttributes,
-                                                                  Classification.PRIVATE,
-                                                                  GrantType.STANDARD,
-                                                                  RoleType.ORGANISATION)));
+        ExistingRoleAssignment existing = TestDataBuilder
+            .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
+                                        "case-allocator",
+                                        RoleCategory.LEGAL_OPERATIONS,
+                                        existingAttributes,
+                                        Classification.PRIVATE,
+                                        GrantType.STANDARD,
+                                        RoleType.ORGANISATION);
+        existing.setAuthorisations(null);
+        executeDroolRules(List.of(existing));
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals(List.of("CCD","ExUI","SSIC", "RefData"), roleAssignment.getAuthorisations());
+            Assertions.assertNull(roleAssignment.getAuthorisations());
             Assertions.assertEquals("IA", roleAssignment.getAttributes().get("jurisdiction").asText());
             Assertions.assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
         });
@@ -316,8 +318,8 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                                                  "specific-access-requested",
                                                                                  RoleCategory.ADMIN,
                                                                                  roleAssignmentAttributes,
-                                                                                 Classification.PRIVATE,
-                                                                                 GrantType.BASIC,
+                                                                                 Classification.RESTRICTED,
+                                                                                 GrantType.SPECIFIC,
                                                                                  Status.CREATE_REQUESTED,
                                                                                  "anyClient",
                                                                                  false).build();
@@ -329,15 +331,16 @@ class SpecificAccessDroolsTest extends DroolBase {
         HashMap<String,JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction",convertValueJsonNode("IA"));
         existingAttributes.put("caseTypeId",convertValueJsonNode("Asylum"));
-
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                                                  "case-allocator",
-                                                                  RoleCategory.ADMIN,
-                                                                  existingAttributes,
-                                                                  Classification.PRIVATE,
-                                                                  GrantType.STANDARD,
-                                                                  RoleType.ORGANISATION)));
+        ExistingRoleAssignment existing = TestDataBuilder
+            .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
+                                        "case-allocator",
+                                        RoleCategory.ADMIN,
+                                        existingAttributes,
+                                        Classification.PRIVATE,
+                                        GrantType.STANDARD,
+                                        RoleType.ORGANISATION);
+        existing.setAuthorisations(null);
+        executeDroolRules(List.of(existing));
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
@@ -360,8 +363,8 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                                                  "specific-access-admin",
                                                                                  RoleCategory.ADMIN,
                                                                                  attr,
-                                                                                 Classification.PRIVATE,
-                                                                                 GrantType.BASIC,
+                                                                                 Classification.RESTRICTED,
+                                                                                 GrantType.SPECIFIC,
                                                                                  Status.CREATE_REQUESTED,
                                                                                  "anyClient",false).build();
 
@@ -375,19 +378,20 @@ class SpecificAccessDroolsTest extends DroolBase {
         existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
         existingAttributes.put("managedRoleCategory", convertValueJsonNode("ADMIN"));
         existingAttributes.put("managedRole", convertValueJsonNode("specific-access-admin"));
-
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                                                  "case-allocator",
-                                                                  RoleCategory.ADMIN,
-                                                                  existingAttributes,
-                                                                  Classification.PRIVATE,
-                                                                  GrantType.STANDARD,
-                                                                  RoleType.ORGANISATION)));
+        ExistingRoleAssignment existing = TestDataBuilder
+            .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
+                                        "case-allocator",
+                                        RoleCategory.ADMIN,
+                                        existingAttributes,
+                                        Classification.RESTRICTED,
+                                        GrantType.STANDARD,
+                                        RoleType.ORGANISATION);
+        existing.setAuthorisations(null);
+        executeDroolRules(List.of(existing));
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals(List.of("CCD","ExUI","SSIC", "RefData"), roleAssignment.getAuthorisations());
+            Assertions.assertNull(roleAssignment.getAuthorisations());
             Assertions.assertEquals("IA", roleAssignment.getAttributes().get("jurisdiction").asText());
             Assertions.assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
         });
