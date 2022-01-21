@@ -88,9 +88,8 @@ class SpecificAccessDroolsTest extends DroolBase {
 
         buildExecuteKieSession();
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles()
+            .forEach(roleAssignment -> Assertions.assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus()));
     }
 
     @Test //rule create_specific_access_granted_or_denied_case_role
@@ -158,9 +157,8 @@ class SpecificAccessDroolsTest extends DroolBase {
 
         buildExecuteKieSession();
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles()
+            .forEach(roleAssignment -> Assertions.assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus()));
     }
 
     @Test //rule case_allocator_create_specific_access_judicial_case_role
@@ -249,10 +247,57 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                                   GrantType.STANDARD,
                                                                   RoleType.ORGANISATION)));
 
-        assignmentRequest.getRequestedRoles().forEach(e -> {
-            Assertions.assertEquals(Status.APPROVED, e.getStatus());
-            Assertions.assertEquals("IA",e.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals("Asylum",e.getAttributes().get("caseType").asText());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            Assertions.assertEquals("IA", roleAssignment.getAttributes().get("jurisdiction").asText());
+            Assertions.assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
+        });
+
+    }
+
+    @Test //case_allocator_create_specific_access_legal_ops_case_role
+    void shouldCreateAndAllocateSpecificAccess_LegalOpsCaseRole() {
+
+        HashMap<String, JsonNode> attr = new HashMap<>();
+        attr.put("caseId", convertValueJsonNode("1234567890123456"));
+        attr.put("caseType", convertValueJsonNode("noCaseType"));
+        attr.put("jurisdiction", convertValueJsonNode("IA"));
+        attr.put("requestedRole", convertValueJsonNode("specific-access-legal-ops"));
+
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecificAccess("specific-access",
+                                                                                 "specific-access-legal-ops",
+                                                                                 RoleCategory.LEGAL_OPERATIONS,
+                                                                                 attr,
+                                                                                 Classification.PRIVATE,
+                                                                                 GrantType.BASIC,
+                                                                                 Status.CREATE_REQUESTED,
+                                                                                 "anyClient",false).build();
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        HashMap<String,JsonNode> existingAttributes = new HashMap<>();
+        existingAttributes.put("caseId",convertValueJsonNode("1234567890123456"));
+        existingAttributes.put("jurisdiction",convertValueJsonNode("IA"));
+        existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
+        existingAttributes.put("managedRoleCategory", convertValueJsonNode("LEGAL_OPERATIONS"));
+        existingAttributes.put("managedRole", convertValueJsonNode("specific-access-legal-ops"));
+
+        executeDroolRules(List.of(TestDataBuilder
+                                      .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
+                                                                  "case-allocator",
+                                                                  RoleCategory.LEGAL_OPERATIONS,
+                                                                  existingAttributes,
+                                                                  Classification.PRIVATE,
+                                                                  GrantType.STANDARD,
+                                                                  RoleType.ORGANISATION)));
+
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            Assertions.assertEquals(List.of("CCD","ExUI","SSIC", "RefData"), roleAssignment.getAuthorisations());
+            Assertions.assertEquals("IA", roleAssignment.getAttributes().get("jurisdiction").asText());
+            Assertions.assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
         });
 
     }
@@ -294,10 +339,57 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                                   GrantType.STANDARD,
                                                                   RoleType.ORGANISATION)));
 
-        assignmentRequest.getRequestedRoles().forEach(e -> {
-            Assertions.assertEquals(Status.APPROVED,e.getStatus());
-            Assertions.assertEquals("IA",e.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals("Asylum",e.getAttributes().get("caseType").asText());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            Assertions.assertEquals("IA", roleAssignment.getAttributes().get("jurisdiction").asText());
+            Assertions.assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
+        });
+
+    }
+
+    @Test //case_allocator_create_specific_access_admin_case_role
+    void shouldCreateAndAllocateSpecificAccess_AdminCaseRole() {
+
+        HashMap<String, JsonNode> attr = new HashMap<>();
+        attr.put("caseId", convertValueJsonNode("1234567890123456"));
+        attr.put("caseType", convertValueJsonNode("noCaseType"));
+        attr.put("jurisdiction", convertValueJsonNode("IA"));
+        attr.put("requestedRole", convertValueJsonNode("specific-access-admin"));
+
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecificAccess("specific-access",
+                                                                                 "specific-access-admin",
+                                                                                 RoleCategory.ADMIN,
+                                                                                 attr,
+                                                                                 Classification.PRIVATE,
+                                                                                 GrantType.BASIC,
+                                                                                 Status.CREATE_REQUESTED,
+                                                                                 "anyClient",false).build();
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        HashMap<String,JsonNode> existingAttributes = new HashMap<>();
+        existingAttributes.put("caseId",convertValueJsonNode("1234567890123456"));
+        existingAttributes.put("jurisdiction",convertValueJsonNode("IA"));
+        existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
+        existingAttributes.put("managedRoleCategory", convertValueJsonNode("ADMIN"));
+        existingAttributes.put("managedRole", convertValueJsonNode("specific-access-admin"));
+
+        executeDroolRules(List.of(TestDataBuilder
+                                      .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
+                                                                  "case-allocator",
+                                                                  RoleCategory.ADMIN,
+                                                                  existingAttributes,
+                                                                  Classification.PRIVATE,
+                                                                  GrantType.STANDARD,
+                                                                  RoleType.ORGANISATION)));
+
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            Assertions.assertEquals(List.of("CCD","ExUI","SSIC", "RefData"), roleAssignment.getAuthorisations());
+            Assertions.assertEquals("IA", roleAssignment.getAttributes().get("jurisdiction").asText());
+            Assertions.assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
         });
 
     }
