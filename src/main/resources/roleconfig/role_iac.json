@@ -916,11 +916,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["BASIC"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["PRIVATE"]
+          "values": ["RESTRICTED"]
         },
         "attributes": {
           "jurisdiction": {
@@ -950,11 +950,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["BASIC"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["PRIVATE"]
+          "values": ["RESTRICTED"]
         },
         "endTime": {
           "mandatory": true
@@ -1070,11 +1070,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["BASIC"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["PRIVATE"]
+          "values": ["RESTRICTED"]
         },
         "attributes": {
           "jurisdiction": {
@@ -1104,11 +1104,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["BASIC"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["PRIVATE"]
+          "values": ["RESTRICTED"]
         },
         "endTime": {
           "mandatory": true
@@ -1224,11 +1224,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["BASIC"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["PRIVATE"]
+          "values": ["RESTRICTED"]
         },
         "attributes": {
           "jurisdiction": {
@@ -1258,11 +1258,11 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["BASIC"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["PRIVATE"]
+          "values": ["RESTRICTED"]
         },
         "endTime": {
           "mandatory": true
