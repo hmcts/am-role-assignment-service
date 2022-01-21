@@ -161,7 +161,7 @@ end;
 
 /*
  * The below rules are required for Specific and Challenged access
- * It will be toggled on with new IAC_2_0 DB flag.
+ * It will be toggled on with new IAC_SPECIFIC_1_0 and IAC_CHALLENGED_1_0 DB flag.
  */
 
 /*
