@@ -2,7 +2,8 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
@@ -19,20 +20,22 @@ import java.util.List;
 
 class ChallengedAccessDroolsTest extends DroolBase {
 
-    /* -----------------------------------------CHALLENGED ACCESS JUDICIAL----------------------------------------- */
-
-    @Test //rule challenged_access_create_case_role_judiciary
-    void shouldGrantAccessFor_ChallengedAccessJudiciary() {
-
+    @ParameterizedTest
+    @CsvSource({
+        "challenged-access-judiciary,JUDICIAL",
+        "challenged-access-admin,ADMIN",
+        "challenged-access-legal-ops,LEGAL_OPERATIONS",
+    })
+    void shouldGrantAccessFor_ChallengedAccess(String roleName, String roleCategory) {
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("challenged-access-judiciary"));
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
         roleAssignmentAttributes.put("caseType", convertValueJsonNode("notAsylum"));
         roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("IA"));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess("challenged-access",
-                                                                                "challenged-access-judiciary",
-                                                                                RoleCategory.JUDICIAL,
+                                                                                roleName,
+                                                                                RoleCategory.valueOf(roleCategory),
                                                                                 roleAssignmentAttributes,
                                                                                 Classification.PUBLIC,
                                                                                 GrantType.CHALLENGED,
@@ -51,7 +54,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
                                                                   "anyRoleName",
-                                                                  RoleCategory.JUDICIAL,
+                                                                  RoleCategory.valueOf(roleCategory),
                                                                   existingAttributes,
                                                                   Classification.PRIVATE,
                                                                   GrantType.STANDARD,
@@ -66,18 +69,23 @@ class ChallengedAccessDroolsTest extends DroolBase {
         });
     }
 
-    @Test //rule challenged_access_create_case_role_judiciary
-    void shouldRejectAccessFor_ChallengedAccessJudiciary_IncorrectRoleName() {
+    @ParameterizedTest
+    @CsvSource({
+        "challenged-access-legal-ops,JUDICIAL",
+        "challenged-access-judicial,ADMIN",
+        "challenged-access-admin,LEGAL_OPERATIONS",
+    })
+    void shouldRejectAccessFor_ChallengedAccess_IncorrectRoleName(String roleName, String roleCategory) {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("challenged-access-judiciary"));
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
         roleAssignmentAttributes.put("caseType", convertValueJsonNode("notAsylum"));
         roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("IA"));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess("challenged-access",
-                                                                                "challenged-access-admin",
-                                                                                RoleCategory.JUDICIAL,
+                                                                                roleName,
+                                                                                RoleCategory.valueOf(roleCategory),
                                                                                 roleAssignmentAttributes,
                                                                                 Classification.PUBLIC,
                                                                                 GrantType.CHALLENGED,
@@ -96,7 +104,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
                                                                   "anyRoleName",
-                                                                  RoleCategory.JUDICIAL,
+                                                                  RoleCategory.valueOf(roleCategory),
                                                                   existingAttributes,
                                                                   Classification.PRIVATE,
                                                                   GrantType.STANDARD,
@@ -107,18 +115,25 @@ class ChallengedAccessDroolsTest extends DroolBase {
         });
     }
 
-    @Test //rule challenged_access_create_case_role_judiciary
-    void shouldRejectAccessFor_ChallengedAccessJudiciary_IncorrectFlagEnabled() {
+    @ParameterizedTest
+    @CsvSource({
+        "challenged-access-judiciary,JUDICIAL,IAC_SPECIFIC_1_0",
+        "challenged-access-admin,ADMIN,IAC_SPECIFIC_1_0",
+        "challenged-access-legal-ops,LEGAL_OPERATIONS,IAC_SPECIFIC_1_0",
+    })
+    void shouldRejectAccessFor_ChallengedAccess_IncorrectFlagEnabled(String roleName,
+                                                                     String roleCategory,
+                                                                     String flag) {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("challenged-access-judiciary"));
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
         roleAssignmentAttributes.put("caseType", convertValueJsonNode("notAsylum"));
         roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("IA"));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess("challenged-access",
-                                                                                "challenged-access-judiciary",
-                                                                                RoleCategory.JUDICIAL,
+                                                                                roleName,
+                                                                                RoleCategory.valueOf(roleCategory),
                                                                                 roleAssignmentAttributes,
                                                                                 Classification.PUBLIC,
                                                                                 GrantType.CHALLENGED,
@@ -126,7 +141,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
                                                                                 "anyClient",
                                                                                 false).build();
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.valueOf(flag).getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -137,7 +152,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
                                                                   "anyRoleName",
-                                                                  RoleCategory.JUDICIAL,
+                                                                  RoleCategory.valueOf(roleCategory),
                                                                   existingAttributes,
                                                                   Classification.PRIVATE,
                                                                   GrantType.STANDARD,
@@ -147,264 +162,4 @@ class ChallengedAccessDroolsTest extends DroolBase {
             Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus());
         });
     }
-
-    /* -----------------------------------------CHALLENGED ACCESS ADMIN----------------------------------------- */
-
-    @Test //rule challenged_access_create_case_role_admin
-    void shouldGrantAccessFor_ChallengedAccessAdmin() {
-
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("challenged-access-admin"));
-        roleAssignmentAttributes.put("caseType", convertValueJsonNode("notAsylum"));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("IA"));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess("challenged-access",
-                                                                                "challenged-access-admin",
-                                                                                RoleCategory.ADMIN,
-                                                                                roleAssignmentAttributes,
-                                                                                Classification.PUBLIC,
-                                                                                GrantType.CHALLENGED,
-                                                                                Status.CREATE_REQUESTED,
-                                                                                "anyClient",
-                                                                                false).build();
-
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
-        HashMap<String,JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
-        existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
-        existingAttributes.put("substantive", convertValueJsonNode("Y"));
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                                                  "anyRoleName",
-                                                                  RoleCategory.ADMIN,
-                                                                  existingAttributes,
-                                                                  Classification.PRIVATE,
-                                                                  GrantType.STANDARD,
-                                                                  RoleType.ORGANISATION)));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
-            Assertions.assertEquals(Classification.PUBLIC, roleAssignment.getClassification());
-            Assertions.assertEquals(List.of("CCD","ExUI","SSIC", "RefData"),
-                                    roleAssignment.getAuthorisations());
-        });
-    }
-
-    @Test //rule challenged_access_create_case_role_admin
-    void shouldRejectAccessFor_ChallengedAccessAdmin_IncorrectRoleName() {
-
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("challenged-access-admin"));
-        roleAssignmentAttributes.put("caseType", convertValueJsonNode("notAsylum"));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("IA"));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess("challenged-access",
-                                                                                "challenged-access-judiciary",
-                                                                                RoleCategory.ADMIN,
-                                                                                roleAssignmentAttributes,
-                                                                                Classification.PUBLIC,
-                                                                                GrantType.CHALLENGED,
-                                                                                Status.CREATE_REQUESTED,
-                                                                                "anyClient",
-                                                                                false).build();
-
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
-        HashMap<String,JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
-        existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
-        existingAttributes.put("substantive", convertValueJsonNode("Y"));
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                                                  "anyRoleName",
-                                                                  RoleCategory.ADMIN,
-                                                                  existingAttributes,
-                                                                  Classification.PRIVATE,
-                                                                  GrantType.STANDARD,
-                                                                  RoleType.ORGANISATION)));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
-    }
-
-    @Test //rule challenged_access_create_case_role_admin
-    void shouldRejectAccessFor_ChallengedAccessAdmin_IncorrectFlagEnabled() {
-
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("challenged-access-judiciary"));
-        roleAssignmentAttributes.put("caseType", convertValueJsonNode("notAsylum"));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("IA"));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess("challenged-access",
-                                                                                "challenged-access-admin",
-                                                                                RoleCategory.ADMIN,
-                                                                                roleAssignmentAttributes,
-                                                                                Classification.PUBLIC,
-                                                                                GrantType.CHALLENGED,
-                                                                                Status.CREATE_REQUESTED,
-                                                                                "anyClient",
-                                                                                false).build();
-
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
-        HashMap<String,JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
-        existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
-        existingAttributes.put("substantive", convertValueJsonNode("Y"));
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                                                  "anyRoleName",
-                                                                  RoleCategory.ADMIN,
-                                                                  existingAttributes,
-                                                                  Classification.PRIVATE,
-                                                                  GrantType.STANDARD,
-                                                                  RoleType.ORGANISATION)));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
-    }
-
-    /* -----------------------------------------CHALLENGED ACCESS LEGAL-OPS----------------------------------------- */
-
-    @Test //rule challenged_access_create_case_role_legal_ops
-    void shouldGrantAccessFor_ChallengedAccessLegalOps() {
-
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("challenged-access-legal-ops"));
-        roleAssignmentAttributes.put("caseType", convertValueJsonNode("notAsylum"));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("IA"));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess("challenged-access",
-                                                                                "challenged-access-legal-ops",
-                                                                                RoleCategory.LEGAL_OPERATIONS,
-                                                                                roleAssignmentAttributes,
-                                                                                Classification.PUBLIC,
-                                                                                GrantType.CHALLENGED,
-                                                                                Status.CREATE_REQUESTED,
-                                                                                "anyClient",
-                                                                                false).build();
-
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
-        HashMap<String,JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
-        existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
-        existingAttributes.put("substantive", convertValueJsonNode("Y"));
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                                                  "anyRoleName",
-                                                                  RoleCategory.LEGAL_OPERATIONS,
-                                                                  existingAttributes,
-                                                                  Classification.PRIVATE,
-                                                                  GrantType.STANDARD,
-                                                                  RoleType.ORGANISATION)));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
-            Assertions.assertEquals(Classification.PUBLIC, roleAssignment.getClassification());
-            Assertions.assertEquals(List.of("CCD","ExUI","SSIC", "RefData"),
-                                    roleAssignment.getAuthorisations());
-        });
-    }
-
-    @Test //rule challenged_access_create_case_role_legal_ops
-    void shouldRejectAccessFor_ChallengedAccessLegalOps_IncorrectRoleName() {
-
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("challenged-access-legal_ops"));
-        roleAssignmentAttributes.put("caseType", convertValueJsonNode("notAsylum"));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("IA"));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess("challenged-access",
-                                                                                "challenged-access-admin",
-                                                                                RoleCategory.LEGAL_OPERATIONS,
-                                                                                roleAssignmentAttributes,
-                                                                                Classification.PUBLIC,
-                                                                                GrantType.CHALLENGED,
-                                                                                Status.CREATE_REQUESTED,
-                                                                                "anyClient",
-                                                                                false).build();
-
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
-        HashMap<String,JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
-        existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
-        existingAttributes.put("substantive", convertValueJsonNode("Y"));
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                                                  "anyRoleName",
-                                                                  RoleCategory.LEGAL_OPERATIONS,
-                                                                  existingAttributes,
-                                                                  Classification.PRIVATE,
-                                                                  GrantType.STANDARD,
-                                                                  RoleType.ORGANISATION)));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
-    }
-
-    @Test //rule challenged_access_create_case_role_legal_ops
-    void shouldRejectAccessFor_ChallengedAccessLegalOps_IncorrectFlagEnabled() {
-
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("challenged-access-legal-ops"));
-        roleAssignmentAttributes.put("caseType", convertValueJsonNode("notAsylum"));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("IA"));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess("challenged-access",
-                                                                                "challenged-access-legal-ops",
-                                                                                RoleCategory.ADMIN,
-                                                                                roleAssignmentAttributes,
-                                                                                Classification.PUBLIC,
-                                                                                GrantType.CHALLENGED,
-                                                                                Status.CREATE_REQUESTED,
-                                                                                "anyClient",
-                                                                                false).build();
-
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
-        HashMap<String,JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
-        existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
-        existingAttributes.put("substantive", convertValueJsonNode("Y"));
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools("4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                                                  "anyRoleName",
-                                                                  RoleCategory.LEGAL_OPERATIONS,
-                                                                  existingAttributes,
-                                                                  Classification.PRIVATE,
-                                                                  GrantType.STANDARD,
-                                                                  RoleType.ORGANISATION)));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
-    }
-
-
 }
