@@ -613,7 +613,7 @@ public class TestDataBuilder {
 
     }
 
-    public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecificAccess(
+    public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecialAccess(
         String process,
         String roleName,
         RoleCategory roleCategory,
@@ -647,7 +647,7 @@ public class TestDataBuilder {
                     .grantType(grantType)
                     .readOnly(readOnly)
                     .classification(classification)
-                    .endTime(ZonedDateTime.now().plusDays(1L))
+                    .endTime(ZonedDateTime.now().plusHours(1L))
                     .notes(convertValueJsonNode(List.of("Access required for reasons")))
                     .attributes(attributes)
                     .build()
