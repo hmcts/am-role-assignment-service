@@ -565,6 +565,25 @@ public class TestDataBuilder {
 
     }
 
+    public static ExistingRoleAssignment buildExistingRoleForDrools(String actorId, String roleName,
+                                                                    RoleCategory roleCategory,
+                                                                    Map<String,JsonNode> attributes,
+                                                                    Classification classification,
+                                                                    GrantType grantType,
+                                                                    RoleType roleType) {
+        return ExistingRoleAssignment.builder()
+            .actorId(actorId)
+            .roleType(roleType)
+            .roleCategory(roleCategory)
+            .roleName(roleName)
+            .classification(classification)
+            .grantType(grantType)
+            .attributes(attributes)
+            .authorisations(List.of("CCD","ExUI","SSIC", "RefData"))
+            .build();
+
+    }
+
     public static List<RoleAssignment> getRequestedOrgRole() {
         return Arrays.asList(RoleAssignment.builder()
                                  .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
@@ -592,6 +611,47 @@ public class TestDataBuilder {
                                                        .build());
 
 
+    }
+
+    public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecialAccess(
+        String process,
+        String roleName,
+        RoleCategory roleCategory,
+        HashMap<String, JsonNode> attributes,
+        Classification classification,
+        GrantType grantType,
+        Status status,
+        String clientId,
+        boolean readOnly) {
+
+        return AssignmentRequest.builder()
+            .request(Request.builder()
+                         .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
+                         .authenticatedUserId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+                         .clientId(clientId)
+                         .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
+                         .assignerId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+                         .requestType(RequestType.CREATE)
+                         .reference("reference")
+                         .process(process)
+                         .replaceExisting(true)
+                         .created(ZonedDateTime.now())
+                         .build())
+            .requestedRoles(Collections.singletonList(
+                RoleAssignment.builder()
+                    .actorId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+                    .status(status)
+                    .roleType(RoleType.CASE)
+                    .roleName(roleName)
+                    .roleCategory(roleCategory)
+                    .grantType(grantType)
+                    .readOnly(readOnly)
+                    .classification(classification)
+                    .endTime(ZonedDateTime.now().plusHours(1L))
+                    .notes(convertValueJsonNode(List.of("Access required for reasons")))
+                    .attributes(attributes)
+                    .build()
+            ));
     }
 
     public static RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType) {
