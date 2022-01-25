@@ -33,6 +33,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
+import static java.time.LocalDateTime.now;
+import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.ZoneId;
@@ -49,11 +54,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import static java.time.LocalDateTime.now;
-import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
-import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
-
 @Setter
 public class TestDataBuilder {
 
@@ -63,12 +63,14 @@ public class TestDataBuilder {
 
     public static AssignmentRequest buildAssignmentRequest(Status requestStatus, Status roleStatus,
                                                            Boolean replaceExisting) throws IOException {
-        return new AssignmentRequest(buildRequest(requestStatus, replaceExisting),
-                                     buildRequestedRoleCollection(roleStatus));
+        return new AssignmentRequest(
+            buildRequest(requestStatus, replaceExisting),
+            buildRequestedRoleCollection(roleStatus)
+        );
     }
 
     public static AssignmentRequest buildEmptyAssignmentRequest(Status roleStatus) throws IOException {
-        return new AssignmentRequest(Request.builder().build(),  buildRequestedRoleCollection(roleStatus));
+        return new AssignmentRequest(Request.builder().build(), buildRequestedRoleCollection(roleStatus));
     }
 
     public static Request buildRequest(Status status, Boolean replaceExisting) {
@@ -199,23 +201,26 @@ public class TestDataBuilder {
                                                                                                Boolean replaceExisting)
         throws Exception {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new RoleAssignmentRequestResource(buildAssignmentRequest(requestStatus,
-                                                                           roleStatus,
-                                                                           replaceExisting)));
+            .body(new RoleAssignmentRequestResource(buildAssignmentRequest(
+                requestStatus,
+                roleStatus,
+                replaceExisting
+            )));
     }
 
     public static ResponseEntity<RoleAssignmentResource> buildResourceRoleAssignmentResponse(
         Status roleStatus) throws Exception {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new RoleAssignmentResource(Arrays.asList(buildRoleAssignment(roleStatus)),""));
+            .body(new RoleAssignmentResource(Arrays.asList(buildRoleAssignment(roleStatus)), ""));
     }
 
     public static ResponseEntity<RoleAssignmentResource> buildResourceRoleAssignmentResponse_Custom(
         Status roleStatus, String actorId) throws Exception {
         return ResponseEntity.status(HttpStatus.OK)
             .body(new RoleAssignmentResource(Arrays.asList(buildRoleAssignment_CustomActorId(
-                roleStatus, actorId,"attributes.json", RoleType.ORGANISATION,
-                "senior-tribunal-caseworker")), actorId));
+                roleStatus, actorId, "attributes.json", RoleType.ORGANISATION,
+                "senior-tribunal-caseworker"
+            )), actorId));
     }
 
     public static Collection<RoleAssignment> buildRequestedRoleCollection(Status status) throws IOException {
@@ -242,7 +247,8 @@ public class TestDataBuilder {
         try (InputStream inputStream =
                  TestDataBuilder.class.getClassLoader().getResourceAsStream(path)) {
             assert inputStream != null;
-            JsonNode result = new ObjectMapper().readValue(inputStream, new TypeReference<>() {});
+            JsonNode result = new ObjectMapper().readValue(inputStream, new TypeReference<>() {
+            });
             inputStream.close();
             return result;
         } catch (Exception e) {
@@ -254,7 +260,8 @@ public class TestDataBuilder {
         try (InputStream inputStream =
                  TestDataBuilder.class.getClassLoader().getResourceAsStream("notes.json")) {
             assert inputStream != null;
-            JsonNode result = new ObjectMapper().readValue(inputStream, new TypeReference<>() {});
+            JsonNode result = new ObjectMapper().readValue(inputStream, new TypeReference<>() {
+            });
             inputStream.close();
             return result;
         } catch (Exception e) {
@@ -386,7 +393,7 @@ public class TestDataBuilder {
 
 
     public static HistoryEntity buildHistoryEntity(RoleAssignment roleAssignment, RequestEntity requestEntity) {
-        String[] auths = {"dev","test"};
+        String[] auths = {"dev", "test"};
         return HistoryEntity.builder()
             .actorId(roleAssignment.getActorId())
             .actorIdType(roleAssignment.getActorIdType().toString())
@@ -452,8 +459,10 @@ public class TestDataBuilder {
 
     public static AssignmentRequest createRoleAssignmentRequest(
         boolean replaceExisting, boolean readOnly) throws IOException {
-        return new AssignmentRequest(buildRequestForRoleAssignment(replaceExisting),
-                                     buildRequestedRoles(readOnly));
+        return new AssignmentRequest(
+            buildRequestForRoleAssignment(replaceExisting),
+            buildRequestedRoles(readOnly)
+        );
     }
 
     public static Request buildRequestForRoleAssignment(boolean replaceExisting) {
@@ -535,9 +544,9 @@ public class TestDataBuilder {
 
     public static ExistingRoleAssignment buildExistingRoleForIAC(String actorId, String roleName,
                                                                  RoleCategory roleCategory) {
-        Map<String,JsonNode> attributes = new HashMap<>();
-        attributes.put("jurisdiction",convertValueJsonNode("IA"));
-        attributes.put("caseTypeId",convertValueJsonNode("Asylum"));
+        Map<String, JsonNode> attributes = new HashMap<>();
+        attributes.put("jurisdiction", convertValueJsonNode("IA"));
+        attributes.put("caseTypeId", convertValueJsonNode("Asylum"));
         return ExistingRoleAssignment.builder()
             .actorId(actorId)
             .roleType(RoleType.ORGANISATION)
@@ -551,7 +560,7 @@ public class TestDataBuilder {
     }
 
     public static ExistingRoleAssignment buildExistingRoleForConflict(String juris, RoleCategory roleCategory) {
-        Map<String,JsonNode> attributes = new HashMap<>();
+        Map<String, JsonNode> attributes = new HashMap<>();
         attributes.put("jurisdiction", convertValueJsonNode(juris));
         return ExistingRoleAssignment.builder()
             .actorId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
@@ -567,7 +576,7 @@ public class TestDataBuilder {
 
     public static ExistingRoleAssignment buildExistingRoleForDrools(String actorId, String roleName,
                                                                     RoleCategory roleCategory,
-                                                                    Map<String,JsonNode> attributes,
+                                                                    Map<String, JsonNode> attributes,
                                                                     Classification classification,
                                                                     GrantType grantType,
                                                                     RoleType roleType) {
@@ -579,7 +588,9 @@ public class TestDataBuilder {
             .classification(classification)
             .grantType(grantType)
             .attributes(attributes)
-            .authorisations(List.of("CCD","ExUI","SSIC", "RefData"))
+            .beginTime(ZonedDateTime.now().minusDays(1L))
+            .endTime(ZonedDateTime.now().plusHours(1L))
+            .authorisations(List.of("CCD", "ExUI", "SSIC", "RefData"))
             .build();
 
     }
@@ -622,7 +633,8 @@ public class TestDataBuilder {
         GrantType grantType,
         Status status,
         String clientId,
-        boolean readOnly) {
+        boolean readOnly,
+        String notes) {
 
         return AssignmentRequest.builder()
             .request(Request.builder()
@@ -648,7 +660,7 @@ public class TestDataBuilder {
                     .readOnly(readOnly)
                     .classification(classification)
                     .endTime(ZonedDateTime.now().plusHours(1L))
-                    .notes(convertValueJsonNode(List.of("Access required for reasons")))
+                    .notes(convertValueJsonNode(List.of(notes)))
                     .attributes(attributes)
                     .build()
             ));
@@ -689,16 +701,16 @@ public class TestDataBuilder {
             .attributes(new HashMap<String, JsonNode>())
             .build();
         ra.setAttribute(attributeKey, attributeVal);
-        ra.setAttribute("jurisdiction","IA");
+        ra.setAttribute("jurisdiction", "IA");
         return ra;
     }
 
     public static RoleAssignment getRequestedCaseRole_2(RoleCategory roleCategory,
-                                          String roleName,
-                                          GrantType grantType,
-                                          RoleType roleType,
-                                          Classification classification,
-                                          Status status) {
+                                                        String roleName,
+                                                        GrantType grantType,
+                                                        RoleType roleType,
+                                                        Classification classification,
+                                                        Status status) {
         return RoleAssignment.builder()
             .id(UUID.randomUUID())
             .actorId(UUID.randomUUID().toString())
