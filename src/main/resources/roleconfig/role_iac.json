@@ -950,7 +950,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["NONE"]
         },
         "classification": {
           "mandatory": true,
@@ -990,7 +990,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["BASIC"]
+          "values": ["NONE"]
         },
         "classification": {
           "mandatory": true,
@@ -1030,7 +1030,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["BASIC"]
+          "values": ["NONE"]
         },
         "classification": {
           "mandatory": true,
@@ -1104,7 +1104,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["NONE"]
         },
         "classification": {
           "mandatory": true,
@@ -1144,7 +1144,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["BASIC"]
+          "values": ["NONE"]
         },
         "classification": {
           "mandatory": true,
@@ -1184,7 +1184,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["BASIC"]
+          "values": ["NONE"]
         },
         "classification": {
           "mandatory": true,
@@ -1258,7 +1258,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["NONE"]
         },
         "classification": {
           "mandatory": true,
@@ -1298,7 +1298,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["BASIC"]
+          "values": ["NONE"]
         },
         "classification": {
           "mandatory": true,
@@ -1338,7 +1338,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["BASIC"]
+          "values": ["NONE"]
         },
         "classification": {
           "mandatory": true,
