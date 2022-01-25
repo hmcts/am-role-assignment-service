@@ -10,8 +10,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -89,7 +89,7 @@ class FilterRequestUtilTest {
 
         doThrow(ServletException.class).when(filterChain).doFilter(any(), any());
 
-        Assertions.assertThrows(ResponseStatusException.class, () ->
+        Assertions.assertThrows(UnprocessableEntityException.class, () ->
             sut.doFilterInternal(httpServletRequest, httpServletResponse, filterChain)
         );
     }
