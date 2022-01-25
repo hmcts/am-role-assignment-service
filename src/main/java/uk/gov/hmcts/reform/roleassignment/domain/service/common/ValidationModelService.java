@@ -93,7 +93,8 @@ public class ValidationModelService {
     public List<Assignment> getCurrentRoleAssignmentsForActors(Set<String> actorIds) {
         var queryRequest = QueryRequest.builder()
             .actorId(actorIds)
-            //.roleType("ORGANISATION")
+            .roleType(List.of("ORGANISATION", "CASE"))
+            .grantType(List.of("STANDARD", "NONE"))
             .validAt(LocalDateTime.now())
             .build();
 
