@@ -25,7 +25,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -60,7 +60,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     public void setUp() {
         template = new JdbcTemplate(ds);
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -114,7 +114,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             );
             assertEquals(
                 ACTOR_ID,
-                response.getRoleAssignmentResponse().get(0).getActorId().toString()
+                response.getRoleAssignmentResponse().get(0).getActorId()
             );
         }
     }
@@ -147,7 +147,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             );
             assertEquals(
                 ACTOR_ID,
-                response.get(0).getActorId().toString()
+                response.get(0).getActorId()
             );
         }
     }
@@ -180,7 +180,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             );
             assertEquals(
                 ACTOR_ID,
-                response.get(0).getActorId().toString()
+                response.get(0).getActorId()
             );
         }
     }
@@ -222,7 +222,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     public void shouldGetRoleAssignmentsRecordsBasedOnDynamicQuery() throws Exception {
 
         QueryRequest queryRequest = QueryRequest.builder()
-            .authorisations(Arrays.asList("dev"))
+            .authorisations(Collections.singletonList("dev"))
             .build();
 
         final String url = "/am/role-assignments/query";

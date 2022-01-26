@@ -92,7 +92,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @BeforeEach
     public void setUp() throws IOException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, Status.LIVE, false);
         requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
         roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
@@ -102,7 +102,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should get 204 when process and reference doesn't exist")
-    void shouldThrowResourceNotFoundWhenProcessNotExist() throws Exception {
+    void shouldThrowResourceNotFoundWhenProcessNotExist() {
         mockRequest();
         ResponseEntity response = sut.deleteRoleAssignmentByProcessAndReference(PROCESS, REFERENCE);
 
@@ -112,7 +112,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should get 204 when role assignment records delete  successful")
-    void shouldDeleteRoleAssignmentByProcess() throws Exception {
+    void shouldDeleteRoleAssignmentByProcess() {
 
         //Set the status approved of all requested role manually for drool validation process
         setApprovedStatusByDrool();
@@ -186,7 +186,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should delete records from role_assignment table for a valid Assignment Id")
-    void shouldDeleteRecordsFromRoleAssignment() throws Exception {
+    void shouldDeleteRecordsFromRoleAssignment() {
 
         //Set the status approved of all requested role manually for drool validation process
         String assignmentId = UUID.randomUUID().toString();
@@ -203,12 +203,10 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should delete any delete approved records that are present")
-    void shouldDeleteRecordsForApprovedItems() throws Exception {
+    void shouldDeleteRecordsForApprovedItems() {
         mockRequest();
         when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment1 -> {
-            roleAssignment1.setStatus(DELETE_APPROVED);
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment1 -> roleAssignment1.setStatus(DELETE_APPROVED));
         mockHistoryEntity();
 
         //set history entity into request entity
@@ -224,7 +222,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should delete only delete approved records and remove other records")
-    void shouldDeleteRecordsOnlyForApprovedItems() throws Exception {
+    void shouldDeleteRecordsOnlyForApprovedItems() {
         mockRequest();
         when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
         //Set 1 of 2 to delete approved status
@@ -246,12 +244,10 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should delete any delete approved records that are present even with no actorID passed")
-    void shouldDeleteRecordsForApprovedItemsNoActorID() throws Exception {
+    void shouldDeleteRecordsForApprovedItemsNoActorID() {
         mockRequest();
         when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment1 -> {
-            roleAssignment1.setStatus(DELETE_APPROVED);
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment1 -> roleAssignment1.setStatus(DELETE_APPROVED));
         mockHistoryEntity();
 
         //set history entity into request entity
@@ -267,7 +263,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should throw 204 exception for a non existing Assignment id")
-    void shouldThrowNotFoundForAssignmentId() throws Exception {
+    void shouldThrowNotFoundForAssignmentId() {
         String assignmentId = UUID.randomUUID().toString();
         setApprovedStatusByDrool();
         mockRequest();
@@ -289,7 +285,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should not delete any records if delete approved records are zero")
-    void shouldNotDeleteRecordsForZeroApprovedItems() throws Exception {
+    void shouldNotDeleteRecordsForZeroApprovedItems() {
         mockRequest();
         when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
         sut.setRequestEntity(new RequestEntity());
@@ -301,7 +297,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should not delete any records if delete approved records don't match requested items")
-    void shouldNotDeleteRecordsForNonMatchingRequestItems() throws Exception {
+    void shouldNotDeleteRecordsForNonMatchingRequestItems() {
         mockRequest();
         RoleAssignment roleAssignment = RoleAssignment.builder().status(DELETE_APPROVED).build();
         when(persistenceUtil.prepareHistoryEntityForPersistance(any(), any())).thenReturn(historyEntity);
@@ -327,7 +323,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should throw Unprocessable Entity 422 if any record is rejected for deletion")
-    void shouldThrowUnprocessableIfRecordIsRejected() throws Exception {
+    void shouldThrowUnprocessableIfRecordIsRejected() {
         //Set the status approved of all requested role manually for drool validation process
         setApprovedStatusByDrool();
         mockRequest();
@@ -354,7 +350,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should throw 400 when reference doesn't exist")
-    void shouldThrowBadRequestWhenReferenceNotExist() throws Exception {
+    void shouldThrowBadRequestWhenReferenceNotExist() {
         mockRequest();
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.deleteRoleAssignmentByProcessAndReference(PROCESS, null)
@@ -363,7 +359,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should throw 400 when reference blank")
-    void shouldThrowBadRequestWhenReferenceBlank() throws Exception {
+    void shouldThrowBadRequestWhenReferenceBlank() {
         mockRequest();
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.deleteRoleAssignmentByProcessAndReference(PROCESS, " ")
@@ -372,7 +368,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should throw 400 when process doesn't exist")
-    void shouldThrowBadRequestWhenProcessNotExist() throws Exception {
+    void shouldThrowBadRequestWhenProcessNotExist() {
         mockRequest();
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.deleteRoleAssignmentByProcessAndReference(null, REFERENCE)
@@ -381,7 +377,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should throw 400 when process blank")
-    void shouldThrowBadRequestWhenProcessBlank() throws Exception {
+    void shouldThrowBadRequestWhenProcessBlank() {
         mockRequest();
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.deleteRoleAssignmentByProcessAndReference(" ", REFERENCE)
@@ -416,7 +412,7 @@ class DeleteRoleAssignmentOrchestratorTest {
             .roleType(roleType)
             .build();
         MultipleQueryRequest multipleQueryRequest = MultipleQueryRequest.builder()
-            .queryRequests(Arrays.asList(queryRequest))
+            .queryRequests(Collections.singletonList(queryRequest))
             .build();
 
         ResponseEntity<Void> response = sut.deleteRoleAssignmentsByQuery(multipleQueryRequest);
@@ -427,14 +423,14 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     }
 
-    private void assertion() throws Exception {
+    private void assertion() {
         verify(parseRequestService, times(1)).prepareDeleteRequest(any(), any(), any(), any());
         verify(persistenceService, times(1)).persistRequest(any(Request.class));
         verify(persistenceUtil, times(4))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
     }
 
-    private void mockRequest() throws Exception {
+    private void mockRequest() {
         when(parseRequestService.prepareDeleteRequest(any(), any(), any(), any())).thenReturn(
             assignmentRequest.getRequest());
         when(persistenceService.persistRequest(any())).thenReturn(requestEntity);
@@ -447,7 +443,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         historyEntity.setStatus(DELETE_APPROVED.toString());
     }
 
-    private void mockHistoryEntity() throws Exception {
+    private void mockHistoryEntity() {
         doNothing().when(validationModelService).validateRequest(assignmentRequest);
         when(persistenceUtil.prepareHistoryEntityForPersistance(
             roleAssignment,
@@ -457,7 +453,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should get 200 when role assignment records delete  successful")
-    void shouldDeleteRoleAssignmentByQueryRequest() throws Exception {
+    void shouldDeleteRoleAssignmentByQueryRequest() {
 
         //Set the status approved of all requested role manually for drool validation process
         setApprovedStatusByDrool();
@@ -481,7 +477,7 @@ class DeleteRoleAssignmentOrchestratorTest {
             .roleType(roleType)
             .build();
         MultipleQueryRequest multipleQueryRequest = MultipleQueryRequest.builder()
-            .queryRequests(Arrays.asList(queryRequest))
+            .queryRequests(Collections.singletonList(queryRequest))
             .build();
 
         ResponseEntity<Void> response = sut.deleteRoleAssignmentsByQuery(multipleQueryRequest);
@@ -497,7 +493,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should throw 400 when query request empty")
-    void shouldThrowBadRequestWhenQueryRequestEmpty() throws Exception {
+    void shouldThrowBadRequestWhenQueryRequestEmpty() {
         mockRequest();
         MultipleQueryRequest multipleQueryRequest = MultipleQueryRequest.builder()
             .queryRequests(Collections.emptyList())
