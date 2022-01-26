@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 
-public class AuditLoggerUtilTest {
+class AuditLoggerUtilTest {
 
     private AssignmentRequest assignmentRequest;
     private RoleAssignmentRequestResource roleAssignmentRequestResource;
@@ -49,7 +49,7 @@ public class AuditLoggerUtilTest {
     }
 
     @Test
-    public void checkAssignmentIds() {
+    void checkAssignmentIds() {
 
         List<UUID> expectedIds = Arrays.asList(
             UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"),
@@ -62,7 +62,7 @@ public class AuditLoggerUtilTest {
     }
 
     @Test
-    public void checkAddLinks() {
+    void checkAddLinks() {
         roleAssignmentRequestResource = Mockito.mock(RoleAssignmentRequestResource.class);
         roleAssignmentRequestResource.addLinks(assignmentRequest.getRequest().getId());
         Mockito.verify(roleAssignmentRequestResource, Mockito.times(1))
@@ -70,13 +70,13 @@ public class AuditLoggerUtilTest {
     }
 
     @Test
-    public void checkAssignmentIdsNullResponse() {
+    void checkAssignmentIdsNullResponse() {
         List<UUID> assignmentIds = AuditLoggerUtil.buildAssignmentIds(ResponseEntity.ok().build());
         assertEquals(0, assignmentIds.size());
     }
 
     @Test
-    public void checkActorIds() {
+    void checkActorIds() {
 
         Set<String> expectedIds = Set.of(
             "21334a2b-79ce-44eb-9168-2d49a744be9c"
@@ -88,13 +88,13 @@ public class AuditLoggerUtilTest {
     }
 
     @Test
-    public void checkActorIdsNullResponse() {
+    void checkActorIdsNullResponse() {
         Set<String> actorIds = AuditLoggerUtil.buildActorIds(ResponseEntity.ok().build());
         assertEquals(0, actorIds.size());
     }
 
     @Test
-    public void checkRoleNames() {
+    void checkRoleNames() {
 
         List<String> expectedRoles = Arrays.asList(
             "judge",
@@ -107,13 +107,13 @@ public class AuditLoggerUtilTest {
     }
 
     @Test
-    public void checkRoleNamesEmpty() {
+    void checkRoleNamesEmpty() {
         List<String> roleNames = AuditLoggerUtil.buildRoleNames(ResponseEntity.ok().build());
         assertEquals(0, roleNames.size());
     }
 
     @Test
-    public void checkCaseIds() {
+    void checkCaseIds() {
 
         Set<String> expectedCaseIds = new HashSet<>();
         expectedCaseIds.add("1234567890123456");
@@ -124,13 +124,13 @@ public class AuditLoggerUtilTest {
     }
 
     @Test
-    public void checkCaseIdsEmpty() {
+    void checkCaseIdsEmpty() {
         Set<String> caseIds = AuditLoggerUtil.buildCaseIds(ResponseEntity.ok().build());
         assertEquals(0, caseIds.size());
     }
 
     @Test
-    public void shouldReturnAssignmentIds() {
+    void shouldReturnAssignmentIds() {
 
         List<UUID> expectedIds = Arrays.asList(
             UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"),
@@ -143,13 +143,13 @@ public class AuditLoggerUtilTest {
     }
 
     @Test
-    public void shouldReturnEmptyAssignmentIds() {
+    void shouldReturnEmptyAssignmentIds() {
         List<UUID> assignmentIds = AuditLoggerUtil.getAssignmentIds(ResponseEntity.ok().build());
         assertEquals(0, assignmentIds.size());
     }
 
     @Test
-    public void shouldReturnActorIds() {
+    void shouldReturnActorIds() {
 
         Set<String> expectedActorIds = Set.of(
             "21334a2b-79ce-44eb-9168-2d49a744be9c");
@@ -160,13 +160,13 @@ public class AuditLoggerUtilTest {
     }
 
     @Test
-    public void shouldReturnEmptyActorIds() {
+    void shouldReturnEmptyActorIds() {
         Set<String> actorIds = AuditLoggerUtil.getActorIds(ResponseEntity.ok().build());
         assertEquals(0, actorIds.size());
     }
 
     @Test
-    public void shouldReturnAssignmentIdsForSearch() {
+    void shouldReturnAssignmentIdsForSearch() {
         List<UUID> expectedIds = Arrays.asList(
             UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"),
             UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f")
@@ -180,13 +180,13 @@ public class AuditLoggerUtilTest {
     }
 
     @Test
-    public void shouldReturnEmptyAssignmentIdsForSearch() {
+    void shouldReturnEmptyAssignmentIdsForSearch() {
         List<UUID> assignmentIds = AuditLoggerUtil.searchAssignmentIds(ResponseEntity.ok().build());
         assertEquals(0, assignmentIds.size());
     }
 
     @Test
-    public void shouldReturnSizeOfAssignments() {
+    void shouldReturnSizeOfAssignments() {
         ResponseEntity<RoleAssignmentResource> responseEntity = ResponseEntity
             .ok(new RoleAssignmentResource((List<? extends Assignment>) assignmentRequest.getRequestedRoles()));
         String assignmentSize = AuditLoggerUtil.sizeOfAssignments(responseEntity);
@@ -195,7 +195,7 @@ public class AuditLoggerUtilTest {
     }
 
     @Test
-    public void shouldReturnNullAsSizeOfAssignments() {
+    void shouldReturnNullAsSizeOfAssignments() {
         ResponseEntity<RoleAssignmentResource> responseEntity = ResponseEntity.ok().build();
         String assignmentSize = AuditLoggerUtil.sizeOfAssignments(responseEntity);
         assertNull(assignmentSize);
