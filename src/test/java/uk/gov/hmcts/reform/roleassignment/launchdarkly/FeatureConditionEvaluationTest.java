@@ -40,7 +40,7 @@ public class FeatureConditionEvaluationTest {
 
     @Before
     public void initializeMocks() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         launchDarklyMap = new HashMap<>();
         launchDarklyMap.put("/am/role-assignments/ld/endpoint", "get-ld-flag");
     }
@@ -85,7 +85,7 @@ public class FeatureConditionEvaluationTest {
     }
 
     @Test
-    public void expectExceptionForFlagDiable() throws Exception {
+    public void expectExceptionForFlagDiable() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint");
         when(request.getMethod()).thenReturn("GET");
         when(featureToggleService.getLaunchDarklyFlag(any())).thenReturn("get-ld-flag");

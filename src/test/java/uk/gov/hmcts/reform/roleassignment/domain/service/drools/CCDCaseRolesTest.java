@@ -72,7 +72,7 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Test
-    public void shouldApproveDummyCaseRoleCreation_CCD_1_0_enableByPassDroolRule() {
+    void shouldApproveDummyCaseRoleCreation_CCD_1_0_enableByPassDroolRule() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
@@ -91,7 +91,7 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Test
-    public void shouldApproveDummyCaseRoleCreationWithDummyRoleName_CCD_1_0_enableByPassDroolRule() {
+    void shouldApproveDummyCaseRoleCreationWithDummyRoleName_CCD_1_0_enableByPassDroolRule() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL, "[DUMMYSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
@@ -113,7 +113,7 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Test
-    public void shouldRejectDummyCaseRoleCreation_CCD_1_0_disableByPassDroolRule() {
+    void shouldRejectDummyCaseRoleCreation_CCD_1_0_disableByPassDroolRule() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", CREATE_REQUESTED);
@@ -170,7 +170,7 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Test
-    public void shouldApproveDeleteDummyCaseRoles_enableCcdBypassFlag() {
+    void shouldApproveDeleteDummyCaseRoles_enableCcdBypassFlag() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
@@ -191,7 +191,7 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Test
-    public void shouldApproveDeleteDummyCaseRolesWithDummyRoleName_enableCcdBypassFlag() {
+    void shouldApproveDeleteDummyCaseRolesWithDummyRoleName_enableCcdBypassFlag() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL, "[DUMMYSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
@@ -212,7 +212,7 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Test
-    public void shouldRejectDeleteDummyCaseRoles_invalidJurisdiction() {
+    void shouldRejectDeleteDummyCaseRoles_invalidJurisdiction() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
                                                              SPECIFIC, "caseId",
                                                              "1234567890123456", DELETE_REQUESTED);
