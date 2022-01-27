@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleA
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -39,7 +40,7 @@ class DeleteAssignmentControllerTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     private static final String PROCESS = "S-50";
@@ -92,7 +93,7 @@ class DeleteAssignmentControllerTest {
 
     @Test
     @DisplayName("should get 200 when role assignment records delete by Multiple Query Request successful")
-    void shouldDeleteRoleAssignmentByQueryRequest() throws Exception {
+    void shouldDeleteRoleAssignmentByQueryRequest() {
 
         List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
 
@@ -100,7 +101,7 @@ class DeleteAssignmentControllerTest {
             .roleType(roleType)
             .build();
         MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
-            .queryRequests(Arrays.asList(queryRequest))
+            .queryRequests(Collections.singletonList(queryRequest))
             .build();
 
 

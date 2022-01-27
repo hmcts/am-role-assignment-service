@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -98,7 +99,7 @@ class CreateRoleAssignmentServiceTest {
 
     @BeforeEach
     public void setUp() throws IOException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         prepareInput();
     }
 
@@ -145,9 +146,8 @@ class CreateRoleAssignmentServiceTest {
         assertNotNull(incomingAssignmentRequest.getRequestedRoles().iterator().next().getId());
         verify(persistenceService, times(2))
             .updateRequest(any(RequestEntity.class));
-        existingAssignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(DELETED, roleAssignment.getStatus());
-        });
+        existingAssignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                                  assertEquals(DELETED, roleAssignment.getStatus()));
         verify(persistenceService, times(2))
             .deleteRoleAssignment(any(RoleAssignment.class));
         verify(persistenceService, times(1))
@@ -428,7 +428,7 @@ class CreateRoleAssignmentServiceTest {
             incomingAssignmentRequest
         );
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
-        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+        AssignmentRequest result = Objects.requireNonNull(roleAssignmentRequestResource).getRoleAssignmentRequest();
 
         String msg = "Duplicate Request: Requested Assignments are already live.";
 
@@ -537,9 +537,8 @@ class CreateRoleAssignmentServiceTest {
         sut.checkAllApproved(incomingAssignmentRequest);
 
         //assertion
-        incomingAssignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(REJECTED, roleAssignment.getStatus());
-        });
+        incomingAssignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                                  assertEquals(REJECTED, roleAssignment.getStatus()));
         assertEquals(REJECTED, incomingAssignmentRequest.getRequest().getStatus());
         assertEquals(REJECTED.toString(), sut.getRequestEntity().getStatus());
 
@@ -723,9 +722,8 @@ class CreateRoleAssignmentServiceTest {
         //assertion
         verify(persistenceService, times(4))
             .updateRequest(any(RequestEntity.class));
-        existingAssignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(DELETE_APPROVED, roleAssignment.getStatus());
-        });
+        existingAssignmentRequest.getRequestedRoles()
+            .forEach(roleAssignment -> assertEquals(DELETE_APPROVED, roleAssignment.getStatus()));
 
         verify(persistenceUtil, times(6))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
@@ -924,7 +922,7 @@ class CreateRoleAssignmentServiceTest {
     }
 
     @Test
-    void hasAssignmentsUpdated_withAuthorizations() throws IOException, ParseException,
+    void hasAssignmentsUpdated_withAuthorizations() throws IOException,
         InvocationTargetException, IllegalAccessException {
 
         incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, APPROVED,
@@ -955,7 +953,7 @@ class CreateRoleAssignmentServiceTest {
     }
 
     @Test
-    void hasAssignmentsUpdated_withIncomingAssignments() throws IOException, ParseException,
+    void hasAssignmentsUpdated_withIncomingAssignments() throws IOException,
         InvocationTargetException, IllegalAccessException {
 
         incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, APPROVED,
@@ -979,7 +977,7 @@ class CreateRoleAssignmentServiceTest {
     }
 
     @Test
-    void hasAssignmentsUpdated_withExistingAssignments() throws IOException, ParseException,
+    void hasAssignmentsUpdated_withExistingAssignments() throws IOException,
         InvocationTargetException, IllegalAccessException {
 
         incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, APPROVED,
@@ -1000,7 +998,7 @@ class CreateRoleAssignmentServiceTest {
     }
 
     @Test
-    void hasAssignmentsUpdated_withEmptyAssignments() throws IOException, ParseException,
+    void hasAssignmentsUpdated_withEmptyAssignments() throws IOException,
         InvocationTargetException, IllegalAccessException {
 
         incomingAssignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, APPROVED,
