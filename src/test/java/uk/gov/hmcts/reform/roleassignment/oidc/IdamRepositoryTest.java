@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.oidc;
 
 import feign.FeignException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,6 @@ import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -71,7 +71,7 @@ class IdamRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         idamRepository = new IdamRepository(idamApi, oidcAdminConfiguration,
                                             oauth2Configuration, restTemplate,
                                             cacheManager
@@ -88,7 +88,7 @@ class IdamRepositoryTest {
     void getUserInfo() {
         UserInfo userInfo = mock(UserInfo.class);
         CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
-        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+        var cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
 
         when(idamApi.retrieveUserInfo(anyString())).thenReturn(userInfo);
         when(cacheManager.getCache(anyString())).thenReturn(caffeineCacheMock);
@@ -105,7 +105,6 @@ class IdamRepositoryTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void getUserInfo_cacheNone() {
         UserInfo userInfo = mock(UserInfo.class);
 
@@ -124,7 +123,7 @@ class IdamRepositoryTest {
         verify(cacheManager, times(0)).getCache(any());
 
         CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
-        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+        var cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
 
         verify(caffeineCacheMock, times(0)).getNativeCache();
         verify(cache, times(0)).estimatedSize();
@@ -132,7 +131,6 @@ class IdamRepositoryTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void getUserInfo_cacheNull() {
         UserInfo userInfo = mock(UserInfo.class);
 
@@ -151,7 +149,7 @@ class IdamRepositoryTest {
         verify(cacheManager, times(0)).getCache(any());
 
         CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
-        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+        var cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
 
         verify(caffeineCacheMock, times(0)).getNativeCache();
         verify(cache, times(0)).estimatedSize();
@@ -160,12 +158,20 @@ class IdamRepositoryTest {
 
     @Test
     void getUserInfo_HandleHttpResponse() {
-        FeignException.Unauthorized exception = mock(FeignException.Unauthorized.class);
-        when(idamApi.retrieveUserInfo(null)).thenThrow(exception);
+        ReflectionTestUtils.setField(
+            idamRepository,
+            "cacheType", "none"
+
+        );
+        when(idamApi.retrieveUserInfo(any())).thenThrow(FeignException.Unauthorized.class);
+
+        Assertions.assertThrows(ResponseStatusException.class, () ->
+            idamRepository.getUserInfo("Bearer invalid")
+        );
     }
 
     @Test
-    void getUserRolesBlankResponse() throws IOException {
+    void getUserRolesBlankResponse() {
         String userId = "003352d0-e699-48bc-b6f5-5810411e60af";
         UserDetails userDetails = UserDetails.builder().email("black@betty.com").forename("ram").surname("jam").id(
             "1234567890123456")
@@ -180,7 +186,7 @@ class IdamRepositoryTest {
     @SuppressWarnings("unchecked")
     void getManageUserToken() {
         CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
-        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+        var cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
 
         when(cacheManager.getCache(anyString())).thenReturn(caffeineCacheMock);
         when(caffeineCacheMock.getNativeCache()).thenReturn(cache);
@@ -202,7 +208,6 @@ class IdamRepositoryTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void getManageUserToken_cacheNone() {
 
         ReflectionTestUtils.setField(
@@ -227,14 +232,13 @@ class IdamRepositoryTest {
         verify(cacheManager, times(0)).getCache(any());
 
         CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
-        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+        var cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
 
         verify(caffeineCacheMock, times(0)).getNativeCache();
         verify(cache, times(0)).estimatedSize();
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void getManageUserToken_cacheNull() {
 
         ReflectionTestUtils.setField(
@@ -258,7 +262,7 @@ class IdamRepositoryTest {
         verify(cacheManager, times(0)).getCache(any());
 
         CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
-        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+        var cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
 
         verify(caffeineCacheMock, times(0)).getNativeCache();
         verify(cache, times(0)).estimatedSize();
@@ -287,7 +291,7 @@ class IdamRepositoryTest {
         String userId = "4dc7dd3c-3fb5-4611-bbde-5101a97681e0";
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-        ResponseEntity<List<Object>> responseEntity = new ResponseEntity<List<Object>>(headers, HttpStatus.OK);
+        ResponseEntity<List<Object>> responseEntity = new ResponseEntity<>(headers, HttpStatus.OK);
 
         doReturn(responseEntity)
             .when(restTemplate)
@@ -313,7 +317,7 @@ class IdamRepositoryTest {
         List<Object> list = new ArrayList<>();
         list.add(mapRoles);
 
-        ResponseEntity<List<Object>> responseEntity = new ResponseEntity<List<Object>>(HttpStatus.OK);
+        ResponseEntity<List<Object>> responseEntity = new ResponseEntity<>(HttpStatus.OK);
         doReturn(responseEntity)
             .when(restTemplate)
             .exchange(
@@ -343,7 +347,7 @@ class IdamRepositoryTest {
         List<Object> list = new ArrayList<>();
         list.add(mapRoles);
 
-        ResponseEntity<List<Object>> responseEntity = new ResponseEntity<List<Object>>(HttpStatus.NOT_ACCEPTABLE);
+        ResponseEntity<List<Object>> responseEntity = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         doReturn(responseEntity)
             .when(restTemplate)
             .exchange(
@@ -366,7 +370,7 @@ class IdamRepositoryTest {
     void getUserInfoException() {
         UserInfo userInfo = mock(UserInfo.class);
         CaffeineCache caffeineCacheMock = mock(CaffeineCache.class);
-        com.github.benmanes.caffeine.cache.Cache cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
+        var cache = mock(com.github.benmanes.caffeine.cache.Cache.class);
 
         when(idamApi.retrieveUserInfo(anyString())).thenReturn(userInfo);
         when(cacheManager.getCache(anyString())).thenReturn(caffeineCacheMock);

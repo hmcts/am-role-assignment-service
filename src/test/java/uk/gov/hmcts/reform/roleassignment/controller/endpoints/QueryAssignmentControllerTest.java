@@ -16,6 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAss
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,7 +38,7 @@ class QueryAssignmentControllerTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
 
@@ -131,7 +132,7 @@ class QueryAssignmentControllerTest {
             .actorId(actorId)
             .build();
         MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
-            .queryRequests(Arrays.asList(queryRequest))
+            .queryRequests(Collections.singletonList(queryRequest))
             .build();
 
         ResponseEntity<RoleAssignmentResource> expectedResponse
@@ -156,7 +157,7 @@ class QueryAssignmentControllerTest {
             .actorId(actorId)
             .build();
         MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
-            .queryRequests(Arrays.asList(queryRequest))
+            .queryRequests(Collections.singletonList(queryRequest))
             .build();
         ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)
@@ -182,7 +183,7 @@ class QueryAssignmentControllerTest {
             .roleType(roleType)
             .build();
         MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
-            .queryRequests(Arrays.asList(queryRequest))
+            .queryRequests(Collections.singletonList(queryRequest))
             .build();
         ResponseEntity<RoleAssignmentResource> expectedResponse = ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         doReturn(expectedResponse).when(queryRoleAssignmentOrchestrator)

@@ -52,7 +52,7 @@ class ParseRequestServiceTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -175,12 +175,12 @@ class ParseRequestServiceTest {
 
         assertFalse(result.isByPassOrgDroolRule());
         assertEquals(clientId, result.getClientId());
-        assertEquals(userId.toString(), result.getAuthenticatedUserId().toString());
+        assertEquals(userId.toString(), result.getAuthenticatedUserId());
         assertEquals(builtReq.getStatus(), result.getStatus());
         assertEquals(builtReq.getRequestType(), result.getRequestType());
         assertEquals(builtReq.getProcess(), result.getProcess());
         assertEquals(builtReq.getReference(), result.getReference());
-        assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9c", result.getAssignerId().toString());
+        assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9c", result.getAssignerId());
         assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9d", result.getCorrelationId());
     }
 

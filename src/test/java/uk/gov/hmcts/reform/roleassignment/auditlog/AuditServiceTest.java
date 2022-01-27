@@ -63,7 +63,7 @@ class AuditServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         auditService = new AuditService(fixedClock, securityUtils, auditRepository);
 
         doReturn(SERVICE_NAME).when(securityUtils).getServiceName();
