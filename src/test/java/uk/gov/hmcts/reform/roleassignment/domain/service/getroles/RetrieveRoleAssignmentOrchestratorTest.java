@@ -21,7 +21,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceServi
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +54,7 @@ class RetrieveRoleAssignmentOrchestratorTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -100,7 +99,7 @@ class RetrieveRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    void getRoleAssignment_shouldNotThrowResourceNotFoundWhenActorIsNotAvailable() throws Exception {
+    void getRoleAssignment_shouldNotThrowResourceNotFoundWhenActorIsNotAvailable() {
         List<RoleAssignment> roleAssignments = new ArrayList<>();
         String actorId = "123e4567-e89b-42d3-a456-556642445678";
 
@@ -127,7 +126,7 @@ class RetrieveRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    void getListOfRoles() throws IOException {
+    void getListOfRoles() {
         List<RoleConfigRole> roles = sut.getListOfRoles();
         assertNotNull(roles);
         assertTrue(roles.size() > 2);

@@ -12,7 +12,6 @@ import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 import uk.gov.hmcts.reform.roleassignment.oidc.OIdcAdminConfiguration;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -36,12 +35,12 @@ class IdamRoleServiceTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
 
     @Test
-    void getUserRoles() throws IOException {
+    void getUserRoles() {
         String userId = "003352d0-e699-48bc-b6f5-5810411e60af";
         UserDetails userDetails = UserDetails.builder().email("black@betty.com").forename("ram").surname("jam").id(
             "1234567890123456")
@@ -69,7 +68,7 @@ class IdamRoleServiceTest {
     }
 
     @Test
-    void getUserRolesEmptyUserDetails() throws IOException {
+    void getUserRolesEmptyUserDetails() {
         String userId = "003352d0-e699-48bc-b6f5-5810411e60af";
 
         when(idamRepositoryMock.searchUserByUserId(any(), any()))
@@ -79,7 +78,7 @@ class IdamRoleServiceTest {
     }
 
     @Test
-    void getUserRolesBlankResponse() throws IOException {
+    void getUserRolesBlankResponse() {
         String userId = "003352d0-e699-48bc-b6f5-5810411e60af";
         UserDetails userDetails = UserDetails.builder().email("black@betty.com").forename("ram").surname("jam").id(
             "1234567890123456")
