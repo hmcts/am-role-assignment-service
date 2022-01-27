@@ -25,8 +25,10 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -63,7 +65,7 @@ class ValidationModelServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -169,7 +171,8 @@ class ValidationModelServiceTest {
         List<? extends Assignment> existingRecords = sut.getCurrentRoleAssignmentsForActors(actorIds);
         assertNotNull(existingRecords);
         assertEquals(4, existingRecords.size());
-
+        when(persistenceService.getTotalRecords()).thenReturn(200L);
+        assertTrue(persistenceService.getTotalRecords() > 100, "log message");
 
     }
 
