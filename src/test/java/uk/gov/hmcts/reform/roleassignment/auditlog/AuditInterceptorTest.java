@@ -41,7 +41,7 @@ class AuditInterceptorTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         interceptor = new AuditInterceptor(auditService, applicationParams);
 
         request = new MockHttpServletRequest(METHOD, REQUEST_URI);
@@ -65,8 +65,7 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getHttpMethod()).isEqualTo(METHOD);
         assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
-        //assertThat(auditContext.getRequestId()).isEqualTo(REQUEST_ID);
-        assertThat(auditContextSpy.getRequestPayload()).isEmpty();;
+        assertThat(auditContextSpy.getRequestPayload()).isEmpty();
         assertThat(AuditContextHolder.getAuditContext()).isNull();
         Mockito.verify(auditContextSpy, times(1)).setRequestPayload(any());
         verify(auditService).audit(auditContextSpy);

@@ -35,7 +35,7 @@ class DataStoreApiInterceptorTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         dataStoreApiInterceptor = new DataStoreApiInterceptor();
         dataStoreApiInterceptor.idamRepository = idamRepositoryMock;
         dataStoreApiInterceptor.securityUtils = securityUtils;

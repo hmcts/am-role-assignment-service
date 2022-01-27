@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
@@ -22,8 +24,6 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExi
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole_ra;
-
-
 
 @RunWith(MockitoJUnitRunner.class)
 class DroolJudicialCategoryCaseRoleTest extends DroolBase {
@@ -49,17 +49,24 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
                                                   RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(Status.APPROVED, roleAssignment.getStatus());
             assertEquals("N", roleAssignment.getAttributes().get("substantive").asText());
         });
     }
 
-    @Test
-    void shouldDeleteApprovedRequestedRoleForCase_CaseAllocator() {
+    @ParameterizedTest
+    @CsvSource({
+        "case-allocator",
+        "lead-judge",
+        "hearing-judge",
+        "ftpa-judge",
+        "hearing-panel-judge"
+    })
+    void shouldDeleteApprovedRequestedRoleForCase_CaseAllocator(String roleName) {
 
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
-                                                                "case-allocator",
+                                                                roleName,
                                                                 SPECIFIC, "caseId",
                                                                 "1234567890123456", DELETE_REQUESTED);
 
@@ -69,16 +76,14 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
         featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "case-allocator",
+                                                          roleName,
                                                           RoleCategory.JUDICIAL),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
                                                           "case-allocator",
                                                           RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> {
-            assertEquals(Status.DELETE_APPROVED, ra.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
     }
 
     @Test
@@ -109,9 +114,7 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
                                                           RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> {
-            assertEquals(Status.APPROVED, ra.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
     }
 
     @Test
@@ -146,113 +149,7 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
                                                           RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> {
-            assertEquals(Status.APPROVED, ra.getStatus());
-        });
-    }
-
-    @Test
-    void shouldDeleteApprovedRequestedRoleForCase_LeadJudge() {
-
-        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
-                                                                "lead-judge",
-                                                                SPECIFIC, "caseId",
-                                                                "1234567890123456", DELETE_REQUESTED);
-
-        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "lead-judge",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL)));
-
-        //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> {
-            assertEquals(Status.DELETE_APPROVED, ra.getStatus());
-        });
-    }
-
-    @Test
-    void shouldDeleteApprovedRequestedRoleForCase_HearingJudge() {
-
-        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
-                                                                "hearing-judge",
-                                                                SPECIFIC, "caseId",
-                                                                "1234567890123456", DELETE_REQUESTED);
-
-        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "hearing-judge",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL)));
-
-        //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> {
-            assertEquals(Status.DELETE_APPROVED, ra.getStatus());
-        });
-    }
-
-    @Test
-    void shouldDeleteApprovedRequestedRoleForCase_FtpaJudge() {
-
-        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
-                                                                "ftpa-judge",
-                                                                SPECIFIC, "caseId",
-                                                                "1234567890123456", DELETE_REQUESTED);
-
-        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "ftpa-judge",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL)));
-
-        //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> {
-            assertEquals(Status.DELETE_APPROVED, ra.getStatus());
-        });
-    }
-
-    @Test
-    void shouldDeleteApprovedRequestedRoleForCase_HearingPanelJudge() {
-
-        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
-                                                                "hearing-panel-judge",
-                                                                SPECIFIC, "caseId",
-                                                                "1234567890123456", DELETE_REQUESTED);
-
-        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "hearing-panel-judge",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL)));
-
-        //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> {
-            assertEquals(Status.DELETE_APPROVED, ra.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
     }
 
     @Test
@@ -276,9 +173,7 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
                                                           RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> {
-            assertEquals(Status.REJECTED, ra.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
     }
 
     @Test
@@ -302,9 +197,7 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
                                                           RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> {
-            assertEquals(Status.REJECTED, ra.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
     }
 
     @Test
@@ -329,9 +222,8 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
                                                           RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
@@ -356,9 +248,8 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
                                                           RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles()
+            .forEach(roleAssignment -> assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
@@ -379,9 +270,8 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
                                                           RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
@@ -440,9 +330,8 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
         executeDroolRules(existingRoleAssignments);
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
@@ -480,9 +369,8 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
         executeDroolRules(existingRoleAssignments);
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
@@ -505,9 +393,7 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
                                                           RoleCategory.JUDICIAL)));
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> {
-            assertEquals(Status.REJECTED, ra.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
     }
 
 
