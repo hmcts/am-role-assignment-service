@@ -44,7 +44,7 @@ class RetrieveDataServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         sut = new RetrieveDataService(dataStoreApi, cacheManager);
     }
@@ -68,7 +68,6 @@ class RetrieveDataServiceTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void getCaseById_cacheNone() {
 
         org.springframework.test.util.ReflectionTestUtils.setField(
@@ -84,7 +83,6 @@ class RetrieveDataServiceTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     void getCaseById_cacheNull() {
 
         org.springframework.test.util.ReflectionTestUtils.setField(

@@ -348,9 +348,10 @@ class PersistenceServiceTest {
 
     @Test
     void  getAssignmentsByActorException() throws SQLException {
+        String uuid = UUID.randomUUID().toString();
         doThrow(SQLException.class).when(roleAssignmentRepository).findByActorId(any());
         assertThrows(UnprocessableEntityException.class, () ->
-            sut.getAssignmentsByActor(UUID.randomUUID().toString()));
+            sut.getAssignmentsByActor(uuid));
     }
 
     @Test
@@ -934,7 +935,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    public void getFlagStatus_False() {
+    void getFlagStatus_False() {
         String flagName = "iac_1_0";
         String env = "pr";
         FlagConfig flagConfig = FlagConfig.builder()

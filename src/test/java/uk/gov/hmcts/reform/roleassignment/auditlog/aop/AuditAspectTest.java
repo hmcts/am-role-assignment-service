@@ -14,12 +14,13 @@ import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.GET_ASSIGNMENTS_BY_ACTOR;
 
-public class AuditAspectTest {
+class AuditAspectTest {
     private static final String ACTOR_ID = "6b36bfc6-bb21-11ea-b3de-0242ac130004";
     private static final String ID = "56a95928-6fd9-42b4-afda-12b6c69f1036";
     private static final String ROLE_NAME = "Judge";
@@ -38,7 +39,7 @@ public class AuditAspectTest {
     }
 
     @Test
-    public void shouldPopulateAuditContext() {
+    void shouldPopulateAuditContext() {
         RoleAssignment result = controllerProxy.retrieveRoleAssignmentByActorId(ACTOR_ID, ROLE_NAME);
         assertThat(result).isNotNull();
 
@@ -55,26 +56,26 @@ public class AuditAspectTest {
     }
 
     @Test
-    public void shouldThrowExceptionOnInvalidMethod() {
+    void shouldThrowExceptionOnInvalidMethod() {
         controllerProxy.retrieveRoleAssignmentByActorId_invalidMethod(ACTOR_ID, ROLE_NAME);
         AuditContext context = AuditContextHolder.getAuditContext();
         assertThat(context).isNotNull();
     }
 
     @Test
-    public void unProcessableAuditContext() {
+    void unProcessableAuditContext() {
         for (HttpStatus state: List.of(HttpStatus.UNPROCESSABLE_ENTITY, HttpStatus.CONFLICT)) {
-            ResponseEntity result = controllerProxy.responseProcessEntity(state, ACTOR_ID, ROLE_NAME);
+            ResponseEntity<?> result = controllerProxy.responseProcessEntity(state, ACTOR_ID, ROLE_NAME);
             assertThat(result).isNotNull();
-            assertThat(((RoleAssignment) result.getBody()).getRoleName()).isEqualTo(ROLE_NAME);
+            assertThat(((RoleAssignment) Objects.requireNonNull(result.getBody())).getRoleName()).isEqualTo(ROLE_NAME);
         }
     }
 
     @Test
-    public void acceptProcessableAuditContext() {
-        ResponseEntity result = controllerProxy.responseProcessEntity(HttpStatus.ACCEPTED, ACTOR_ID, ROLE_NAME);
+    void acceptProcessableAuditContext() {
+        ResponseEntity<?> result = controllerProxy.responseProcessEntity(HttpStatus.ACCEPTED, ACTOR_ID, ROLE_NAME);
         assertThat(result).isNotNull();
-        assertThat(((RoleAssignment)result.getBody()).getRoleName()).isEqualTo(ROLE_NAME);
+        assertThat(((RoleAssignment) Objects.requireNonNull(result.getBody())).getRoleName()).isEqualTo(ROLE_NAME);
     }
 
     @Controller

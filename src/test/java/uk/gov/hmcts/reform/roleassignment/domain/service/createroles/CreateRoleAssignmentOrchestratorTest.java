@@ -27,9 +27,9 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -78,7 +78,7 @@ class CreateRoleAssignmentOrchestratorTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -107,7 +107,7 @@ class CreateRoleAssignmentOrchestratorTest {
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
-        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+        AssignmentRequest result = Objects.requireNonNull(roleAssignmentRequestResource).getRoleAssignmentRequest();
 
         //assert values
         assert result != null;
@@ -143,7 +143,7 @@ class CreateRoleAssignmentOrchestratorTest {
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
-        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+        AssignmentRequest result = Objects.requireNonNull(roleAssignmentRequestResource).getRoleAssignmentRequest();
 
         //assert values
         assertEquals(assignmentRequest, result);
@@ -181,7 +181,7 @@ class CreateRoleAssignmentOrchestratorTest {
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
-        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+        AssignmentRequest result = Objects.requireNonNull(roleAssignmentRequestResource).getRoleAssignmentRequest();
 
         //assert values
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
@@ -216,9 +216,7 @@ class CreateRoleAssignmentOrchestratorTest {
             .thenThrow(mock(ParseException.class));
 
         //actual method call
-        assertThrows(ParseException.class, () -> {
-            sut.createRoleAssignment(assignmentRequest);
-        });
+        assertThrows(ParseException.class, () -> sut.createRoleAssignment(assignmentRequest));
 
     }
 
@@ -248,7 +246,7 @@ class CreateRoleAssignmentOrchestratorTest {
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
-        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+        AssignmentRequest result = Objects.requireNonNull(roleAssignmentRequestResource).getRoleAssignmentRequest();
 
         //assert values
         assertEquals(assignmentRequest, result);
@@ -293,7 +291,7 @@ class CreateRoleAssignmentOrchestratorTest {
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
-        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+        AssignmentRequest result = Objects.requireNonNull(roleAssignmentRequestResource).getRoleAssignmentRequest();
 
         //assert values
         assertEquals(assignmentRequest, result);
@@ -330,7 +328,7 @@ class CreateRoleAssignmentOrchestratorTest {
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
-        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+        AssignmentRequest result = Objects.requireNonNull(roleAssignmentRequestResource).getRoleAssignmentRequest();
 
 
         //assert values
@@ -379,7 +377,7 @@ class CreateRoleAssignmentOrchestratorTest {
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
-        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+        AssignmentRequest result = Objects.requireNonNull(roleAssignmentRequestResource).getRoleAssignmentRequest();
 
         //assert values
         assertEquals(assignmentRequest, result);
@@ -412,7 +410,8 @@ class CreateRoleAssignmentOrchestratorTest {
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
         RoleAssignmentRequestResource roleAssignmentRequestResource  =  response
             .getBody();
-        AssignmentRequest assignmentRequest = roleAssignmentRequestResource.getRoleAssignmentRequest();
+        AssignmentRequest assignmentRequest =
+            Objects.requireNonNull(roleAssignmentRequestResource).getRoleAssignmentRequest();
 
         //assert values
         assertNotNull(response);
@@ -440,7 +439,7 @@ class CreateRoleAssignmentOrchestratorTest {
         );
         for (RoleAssignment roleAssignment : assignmentRequest.getRequestedRoles()) {
             roleAssignment.setId(UUID.randomUUID());
-            roleAssignment.setAuthorisations(Arrays.asList("dev"));
+            roleAssignment.setAuthorisations(Collections.singletonList("dev"));
 
         }
         assignmentRequest.getRequest().setReplaceExisting(true);
@@ -467,7 +466,7 @@ class CreateRoleAssignmentOrchestratorTest {
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
-        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+        AssignmentRequest result = Objects.requireNonNull(roleAssignmentRequestResource).getRoleAssignmentRequest();
 
         //assert values
         assertEquals(assignmentRequest, result);
@@ -485,12 +484,12 @@ class CreateRoleAssignmentOrchestratorTest {
         prepareRequestWhenReplaceExistingTrue();
         assignmentRequest = Mockito.spy(assignmentRequest);
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> roleAssignment
-            .setAuthorisations(Arrays.asList("dev")));
+            .setAuthorisations(Collections.singletonList("dev")));
         ((List<RoleAssignment>) assignmentRequest.getRequestedRoles()).get(1).setRoleName("sdsdsd");
 
         RoleAssignment existingRecords = ((List<RoleAssignment>)assignmentRequest.getRequestedRoles()).get(0);
         AssignmentRequest existingAssignmentRecords = new AssignmentRequest(assignmentRequest
-                                                        .getRequest(),Arrays.asList(existingRecords));
+                                                        .getRequest(),Collections.singletonList(existingRecords));
 
 
 
@@ -517,7 +516,7 @@ class CreateRoleAssignmentOrchestratorTest {
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
-        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+        AssignmentRequest result = Objects.requireNonNull(roleAssignmentRequestResource).getRoleAssignmentRequest();
 
 
         //assert values
@@ -540,10 +539,10 @@ class CreateRoleAssignmentOrchestratorTest {
         prepareRequestWhenReplaceExistingTrue();
         assignmentRequest = Mockito.spy(assignmentRequest);
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> roleAssignment
-            .setAuthorisations(Arrays.asList("dev")));
+            .setAuthorisations(Collections.singletonList("dev")));
 
         Optional<RoleAssignment> incomingRecords = assignmentRequest.getRequestedRoles().stream().findFirst();
-        assignmentRequest.setRequestedRoles(Arrays.asList(incomingRecords.get()));
+        assignmentRequest.setRequestedRoles(Collections.singletonList(incomingRecords.get()));
 
         AssignmentRequest existingAssignmentRecords  = TestDataBuilder.buildAssignmentRequest(Status.CREATED,
                                                                  Status.APPROVED,
@@ -551,7 +550,7 @@ class CreateRoleAssignmentOrchestratorTest {
         );
         existingAssignmentRecords.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment
-                .setAuthorisations(Arrays.asList("dev"));
+                .setAuthorisations(Collections.singletonList("dev"));
             roleAssignment.setBeginTime(incomingRecords.get().getBeginTime());
             roleAssignment.setEndTime(incomingRecords.get().getEndTime());
         });
@@ -584,7 +583,7 @@ class CreateRoleAssignmentOrchestratorTest {
         //actual method call
         ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
         RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
-        AssignmentRequest result = roleAssignmentRequestResource.getRoleAssignmentRequest();
+        AssignmentRequest result = Objects.requireNonNull(roleAssignmentRequestResource).getRoleAssignmentRequest();
 
         //assert values
         verify(assignmentRequest, times(2)).setRequestedRoles(any());
