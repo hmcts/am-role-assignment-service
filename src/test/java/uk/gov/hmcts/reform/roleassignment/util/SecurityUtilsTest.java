@@ -67,7 +67,7 @@ class SecurityUtilsTest {
 
 
     private void mockSecurityContextData() throws IOException {
-        List<String> collection = new ArrayList<String>();
+        List<String> collection = new ArrayList<>();
         collection.add("string");
         Map<String, Object> headers = new HashMap<>();
         headers.put("header", "head");
@@ -86,28 +86,28 @@ class SecurityUtilsTest {
     @BeforeEach
     public void setUp() throws IOException {
         mockSecurityContextData();
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void getUserId() throws IOException {
+    void getUserId() {
         assertEquals(USER_ID, securityUtils.getUserId());
     }
 
     @Test
-    void getUserRolesHeader() throws IOException {
+    void getUserRolesHeader() {
         assertNotNull(securityUtils.getUserRolesHeader());
     }
 
     @Test
-    void getUserToken() throws IOException {
+    void getUserToken() {
         String result = securityUtils.getUserToken();
         assertNotNull(result);
         assertTrue(result.contains(USER_JWT));
     }
 
     @Test
-    void getAuthorizationHeaders() throws IOException {
+    void getAuthorizationHeaders() {
         HttpHeaders result = securityUtils.authorizationHeaders();
         assertEquals(serviceAuthorization, Objects.requireNonNull(result.get(SERVICE_AUTHORIZATION)).get(0));
         assertEquals(USER_ID, Objects.requireNonNull(result.get("user-id")).get(0));
@@ -134,7 +134,7 @@ class SecurityUtilsTest {
     }
 
     @Test
-    void removeBearerFromToken() throws IOException {
+    void removeBearerFromToken() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader(SERVICE_AUTHORIZATION, serviceAuthorization);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
@@ -142,7 +142,7 @@ class SecurityUtilsTest {
     }
 
     @Test
-    void removeBearerFromToken_NoBearerTag() throws IOException {
+    void removeBearerFromToken_NoBearerTag() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader(SERVICE_AUTHORIZATION, serviceAuthorizationNoBearer);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
@@ -150,7 +150,7 @@ class SecurityUtilsTest {
     }
 
     @Test
-    void shouldNotGetServiceNameFromContext() throws IOException {
+    void shouldNotGetServiceNameFromContext() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader(SERVICE_AUTHORIZATION, serviceAuthorizationNoBearer);
         RequestContextHolder.setRequestAttributes(null);
