@@ -61,7 +61,7 @@ class SpecificAccessDroolsTest extends DroolBase {
 
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          "4772dc44-268f-4d0c-8f83-f0fb662aac84",
+                                          TestDataBuilder.ACTORID,
                                           "judge",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -375,9 +375,9 @@ class SpecificAccessDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "challenged-access-judiciary,JUDICIAL",
-        "challenged-access-admin,ADMIN",
-        "challenged-access-legal-ops,LEGAL_OPERATIONS"
+        "specific-access-judiciary,JUDICIAL",
+        "specific-access-admin,ADMIN",
+        "specific-access-legal-ops,LEGAL_OPERATIONS"
     })
     void shouldRejectAccessFor_SpecificAccess_InsufficientNotes(String roleName, String roleCategory) {
 

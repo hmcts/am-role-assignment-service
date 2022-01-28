@@ -85,7 +85,6 @@ public abstract class DroolBase {
         attributes.put("baseLocation", "London");
         JsonNode attr = convertValueJsonNode(attributes);
         caseAttributes.put("caseManagementLocation", attr);
-
         Case caseObj4 = Case.builder().id("1616161616161616")
             .caseTypeId("Asylum")
             .jurisdiction("IA")

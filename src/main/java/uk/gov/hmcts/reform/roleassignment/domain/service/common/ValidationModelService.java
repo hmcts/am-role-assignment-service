@@ -12,7 +12,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -93,8 +95,8 @@ public class ValidationModelService {
     public List<Assignment> getCurrentRoleAssignmentsForActors(Set<String> actorIds) {
         var queryRequest = QueryRequest.builder()
             .actorId(actorIds)
-            .roleType(List.of("ORGANISATION", "CASE"))
-            .grantType(List.of("STANDARD", "NONE"))
+            .roleType(List.of(RoleType.ORGANISATION.name(), RoleType.CASE.name()))
+            .grantType(List.of(GrantType.STANDARD.name(), GrantType.BASIC.name(), GrantType.NONE.name()))
             .validAt(LocalDateTime.now())
             .build();
 
