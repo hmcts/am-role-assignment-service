@@ -205,7 +205,7 @@ when
              roleCategory == RoleCategory.LEGAL_OPERATIONS,
              grantType == GrantType.CHALLENGED,
              endTime != null && !endTime.isAfter(ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(1)),
-             notes != null && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
+             notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
              id == $caseId)
