@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -11,11 +12,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.roleassignment.health.CcdDataStoreHealthIndicator;
 import uk.gov.hmcts.reform.roleassignment.health.IdamServiceHealthIndicator;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
@@ -52,6 +55,16 @@ public abstract class BaseTest {
         MediaType.APPLICATION_JSON.getSubtype(),
         StandardCharsets.UTF_8
     );
+
+    @NotNull
+    protected HttpHeaders getHttpHeaders(final String clientId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer user1");
+        String s2SToken = MockUtils.generateDummyS2SToken(clientId);
+        headers.add("ServiceAuthorization", "Bearer " + s2SToken);
+        headers.add(Constants.CORRELATION_ID_HEADER_NAME, "38a90097-434e-47ee-8ea1-9ea2a267f51d");
+        return headers;
+    }
 
     @TestConfiguration
     static class Configuration {

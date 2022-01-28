@@ -33,7 +33,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleServic
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
 import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
-import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -42,7 +41,6 @@ import java.util.Arrays;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -204,13 +202,4 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
         return getHttpHeaders(AUTHORISED_SERVICE);
     }
 
-    @NotNull
-    private HttpHeaders getHttpHeaders(final String clientId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(AUTHORIZATION, "Bearer user1");
-        String s2SToken = MockUtils.generateDummyS2SToken(clientId);
-        headers.add("ServiceAuthorization", "Bearer " + s2SToken);
-        headers.add(Constants.CORRELATION_ID_HEADER_NAME, "38a90097-434e-47ee-8ea1-9ea2a267f51d");
-        return headers;
-    }
 }
