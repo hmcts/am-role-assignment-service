@@ -15,19 +15,19 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
-import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
-
 import java.util.HashMap;
 import java.util.List;
+
+import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @RunWith(MockitoJUnitRunner.class)
 class SpecificAccessDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "challenged-access-judiciary,JUDICIAL",
-        "challenged-access-admin,ADMIN",
-        "challenged-access-legal-ops,LEGAL_OPERATIONS"
+        "specific-access-judiciary,JUDICIAL",
+        "specific-access-admin,ADMIN",
+        "specific-access-legal-ops,LEGAL_OPERATIONS"
     })
     void shouldGrantAccessFor_SpecificAccess_SelfRequested(String roleName, String roleCategory) {
 
