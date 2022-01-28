@@ -25,11 +25,14 @@ class SpecificAccessDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "specific-access-judiciary,JUDICIAL",
-        "specific-access-admin,ADMIN",
-        "specific-access-legal-ops,LEGAL_OPERATIONS"
+        "specific-access-judiciary,JUDICIAL,STANDARD",
+        "specific-access-admin,ADMIN,STANDARD",
+        "specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
+        "specific-access-judiciary,JUDICIAL,BASIC",
+        "specific-access-admin,ADMIN,BASIC",
+        "specific-access-legal-ops,LEGAL_OPERATIONS,BASIC"
     })
-    void shouldGrantAccessFor_SpecificAccess_SelfRequested(String roleName, String roleCategory) {
+    void shouldGrantAccessFor_SpecificAccess_SelfRequested(String roleName, String roleCategory, String orgGrantType) {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
@@ -66,7 +69,7 @@ class SpecificAccessDroolsTest extends DroolBase {
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
                                           Classification.PRIVATE,
-                                          GrantType.STANDARD,
+                                          GrantType.valueOf(orgGrantType),
                                           RoleType.ORGANISATION
                                       )));
 
