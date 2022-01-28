@@ -57,6 +57,8 @@ import java.util.UUID;
 @Setter
 public class TestDataBuilder {
 
+    public static final String ACTORID = "4772dc44-268f-4d0c-8f83-f0fb662aac84";
+
     private TestDataBuilder() {
         //not meant to be instantiated.
     }
@@ -76,7 +78,7 @@ public class TestDataBuilder {
     public static Request buildRequest(Status status, Boolean replaceExisting) {
         return Request.builder()
             .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
-            .authenticatedUserId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+            .authenticatedUserId(ACTORID)
             .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
             .assignerId("123e4567-e89b-42d3-a456-556642445678")
             .requestType(RequestType.CREATE)
@@ -502,7 +504,7 @@ public class TestDataBuilder {
     public static RoleAssignment buildRoleAssignmentForConflict(RoleCategory roleCategory) throws IOException {
         ZonedDateTime timeStamp = ZonedDateTime.now(ZoneOffset.UTC);
         return RoleAssignment.builder()
-            .actorId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+            .actorId(ACTORID)
             .actorIdType(ActorIdType.IDAM)
             .roleType(RoleType.CASE)
             .roleName("conflict-of-interest")
@@ -563,7 +565,7 @@ public class TestDataBuilder {
         Map<String, JsonNode> attributes = new HashMap<>();
         attributes.put("jurisdiction", convertValueJsonNode(juris));
         return ExistingRoleAssignment.builder()
-            .actorId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+            .actorId(ACTORID)
             .roleType(RoleType.ORGANISATION)
             .roleCategory(roleCategory)
             .grantType(GrantType.STANDARD)
@@ -610,11 +612,11 @@ public class TestDataBuilder {
     public static AssignmentRequest.AssignmentRequestBuilder getAssignmentRequest() {
         return AssignmentRequest.builder().request(Request.builder()
                                                        .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
-                                                       .authenticatedUserId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+                                                       .authenticatedUserId(ACTORID)
                                                        .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
-                                                       .assignerId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+                                                       .assignerId(ACTORID)
                                                        .requestType(RequestType.CREATE)
-                                                       .reference("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+                                                       .reference(ACTORID)
                                                        .process(("p2"))
                                                        .replaceExisting(true)
                                                        .status(Status.CREATED)
@@ -639,19 +641,19 @@ public class TestDataBuilder {
         return AssignmentRequest.builder()
             .request(Request.builder()
                          .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
-                         .authenticatedUserId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+                         .authenticatedUserId(ACTORID)
                          .clientId(clientId)
                          .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
-                         .assignerId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+                         .assignerId(ACTORID)
                          .requestType(RequestType.CREATE)
-                         .reference("reference")
+                         .reference("1234567890123456/" + roleName + "/" + ACTORID)
                          .process(process)
                          .replaceExisting(true)
                          .created(ZonedDateTime.now())
                          .build())
             .requestedRoles(Collections.singletonList(
                 RoleAssignment.builder()
-                    .actorId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
+                    .actorId(ACTORID)
                     .status(status)
                     .roleType(RoleType.CASE)
                     .roleName(roleName)

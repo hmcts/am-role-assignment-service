@@ -80,8 +80,8 @@ public abstract class DroolBase {
         doReturn(caseObj3).when(retrieveDataService).getCaseById("1234567890123459");
 
         HashMap<String, JsonNode> caseAttributes = new HashMap<>();
-        caseAttributes.put("REGION", convertValueJsonNode("south-east"));
-        caseAttributes.put("BASE_LOCATION", convertValueJsonNode("London"));
+        caseAttributes.put("region", convertValueJsonNode("south-east"));
+        caseAttributes.put("baseLocation", convertValueJsonNode("London"));
         Case caseObj4 = Case.builder().id("1616161616161616")
             .caseTypeId("Asylum")
             .jurisdiction("IA")
