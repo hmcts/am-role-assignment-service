@@ -13,7 +13,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
-
+import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 /*
  * The below rules are required for Specific and Challenged access
  * It will be toggled on with new IAC_SPECIFIC_1_0 and IAC_CHALLENGED_1_0 DB flag.
@@ -53,8 +53,8 @@ when
              attributes["caseType"] == null || attributes["caseType"].asText() == $c.caseTypeId,
              attributes["region"] == null || attributes["region"].asText() != $c.getRegion(),
              attributes["baseLocation"] == null || attributes["baseLocation"].asText() != $c.getBaseLocation(),
-             attributes["managedRoleCategory"] == null || attributes["managedRoleCategory"].asText() == $ra.roleCategory.toString(),
-             attributes["managedRole"] == null || attributes["managedRole"].asText() == $ra.roleName)
+             attributes["managedRoleCategory"] == null || ValidationUtil.csvContains($ra.roleCategory.toString(), attributes["managedRoleCategory"].asText()),
+             attributes["managedRole"] == null || ValidationUtil.csvContains($ra.roleName, attributes["managedRole"].asText()))
 then
     // We copy the authorisations to allow the case config to require an authorisation
     // for (particularly judicial) role mappings
