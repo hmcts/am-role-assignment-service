@@ -51,7 +51,7 @@ def versions = [
   cucumber       : '5.7.0',
   feign_jackson  : '9.7.0',
   drools         : '7.60.0.Final',
-  launchDarklySdk: '5.2.2',
+  launchDarklySdk: '5.7.0',
   log4JVersion   : '2.17.1',
   logbackVersion : '1.2.10'
 ]
