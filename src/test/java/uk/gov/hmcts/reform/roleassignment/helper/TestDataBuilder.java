@@ -644,7 +644,7 @@ public class TestDataBuilder {
                          .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
                          .assignerId("4772dc44-268f-4d0c-8f83-f0fb662aac84")
                          .requestType(RequestType.CREATE)
-                         .reference("reference")
+                         .reference("1234567890123456/" + process + "/4772dc44-268f-4d0c-8f83-f0fb662aac84")
                          .process(process)
                          .replaceExisting(true)
                          .created(ZonedDateTime.now())

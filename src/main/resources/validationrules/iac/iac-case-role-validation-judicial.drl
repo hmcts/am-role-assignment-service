@@ -174,7 +174,8 @@ when
              // The assigner must be the current user.
              assignerId == authenticatedUserId,
              process == "challenged-access",
-             reference != null)
+             reference != null && $referenceId : reference.split("/") && $referenceId.size() > 2
+             && $referenceId[0].length() == 16 && $referenceId[1].startsWith("challenged-access"))
     $ra: RoleAssignment(
              actorId == $rq.authenticatedUserId,
              status == Status.CREATE_REQUESTED,
