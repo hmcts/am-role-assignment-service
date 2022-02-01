@@ -17,10 +17,13 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
-
+import static uk.gov.hmcts.reform.roleassignment.domain.model.Case.REGION;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.Case.BASE_LOCATION;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.Case.CASE_MANAGEMENT_LOCATION;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class DroolBase {
 
@@ -80,13 +83,14 @@ public abstract class DroolBase {
         doReturn(caseObj3).when(retrieveDataService).getCaseById("1234567890123459");
 
         HashMap<String, JsonNode> caseAttributes = new HashMap<>();
-        caseAttributes.put("REGION", convertValueJsonNode("south-east"));
-        caseAttributes.put("BASE_LOCATION", convertValueJsonNode("London"));
+        caseAttributes.put(REGION, convertValueJsonNode("south-east"));
+        caseAttributes.put(BASE_LOCATION, convertValueJsonNode("London"));
+
         Case caseObj4 = Case.builder().id("1616161616161616")
             .caseTypeId("Asylum")
             .jurisdiction("IA")
             .securityClassification(Classification.PUBLIC)
-            .data(caseAttributes)
+            .data(Map.of(CASE_MANAGEMENT_LOCATION, convertValueJsonNode(caseAttributes)))
             .build();
         doReturn(caseObj4).when(retrieveDataService).getCaseById("1616161616161616");
 
