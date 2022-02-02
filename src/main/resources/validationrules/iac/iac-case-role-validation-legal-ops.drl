@@ -232,6 +232,7 @@ then
     // for (particularly judicial) role mappings
     $ra.setAuthorisations($e.getAuthorisations());
     $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Stage 1 approved : challenged_access_create_case_role_legal_ops");
     update($ra);
