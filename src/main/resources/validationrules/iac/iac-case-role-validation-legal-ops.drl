@@ -169,24 +169,6 @@ then
 end;
 
 /*
- * The case roles can be deleted if CaseAllocatorApproval entity is available for requested role assignment.
- */
-
-
-rule "ia_staff_case_allocator_approved_delete_case_role_v11"
-when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
-    $ca: CaseAllocatorApproval(
-                roleAssignment.status == Status.DELETE_REQUESTED,
-                roleAssignment.attributes["jurisdiction"].asText() == "IA")
-then
-    $ca.getRoleAssignment().setStatus(Status.DELETE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : ia_staff_case_allocator_approved_delete_case_role_v11");
-    update($ca.getRoleAssignment());
-    logMsg("Rule : ia_staff_case_allocator_approved_delete_case_role_v11");
-end;
-
-/*
  * IAC "challenged-access" case roles self creation user
  */
 rule "challenged_access_create_case_role_legal_ops"
@@ -237,22 +219,4 @@ then
     $ra.log("Stage 1 approved : challenged_access_create_case_role_legal_ops");
     update($ra);
     logMsg("Rule : challenged_access_create_case_role_legal_ops");
-end;
-
-
-rule "challenged_delete_case_role"
-when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
-    $rq: Request(
-             assignerId == authenticatedUserId)
-    $ra: RoleAssignment(
-             actorId == $rq.assignerId,
-             status == Status.DELETE_REQUESTED,
-             roleType == RoleType.CASE,
-             grantType == GrantType.CHALLENGED)
-then
-    $ra.setStatus(Status.DELETE_APPROVED);
-    $ra.log("Delete approved : challenged_delete_case_role");
-    update($ra);
-    logMsg("Rule : challenged_delete_case_role");
 end;
