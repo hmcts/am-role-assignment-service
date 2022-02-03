@@ -238,3 +238,21 @@ then
     update($ra);
     logMsg("Rule : challenged_access_create_case_role_legal_ops");
 end;
+
+
+rule "challenged_delete_case_role"
+when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
+    $rq: Request(
+             assignerId == authenticatedUserId)
+    $ra: RoleAssignment(
+             actorId == $rq.assignerId,
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.CASE,
+             grantType == GrantType.CHALLENGED)
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : challenged_delete_case_role");
+    update($ra);
+    logMsg("Rule : challenged_delete_case_role");
+end;
