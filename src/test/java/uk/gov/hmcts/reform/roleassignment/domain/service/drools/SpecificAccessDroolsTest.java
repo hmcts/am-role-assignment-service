@@ -344,7 +344,7 @@ class SpecificAccessDroolsTest extends DroolBase {
             RoleCategory.valueOf(roleCategory),
             roleAssignmentAttributes,
             Classification.RESTRICTED,
-            GrantType.NONE,
+            GrantType.BASIC,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
@@ -396,7 +396,7 @@ class SpecificAccessDroolsTest extends DroolBase {
             RoleCategory.valueOf(roleCategory),
             roleAssignmentAttributes,
             Classification.RESTRICTED,
-            GrantType.NONE,
+            GrantType.BASIC,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
@@ -423,9 +423,8 @@ class SpecificAccessDroolsTest extends DroolBase {
                                           RoleType.ORGANISATION
                                       )));
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                  Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @ParameterizedTest
@@ -535,7 +534,7 @@ class SpecificAccessDroolsTest extends DroolBase {
             RoleCategory.valueOf(roleCategory),
             roleAssignmentAttributes,
             Classification.PRIVATE,
-            GrantType.NONE,
+            GrantType.BASIC,
             Status.CREATE_REQUESTED,
             "not_xui_webapp",
             true,
