@@ -46,10 +46,10 @@ class SpecificAccessDroolsTest extends DroolBase {
             RoleCategory.valueOf(roleCategory),
             roleAssignmentAttributes,
             Classification.RESTRICTED,
-            GrantType.NONE,
+            GrantType.BASIC,
             Status.CREATE_REQUESTED,
             "anyClient",
-            false,
+            true,
             "Access required for reasons"
         )
             .build();
@@ -221,7 +221,7 @@ class SpecificAccessDroolsTest extends DroolBase {
             RoleCategory.valueOf(roleCategory),
             roleAssignmentAttributes,
             Classification.PRIVATE,
-            GrantType.NONE,
+            GrantType.BASIC,
             Status.CREATE_REQUESTED,
             "xui_webapp",
             true,
@@ -245,7 +245,7 @@ class SpecificAccessDroolsTest extends DroolBase {
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
                                           Classification.PRIVATE,
-                                          GrantType.STANDARD,
+                                          GrantType.BASIC,
                                           RoleType.CASE
                                       )));
 
