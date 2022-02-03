@@ -96,7 +96,7 @@ public class ValidationModelService {
         var queryRequest = QueryRequest.builder()
             .actorId(actorIds)
             .roleType(List.of(RoleType.ORGANISATION.name(), RoleType.CASE.name()))
-            .grantType(List.of(GrantType.STANDARD.name(), GrantType.BASIC.name(), GrantType.NONE.name()))
+            .grantType(List.of(GrantType.STANDARD.name(), GrantType.BASIC.name()))
             .validAt(LocalDateTime.now())
             .build();
 

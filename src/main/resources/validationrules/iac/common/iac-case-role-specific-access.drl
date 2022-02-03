@@ -39,7 +39,7 @@ when
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              roleName == "specific-access-requested",
-             grantType == GrantType.NONE,
+             readOnly == true,
              notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
@@ -98,8 +98,6 @@ when
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              roleName in ("specific-access-granted", "specific-access-denied"),
-             classification == Classification.PRIVATE,
-             grantType == GrantType.NONE,
              readOnly == true,
              endTime != null,
              notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
