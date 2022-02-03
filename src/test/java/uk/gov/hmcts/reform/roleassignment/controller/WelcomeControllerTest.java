@@ -34,7 +34,7 @@ class WelcomeControllerTest {
 
     @Test
     void index() {
-        assertEquals("redirect:swagger-ui.html", sut.index(), "index html not found");
+        assertEquals("redirect:swagger-ui.html", sut.index());
     }
 
     @Test
