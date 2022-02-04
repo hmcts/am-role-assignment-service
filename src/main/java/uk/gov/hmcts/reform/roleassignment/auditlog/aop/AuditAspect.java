@@ -47,6 +47,7 @@ public class AuditAspect {
             String process = getValue(joinPoint, logAudit.process(), result, String.class);
             String reference = getValue(joinPoint, logAudit.reference(), result, String.class);
             String correlationId = getValue(joinPoint, logAudit.correlationId(), result, String.class);
+            String responseTime = getValue(joinPoint, logAudit.responseTime(), result, String.class);
 
             AuditContextHolder.setAuditContext(AuditContext.auditContextWith()
                                                    .auditOperationType(logAudit.operationType())
@@ -58,6 +59,7 @@ public class AuditAspect {
                                                    .reference(reference)
                                                    .correlationId(correlationId)
                                                    .assignmentSize(size)
+                                                   .responseTime(responseTime)
                                                    .build());
         }
 

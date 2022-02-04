@@ -47,6 +47,7 @@ public class AuditService {
         entry.setCorrelationId(auditContext.getCorrelationId());
         entry.setRequestPayload(auditContext.getRequestPayload());
         entry.setAssignmentSize(auditContext.getAssignmentSize());
+        entry.setResponseTime(auditContext.getResponseTime());
         auditRepository.save(entry);
 
     }

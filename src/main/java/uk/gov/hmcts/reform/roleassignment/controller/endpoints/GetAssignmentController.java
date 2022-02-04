@@ -58,7 +58,8 @@ public class GetAssignmentController {
     @LogAudit(operationType = GET_ASSIGNMENTS_BY_ACTOR,
         size = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).sizeOfAssignments(#result)",
         actorId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).getActorIds(#result)",
-        correlationId = "#correlationId")
+        correlationId = "#correlationId",
+        responseTime = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).responseTime(#result)")
     public ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByActorId(
                                  @RequestHeader(value = "x-correlation-id",
                                  required = false) String correlationId,

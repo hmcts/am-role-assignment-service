@@ -35,4 +35,6 @@ public @interface LogAudit {
     String requestPayload() default "";
 
     String size() default "";
+
+    String responseTime() default "";
 }
