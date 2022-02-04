@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.data;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.json.JSONObject;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
@@ -61,26 +62,19 @@ public final class RoleAssignmentEntitySpecifications {
                                                                               .stream()
                                                        .map(value -> {
                                                            if (value == null) {
-                                                               return builder.isNull(builder.function(
-                                                                                     "jsonb_extract_path_text",
-                                                                                      String.class,
-                                                                                      root.<String>get("attributes"),
-                                                                                      builder.literal(entry.getKey())
-                                                                                              ));
-                                                           } else {
-                                                               return builder.or(builder.equal(
-                                                                                                  builder.function(
-                                                                                      "jsonb_extract_path_text",
-                                                                                                      String.class,
-                                                                                                      root.<String>get(
-                                                                                                        "attributes"),
-                                                                                                      builder.literal(
-                                                                                                     entry.getKey())
-                                                                                                  ),
-                                                                                                  value
-                                                                                              ));
+                                                               return builder.isNull(
+                                                                   builder.function("contains_jsonb",
+                                                                      Boolean.class,
+                                                                      root.get("attributes"),
+                                                                      builder.literal(new JSONObject().toString())));
+                                           } else {
+                                               return builder.or(builder.isTrue(
+                                       builder.function("contains_jsonb",
+                                                        Boolean.class,
+                                                        root.get("attributes"),
+                                                        builder.literal(new JSONObject()
+                                                            .put(entry.getKey(), value).toString()))));
                                                            }
-
                                                        }).toArray(Predicate[]::new)))
                                                          .toArray(Predicate[]::new));
 
