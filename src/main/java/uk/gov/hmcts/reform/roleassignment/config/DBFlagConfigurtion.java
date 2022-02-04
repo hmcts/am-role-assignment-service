@@ -56,4 +56,8 @@ public class DBFlagConfigurtion implements CommandLineRunner {
         flagConfig.setStatus(status);
         flagConfigRepository.save(flagConfig);
     }
+
+    public void setDbFeature2Enable(String dbFeature2Enable) {
+        this.dbFeature2Enable = dbFeature2Enable;
+    }
 }
