@@ -14,7 +14,6 @@ import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 
 import java.util.Arrays;
 import java.util.List;

@@ -52,6 +52,7 @@ class AuditAspectTest {
         assertThat(context.getAssignmentId()).isEqualTo(ID);
         assertThat(context.getAssignmentSize()).isEqualTo(1);
         assertThat(context.getRoleName()).isEqualTo(ROLE_NAME);
+        assertThat(context.getResponseTime()).isNotNull();
 
     }
 
@@ -77,6 +78,8 @@ class AuditAspectTest {
         assertThat(result).isNotNull();
         assertThat(((RoleAssignment) Objects.requireNonNull(result.getBody())).getRoleName()).isEqualTo(ROLE_NAME);
     }
+
+
 
     @Controller
     @SuppressWarnings("unused")
