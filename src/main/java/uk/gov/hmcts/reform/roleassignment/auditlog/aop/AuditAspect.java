@@ -14,6 +14,7 @@ import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,9 +33,10 @@ public class AuditAspect {
 
     @Around("@annotation(logAudit)")
     public Object audit(ProceedingJoinPoint joinPoint, LogAudit logAudit) throws Throwable {
-        Object result = null;
 
-        result = joinPoint.proceed();
+        long startTime = System.currentTimeMillis();
+
+        Object result = joinPoint.proceed();
 
         if (result instanceof ResponseEntity && statusCodes.contains(((ResponseEntity) result).getStatusCodeValue())) {
             return result;
@@ -47,7 +49,7 @@ public class AuditAspect {
             String process = getValue(joinPoint, logAudit.process(), result, String.class);
             String reference = getValue(joinPoint, logAudit.reference(), result, String.class);
             String correlationId = getValue(joinPoint, logAudit.correlationId(), result, String.class);
-            String responseTime = getValue(joinPoint, logAudit.responseTime(), result, String.class);
+            Long responseTime = Math.subtractExact(System.currentTimeMillis(), startTime);
 
             AuditContextHolder.setAuditContext(AuditContext.auditContextWith()
                                                    .auditOperationType(logAudit.operationType())
