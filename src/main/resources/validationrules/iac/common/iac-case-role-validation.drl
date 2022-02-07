@@ -43,7 +43,7 @@ when
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c: Case(
              id == $caseId)
-    Request(reference == $caseId + "/" + $ra.roleName + "/" + $ra.actorId)
+    Request(reference == $caseId + "/" + $ra.attributes["requestedRole"].asText() + "/" + $ra.actorId)
     $e: ExistingRoleAssignment(
              actorId == $ra.actorId,
              roleType == RoleType.ORGANISATION,
@@ -103,7 +103,7 @@ when
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
              id == $caseId)
-    Request(reference == $caseId + "/" + $ra.roleName + "/" + $ra.actorId)
+    Request(reference == $caseId + "/" + $ra.attributes["requestedRole"].asText() + "/" + $ra.actorId)
     $e: ExistingRoleAssignment(
              actorId == $ra.actorId,
              roleType == RoleType.CASE,
