@@ -23,7 +23,7 @@ public class AuditEntry {
     private String correlationId;
     private String requestPayload;
     private Integer assignmentSize;
-    private String responseTime;
+    private Long responseTime;
 
 
 }

@@ -113,17 +113,4 @@ public class AuditLoggerUtil {
         }
         return null;
     }
-    public static String responseTime(final  ResponseEntity<RoleAssignmentResource> response) {
-
-        var roleAssignmentResourceReq = response.getHeaders();
-
-        if (roleAssignmentResourceReq != null) {
-            long reqTime = roleAssignmentResourceReq.getDate();
-            long resTime = Instant.now().toEpochMilli();
-            long processTime = resTime - reqTime;
-            return String.format("{0:}", processTime);
-
-        }
-        return null;
-    }
 }
