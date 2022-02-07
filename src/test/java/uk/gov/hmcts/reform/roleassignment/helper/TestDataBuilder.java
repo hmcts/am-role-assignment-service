@@ -646,7 +646,7 @@ public class TestDataBuilder {
                          .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
                          .assignerId(ACTORID)
                          .requestType(RequestType.CREATE)
-                         .reference("1234567890123456/" + roleName + "/" + ACTORID)
+                         .reference("1234567890123456/" + attributes.get("requestedRole").asText() + "/" + ACTORID)
                          .process(process)
                          .replaceExisting(true)
                          .created(ZonedDateTime.now())

@@ -265,6 +265,7 @@ class SpecificAccessDroolsTest extends DroolBase {
     void shouldDeleteAccessFor_SpecificAccess(String roleCategory) {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("specific-access"));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
             "specific-access",
@@ -299,7 +300,7 @@ class SpecificAccessDroolsTest extends DroolBase {
     void shouldDeleteAccessFor_SpecificAccess_XuiClient(String roleCategory) {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("specific-access"));
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
             "specific-access",
             "specific-access-requested",
@@ -489,6 +490,7 @@ class SpecificAccessDroolsTest extends DroolBase {
     void shouldRejectDeleteAccessFor_SpecificAccess_IncorrectRoleName(String roleCategory) {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("specific-access"));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
             "specific-access",
