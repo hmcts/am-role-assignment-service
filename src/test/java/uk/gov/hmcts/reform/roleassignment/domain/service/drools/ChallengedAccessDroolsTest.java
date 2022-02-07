@@ -57,7 +57,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         existingAttributes.put("substantive", convertValueJsonNode("Y"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          "4772dc44-268f-4d0c-8f83-f0fb662aac84",
+                                          TestDataBuilder.ACTORID,
                                           "anyRoleName",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -175,7 +175,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         existingAttributes.put("region", convertValueJsonNode("south-east"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          "4772dc44-268f-4d0c-8f83-f0fb662aac84",
+                                          TestDataBuilder.ACTORID,
                                           "anyRoleName",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -229,7 +229,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         existingAttributes.put("substantive", convertValueJsonNode("Y"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          "4772dc44-268f-4d0c-8f83-f0fb662aac84",
+                                          TestDataBuilder.ACTORID,
                                           "anyRoleName",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -282,7 +282,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         existingAttributes.put("substantive", convertValueJsonNode("Y"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          "4772dc44-268f-4d0c-8f83-f0fb662aac84",
+                                          TestDataBuilder.ACTORID,
                                           "anyRoleName",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -332,7 +332,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         existingAttributes.put("substantive", convertValueJsonNode("Y"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          "4772dc44-268f-4d0c-8f83-f0fb662aac84",
+                                          TestDataBuilder.ACTORID,
                                           "anyRoleName",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
