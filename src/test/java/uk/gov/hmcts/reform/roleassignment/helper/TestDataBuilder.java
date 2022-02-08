@@ -627,7 +627,7 @@ public class TestDataBuilder {
 
     }
 
-    public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecialAccess(
+    public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestForSpecialAccess(
         String process,
         String roleName,
         RoleCategory roleCategory,
@@ -674,7 +674,7 @@ public class TestDataBuilder {
         RoleCategory roleCategory, HashMap<String, JsonNode> attributes, Classification classification,
         GrantType grantType, Status status, String clientId, boolean readOnly,String notes) {
 
-        return buildAssignmentRequestSpecialAccess(process, roleName, roleCategory, attributes, classification,
+        return buildAssignmentRequestForSpecialAccess(process, roleName, roleCategory, attributes, classification,
                                                    grantType, status, clientId, readOnly, notes, CASE_ALLOCATOR_ID);
     }
 
@@ -683,7 +683,7 @@ public class TestDataBuilder {
         Classification classification, GrantType grantType, Status status, String clientId, boolean readOnly,
         String notes) {
 
-        return buildAssignmentRequestSpecialAccess(process, roleName, roleCategory, attributes, classification,
+        return buildAssignmentRequestForSpecialAccess(process, roleName, roleCategory, attributes, classification,
                                                    grantType, status, clientId, readOnly, notes, ACTORID);
     }
 
