@@ -58,6 +58,7 @@ import java.util.UUID;
 public class TestDataBuilder {
 
     public static final String ACTORID = "4772dc44-268f-4d0c-8f83-f0fb662aac84";
+    public static final String CASE_ALLOCATOR_ID = "4772dc44-268f-4d0c-8f83-f0fb662aac88";
 
     private TestDataBuilder() {
         //not meant to be instantiated.
@@ -636,15 +637,15 @@ public class TestDataBuilder {
         Status status,
         String clientId,
         boolean readOnly,
-        String notes) {
+        String notes, String actorId) {
 
         return AssignmentRequest.builder()
             .request(Request.builder()
                          .id(UUID.fromString("ab4e8c21-27a0-4abd-aed8-810fdce22adb"))
-                         .authenticatedUserId(ACTORID)
+                         .authenticatedUserId(actorId)
                          .clientId(clientId)
                          .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
-                         .assignerId(ACTORID)
+                         .assignerId(actorId)
                          .requestType(RequestType.CREATE)
                          .reference("1234567890123456/" + attributes.get("requestedRole").asText() + "/" + ACTORID)
                          .process(process)
@@ -666,6 +667,24 @@ public class TestDataBuilder {
                     .attributes(attributes)
                     .build()
             ));
+    }
+
+    public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecialAccessApprover(
+        String process, String roleName,
+        RoleCategory roleCategory, HashMap<String, JsonNode> attributes, Classification classification,
+        GrantType grantType, Status status, String clientId, boolean readOnly,String notes) {
+
+        return buildAssignmentRequestSpecialAccess(process, roleName, roleCategory, attributes, classification,
+                                                   grantType, status, clientId, readOnly, notes, CASE_ALLOCATOR_ID);
+    }
+
+    public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecialAccess(
+        String process, String roleName, RoleCategory roleCategory, HashMap<String, JsonNode> attributes,
+        Classification classification, GrantType grantType, Status status, String clientId, boolean readOnly,
+        String notes) {
+
+        return buildAssignmentRequestSpecialAccess(process, roleName, roleCategory, attributes, classification,
+                                                   grantType, status, clientId, readOnly, notes, ACTORID);
     }
 
     public static RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType) {

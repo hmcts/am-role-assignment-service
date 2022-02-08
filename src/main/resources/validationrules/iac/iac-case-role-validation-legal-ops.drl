@@ -201,6 +201,7 @@ when
              process == "specific-access",
              reference != null)
     $ra: RoleAssignment(
+             actorId != $rq.assignerId,
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              roleName == "specific-access-legal-ops",
