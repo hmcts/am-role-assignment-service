@@ -1,14 +1,13 @@
 {
   "title": "must successfully create access-requested Case Role Assignment",
-  "_guid_": "S-210",
+  "_guid_": "S-212_Access_Requested",
   "_extends_": "F-011_Test_Data_Base",
   "specs": [
-    "Befta1 - who is the actor for requested role",
-    "contains specific-access-legal-ops case requested role assignment"
+    "to create role assignments for requested role"
   ],
   "users": {
     "invokingUser": {
-      "username": "TEST_AM_USER6_BEFTA@test.local",
+      "username": "TEST_AM_USER4_BEFTA@test.local",
       "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
     }
   },
@@ -36,9 +35,9 @@
           "endTime" : "2024-03-02T00:00Z",
           "readOnly": true,
           "notes" : [{
-              "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
-              "time": "2022-01-01T00:00Z",
-              "comment": "Need Access to case number 1616413322379009 for a month"
+            "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "time": "2022-01-01T00:00Z",
+            "comment": "Need Access to case number 1616413322379009 for a month"
           }]
         }
       ]
@@ -88,3 +87,4 @@
     }
   }
 }
+
