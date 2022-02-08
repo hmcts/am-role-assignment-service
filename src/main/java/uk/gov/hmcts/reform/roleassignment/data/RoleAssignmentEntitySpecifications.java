@@ -59,10 +59,11 @@ public final class RoleAssignmentEntitySpecifications {
                              .map(entry -> builder.or(entry.getValue().stream().map(value -> {
                                  if (value == null) {
                                      return builder.isNull(builder.function(
-                                         "contains_jsonb",
-                                         Boolean.class,
-                                         root.get("attributes"),
-                                         builder.literal(new JSONObject().toString())));
+                                         "jsonb_extract_path_text",
+                                         String.class,
+                                         root.<String>get("attributes"),
+                                         builder.literal(entry.getKey())
+                                     ));
                                  } else {
                                      return builder.or(builder.isTrue(builder.function(
                                          "contains_jsonb",
