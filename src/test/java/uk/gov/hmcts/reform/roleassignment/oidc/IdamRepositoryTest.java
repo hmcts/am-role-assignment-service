@@ -19,13 +19,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnauthorizedException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -166,7 +166,7 @@ class IdamRepositoryTest {
         );
         when(idamApi.retrieveUserInfo(any())).thenThrow(FeignException.Unauthorized.class);
 
-        Assertions.assertThrows(ResponseStatusException.class, () ->
+        Assertions.assertThrows(UnauthorizedException.class, () ->
             idamRepository.getUserInfo("Bearer invalid")
         );
     }
@@ -393,17 +393,28 @@ class IdamRepositoryTest {
         FeignException.Unauthorized unauthorized = mock(FeignException.Unauthorized.class);
         when(idamRepository.getUserInfo("invalid token")).thenThrow(unauthorized);
 
-        assertThrows(ResponseStatusException.class, () -> idamRepository.getUserInfo("invalid token"));
+        assertThrows(UnauthorizedException.class, () -> idamRepository.getUserInfo("invalid token"));
     }
 
     @Test
-    void getUserByUserIdException() {
+    void getUserByUserIdUnauthorizedException() {
         FeignException.Unauthorized unauthorized = mock(FeignException.Unauthorized.class);
         when(idamApi.getUserByUserId(any(), any())).thenThrow(unauthorized);
 
         assertThrows(
-            ResponseStatusException.class,
-            () -> idamRepository.getUserByUserId("invalid token", "testuserid")
+            UnauthorizedException.class,
+            () -> idamRepository.getUserByUserId("token", "unauthorizedUser")
+        );
+    }
+
+    @Test
+    void getUserByUserIdBadRequestException() {
+        FeignException.BadRequest badRequest = mock(FeignException.BadRequest.class);
+        when(idamApi.getUserByUserId(any(), any())).thenThrow(badRequest);
+
+        assertThrows(
+            BadRequestException.class,
+            () -> idamRepository.getUserByUserId("token", "@@@££££")
         );
     }
 
