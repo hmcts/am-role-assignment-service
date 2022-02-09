@@ -4,7 +4,16 @@
       "invokingUser": {
         "username": "TEST_AM_USER2_BEFTA@test.local",
         "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+      },
+      "befta1": {
+        "username": "TEST_AM_USER1_BEFTA@test.local",
+        "password": "[[$TEST_AM_USER1_BEFTA_PWD]]"
+      },
+      "befta3": {
+        "username": "TEST_AM_USER3_BEFTA@test.local",
+        "password": "[[$TEST_AM_USER3_BEFTA_PWD]]"
       }
+
   },
   "request": {
     "headers": {
