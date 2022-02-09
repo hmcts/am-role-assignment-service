@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller.advice;
 
+import feign.FeignException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -59,6 +60,14 @@ class RoleAssignmentControllerAdviceTest {
         ResponseEntity<Object> responseEntity = csda.customValidationBadRequestError(badRequestException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+    }
+
+    @Test
+    void customValidationFeignUnauthorizedError() {
+        FeignException.Unauthorized unauthorizedException = mock(FeignException.Unauthorized.class);
+        ResponseEntity<Object> responseEntity = csda.customValidationFeignUnauthorizedError(unauthorizedException);
+        assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), responseEntity.getStatusCodeValue());
     }
 
     @Test
