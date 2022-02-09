@@ -76,8 +76,7 @@ public class CreateAssignmentController {
         roleName = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildRoleNames(#result)",
         caseId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).buildCaseIds(#result)",
         assignerId = "#assignmentRequest.request.assignerId",
-        correlationId = "#correlationId",
-        requestPayload = "#auditContextWith.requestPayload"
+        correlationId = "#correlationId"
     )
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
