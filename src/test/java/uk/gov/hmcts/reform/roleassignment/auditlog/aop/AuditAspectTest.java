@@ -53,6 +53,7 @@ class AuditAspectTest {
         assertThat(context.getAssignmentSize()).isEqualTo(1);
         assertThat(context.getRoleName()).isEqualTo(ROLE_NAME);
         assertThat(context.getResponseTime()).isNotNull();
+        assertThat(context.getRequestPayload()).isNull();
 
     }
 
