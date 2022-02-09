@@ -1,5 +1,5 @@
 {
-  "_guid_": "S-210_DeleteDataForRoleAssignmentsForRequestedRole",
+  "_guid_": "S-211_DeleteDataForRoleAssignmentsForOrgRoles",
   "productName": "Role Assignment Service",
   "operationName": "Delete Role Assignments by Process",
   "method": "DELETE",
@@ -9,7 +9,7 @@
   ],
   "users": {
     "invokingUser": {
-      "username": "TEST_AM_USER6_BEFTA@test.local",
+      "username": "TEST_AM_USER4_BEFTA@test.local",
       "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
     }
   },
@@ -21,7 +21,7 @@
     },
     "pathVariables": {
       "process": "specific-access",
-      "reference": "${[scenarioContext][parentContext][childContexts][S-212_Access_Requested][testData][request][body][roleRequest][reference]}"
+      "reference": "${[scenarioContext][parentContext][childContexts][S-211_Org_Role_Creation][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {

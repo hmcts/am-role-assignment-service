@@ -33,7 +33,7 @@ Feature: F-011 : Create Specific Role Assignments
     And the response has all other details as expected.
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
     And a successful call [to delete role assignments just created above] as in [S-211_DeleteDataForRoleAssignmentsForOrgRoles],
-    And a successful call [to delete role assignments just created above] as in [S-211_DeleteDataForRoleAssignmentsForRequestedRole].
+    And a successful call [to delete role assignments just created above] as in [S-211_DeleteDataForRoleAssignmentsForGrantedRole].
 
   @S-212
   @FeatureToggle(RAS:iac_specific_1_0=on)
@@ -49,6 +49,6 @@ Feature: F-011 : Create Specific Role Assignments
     And the response has all other details as expected.
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
     And a successful call [to delete role assignments just created above] as in [S-212_DeleteDataForRoleAssignmentsForOrgRoles],
-    And a successful call [to delete role assignments just created above] as in [S-212_DeleteDataForRoleAssignmentsForRequestedRole].
+    And a successful call [to delete role assignments just created above] as in [S-212_DeleteDataForRoleAssignmentsForDeniedRole].
 
 

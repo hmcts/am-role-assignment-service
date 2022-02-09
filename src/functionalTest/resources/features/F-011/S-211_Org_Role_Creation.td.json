@@ -1,27 +1,33 @@
 {
   "_guid_": "S-211_Org_Role_Creation",
-  "_extends_": "F-001_Test_Data_Base",
+  "_extends_": "F-011_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester",
     "Befta1 - who is the actor for requested role"
   ],
-  "users": {
-    "invokingUser": {
-      "username": "TEST_AM_USER5_BEFTA@test.local",
-      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
-    }
-  },
+
   "request": {
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S_206_Org_Role_For_Multiple_Actors",
+        "reference": "S_211_Org_Role_For_Multiple_Actors",
         "process": "specific-access"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+          "roleName": "case-allocator",
+          "roleCategory": "JUDICIAL",
+          "beginTime" : "2022-01-01T00:00:00Z",
+          "attributes":
+          {
+            "jurisdiction": "IA"
+          }
+        },
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][users][befta3][id]}",
           "roleName": "case-allocator",
           "roleCategory": "JUDICIAL",
           "beginTime" : "2022-01-01T00:00:00Z",
@@ -43,14 +49,28 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "replaceExisting": false,
+          "replaceExisting": true,
           "process": "specific-access"
         },
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
             "process": "specific-access",
-            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD",
+            "roleCategory": "JUDICIAL",
+            "roleName": "case-allocator",
+            "attributes":
+            {
+              "jurisdiction": "IA",
+              "substantive" : "N"
+            }
+          },
+          {
+            "_extends_": "ResponseRequestedRole",
+            "process": "specific-access",
+            "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",

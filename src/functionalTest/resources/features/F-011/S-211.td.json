@@ -8,8 +8,8 @@
   ],
   "users": {
     "invokingUser": {
-      "username": "TEST_AM_USER5_BEFTA@test.local",
-      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+      "username": "TEST_AM_USER3_BEFTA@test.local",
+      "password": "[[$TEST_AM_USER3_BEFTA_PWD]]"
     }
   },
   "request": {
@@ -19,7 +19,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/specific-access-judiciary/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1607103938250138/specific-access-judiciary/${[scenarioContext][testData][users][befta1][id]}",
         "process" : "specific-access",
         "replaceExisting" : true
       },
@@ -35,7 +35,7 @@
           },
           "roleName": "specific-access-granted",
           "roleCategory": "JUDICIAL",
-          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
           "endTime" : "2024-03-02T00:00Z",
           "readOnly": true,
           "notes" : [{
@@ -55,7 +55,7 @@
           },
           "roleName" : "specific-access-judiciary",
           "roleCategory" : "JUDICIAL",
-          "actorId" : "${[scenarioContext][testData][users][invokingUser][id]}",
+          "actorId" : "${[scenarioContext][testData][users][befta1][id]}",
           "endTime" : "2024-03-02T00:00Z",
           "readOnly": true,
           "notes" : [
