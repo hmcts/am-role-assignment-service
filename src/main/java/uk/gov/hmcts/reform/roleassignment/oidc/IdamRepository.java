@@ -22,6 +22,7 @@ import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
 import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 
 import java.util.List;
 
@@ -70,10 +71,13 @@ public class IdamRepository {
         }
         try {
             return idamApi.retrieveUserInfo(BEARER + jwtToken);
-        } catch (FeignException.Unauthorized feigenunauthorized) {
-            log.error("its  FeignException retrive user info ", feigenunauthorized);
+        } catch (FeignException.Unauthorized feignUnauthorized) {
+            log.error("its FeignException retrieve user info ", feignUnauthorized);
             throw new ResponseStatusException(
-                HttpStatus.UNAUTHORIZED, "kindly provide correct token ", feigenunauthorized);
+                HttpStatus.UNAUTHORIZED, "kindly provide correct token ", feignUnauthorized);
+        } catch (FeignException.BadRequest feignBadRequest) {
+            log.error("its FeignException Bad Request retrieve user info ", feignBadRequest);
+            throw new BadRequestException("Bad Request while retrieving user info using bearer token");
         }
 
     }

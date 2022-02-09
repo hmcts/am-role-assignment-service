@@ -25,6 +25,7 @@ import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -166,6 +167,20 @@ class IdamRepositoryTest {
         when(idamApi.retrieveUserInfo(any())).thenThrow(FeignException.Unauthorized.class);
 
         Assertions.assertThrows(ResponseStatusException.class, () ->
+            idamRepository.getUserInfo("Bearer invalid")
+        );
+    }
+
+    @Test
+    void getUserInfo_BadRequest() {
+        ReflectionTestUtils.setField(
+            idamRepository,
+            "cacheType", "none"
+
+        );
+        when(idamApi.retrieveUserInfo(any())).thenThrow(FeignException.BadRequest.class);
+
+        Assertions.assertThrows(BadRequestException.class, () ->
             idamRepository.getUserInfo("Bearer invalid")
         );
     }
