@@ -13,6 +13,9 @@
   },
   "request": {
     "body": {
+      "headers": {
+        "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForXui]}"
+      },
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
         "reference": "1616413322379009/specific-access-judiciary/${[scenarioContext][testData][users][invokingUser][id]}",
