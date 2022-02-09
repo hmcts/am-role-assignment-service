@@ -16,12 +16,13 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
 import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnauthorizedException;
 
 import java.util.List;
 
@@ -70,10 +71,12 @@ public class IdamRepository {
         }
         try {
             return idamApi.retrieveUserInfo(BEARER + jwtToken);
-        } catch (FeignException.Unauthorized feigenunauthorized) {
-            log.error("its  FeignException retrive user info ", feigenunauthorized);
-            throw new ResponseStatusException(
-                HttpStatus.UNAUTHORIZED, "kindly provide correct token ", feigenunauthorized);
+        } catch (FeignException.Unauthorized feignUnauthorized) {
+            log.error("FeignException Unauthorized: retrieve user info ", feignUnauthorized);
+            throw new UnauthorizedException("User is not authorized");
+        } catch (FeignException.BadRequest feignBadRequest) {
+            log.error("FeignException Bad Request: retrieve user info ", feignBadRequest);
+            throw new BadRequestException("User is not valid");
         }
 
     }
@@ -81,10 +84,12 @@ public class IdamRepository {
     public UserDetails getUserByUserId(String jwtToken, String userId) {
         try {
             return idamApi.getUserByUserId(BEARER + jwtToken, userId);
-        } catch (FeignException.Unauthorized feigenunauthorized) {
-            log.error("its  FeignException get user by id ", feigenunauthorized);
-            throw new ResponseStatusException(
-               HttpStatus.UNAUTHORIZED, "kindly provide correct token ", feigenunauthorized);
+        } catch (FeignException.Unauthorized feignUnauthorized) {
+            log.error("FeignException Unauthorized: retrieve user info ", feignUnauthorized);
+            throw new UnauthorizedException("User is not authorized");
+        } catch (FeignException.BadRequest feignBadRequest) {
+            log.error("FeignException Bad Request: retrieve user info ", feignBadRequest);
+            throw new BadRequestException("User is not valid");
         }
     }
 
