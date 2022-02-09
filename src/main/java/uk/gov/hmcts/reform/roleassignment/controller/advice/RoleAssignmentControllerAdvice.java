@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller.advice;
 
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.kie.api.runtime.rule.ConsequenceException;
 import org.slf4j.Logger;
@@ -31,6 +32,7 @@ import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstant
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.BAD_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.INVALID_REQUEST;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.RESOURCE_NOT_FOUND;
+import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.UNAUTHORIZED;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.UNKNOWN_EXCEPTION;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.UNPROCESSABLE_ENTITY;
 
@@ -69,6 +71,17 @@ public class RoleAssignmentControllerAdvice {
             HttpStatus.BAD_REQUEST,
             BAD_REQUEST.getErrorCode(),
             BAD_REQUEST.getErrorMessage()
+        );
+    }
+
+    @ExceptionHandler(FeignException.Unauthorized.class)
+    public ResponseEntity<Object> customValidationFeignUnauthorizedError(
+        FeignException.Unauthorized ex) {
+        return errorDetailsResponseEntity(
+            ex,
+            HttpStatus.UNAUTHORIZED,
+            UNAUTHORIZED.getErrorCode(),
+            UNAUTHORIZED.getErrorMessage()
         );
     }
 
