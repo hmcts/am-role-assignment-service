@@ -34,7 +34,6 @@ public class AuditAspect {
     public Object audit(ProceedingJoinPoint joinPoint, LogAudit logAudit) throws Throwable {
 
         long startTime = System.currentTimeMillis();
-
         Object result = joinPoint.proceed();
 
         if (result instanceof ResponseEntity && statusCodes.contains(((ResponseEntity) result).getStatusCodeValue())) {
@@ -49,9 +48,6 @@ public class AuditAspect {
             String reference = getValue(joinPoint, logAudit.reference(), result, String.class);
             String correlationId = getValue(joinPoint, logAudit.correlationId(), result, String.class);
             Long responseTime = Math.subtractExact(System.currentTimeMillis(), startTime);
-            String requestPayload = (responseTime != null && responseTime > 500)
-                ? getValue(joinPoint, logAudit.requestPayload(), result, String.class) :
-                "Response time is less than 500millis";
 
             AuditContextHolder.setAuditContext(AuditContext.auditContextWith()
                                                    .auditOperationType(logAudit.operationType())
@@ -62,7 +58,6 @@ public class AuditAspect {
                                                    .process(process)
                                                    .reference(reference)
                                                    .correlationId(correlationId)
-                                                   .requestPayload(requestPayload)
                                                    .assignmentSize(size)
                                                    .responseTime(responseTime)
                                                    .build());
