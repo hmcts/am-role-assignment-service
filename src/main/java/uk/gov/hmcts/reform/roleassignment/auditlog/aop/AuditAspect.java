@@ -49,7 +49,7 @@ public class AuditAspect {
             String reference = getValue(joinPoint, logAudit.reference(), result, String.class);
             String correlationId = getValue(joinPoint, logAudit.correlationId(), result, String.class);
             Long responseTime = Math.subtractExact(System.currentTimeMillis(), startTime);
-            String requestPayload = responseTime > 100 ? getValue(joinPoint, logAudit.requestPayload(), result, String.class) :
+            String requestPayload = responseTime > 500 ? getValue(joinPoint, logAudit.requestPayload(), result, String.class) :
                 "Response time is less 500millis";
 
             AuditContextHolder.setAuditContext(AuditContext.auditContextWith()
