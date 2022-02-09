@@ -18,6 +18,7 @@ class AuditLogFormatterTest {
         auditEntry.setHttpMethod("GET");
         auditEntry.setPath("test_path");
         auditEntry.setHttpStatus(200);
+        auditEntry.setRequestPayload("payload");
         auditEntry.setAssignmentSize(1);
         auditEntry.getResponseTime();
         String result = logFormatter.format(auditEntry);
@@ -26,6 +27,7 @@ class AuditLogFormatterTest {
                          + "invokingService:test_invokingService,"
                          + "endpointCalled:test_path,"
                          + "operationalOutcome:200,"
+                         + "requestPayload:payload,"
                          + "responseTime:null",
                              result);
     }
