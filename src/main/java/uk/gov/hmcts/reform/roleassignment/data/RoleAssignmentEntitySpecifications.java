@@ -57,22 +57,25 @@ public final class RoleAssignmentEntitySpecifications {
             return null;
         }
         return (root, query, builder) -> builder.and(attributes.entrySet().stream()
-                                                         .map(entry -> builder.or(entry.getValue().stream().map(value -> {
-                                                             if (value == null) {
-                                                                 return builder.isNull(builder.function(
-                                                                     "jsonb_extract_path_text",
-                                                                     String.class,
-                                                                     root.<String>get("attributes"),
-                                                                     builder.literal(entry.getKey())
-                                                                 ));
-                                                             } else {
-                                                                 return builder.or(builder.isTrue(builder.function(
-                                                                     "contains_jsonb",
-                                                                     Boolean.class,
-                                                                     root.get("attributes"),
-                                                                     builder.literal(new JSONObject().put(entry.getKey(), value).toString()))));
-                                                             }
-                                                         }).toArray(Predicate[]::new)))
+                                                         .map(entry ->
+                                                              builder.or(entry.getValue().stream().map(value -> {
+                                                                  if (value == null) {
+                                                                      return builder.isNull(builder.function(
+                                                                         "jsonb_extract_path_text",
+                                                                         String.class,
+                                                                         root.<String>get("attributes"),
+                                                                         builder.literal(entry.getKey())
+                                                                      ));
+                                                                  } else {
+                                                                      return builder.or(builder.isTrue(builder.function(
+                                                                         "contains_jsonb",
+                                                                         Boolean.class,
+                                                                         root.get("attributes"),
+                                                                         builder.literal(
+                                                                             new JSONObject().put(entry.getKey(), value)
+                                                                                 .toString()))));
+                                                                  }
+                                                              }).toArray(Predicate[]::new)))
                                                          .toArray(Predicate[]::new));
 
     }
