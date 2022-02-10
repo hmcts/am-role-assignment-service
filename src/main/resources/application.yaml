@@ -163,7 +163,6 @@ org :
     byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:false}
 
 logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:INFO}
-
 dbFeature:
   flags:
     enable: ${DB_FEATURE_FLAG_ENABLE:}
