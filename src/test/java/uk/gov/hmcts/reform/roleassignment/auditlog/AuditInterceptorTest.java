@@ -67,7 +67,7 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
         assertThat(auditContextSpy.getRequestPayload()).isEmpty();
         assertThat(AuditContextHolder.getAuditContext()).isNull();
-        assertThat(auditContextSpy.getResponseTime()).isGreaterThan(500);
+        assertThat(auditContextSpy.getResponseTime()).isGreaterThan(500L);
         Mockito.verify(auditContextSpy, times(1)).setRequestPayload(any());
         verify(auditService).audit(auditContextSpy);
     }
@@ -86,9 +86,9 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
         assertThat(auditContextSpy.getRequestPayload()).isEmpty();
         assertThat(AuditContextHolder.getAuditContext()).isNull();
-        assertThat(auditContextSpy.getResponseTime()).isLessThan(500);
-        Mockito.verify(auditContextSpy, times(1)).setRequestPayload(any());
+        assertThat(auditContextSpy.getResponseTime()).isLessThan(500L);
         verify(auditService).audit(auditContextSpy);
+
     }
 
     @Test
