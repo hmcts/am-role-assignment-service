@@ -20,7 +20,7 @@ class AuditLogFormatterTest {
         auditEntry.setHttpStatus(200);
         auditEntry.setRequestPayload("payload");
         auditEntry.setAssignmentSize(1);
-        auditEntry.getResponseTime();
+        auditEntry.setResponseTime(500L);
         String result = logFormatter.format(auditEntry);
         assertEquals("LA-AM-RAS dateTime:2020-12-05 10:30:45,"
                          + "operationType:CREAT_CASE,assignmentSize:1,"
@@ -28,7 +28,7 @@ class AuditLogFormatterTest {
                          + "endpointCalled:test_path,"
                          + "operationalOutcome:200,"
                          + "requestPayload:payload,"
-                         + "responseTime:null",
+                         + "responseTime:500",
                              result);
     }
 

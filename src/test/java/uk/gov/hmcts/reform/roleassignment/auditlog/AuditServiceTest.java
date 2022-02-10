@@ -46,6 +46,7 @@ class AuditServiceTest {
     public static final String ROLE_NAME = "ADMIN";
     public static final String CORRELATION_ID = "CORRELATION-1";
     public static final String REQUEST_PAYLOAD = "PAYLOAD-1";
+    public static final Long RESPONSE_TIME = 500L;
 
 
     @Mock
@@ -93,6 +94,7 @@ class AuditServiceTest {
             .correlationId(CORRELATION_ID)
             .requestPayload(REQUEST_PAYLOAD)
             .assignmentSize(1)
+            .responseTime(RESPONSE_TIME)
             .build();
         AuditContext auditContextSpy = Mockito.spy(auditContext);
         auditService.audit(auditContextSpy);
