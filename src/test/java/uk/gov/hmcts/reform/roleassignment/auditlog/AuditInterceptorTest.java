@@ -54,12 +54,12 @@ class AuditInterceptorTest {
     }
 
     @Test
-    void shouldPrepareAuditContextWithHttpSemantics() {
+    void shouldPrepareAuditContextWithHttpSemanticsLongResponse() {
         AuditContext auditContext = new AuditContext();
+        auditContext.setResponseTime(1500L);
         AuditContext auditContextSpy = Mockito.spy(auditContext);
         given(handler.hasMethodAnnotation(LogAudit.class)).willReturn(true);
         AuditContextHolder.setAuditContext(auditContextSpy);
-
         interceptor.afterCompletion(request, response, handler, null);
 
         assertThat(auditContextSpy.getHttpMethod()).isEqualTo(METHOD);
@@ -67,7 +67,26 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
         assertThat(auditContextSpy.getRequestPayload()).isEmpty();
         assertThat(AuditContextHolder.getAuditContext()).isNull();
-        assertThat(auditContextSpy.getResponseTime()).isNull();
+        assertThat(auditContextSpy.getResponseTime()).isGreaterThan(500);
+        Mockito.verify(auditContextSpy, times(1)).setRequestPayload(any());
+        verify(auditService).audit(auditContextSpy);
+    }
+
+    @Test
+    void shouldPrepareAuditContextWithHttpSemanticsShortResponse() {
+        AuditContext auditContext = new AuditContext();
+        auditContext.setResponseTime(400L);
+        AuditContext auditContextSpy = Mockito.spy(auditContext);
+        given(handler.hasMethodAnnotation(LogAudit.class)).willReturn(true);
+        AuditContextHolder.setAuditContext(auditContextSpy);
+        interceptor.afterCompletion(request, response, handler, null);
+
+        assertThat(auditContextSpy.getHttpMethod()).isEqualTo(METHOD);
+        assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
+        assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
+        assertThat(auditContextSpy.getRequestPayload()).isEmpty();
+        assertThat(AuditContextHolder.getAuditContext()).isNull();
+        assertThat(auditContextSpy.getResponseTime()).isLessThan(500);
         Mockito.verify(auditContextSpy, times(1)).setRequestPayload(any());
         verify(auditService).audit(auditContextSpy);
     }
