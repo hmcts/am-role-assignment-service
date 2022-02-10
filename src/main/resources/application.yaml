@@ -72,7 +72,6 @@ spring:
           batch_versioned_data: true
           lob:
             non_contextual_creation: true
-        dialect: uk.gov.hmcts.reform.roleassignment.config.RasPostgreSQL9Dialect
 
   flyway.enabled: ${ENABLE_DB_MIGRATE:true}
   flyway.locations: classpath:db/migration
