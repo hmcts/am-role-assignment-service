@@ -46,6 +46,7 @@ class AuditServiceTest {
     public static final String ROLE_NAME = "ADMIN";
     public static final String CORRELATION_ID = "CORRELATION-1";
     public static final String REQUEST_PAYLOAD = "PAYLOAD-1";
+    public static final Long RESPONSE_TIME = 500L;
 
 
     @Mock
@@ -93,6 +94,7 @@ class AuditServiceTest {
             .correlationId(CORRELATION_ID)
             .requestPayload(REQUEST_PAYLOAD)
             .assignmentSize(1)
+            .responseTime(RESPONSE_TIME)
             .build();
         AuditContext auditContextSpy = Mockito.spy(auditContext);
         auditService.audit(auditContextSpy);
@@ -114,7 +116,7 @@ class AuditServiceTest {
         assertThat(entry.getRoleName(), is(equalTo(auditContextSpy.getRoleName())));
         assertThat(entry.getCorrelationId(), is(equalTo(auditContextSpy.getCorrelationId())));
         assertThat(entry.getAuthenticatedUserId(), is(equalTo(securityUtils.getUserId())));
-
+        assertThat(entry.getResponseTime(), is(equalTo(auditContextSpy.getResponseTime())));
         assertThat(entry.getInvokingService(), is(equalTo((SERVICE_NAME))));
         assertThat(entry.getOperationType(), is(equalTo(AuditOperationType.CREATE_ASSIGNMENTS.getLabel())));
         assertThat(entry.getRequestPayload(), is(equalTo(auditContextSpy.getRequestPayload())));

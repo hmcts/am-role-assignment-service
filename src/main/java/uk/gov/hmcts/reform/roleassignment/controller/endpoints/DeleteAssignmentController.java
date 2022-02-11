@@ -76,7 +76,9 @@ public class DeleteAssignmentController {
     @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_PROCESS,
         process = "#process",
         reference = "#reference",
-        correlationId = "#correlationId")
+        correlationId = "#correlationId",
+        requestPayload = "#auditContextWith.requestPayload"
+    )
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResponseEntity<Void> deleteRoleAssignment(@RequestHeader(value = "x-correlation-id",
         required = false)
@@ -122,7 +124,8 @@ public class DeleteAssignmentController {
     })
     @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_ID,
         assignmentId = "#assignmentId",
-        correlationId = "#correlationId"
+        correlationId = "#correlationId",
+        requestPayload = "#auditContextWith.requestPayload"
     )
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public ResponseEntity<Void> deleteRoleAssignmentById(@RequestHeader(
