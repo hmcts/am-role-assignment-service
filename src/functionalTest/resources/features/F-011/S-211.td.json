@@ -19,7 +19,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/specific-access-judiciary/${[scenarioContext][testData][users][befta1][id]}",
+        "reference": "1607103938250138/specific-access-judiciary/${[scenarioContext][testData][users][befta4][id]}",
         "process" : "specific-access",
         "replaceExisting" : true
       },
@@ -35,7 +35,7 @@
           },
           "roleName": "specific-access-granted",
           "roleCategory": "JUDICIAL",
-          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+          "actorId": "${[scenarioContext][testData][users][befta4][id]}",
           "endTime" : "2024-03-02T00:00Z",
           "readOnly": true,
           "notes" : [{
@@ -55,7 +55,7 @@
           },
           "roleName" : "specific-access-judiciary",
           "roleCategory" : "JUDICIAL",
-          "actorId" : "${[scenarioContext][testData][users][befta1][id]}",
+          "actorId" : "${[scenarioContext][testData][users][befta4][id]}",
           "endTime" : "2024-03-02T00:00Z",
           "readOnly": true,
           "notes" : [

@@ -7,7 +7,7 @@
   ],
   "users": {
     "invokingUser": {
-      "username": "TEST_AM_USER1_BEFTA@test.local",
+      "username": "TEST_AM_USER4_BEFTA@test.local",
       "password": "[[$TEST_AM_USER1_BEFTA_PWD]]"
     }
   },

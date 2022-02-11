@@ -5,6 +5,10 @@
         "username": "TEST_AM_USER2_BEFTA@test.local",
         "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
       },
+    "befta4": {
+      "username": "TEST_AM_USER4_BEFTA@test.local",
+      "password": "[[$TEST_AM_USER1_BEFTA_PWD]]"
+    },
       "befta1": {
         "username": "TEST_AM_USER1_BEFTA@test.local",
         "password": "[[$TEST_AM_USER1_BEFTA_PWD]]"
