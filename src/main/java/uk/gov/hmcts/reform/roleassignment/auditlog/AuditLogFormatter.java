@@ -29,7 +29,7 @@ public class AuditLogFormatter {
             .append(getPair("roleName", entry.getRoleName()))
             .append(getPair("authenticatedUserId", entry.getAuthenticatedUserId()))
             .append(getPair("correlationId", entry.getCorrelationId()))
-            .append(getPair("requestPayload", String.valueOf(entry.getRequestPayload())))
+            .append(getPair("requestPayload", entry.getRequestPayload()))
             .append(getPair("responseTime",String.valueOf(entry.getResponseTime())))
             .toString();
     }

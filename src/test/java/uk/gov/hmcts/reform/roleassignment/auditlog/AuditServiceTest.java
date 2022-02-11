@@ -116,7 +116,7 @@ class AuditServiceTest {
         assertThat(entry.getRoleName(), is(equalTo(auditContextSpy.getRoleName())));
         assertThat(entry.getCorrelationId(), is(equalTo(auditContextSpy.getCorrelationId())));
         assertThat(entry.getAuthenticatedUserId(), is(equalTo(securityUtils.getUserId())));
-
+        assertThat(entry.getResponseTime(), is(equalTo(auditContextSpy.getResponseTime())));
         assertThat(entry.getInvokingService(), is(equalTo((SERVICE_NAME))));
         assertThat(entry.getOperationType(), is(equalTo(AuditOperationType.CREATE_ASSIGNMENTS.getLabel())));
         assertThat(entry.getRequestPayload(), is(equalTo(auditContextSpy.getRequestPayload())));
