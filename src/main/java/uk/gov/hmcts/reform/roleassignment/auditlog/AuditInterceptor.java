@@ -63,7 +63,8 @@ public class AuditInterceptor extends HandlerInterceptorAdapter {
         context.setHttpStatus(response.getStatus());
         context.setHttpMethod(request.getMethod());
         context.setRequestPath(request.getRequestURI());
-        if ((context.getResponseTime() != null && context.getResponseTime() > 500) || LOG.isDebugEnabled()) {
+        if ((context.getResponseTime() != null && context.getResponseTime() > 500) ||
+            (context.getResponseTime() != null && context.getHttpStatus() == 422) || LOG.isDebugEnabled()) {
             context.setRequestPayload(new MutableHttpServletRequest(request).getBodyAsString());
         }
         return context;
