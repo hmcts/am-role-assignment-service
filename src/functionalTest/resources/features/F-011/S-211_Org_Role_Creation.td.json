@@ -16,7 +16,7 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+          "actorId": "${[scenarioContext][testData][users][befta4][id]}",
           "roleName": "case-allocator",
           "roleCategory": "JUDICIAL",
           "beginTime" : "2022-01-01T00:00:00Z",
@@ -56,7 +56,7 @@
           {
             "_extends_": "ResponseRequestedRole",
             "process": "specific-access",
-            "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+            "actorId": "${[scenarioContext][testData][users][befta4][id]}",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
