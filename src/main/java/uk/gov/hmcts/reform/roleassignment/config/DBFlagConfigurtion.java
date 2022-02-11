@@ -56,4 +56,5 @@ public class DBFlagConfigurtion implements CommandLineRunner {
         flagConfig.setStatus(status);
         flagConfigRepository.save(flagConfig);
     }
+
 }
