@@ -472,7 +472,6 @@ dependencies {
   contractTestCompile group: 'au.com.dius.pact.provider', name: 'spring', version: versions.pact_version
   contractTestCompile group: 'au.com.dius.pact.provider', name: 'junit5spring', version: versions.pact_version
 
-
   contractTestCompile sourceSets.main.runtimeClasspath
   contractTestCompile sourceSets.test.runtimeClasspath
 
