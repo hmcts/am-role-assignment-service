@@ -489,7 +489,7 @@ dependencyManagement {
       entry 'logback-classic'
       entry 'logback-core'
     }
-    dependencySet(group: 'net.minidev', version: '2.4.7') {
+    dependencySet(group: 'net.minidev', version: '2.4.8') {
       entry 'json-smart'
     }
   }
