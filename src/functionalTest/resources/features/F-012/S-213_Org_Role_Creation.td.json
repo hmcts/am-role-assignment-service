@@ -1,6 +1,6 @@
 {
   "_guid_": "S-213_Org_Role_Creation",
-  "_extends_": "F-001_Test_Data_Base",
+  "_extends_": "F-012_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester",
     "Befta1 - who is the actor for requested role"
@@ -15,20 +15,20 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S_206_Org_Role_For_Multiple_Actors",
-        "process": "challenged-access"
+        "reference": "S_213_Org_Role_For_Multiple_Actors",
+        "process": "challenged-access",
+        "replaceExisting" : true
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "roleName": "judge",
-          "roleCategory": "JUDICIAL",
+          "roleName": "senior-tribunal-caseworker",
+          "roleCategory": "LEGAL_OPERATIONS",
           "beginTime" : "2022-01-01T00:00:00Z",
           "attributes":
           {
-            "caseType": "Asylum",
-            "jurisdiction": "IA"
+            "primaryLocation": "445777"
           }
         }
       ]
@@ -44,7 +44,7 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "replaceExisting": false,
+          "replaceExisting": "${[scenarioContext][testData][request][body][roleRequest][replaceExisting]}",
           "process": "challenged-access"
         },
         "requestedRoles": [
@@ -54,12 +54,12 @@
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
-            "roleCategory": "JUDICIAL",
-            "roleName": "judge",
+            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
+            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "attributes":
             {
+              "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][primaryLocation]}",
               "jurisdiction": "IA",
-              "caseType": "Asylum",
               "substantive" : "Y"
             }
           }

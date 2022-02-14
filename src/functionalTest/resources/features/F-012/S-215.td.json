@@ -1,15 +1,15 @@
 {
-  "title": "must successfully create challenged-access Role Assignment",
-  "_guid_": "S-213",
+  "title": "must successfully create challenged-access-admin role",
+  "_guid_": "S-215",
   "_extends_": "F-012_Test_Data_Base",
   "specs": [
     "Befta1 - who is the actor for requested role",
-    "contains specific-access-legal-ops case requested role assignment"
+    "contains challenged-access-admin case requested role assignment"
   ],
   "users": {
     "invokingUser": {
-      "username": "TEST_AM_USER3_BEFTA@test.local",
-      "password": "[[$TEST_AM_USER3_BEFTA_PWD]]"
+      "username": "TEST_AM_USER6_BEFTA@test.local",
+      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
     }
   },
   "request": {
@@ -19,7 +19,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/challenged-access-legal-ops/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1607103938250138/challenged-access-admin/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "challenged-access",
         "replaceExisting" : true
       },
@@ -30,15 +30,13 @@
           "grantType" : "CHALLENGED",
           "classification" : "PUBLIC",
           "attributes": {
-            "caseId": "1607103938250138",
-            "requestedRole":"challenged-access-legal-ops",
-            "jurisdiction":"IA"
+            "caseId": "1607103938250138"
           },
-          "roleName": "challenged-access-legal-ops",
-          "roleCategory": "LEGAL_OPERATIONS",
+          "roleName": "challenged-access-admin",
+          "roleCategory": "ADMIN",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "endTime" : "2024-03-02T00:00Z",
-          "readOnly": true,
+          "endTime" : "2022-02-15T00:00Z",
+          "readOnly": false,
           "notes" : [{
             "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "time": "2022-01-01T00:00Z",
@@ -59,7 +57,7 @@
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
           "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "process" : "specific-access",
+          "process" : "${[scenarioContext][testData][request][body][roleRequest][process]}",
           "replaceExisting": true
         },
         "requestedRoles": [
@@ -72,9 +70,8 @@
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
             "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
             "classification" : "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
-            "readOnly": true,
+            "readOnly": "${[scenarioContext][testData][request][body][requestedRoles][0][readOnly]}",
             "attributes": {
-              "requestedRole":"challenged-access-legal-ops",
               "caseId": "1607103938250138",
               "jurisdiction" : "IA",
               "caseType" : "Asylum",
