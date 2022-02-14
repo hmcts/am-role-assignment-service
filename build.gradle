@@ -50,7 +50,7 @@ def versions = [
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
   feign_jackson  : '9.7.0',
-  drools         : '7.60.0.Final',
+  drools         : '7.65.0.Final',
   launchDarklySdk: '5.7.0',
   log4JVersion   : '2.17.1',
   logbackVersion : '1.2.10'
@@ -339,13 +339,14 @@ dependencies {
   implementation group: 'org.drools', name: 'drools-compiler', version: versions.drools
   implementation group: 'org.drools', name: 'drools-decisiontables', version: versions.drools
 
-  compile(group: 'org.kie', name: 'kie-ci', version: versions.drools) {
+  implementation(group: 'org.kie', name: 'kie-ci', version: versions.drools) {
     exclude group: 'org.jsoup', module: 'jsoup'
     exclude group: 'org.apache.ant', module: 'ant'
     exclude group: 'org.apache.ant', module: 'ant-launcher'
     exclude group: 'org.glassfish', module: 'jakarta.el'
     exclude group: 'jakarta.el', module: 'jakarta.el-api'
     exclude group: 'com.google.protobuf', module: 'protobuf-java'
+
   }
   //Dependent on drools Jar. Can be removed CVE-2021-26291
   implementation group: 'org.apache.maven', name: 'maven-core', version: '3.8.1'
@@ -507,7 +508,6 @@ configurations {
   runtime.exclude group: "org.glassfish", module: "jakarta.el"
   runtime.exclude group: "io.github.x-stream", module: "mxparser"
   runtime.exclude group: 'io.netty', module: 'netty-tcnative-classes'
-  runtime.exclude group: 'com.thoughtworks.xstream', module: 'xstream'
 }
 
 cucumberReports {
