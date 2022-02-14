@@ -166,3 +166,8 @@ dbFeature:
   flags:
     enable: ${DB_FEATURE_FLAG_ENABLE:}
     disable: ${DB_FEATURE_FLAG_DISABLE:}
+
+dbMigration:
+  # When true, the app will run DB migration on startup.
+  # Otherwise, it will just check if all migrations have been applied (and fail to start if not).
+  runOnStartup: ${RUN_DB_MIGRATION_ON_STARTUP:true}
