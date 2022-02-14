@@ -1,33 +1,34 @@
 {
-  "_guid_": "S-213_Org_Role_Creation",
-  "_extends_": "F-001_Test_Data_Base",
+  "_guid_": "S-215_Org_Role_Creation",
+  "_extends_": "F-012_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester",
     "Befta1 - who is the actor for requested role"
   ],
   "users": {
     "invokingUser": {
-      "username": "TEST_AM_USER3_BEFTA@test.local",
-      "password": "[[$TEST_AM_USER3_BEFTA_PWD]]"
+      "username": "TEST_AM_USER6_BEFTA@test.local",
+      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
     }
   },
   "request": {
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S_206_Org_Role_For_Multiple_Actors",
-        "process": "challenged-access"
+        "reference": "S_213_Org_Role_For_Multiple_Actors",
+        "process": "challenged-access",
+        "replaceExisting" : true
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "roleName": "judge",
-          "roleCategory": "LEGAL_OPERATIONS",
+          "roleName": "hearing-centre-admin",
+          "roleCategory": "ADMIN",
           "beginTime" : "2022-01-01T00:00:00Z",
           "attributes":
           {
-            "caseType": "Asylum",
+            "primaryLocation": "123321",
             "jurisdiction": "IA"
           }
         }
@@ -44,7 +45,7 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "replaceExisting": false,
+          "replaceExisting": "${[scenarioContext][testData][request][body][roleRequest][replaceExisting]}",
           "process": "challenged-access"
         },
         "requestedRoles": [
@@ -54,12 +55,12 @@
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
-            "roleCategory": "LEGAL_OPERATIONS",
-            "roleName": "judge",
+            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
+            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "attributes":
             {
-              "jurisdiction": "IA",
-              "caseType": "Asylum",
+              "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][primaryLocation]}",
+              "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "substantive" : "Y"
             }
           }

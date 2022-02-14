@@ -24,6 +24,8 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
                 return generateCaseId();
             case ("generateS2STokenForCcd"):
                 return new TokenUtils().generateServiceToken(buildCcdSpecificConfig());
+            case ("generateS2STokenForXui"):
+                return new TokenUtils().generateServiceToken(buildXuiSpecificConfig());
             default:
                 return super.calculateCustomValue(scenarioContext, key);
         }
@@ -39,6 +41,14 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
         UserTokenProviderConfig config = new UserTokenProviderConfig();
         config.setMicroService("ccd_data");
         config.setSecret(System.getenv("CCD_DATA_S2S_SECRET"));
+        config.setS2sUrl(EnvironmentVariableUtils.getRequiredVariable("IDAM_S2S_URL"));
+        return config;
+    }
+
+    private UserTokenProviderConfig buildXuiSpecificConfig() {
+        UserTokenProviderConfig config = new UserTokenProviderConfig();
+        config.setMicroService("xui_webapp");
+        config.setSecret(System.getenv("XUI_WEBAPP_S2S_SECRET"));
         config.setS2sUrl(EnvironmentVariableUtils.getRequiredVariable("IDAM_S2S_URL"));
         return config;
     }
