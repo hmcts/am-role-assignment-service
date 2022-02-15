@@ -30,6 +30,8 @@ class AuditInterceptorTest {
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
+    private MockHttpServletResponse responseNew;
+
 
     private AuditInterceptor interceptor;
     @Mock
@@ -48,7 +50,8 @@ class AuditInterceptorTest {
         request.addHeader(AuditInterceptor.REQUEST_ID, REQUEST_ID);
         response = new MockHttpServletResponse();
         response.setStatus(STATUS);
-
+        responseNew = new MockHttpServletResponse();
+        responseNew.setStatus(422);
 
         given(applicationParams.isAuditLogEnabled()).willReturn(true);
         given(applicationParams.getAuditLogIgnoreStatuses()).willReturn(Lists.newArrayList(404));
@@ -91,6 +94,23 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getRequestPayload()).isEmpty();
         assertThat(AuditContextHolder.getAuditContext()).isNull();
         assertThat(auditContextSpy.getResponseTime()).isLessThan(500L);
+        Mockito.verify(auditContextSpy, times(1)).setRequestPayload(any());
+        verify(auditService).audit(auditContextSpy);
+
+    }
+
+    @Test
+    void shouldPrepareAuditContextWithHttpSemanticsOnResponse422() {
+        AuditContext auditContext = new AuditContext();
+        AuditContext auditContextSpy = Mockito.spy(auditContext);
+        given(handler.hasMethodAnnotation(LogAudit.class)).willReturn(true);
+        AuditContextHolder.setAuditContext(auditContextSpy);
+        interceptor.afterCompletion(request, responseNew, handler, null);
+
+        assertThat(auditContextSpy.getHttpMethod()).isEqualTo(METHOD);
+        assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
+        assertThat(auditContextSpy.getHttpStatus()).isEqualTo(422);
+
         Mockito.verify(auditContextSpy, times(1)).setRequestPayload(any());
         verify(auditService).audit(auditContextSpy);
 
