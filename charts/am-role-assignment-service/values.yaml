@@ -3,6 +3,8 @@ java:
   ingressHost: am-role-assignment-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   applicationPort: 4096
   aadIdentityName: am
+  startupDelay: 30
+  startupFailureThreshold: 5
   keyVaults:
     am:
       secrets:
