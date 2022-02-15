@@ -23,7 +23,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 
 class AuditInterceptorTest {
 
-    private static final int STATUS = 422;
+    private static final int STATUS = 200;
     private static final String METHOD = "GET";
     private static final String REQUEST_URI = "/cases/1234";
     private static final String REQUEST_ID = "tes_request_id";
@@ -66,7 +66,7 @@ class AuditInterceptorTest {
 
         assertThat(auditContextSpy.getHttpMethod()).isEqualTo(METHOD);
         assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
-        assertThat(auditContextSpy.getHttpStatus()).isEqualTo(422);
+        assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
         assertThat(AuditContextHolder.getAuditContext()).isNull();
         assertThat(auditContextSpy.getResponseTime()).isGreaterThan(500L);
         assertThat(auditContextSpy.getRequestPayload()).isEmpty();
@@ -87,7 +87,7 @@ class AuditInterceptorTest {
         interceptor.afterCompletion(request, response, handler, null);
         assertThat(auditContextSpy.getHttpMethod()).isEqualTo(METHOD);
         assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
-        assertThat(auditContextSpy.getHttpStatus()).isEqualTo(422);
+        assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
         assertThat(auditContextSpy.getRequestPayload()).isEmpty();
         assertThat(AuditContextHolder.getAuditContext()).isNull();
         assertThat(auditContextSpy.getResponseTime()).isLessThan(500L);
