@@ -61,7 +61,7 @@ public class IdamRepository {
     }
 
     @Cacheable(value = "token")
-    @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 3))
+    @Retryable(backoff = @Backoff(delay = 500, multiplier = 2), exclude = {FeignException.BadRequest.class})
     public UserInfo getUserInfo(String jwtToken) {
         if (cacheType != null && !cacheType.equals("none")) {
             var caffeineCache = (CaffeineCache) cacheManager.getCache("token");
@@ -69,15 +69,7 @@ public class IdamRepository {
                 .getNativeCache();
             log.info("generating Bearer Token, current size of cache: {}", nativeCache.estimatedSize());
         }
-        try {
-            return idamApi.retrieveUserInfo(BEARER + jwtToken);
-        } catch (FeignException.Unauthorized feignUnauthorized) {
-            log.error("FeignException Unauthorized: retrieve user info ", feignUnauthorized);
-            throw new UnauthorizedException("User is not authorized");
-        } catch (FeignException.BadRequest feignBadRequest) {
-            log.error("FeignException Bad Request: retrieve user info ", feignBadRequest);
-            throw new BadRequestException("User is not valid");
-        }
+        return idamApi.retrieveUserInfo(BEARER + jwtToken);
 
     }
 
@@ -100,7 +92,7 @@ public class IdamRepository {
                 url,
                 GET,
                 new HttpEntity<>(getHttpHeaders(jwtToken)),
-                new ParameterizedTypeReference<List<Object>>() {
+                new ParameterizedTypeReference<>() {
                 }
             );
             if (HttpStatus.OK.equals(response.getStatusCode())) {
@@ -120,7 +112,7 @@ public class IdamRepository {
     }
 
     @Cacheable(value = "userToken")
-    @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 3))
+    @Retryable(backoff = @Backoff(delay = 2000, multiplier = 3))
     public String getManageUserToken(String userId) {
         if (cacheType != null && !cacheType.equals("none")) {
             var caffeineCache = (CaffeineCache) cacheManager.getCache("userToken");
