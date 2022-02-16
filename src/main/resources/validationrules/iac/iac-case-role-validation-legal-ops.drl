@@ -169,8 +169,14 @@ then
 end;
 
 /*
+ * The below rules are required for Challenged access
+ * It will be toggled on with IAC_CHALLENGED_1_0 DB flag.
+ */
+
+/*
  * IAC "challenged-access" case roles self creation user
  */
+
 rule "challenged_access_create_case_role_legal_ops"
 when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
@@ -186,7 +192,8 @@ when
              roleName == "challenged-access-legal-ops",
              roleCategory == RoleCategory.LEGAL_OPERATIONS,
              grantType == GrantType.CHALLENGED,
-             endTime != null && !endTime.isAfter(ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(1)),
+             endTime != null && !endTime.isAfter(ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(1))
+             && !endTime.isBefore(ZonedDateTime.now()), /* request cannot have past end time */
              notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(

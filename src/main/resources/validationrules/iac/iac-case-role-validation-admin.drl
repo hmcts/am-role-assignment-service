@@ -18,8 +18,8 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 /*
- * The below rules are required for Specific and Challenged access
- * It will be toggled on with new IAC_SPECIFIC_1_0 and IAC_CHALLENGED_1_0 DB flag.
+ * The below rules are required for Challenged access
+ * It will be toggled on with IAC_CHALLENGED_1_0 DB flag.
  */
 
 /*
@@ -40,7 +40,8 @@ when
              roleName == "challenged-access-admin",
              roleCategory == RoleCategory.ADMIN,
              grantType == GrantType.CHALLENGED,
-             endTime != null && !endTime.isAfter(ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(1)),
+             endTime != null && !endTime.isAfter(ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(1))
+             && !endTime.isBefore(ZonedDateTime.now()), /* request cannot have past end time */
              notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(

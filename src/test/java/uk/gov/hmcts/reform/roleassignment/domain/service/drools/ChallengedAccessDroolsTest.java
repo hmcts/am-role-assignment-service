@@ -13,10 +13,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
-import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
-
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
+
+import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 class ChallengedAccessDroolsTest extends DroolBase {
 
@@ -321,6 +322,60 @@ class ChallengedAccessDroolsTest extends DroolBase {
             "A"
         )
             .build();
+
+        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
+        existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
+        existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
+        existingAttributes.put("substantive", convertValueJsonNode("Y"));
+        executeDroolRules(List.of(TestDataBuilder
+                                      .buildExistingRoleForDrools(
+                                          TestDataBuilder.ACTORID,
+                                          "judge",
+                                          RoleCategory.valueOf(roleCategory),
+                                          existingAttributes,
+                                          Classification.PRIVATE,
+                                          GrantType.STANDARD,
+                                          RoleType.ORGANISATION
+                                      )));
+
+        assignmentRequest.getRequestedRoles()
+            .forEach(roleAssignment -> Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "challenged-access-judiciary,JUDICIAL",
+        "challenged-access-admin,ADMIN",
+        "challenged-access-legal-ops,LEGAL_OPERATIONS",
+    })
+    void shouldRejectAccessFor_ChallengedAccess_PastEndTime(String roleName, String roleCategory) {
+        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
+        roleAssignmentAttributes.put("caseType", convertValueJsonNode("notAsylum"));
+        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("IA"));
+
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
+            "challenged-access",
+            roleName,
+            RoleCategory.valueOf(roleCategory),
+            roleAssignmentAttributes,
+            Classification.PUBLIC,
+            GrantType.CHALLENGED,
+            Status.CREATE_REQUESTED,
+            "anyClient",
+            false,
+            "A"
+        )
+            .build();
+
+        //Update the assignment record to have past End time
+        assignmentRequest.getRequestedRoles().stream().findFirst()
+            .get().setEndTime(ZonedDateTime.now().minusHours(1L));
 
         FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
             .status(true).build();
