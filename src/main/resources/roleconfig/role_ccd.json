@@ -1874,5 +1874,149 @@
         }
       }
     ]
+  },
+  {
+    "name":  "[ADOPCASEWORKER]",
+    "label": "Adoption Case Worker",
+    "description": "Adoption Case Worker",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["ADOPTION"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["A58"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[ADOPCASEWORKERADMIN]",
+    "label": "Adoption Court Admin",
+    "description": "Adoption Court Admin",
+    "category": "ADMIN",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["ADOPTION"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["A58"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "caseworker-adoption-caseworker",
+    "label": "Adoption Case Worker - TestOnly",
+    "description": "Adoption Case Worker - TestOnly",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["ADOPTION"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["A58"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "caseworker-adoption-courtadmin",
+    "label": "Adoption Court Admin - TestOnly",
+    "description": "Adoption Court Admin - TestOnly",
+    "category": "ADMIN",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["ADOPTION"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["A58"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
