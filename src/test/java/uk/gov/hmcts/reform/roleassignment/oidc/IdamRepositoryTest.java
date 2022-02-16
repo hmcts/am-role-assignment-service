@@ -166,7 +166,7 @@ class IdamRepositoryTest {
         );
         when(idamApi.retrieveUserInfo(any())).thenThrow(FeignException.Unauthorized.class);
 
-        Assertions.assertThrows(UnauthorizedException.class, () ->
+        Assertions.assertThrows(FeignException.Unauthorized.class, () ->
             idamRepository.getUserInfo("Bearer invalid")
         );
     }
@@ -180,7 +180,7 @@ class IdamRepositoryTest {
         );
         when(idamApi.retrieveUserInfo(any())).thenThrow(FeignException.BadRequest.class);
 
-        Assertions.assertThrows(BadRequestException.class, () ->
+        Assertions.assertThrows(FeignException.BadRequest.class, () ->
             idamRepository.getUserInfo("Bearer invalid")
         );
     }
@@ -393,7 +393,7 @@ class IdamRepositoryTest {
         FeignException.Unauthorized unauthorized = mock(FeignException.Unauthorized.class);
         when(idamRepository.getUserInfo("invalid token")).thenThrow(unauthorized);
 
-        assertThrows(UnauthorizedException.class, () -> idamRepository.getUserInfo("invalid token"));
+        assertThrows(FeignException.Unauthorized.class, () -> idamRepository.getUserInfo("invalid token"));
     }
 
     @Test
