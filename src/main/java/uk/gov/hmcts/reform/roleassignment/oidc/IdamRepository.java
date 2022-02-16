@@ -12,8 +12,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
@@ -21,7 +19,6 @@ import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
 import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnauthorizedException;
 
 import java.util.List;
@@ -61,7 +58,6 @@ public class IdamRepository {
     }
 
     @Cacheable(value = "token")
-    @Retryable(backoff = @Backoff(delay = 500, multiplier = 2), exclude = {FeignException.BadRequest.class})
     public UserInfo getUserInfo(String jwtToken) {
         if (cacheType != null && !cacheType.equals("none")) {
             var caffeineCache = (CaffeineCache) cacheManager.getCache("token");
@@ -69,19 +65,20 @@ public class IdamRepository {
                 .getNativeCache();
             log.info("generating Bearer Token, current size of cache: {}", nativeCache.estimatedSize());
         }
-        return idamApi.retrieveUserInfo(BEARER + jwtToken);
-
+        try {
+            return idamApi.retrieveUserInfo(BEARER + jwtToken);
+        } catch (FeignException feignException) {
+            log.error("FeignException Unauthorized: retrieve user info ", feignException);
+            throw new UnauthorizedException("User is not authorized", feignException);
+        }
     }
 
     public UserDetails getUserByUserId(String jwtToken, String userId) {
         try {
             return idamApi.getUserByUserId(BEARER + jwtToken, userId);
-        } catch (FeignException.Unauthorized feignUnauthorized) {
+        } catch (FeignException feignUnauthorized) {
             log.error("FeignException Unauthorized: retrieve user info ", feignUnauthorized);
-            throw new UnauthorizedException("User is not authorized");
-        } catch (FeignException.BadRequest feignBadRequest) {
-            log.error("FeignException Bad Request: retrieve user info ", feignBadRequest);
-            throw new BadRequestException("User is not valid");
+            throw new UnauthorizedException("User is not authorized", feignUnauthorized);
         }
     }
 
@@ -112,7 +109,6 @@ public class IdamRepository {
     }
 
     @Cacheable(value = "userToken")
-    @Retryable(backoff = @Backoff(delay = 2000, multiplier = 3))
     public String getManageUserToken(String userId) {
         if (cacheType != null && !cacheType.equals("none")) {
             var caffeineCache = (CaffeineCache) cacheManager.getCache("userToken");

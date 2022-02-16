@@ -24,14 +24,9 @@ import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
 import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
-import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnauthorizedException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -66,7 +61,7 @@ class IdamRepositoryTest {
     private CacheManager cacheManager = mock(CacheManager.class);
 
 
-    private RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
+    private final RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 
     IdamRepository idamRepository;
 
@@ -166,7 +161,7 @@ class IdamRepositoryTest {
         );
         when(idamApi.retrieveUserInfo(any())).thenThrow(FeignException.Unauthorized.class);
 
-        Assertions.assertThrows(FeignException.Unauthorized.class, () ->
+        Assertions.assertThrows(UnauthorizedException.class, () ->
             idamRepository.getUserInfo("Bearer invalid")
         );
     }
@@ -180,7 +175,7 @@ class IdamRepositoryTest {
         );
         when(idamApi.retrieveUserInfo(any())).thenThrow(FeignException.BadRequest.class);
 
-        Assertions.assertThrows(FeignException.BadRequest.class, () ->
+        Assertions.assertThrows(UnauthorizedException.class, () ->
             idamRepository.getUserInfo("Bearer invalid")
         );
     }
@@ -324,14 +319,6 @@ class IdamRepositoryTest {
     @Test
     void shouldReturnUserRoles() {
 
-
-        Map<String, Object> mapRoles = new HashMap<>();
-
-        mapRoles.put("userRoles", Arrays.asList("caseworker", "am_import"));
-
-        List<Object> list = new ArrayList<>();
-        list.add(mapRoles);
-
         ResponseEntity<List<Object>> responseEntity = new ResponseEntity<>(HttpStatus.OK);
         doReturn(responseEntity)
             .when(restTemplate)
@@ -353,14 +340,6 @@ class IdamRepositoryTest {
 
     @Test
     void shouldReturnUserRolesAsNull() {
-
-
-        Map<String, Object> mapRoles = new HashMap<>();
-
-        mapRoles.put("userRoles", Arrays.asList("caseworker", "am_import"));
-
-        List<Object> list = new ArrayList<>();
-        list.add(mapRoles);
 
         ResponseEntity<List<Object>> responseEntity = new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         doReturn(responseEntity)
@@ -393,7 +372,7 @@ class IdamRepositoryTest {
         FeignException.Unauthorized unauthorized = mock(FeignException.Unauthorized.class);
         when(idamRepository.getUserInfo("invalid token")).thenThrow(unauthorized);
 
-        assertThrows(FeignException.Unauthorized.class, () -> idamRepository.getUserInfo("invalid token"));
+        assertThrows(UnauthorizedException.class, () -> idamRepository.getUserInfo("invalid token"));
     }
 
     @Test
@@ -413,7 +392,7 @@ class IdamRepositoryTest {
         when(idamApi.getUserByUserId(any(), any())).thenThrow(badRequest);
 
         assertThrows(
-            BadRequestException.class,
+            UnauthorizedException.class,
             () -> idamRepository.getUserByUserId("token", "@@@££££")
         );
     }
