@@ -4,9 +4,11 @@ import feign.FeignException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnauthorizedException;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.servlet.FilterChain;
@@ -51,6 +53,10 @@ public class SecurityEndpointFilter extends OncePerRequestFilter {
                 FeignException.FeignClientException feignClientException =
                     (FeignException.FeignClientException) throwable;
                 response.setStatus(feignClientException.status());
+                return;
+            } else if (e instanceof UnauthorizedException) {
+                logger.error("Authorisation exception", e);
+                response.sendError(HttpStatus.FORBIDDEN.value(), "Access Denied");
                 return;
             }
             throw e;
