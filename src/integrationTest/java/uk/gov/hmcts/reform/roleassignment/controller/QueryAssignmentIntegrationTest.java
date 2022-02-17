@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
@@ -30,7 +31,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.versions.V2;
 
@@ -68,7 +68,7 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
     private WebApplicationContext wac;
 
     @MockBean
-    private IdamRepository idamRepository;
+    private IdamApi idamApi;
 
     @Mock
     private Authentication authentication;
@@ -84,7 +84,7 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
             .uid("6b36bfc6-bb21-11ea-b3de-0242ac130006")
             .sub("emailId@a.com")
             .build();
-        doReturn(userInfo).when(idamRepository).getUserInfo(anyString());
+        doReturn(userInfo).when(idamApi).retrieveUserInfo(anyString());
         doReturn(authentication).when(securityContext).getAuthentication();
         SecurityContextHolder.setContext(securityContext);
         MockUtils.setSecurityAuthorities(authentication, MockUtils.ROLE_CASEWORKER);
