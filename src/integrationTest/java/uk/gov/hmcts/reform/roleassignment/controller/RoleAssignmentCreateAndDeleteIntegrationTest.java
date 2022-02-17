@@ -20,6 +20,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
@@ -31,7 +32,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
-import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.inject.Inject;
@@ -80,7 +80,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     private WebApplicationContext wac;
 
     @MockBean
-    private IdamRepository idamRepository;
+    private IdamApi idamApi;
 
     @Autowired
     private DataSource ds;
@@ -120,7 +120,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             .uid("6b36bfc6-bb21-11ea-b3de-0242ac130006")
             .sub("emailId@a.com")
             .build();
-        doReturn(userInfo).when(idamRepository).getUserInfo(anyString());
+        doReturn(userInfo).when(idamApi).retrieveUserInfo(anyString());
         Case retrievedCase = Case.builder().id("1234567890123456")
             .caseTypeId("Asylum")
             .jurisdiction("IA")
