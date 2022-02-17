@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequest
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ForbiddenException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnauthorizedException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -68,6 +69,14 @@ class RoleAssignmentControllerAdviceTest {
         ResponseEntity<Object> responseEntity = csda.customValidationFeignUnauthorizedError(unauthorizedException);
         assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
         assertEquals(HttpStatus.UNAUTHORIZED.value(), responseEntity.getStatusCodeValue());
+    }
+
+    @Test
+    void customValidationUnauthorizedError() {
+        UnauthorizedException unauthorizedException = mock(UnauthorizedException.class);
+        ResponseEntity<Object> responseEntity = csda.customValidationUnauthorizedError(unauthorizedException);
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.FORBIDDEN.value(), responseEntity.getStatusCodeValue());
     }
 
     @Test
