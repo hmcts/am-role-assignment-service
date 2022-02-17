@@ -63,8 +63,7 @@ public class SecurityUtils {
     }
 
     public String getUserId() {
-        UserInfo userInfo = getUserInfo();
-        return userInfo == null ? null : userInfo.getUid();
+        return getUserInfo().getUid();
     }
 
     public String getUserToken() {
