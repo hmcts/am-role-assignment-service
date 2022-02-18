@@ -7,6 +7,7 @@ import uk.gov.hmcts.reform.roleassignment.befta.utils.TokenUtils;
 import uk.gov.hmcts.reform.roleassignment.befta.utils.UserTokenProviderConfig;
 import uk.gov.hmcts.reform.roleassignment.util.EnvironmentVariableUtils;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -26,6 +27,10 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
                 return new TokenUtils().generateServiceToken(buildCcdSpecificConfig());
             case ("generateS2STokenForXui"):
                 return new TokenUtils().generateServiceToken(buildXuiSpecificConfig());
+            case ("tomorrow"):
+                return LocalDate.now().plusDays(1);
+            case ("today"):
+                return LocalDate.now();
             default:
                 return super.calculateCustomValue(scenarioContext, key);
         }
