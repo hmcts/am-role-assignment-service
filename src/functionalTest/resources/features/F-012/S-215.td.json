@@ -35,7 +35,8 @@
           "roleName": "challenged-access-admin",
           "roleCategory": "ADMIN",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "endTime" : "2022-02-15T00:00Z",
+          "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
+          "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
           "readOnly": false,
           "notes" : [{
             "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
