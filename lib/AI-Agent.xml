@@ -24,5 +24,17 @@
       <Method name="retrieveRoleAssignmentsByMultipleQueryRequest"/>
       <Method name="getAssignmentById"/>
     </Class>
+    <Class name="uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService">
+      <Method name="runRulesOnAllRequestedAssignments"/>
+      <Method name="getExistingRoleAssignmentsForRequest"/>
+    </Class>
+    <Class name="uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService">
+      <Method name="getCaseById"/>
+      <Method name="getExistingRoleAssignmentsForRequest"/>
+    </Class>
+    <Class name="uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentService">
+      <Method name="checkAllDeleteApproved"/>
+      <Method name="hasAssignmentsUpdated"/>
+    </Class>
   </Instrumentation>
 </ApplicationInsightsAgent>
