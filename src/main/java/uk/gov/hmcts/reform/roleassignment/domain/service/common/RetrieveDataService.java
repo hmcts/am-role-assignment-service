@@ -35,7 +35,7 @@ public class RetrieveDataService {
     }
 
     @Cacheable(value = "caseId")
-    @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 3))
+    @Retryable(backoff = @Backoff(delay = 500, multiplier = 3))
     public Case getCaseById(String caseId) {
         if (Objects.nonNull(cacheType) && !cacheType.equals("none")) {
             var caffeineCache = (CaffeineCache) cacheManager.getCache("caseId");
