@@ -3,8 +3,26 @@
   <AgentLogger>INFO</AgentLogger>
   <Instrumentation>
     <BuiltIn enabled="true">
+      <Logging threshold="info"/>
       <HTTP enabled="true"/>
       <JDBC enabled="true"/>
+      <!-- Set SQL query duration above which query plan is reported. Default is 10000 ms. -->
+      <MaxStatementQueryLimitInMS>100</MaxStatementQueryLimitInMS>
     </BuiltIn>
+    <Class name="uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService">
+      <Method name="persistRequest"/>
+      <Method name="updateRequest"/>
+      <Method name="persistHistoryEntities"/>
+      <Method name="persistRoleAssignments"/>
+      <Method name="persistActorCache"/>
+      <Method name="getActorCacheEntity"/>
+      <Method name="getAssignmentsByProcess"/>
+      <Method name="deleteRoleAssignment"/>
+      <Method name="deleteRoleAssignmentByActorId"/>
+      <Method name="getAssignmentsByActor"/>
+      <Method name="retrieveRoleAssignmentsByQueryRequest"/>
+      <Method name="retrieveRoleAssignmentsByMultipleQueryRequest"/>
+      <Method name="getAssignmentById"/>
+    </Class>
   </Instrumentation>
 </ApplicationInsightsAgent>
