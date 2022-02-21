@@ -174,7 +174,7 @@ end;
  */
 
 /*
- * IAC "challenged-access" case roles self creation user
+ * IAC "challenged-access" case roles self creation user - general
  */
 
 rule "challenged_access_create_case_role_legal_ops"
@@ -226,4 +226,59 @@ then
     $ra.log("Stage 1 approved : challenged_access_create_case_role_legal_ops");
     update($ra);
     logMsg("Rule : challenged_access_create_case_role_legal_ops");
+end;
+
+/*
+ * IAC "challenged-access" case roles self creation user - tribunal-caseworker
+ */
+
+rule "challenged_access_create_case_role_legal_ops_tcw"
+when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
+    $rq: Request(
+             // The assigner must be the current user.
+             assignerId == authenticatedUserId,
+             process == "challenged-access",
+             reference != null)
+    $ra: RoleAssignment(
+             actorId == $rq.authenticatedUserId,
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName == "challenged-access-legal-ops",
+             roleCategory == RoleCategory.LEGAL_OPERATIONS,
+             grantType == GrantType.CHALLENGED,
+             endTime != null && !endTime.isAfter(ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(1))
+             && !endTime.isBefore(ZonedDateTime.now()), /* request cannot have past end time */
+             notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
+             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
+    $c:  Case(
+             id == $caseId)
+    Request(reference == $caseId + "/" + $ra.roleName + "/" + $ra.actorId)
+    $e: ExistingRoleAssignment(
+             actorId == $ra.actorId,
+             roleName == "tribunal-caseworker",
+             roleType == RoleType.ORGANISATION,
+             roleCategory == $ra.roleCategory,
+             grantType == GrantType.STANDARD,
+             classification.isAtLeast($c.securityClassification),
+             endTime == null || endTime.isAfter(ZonedDateTime.now()),
+             beginTime == null || !beginTime.isAfter(ZonedDateTime.now()),
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == $c.jurisdiction,
+             attributes["caseType"] == null || attributes["caseType"].asText() == $c.caseTypeId,
+             attributes["region"] == null || attributes["region"].asText() != $c.region,
+             attributes["baseLocation"] == null || attributes["baseLocation"].asText() != $c.baseLocation)
+then
+    // The classification of $e has already been checked, so access to the case is OK.
+    // We set $ra.classification to match the case - if the case is further restricted,
+    // then the user will need to request challenged access again, if they still can.
+    $ra.setClassification($c.getSecurityClassification());
+    // We copy the authorisations to allow the case config to require an authorisation
+    // for (particularly judicial) role mappings
+    $ra.setAuthorisations($e.getAuthorisations());
+    $ra.setAttribute("caseType", $c.getCaseTypeId());
+    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : challenged_access_create_case_role_legal_ops_tcw");
+    update($ra);
+    logMsg("Rule : challenged_access_create_case_role_legal_ops_tcw");
 end;
