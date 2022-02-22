@@ -2018,5 +2018,149 @@
         }
       }
     ]
+  },
+  {
+    "name":  "[APPLICANTSOLICITORONESPEC]",
+    "label": "Applicant Solicitor 1 spec",
+    "description": "Applicant Solicitor 1 spec",
+    "category": "PROFESSIONAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["CIVIL"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[APPLICANTSOLICITORTWOSPEC]",
+    "label": "Applicant Solicitor 2 spec",
+    "description": "Applicant Solicitor 2 spec",
+    "category": "PROFESSIONAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["CIVIL"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[RESPONDENTSOLICITORONESPEC]",
+    "label": "Respondent Solicitor 1 spec",
+    "description": "Respondent Solicitor 1 spec",
+    "category": "PROFESSIONAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["CIVIL"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[RESPONDENTSOLICITORTWOSPEC]",
+    "label": "Respondent Solicitor 2 spec",
+    "description": "Respondent Solicitor 2 spec",
+    "category": "PROFESSIONAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["CIVIL"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
