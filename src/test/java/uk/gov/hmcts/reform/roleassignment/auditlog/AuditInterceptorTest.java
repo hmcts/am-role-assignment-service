@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.roleassignment.ApplicationParams;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContext;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContextHolder;
 
+import static org.junit.Assert.assertFalse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -93,6 +94,7 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
         assertThat(AuditContextHolder.getAuditContext()).isNull();
+        assertNotNull(auditContextSpy.getResponseTime());
         assertThat(auditContextSpy.getResponseTime()).isGreaterThan(500L);
         assertThat(auditContextSpy.getRequestPayload()).isEmpty();
         verify(auditContextSpy, times(1)).setRequestPayload(any());
@@ -107,7 +109,6 @@ class AuditInterceptorTest {
 
         auditContextSpy = spy(auditContext);
         given(handler.hasMethodAnnotation(LogAudit.class)).willReturn(true);
-        assertThat(handler).isInstanceOf(HandlerMethod.class);
         AuditContextHolder.setAuditContext(auditContextSpy);
         interceptor.afterCompletion(request, response, handler, null);
         assertNotNull(auditContext);
@@ -115,8 +116,10 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
         assertThat(auditContextSpy.getRequestPayload()).isEmpty();
+        assertThat(auditContextSpy.getResponseTime()).isNotNull();
         assertThat(AuditContextHolder.getAuditContext()).isNull();
         assertThat(auditContextSpy.getResponseTime()).isLessThan(500L);
+        assertThat(auditContextSpy.getResponseTime()).isGreaterThan(1L);
         verify(auditContextSpy, times(1)).setRequestPayload(any());
         verify(auditService).audit(auditContextSpy);
 
@@ -135,7 +138,9 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getHttpMethod()).isEqualTo(METHOD);
         assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(422);
-
+        assertFalse(auditContextSpy.getHttpStatus() != 422);
+        assertThat(auditContextSpy.getHttpStatus()).isNotNull();
+        assertNotNull(auditContextSpy.getHttpStatus());
         verify(auditContextSpy, times(1)).setRequestPayload(any());
         verify(auditService).audit(auditContextSpy);
 
