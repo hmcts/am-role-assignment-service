@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 import uk.gov.hmcts.reform.roleassignment.ApplicationParams;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContext;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContextHolder;
@@ -14,7 +14,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AuditInterceptor extends HandlerInterceptorAdapter {
+public class AuditInterceptor implements HandlerInterceptor {
 
     private static final Logger LOG = LoggerFactory.getLogger(AuditInterceptor.class);
 
