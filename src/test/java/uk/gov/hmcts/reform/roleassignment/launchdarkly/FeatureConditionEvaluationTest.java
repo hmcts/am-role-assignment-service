@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FeatureConditionEvaluationTest {
+class FeatureConditionEvaluationTest {
 
     FeatureToggleService featureToggleService = mock(FeatureToggleService.class);
 
@@ -41,15 +41,15 @@ public class FeatureConditionEvaluationTest {
         securityUtils
     );
 
-    @Before
-    public void initializeMocks() {
+    @BeforeEach
+    void initializeMocks() {
         MockitoAnnotations.openMocks(this);
         launchDarklyMap = new HashMap<>();
         launchDarklyMap.put("/am/role-assignments/ld/endpoint", "get-ld-flag");
     }
 
     @Test
-    public void getPositiveResponseForFlag() throws Exception {
+    void getPositiveResponseForFlag() throws Exception {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint");
         when(request.getMethod()).thenReturn("GET");
         when(featureToggleService.getLaunchDarklyFlag(any())).thenReturn("get-ld-flag");
@@ -59,7 +59,7 @@ public class FeatureConditionEvaluationTest {
     }
 
     @Test
-    public void getNegativeResponseForFlag() {
+    void getNegativeResponseForFlag() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint");
         when(featureToggleService.isValidFlag(any())).thenReturn(true);
         when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(false);
@@ -69,7 +69,7 @@ public class FeatureConditionEvaluationTest {
     }
 
     @Test
-    public void expectExceptionForNonRegisteredURI() {
+    void expectExceptionForNonRegisteredURI() {
         when(request.getRequestURI()).thenReturn("");
         Assertions.assertThrows(ForbiddenException.class, () ->
             featureConditionEvaluation.preHandle(request, response, object)
@@ -77,7 +77,7 @@ public class FeatureConditionEvaluationTest {
     }
 
     @Test
-    public void expectExceptionForInvalidFlagName() {
+    void expectExceptionForInvalidFlagName() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint");
         when(request.getMethod()).thenReturn("GET");
         when(featureToggleService.getLaunchDarklyFlag(any())).thenReturn("get-ld-flag");
@@ -88,7 +88,7 @@ public class FeatureConditionEvaluationTest {
     }
 
     @Test
-    public void expectExceptionForFlagDiable() {
+    void expectExceptionForFlagDiable() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/ld/endpoint");
         when(request.getMethod()).thenReturn("GET");
         when(featureToggleService.getLaunchDarklyFlag(any())).thenReturn("get-ld-flag");

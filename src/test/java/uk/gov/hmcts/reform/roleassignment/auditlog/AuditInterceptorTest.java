@@ -4,6 +4,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+
 import static org.mockito.Mockito.spy;
 
 import org.mockito.ArgumentCaptor;
@@ -138,9 +139,6 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getHttpMethod()).isEqualTo(METHOD);
         assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(422);
-        assertFalse(auditContextSpy.getHttpStatus() != 422);
-        assertThat(auditContextSpy.getHttpStatus()).isNotNull();
-        assertNotNull(auditContextSpy.getHttpStatus());
         verify(auditContextSpy, times(1)).setRequestPayload(any());
         verify(auditService).audit(auditContextSpy);
 
