@@ -1790,11 +1790,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["DIVORCE"]
+            "values": ["DIVORCE","PRIVATELAW"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["NFD"]
+            "values": ["NFD","PRLAPPS"]
           },
           "caseId": {
             "mandatory": true
