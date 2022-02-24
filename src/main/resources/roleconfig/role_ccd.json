@@ -1876,10 +1876,10 @@
     ]
   },
   {
-    "name":  "[ADOPCASEWORKER]",
-    "label": "Adoption Case Worker",
-    "description": "Adoption Case Worker",
-    "category": "LEGAL_OPERATIONS",
+    "name":  "[APPLICANTSOLICITORONESPEC]",
+    "label": "Applicant Solicitor 1 spec",
+    "description": "Applicant Solicitor 1 spec",
+    "category": "PROFESSIONAL",
     "substantive": true,
     "patterns": [
       {
@@ -1898,11 +1898,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["ADOPTION"]
+            "values": ["CIVIL"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["A58"]
+            "values": ["CIVIL"]
           },
           "caseId": {
             "mandatory": true
@@ -1912,10 +1912,10 @@
     ]
   },
   {
-    "name":  "[ADOPCASEWORKERADMIN]",
-    "label": "Adoption Court Admin",
-    "description": "Adoption Court Admin",
-    "category": "ADMIN",
+    "name":  "[APPLICANTSOLICITORTWOSPEC]",
+    "label": "Applicant Solicitor 2 spec",
+    "description": "Applicant Solicitor 2 spec",
+    "category": "PROFESSIONAL",
     "substantive": true,
     "patterns": [
       {
@@ -1934,11 +1934,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["ADOPTION"]
+            "values": ["CIVIL"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["A58"]
+            "values": ["CIVIL"]
           },
           "caseId": {
             "mandatory": true
@@ -1948,10 +1948,10 @@
     ]
   },
   {
-    "name":  "caseworker-adoption-caseworker",
-    "label": "Adoption Case Worker - TestOnly",
-    "description": "Adoption Case Worker - TestOnly",
-    "category": "LEGAL_OPERATIONS",
+    "name":  "[RESPONDENTSOLICITORONESPEC]",
+    "label": "Respondent Solicitor 1 spec",
+    "description": "Respondent Solicitor 1 spec",
+    "category": "PROFESSIONAL",
     "substantive": true,
     "patterns": [
       {
@@ -1970,11 +1970,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["ADOPTION"]
+            "values": ["CIVIL"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["A58"]
+            "values": ["CIVIL"]
           },
           "caseId": {
             "mandatory": true
@@ -1984,10 +1984,10 @@
     ]
   },
   {
-    "name":  "caseworker-adoption-courtadmin",
-    "label": "Adoption Court Admin - TestOnly",
-    "description": "Adoption Court Admin - TestOnly",
-    "category": "ADMIN",
+    "name":  "[RESPONDENTSOLICITORTWOSPEC]",
+    "label": "Respondent Solicitor 2 spec",
+    "description": "Respondent Solicitor 2 spec",
+    "category": "PROFESSIONAL",
     "substantive": true,
     "patterns": [
       {
@@ -2006,11 +2006,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["ADOPTION"]
+            "values": ["CIVIL"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["A58"]
+            "values": ["CIVIL"]
           },
           "caseId": {
             "mandatory": true
