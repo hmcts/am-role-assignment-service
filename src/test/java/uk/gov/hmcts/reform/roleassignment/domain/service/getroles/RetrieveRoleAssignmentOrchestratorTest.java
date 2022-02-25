@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
@@ -29,6 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -86,6 +89,16 @@ class RetrieveRoleAssignmentOrchestratorTest {
             sut.getAssignmentsByActor(actorId)
         );
     }
+
+    @Test
+    void getRoleAssignment_shouldThrowUnprocessableException() {
+        doThrow(UnprocessableEntityException.class).when(persistenceService).getAssignmentsByActor(anyString());
+        String actorId = "123e4567-e89b-42d3-a456-556642445678";
+        Assertions.assertThrows(UnprocessableEntityException.class, () ->
+            sut.getAssignmentsByActor(actorId)
+        );
+    }
+
 
     @Test
     void getRoleAssignment_shouldThrowBadRequestWhenActorIsNotValid() throws Exception {
