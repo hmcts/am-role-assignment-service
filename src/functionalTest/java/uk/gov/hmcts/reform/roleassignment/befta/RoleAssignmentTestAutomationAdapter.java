@@ -7,6 +7,7 @@ import uk.gov.hmcts.reform.roleassignment.befta.utils.TokenUtils;
 import uk.gov.hmcts.reform.roleassignment.befta.utils.UserTokenProviderConfig;
 import uk.gov.hmcts.reform.roleassignment.util.EnvironmentVariableUtils;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,6 +25,12 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
                 return generateCaseId();
             case ("generateS2STokenForCcd"):
                 return new TokenUtils().generateServiceToken(buildCcdSpecificConfig());
+            case ("generateS2STokenForXui"):
+                return new TokenUtils().generateServiceToken(buildXuiSpecificConfig());
+            case ("tomorrow"):
+                return LocalDate.now().plusDays(1);
+            case ("today"):
+                return LocalDate.now();
             default:
                 return super.calculateCustomValue(scenarioContext, key);
         }
@@ -39,6 +46,14 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
         UserTokenProviderConfig config = new UserTokenProviderConfig();
         config.setMicroService("ccd_data");
         config.setSecret(System.getenv("CCD_DATA_S2S_SECRET"));
+        config.setS2sUrl(EnvironmentVariableUtils.getRequiredVariable("IDAM_S2S_URL"));
+        return config;
+    }
+
+    private UserTokenProviderConfig buildXuiSpecificConfig() {
+        UserTokenProviderConfig config = new UserTokenProviderConfig();
+        config.setMicroService("xui_webapp");
+        config.setSecret(System.getenv("XUI_WEBAPP_S2S_SECRET"));
         config.setS2sUrl(EnvironmentVariableUtils.getRequiredVariable("IDAM_S2S_URL"));
         return config;
     }
