@@ -341,7 +341,7 @@ dependencies {
   compile(group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot)
   compile(group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot)
 
-  implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.6.1'
+  implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.6.2'
   implementation 'com.github.hmcts:properties-volume-spring-boot-starter:0.1.1'
   implementation group: 'org.springframework', name: 'spring-core', version: '5.3.15'
 
