@@ -39,6 +39,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
@@ -100,12 +101,14 @@ class PersistenceServiceTest {
     @Mock
     private FlagConfigRepository flagConfigRepository;
 
+    @Mock
+    FeatureToggleService featureToggleService;
 
     @InjectMocks
     private final PersistenceService sut = new PersistenceService(
         historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository,
         databseChangelogLockRepository,
-        flagConfigRepository
+        flagConfigRepository, featureToggleService
     );
 
 

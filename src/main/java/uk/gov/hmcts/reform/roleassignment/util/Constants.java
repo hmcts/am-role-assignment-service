@@ -41,6 +41,6 @@ public final class Constants {
     public static final String NO_RECORDS = "No Records found for deletion";
     public static final String PROCESS = "CCD";
     public static final String REFERENCE = "DeleteByQueryRequest";
-
-
+    public static final String SERVICE_NAME = "am_role_assignment_service";
+    public static final String DISABLE_ACTOR_CACHE_FLAG = "ras-disable-actor-cache-flag";
 }

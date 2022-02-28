@@ -74,7 +74,8 @@ public class GetAssignmentController {
         var responseHeaders = new HttpHeaders();
         RoleAssignmentResource body = responseEntity.getBody();
 
-        if (body != null && CollectionUtils.isNotEmpty(body.getRoleAssignmentResponse())) {
+        if (retrieveRoleAssignmentService.isActorCacheFlagEnabled()
+            && body != null && CollectionUtils.isNotEmpty(body.getRoleAssignmentResponse())) {
             long etag = retrieveRoleAssignmentService.retrieveETag(actorId);
             String weakEtag = "W/\"" + etag + "\"";
             responseHeaders.setETag(weakEtag);

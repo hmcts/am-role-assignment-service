@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,12 +48,16 @@ class RetrieveRoleAssignmentOrchestratorTest {
     @Mock
     private PrepareResponseService prepareResponseService = mock(PrepareResponseService.class);
 
+    @Mock
+    private FeatureToggleService featureToggleService = mock(FeatureToggleService.class);
+
     private static final String ROLE_TYPE = "CASE";
 
     @InjectMocks
     private RetrieveRoleAssignmentOrchestrator sut = new RetrieveRoleAssignmentOrchestrator(
         persistenceService,
-        prepareResponseService
+        prepareResponseService,
+        featureToggleService
     );
 
     @BeforeEach

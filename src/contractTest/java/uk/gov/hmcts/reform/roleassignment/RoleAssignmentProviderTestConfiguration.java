@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleA
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreApi;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
@@ -27,6 +28,9 @@ public class RoleAssignmentProviderTestConfiguration {
 
     @MockBean
     private PersistenceService persistenceService;
+
+    @MockBean
+    private FeatureToggleService featureToggleService;
 
     @Bean
     @Primary
@@ -86,7 +90,8 @@ public class RoleAssignmentProviderTestConfiguration {
     @Bean
     @Primary
     public RetrieveRoleAssignmentOrchestrator getListOfRoles() {
-        return new RetrieveRoleAssignmentOrchestrator(persistenceService, getPrepareResponseService());
+        return new RetrieveRoleAssignmentOrchestrator(persistenceService, getPrepareResponseService(),
+                                                      featureToggleService);
     }
 
     @Bean
