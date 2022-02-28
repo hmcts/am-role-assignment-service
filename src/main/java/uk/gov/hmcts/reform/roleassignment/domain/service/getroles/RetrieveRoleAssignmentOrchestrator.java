@@ -10,11 +10,15 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
 import java.util.List;
+
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_NAME;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.DISABLE_ACTOR_CACHE_FLAG;
 
 @Service
 @RequestScope
@@ -22,11 +26,14 @@ public class RetrieveRoleAssignmentOrchestrator {
 
     private PersistenceService persistenceService;
     private PrepareResponseService prepareResponseService;
+    private FeatureToggleService featureToggleService;
 
     public RetrieveRoleAssignmentOrchestrator(@Autowired PersistenceService persistenceService,
-                                              @Autowired PrepareResponseService prepareResponseService) {
+                                              @Autowired PrepareResponseService prepareResponseService,
+                                              @Autowired FeatureToggleService featureToggleService) {
         this.persistenceService = persistenceService;
         this.prepareResponseService = prepareResponseService;
+        this.featureToggleService = featureToggleService;
     }
 
     //1. call parse request service
@@ -57,4 +64,9 @@ public class RetrieveRoleAssignmentOrchestrator {
         var entity = persistenceService.getActorCacheEntity(actorId);
         return entity.getEtag();
     }
+
+    public boolean isActorCacheFlagEnabled() {
+        return !featureToggleService.isFlagEnabled(SERVICE_NAME, DISABLE_ACTOR_CACHE_FLAG);
+    }
+
 }
