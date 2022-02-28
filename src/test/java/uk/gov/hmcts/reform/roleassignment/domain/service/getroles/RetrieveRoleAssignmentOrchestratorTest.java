@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -148,5 +149,17 @@ class RetrieveRoleAssignmentOrchestratorTest {
         List<RoleConfigRole> roles = sut.getListOfRoles();
         assertNotNull(roles);
         assertTrue(roles.size() > 2);
+    }
+
+    @Test
+    void actorCacheFlagEnabled() {
+        when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(true);
+        assertFalse(sut.isActorCacheFlagEnabled());
+    }
+
+    @Test
+    void actorCacheFlagDisabled() {
+        when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(false);
+        assertTrue(sut.isActorCacheFlagEnabled());
     }
 }

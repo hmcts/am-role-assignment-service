@@ -87,4 +87,20 @@ class GetAssignmentControllerTest {
         assertEquals(expectedResponse.getBody(), response.getBody());
         assertNotNull(response.getHeaders().getETag());
     }
+
+    @Test
+    void shouldGetRoleAssignmentResourceWithRoleAssignment_actorCacheDisable() throws Exception {
+        String actorId = "123e4567-e89b-42d3-a456-556642445678";
+        ResponseEntity<RoleAssignmentResource> expectedResponse = TestDataBuilder
+            .buildResourceRoleAssignmentResponse(Status.LIVE);
+        doReturn(false).when(retrieveRoleAssignmentServiceMock).isActorCacheFlagEnabled();
+        doReturn(expectedResponse).when(retrieveRoleAssignmentServiceMock).getAssignmentsByActor(actorId);
+        long etag = 1;
+        doReturn(etag).when(retrieveRoleAssignmentServiceMock).retrieveETag(actorId);
+        ResponseEntity<RoleAssignmentResource> response = sut.retrieveRoleAssignmentsByActorId("", "", actorId);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResponse.getBody(), response.getBody());
+        assertNull(response.getHeaders().getETag());
+    }
 }

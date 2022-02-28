@@ -108,7 +108,7 @@ class PersistenceServiceTest {
     private final PersistenceService sut = new PersistenceService(
         historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository,
         databseChangelogLockRepository,
-        flagConfigRepository, featureToggleService
+        flagConfigRepository
     );
 
 
@@ -195,6 +195,18 @@ class PersistenceServiceTest {
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
         verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
         verify(entityManager, times(1)).flush();
+    }
+
+    @Test
+    void skipPersistActorCache_disableCacheFalse() throws IOException, SQLException {
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(LIVE);
+        when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(true);
+
+        sut.persistActorCache(List.of(roleAssignment));
+
+        verify(persistenceUtil, times(0)).convertActorCacheToEntity(any());
+        verify(actorCacheRepository, times(0)).findByActorId(roleAssignment.getActorId());
+        verify(entityManager, times(0)).flush();
     }
 
     @Test
