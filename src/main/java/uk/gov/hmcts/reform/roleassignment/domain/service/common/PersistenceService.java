@@ -77,6 +77,7 @@ public class PersistenceService {
     private ActorCacheRepository actorCacheRepository;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
     private FlagConfigRepository flagConfigRepository;
+    @Autowired
     private FeatureToggleService featureToggleService;
 
     @Value("${roleassignment.query.sortcolumn}")
@@ -92,8 +93,7 @@ public class PersistenceService {
                               RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
                               ActorCacheRepository actorCacheRepository,
                               DatabseChangelogLockRepository databseChangelogLockRepository,
-                              FlagConfigRepository flagConfigRepository,
-                              FeatureToggleService featureToggleService) {
+                              FlagConfigRepository flagConfigRepository) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
@@ -101,7 +101,6 @@ public class PersistenceService {
         this.actorCacheRepository = actorCacheRepository;
         this.databseChangelogLockRepository = databseChangelogLockRepository;
         this.flagConfigRepository = flagConfigRepository;
-        this.featureToggleService = featureToggleService;
     }
 
     @Transactional
