@@ -17,13 +17,16 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceServi
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.CASE;
 
 @RunWith(MockitoJUnitRunner.class)
 class QueryRoleAssignmentOrchestratorTest {
@@ -69,6 +72,39 @@ class QueryRoleAssignmentOrchestratorTest {
         assertNotNull(result);
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getBody());
+        assertTrue(result.getHeaders().containsKey("Total-Records"));
+    }
+
+    @Test
+    void should_PostRoleAssignmentsQueryByRequest__() throws IOException {
+
+        List<String> roleType = Collections.singletonList("ORGANISATION");
+
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", List.of("1234567891234567"));
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .attributes(attr)
+            .roleType(roleType)
+            .build();
+
+        when(persistenceServiceMock.retrieveRoleAssignmentsByQueryRequest(queryRequest,
+                                                                          1,
+                                                                          2,
+                                                                          "id",
+                                                                          "asc",
+                                                                          false))
+            .thenReturn(Collections.emptyList());
+        when(persistenceServiceMock.getTotalRecords()).thenReturn(Long.valueOf(10));
+        ResponseEntity<RoleAssignmentResource> result = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,
+                                                                                                  1,
+                                                                                                  2,
+                                                                                                  "id",
+                                                                                                  "asc");
+        assertNotNull(result);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getBody());
+        assertTrue(result.getBody().getRoleAssignmentResponse().get(0).getRoleType().toString().contains("CASE"));
         assertTrue(result.getHeaders().containsKey("Total-Records"));
     }
 

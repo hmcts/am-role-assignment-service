@@ -1,28 +1,36 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
+import org.checkerframework.checker.nullness.Opt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.CASE;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
-
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.CASE;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 @Named
 @Singleton
@@ -179,5 +187,28 @@ public class ValidationUtil {
 
     public static boolean csvContains(String value, String csv) {
         return Arrays.stream(csv.split(",")).map(String::trim).anyMatch(value::equals);
+    }
+
+    public static MultipleQueryRequest validateQueryRequests(List<QueryRequest> queryRequests) {
+        queryRequests.forEach(query -> {
+            var actorIdInvalid = true;
+            var caseIdInvalid = true;
+
+            if(MapUtils.isNotEmpty(query.getAttributes())
+                && query.getAttributes().containsKey("caseId")
+                && StringUtils.isNotBlank(query.getAttributes().get("caseId").get(0))) {
+                caseIdInvalid = false;
+                query.getRoleType().add(CASE.name());
+            }
+            if(CollectionUtils.isNotEmpty(query.getActorId())
+                && StringUtils.isNotBlank(query.getActorId().get(0))) {
+                actorIdInvalid = false;
+            }
+            if (actorIdInvalid && caseIdInvalid) {
+                throw new BadRequestException(V1.Error.BAD_QUERY_REQUEST_MISSING_CASEID_ACTORID);
+            }
+        });
+
+        return new MultipleQueryRequest(queryRequests);
     }
 }
