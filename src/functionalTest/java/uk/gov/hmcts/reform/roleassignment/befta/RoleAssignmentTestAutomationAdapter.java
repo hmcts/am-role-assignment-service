@@ -7,12 +7,12 @@ import uk.gov.hmcts.reform.roleassignment.befta.utils.TokenUtils;
 import uk.gov.hmcts.reform.roleassignment.befta.utils.UserTokenProviderConfig;
 import uk.gov.hmcts.reform.roleassignment.util.EnvironmentVariableUtils;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
 @Slf4j
 public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAdapter {
-    public static RoleAssignmentTestAutomationAdapter INSTANCE = new RoleAssignmentTestAutomationAdapter();
 
     @Override
     public Object calculateCustomValue(BackEndFunctionalTestScenarioContext scenarioContext, Object key) {
@@ -26,6 +26,10 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
                 return new TokenUtils().generateServiceToken(buildCcdSpecificConfig());
             case ("generateS2STokenForXui"):
                 return new TokenUtils().generateServiceToken(buildXuiSpecificConfig());
+            case ("tomorrow"):
+                return LocalDate.now().plusDays(1);
+            case ("today"):
+                return LocalDate.now();
             default:
                 return super.calculateCustomValue(scenarioContext, key);
         }

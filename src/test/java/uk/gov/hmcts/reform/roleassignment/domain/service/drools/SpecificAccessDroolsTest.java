@@ -323,6 +323,7 @@ class SpecificAccessDroolsTest extends DroolBase {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("specific-access"));
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
             "specific-access",
@@ -358,6 +359,8 @@ class SpecificAccessDroolsTest extends DroolBase {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("specific-access"));
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
+
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
             "specific-access",
             "specific-access-requested",
@@ -548,6 +551,7 @@ class SpecificAccessDroolsTest extends DroolBase {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("requestedRole", convertValueJsonNode("specific-access"));
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
             "specific-access",

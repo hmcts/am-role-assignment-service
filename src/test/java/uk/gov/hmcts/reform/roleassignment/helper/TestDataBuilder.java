@@ -4,10 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.jwt.Jwt;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
@@ -34,7 +32,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import static java.time.LocalDateTime.now;
-import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
@@ -48,10 +45,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 @Setter
@@ -93,8 +88,7 @@ public class TestDataBuilder {
     }
 
     public static RoleAssignment buildRoleAssignment_CustomActorId(Status status, String actorId, String path,
-                                                                   RoleType roleType, String roleName)
-        throws IOException {
+                                                                   RoleType roleType, String roleName) {
         ZonedDateTime timeStamp = ZonedDateTime.now();
         return RoleAssignment.builder()
             .id(UUID.fromString("3ed4f960-e50b-4127-af30-47821d5799f7"))
@@ -119,24 +113,21 @@ public class TestDataBuilder {
     }
 
     public static List<RoleAssignment> buildRoleAssignmentList_Custom(Status status, String actorId, String path,
-                                                                      RoleType roleType, String roleName)
-        throws IOException {
+                                                                      RoleType roleType, String roleName) {
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path, roleType, roleName));
         return requestedRoles;
     }
 
     public static List<Assignment> buildAssignmentList(Status status, String actorId, String path, RoleType roleType,
-                                                       String roleName)
-        throws IOException {
+                                                       String roleName) {
         List<Assignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path, roleType, roleName));
         return requestedRoles;
     }
 
     public static List<Assignment> buildMultiAssignmentList(Status status, String actorId, String path,
-                                                            RoleType roleType, String roleName)
-        throws IOException {
+                                                            RoleType roleType, String roleName) {
         List<Assignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path, roleType, roleName));
         requestedRoles.add(buildRoleAssignment_CustomActorId(status, actorId, path, roleType, roleName));
@@ -168,7 +159,7 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static RoleAssignment buildRoleAssignmentUpdated(Status status) throws IOException {
+    public static RoleAssignment buildRoleAssignmentUpdated(Status status) {
         ZonedDateTime timeStamp = ZonedDateTime.now(ZoneOffset.UTC);
         return RoleAssignment.builder()
             .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
@@ -214,16 +205,7 @@ public class TestDataBuilder {
     public static ResponseEntity<RoleAssignmentResource> buildResourceRoleAssignmentResponse(
         Status roleStatus) throws Exception {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new RoleAssignmentResource(Arrays.asList(buildRoleAssignment(roleStatus)), ""));
-    }
-
-    public static ResponseEntity<RoleAssignmentResource> buildResourceRoleAssignmentResponse_Custom(
-        Status roleStatus, String actorId) throws Exception {
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(new RoleAssignmentResource(Arrays.asList(buildRoleAssignment_CustomActorId(
-                roleStatus, actorId, "attributes.json", RoleType.ORGANISATION,
-                "senior-tribunal-caseworker"
-            )), actorId));
+            .body(new RoleAssignmentResource(List.of(buildRoleAssignment(roleStatus)), ""));
     }
 
     public static Collection<RoleAssignment> buildRequestedRoleCollection(Status status) throws IOException {
@@ -233,13 +215,7 @@ public class TestDataBuilder {
         return requestedRoles;
     }
 
-    public static Collection<RoleAssignment> buildRoleAssignmentCollection_Pact(Status status) throws IOException {
-        Collection<RoleAssignment> requestedRoles = new ArrayList<>();
-        requestedRoles.add(buildRoleAssignment(status));
-        return requestedRoles;
-    }
-
-    public static Collection<RoleAssignment> buildRequestedRoleCollection_Updated(Status status) throws IOException {
+    public static Collection<RoleAssignment> buildRequestedRoleCollection_Updated(Status status) {
         Collection<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRoleAssignmentUpdated(status));
         requestedRoles.add(buildRoleAssignmentUpdated(status));
@@ -272,7 +248,7 @@ public class TestDataBuilder {
         }
     }
 
-    public static List<RoleConfigRole> buildRolesFromFile() throws IOException {
+    public static List<RoleConfigRole> buildRolesFromFile() {
         return JacksonUtils.getConfiguredRoles();
     }
 
@@ -351,7 +327,7 @@ public class TestDataBuilder {
 
     }
 
-    public static ActorCacheEntity buildActorCacheEntity() throws IOException {
+    public static ActorCacheEntity buildActorCacheEntity() {
         JsonNode attributes = buildAttributesFromFile("attributes.json");
         return ActorCacheEntity.builder()
             .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
@@ -360,40 +336,17 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static ActorCache buildActorCache() throws IOException {
+    public static ActorCache buildActorCache() {
         return ActorCache.builder()
             .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
             .etag(1)
             .build();
     }
 
-    private static RoleAssignmentEntity buildRoleAssignmentEntitySet() throws IOException {
-        return RoleAssignmentEntity.builder()
-            .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
-            .actorIdType(ActorIdType.IDAM.name())
-            .roleType(RoleType.CASE.name())
-            .roleName("judge")
-            .classification(Classification.PUBLIC.name())
-            .grantType(GrantType.STANDARD.name())
-            .roleCategory(RoleCategory.JUDICIAL.name())
-            .readOnly(true)
-            .beginTime(now().plusDays(1))
-            .endTime(now().plusMonths(1))
-            .created(now())
-            .attributes(buildAttributesFromFile("attributes.json"))
-            .build();
-    }
-
-
-    @NotNull
-    public static ActorCache prepareActorCache(RoleAssignment roleAssignment) {
+    public static void prepareActorCache(RoleAssignment roleAssignment) {
         ActorCache actorCache = new ActorCache();
         actorCache.setActorId(roleAssignment.getActorId());
-        Set<RoleAssignmentEntity> roleAssignmentEntities = new HashSet<>();
-        roleAssignmentEntities.add(convertRoleAssignmentToEntity(roleAssignment));
-        return actorCache;
     }
-
 
     public static HistoryEntity buildHistoryEntity(RoleAssignment roleAssignment, RequestEntity requestEntity) {
         String[] auths = {"dev", "test"};
@@ -440,7 +393,7 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static UserInfo buildUserInfo(String uuid) throws IOException {
+    public static UserInfo buildUserInfo(String uuid) {
         List<String> list = new ArrayList<>();
         List<RoleConfigRole> roles = TestDataBuilder.buildRolesFromFile();
         for (RoleConfigRole role : roles) {
@@ -450,18 +403,13 @@ public class TestDataBuilder {
             .name("James").givenName("007").familyName("Bond").roles(list).build();
     }
 
-    public static Jwt buildJwt() {
-        return Jwt.withTokenValue("token_value").header("head", "head")
-            .claim("tokenName", ACCESS_TOKEN).build();
-    }
-
     public static Case buildCase() {
         return Case.builder()
             .id("1234").build();
     }
 
     public static AssignmentRequest createRoleAssignmentRequest(
-        boolean replaceExisting, boolean readOnly) throws IOException {
+        boolean replaceExisting, boolean readOnly) {
         return new AssignmentRequest(
             buildRequestForRoleAssignment(replaceExisting),
             buildRequestedRoles(readOnly)
@@ -477,13 +425,13 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static Collection<RoleAssignment> buildRequestedRoles(boolean readOnly) throws IOException {
+    public static Collection<RoleAssignment> buildRequestedRoles(boolean readOnly) {
         Collection<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(buildRoleAssignments(readOnly));
         return requestedRoles;
     }
 
-    public static RoleAssignment buildRoleAssignments(boolean readOnly) throws IOException {
+    public static RoleAssignment buildRoleAssignments(boolean readOnly) {
         ZonedDateTime timeStamp = ZonedDateTime.now(ZoneOffset.UTC);
         return RoleAssignment.builder()
             .actorId("123e4567-e89b-42d3-a456-556642445612")
@@ -502,7 +450,7 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static RoleAssignment buildRoleAssignmentForConflict(RoleCategory roleCategory) throws IOException {
+    public static RoleAssignment buildRoleAssignmentForConflict(RoleCategory roleCategory) {
         ZonedDateTime timeStamp = ZonedDateTime.now(ZoneOffset.UTC);
         return RoleAssignment.builder()
             .actorId(ACTORID)
@@ -530,16 +478,16 @@ public class TestDataBuilder {
         attributes.put("contractType", contractTypes);
 
         return QueryRequest.builder()
-            .actorId(Arrays.asList("123e4567-e89b-42d3-a456-556642445612"))
+            .actorId(List.of("123e4567-e89b-42d3-a456-556642445612"))
 
-            .roleType(Arrays.asList(RoleType.CASE.toString()))
-            .roleName(Arrays.asList("judge"))
-            .classification(Arrays.asList(Classification.PUBLIC.toString()))
-            .grantType(Arrays.asList(GrantType.SPECIFIC.toString()))
-            .roleCategory(Arrays.asList(RoleCategory.JUDICIAL.toString()))
+            .roleType(List.of(RoleType.CASE.toString()))
+            .roleName(List.of("judge"))
+            .classification(List.of(Classification.PUBLIC.toString()))
+            .grantType(List.of(GrantType.SPECIFIC.toString()))
+            .roleCategory(List.of(RoleCategory.JUDICIAL.toString()))
             .validAt(now())
             .attributes(attributes)
-            .authorisations(Arrays.asList("dev"))
+            .authorisations(List.of("dev"))
             .build();
 
 
@@ -599,14 +547,14 @@ public class TestDataBuilder {
     }
 
     public static List<RoleAssignment> getRequestedOrgRole() {
-        return Arrays.asList(RoleAssignment.builder()
+        return List.of(RoleAssignment.builder()
                                  .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
                                  .actorId("4772dc44-268f-4d0c-8f83-f0fb662aac83")
                                  .actorIdType(ActorIdType.IDAM)
                                  .classification(Classification.PUBLIC)
                                  .readOnly(true)
                                  .status(CREATE_REQUESTED)
-                                 .attributes(new HashMap<String, JsonNode>())
+                                 .attributes(new HashMap<>())
                                  .build());
     }
 
@@ -625,6 +573,45 @@ public class TestDataBuilder {
                                                        .build());
 
 
+    }
+
+    public static RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType) {
+        return RoleAssignment.builder()
+            .id(UUID.randomUUID())
+            .actorId(UUID.randomUUID().toString())
+            .actorIdType(ActorIdType.IDAM)
+            .roleCategory(roleCategory)
+            .roleType(RoleType.CASE)
+            .roleName(roleName)
+            .grantType(grantType)
+            .classification(Classification.PUBLIC)
+            .readOnly(true)
+            .status(CREATE_REQUESTED)
+            .attributes(new HashMap<>())
+            .build();
+    }
+
+    public static RoleAssignment getRequestedCaseRole_ra(RoleCategory roleCategory, String roleName,
+                                                         GrantType grantType,
+                                                         String attributeKey,
+                                                         String attributeVal,
+                                                         Status status) {
+        RoleAssignment ra = RoleAssignment.builder()
+            .id(UUID.randomUUID())
+            .actorId(UUID.randomUUID().toString())
+            .actorIdType(ActorIdType.IDAM)
+            .roleCategory(roleCategory)
+            .roleType(RoleType.CASE)
+            .roleName(roleName)
+            .grantType(grantType)
+            .classification(Classification.PUBLIC)
+            .readOnly(true)
+            .status(status)
+            .attributes(new HashMap<>())
+            .build();
+        ra.setAttribute(attributeKey, attributeVal);
+        ra.setAttribute("jurisdiction","IA");
+        return ra;
     }
 
     public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestForSpecialAccess(
@@ -647,7 +634,8 @@ public class TestDataBuilder {
                          .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
                          .assignerId(actorId)
                          .requestType(RequestType.CREATE)
-                         .reference("1234567890123456/" + attributes.get("requestedRole").asText() + "/" + ACTORID)
+                         .reference(attributes.get("caseId").asText() + "/" + attributes.get("requestedRole").asText()
+                                        + "/" + ACTORID)
                          .process(process)
                          .replaceExisting(true)
                          .created(ZonedDateTime.now())
@@ -684,67 +672,8 @@ public class TestDataBuilder {
         String notes) {
 
         return buildAssignmentRequestForSpecialAccess(process, roleName, roleCategory, attributes, classification,
-                                                   grantType, status, clientId, readOnly, notes, ACTORID);
+                                                      grantType, status, clientId, readOnly, notes, ACTORID);
     }
 
-    public static RoleAssignment getRequestedCaseRole(RoleCategory roleCategory, String roleName, GrantType grantType) {
-        return RoleAssignment.builder()
-            .id(UUID.randomUUID())
-            .actorId(UUID.randomUUID().toString())
-            .actorIdType(ActorIdType.IDAM)
-            .roleCategory(roleCategory)
-            .roleType(RoleType.CASE)
-            .roleName(roleName)
-            .grantType(grantType)
-            .classification(Classification.PUBLIC)
-            .readOnly(true)
-            .status(CREATE_REQUESTED)
-            .attributes(new HashMap<String, JsonNode>())
-            .build();
-    }
-
-    public static RoleAssignment getRequestedCaseRole_ra(RoleCategory roleCategory, String roleName,
-                                                         GrantType grantType,
-                                                         String attributeKey,
-                                                         String attributeVal,
-                                                         Status status) {
-        RoleAssignment ra = RoleAssignment.builder()
-            .id(UUID.randomUUID())
-            .actorId(UUID.randomUUID().toString())
-            .actorIdType(ActorIdType.IDAM)
-            .roleCategory(roleCategory)
-            .roleType(RoleType.CASE)
-            .roleName(roleName)
-            .grantType(grantType)
-            .classification(Classification.PUBLIC)
-            .readOnly(true)
-            .status(status)
-            .attributes(new HashMap<String, JsonNode>())
-            .build();
-        ra.setAttribute(attributeKey, attributeVal);
-        ra.setAttribute("jurisdiction", "IA");
-        return ra;
-    }
-
-    public static RoleAssignment getRequestedCaseRole_2(RoleCategory roleCategory,
-                                                        String roleName,
-                                                        GrantType grantType,
-                                                        RoleType roleType,
-                                                        Classification classification,
-                                                        Status status) {
-        return RoleAssignment.builder()
-            .id(UUID.randomUUID())
-            .actorId(UUID.randomUUID().toString())
-            .actorIdType(ActorIdType.IDAM)
-            .roleCategory(roleCategory)
-            .roleType(roleType)
-            .roleName(roleName)
-            .grantType(grantType)
-            .classification(classification)
-            .readOnly(true)
-            .status(status)
-            .attributes(new HashMap<String, JsonNode>())
-            .build();
-    }
 
 }
