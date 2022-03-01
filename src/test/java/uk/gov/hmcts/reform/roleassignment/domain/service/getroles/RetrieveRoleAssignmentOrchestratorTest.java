@@ -144,5 +144,4 @@ class RetrieveRoleAssignmentOrchestratorTest {
         assertNotNull(roles);
         assertTrue(roles.size() > 2);
     }
-
 }

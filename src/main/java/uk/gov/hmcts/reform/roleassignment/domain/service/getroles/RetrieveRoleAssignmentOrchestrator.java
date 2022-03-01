@@ -27,7 +27,6 @@ public class RetrieveRoleAssignmentOrchestrator {
                                               @Autowired PrepareResponseService prepareResponseService) {
         this.persistenceService = persistenceService;
         this.prepareResponseService = prepareResponseService;
-
     }
 
     //1. call parse request service
@@ -58,5 +57,4 @@ public class RetrieveRoleAssignmentOrchestrator {
         var entity = persistenceService.getActorCacheEntity(actorId);
         return entity.getEtag();
     }
-
 }

@@ -86,5 +86,4 @@ class GetAssignmentControllerTest {
         assertEquals(expectedResponse.getBody(), response.getBody());
         assertNotNull(response.getHeaders().getETag());
     }
-
 }
