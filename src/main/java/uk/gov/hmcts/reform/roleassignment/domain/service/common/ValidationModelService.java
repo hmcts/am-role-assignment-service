@@ -12,7 +12,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -81,7 +83,7 @@ public class ValidationModelService {
         }
         // facts needs assignee roles for creates, not for deletes (?)
         if (assignmentRequest.getRequest().getRequestType() == RequestType.CREATE) {
-            assignmentRequest.getRequestedRoles().stream().forEach(r -> userIds.add(r.getActorId()));
+            assignmentRequest.getRequestedRoles().forEach(r -> userIds.add(r.getActorId()));
         }
 
         //replacing the logic to make single db call using dynamic search api.
@@ -93,7 +95,8 @@ public class ValidationModelService {
     public List<Assignment> getCurrentRoleAssignmentsForActors(Set<String> actorIds) {
         var queryRequest = QueryRequest.builder()
             .actorId(actorIds)
-            .roleType("ORGANISATION")
+            .roleType(List.of(RoleType.ORGANISATION.name(), RoleType.CASE.name()))
+            .grantType(List.of(GrantType.STANDARD.name(), GrantType.BASIC.name()))
             .validAt(LocalDateTime.now())
             .build();
 
@@ -109,6 +112,9 @@ public class ValidationModelService {
 
         );
         long totalRecords = persistenceService.getTotalRecords();
+        if (totalRecords > 100) {
+            log.warn("Fetched assignments for the actor have {} total records", totalRecords);
+        }
         double pageNumber = 0;
         if (defaultSize > 0) {
             pageNumber = (double) totalRecords / (double) defaultSize;
