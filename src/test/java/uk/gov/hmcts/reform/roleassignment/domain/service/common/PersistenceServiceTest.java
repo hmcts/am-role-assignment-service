@@ -250,6 +250,17 @@ class PersistenceServiceTest {
     }
 
     @Test
+    void getActorCacheEntity_LDFlagCacheTrue() throws SQLException {
+        String id = UUID.randomUUID().toString();
+        ActorCacheEntity actorCacheEntity = TestDataBuilder.buildActorCacheEntity();
+        when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(true);
+        when(actorCacheRepository.findByActorId(id)).thenReturn(actorCacheEntity);
+        ActorCacheEntity result = sut.getActorCacheEntity(id);
+        assertEquals(0l, result.getEtag());
+        verify(actorCacheRepository, times(0)).findByActorId(id);
+    }
+
+    @Test
     void getActorCacheEntityException() throws SQLException {
         String uuid = UUID.randomUUID().toString();
         doThrow(SQLException.class).when(actorCacheRepository).findByActorId(any());
