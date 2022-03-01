@@ -256,7 +256,7 @@ class PersistenceServiceTest {
         when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(true);
         when(actorCacheRepository.findByActorId(id)).thenReturn(actorCacheEntity);
         ActorCacheEntity result = sut.getActorCacheEntity(id);
-        assertEquals(0l, result.getEtag());
+        assertEquals(0L, result.getEtag());
         verify(actorCacheRepository, times(0)).findByActorId(id);
     }
 
