@@ -27,11 +27,12 @@ import java.util.Map;
 
 public abstract class DroolBase {
 
-    private final RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
     StatelessKieSession kieSession;
     AssignmentRequest assignmentRequest;
     List<Object> facts;
     List<FeatureFlag> featureFlags;
+
+    private final RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
 
     @BeforeEach
     public void setUp() {
