@@ -232,7 +232,7 @@ class PersistenceServiceTest {
         sut.persistActorCache(roleAssignmentCollation);
 
         assertNull(entity.getActorId());
-        verify(roleAssignment, times(6)).getActorId();
+        verify(roleAssignment, times(5)).getActorId();
         verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
         verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
         verify(entityManager, times(1)).persist(any());
@@ -240,7 +240,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getActorCacheEntity() throws IOException, SQLException {
+    void getActorCacheEntity() throws SQLException {
         String id = UUID.randomUUID().toString();
         ActorCacheEntity actorCacheEntity = TestDataBuilder.buildActorCacheEntity();
         when(actorCacheRepository.findByActorId(id)).thenReturn(actorCacheEntity);
