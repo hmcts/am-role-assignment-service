@@ -179,6 +179,9 @@ public class PersistenceService {
 
     @Transactional
     public ActorCacheEntity getActorCacheEntity(String actorId) {
+        if (featureToggleService.isFlagEnabled(SERVICE_NAME, DISABLE_ACTOR_CACHE_FLAG)) {
+            return new ActorCacheEntity();
+        }
         try {
             return actorCacheRepository.findByActorId(actorId);
         } catch (Exception sqlException) {

@@ -21,13 +21,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -49,16 +47,12 @@ class RetrieveRoleAssignmentOrchestratorTest {
     @Mock
     private PrepareResponseService prepareResponseService = mock(PrepareResponseService.class);
 
-    @Mock
-    private FeatureToggleService featureToggleService = mock(FeatureToggleService.class);
-
     private static final String ROLE_TYPE = "CASE";
 
     @InjectMocks
     private RetrieveRoleAssignmentOrchestrator sut = new RetrieveRoleAssignmentOrchestrator(
         persistenceService,
-        prepareResponseService,
-        featureToggleService
+        prepareResponseService
     );
 
     @BeforeEach
@@ -151,15 +145,4 @@ class RetrieveRoleAssignmentOrchestratorTest {
         assertTrue(roles.size() > 2);
     }
 
-    @Test
-    void actorCacheFlagEnabled() {
-        when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(true);
-        assertFalse(sut.isActorCacheFlagEnabled());
-    }
-
-    @Test
-    void actorCacheFlagDisabled() {
-        when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(false);
-        assertTrue(sut.isActorCacheFlagEnabled());
-    }
 }
