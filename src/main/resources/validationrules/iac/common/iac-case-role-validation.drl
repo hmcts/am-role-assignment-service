@@ -139,7 +139,7 @@ then
     $ra.log("Stage 1 approved : delete_specific_access_granted_or_denied_case_role");
     update($ra);
     logMsg("Rule : delete_specific_access_granted_or_denied_case_role");
-end
+end;
 
 /*
  * The case roles can be deleted if CaseAllocatorApproval entity is available for requested role assignment.
