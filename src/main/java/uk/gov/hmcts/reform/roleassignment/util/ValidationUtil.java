@@ -1,11 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
-import org.checkerframework.checker.nullness.Opt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
@@ -24,11 +21,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -189,25 +188,28 @@ public class ValidationUtil {
         return Arrays.stream(csv.split(",")).map(String::trim).anyMatch(value::equals);
     }
 
-    public static MultipleQueryRequest validateQueryRequests(List<QueryRequest> queryRequests) {
-        queryRequests.forEach(query -> {
-            var actorIdInvalid = true;
-            var caseIdInvalid = true;
+    public static QueryRequest validateQueryRequests(QueryRequest query) {
+        var actorIdInvalid = true;
+        var caseIdInvalid = isAttributeEmpty(query.getAttributes(), "caseId");
 
-            if(MapUtils.isNotEmpty(query.getAttributes())
-                && query.getAttributes().containsKey("caseId")
-                && StringUtils.isNotBlank(query.getAttributes().get("caseId").get(0))) {
-                caseIdInvalid = false;
-                query.getRoleType().add(CASE.name());
-            }
-            if(CollectionUtils.isNotEmpty(query.getActorId())
-                && StringUtils.isNotBlank(query.getActorId().get(0))) {
-                actorIdInvalid = false;
-            }
-            if (actorIdInvalid && caseIdInvalid) {
-                throw new BadRequestException(V1.Error.BAD_QUERY_REQUEST_MISSING_CASEID_ACTORID);
-            }
-        });
+        if(CollectionUtils.isNotEmpty(query.getActorId())
+            && StringUtils.isNotBlank(query.getActorId().get(0))) {
+            actorIdInvalid = false;
+        }
+        if (actorIdInvalid && caseIdInvalid) {
+            throw new BadRequestException(V1.Error.BAD_QUERY_REQUEST_MISSING_CASEID_ACTORID);
+        }
+        return query;
+    }
+
+    public static boolean isAttributeEmpty(Map<String, List<String>> attributes, String attribute) {
+        return Optional.ofNullable(attributes).map(m -> m
+            .getOrDefault(attribute, Collections.emptyList()).stream().filter(s -> !s.isBlank())
+           .collect(Collectors.toList())).get().isEmpty();
+    }
+
+    public static MultipleQueryRequest validateQueryRequests(List<QueryRequest> queryRequests) {
+        queryRequests.forEach(ValidationUtil::validateQueryRequests);
 
         return new MultipleQueryRequest(queryRequests);
     }

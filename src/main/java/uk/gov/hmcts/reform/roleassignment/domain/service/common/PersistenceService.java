@@ -32,7 +32,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
+import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
 import javax.persistence.EntityManager;
 import java.util.Collection;
@@ -234,7 +236,10 @@ public class PersistenceService {
                                                                   boolean existingFlag) {
 
 
-
+        List<String> roleTypes = searchRequest.getRoleType();
+        if (ValidationUtil.isAttributeEmpty(searchRequest.getAttributes(), "caseId")) {
+            roleTypes.add(RoleType.CASE.name());
+        }
         Page<RoleAssignmentEntity> pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(Objects.requireNonNull(
                 Objects.requireNonNull(
@@ -248,7 +253,7 @@ public class PersistenceService {
                                         .and(searchByGrantType(searchRequest.getGrantType())))
                                     .and(searchByValidDate(searchRequest.getValidAt())))
                                 .and(searchByAttributes(searchRequest.getAttributes())))
-                            .and(searchByRoleType(searchRequest.getRoleType())))
+                            .and(searchByRoleType(roleTypes)))
                         .and(searchByRoleName(searchRequest.getRoleName())))
                     .and(searchByClassification(searchRequest.getClassification())))
                                        .and(searchByRoleCategories(searchRequest.getRoleCategory())))
