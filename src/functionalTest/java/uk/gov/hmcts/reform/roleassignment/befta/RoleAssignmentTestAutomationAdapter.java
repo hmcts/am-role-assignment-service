@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @Slf4j
 public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAdapter {
+    public static RoleAssignmentTestAutomationAdapter INSTANCE = new RoleAssignmentTestAutomationAdapter();
 
     @Override
     public Object calculateCustomValue(BackEndFunctionalTestScenarioContext scenarioContext, Object key) {
