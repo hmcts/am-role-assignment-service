@@ -21,7 +21,7 @@ public class FeatureToggleService {
     @Autowired
     private final LDClient ldClient;
 
-    @Value("${launchdarkly.sdk.environment}")
+    @Value("${LAUNCH_DARKLY_ENV:pr}")
     private String environment;
 
     private final String userName;
@@ -36,7 +36,7 @@ public class FeatureToggleService {
     }
 
     @Autowired
-    public FeatureToggleService(LDClient ldClient, @Value("${launchdarkly.sdk.user}") String userName) {
+    public FeatureToggleService(LDClient ldClient, @Value("${LAUNCH_DARKLY_ENV:local}") String userName) {
         this.ldClient = ldClient;
         this.userName = userName;
     }
