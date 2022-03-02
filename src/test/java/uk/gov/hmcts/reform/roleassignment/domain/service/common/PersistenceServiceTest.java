@@ -399,7 +399,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void postRoleAssignmentsByQueryRequest() throws IOException {
+    void postRoleAssignmentsByQueryRequest_withCaseId() throws IOException {
 
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
@@ -412,7 +412,61 @@ class PersistenceServiceTest {
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleType = Arrays.asList("ORGANISATION");
+
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", List.of("1234567891234567"));
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleType)
+            .attributes(attr)
+            .build();
+
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
+            Pageable.class);
+
+        Specification<RoleAssignmentEntity> spec = Specification.where(any());
+        Pageable pageableCapture = pageableCaptor.capture();
+
+        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        ))
+            .thenReturn(page);
+
+
+        when(mockSpec.toPredicate(root, query, builder)).thenReturn(predicate);
+
+
+        when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
+            .thenReturn(TestDataBuilder.buildRoleAssignment(LIVE));
+
+        List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1,
+                                                                                                  1, "id",
+                                                                                                  "desc", false
+        );
+        assertNotNull(roleAssignmentList);
+        assertFalse(roleAssignmentList.isEmpty());
+        assertFalse(roleAssignmentList.contains(null));
+        verify(persistenceUtil, times(1))
+            .convertEntityToRoleAssignment(page.iterator().next());
+
+    }
+
+    @Test
+    void postRoleAssignmentsByQueryRequest_withoutCaseId() throws IOException {
+
+
+        List<RoleAssignmentEntity> tasks = new ArrayList<>();
+        tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
+
+        Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
+
+
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleType = Arrays.asList("ORGANISATION");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
@@ -1007,7 +1061,6 @@ class PersistenceServiceTest {
 
     }
 
-
     @Test
     void postRoleAssignmentsByMultipleQueryRequest() throws IOException {
 
@@ -1022,20 +1075,38 @@ class PersistenceServiceTest {
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+
+        List<String> roleTypeCaseOrg = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleTypeOrg = Arrays.asList("ORGANISATION");
 
         String roleName = "senior-tribunal-caseworker";
 
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", List.of("1234567891234567"));
+
         QueryRequest queryRequest1 = QueryRequest.builder()
             .actorId(actorId)
-            .roleType(roleType)
+            .roleType(roleTypeCaseOrg)
             .build();
         QueryRequest queryRequest2 = QueryRequest.builder()
+            .actorId(actorId)
             .roleName(roleName)
+            .roleType(roleTypeOrg)
+            .build();
+        QueryRequest queryRequest3 = QueryRequest.builder()
+            .actorId(actorId)
+            .roleName(roleName)
+            .roleType(roleTypeOrg)
+            .attributes(attr)
+            .build();
+        QueryRequest queryRequest4 = QueryRequest.builder()
+            .roleName(roleName)
+            .roleType(roleTypeCaseOrg)
+            .attributes(attr)
             .build();
 
         MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
-            .queryRequests(Arrays.asList(queryRequest1,queryRequest2))
+            .queryRequests(Arrays.asList(queryRequest1,queryRequest2,queryRequest3,queryRequest4))
             .build();
 
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
@@ -1057,12 +1128,12 @@ class PersistenceServiceTest {
 
         List<? extends Assignment> roleAssignmentList = sut
             .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
-                                                                             1,
-                                                                             1,
-                                                                             "id",
-                                                                             "desc",
-                                                                             false
-        );
+                                                           1,
+                                                           1,
+                                                           "id",
+                                                           "desc",
+                                                           false
+            );
         assertNotNull(roleAssignmentList);
         assertFalse(roleAssignmentList.isEmpty());
         assertFalse(roleAssignmentList.contains(null));
@@ -1089,6 +1160,72 @@ class PersistenceServiceTest {
 
         assertThrows(UnprocessableEntityException.class, () ->
             sut.persistActorCache(roleAssignments));
+    }
+
+    @Test
+    void addCaseTypeIfIdExists_idNotExisting_noAdd() {
+
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleTypesInitial = Collections.singletonList("ORGANISATION");
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleTypesInitial)
+            .build();
+
+        List<String> roleTypesResult = sut.addCaseTypeIfIdExists(queryRequest);
+
+        assertEquals(roleTypesInitial, roleTypesResult);
+    }
+
+    @Test
+    void addCaseTypeIfIdExists_idExisting_noAdd() {
+
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleTypesInitial = Arrays.asList("CASE","ORGANISATION");
+
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", List.of("1234567891234567"));
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleTypesInitial)
+            .attributes(attr)
+            .build();
+
+        List<String> roleTypesResult = sut.addCaseTypeIfIdExists(queryRequest);
+
+        assertEquals(roleTypesInitial, roleTypesResult);
+    }
+
+    @Test
+    void addCaseTypeIfIdExists_idExisting_add() {
+
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleTypesInitial = Collections.singletonList("ORGANISATION");
+
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", List.of("1234567891234567"));
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleTypesInitial)
+            .attributes(attr)
+            .build();
+
+        List<String> roleTypesResult = sut.addCaseTypeIfIdExists(queryRequest);
+        List<String> roleTypesExpectedResult = Arrays.asList("ORGANISATION", "CASE");
+
+        assertEquals(roleTypesExpectedResult, roleTypesResult);
     }
 
 

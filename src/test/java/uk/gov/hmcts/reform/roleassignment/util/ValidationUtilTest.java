@@ -20,7 +20,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -485,6 +484,15 @@ class ValidationUtilTest {
     void validateQueryRequest_Throws_CaseIdBlank() {
         Map<String, List<String>> attr = new HashMap<>();
         attr.put("caseId", List.of(""));
+        List<QueryRequest> queryRequest = List.of(QueryRequest.builder().attributes(attr).build());
+        Assertions.assertThrows(BadRequestException.class, () ->
+            ValidationUtil.validateQueryRequests(queryRequest));
+    }
+
+    @Test
+    void validateQueryRequest_Throws_CaseIdEmpty() {
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", Collections.emptyList());
         List<QueryRequest> queryRequest = List.of(QueryRequest.builder().attributes(attr).build());
         Assertions.assertThrows(BadRequestException.class, () ->
             ValidationUtil.validateQueryRequests(queryRequest));
