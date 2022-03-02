@@ -141,6 +141,13 @@ feign:
 swaggerUrl: ${TEST_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
 
+launchdarkly:
+  sdk:
+    key: ${LD_SDK_KEY:}
+    environment: ${LAUNCH_DARKLY_ENV:pr}
+    user: am-${LAUNCH_DARKLY_ENV:local}
+  runOnStartup: ${RUN_LD_ON_STARTUP:false}
+
 audit:
   log:
     ignore:
@@ -166,8 +173,3 @@ dbMigration:
   # When true, the app will run DB migration on startup.
   # Otherwise, it will just check if all migrations have been applied (and fail to start if not).
   runOnStartup: ${RUN_DB_MIGRATION_ON_STARTUP:true}
-
-launchdarklyOnStartUp:
-  runOnStartup: ${RUN_DARKLY_ON_STARTUP:false}
-
-
