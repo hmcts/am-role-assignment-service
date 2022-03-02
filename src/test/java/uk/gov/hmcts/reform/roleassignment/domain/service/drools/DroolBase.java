@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
@@ -13,11 +14,16 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.Case.REGION;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.Case.BASE_LOCATION;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.Case.CASE_MANAGEMENT_LOCATION;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class DroolBase {
 
@@ -76,6 +82,18 @@ public abstract class DroolBase {
             .securityClassification(Classification.PUBLIC)
             .build();
         doReturn(caseObj3).when(retrieveDataService).getCaseById("1234567890123459");
+
+        HashMap<String, JsonNode> caseAttributes = new HashMap<>();
+        caseAttributes.put(REGION, convertValueJsonNode("south-east"));
+        caseAttributes.put(BASE_LOCATION, convertValueJsonNode("London"));
+
+        Case caseObj4 = Case.builder().id("1616161616161616")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .securityClassification(Classification.PUBLIC)
+            .data(Map.of(CASE_MANAGEMENT_LOCATION, convertValueJsonNode(caseAttributes)))
+            .build();
+        doReturn(caseObj4).when(retrieveDataService).getCaseById("1616161616161616");
 
         // Set up the rule engine for validation.
         KieServices ks = KieServices.Factory.get();
