@@ -1,59 +1,61 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import com.launchdarkly.sdk.server.LDClient;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.servlet.http.HttpServletRequest;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 class FeatureToggleServiceTest {
 
     @Mock
-    LDClient ldClient = mock(LDClient.class);
+    LDClient ldClient;
 
     @Mock
-    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletRequest request;
 
     @InjectMocks
-    FeatureToggleService featureToggleService = new FeatureToggleService(ldClient, "user");
+    FeatureToggleService featureToggleService;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void evaluateLdFlag() {
         when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(true);
-        featureToggleService = new FeatureToggleService(ldClient, "user");
         Assertions.assertTrue(featureToggleService.isFlagEnabled("serviceName", "userName"));
     }
 
     @Test
     void evaluateLdFlagFalse() {
         when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(false);
-        featureToggleService = new FeatureToggleService(ldClient, "user");
         Assertions.assertFalse(featureToggleService.isFlagEnabled("serviceName", "userName"));
     }
 
     @Test
     void isValidFlag() {
         when(ldClient.isFlagKnown(any())).thenReturn(true);
-        featureToggleService = new FeatureToggleService(ldClient, "user");
         Assertions.assertTrue(featureToggleService.isValidFlag("serviceName"));
     }
 
     @Test
     void isValidFlagReturnsFalse() {
         when(ldClient.isFlagKnown(any())).thenReturn(false);
-        featureToggleService = new FeatureToggleService(ldClient, "user");
         Assertions.assertFalse(featureToggleService.isValidFlag("serviceName"));
     }
 
@@ -65,7 +67,6 @@ class FeatureToggleServiceTest {
     void getLdFlagWithValidFlagMapEntries(String url, String method, String flag) {
         when(request.getRequestURI()).thenReturn(url);
         when(request.getMethod()).thenReturn(method);
-        featureToggleService = new FeatureToggleService(ldClient, "user");
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
         Assertions.assertEquals(flag, flagName);
     }
@@ -77,7 +78,6 @@ class FeatureToggleServiceTest {
     void getLdFlagGet_RoleAssignmentCase(String url, String method, String flag) {
         when(request.getRequestURI()).thenReturn(url);
         when(request.getMethod()).thenReturn(method);
-        featureToggleService = new FeatureToggleService(ldClient, "user");
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
         Assertions.assertEquals(flag, flagName);
     }
@@ -93,7 +93,6 @@ class FeatureToggleServiceTest {
     void getLdFlagWithNonExistingUriPath(String method) {
         when(request.getRequestURI()).thenReturn("/am/dummy");
         when(request.getMethod()).thenReturn(method);
-        featureToggleService = new FeatureToggleService(ldClient, "user");
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
         Assertions.assertNull(flagName);
     }
@@ -102,7 +101,6 @@ class FeatureToggleServiceTest {
     void getLdFlagDeleteStringContainsCase() {
         when(request.getRequestURI()).thenReturn("/am/role-assignments/");
         when(request.getMethod()).thenReturn("DELETE");
-        featureToggleService = new FeatureToggleService(ldClient, "user");
         String flagName = featureToggleService.getLaunchDarklyFlag(request);
         Assertions.assertNull(flagName);
     }
