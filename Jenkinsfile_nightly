@@ -32,6 +32,9 @@ def secrets = [
   ],
   'ccd-${env}': [
     secret('ccd-data-s2s-secret', 'CCD_DATA_S2S_SECRET')
+  ],
+  'rpx-${env}': [
+    secret('xui-webapp', 'XUI_WEBAPP_S2S_SECRET')
   ]
 ]
 
@@ -89,7 +92,7 @@ withNightlyPipeline(type, product, component) {
   enableMutationTest()
   enableSecurityScan()
   enableFullFunctionalTest()
-  enableFortifyScan()
+  //enableFortifyScan()
 
   before('fullFunctionalTest') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
@@ -106,7 +109,7 @@ withNightlyPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/cucumber/**/*'
   }
 
-   after('fortify-scan') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
-  }
+   //after('fortify-scan') {
+    //steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+  //}
 }
