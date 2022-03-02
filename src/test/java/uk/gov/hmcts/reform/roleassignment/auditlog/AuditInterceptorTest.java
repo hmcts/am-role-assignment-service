@@ -1,12 +1,20 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog;
 
-import org.slf4j.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.Appender;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
+
+import static org.mockito.Mockito.spy;
+
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.slf4j.LoggerFactory;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
@@ -16,13 +24,13 @@ import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
 
 class AuditInterceptorTest {
 
@@ -36,7 +44,8 @@ class AuditInterceptorTest {
     private MockHttpServletResponse response;
     private MockHttpServletResponse responseNew;
 
-    private Logger mockLogger;
+    @Captor
+    private ArgumentCaptor<ILoggingEvent> captor;
 
     private AuditInterceptor interceptor;
     @Mock
@@ -45,6 +54,8 @@ class AuditInterceptorTest {
     private ApplicationParams applicationParams;
     @Mock
     private HandlerMethod handler;
+    @Mock
+    private Appender<ILoggingEvent> mockAppender;
 
     @BeforeEach
     void setUp() {
@@ -58,6 +69,10 @@ class AuditInterceptorTest {
         responseNew = new MockHttpServletResponse();
         responseNew.setStatus(422);
 
+        Logger rootLogger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        rootLogger.addAppender(mockAppender);
+        rootLogger.setLevel(Level.DEBUG);
+
         given(applicationParams.isAuditLogEnabled()).willReturn(true);
         given(applicationParams.getAuditLogIgnoreStatuses()).willReturn(Lists.newArrayList(404));
     }
@@ -67,7 +82,7 @@ class AuditInterceptorTest {
         AuditContext auditContext = new AuditContext();
         auditContext.setResponseTime(1500L);
 
-        auditContextSpy = Mockito.spy(auditContext);
+        auditContextSpy = spy(auditContext);
         given(handler.hasMethodAnnotation(LogAudit.class)).willReturn(true);
 
         AuditContextHolder.setAuditContext(auditContextSpy);
@@ -79,9 +94,10 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
         assertThat(AuditContextHolder.getAuditContext()).isNull();
+        assertNotNull(auditContextSpy.getResponseTime());
         assertThat(auditContextSpy.getResponseTime()).isGreaterThan(500L);
         assertThat(auditContextSpy.getRequestPayload()).isEmpty();
-        Mockito.verify(auditContextSpy, times(1)).setRequestPayload(any());
+        verify(auditContextSpy, times(1)).setRequestPayload(any());
         verify(auditService).audit(auditContextSpy);
 
     }
@@ -91,9 +107,8 @@ class AuditInterceptorTest {
         AuditContext auditContext = new AuditContext();
         auditContext.setResponseTime(400L);
 
-        auditContextSpy = Mockito.spy(auditContext);
+        auditContextSpy = spy(auditContext);
         given(handler.hasMethodAnnotation(LogAudit.class)).willReturn(true);
-        assertThat(handler).isInstanceOf(HandlerMethod.class);
         AuditContextHolder.setAuditContext(auditContextSpy);
         interceptor.afterCompletion(request, response, handler, null);
         assertNotNull(auditContext);
@@ -101,9 +116,11 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
         assertThat(auditContextSpy.getRequestPayload()).isEmpty();
+        assertThat(auditContextSpy.getResponseTime()).isNotNull();
         assertThat(AuditContextHolder.getAuditContext()).isNull();
         assertThat(auditContextSpy.getResponseTime()).isLessThan(500L);
-        Mockito.verify(auditContextSpy, times(1)).setRequestPayload(any());
+        assertThat(auditContextSpy.getResponseTime()).isGreaterThan(1L);
+        verify(auditContextSpy, times(1)).setRequestPayload(any());
         verify(auditService).audit(auditContextSpy);
 
     }
@@ -111,7 +128,7 @@ class AuditInterceptorTest {
     @Test
     void shouldPrepareAuditContextWithHttpSemanticsOnResponse422() {
         AuditContext auditContext = new AuditContext();
-        auditContextSpy = Mockito.spy(auditContext);
+        auditContextSpy = spy(auditContext);
 
         given(handler.hasMethodAnnotation(LogAudit.class)).willReturn(true);
         assertThat(handler).isInstanceOf(HandlerMethod.class);
@@ -121,8 +138,7 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getHttpMethod()).isEqualTo(METHOD);
         assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(422);
-
-        Mockito.verify(auditContextSpy, times(1)).setRequestPayload(any());
+        verify(auditContextSpy, times(1)).setRequestPayload(any());
         verify(auditService).audit(auditContextSpy);
 
     }
@@ -130,20 +146,17 @@ class AuditInterceptorTest {
     @Test
     void shouldCheckIfDebugEnabled() {
         AuditContext auditContext = new AuditContext();
-        auditContextSpy = Mockito.spy(auditContext);
-
+        auditContextSpy = spy(auditContext);
         given(handler.hasMethodAnnotation(LogAudit.class)).willReturn(true);
-        assertThat(handler).isInstanceOf(HandlerMethod.class);
-        mockLogger = Mockito.mock(Logger.class);
-
         AuditContextHolder.setAuditContext(auditContextSpy);
         interceptor.afterCompletion(request, responseNew, handler, null);
 
-        when(mockLogger.isDebugEnabled()).thenReturn(false);
-        assertThat(auditContextSpy.getRequestPayload()).isEmpty();
-
-        Mockito.verify(auditContextSpy, times(1)).setRequestPayload(any());
+        verify(mockAppender, times(2)).doAppend(captor.capture());
+        verify(auditContextSpy, times(1)).setRequestPayload(any());
+        ILoggingEvent loggingEvent = captor.getAllValues().get(0);
+        assertEquals(Level.DEBUG,loggingEvent.getLevel());
         verify(auditService).audit(auditContextSpy);
+
 
     }
 

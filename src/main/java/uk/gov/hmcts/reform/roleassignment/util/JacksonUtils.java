@@ -117,6 +117,7 @@ public class JacksonUtils {
                                                                        .getRequest().getClientId()) == false)) {
                 subset.getAttributes().remove("caseType");
                 subset.getAttributes().remove("jurisdiction");
+                subset.setAuthorisations(null);
             }
             roleAssignmentSubsets.put(roleAssignment.getId(), subset);
         }
