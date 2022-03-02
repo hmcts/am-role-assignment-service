@@ -410,6 +410,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
         QueryRequest queryRequest = QueryRequest.builder()
             .roleType(roleType)
+            .actorId("123456")
             .build();
         MultipleQueryRequest multipleQueryRequest = MultipleQueryRequest.builder()
             .queryRequests(Collections.singletonList(queryRequest))
@@ -474,6 +475,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
 
         QueryRequest queryRequest = QueryRequest.builder()
+            .actorId("123456")
             .roleType(roleType)
             .build();
         MultipleQueryRequest multipleQueryRequest = MultipleQueryRequest.builder()
