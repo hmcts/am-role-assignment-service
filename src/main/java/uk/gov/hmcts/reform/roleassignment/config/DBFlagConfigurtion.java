@@ -18,7 +18,7 @@ public class DBFlagConfigurtion implements CommandLineRunner {
     @Autowired
     FlagConfigRepository flagConfigRepository;
 
-    @Value("${launchdarkly.sdk.environment}")
+    @Value("${LAUNCH_DARKLY_ENV:pr}")
     private String environment;
 
     @Value("${dbFeature.flags.enable}")
