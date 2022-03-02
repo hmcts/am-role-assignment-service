@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +22,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -188,29 +186,29 @@ public class ValidationUtil {
         return Arrays.stream(csv.split(",")).map(String::trim).anyMatch(value::equals);
     }
 
-    public static QueryRequest validateQueryRequests(QueryRequest query) {
+    public static MultipleQueryRequest validateQueryRequests(List<QueryRequest> queryRequests) {
+        queryRequests.forEach(ValidationUtil::validateQueryRequests);
+
+        return new MultipleQueryRequest(queryRequests);
+    }
+
+    public static void validateQueryRequests(QueryRequest query) {
         var actorIdInvalid = true;
         var caseIdInvalid = isAttributeEmpty(query.getAttributes(), "caseId");
 
-        if(CollectionUtils.isNotEmpty(query.getActorId())
+        if (CollectionUtils.isNotEmpty(query.getActorId())
             && StringUtils.isNotBlank(query.getActorId().get(0))) {
             actorIdInvalid = false;
         }
         if (actorIdInvalid && caseIdInvalid) {
             throw new BadRequestException(V1.Error.BAD_QUERY_REQUEST_MISSING_CASEID_ACTORID);
         }
-        return query;
     }
 
     public static boolean isAttributeEmpty(Map<String, List<String>> attributes, String attribute) {
-        return Optional.ofNullable(attributes).map(m -> m
-            .getOrDefault(attribute, Collections.emptyList()).stream().filter(s -> !s.isBlank())
-           .collect(Collectors.toList())).get().isEmpty();
-    }
-
-    public static MultipleQueryRequest validateQueryRequests(List<QueryRequest> queryRequests) {
-        queryRequests.forEach(ValidationUtil::validateQueryRequests);
-
-        return new MultipleQueryRequest(queryRequests);
+        return !MapUtils.isNotEmpty(attributes)
+            || !attributes.containsKey(attribute)
+            || !CollectionUtils.isNotEmpty(attributes.get(attribute))
+            || !StringUtils.isNotBlank(attributes.get(attribute).get(0));
     }
 }

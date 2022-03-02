@@ -31,12 +31,11 @@ public class QueryRoleAssignmentOrchestrator {
 
         long startTime = System.currentTimeMillis();
 
-        MultipleQueryRequest validQueries =
-            ValidationUtil.validateQueryRequests(Collections.singletonList(queryRequest));
+        ValidationUtil.validateQueryRequests(Collections.singletonList(queryRequest));
 
         List<Assignment> assignmentList =
             persistenceService.retrieveRoleAssignmentsByQueryRequest(
-                validQueries.getQueryRequests().get(0),
+                queryRequest,
                 pageNumber,
                 size,
                 sort,
@@ -56,12 +55,11 @@ public class QueryRoleAssignmentOrchestrator {
 
         long startTime = System.currentTimeMillis();
 
-        MultipleQueryRequest validQueries =
-            ValidationUtil.validateQueryRequests(queryRequest.getQueryRequests());
+        ValidationUtil.validateQueryRequests(queryRequest.getQueryRequests());
 
         List<Assignment> assignmentList =
             persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
-                validQueries,
+                queryRequest,
                 pageNumber,
                 size,
                 sort,

@@ -37,6 +37,7 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -235,11 +236,8 @@ public class PersistenceService {
                                                                   String direction,
                                                                   boolean existingFlag) {
 
+        List<String> roleTypes = addCaseTypeIfIdExists(searchRequest);
 
-        List<String> roleTypes = searchRequest.getRoleType();
-        if (ValidationUtil.isAttributeEmpty(searchRequest.getAttributes(), "caseId")) {
-            roleTypes.add(RoleType.CASE.name());
-        }
         Page<RoleAssignmentEntity> pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(Objects.requireNonNull(
                 Objects.requireNonNull(
@@ -283,15 +281,17 @@ public class PersistenceService {
                                                                           String direction,
                                                                           boolean existingFlag) {
 
-
         Specification<RoleAssignmentEntity> finalQuery = null;
         if (CollectionUtils.isNotEmpty(multipleQueryRequest.getQueryRequests())) {
+
+            List<String> roleTypes = addCaseTypeIfIdExists(multipleQueryRequest.getQueryRequests().get(0));
+
             Specification<RoleAssignmentEntity> initialQuery = Specification.where(
                 searchByActorIds(multipleQueryRequest.getQueryRequests().get(0).getActorId()))
                 .and(searchByGrantType(multipleQueryRequest.getQueryRequests().get(0).getGrantType()))
                 .and(searchByValidDate(multipleQueryRequest.getQueryRequests().get(0).getValidAt()))
                 .and(searchByAttributes(multipleQueryRequest.getQueryRequests().get(0).getAttributes()))
-                .and(searchByRoleType(multipleQueryRequest.getQueryRequests().get(0).getRoleType()))
+                .and(searchByRoleType(roleTypes))
                 .and(searchByRoleName(multipleQueryRequest.getQueryRequests().get(0).getRoleName()))
                 .and(searchByClassification(multipleQueryRequest.getQueryRequests().get(0).getClassification()))
                 .and(searchByRoleCategories(multipleQueryRequest.getQueryRequests().get(0).getRoleCategory()))
@@ -302,6 +302,9 @@ public class PersistenceService {
 
             if (multipleQueryRequest.getQueryRequests().size() > 1) {
                 for (var i = 1; i < multipleQueryRequest.getQueryRequests().size(); i++) {
+
+                    List<String> roleTypesMulti = addCaseTypeIfIdExists(multipleQueryRequest.getQueryRequests().get(i));
+
                     finalQuery = initialQuery.or(
                           searchByActorIds(multipleQueryRequest.getQueryRequests().get(i).getActorId())
                            .and(searchByRoleName(multipleQueryRequest.getQueryRequests().get(i).getRoleName()))
@@ -312,7 +315,7 @@ public class PersistenceService {
                            .and(searchByGrantType(multipleQueryRequest.getQueryRequests().get(i).getGrantType()))
                            .and(searchByValidDate(multipleQueryRequest.getQueryRequests().get(i).getValidAt()))
                            .and(searchByAttributes(multipleQueryRequest.getQueryRequests().get(i).getAttributes()))
-                           .and(searchByRoleType(multipleQueryRequest.getQueryRequests().get(i).getRoleType()))
+                           .and(searchByRoleType(roleTypesMulti))
                            .and(searchByClassification(multipleQueryRequest.getQueryRequests().get(i)
                                                            .getClassification()))
                            .and(searchByRoleCategories(multipleQueryRequest.getQueryRequests()
@@ -396,7 +399,17 @@ public class PersistenceService {
 
     public FlagConfig persistFlagConfig(FlagConfig flagConfig) {
         return flagConfigRepository.save(flagConfig);
+    }
 
+    public List<String> addCaseTypeIfIdExists(QueryRequest queryRequest) {
+        List<String> roleTypes = new ArrayList<>(queryRequest.getRoleType());
+        boolean caseIdExist = !ValidationUtil.isAttributeEmpty(queryRequest.getAttributes(), "caseId");
+        if (caseIdExist
+            && CollectionUtils.isNotEmpty(queryRequest.getRoleType())
+            && !roleTypes.contains("CASE")) {
+            roleTypes.add(RoleType.CASE.name());
+        }
+        return roleTypes;
     }
 
 }
