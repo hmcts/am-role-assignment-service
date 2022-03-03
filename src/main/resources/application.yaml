@@ -146,7 +146,7 @@ launchdarkly:
     key: ${LD_SDK_KEY:}
     environment: ${LAUNCH_DARKLY_ENV:pr}
     user: am-${LAUNCH_DARKLY_ENV:local}
-  runOnStartup: ${RUN_LD_ON_STARTUP:false}
+  runOnStartup: ${RUN_LD_ON_STARTUP:true}
 
 audit:
   log:
