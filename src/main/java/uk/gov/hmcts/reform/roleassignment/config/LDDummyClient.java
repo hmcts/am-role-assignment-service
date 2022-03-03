@@ -46,7 +46,7 @@ public class LDDummyClient implements LDClientInterface {
 
     @Override
     public boolean boolVariation(String featureKey, LDUser user, boolean defaultValue) {
-        return false;
+        return true;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class LDDummyClient implements LDClientInterface {
 
     @Override
     public boolean isFlagKnown(String featureKey) {
-        return false;
+        return true;
     }
 
     @Override
