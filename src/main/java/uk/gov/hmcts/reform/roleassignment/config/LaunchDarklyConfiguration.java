@@ -13,7 +13,7 @@ import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluatio
 @Configuration
 public class LaunchDarklyConfiguration implements WebMvcConfigurer {
 
-    @Value("${launchdarkly.runOnStartup:false}")
+    @Value("${launchdarkly.runOnStartup:true}")
     private boolean runOnStartup;
 
     @Bean
