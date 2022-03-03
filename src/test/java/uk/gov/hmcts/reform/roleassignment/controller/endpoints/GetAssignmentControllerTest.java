@@ -79,7 +79,7 @@ class GetAssignmentControllerTest {
             .buildResourceRoleAssignmentResponse(Status.LIVE);
         doReturn(expectedResponse).when(retrieveRoleAssignmentServiceMock).getAssignmentsByActor(actorId);
         String etag = "1";
-        doReturn(etag).when(retrieveRoleAssignmentServiceMock).retrieveETag(actorId);
+        //doReturn(etag).when(retrieveRoleAssignmentServiceMock).retrieveETag(actorId);
         ResponseEntity<RoleAssignmentResource> response = sut.retrieveRoleAssignmentsByActorId("",
                                                                                        etag, actorId);
         assertNotNull(response);
