@@ -39,6 +39,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
@@ -100,6 +101,8 @@ class PersistenceServiceTest {
     @Mock
     private FlagConfigRepository flagConfigRepository;
 
+    @Mock
+    FeatureToggleService featureToggleService;
 
     @InjectMocks
     private final PersistenceService sut = new PersistenceService(
@@ -195,6 +198,18 @@ class PersistenceServiceTest {
     }
 
     @Test
+    void skipPersistActorCache_disableCacheFalse() throws IOException, SQLException {
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(LIVE);
+        when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(true);
+
+        sut.persistActorCache(List.of(roleAssignment));
+
+        verify(persistenceUtil, times(0)).convertActorCacheToEntity(any());
+        verify(actorCacheRepository, times(0)).findByActorId(roleAssignment.getActorId());
+        verify(entityManager, times(0)).flush();
+    }
+
+    @Test
     void actorCache() throws IOException {
         ActorCache actorCache = sut.prepareActorCache(TestDataBuilder.buildRoleAssignment(LIVE));
         assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9c", actorCache.getActorId());
@@ -232,6 +247,17 @@ class PersistenceServiceTest {
         ActorCacheEntity result = sut.getActorCacheEntity(id);
         assertEquals(actorCacheEntity, result);
         verify(actorCacheRepository, times(1)).findByActorId(id);
+    }
+
+    @Test
+    void getActorCacheEntity_LDFlagCacheTrue() throws SQLException {
+        String id = UUID.randomUUID().toString();
+        ActorCacheEntity actorCacheEntity = TestDataBuilder.buildActorCacheEntity();
+        when(featureToggleService.isFlagEnabled(any(), any())).thenReturn(true);
+        when(actorCacheRepository.findByActorId(id)).thenReturn(actorCacheEntity);
+        ActorCacheEntity result = sut.getActorCacheEntity(id);
+        assertEquals(0L, result.getEtag());
+        verify(actorCacheRepository, times(0)).findByActorId(id);
     }
 
     @Test

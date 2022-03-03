@@ -7,9 +7,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,19 +69,7 @@ public class GetAssignmentController {
         ResponseEntity<RoleAssignmentResource> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
             actorId
         );
-        var responseHeaders = new HttpHeaders();
-        RoleAssignmentResource body = responseEntity.getBody();
-
-        if (body != null && CollectionUtils.isNotEmpty(body.getRoleAssignmentResponse())) {
-            long etag = retrieveRoleAssignmentService.retrieveETag(actorId);
-            String weakEtag = "W/\"" + etag + "\"";
-            responseHeaders.setETag(weakEtag);
-        }
-
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .headers(responseHeaders)
-            .body(body);
+        return ResponseEntity.status(HttpStatus.OK).body(responseEntity.getBody());
     }
 
     //**************** Get role configurations API ***************
