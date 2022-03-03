@@ -32,6 +32,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
@@ -56,6 +57,8 @@ import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecif
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByRoleName;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByRoleType;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByValidDate;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_NAME;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.DISABLE_ACTOR_CACHE_FLAG;
 
 @Service
 public class PersistenceService {
@@ -74,6 +77,8 @@ public class PersistenceService {
     private ActorCacheRepository actorCacheRepository;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
     private FlagConfigRepository flagConfigRepository;
+    @Autowired
+    private FeatureToggleService featureToggleService;
 
     @Value("${roleassignment.query.sortcolumn}")
     private String sortColumn;
@@ -133,10 +138,14 @@ public class PersistenceService {
 
     @Transactional
     public void persistActorCache(Collection<RoleAssignment> roleAssignments) {
+
+        if (featureToggleService.isFlagEnabled(SERVICE_NAME, DISABLE_ACTOR_CACHE_FLAG)) {
+            return;
+        }
         roleAssignments.forEach(roleAssignment -> {
             var actorCacheEntity = persistenceUtil
                 .convertActorCacheToEntity(prepareActorCache(roleAssignment));
-            ActorCacheEntity existingActorCache = null;
+            ActorCacheEntity existingActorCache;
             try {
                 existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
             } catch (Exception sqlException) {
@@ -170,6 +179,9 @@ public class PersistenceService {
 
     @Transactional
     public ActorCacheEntity getActorCacheEntity(String actorId) {
+        if (featureToggleService.isFlagEnabled(SERVICE_NAME, DISABLE_ACTOR_CACHE_FLAG)) {
+            return new ActorCacheEntity();
+        }
         try {
             return actorCacheRepository.findByActorId(actorId);
         } catch (Exception sqlException) {
@@ -183,9 +195,8 @@ public class PersistenceService {
 
         Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
         //convert into model class
-        List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(historyEntity -> persistenceUtil
-            .convertHistoryEntityToRoleAssignment(historyEntity)).collect(
-            Collectors.toList());
+        List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(
+            persistenceUtil::convertHistoryEntityToRoleAssignment).collect(Collectors.toList());
         logger.debug(
             " >> getAssignmentsByProcess execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
@@ -218,7 +229,7 @@ public class PersistenceService {
         try {
             Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
             //convert into model class
-            return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+            return roleAssignmentEntities.stream().map(persistenceUtil::convertEntityToRoleAssignment)
                 .collect(Collectors.toList());
         } catch (Exception sqlException) {
             throw new UnprocessableEntityException("SQL Error get by actor id: "
@@ -270,8 +281,6 @@ public class PersistenceService {
         return prepareQueryRequestResponse(existingFlag);
     }
 
-
-    @SuppressWarnings("unchecked")
     public List<Assignment> retrieveRoleAssignmentsByMultipleQueryRequest(MultipleQueryRequest multipleQueryRequest,
                                                                           Integer pageNumber,
                                                                           Integer size, String sort,
@@ -345,13 +354,13 @@ public class PersistenceService {
         List<Assignment> roleAssignmentList;
         if (!existingFlag) {
             roleAssignmentList = PageHolder.holder.get().stream()
-                .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+                .map(persistenceUtil::convertEntityToRoleAssignment)
                 .collect(Collectors.toList());
 
 
         } else {
             roleAssignmentList = PageHolder.holder.get().stream()
-                .map(role -> persistenceUtil.convertEntityToExistingRoleAssignment(role))
+                .map(persistenceUtil::convertEntityToExistingRoleAssignment)
                 .collect(Collectors.toList());
 
 
@@ -370,7 +379,7 @@ public class PersistenceService {
         Optional<RoleAssignmentEntity> roleAssignmentEntityOptional = roleAssignmentRepository.findById(assignmentId);
         if (roleAssignmentEntityOptional.isPresent()) {
             return roleAssignmentEntityOptional.stream()
-                .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+                .map(persistenceUtil::convertEntityToRoleAssignment)
                 .collect(Collectors.toList());
         }
         return Collections.emptyList();
