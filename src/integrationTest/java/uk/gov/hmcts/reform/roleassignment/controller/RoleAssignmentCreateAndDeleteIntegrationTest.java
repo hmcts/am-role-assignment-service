@@ -292,8 +292,13 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             .caseTypeId("Asylum")
             .jurisdiction("IA")
             .build();
+        Case retrievedCase3 = Case.builder().id("1234567890123456")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .build();
         doReturn(retrievedCase1).when(retrieveDataService).getCaseById("1234567890123457");
         doReturn(retrievedCase2).when(retrieveDataService).getCaseById("1234567890123458");
+        doReturn(retrievedCase3).when(retrieveDataService).getCaseById("1234567890123456");
         assertEquals(Integer.valueOf(4), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
 
@@ -358,19 +363,31 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     private String createRoleAssignmentRequestAdvanceDelete() {
 
-        return "{\"queryRequests\":[{\"actorId\":[\"23e4567-e89b-42d3-a456-556642445612\"]},"
-            + "{\"roleName\": [\"lead-judge\"]},"
-            + "{\"roleType\": [\"CASE\"]},"
-            + "{\"attributes\": {"
-            + "\"caseId\": [\"1234567890123456\"]}}"
+        return "{\"queryRequests\":[{\"actorId\":[\"123e4567-e89b-42d3-a456-556642445612\"],"
+            + "\"roleName\": [\"lead-judge\"],"
+            + "\"roleType\": [\"CASE\"]}"
             + "]}";
     }
 
     private String createRoleAssignmentRequestAdvanceDeleteMultiple() {
-        return "{\"queryRequests\":["
-            + "{\"roleName\": [\"lead-judge\"]},"
-            + "{\"roleType\": [\"CASE\"]}"
-            + "]}";
+        return "{\"queryRequests\" : [ "
+            + "{"
+            + "\"attributes\" : {"
+            + "\"caseId\" : [ \"1234567890123456\" ]"
+            + "}"
+            + "},"
+            + "{"
+            + "\"attributes\" : {"
+            + "\"caseId\" : [ \"1234567890123457\" ]"
+            + "}"
+            + "},"
+            + "{"
+            + "\"attributes\" : {"
+            + "\"caseId\" : [ \"1234567890123458\" ]"
+            + "}"
+            + "}"
+            + "]"
+            + "}";
     }
 
     private void assertAssignmentRecords() {

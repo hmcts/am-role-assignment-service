@@ -118,23 +118,24 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
-    public void retrieveRoleAssignmentsByQueryRequest_emptyQueryRequestAndPageSizeAndSort() throws Exception {
+    public void retrieveRoleAssignmentsByQueryRequest_PageSizeAndSort() throws Exception {
 
         logger.info("Retrieve Role Assignments with empty Query Request to verify return all entries with size 2");
 
         final MvcResult result = mockMvc.perform(post(URL)
                                                  .contentType(JSON_CONTENT_TYPE)
                                                  .headers(getHttpHeaders("2", "roleCategory"))
-                                                 .content(mapper.writeValueAsBytes(QueryRequest.builder().build())))
+                                                 .content(mapper.writeValueAsBytes(
+                                                     QueryRequest.builder()
+                                                         .actorId("123e4567-e89b-42d3-a456-556642445613").build())))
             .andExpect(status().isOk())
             .andReturn();
         JsonNode responseJsonNode = new ObjectMapper().readValue(result.getResponse().getContentAsString(),
                                                            JsonNode.class);
         assertFalse(responseJsonNode.get("roleAssignmentResponse").isEmpty());
         assertEquals(2, responseJsonNode.get("roleAssignmentResponse").size());
-        assertEquals("JUDICIAL", responseJsonNode.get("roleAssignmentResponse").get(0)
-            .get("roleCategory").asText());
-        assertNull(responseJsonNode.get("roleAssignmentResponse").get(1).get("roleCategory"));
+        assertEquals("ORGANISATION", responseJsonNode.get("roleAssignmentResponse").get(0)
+            .get("roleType").asText());
     }
 
     @Test
@@ -226,11 +227,11 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
-    public void retrieveRoleAssignmentsByQueryRequestV2_emptyQueryRequestsAndPageSize() throws Exception {
+    public void retrieveRoleAssignmentsByQueryRequestV2_PageSize() throws Exception {
 
         logger.info("Retrieve Role Assignments with empty Query with Sort Request to verify 2 entries sort by "
                         + "roleCategory and NULL roleCategory should go end");
-        QueryRequest queryRequest = QueryRequest.builder().build();
+        QueryRequest queryRequest = QueryRequest.builder().actorId("123e4567-e89b-42d3-a456-556642445613").build();
         MultipleQueryRequest queryRequests  =  MultipleQueryRequest.builder().queryRequests(List.of(queryRequest))
             .build();
 
@@ -245,19 +246,17 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
             .readValue(result.getResponse().getContentAsString(),JsonNode.class);
         assertFalse(responseJsonNode.get("roleAssignmentResponse").isEmpty());
         assertEquals(2, responseJsonNode.get("roleAssignmentResponse").size());
-        assertEquals("JUDICIAL", responseJsonNode.get("roleAssignmentResponse").get(0)
-            .get("roleCategory").asText());
-        assertNull(responseJsonNode.get("roleAssignmentResponse").get(1).get("roleCategory"));
-
+        assertEquals("ORGANISATION", responseJsonNode.get("roleAssignmentResponse").get(0)
+            .get("roleType").asText());
     }
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
-    public void retrieveRoleAssignmentsByQueryRequestV2_emptyQueryRequestsAndPageSizeAndSortDesc() throws Exception {
+    public void retrieveRoleAssignmentsByQueryRequestV2_PageSizeAndSortDesc() throws Exception {
 
         logger.info("Retrieve Role Assignments with empty Query with Sort Request to verify 2 entries sort by "
                         + "roleCategory and NULL roleCategory should go end");
-        QueryRequest queryRequest = QueryRequest.builder().build();
+        QueryRequest queryRequest = QueryRequest.builder().actorId("123e4567-e89b-42d3-a456-556642445613").build();
         MultipleQueryRequest queryRequests  =  MultipleQueryRequest.builder().queryRequests(List.of(queryRequest))
             .build();
         HttpHeaders headers = getHttpHeaders("2", "roleCategory");
@@ -273,9 +272,8 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
             .readValue(result.getResponse().getContentAsString(),JsonNode.class);
         assertFalse(responseJsonNode.get("roleAssignmentResponse").isEmpty());
         assertEquals(2, responseJsonNode.get("roleAssignmentResponse").size());
-        assertEquals("JUDICIAL", responseJsonNode.get("roleAssignmentResponse").get(0)
-            .get("roleCategory").asText());
-        assertNull(responseJsonNode.get("roleAssignmentResponse").get(1).get("roleCategory"));
+        assertEquals("ORGANISATION", responseJsonNode.get("roleAssignmentResponse").get(0)
+            .get("roleType").asText());
     }
 
     public static QueryRequest createQueryRequest() {

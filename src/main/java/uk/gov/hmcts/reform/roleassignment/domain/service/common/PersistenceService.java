@@ -321,7 +321,7 @@ public class PersistenceService {
                            .and(searchByRoleCategories(multipleQueryRequest.getQueryRequests()
                                                            .get(i).getRoleCategory()))
                            .and(searchByReadOnly(multipleQueryRequest.getQueryRequests().get(i).getReadOnly())));
-
+                    initialQuery = finalQuery;
                 }
             } else {
                 finalQuery = initialQuery;
@@ -402,10 +402,11 @@ public class PersistenceService {
     }
 
     public List<String> addCaseTypeIfIdExists(QueryRequest queryRequest) {
-        List<String> roleTypes = new ArrayList<>(queryRequest.getRoleType());
-        boolean caseIdExist = !ValidationUtil.isAttributeEmpty(queryRequest.getAttributes(), "caseId");
-        if (caseIdExist
-            && CollectionUtils.isNotEmpty(queryRequest.getRoleType())
+        List<String> roleTypes = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(queryRequest.getRoleType())) {
+            roleTypes.addAll(queryRequest.getRoleType());
+        }
+        if (!ValidationUtil.isAttributeEmpty(queryRequest.getAttributes(), "caseId")
             && !roleTypes.contains("CASE")) {
             roleTypes.add(RoleType.CASE.name());
         }

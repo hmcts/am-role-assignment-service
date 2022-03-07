@@ -1182,6 +1182,25 @@ class PersistenceServiceTest {
     }
 
     @Test
+    void addCaseTypeIfIdExists_idNotExisting_emptyRoleType_noAdd() {
+
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleTypesInitial = Collections.emptyList();
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleTypesInitial)
+            .build();
+
+        List<String> roleTypesResult = sut.addCaseTypeIfIdExists(queryRequest);
+
+        assertEquals(roleTypesInitial, roleTypesResult);
+    }
+
+    @Test
     void addCaseTypeIfIdExists_idExisting_noAdd() {
 
         List<String> actorId = Arrays.asList(
@@ -1224,6 +1243,30 @@ class PersistenceServiceTest {
 
         List<String> roleTypesResult = sut.addCaseTypeIfIdExists(queryRequest);
         List<String> roleTypesExpectedResult = Arrays.asList("ORGANISATION", "CASE");
+
+        assertEquals(roleTypesExpectedResult, roleTypesResult);
+    }
+
+    @Test
+    void addCaseTypeIfIdExists_idExisting_emptyRoleTypes_add() {
+
+        List<String> actorId = Arrays.asList(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleTypesInitial = Collections.emptyList();
+
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", List.of("1234567891234567"));
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleTypesInitial)
+            .attributes(attr)
+            .build();
+
+        List<String> roleTypesResult = sut.addCaseTypeIfIdExists(queryRequest);
+        List<String> roleTypesExpectedResult = Collections.singletonList("CASE");
 
         assertEquals(roleTypesExpectedResult, roleTypesResult);
     }
