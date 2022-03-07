@@ -438,7 +438,7 @@ dependencies {
     exclude group: 'junit', module: 'junit'
   }
 
-  testImplementation 'com.github.hmcts:befta-fw:8.7.1'
+  testImplementation 'com.github.hmcts:befta-fw:8.7.2-Categories'
 
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.5.RELEASE'
 
