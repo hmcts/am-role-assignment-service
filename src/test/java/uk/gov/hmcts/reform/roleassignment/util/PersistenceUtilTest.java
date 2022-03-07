@@ -107,11 +107,6 @@ class PersistenceUtilTest {
     }
 
     @Test
-    void convertActorCacheToEntity() throws IOException {
-        assertNotNull(persistenceUtil.convertActorCacheToEntity(TestDataBuilder.buildActorCache()));
-    }
-
-    @Test
     void convertHistoryEntityToRoleAssignment() throws IOException {
         final HistoryEntity historyEntity = TestDataBuilder.buildHistoryEntity(
             TestDataBuilder.buildRoleAssignment(Status.LIVE),

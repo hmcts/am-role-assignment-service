@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -14,8 +13,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
-import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
-import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
 import uk.gov.hmcts.reform.roleassignment.data.FlagConfig;
@@ -26,7 +23,6 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
@@ -57,8 +53,6 @@ import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecif
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByRoleName;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByRoleType;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByValidDate;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_NAME;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.DISABLE_ACTOR_CACHE_FLAG;
 
 @Service
 public class PersistenceService {
@@ -74,7 +68,6 @@ public class PersistenceService {
     private RequestRepository requestRepository;
     private RoleAssignmentRepository roleAssignmentRepository;
     private PersistenceUtil persistenceUtil;
-    private ActorCacheRepository actorCacheRepository;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
     private FlagConfigRepository flagConfigRepository;
     @Autowired
@@ -91,14 +84,12 @@ public class PersistenceService {
 
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
                               RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
-                              ActorCacheRepository actorCacheRepository,
                               DatabseChangelogLockRepository databseChangelogLockRepository,
                               FlagConfigRepository flagConfigRepository) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
         this.persistenceUtil = persistenceUtil;
-        this.actorCacheRepository = actorCacheRepository;
         this.databseChangelogLockRepository = databseChangelogLockRepository;
         this.flagConfigRepository = flagConfigRepository;
     }
@@ -134,60 +125,6 @@ public class PersistenceService {
         ).collect(Collectors.toSet());
         roleAssignmentEntities.forEach(roleAssignmentEntity -> entityManager.persist(roleAssignmentEntity));
         entityManager.flush();
-    }
-
-    @Transactional
-    public void persistActorCache(Collection<RoleAssignment> roleAssignments) {
-
-        if (featureToggleService.isFlagEnabled(SERVICE_NAME, DISABLE_ACTOR_CACHE_FLAG)) {
-            return;
-        }
-        roleAssignments.forEach(roleAssignment -> {
-            var actorCacheEntity = persistenceUtil
-                .convertActorCacheToEntity(prepareActorCache(roleAssignment));
-            ActorCacheEntity existingActorCache;
-            try {
-                existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
-            } catch (Exception sqlException) {
-                throw new UnprocessableEntityException("Error during SQL call actorCache"
-                                                      + " was interrupted or blocked. " + sqlException);
-            }
-            if (existingActorCache != null) {
-                actorCacheEntity.setEtag(existingActorCache.getEtag());
-                entityManager.merge(actorCacheEntity);
-            } else {
-                entityManager.persist(actorCacheEntity);
-            }
-        });
-        try {
-
-            entityManager.flush();
-
-        } catch (Exception exception) {
-
-            throw new UnprocessableEntityException("Error occurred flush: " + exception.getMessage());
-
-        }
-    }
-
-    @NotNull
-    protected ActorCache prepareActorCache(RoleAssignment roleAssignment) {
-        var actorCache = new ActorCache();
-        actorCache.setActorId(roleAssignment.getActorId());
-        return actorCache;
-    }
-
-    @Transactional
-    public ActorCacheEntity getActorCacheEntity(String actorId) {
-        if (featureToggleService.isFlagEnabled(SERVICE_NAME, DISABLE_ACTOR_CACHE_FLAG)) {
-            return new ActorCacheEntity();
-        }
-        try {
-            return actorCacheRepository.findByActorId(actorId);
-        } catch (Exception sqlException) {
-            throw new UnprocessableEntityException("Error: SQL call actorCache was interrupted or "
-                                                       + "blocked. " + sqlException.getMessage());
-        }
     }
 
     public List<RoleAssignment> getAssignmentsByProcess(String process, String reference, String status) {
