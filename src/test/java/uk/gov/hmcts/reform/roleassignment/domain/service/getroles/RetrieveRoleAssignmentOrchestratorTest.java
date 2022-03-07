@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
-import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
@@ -124,18 +123,6 @@ class RetrieveRoleAssignmentOrchestratorTest {
         ResponseEntity<RoleAssignmentResource> response = sut.getAssignmentsByActor(actorId);
         assertNotNull(response.getBody());
         assertNotNull(response.getBody().getRoleAssignmentResponse());
-    }
-
-    @Test
-    void getRoleAssignment_shouldRetrieveETag() throws Exception {
-
-        String actorId = "123e4567-e89b-42d3-a456-556642445678";
-        ResponseEntity<Object> roles = TestDataBuilder.buildRoleAssignmentResponse(Status.CREATED, Status.LIVE, false);
-        ActorCacheEntity actorCacheEntity = TestDataBuilder.buildActorCacheEntity();
-        when(persistenceService.getActorCacheEntity(actorId)).thenReturn(actorCacheEntity);
-        long etag = sut.retrieveETag(actorId);
-        assertEquals(1, etag);
-        verify(persistenceService, times(1)).getActorCacheEntity(any(String.class));
     }
 
     @Test
