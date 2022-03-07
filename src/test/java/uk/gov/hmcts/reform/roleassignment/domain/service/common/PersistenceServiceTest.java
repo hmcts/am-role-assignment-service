@@ -1064,26 +1064,6 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void persistActorCacheException() throws IOException {
-        doThrow(OptimisticLockException.class).when(entityManager).flush();
-
-        Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
-
-        assertThrows(UnprocessableEntityException.class, () ->
-            sut.persistActorCache(roleAssignments));
-    }
-
-    @Test
-    void persistActorCacheSqlException() throws IOException, SQLException {
-        doThrow(SQLException.class).when(actorCacheRepository).findByActorId(any());
-
-        Collection<RoleAssignment> roleAssignments = TestDataBuilder.buildRequestedRoleCollection(CREATED);
-
-        assertThrows(UnprocessableEntityException.class, () ->
-            sut.persistActorCache(roleAssignments));
-    }
-
-    @Test
     void addCaseTypeIfIdExists_idNotExisting_noAdd() {
 
         List<String> actorId = Arrays.asList(
