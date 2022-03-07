@@ -23,7 +23,7 @@ plugins {
   id 'org.sonarqube' version '3.2.0'
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.22'
   id 'au.com.dius.pact' version '4.1.7' //do not change this version or serenity reports will fail to generate
-  id 'org.flywaydb.flyway' version '8.4.4'
+  id 'org.flywaydb.flyway' version '8.5.2'
 }
 
 apply plugin: "info.solidsoft.pitest"
