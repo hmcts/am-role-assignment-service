@@ -2,12 +2,10 @@ package uk.gov.hmcts.reform.roleassignment.util;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.FlagConfig;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FlagRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -23,8 +21,6 @@ import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
-
-import static java.time.LocalTime.now;
 
 @Service
 public class PersistenceUtil {
@@ -93,15 +89,6 @@ public class PersistenceUtil {
                                 ? roleAssignment.getAuthorisations().toArray(new String[0]) : null)
             .isNewFlag(isNewFlag)
             .build();
-    }
-
-    public ActorCacheEntity convertActorCacheToEntity(ActorCache actorCache) {
-        return ActorCacheEntity.builder()
-            .actorId(actorCache.getActorId())
-            .etag(actorCache.getEtag())
-            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(now()))
-            .build();
-
     }
 
     public RoleAssignment convertHistoryEntityToRoleAssignment(HistoryEntity historyEntity) {

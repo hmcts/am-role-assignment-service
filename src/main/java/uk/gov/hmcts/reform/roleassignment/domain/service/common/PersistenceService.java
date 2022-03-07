@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -14,8 +13,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
-import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
-import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
 import uk.gov.hmcts.reform.roleassignment.data.FlagConfig;
@@ -26,13 +23,13 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
@@ -74,9 +71,10 @@ public class PersistenceService {
     private RequestRepository requestRepository;
     private RoleAssignmentRepository roleAssignmentRepository;
     private PersistenceUtil persistenceUtil;
-    private ActorCacheRepository actorCacheRepository;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
     private FlagConfigRepository flagConfigRepository;
+    @Autowired
+    private FeatureToggleService featureToggleService;
 
     @Value("${roleassignment.query.sortcolumn}")
     private String sortColumn;
@@ -89,14 +87,12 @@ public class PersistenceService {
 
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
                               RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
-                              ActorCacheRepository actorCacheRepository,
                               DatabseChangelogLockRepository databseChangelogLockRepository,
                               FlagConfigRepository flagConfigRepository) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
         this.persistenceUtil = persistenceUtil;
-        this.actorCacheRepository = actorCacheRepository;
         this.databseChangelogLockRepository = databseChangelogLockRepository;
         this.flagConfigRepository = flagConfigRepository;
     }
@@ -134,61 +130,13 @@ public class PersistenceService {
         entityManager.flush();
     }
 
-    @Transactional
-    public void persistActorCache(Collection<RoleAssignment> roleAssignments) {
-        roleAssignments.forEach(roleAssignment -> {
-            var actorCacheEntity = persistenceUtil
-                .convertActorCacheToEntity(prepareActorCache(roleAssignment));
-            ActorCacheEntity existingActorCache = null;
-            try {
-                existingActorCache = actorCacheRepository.findByActorId(roleAssignment.getActorId());
-            } catch (Exception sqlException) {
-                throw new UnprocessableEntityException("Error during SQL call actorCache"
-                                                      + " was interrupted or blocked. " + sqlException);
-            }
-            if (existingActorCache != null) {
-                actorCacheEntity.setEtag(existingActorCache.getEtag());
-                entityManager.merge(actorCacheEntity);
-            } else {
-                entityManager.persist(actorCacheEntity);
-            }
-        });
-        try {
-
-            entityManager.flush();
-
-        } catch (Exception exception) {
-
-            throw new UnprocessableEntityException("Error occurred flush: " + exception.getMessage());
-
-        }
-    }
-
-    @NotNull
-    protected ActorCache prepareActorCache(RoleAssignment roleAssignment) {
-        var actorCache = new ActorCache();
-        actorCache.setActorId(roleAssignment.getActorId());
-        return actorCache;
-    }
-
-    @Transactional
-    public ActorCacheEntity getActorCacheEntity(String actorId) {
-        try {
-            return actorCacheRepository.findByActorId(actorId);
-        } catch (Exception sqlException) {
-            throw new UnprocessableEntityException("Error: SQL call actorCache was interrupted or "
-                                                       + "blocked. " + sqlException.getMessage());
-        }
-    }
-
     public List<RoleAssignment> getAssignmentsByProcess(String process, String reference, String status) {
         long startTime = System.currentTimeMillis();
 
         Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
         //convert into model class
-        List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(historyEntity -> persistenceUtil
-            .convertHistoryEntityToRoleAssignment(historyEntity)).collect(
-            Collectors.toList());
+        List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(
+            persistenceUtil::convertHistoryEntityToRoleAssignment).collect(Collectors.toList());
         logger.debug(
             " >> getAssignmentsByProcess execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
@@ -221,7 +169,7 @@ public class PersistenceService {
         try {
             Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
             //convert into model class
-            return roleAssignmentEntities.stream().map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+            return roleAssignmentEntities.stream().map(persistenceUtil::convertEntityToRoleAssignment)
                 .collect(Collectors.toList());
         } catch (Exception sqlException) {
             throw new UnprocessableEntityException("SQL Error get by actor id: "
@@ -273,8 +221,6 @@ public class PersistenceService {
         return prepareQueryRequestResponse(existingFlag);
     }
 
-
-    @SuppressWarnings("unchecked")
     public List<Assignment> retrieveRoleAssignmentsByMultipleQueryRequest(MultipleQueryRequest multipleQueryRequest,
                                                                           Integer pageNumber,
                                                                           Integer size, String sort,
@@ -353,13 +299,13 @@ public class PersistenceService {
         List<Assignment> roleAssignmentList;
         if (!existingFlag) {
             roleAssignmentList = PageHolder.holder.get().stream()
-                .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+                .map(persistenceUtil::convertEntityToRoleAssignment)
                 .collect(Collectors.toList());
 
 
         } else {
             roleAssignmentList = PageHolder.holder.get().stream()
-                .map(role -> persistenceUtil.convertEntityToExistingRoleAssignment(role))
+                .map(persistenceUtil::convertEntityToExistingRoleAssignment)
                 .collect(Collectors.toList());
 
 
@@ -378,7 +324,7 @@ public class PersistenceService {
         Optional<RoleAssignmentEntity> roleAssignmentEntityOptional = roleAssignmentRepository.findById(assignmentId);
         if (roleAssignmentEntityOptional.isPresent()) {
             return roleAssignmentEntityOptional.stream()
-                .map(role -> persistenceUtil.convertEntityToRoleAssignment(role))
+                .map(persistenceUtil::convertEntityToRoleAssignment)
                 .collect(Collectors.toList());
         }
         return Collections.emptyList();

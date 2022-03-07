@@ -262,12 +262,10 @@ public class DeleteRoleAssignmentOrchestrator {
             for (RoleAssignment requestedRole : validatedAssignmentRequest.getRequestedRoles()) {
                 persistenceService.deleteRoleAssignmentByActorId(requestedRole.getActorId());
             }
-            persistenceService.persistActorCache(validatedAssignmentRequest.getRequestedRoles());
         } else {
             for (RoleAssignment requestedRole : validatedAssignmentRequest.getRequestedRoles()) {
                 persistenceService.deleteRoleAssignment(requestedRole);
             }
-            persistenceService.persistActorCache(validatedAssignmentRequest.getRequestedRoles());
         }
     }
 
