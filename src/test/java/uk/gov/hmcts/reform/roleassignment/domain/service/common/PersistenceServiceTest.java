@@ -1,15 +1,12 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,8 +15,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
-import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
-import uk.gov.hmcts.reform.roleassignment.data.ActorCacheRepository;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
 import uk.gov.hmcts.reform.roleassignment.data.FlagConfig;
@@ -30,7 +25,6 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
@@ -39,10 +33,10 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
+import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
-import javax.persistence.OptimisticLockException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -51,7 +45,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -68,7 +61,6 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -88,8 +80,6 @@ class PersistenceServiceTest {
     @Mock
     private PersistenceUtil persistenceUtil;
     @Mock
-    private ActorCacheRepository actorCacheRepository;
-    @Mock
     private DatabseChangelogLockRepository databseChangelogLockRepository;
     @Mock
     EntityManager entityManager;
@@ -100,10 +90,12 @@ class PersistenceServiceTest {
     @Mock
     private FlagConfigRepository flagConfigRepository;
 
+    @Mock
+    FeatureToggleService featureToggleService;
 
     @InjectMocks
     private final PersistenceService sut = new PersistenceService(
-        historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil, actorCacheRepository,
+        historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil,
         databseChangelogLockRepository,
         flagConfigRepository
     );
@@ -172,77 +164,6 @@ class PersistenceServiceTest {
         verify(entityManager, times(2)).persist(any());
         verify(entityManager, times(1)).flush();
     }
-
-    @Test
-    void persistActorCache() throws IOException, SQLException {
-        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(LIVE);
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.createObjectNode();
-        ActorCacheEntity entity = new ActorCacheEntity(roleAssignment.getActorId(), 1234, rootNode);
-        ActorCacheEntity entity1 = new ActorCacheEntity(roleAssignment.getActorId(), 12, rootNode);
-        TestDataBuilder.prepareActorCache(roleAssignment);
-        when(persistenceUtil.convertActorCacheToEntity(any())).thenReturn(entity);
-        when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(entity1);
-        Collection<RoleAssignment> roleAssignmentCollation = new ArrayList<>();
-        roleAssignmentCollation.add(roleAssignment);
-        sut.persistActorCache(roleAssignmentCollation);
-
-        assertEquals(entity.getActorId(), roleAssignmentCollation.iterator().next().getActorId());
-        assertEquals(entity.getEtag(), entity1.getEtag());
-        verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
-        verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
-        verify(entityManager, times(1)).flush();
-    }
-
-    @Test
-    void actorCache() throws IOException {
-        ActorCache actorCache = sut.prepareActorCache(TestDataBuilder.buildRoleAssignment(LIVE));
-        assertEquals("21334a2b-79ce-44eb-9168-2d49a744be9c", actorCache.getActorId());
-    }
-
-    @Test
-    void persistActorCache_nullEntity() throws IOException, SQLException {
-        RoleAssignment roleAssignment = Mockito.spy(TestDataBuilder.buildRoleAssignment(LIVE));
-        roleAssignment.setActorId(null);
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.createObjectNode();
-        ActorCacheEntity entity = Mockito.spy(new ActorCacheEntity(roleAssignment.getActorId(), 1234, rootNode));
-
-        TestDataBuilder.prepareActorCache(roleAssignment);
-        when(persistenceUtil.convertActorCacheToEntity(any())).thenReturn(entity);
-        when(actorCacheRepository.findByActorId(roleAssignment.getActorId())).thenReturn(null);
-        when(actorCacheRepository.save(entity)).thenReturn(entity);
-        Collection<RoleAssignment> roleAssignmentCollation = new ArrayList<>();
-        roleAssignmentCollation.add(roleAssignment);
-        sut.persistActorCache(roleAssignmentCollation);
-
-        assertNull(entity.getActorId());
-        verify(roleAssignment, times(5)).getActorId();
-        verify(persistenceUtil, times(1)).convertActorCacheToEntity(any());
-        verify(actorCacheRepository, times(1)).findByActorId(roleAssignment.getActorId());
-        verify(entityManager, times(1)).persist(any());
-        verify(entityManager, times(1)).flush();
-    }
-
-    @Test
-    void getActorCacheEntity() throws SQLException {
-        String id = UUID.randomUUID().toString();
-        ActorCacheEntity actorCacheEntity = TestDataBuilder.buildActorCacheEntity();
-        when(actorCacheRepository.findByActorId(id)).thenReturn(actorCacheEntity);
-        ActorCacheEntity result = sut.getActorCacheEntity(id);
-        assertEquals(actorCacheEntity, result);
-        verify(actorCacheRepository, times(1)).findByActorId(id);
-    }
-
-    @Test
-    void getActorCacheEntityException() throws SQLException {
-        String uuid = UUID.randomUUID().toString();
-        doThrow(SQLException.class).when(actorCacheRepository).findByActorId(any());
-        assertThrows(UnprocessableEntityException.class, () ->
-            sut.getActorCacheEntity(uuid));
-    }
-
-
 
     @Test
     void getExistingRoleByProcessAndReference() throws IOException {
@@ -1270,6 +1191,4 @@ class PersistenceServiceTest {
 
         assertEquals(roleTypesExpectedResult, roleTypesResult);
     }
-
-
 }
