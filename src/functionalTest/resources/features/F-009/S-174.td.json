@@ -10,7 +10,6 @@
     "body": {
       "queryRequests": [
         {
-          "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "readOnly": false,
           "roleCategory": ["LEGAL_OPERATIONS"],
           "attributes": {
