@@ -22,6 +22,7 @@ java:
     ENABLE_DB_MIGRATE: true
     BYPASS_ORG_DROOL_RULE: true
     RUN_DB_MIGRATION_ON_STARTUP: true
+    RUN_LD_ON_STARTUP: true
   postgresql:
     enabled: true
     postgresqlUsername: role_assignment
