@@ -15,11 +15,13 @@
     "body": {
       "queryRequests": [
         {
+          "actorId": "123e4567-e89b-42d3-a456-556642445999",
           "attributes": {
             "primaryLocation": ["S190abc"]
           }
         },
         {
+          "actorId": "${[scenarioContext][parentContext][childContexts][S-190_Multiple_Org_Role_Creation][testData][request][body][roleRequest][reference]}",
           "attributes": {
             "primaryLocation": ["S190abc"],
             "jurisdiction": ["IA"]
