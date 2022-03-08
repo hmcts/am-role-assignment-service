@@ -17,7 +17,6 @@ public class LaunchDarklyConfiguration implements WebMvcConfigurer {
     private boolean runOnStartup;
 
     @Bean
-    //@ConditionalOnProperty(prefix = "launchdarkly", name = "runOnStartup", havingValue = "true")
     public LDClientInterface ldClient(@Value("${launchdarkly.sdk.key}") String sdkKey) {
         return runOnStartup ? new LDClient(sdkKey) : new LDDummyClient();
     }
