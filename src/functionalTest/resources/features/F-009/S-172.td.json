@@ -11,7 +11,6 @@
     "body": {
       "queryRequests": [
         {
-          "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "hasAttributes": ["jurisdiction"],
           "roleCategory": ["LEGAL_OPERATIONS"],
           "attributes": {
@@ -20,7 +19,6 @@
           }
         },
         {
-          "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "attributes": {
             "primaryLocation": ["abc"],
             "jurisdiction": ["IA"]
