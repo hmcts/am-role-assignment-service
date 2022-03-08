@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.config;
 
 import com.launchdarkly.sdk.server.LDClient;
+import com.launchdarkly.sdk.server.interfaces.LDClientInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,9 +13,12 @@ import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluatio
 @Configuration
 public class LaunchDarklyConfiguration implements WebMvcConfigurer {
 
+    @Value("${launchdarkly.runOnStartup:true}")
+    private boolean runOnStartup;
+
     @Bean
-    public LDClient ldClient(@Value("${launchdarkly.sdk.key}") String sdkKey) {
-        return new LDClient(sdkKey);
+    public LDClientInterface ldClient(@Value("${launchdarkly.sdk.key}") String sdkKey) {
+        return runOnStartup ? new LDClient(sdkKey) : new LDDummyClient();
     }
 
     @Autowired
