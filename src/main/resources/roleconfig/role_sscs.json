@@ -1,0 +1,176 @@
+[
+  {
+    "name": "hearing-manager",
+    "label": "Hearing Manager",
+    "description": "Hearing Manager for caseworker users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-manager",
+    "label": "Hearing Manager",
+    "description": "Hearing Manager for admin users",
+    "category": "ADMIN",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-view",
+    "label": "Hearing View",
+    "description": "Hearing View for judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-view",
+    "label": "Hearing View",
+    "description": "Hearing View for caseworker users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-view",
+    "label": "Hearing View",
+    "description": "Hearing View for admin users",
+    "category": "ADMIN",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-listed",
+    "label": "Hearing Listed",
+    "description": "Hearing Listed for OGD users",
+    "category": "OTHER_GOV_DEPT",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
+          }
+        }
+      }
+    ]
+  }
+]
