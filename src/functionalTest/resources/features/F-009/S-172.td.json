@@ -11,6 +11,7 @@
     "body": {
       "queryRequests": [
         {
+          "actorId": ["${[scenarioContext][childContexts][S-106_Multiple_Org_Role_Creation][testData][request][body][requestedRoles][0][actorId]}"],
           "hasAttributes": ["jurisdiction"],
           "roleCategory": ["LEGAL_OPERATIONS"],
           "attributes": {
@@ -19,6 +20,7 @@
           }
         },
         {
+          "actorId": ["${[scenarioContext][childContexts][S-106_Multiple_Org_Role_Creation][testData][request][body][requestedRoles][0][actorId]}"],
           "attributes": {
             "primaryLocation": ["abc"],
             "jurisdiction": ["IA"]
