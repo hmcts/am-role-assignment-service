@@ -10,6 +10,7 @@
     "body": {
       "queryRequests": [
         {
+          "actorId": ["${[scenarioContext][childContexts][S-106_Multiple_Org_Role_Creation][testData][request][body][requestedRoles][1][actorId]}"],
           "readOnly": false,
           "roleCategory": ["LEGAL_OPERATIONS"],
           "attributes": {
@@ -31,18 +32,6 @@
           "roleCategory" : "LEGAL_OPERATIONS",
           "roleName" : "[[ANYTHING_PRESENT]]",
           "readOnly" : false,
-          "attributes" : {
-            "contractType" : "Salaried",
-            "primaryLocation" : "abc",
-            "jurisdiction" : "IA",
-            "substantive": "N"
-          }
-        },
-        {
-          "_extends_": "ResponseRoleAssignment",
-          "actorId": "[[ANYTHING_PRESENT]]",
-          "roleCategory" : "LEGAL_OPERATIONS",
-          "roleName" : "[[ANYTHING_PRESENT]]",
           "attributes" : {
             "contractType" : "Salaried",
             "primaryLocation" : "abc",

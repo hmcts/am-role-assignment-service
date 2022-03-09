@@ -15,13 +15,13 @@
     "body": {
       "queryRequests": [
         {
-          "actorId": "${[scenarioContext][parentContext][childContexts][S-190_Multiple_Org_Role_Creation][testData][request][body][roleRequest][reference]}",
+          "actorId": ["${[scenarioContext][parentContext][childContexts][S-190_Multiple_Org_Role_Creation][testData][request][body][roleRequest][reference]}"],
           "attributes": {
             "primaryLocation": ["S190abc"]
           }
         },
         {
-          "actorId": "${[scenarioContext][parentContext][childContexts][S-190_Multiple_Org_Role_Creation][testData][request][body][roleRequest][reference]}",
+          "actorId": ["${[scenarioContext][parentContext][childContexts][S-190_Multiple_Org_Role_Creation][testData][request][body][roleRequest][reference]}"],
           "attributes": {
             "primaryLocation": ["S190abc"],
             "jurisdiction": ["IA"]
