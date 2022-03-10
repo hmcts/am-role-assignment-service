@@ -4,6 +4,7 @@
     "label": "Judge",
     "description": "Judge role for judicial users",
     "category": "JUDICIAL",
+    "type": "ORGANISATION",
     "substantive": true,
     "patterns": [
       {
@@ -33,6 +34,7 @@
     "label": "Case Allocator",
     "description": "Case Allocator role for judicial users",
     "category": "JUDICIAL",
+    "type": "ORGANISATION",
     "substantive": false,
     "patterns": [
       {
@@ -53,7 +55,17 @@
             "mandatory": true
           }
         }
-      },
+      }
+    ]
+  },
+  {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for judicial users",
+    "category": "JUDICIAL",
+    "type": "CASE",
+    "substantive": false,
+    "patterns": [
       {
         "roleType": {
           "mandatory": true,
@@ -85,6 +97,7 @@
     "label": "Task Supervisor",
     "description": "Task Supervisor role for judicial users",
     "category": "JUDICIAL",
+    "type": "ORGANISATION",
     "substantive": false,
     "patterns": [
       {
@@ -113,6 +126,7 @@
     "label": "Senior Judge",
     "description": "Senior Judge role for judicial users",
     "category": "JUDICIAL",
+    "type": "ORGANISATION",
     "substantive": true,
     "patterns": [
       {
@@ -142,6 +156,7 @@
     "label": "Leadership Judge",
     "description": "Leadership Judge role for judicial users",
     "category": "JUDICIAL",
+    "type": "ORGANISATION",
     "substantive": true,
     "patterns": [
       {
@@ -171,6 +186,7 @@
     "label": "Fee Paid Judge",
     "description": "Fee Paid Judge role for judicial users",
     "category": "JUDICIAL",
+    "type": "ORGANISATION",
     "substantive": true,
     "patterns": [
       {
@@ -200,6 +216,7 @@
     "label": "HMCTS Judiciary",
     "description": "HMCTS Judiciary role for judicial users",
     "category": "JUDICIAL",
+    "type": "ORGANISATION",
     "substantive": false,
     "patterns": [
       {
@@ -228,6 +245,7 @@
     "label": "Lead Judge",
     "description": "Lead Judge role for judicial users",
     "category": "JUDICIAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -261,6 +279,7 @@
     "label": "Hearing Judge",
     "description": "Hearing Judge role for judicial users",
     "category": "JUDICIAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -294,6 +313,7 @@
     "label": "FTPA Judge",
     "description": "FTPA Judge role for judicial users",
     "category": "JUDICIAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -327,6 +347,7 @@
     "label": "Hearing Panel Judge",
     "description": "Hearing Panel Judge role for judicial users",
     "category": "JUDICIAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -360,7 +381,8 @@
     "label": "Tribunal Caseworker",
     "description": "Tribunal caseworker role for staff users",
     "category": "LEGAL_OPERATIONS",
-    "substantive": false,
+    "type": "ORGANISATION",
+    "substantive": true,
     "patterns": [
       {
         "roleType": {
@@ -384,7 +406,17 @@
             "mandatory": true
           }
         }
-      },
+      }
+    ]
+  },
+  {
+    "name": "tribunal-caseworker",
+    "label": "Tribunal Caseworker",
+    "description": "Tribunal caseworker role for staff users",
+    "category": "LEGAL_OPERATIONS",
+    "type": "CASE",
+    "substantive": false,
+    "patterns": [
       {
         "roleType": {
           "mandatory": true,
@@ -416,6 +448,7 @@
     "label": "Senior Tribunal Caseworker",
     "description": "Senior Tribunal caseworker role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "type": "ORGANISATION",
     "substantive": true,
     "patterns": [
       {
@@ -448,6 +481,7 @@
     "label": "Case Allocator",
     "description": "Case Allocator role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "type": "ORGANISATION",
     "substantive": false,
     "patterns": [
       {
@@ -500,10 +534,45 @@
     ]
   },
   {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for staff users",
+    "category": "LEGAL_OPERATIONS",
+    "type": "CASE",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "task-supervisor",
     "label": "Task Supervisor",
     "description": "Task Supervisor role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "type": "ORGANISATION",
     "substantive": false,
     "patterns": [
       {
@@ -536,6 +605,7 @@
     "label": "Case Manager",
     "description": "Case Manager role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -573,6 +643,7 @@
     "label": "HMCTS Legal Operations",
     "description": "HMCTS Legal Operations role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "type": "ORGANISATION",
     "substantive": false,
     "patterns": [
       {
@@ -601,6 +672,7 @@
     "label": "HMCTS Admin",
     "description": "HMCTS admin role for admin users",
     "category": "ADMIN",
+    "type": "ORGANISATION",
     "substantive": false,
     "patterns": [
       {
@@ -629,6 +701,7 @@
     "label": "Case Allocator",
     "description": "Case Allocator role for admin users",
     "category": "ADMIN",
+    "type": "ORGANISATION",
     "substantive": false,
     "patterns": [
       {
@@ -660,6 +733,7 @@
     "label": "Task Supervisor",
     "description": "Task Supervisor role for admin users",
     "category": "ADMIN",
+    "type": "ORGANISATION",
     "substantive": false,
     "patterns": [
       {
@@ -691,6 +765,7 @@
     "label": "Hearing Centre Admin",
     "description": "Hearing Centre Admin role for admin users",
     "category": "ADMIN",
+    "type": "ORGANISATION",
     "substantive": true,
     "patterns": [
       {
@@ -723,6 +798,7 @@
     "label": "National Business Centre",
     "description": "National Business Centre role for admin users",
     "category": "ADMIN",
+    "type": "ORGANISATION",
     "substantive": true,
     "patterns": [
       {
@@ -755,6 +831,7 @@
     "label": "CTSC",
     "description": "CTSC role for admin users",
     "category": "ADMIN",
+    "type": "ORGANISATION",
     "substantive": true,
     "patterns": [
       {
@@ -787,6 +864,7 @@
     "label": "Conflict of Interest",
     "description": "Conflict of Interest role for judicial users",
     "category": "JUDICIAL",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -827,6 +905,7 @@
     "label": "Conflict of Interest",
     "description": "Conflict of Interest role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -867,6 +946,7 @@
     "label": "Conflict of Interest",
     "description": "Conflict of Interest role for admin users",
     "category": "ADMIN",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -907,6 +987,7 @@
     "label": "Specific Access (judiciary)",
     "description": "Specific access for judicial users.",
     "category": "JUDICIAL",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -941,6 +1022,7 @@
     "label": "Specific Access Requested",
     "description": "Specific access Requested for Judicial user.",
     "category": "JUDICIAL",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -980,6 +1062,7 @@
     "label": "Specific Access Granted",
     "description": "Specific access Granted for Judicial user.",
     "category": "JUDICIAL",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1019,6 +1102,7 @@
     "label": "Specific Access Denied",
     "description": "Specific access Denied for Judicial user.",
     "category": "JUDICIAL",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1058,6 +1142,7 @@
     "label": "Specific Access (legal-ops)",
     "description": "Specific access for staff users.",
     "category": "LEGAL_OPERATIONS",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1092,6 +1177,7 @@
     "label": "Specific Access Requested",
     "description": "Specific access Requested for staff user.",
     "category": "LEGAL_OPERATIONS",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1131,6 +1217,7 @@
     "label": "Specific Access Granted",
     "description": "Specific access Granted for staff user.",
     "category": "LEGAL_OPERATIONS",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1170,6 +1257,7 @@
     "label": "Specific Access Denied",
     "description": "Specific access Denied for staff user.",
     "category": "LEGAL_OPERATIONS",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1209,6 +1297,7 @@
     "label": "Specific Access (admin)",
     "description": "Specific access for admin users.",
     "category": "ADMIN",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1243,6 +1332,7 @@
     "label": "Specific Access Requested",
     "description": "Specific access Requested for admin user.",
     "category": "ADMIN",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1282,6 +1372,7 @@
     "label": "Specific Access Granted",
     "description": "Specific access Granted for admin user.",
     "category": "ADMIN",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1321,6 +1412,7 @@
     "label": "Specific Access Denied",
     "description": "Specific access Denied for admin user.",
     "category": "ADMIN",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1360,6 +1452,7 @@
     "label": "Challenged Access (judiciary)",
     "description": "Challenged access for judicial users.",
     "category": "JUDICIAL",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1397,6 +1490,7 @@
     "label": "Challenged Access (legal-operations)",
     "description": "Challenged access for staff users.",
     "category": "LEGAL_OPERATIONS",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1434,6 +1528,7 @@
     "label": "Challenged Access (admin)",
     "description": "Challenged access for admin users.",
     "category": "ADMIN",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
