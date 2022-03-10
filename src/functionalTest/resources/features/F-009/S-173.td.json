@@ -49,6 +49,18 @@
             "jurisdiction" : "IA",
             "substantive": "N"
           }
+        },
+        {
+          "_extends_": "ResponseRoleAssignment",
+          "actorId": "[[ANYTHING_PRESENT]]",
+          "roleCategory" : "LEGAL_OPERATIONS",
+          "roleName" : "[[ANYTHING_PRESENT]]",
+          "attributes" : {
+            "contractType" : "Salaried",
+            "primaryLocation" : "abc",
+            "jurisdiction" : "IA",
+            "substantive": "N"
+          }
         }
       ]
     }
