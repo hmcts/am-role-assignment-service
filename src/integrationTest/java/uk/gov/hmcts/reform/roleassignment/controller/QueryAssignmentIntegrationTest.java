@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.time.LocalDateTime.now;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.junit.Assert.assertEquals;
@@ -247,6 +248,33 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
         assertEquals(2, responseJsonNode.get("roleAssignmentResponse").size());
         assertEquals("ORGANISATION", responseJsonNode.get("roleAssignmentResponse").get(0)
             .get("roleType").asText());
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void retrieveRoleAssignmentsByQueryRequestV2_PageSize_EmptyAttributeDoesNotQueryEntireDb() throws Exception {
+
+        logger.info("Retrieve Role Assignments with Sort Request to verify 2 entries sort by "
+                        + "roleCategory and NULL roleCategory should go end");
+        Map<String, List<String>> emptyKeyAttr = new HashMap<>();
+        emptyKeyAttr.put("", Collections.singletonList("divorce"));
+        QueryRequest queryRequest = QueryRequest.builder().attributes(emptyKeyAttr).build();
+        Map<String, List<String>> emptyValueAttr = new HashMap<>();
+        emptyValueAttr.put("jurisdiction", Collections.singletonList(""));
+        QueryRequest queryRequest2 = QueryRequest.builder().attributes(emptyValueAttr).build();
+        MultipleQueryRequest queryRequests  =
+            MultipleQueryRequest.builder().queryRequests(List.of(queryRequest, queryRequest2)).build();
+
+        final MvcResult result = mockMvc.perform(post("/am/role-assignments/query")
+                                                     .contentType(V2.MediaType.POST_ASSIGNMENTS)
+                                                     .headers(getHttpHeaders("2", "roleCategory"))
+                                                     .content(mapper.writeValueAsString(queryRequests))
+                                                     .accept(V2.MediaType.POST_ASSIGNMENTS))
+            .andExpect(status().isOk())
+            .andReturn();
+        JsonNode responseJsonNode = new ObjectMapper()
+            .readValue(result.getResponse().getContentAsString(),JsonNode.class);
+        assertEquals(0, responseJsonNode.get("roleAssignmentResponse").size());
     }
 
     @Test
