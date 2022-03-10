@@ -40,8 +40,6 @@ public final class V1 {
         public static final String INVALID_CASE_ID = "The Case id is invalid ";
         public static final String BAD_QUERY_REQUEST_MISSING_CASEID_ACTORID
             = "The query request must have either actorId or caseId";
-        public static final String BAD_QUERY_REQUEST_CASE_TYPE
-            = "The query request must contain CASE type if caseId is provided";
         public static final String ASSIGNMENT_RECORDS_NOT_FOUND = "No Assignment records found for given criteria";
         public static final String UNPROCESSABLE_ENTITY_REQUEST_REJECTED
             = "Unprocessable entity as request has been rejected";
