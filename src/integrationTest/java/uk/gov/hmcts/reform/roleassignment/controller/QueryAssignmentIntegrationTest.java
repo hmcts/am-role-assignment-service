@@ -119,7 +119,7 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void retrieveRoleAssignmentsByQueryRequest_PageSizeAndSort() throws Exception {
 
-        logger.info("Retrieve Role Assignments with empty Query Request to verify return all entries with size 2");
+        logger.info("Retrieve Role Assignments verify return entries with size 2");
 
         final MvcResult result = mockMvc.perform(post(URL)
                                                  .contentType(JSON_CONTENT_TYPE)
@@ -197,7 +197,7 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void retrieveRoleAssignmentsByQueryRequestV2_queryRequests() throws Exception {
 
-        logger.info("Retrieve Role Assignments with two Query Requests in the list to verify return all entries");
+        logger.info("Retrieve Role Assignments with two Query Requests in the list to verify return entries");
         QueryRequest queryRequest = createQueryRequest();
         QueryRequest queryRequest2 = QueryRequest.builder()
             .actorId(List.of(ACTOR_ID))
@@ -228,7 +228,7 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void retrieveRoleAssignmentsByQueryRequestV2_PageSize() throws Exception {
 
-        logger.info("Retrieve Role Assignments with empty Query with Sort Request to verify 2 entries sort by "
+        logger.info("Retrieve Role Assignments with Sort Request to verify 2 entries sort by "
                         + "roleCategory and NULL roleCategory should go end");
         QueryRequest queryRequest = QueryRequest.builder().actorId("123e4567-e89b-42d3-a456-556642445613").build();
         MultipleQueryRequest queryRequests  =  MultipleQueryRequest.builder().queryRequests(List.of(queryRequest))
@@ -253,7 +253,7 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void retrieveRoleAssignmentsByQueryRequestV2_PageSizeAndSortDesc() throws Exception {
 
-        logger.info("Retrieve Role Assignments with empty Query with Sort Request to verify 2 entries sort by "
+        logger.info("Retrieve Role Assignments with Sort Request to verify 2 entries sort by "
                         + "roleCategory and NULL roleCategory should go end");
         QueryRequest queryRequest = QueryRequest.builder().actorId("123e4567-e89b-42d3-a456-556642445613").build();
         MultipleQueryRequest queryRequests  =  MultipleQueryRequest.builder().queryRequests(List.of(queryRequest))

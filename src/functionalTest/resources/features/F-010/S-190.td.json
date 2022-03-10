@@ -15,7 +15,6 @@
     "body": {
       "queryRequests": [
         {
-          "actorId": ["${[scenarioContext][childContexts][S-190_Multiple_Org_Role_Creation][testData][request][body][roleRequest][reference]}"],
           "attributes": {
             "primaryLocation": ["S190abc"]
           }

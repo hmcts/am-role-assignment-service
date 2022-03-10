@@ -469,15 +469,29 @@ class ValidationUtilTest {
         Map<String, List<String>> attr = new HashMap<>();
         attr.put("caseId", List.of("1234567891234567"));
         List<QueryRequest> queryRequest = List.of(QueryRequest.builder().attributes(attr).build());
-        Assertions.assertDoesNotThrow(() ->
-            ValidationUtil.validateQueryRequests(queryRequest));
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateQueryRequests(queryRequest));
+    }
+
+    @Test
+    void validateQueryRequest_AllButIdsPresent_Happy() {
+        List<QueryRequest> queryRequest =
+            List.of(QueryRequest.builder()
+                        .roleType(Collections.singletonList("ORGANISATION"))
+                        .roleCategory(Collections.singletonList("JUDICIAL"))
+                        .authorisations(Collections.singletonList("dev"))
+                        .classification(Collections.singletonList("PUBLIC"))
+                        .grantType(Collections.singletonList("STANDARD"))
+                        .hasAttributes(Collections.singletonList("JURISDICTION"))
+                        .readOnly(false)
+                        .validAt(LocalDateTime.now())
+                        .build());
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateQueryRequests(queryRequest));
     }
 
     @Test
     void validateQueryRequest_ActorIdPresent_Happy() {
         List<QueryRequest> queryRequest = List.of(QueryRequest.builder().actorId(List.of("123456")).build());
-        Assertions.assertDoesNotThrow(() ->
-            ValidationUtil.validateQueryRequests(queryRequest));
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateQueryRequests(queryRequest));
     }
 
     @Test
@@ -485,8 +499,7 @@ class ValidationUtilTest {
         Map<String, List<String>> attr = new HashMap<>();
         attr.put("caseId", List.of(""));
         List<QueryRequest> queryRequest = List.of(QueryRequest.builder().attributes(attr).build());
-        Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateQueryRequests(queryRequest));
+        Assertions.assertThrows(BadRequestException.class, () -> ValidationUtil.validateQueryRequests(queryRequest));
     }
 
     @Test
@@ -494,28 +507,24 @@ class ValidationUtilTest {
         Map<String, List<String>> attr = new HashMap<>();
         attr.put("caseId", Collections.emptyList());
         List<QueryRequest> queryRequest = List.of(QueryRequest.builder().attributes(attr).build());
-        Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateQueryRequests(queryRequest));
+        Assertions.assertThrows(BadRequestException.class, () -> ValidationUtil.validateQueryRequests(queryRequest));
     }
 
     @Test
     void validateQueryRequest_Throws_NoIds_ActorIdBlank() {
         List<QueryRequest> queryRequest = List.of(QueryRequest.builder().actorId(List.of("")).build());
-        Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateQueryRequests(queryRequest));
+        Assertions.assertThrows(BadRequestException.class, () -> ValidationUtil.validateQueryRequests(queryRequest));
     }
 
     @Test
     void validateQueryRequest_Throws_NoIds_ActorIdEmpty() {
         List<QueryRequest> queryRequest = List.of(QueryRequest.builder().actorId(Collections.emptyList()).build());
-        Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateQueryRequests(queryRequest));
+        Assertions.assertThrows(BadRequestException.class, () -> ValidationUtil.validateQueryRequests(queryRequest));
     }
 
     @Test
     void validateQueryRequest_Throws_NullIds() {
         List<QueryRequest> queryRequest = List.of(QueryRequest.builder().build());
-        Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateQueryRequests(queryRequest));
+        Assertions.assertThrows(BadRequestException.class, () -> ValidationUtil.validateQueryRequests(queryRequest));
     }
 }

@@ -10,7 +10,6 @@
     "body": {
       "queryRequests": [
         {
-          "actorId": ["${[scenarioContext][childContexts][S-106_Multiple_Org_Role_Creation][testData][request][body][requestedRoles][1][actorId]}"],
           "readOnly": false,
           "roleCategory": ["LEGAL_OPERATIONS"],
           "attributes": {

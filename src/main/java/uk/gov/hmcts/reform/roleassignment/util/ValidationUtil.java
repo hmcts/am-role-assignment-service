@@ -195,13 +195,14 @@ public class ValidationUtil {
     public static void validateQueryRequests(QueryRequest query) {
         var actorIdInvalid = true;
         var caseIdInvalid = isAttributeEmpty(query.getAttributes(), "caseId");
-
-        if (CollectionUtils.isNotEmpty(query.getActorId())
-            && StringUtils.isNotBlank(query.getActorId().get(0))) {
-            actorIdInvalid = false;
-        }
-        if (actorIdInvalid && caseIdInvalid) {
-            throw new BadRequestException(V1.Error.BAD_QUERY_REQUEST_MISSING_CASEID_ACTORID);
+        if (isQueryRequestEmpty(query)) {
+            if (CollectionUtils.isNotEmpty(query.getActorId())
+                && StringUtils.isNotBlank(query.getActorId().get(0))) {
+                actorIdInvalid = false;
+            }
+            if (actorIdInvalid && caseIdInvalid) {
+                throw new BadRequestException(V1.Error.BAD_QUERY_REQUEST_MISSING_CASEID_ACTORID);
+            }
         }
     }
 
@@ -210,5 +211,17 @@ public class ValidationUtil {
             || !attributes.containsKey(attribute)
             || !CollectionUtils.isNotEmpty(attributes.get(attribute))
             || !StringUtils.isNotBlank(attributes.get(attribute).get(0));
+    }
+
+    public static boolean isQueryRequestEmpty(QueryRequest query) {
+        return CollectionUtils.isEmpty(query.getAuthorisations())
+            && CollectionUtils.isEmpty(query.getClassification())
+            && CollectionUtils.isEmpty(query.getGrantType())
+            && CollectionUtils.isEmpty(query.getHasAttributes())
+            && CollectionUtils.isEmpty(query.getRoleCategory())
+            && CollectionUtils.isEmpty(query.getRoleName())
+            && CollectionUtils.isEmpty(query.getRoleType())
+            && query.getReadOnly() == null
+            && query.getValidAt() == null;
     }
 }

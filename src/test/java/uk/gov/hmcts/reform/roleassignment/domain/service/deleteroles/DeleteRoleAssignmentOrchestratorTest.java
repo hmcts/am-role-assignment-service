@@ -471,7 +471,6 @@ class DeleteRoleAssignmentOrchestratorTest {
         List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
 
         QueryRequest queryRequest = QueryRequest.builder()
-            .actorId("123456")
             .roleType(roleType)
             .build();
         MultipleQueryRequest multipleQueryRequest = MultipleQueryRequest.builder()
