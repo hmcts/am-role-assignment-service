@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Map;
 
 import static java.time.LocalDateTime.now;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.junit.Assert.assertEquals;
