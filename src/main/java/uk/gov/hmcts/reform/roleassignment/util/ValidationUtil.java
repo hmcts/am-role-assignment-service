@@ -222,6 +222,7 @@ public class ValidationUtil {
             && CollectionUtils.isEmpty(query.getRoleName())
             && CollectionUtils.isEmpty(query.getRoleType())
             && query.getReadOnly() == null
-            && query.getValidAt() == null;
+            && query.getValidAt() == null
+            && MapUtils.isEmpty(query.getAttributes());
     }
 }

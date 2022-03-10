@@ -489,25 +489,42 @@ class ValidationUtilTest {
     }
 
     @Test
-    void validateQueryRequest_ActorIdPresent_Happy() {
-        List<QueryRequest> queryRequest = List.of(QueryRequest.builder().actorId(List.of("123456")).build());
+    void validateQueryRequest_AttributesPresentButEmptyValue() {
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("jurisdiction", Collections.emptyList());
+        List<QueryRequest> queryRequest =
+            List.of(QueryRequest.builder()
+                        .attributes(attr)
+                        .build());
         Assertions.assertDoesNotThrow(() -> ValidationUtil.validateQueryRequests(queryRequest));
     }
 
     @Test
-    void validateQueryRequest_Throws_CaseIdBlank() {
+    void validateQueryRequest_AttributeKeyBlankButValuePresent() {
         Map<String, List<String>> attr = new HashMap<>();
-        attr.put("caseId", List.of(""));
-        List<QueryRequest> queryRequest = List.of(QueryRequest.builder().attributes(attr).build());
-        Assertions.assertThrows(BadRequestException.class, () -> ValidationUtil.validateQueryRequests(queryRequest));
+        attr.put("", Collections.singletonList("IA"));
+        List<QueryRequest> queryRequest =
+            List.of(QueryRequest.builder()
+                        .attributes(attr)
+                        .build());
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateQueryRequests(queryRequest));
     }
 
     @Test
-    void validateQueryRequest_Throws_CaseIdEmpty() {
+    void validateQueryRequest_AttributesPresentNoIds_Happy() {
         Map<String, List<String>> attr = new HashMap<>();
-        attr.put("caseId", Collections.emptyList());
-        List<QueryRequest> queryRequest = List.of(QueryRequest.builder().attributes(attr).build());
-        Assertions.assertThrows(BadRequestException.class, () -> ValidationUtil.validateQueryRequests(queryRequest));
+        attr.put("jurisdiction", List.of("IA"));
+        List<QueryRequest> queryRequest =
+            List.of(QueryRequest.builder()
+                        .attributes(attr)
+                        .build());
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateQueryRequests(queryRequest));
+    }
+
+    @Test
+    void validateQueryRequest_ActorIdPresent_Happy() {
+        List<QueryRequest> queryRequest = List.of(QueryRequest.builder().actorId(List.of("123456")).build());
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateQueryRequests(queryRequest));
     }
 
     @Test
