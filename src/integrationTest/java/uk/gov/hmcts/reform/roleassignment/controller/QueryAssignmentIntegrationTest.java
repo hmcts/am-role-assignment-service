@@ -251,16 +251,18 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
-    public void retrieveRoleAssignmentsByQueryRequestV2_PageSize_EmptyAttributeDoesNotQueryEntireDb() throws Exception {
+    public void retrieveRoleAssignmentsByQueryRequestV2_EmptyAttributeMappingDoesNotQueryEntireDb() throws Exception {
 
-        logger.info("Retrieve Role Assignments with Sort Request to verify 2 entries sort by "
-                        + "roleCategory and NULL roleCategory should go end");
+        logger.info("Retrieve Zero Role Assignments when Empty Key or Value Attribute Pairing");
+
         Map<String, List<String>> emptyKeyAttr = new HashMap<>();
         emptyKeyAttr.put("", Collections.singletonList("divorce"));
         QueryRequest queryRequest = QueryRequest.builder().attributes(emptyKeyAttr).build();
+
         Map<String, List<String>> emptyValueAttr = new HashMap<>();
         emptyValueAttr.put("jurisdiction", Collections.singletonList(""));
         QueryRequest queryRequest2 = QueryRequest.builder().attributes(emptyValueAttr).build();
+
         MultipleQueryRequest queryRequests  =
             MultipleQueryRequest.builder().queryRequests(List.of(queryRequest, queryRequest2)).build();
 
@@ -274,6 +276,49 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
         JsonNode responseJsonNode = new ObjectMapper()
             .readValue(result.getResponse().getContentAsString(),JsonNode.class);
         assertEquals(0, responseJsonNode.get("roleAssignmentResponse").size());
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void retrieveRoleAssignmentsByQueryRequestV2_EmptyListPropertyDoesNotQueryEntireDb() throws Exception {
+
+        logger.info("Retrieve Zero Role Assignments when Empty List Property Present");
+
+        QueryRequest queryRequest = QueryRequest.builder().actorId(List.of("")).build();
+
+        MultipleQueryRequest queryRequests  =
+            MultipleQueryRequest.builder().queryRequests(List.of(queryRequest)).build();
+
+        final MvcResult result = mockMvc.perform(post("/am/role-assignments/query")
+                                                     .contentType(V2.MediaType.POST_ASSIGNMENTS)
+                                                     .headers(getHttpHeaders("2", "roleCategory"))
+                                                     .content(mapper.writeValueAsString(queryRequests))
+                                                     .accept(V2.MediaType.POST_ASSIGNMENTS))
+            .andExpect(status().isOk())
+            .andReturn();
+        JsonNode responseJsonNode = new ObjectMapper()
+            .readValue(result.getResponse().getContentAsString(),JsonNode.class);
+        assertEquals(0, responseJsonNode.get("roleAssignmentResponse").size());
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void retrieveRoleAssignmentsByQueryRequestV2_PageSize_EmptyRequestDoesNotQueryEntireDb() throws Exception {
+
+        logger.info("Retrieve Zero Role Assignments when Empty Request");
+
+        QueryRequest queryRequest = QueryRequest.builder().build();
+
+        MultipleQueryRequest queryRequests  =
+            MultipleQueryRequest.builder().queryRequests(List.of(queryRequest)).build();
+
+        mockMvc.perform(post("/am/role-assignments/query")
+                                                     .contentType(V2.MediaType.POST_ASSIGNMENTS)
+                                                     .headers(getHttpHeaders("2", "roleCategory"))
+                                                     .content(mapper.writeValueAsString(queryRequests))
+                                                     .accept(V2.MediaType.POST_ASSIGNMENTS))
+            .andExpect(status().is4xxClientError())
+            .andReturn();
     }
 
     @Test

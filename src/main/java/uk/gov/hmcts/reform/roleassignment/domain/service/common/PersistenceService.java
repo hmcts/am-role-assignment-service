@@ -352,7 +352,7 @@ public class PersistenceService {
         if (CollectionUtils.isNotEmpty(queryRequest.getRoleType())) {
             roleTypes.addAll(queryRequest.getRoleType());
         }
-        if (!ValidationUtil.isAttributeEmpty(queryRequest.getAttributes(), "caseId")
+        if (ValidationUtil.doesKeyAttributeExist(queryRequest.getAttributes(), "caseId")
             && !roleTypes.contains("CASE")) {
             roleTypes.add(RoleType.CASE.name());
         }
