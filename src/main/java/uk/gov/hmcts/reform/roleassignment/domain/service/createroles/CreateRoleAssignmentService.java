@@ -131,11 +131,7 @@ public class CreateRoleAssignmentService {
             createNewAssignmentRecords(parsedAssignmentRequest);
             checkAllApproved(parsedAssignmentRequest);
         }
-        logger.debug(
-            " >> checkAllDeleteApproved execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(),  startTime)
-        );
+
 
     }
 
