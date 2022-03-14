@@ -331,6 +331,56 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
         {"classpath:sql/role_assignment_clean_up.sql",
             "classpath:sql/insert_multiple_assignments_to_delete.sql"})
+    public void shouldNotDeleteAllRoleAssignmentWhenQueryInvalid() throws Exception {
+        Case retrievedCase1 = Case.builder().id("1234567890123457")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .build();
+        Case retrievedCase2 = Case.builder().id("1234567890123458")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .build();
+        Case retrievedCase3 = Case.builder().id("1234567890123456")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .build();
+        doReturn(retrievedCase1).when(retrieveDataService).getCaseById("1234567890123457");
+        doReturn(retrievedCase2).when(retrieveDataService).getCaseById("1234567890123458");
+        doReturn(retrievedCase3).when(retrieveDataService).getCaseById("1234567890123456");
+        assertEquals(Integer.valueOf(4), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
+
+        assertEquals(Integer.valueOf(3), getStatusCount(CREATED));
+        assertEquals(Integer.valueOf(3), getStatusCount(APPROVED));
+        assertEquals(Integer.valueOf(3), getStatusCount(LIVE));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETE_APPROVED));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETED));
+
+        mockMvc.perform(post(ADV_DELETE_URL)
+                            .contentType(JSON_CONTENT_TYPE)
+                            .content(
+                                "{\"queryRequests\" : [{\"caseId\" : [ \"1234567890123456\" ]}]}"
+                            )
+                            .headers(getHttpHeaders())
+        )
+            .andExpect(status().is4xxClientError())
+            .andReturn();
+
+        assertEquals(Integer.valueOf(4), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
+
+        assertEquals(Integer.valueOf(3), getStatusCount(CREATED));
+        assertEquals(Integer.valueOf(3), getStatusCount(APPROVED));
+        assertEquals(Integer.valueOf(3), getStatusCount(LIVE));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETE_APPROVED));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETED));
+
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
+        {"classpath:sql/role_assignment_clean_up.sql",
+            "classpath:sql/insert_multiple_assignments_to_delete.sql"})
     public void shouldDeleteSomeRoleAssignmentsByAdvancedQuery() throws Exception {
 
         assertEquals(Integer.valueOf(4), getAssignmentRecordsCount());

@@ -528,12 +528,6 @@ class ValidationUtilTest {
     }
 
     @Test
-    void validateQueryRequest_Throws_NoIds_ActorIdBlank() {
-        List<QueryRequest> queryRequest = List.of(QueryRequest.builder().actorId(List.of("")).build());
-        Assertions.assertThrows(BadRequestException.class, () -> ValidationUtil.validateQueryRequests(queryRequest));
-    }
-
-    @Test
     void validateQueryRequest_Throws_NoIds_ActorIdEmpty() {
         List<QueryRequest> queryRequest = List.of(QueryRequest.builder().actorId(Collections.emptyList()).build());
         Assertions.assertThrows(BadRequestException.class, () -> ValidationUtil.validateQueryRequests(queryRequest));

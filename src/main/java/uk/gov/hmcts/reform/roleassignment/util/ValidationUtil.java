@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -186,35 +185,31 @@ public class ValidationUtil {
         return Arrays.stream(csv.split(",")).map(String::trim).anyMatch(value::equals);
     }
 
-    public static MultipleQueryRequest validateQueryRequests(List<QueryRequest> queryRequests) {
-        queryRequests.forEach(ValidationUtil::validateQueryRequests);
-
-        return new MultipleQueryRequest(queryRequests);
-    }
-
-    public static void validateQueryRequests(QueryRequest query) {
-        var actorIdInvalid = true;
-        var caseIdInvalid = isAttributeEmpty(query.getAttributes(), "caseId");
-        if (isQueryRequestEmpty(query)) {
-            if (CollectionUtils.isNotEmpty(query.getActorId())
-                && StringUtils.isNotBlank(query.getActorId().get(0))) {
-                actorIdInvalid = false;
-            }
-            if (actorIdInvalid && caseIdInvalid) {
-                throw new BadRequestException(V1.Error.BAD_QUERY_REQUEST_MISSING_CASEID_ACTORID);
-            }
+    public static boolean doesKeyAttributeExist(Map<String, List<String>> attributes, String attribute) {
+        if (MapUtils.isNotEmpty(attributes)) {
+            return attributes.containsKey(attribute);
+        } else {
+            return false;
         }
     }
 
-    public static boolean isAttributeEmpty(Map<String, List<String>> attributes, String attribute) {
-        return !MapUtils.isNotEmpty(attributes)
-            || !attributes.containsKey(attribute)
-            || !CollectionUtils.isNotEmpty(attributes.get(attribute))
-            || !StringUtils.isNotBlank(attributes.get(attribute).get(0));
+    public static void validateQueryRequests(List<QueryRequest> queryRequests) {
+        if (queryRequests.isEmpty()) {
+            throw new BadRequestException(V1.Error.BAD_QUERY_REQUEST_MISSING_CASEID_ACTORID);
+        } else {
+            queryRequests.forEach(ValidationUtil::validateQueryRequests);
+        }
+    }
+
+    public static void validateQueryRequests(QueryRequest query) {
+        if (isQueryRequestEmpty(query)) {
+            throw new BadRequestException(V1.Error.BAD_QUERY_REQUEST_MISSING_CASEID_ACTORID);
+        }
     }
 
     public static boolean isQueryRequestEmpty(QueryRequest query) {
         return CollectionUtils.isEmpty(query.getAuthorisations())
+            && CollectionUtils.isEmpty(query.getActorId())
             && CollectionUtils.isEmpty(query.getClassification())
             && CollectionUtils.isEmpty(query.getGrantType())
             && CollectionUtils.isEmpty(query.getHasAttributes())
