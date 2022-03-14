@@ -54,13 +54,9 @@ public class ValidationModelService {
     }
 
     public void validateRequest(AssignmentRequest assignmentRequest) {
-        long startTime = System.currentTimeMillis();
 
         runRulesOnAllRequestedAssignments(assignmentRequest);
-        log.debug(
-            "Execution time of validateRequest() : {} in milli seconds ",
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
 
     }
 
