@@ -75,15 +75,10 @@ public class QueryAssignmentController {
         @RequestHeader(value = "sort", required = false) String sort,
         @RequestHeader(value = "direction", required = false) String direction,
         @Validated @RequestBody(required = true) QueryRequest queryRequest) {
-        long startTime = System.currentTimeMillis();
         logger.info("Inside Single query request method");
         ResponseEntity<RoleAssignmentResource> response = queryRoleAssignmentOrchestrator
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
-        logger.debug(
-            " >> retrieveRoleAssignmentsByQueryRequest execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
         return response;
     }
 
@@ -126,11 +121,7 @@ public class QueryAssignmentController {
         logger.info("Inside Multiple query request method");
         ResponseEntity<RoleAssignmentResource> response = queryRoleAssignmentOrchestrator
             .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest, pageNumber, size, sort, direction);
-        logger.debug(
-            " >> retrieveRoleAssignmentsByQueryRequestV2 execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
         return response;
     }
 }
