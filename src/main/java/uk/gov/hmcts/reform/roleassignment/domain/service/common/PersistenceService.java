@@ -184,7 +184,7 @@ public class PersistenceService {
                                                                   String direction,
                                                                   boolean existingFlag) {
 
-        List<String> roleTypes = addCaseTypeIfIdExists(searchRequest);
+        List<String> roleTypes = addCaseTypeIfCaseIdExists(searchRequest);
 
         Page<RoleAssignmentEntity> pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(Objects.requireNonNull(
@@ -230,7 +230,7 @@ public class PersistenceService {
         Specification<RoleAssignmentEntity> finalQuery = null;
         if (CollectionUtils.isNotEmpty(multipleQueryRequest.getQueryRequests())) {
 
-            List<String> roleTypes = addCaseTypeIfIdExists(multipleQueryRequest.getQueryRequests().get(0));
+            List<String> roleTypes = addCaseTypeIfCaseIdExists(multipleQueryRequest.getQueryRequests().get(0));
 
             Specification<RoleAssignmentEntity> initialQuery = Specification.where(
                 searchByActorIds(multipleQueryRequest.getQueryRequests().get(0).getActorId()))
@@ -249,7 +249,7 @@ public class PersistenceService {
             if (multipleQueryRequest.getQueryRequests().size() > 1) {
                 for (var i = 1; i < multipleQueryRequest.getQueryRequests().size(); i++) {
 
-                    List<String> roleTypesMulti = addCaseTypeIfIdExists(multipleQueryRequest.getQueryRequests().get(i));
+                    List<String> roleTypesMulti = addCaseTypeIfCaseIdExists(multipleQueryRequest.getQueryRequests().get(i));
 
                     finalQuery = initialQuery.or(
                           searchByActorIds(multipleQueryRequest.getQueryRequests().get(i).getActorId())
@@ -347,7 +347,7 @@ public class PersistenceService {
         return flagConfigRepository.save(flagConfig);
     }
 
-    public List<String> addCaseTypeIfIdExists(QueryRequest queryRequest) {
+    public List<String> addCaseTypeIfCaseIdExists(QueryRequest queryRequest) {
         List<String> roleTypes = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(queryRequest.getRoleType())) {
             roleTypes.addAll(queryRequest.getRoleType());

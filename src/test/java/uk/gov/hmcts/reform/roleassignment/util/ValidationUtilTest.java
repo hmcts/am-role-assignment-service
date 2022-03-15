@@ -538,4 +538,12 @@ class ValidationUtilTest {
         List<QueryRequest> queryRequest = List.of(QueryRequest.builder().build());
         Assertions.assertThrows(BadRequestException.class, () -> ValidationUtil.validateQueryRequests(queryRequest));
     }
+
+    @Test
+    void doesKeyAttributeExist() {
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", Collections.singletonList("123456"));
+
+        Assertions.assertTrue(ValidationUtil.doesKeyAttributeExist(attr, "caseId"));
+    }
 }
