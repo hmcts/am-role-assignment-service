@@ -76,7 +76,6 @@ public class CreateRoleAssignmentService {
     public void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
                                        AssignmentRequest parsedAssignmentRequest) {
         // decision block
-        long startTime = System.currentTimeMillis();
         if (MapUtils.isNotEmpty(needToDeleteRoleAssignments)) {
             List<RoleAssignment> deleteApprovedAssignments = existingAssignmentRequest.getRequestedRoles().stream()
                 .filter(role -> role.getStatus().equals(

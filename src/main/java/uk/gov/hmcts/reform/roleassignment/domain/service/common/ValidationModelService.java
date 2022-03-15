@@ -131,8 +131,6 @@ public class ValidationModelService {
     }
 
     private void runRulesOnAllRequestedAssignments(AssignmentRequest assignmentRequest) {
-        long startTime = System.currentTimeMillis();
-        log.debug(String.format("runRulesOnAllRequestedAssignments execution started at %s", startTime));
 
 
         Set<Object> facts = new HashSet<>();
@@ -173,11 +171,7 @@ public class ValidationModelService {
 
         // Run the rules
         kieSession.execute(facts);
-        log.debug(String.format(
-            " >> runRulesOnAllRequestedAssignments execution finished at %s . Time taken = %s milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        ));
+
 
 
     }
