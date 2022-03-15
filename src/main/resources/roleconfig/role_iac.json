@@ -506,30 +506,6 @@
             "mandatory": true
           }
         }
-      },
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["CASE"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true
-          },
-          "caseType": {
-            "mandatory": true
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
       }
     ]
   },
