@@ -1077,7 +1077,7 @@ class PersistenceServiceTest {
             .roleType(roleTypesInitial)
             .build();
 
-        List<String> roleTypesResult = sut.addCaseTypeIfIdExists(queryRequest);
+        List<String> roleTypesResult = sut.addCaseTypeIfCaseIdExists(queryRequest);
 
         assertEquals(roleTypesInitial, roleTypesResult);
     }
@@ -1096,7 +1096,7 @@ class PersistenceServiceTest {
             .roleType(roleTypesInitial)
             .build();
 
-        List<String> roleTypesResult = sut.addCaseTypeIfIdExists(queryRequest);
+        List<String> roleTypesResult = sut.addCaseTypeIfCaseIdExists(queryRequest);
 
         assertEquals(roleTypesInitial, roleTypesResult);
     }
@@ -1119,7 +1119,7 @@ class PersistenceServiceTest {
             .attributes(attr)
             .build();
 
-        List<String> roleTypesResult = sut.addCaseTypeIfIdExists(queryRequest);
+        List<String> roleTypesResult = sut.addCaseTypeIfCaseIdExists(queryRequest);
 
         assertEquals(roleTypesInitial, roleTypesResult);
     }
@@ -1142,7 +1142,7 @@ class PersistenceServiceTest {
             .attributes(attr)
             .build();
 
-        List<String> roleTypesResult = sut.addCaseTypeIfIdExists(queryRequest);
+        List<String> roleTypesResult = sut.addCaseTypeIfCaseIdExists(queryRequest);
         List<String> roleTypesExpectedResult = Arrays.asList("ORGANISATION", "CASE");
 
         assertEquals(roleTypesExpectedResult, roleTypesResult);
@@ -1166,7 +1166,7 @@ class PersistenceServiceTest {
             .attributes(attr)
             .build();
 
-        List<String> roleTypesResult = sut.addCaseTypeIfIdExists(queryRequest);
+        List<String> roleTypesResult = sut.addCaseTypeIfCaseIdExists(queryRequest);
         List<String> roleTypesExpectedResult = Collections.singletonList("CASE");
 
         assertEquals(roleTypesExpectedResult, roleTypesResult);
