@@ -249,7 +249,9 @@ public class PersistenceService {
             if (multipleQueryRequest.getQueryRequests().size() > 1) {
                 for (var i = 1; i < multipleQueryRequest.getQueryRequests().size(); i++) {
 
-                    List<String> roleTypesMulti = addCaseTypeIfCaseIdExists(multipleQueryRequest.getQueryRequests().get(i));
+                    List<String> roleTypesMulti = addCaseTypeIfCaseIdExists(multipleQueryRequest
+                                                                                .getQueryRequests()
+                                                                                .get(i));
 
                     finalQuery = initialQuery.or(
                           searchByActorIds(multipleQueryRequest.getQueryRequests().get(i).getActorId())
