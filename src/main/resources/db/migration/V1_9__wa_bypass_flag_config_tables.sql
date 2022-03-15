@@ -1,6 +1,6 @@
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('wa_bypass_1_0', 'pr', 'ccd', 'true');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('wa_bypass_1_0', 'aat', 'ccd', 'true');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('wa_bypass_1_0', 'demo', 'ccd', 'true');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('wa_bypass_1_0', 'perftest', 'ccd', 'true');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('wa_bypass_1_0', 'ithc', 'ccd', 'true');
-INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('wa_bypass_1_0', 'prod', 'ccd', 'false');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('wa_bypass_1_0', 'pr', 'wa', 'true');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('wa_bypass_1_0', 'aat', 'wa', 'true');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('wa_bypass_1_0', 'demo', 'wa', 'true');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('wa_bypass_1_0', 'perftest', 'wa', 'true');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('wa_bypass_1_0', 'ithc', 'wa', 'true');
+INSERT INTO flag_config (flag_name, env, service_name, status) VALUES ('wa_bypass_1_0', 'prod', 'wa', 'false');
