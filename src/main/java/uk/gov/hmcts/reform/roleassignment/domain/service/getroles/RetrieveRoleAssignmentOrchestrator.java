@@ -53,8 +53,4 @@ public class RetrieveRoleAssignmentOrchestrator {
         return JacksonUtils.getConfiguredRoles();
     }
 
-    public long retrieveETag(String actorId) {
-        var entity = persistenceService.getActorCacheEntity(actorId);
-        return entity.getEtag();
-    }
 }

@@ -216,7 +216,6 @@ class DeleteRoleAssignmentOrchestratorTest {
         sut.setRequestEntity(requestEntity);
         sut.checkAllDeleteApproved(assignmentRequest, assignmentRequest.getRequest().getAssignerId());
         verify(persistenceService, times(2)).deleteRoleAssignmentByActorId(any());
-        verify(persistenceService, times(1)).persistActorCache(any());
         verify(persistenceService, times(2)).updateRequest(any(RequestEntity.class));
     }
 
@@ -257,7 +256,6 @@ class DeleteRoleAssignmentOrchestratorTest {
         sut.setRequestEntity(requestEntity);
         sut.checkAllDeleteApproved(assignmentRequest, "");
         verify(persistenceService, times(2)).deleteRoleAssignment(any());
-        verify(persistenceService, times(1)).persistActorCache(any());
         verify(persistenceService, times(2)).updateRequest(any(RequestEntity.class));
     }
 
@@ -291,7 +289,6 @@ class DeleteRoleAssignmentOrchestratorTest {
         sut.setRequestEntity(new RequestEntity());
         sut.checkAllDeleteApproved(new AssignmentRequest(new Request(), Collections.emptyList()), "actorId");
         verify(persistenceService, times(0)).deleteRoleAssignmentByActorId(any());
-        verify(persistenceService, times(0)).persistActorCache(any());
         verify(persistenceService, times(2)).updateRequest(any(RequestEntity.class));
     }
 
@@ -316,7 +313,6 @@ class DeleteRoleAssignmentOrchestratorTest {
         ), "actorId");
         assertEquals(DELETE_REJECTED, roleAssignment.getStatus());
         verify(persistenceService, times(0)).deleteRoleAssignmentByActorId(any());
-        verify(persistenceService, times(0)).persistActorCache(any());
         verify(persistenceService, times(2)).updateRequest(any(RequestEntity.class));
 
     }

@@ -52,7 +52,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -150,8 +149,6 @@ class CreateRoleAssignmentServiceTest {
                                                                   assertEquals(DELETED, roleAssignment.getStatus()));
         verify(persistenceService, times(2))
             .deleteRoleAssignment(any(RoleAssignment.class));
-        verify(persistenceService, times(1))
-            .persistActorCache(anyCollection());
         verify(persistenceUtil, times(2))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(persistenceService, times(1))
@@ -403,8 +400,6 @@ class CreateRoleAssignmentServiceTest {
 
         verify(persistenceService, times(3))
             .deleteRoleAssignment(any(RoleAssignment.class));
-        verify(persistenceService, times(2))
-            .persistActorCache(anyCollection());
         verify(persistenceUtil, times(3))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
 
@@ -495,8 +490,6 @@ class CreateRoleAssignmentServiceTest {
         verify(persistenceService, times(2))
             .updateRequest(any(RequestEntity.class));
 
-        verify(persistenceService, times(1))
-            .persistActorCache(anyCollection());
         verify(persistenceUtil, times(2))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(persistenceService, times(1))
@@ -550,8 +543,6 @@ class CreateRoleAssignmentServiceTest {
         verify(persistenceService, times(2))
             .updateRequest(any(RequestEntity.class));
 
-        verify(persistenceService, times(0))
-            .persistActorCache(anyCollection());
         verify(persistenceUtil, times(0))
             .prepareHistoryEntityForPersistance(any(RoleAssignment.class), any(Request.class));
         verify(persistenceService, times(0))
