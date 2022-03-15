@@ -7,11 +7,9 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
-import uk.gov.hmcts.reform.roleassignment.data.ActorCacheEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
-import uk.gov.hmcts.reform.roleassignment.domain.model.ActorCache;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
@@ -325,27 +323,6 @@ public class TestDataBuilder {
         requestedrole.setStatus(Status.valueOf(historyEntity.getStatus()));
         return requestedrole;
 
-    }
-
-    public static ActorCacheEntity buildActorCacheEntity() {
-        JsonNode attributes = buildAttributesFromFile("attributes.json");
-        return ActorCacheEntity.builder()
-            .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
-            .etag(1)
-            .roleAssignmentResponse(JacksonUtils.convertValueJsonNode(attributes))
-            .build();
-    }
-
-    public static ActorCache buildActorCache() {
-        return ActorCache.builder()
-            .actorId("21334a2b-79ce-44eb-9168-2d49a744be9c")
-            .etag(1)
-            .build();
-    }
-
-    public static void prepareActorCache(RoleAssignment roleAssignment) {
-        ActorCache actorCache = new ActorCache();
-        actorCache.setActorId(roleAssignment.getActorId());
     }
 
     public static HistoryEntity buildHistoryEntity(RoleAssignment roleAssignment, RequestEntity requestEntity) {

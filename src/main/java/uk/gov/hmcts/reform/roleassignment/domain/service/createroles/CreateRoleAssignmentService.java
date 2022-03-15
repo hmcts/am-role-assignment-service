@@ -240,7 +240,6 @@ public class CreateRoleAssignmentService {
         for (RoleAssignment requestedAssignment : roleAssignments) {
             requestedAssignment.setStatus(Status.LIVE);
         }
-        persistenceService.persistActorCache(roleAssignments);
         persistenceService.persistRoleAssignments(roleAssignments);
     }
 
@@ -265,7 +264,6 @@ public class CreateRoleAssignmentService {
             persistenceService.deleteRoleAssignment(requestedRole);
 
         }
-        persistenceService.persistActorCache(existingAssignments);
         logger.debug(
             " >> deleteLiveAssignments execution finished at {} . Time taken = {} milliseconds",
             System.currentTimeMillis(),
