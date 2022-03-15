@@ -86,14 +86,9 @@ public class CreateAssignmentController {
                                                                String correlationId,
         @Validated
         @RequestBody AssignmentRequest assignmentRequest) throws ParseException {
-        long startTime = System.currentTimeMillis();
         ResponseEntity<RoleAssignmentRequestResource> response = createRoleAssignmentOrchestrator
             .createRoleAssignment(assignmentRequest);
-        logger.debug(
-            " >> createRoleAssignment execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
         return response;
     }
 }

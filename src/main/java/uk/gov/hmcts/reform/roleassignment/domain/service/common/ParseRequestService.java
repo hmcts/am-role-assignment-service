@@ -2,8 +2,6 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,8 +31,6 @@ import java.util.UUID;
 @Service
 public class ParseRequestService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ParseRequestService.class);
-
     @Autowired
     private SecurityUtils securityUtils;
 
@@ -46,8 +42,7 @@ public class ParseRequestService {
 
     public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType)
         throws ParseException {
-        long startTime = System.currentTimeMillis();
-        logger.debug("parseRequest execution started at {}", startTime);
+
         var request = assignmentRequest.getRequest();
         request.setByPassOrgDroolRule(byPassOrgDroolRule);
         ValidationUtil.validateAssignmentRequest(assignmentRequest);
@@ -79,11 +74,7 @@ public class ParseRequestService {
         var parsedRequest = new AssignmentRequest(new Request(), Collections.emptyList());
         parsedRequest.setRequest(request);
         parsedRequest.setRequestedRoles(requestedAssignments);
-        logger.debug(
-            " >> parseRequest execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
         return parsedRequest;
     }
 

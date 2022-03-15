@@ -1,8 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,7 +30,6 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPRO
 @Service
 @RequestScope
 public class CreateRoleAssignmentOrchestrator {
-    private static final Logger logger = LoggerFactory.getLogger(CreateRoleAssignmentOrchestrator.class);
 
     private ParseRequestService parseRequestService;
     private PrepareResponseService prepareResponseService;
@@ -60,7 +57,6 @@ public class CreateRoleAssignmentOrchestrator {
 
     public ResponseEntity<RoleAssignmentRequestResource> createRoleAssignment(AssignmentRequest roleAssignmentRequest)
         throws ParseException {
-        long startTime = System.currentTimeMillis();
         try {
             AssignmentRequest existingAssignmentRequest;
             createRoleAssignmentService = new CreateRoleAssignmentService(
@@ -86,8 +82,7 @@ public class CreateRoleAssignmentOrchestrator {
 
             //Check replace existing true/false
             if (request.isReplaceExisting()) {
-                long replaceExisting = System.currentTimeMillis();
-                logger.debug("replaceExisting Inner Method execution started at {}", replaceExisting);
+
                 //retrieve existing assignments and prepared temp request
                 existingAssignmentRequest = createRoleAssignmentService
                     .retrieveExistingAssignments(parsedAssignmentRequest);
@@ -128,21 +123,13 @@ public class CreateRoleAssignmentOrchestrator {
                     // Don't throw the exception, as we need to build the response as Http:201
                     log.error("context", e);
                 }
-                logger.debug(
-                    " >> replaceExisting Inner Method execution finished at {} . Time taken = {} milliseconds",
-                    System.currentTimeMillis(),
-                    Math.subtractExact(System.currentTimeMillis(), replaceExisting)
-                );
+
             } else {
                 long newAssignment = System.currentTimeMillis();
                 //Save requested role in history table with CREATED and Approved Status
                 createRoleAssignmentService.createNewAssignmentRecords(parsedAssignmentRequest);
                 createRoleAssignmentService.checkAllApproved(parsedAssignmentRequest);
-                logger.debug(
-                    " >> newAssignment execution finished at {} . Time taken = {} milliseconds",
-                    System.currentTimeMillis(),
-                    Math.subtractExact(System.currentTimeMillis(), newAssignment)
-                );
+
             }
 
             ResponseEntity<RoleAssignmentRequestResource> result = prepareResponseService
@@ -152,11 +139,6 @@ public class CreateRoleAssignmentOrchestrator {
             return result;
         } finally {
             flushGlobalVariables();
-            logger.debug(
-                " >> createRoleAssignment in orchestrator execution finished at {} . Time taken = {} milliseconds",
-                System.currentTimeMillis(),
-                Math.subtractExact(System.currentTimeMillis(), startTime)
-            );
 
         }
 
@@ -195,9 +177,6 @@ public class CreateRoleAssignmentOrchestrator {
     private void identifyAssignmentsToBeUpdated(AssignmentRequest existingAssignmentRequest,
                                                 AssignmentRequest parsedAssignmentRequest)
         throws IllegalAccessException, InvocationTargetException {
-        long startTime = System.currentTimeMillis();
-        logger.debug("identifyAssignmentsToBeUpdated execution started at {}", startTime);
-
 
         //update the existingAssignmentRequest with Only need to be removed record
         if (!createRoleAssignmentService.needToDeleteRoleAssignments.isEmpty()) {
@@ -218,11 +197,7 @@ public class CreateRoleAssignmentOrchestrator {
 
         //Checking all assignments has DELETE_APPROVED status to create new entries of assignment records
         createRoleAssignmentService.checkAllDeleteApproved(existingAssignmentRequest, parsedAssignmentRequest);
-        logger.debug(
-            " >> identifyAssignmentsToBeUpdated execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
 
     }
 }

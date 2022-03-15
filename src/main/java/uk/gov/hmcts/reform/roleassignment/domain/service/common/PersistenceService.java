@@ -282,7 +282,6 @@ public class PersistenceService {
     }
 
     private List<Assignment> prepareQueryRequestResponse(boolean existingFlag) {
-        long startTime = System.currentTimeMillis();
         List<Assignment> roleAssignmentList;
         if (!existingFlag) {
             roleAssignmentList = PageHolder.holder.get().stream()
@@ -297,12 +296,6 @@ public class PersistenceService {
 
 
         }
-
-        logger.debug(
-            " >> retrieveRoleAssignmentsByQueryRequest execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
 
         return roleAssignmentList;
     }

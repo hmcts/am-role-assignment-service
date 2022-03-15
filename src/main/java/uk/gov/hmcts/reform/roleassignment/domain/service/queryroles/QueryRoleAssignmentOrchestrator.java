@@ -77,11 +77,7 @@ public class QueryRoleAssignmentOrchestrator {
             "Total-Records",
             Long.toString(persistenceService.getTotalRecords())
         );
-        logger.debug(
-            " >> retrieveRoleAssignmentsByQueryRequest execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
         return ResponseEntity.status(HttpStatus.OK).headers(responseHeaders).body(
             new RoleAssignmentResource(assignmentList));
     }
