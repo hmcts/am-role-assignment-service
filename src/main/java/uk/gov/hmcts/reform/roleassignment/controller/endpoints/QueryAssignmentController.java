@@ -116,8 +116,6 @@ public class QueryAssignmentController {
         if (CollectionUtils.isEmpty(multipleQueryRequest.getQueryRequests())) {
             throw new BadRequestException("Request Payload is invalid");
         }
-
-        long startTime = System.currentTimeMillis();
         logger.info("Inside Multiple query request method");
         ResponseEntity<RoleAssignmentResource> response = queryRoleAssignmentOrchestrator
             .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest, pageNumber, size, sort, direction);

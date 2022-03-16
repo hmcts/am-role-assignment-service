@@ -125,7 +125,6 @@ public class CreateRoleAssignmentOrchestrator {
                 }
 
             } else {
-                long newAssignment = System.currentTimeMillis();
                 //Save requested role in history table with CREATED and Approved Status
                 createRoleAssignmentService.createNewAssignmentRecords(parsedAssignmentRequest);
                 createRoleAssignmentService.checkAllApproved(parsedAssignmentRequest);
