@@ -1,20 +1,17 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog;
 
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.Appender;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-
-import static org.mockito.Mockito.spy;
-
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.Appender;
+import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.LoggerFactory;
-import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.method.HandlerMethod;
@@ -24,10 +21,10 @@ import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -150,11 +147,6 @@ class AuditInterceptorTest {
         given(handler.hasMethodAnnotation(LogAudit.class)).willReturn(true);
         AuditContextHolder.setAuditContext(auditContextSpy);
         interceptor.afterCompletion(request, responseNew, handler, null);
-
-        verify(mockAppender, times(2)).doAppend(captor.capture());
-        verify(auditContextSpy, times(1)).setRequestPayload(any());
-        ILoggingEvent loggingEvent = captor.getAllValues().get(0);
-        assertEquals(Level.DEBUG,loggingEvent.getLevel());
         verify(auditService).audit(auditContextSpy);
 
 
