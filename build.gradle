@@ -6,21 +6,21 @@ buildscript {
     }
   dependencies {
     classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.12")
-    classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.0'
+    classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.7.4'
   }
 }
 
 plugins {
   id 'eclipse'
   id 'application'
-  id 'uk.gov.hmcts.java' version '0.12.6'
+  id 'uk.gov.hmcts.java' version '0.12.12'
   id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'org.springframework.boot' version '2.4.9'
-  id 'info.solidsoft.pitest' version '1.7.0'
+  id 'info.solidsoft.pitest' version '1.7.4'
   id 'com.github.ben-manes.versions' version '0.40.0'
-  id 'org.sonarqube' version '3.2.0'
+  id 'org.sonarqube' version '3.3'
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.22'
   id 'au.com.dius.pact' version '4.1.7' //do not change this version or serenity reports will fail to generate
   id 'org.flywaydb.flyway' version '8.4.4'
@@ -50,7 +50,7 @@ def versions = [
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
   feign_jackson  : '9.7.0',
-  drools         : '7.65.0.Final',
+  drools         : '7.66.0.Final',
   launchDarklySdk: '5.7.0',
   log4JVersion   : '2.17.1',
   logbackVersion : '1.2.10'
@@ -366,7 +366,7 @@ dependencies {
 
   }
   //Dependent on drools Jar. Can be removed CVE-2021-26291
-  implementation group: 'org.apache.maven', name: 'maven-core', version: '3.8.1'
+  implementation group: 'org.apache.maven', name: 'maven-core', version: '3.8.5'
 
   implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.4.4'
 
@@ -409,7 +409,7 @@ dependencies {
   implementation "org.springframework.security:spring-security-config"
   implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
   compile group: 'com.github.hmcts', name: 'idam-java-client', version: '2.0.1'
-  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.19'
+  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.23'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   implementation 'commons-io:commons-io:2.8.0'
   //CVE-2021-35515, CVE-2021-35516, CVE-2021-35517, CVE-2021-36090:
@@ -423,13 +423,13 @@ dependencies {
 
   pitest 'org.pitest:pitest-junit5-plugin:0.12'
 
-  testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.11.2'
+  testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.4.0'
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit
   testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: versions.junit
   testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junit
 
   testCompile group: 'org.pitest', name: 'pitest', version: versions.pitest
-  testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.7'
+  testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.7.4'
   testCompile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
