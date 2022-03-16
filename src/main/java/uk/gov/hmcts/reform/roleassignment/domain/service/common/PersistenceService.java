@@ -128,17 +128,12 @@ public class PersistenceService {
     }
 
     public List<RoleAssignment> getAssignmentsByProcess(String process, String reference, String status) {
-        long startTime = System.currentTimeMillis();
 
         Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
         //convert into model class
         List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(
             persistenceUtil::convertHistoryEntityToRoleAssignment).collect(Collectors.toList());
-        logger.debug(
-            " >> getAssignmentsByProcess execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
         return roleAssignmentList;
 
     }
@@ -287,7 +282,6 @@ public class PersistenceService {
     }
 
     private List<Assignment> prepareQueryRequestResponse(boolean existingFlag) {
-        long startTime = System.currentTimeMillis();
         List<Assignment> roleAssignmentList;
         if (!existingFlag) {
             roleAssignmentList = PageHolder.holder.get().stream()
@@ -302,12 +296,6 @@ public class PersistenceService {
 
 
         }
-
-        logger.debug(
-            " >> retrieveRoleAssignmentsByQueryRequest execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
 
         return roleAssignmentList;
     }
