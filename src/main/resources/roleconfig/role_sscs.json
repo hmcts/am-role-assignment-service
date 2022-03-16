@@ -58,9 +58,9 @@
     ]
   },
   {
-    "name": "hearing-view",
-    "label": "Hearing View",
-    "description": "Hearing View for judicial users",
+    "name": "hearing-viewer",
+    "label": "Hearing Viewer",
+    "description": "Hearing Viewer for judicial users",
     "category": "JUDICIAL",
     "substantive": false,
     "patterns": [
@@ -87,9 +87,9 @@
     ]
   },
   {
-    "name": "hearing-view",
-    "label": "Hearing View",
-    "description": "Hearing View for caseworker users",
+    "name": "hearing-viewer",
+    "label": "Hearing Viewer",
+    "description": "Hearing Viewer for caseworker users",
     "category": "LEGAL_OPERATIONS",
     "substantive": false,
     "patterns": [
@@ -116,9 +116,9 @@
     ]
   },
   {
-    "name": "hearing-view",
-    "label": "Hearing View",
-    "description": "Hearing View for admin users",
+    "name": "hearing-viewer",
+    "label": "Hearing Viewer",
+    "description": "Hearing Viewer for admin users",
     "category": "ADMIN",
     "substantive": false,
     "patterns": [
@@ -145,9 +145,9 @@
     ]
   },
   {
-    "name": "hearing-listed",
-    "label": "Hearing Listed",
-    "description": "Hearing Listed for OGD users",
+    "name": "listed-hearing-viewer",
+    "label": "Listed Hearing Viewer",
+    "description": "Listed Hearing Viewer for OGD users",
     "category": "OTHER_GOV_DEPT",
     "substantive": false,
     "patterns": [
