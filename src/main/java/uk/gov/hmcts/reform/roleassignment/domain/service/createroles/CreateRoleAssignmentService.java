@@ -6,8 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +39,6 @@ import java.util.stream.Collectors;
 @Data
 @Slf4j
 public class CreateRoleAssignmentService {
-    private static final Logger logger = LoggerFactory.getLogger(CreateRoleAssignmentService.class);
 
     private ParseRequestService parseRequestService;
     private PersistenceService persistenceService;
@@ -76,7 +73,6 @@ public class CreateRoleAssignmentService {
     public void checkAllDeleteApproved(AssignmentRequest existingAssignmentRequest,
                                        AssignmentRequest parsedAssignmentRequest) {
         // decision block
-        long startTime = System.currentTimeMillis();
         if (MapUtils.isNotEmpty(needToDeleteRoleAssignments)) {
             List<RoleAssignment> deleteApprovedAssignments = existingAssignmentRequest.getRequestedRoles().stream()
                 .filter(role -> role.getStatus().equals(
@@ -131,19 +127,13 @@ public class CreateRoleAssignmentService {
             createNewAssignmentRecords(parsedAssignmentRequest);
             checkAllApproved(parsedAssignmentRequest);
         }
-        logger.debug(
-            " >> checkAllDeleteApproved execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(),  startTime)
-        );
+
 
     }
 
     void rejectDeleteRequest(AssignmentRequest existingAssignmentRequest,
                                      List<UUID> rejectedAssignmentIds,
                                      AssignmentRequest parsedAssignmentRequest) {
-        long startTime = System.currentTimeMillis();
-        logger.debug("rejectDeleteRequest execution started at {}", startTime);
 
         var request = parsedAssignmentRequest.getRequest();
         //Insert existingAssignmentRequest.getRequestedRoles() records into history table with status deleted-Rejected
@@ -162,11 +152,7 @@ public class CreateRoleAssignmentService {
         }
 
         persistenceService.updateRequest(requestEntity);
-        logger.debug(
-            " >> rejectDeleteRequest execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
     }
 
 
@@ -202,8 +188,6 @@ public class CreateRoleAssignmentService {
     //Create New Assignment Records
     public void createNewAssignmentRecords(AssignmentRequest parsedAssignmentRequest) {
         //Save new requested role in history table with CREATE_REQUESTED Status
-        long startTime = System.currentTimeMillis();
-        logger.debug("createNewAssignmentRecords execution started at {}", startTime);
 
         insertRequestedRole(parsedAssignmentRequest, Status.CREATE_REQUESTED, emptyUUIds);
 
@@ -219,11 +203,7 @@ public class CreateRoleAssignmentService {
         persistenceService.persistHistoryEntities(requestEntity.getHistoryEntities());
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
-        logger.debug(
-            " >> createNewAssignmentRecords execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
     }
 
     private void moveHistoryRecordsToLiveTable(RequestEntity requestEntity) {
@@ -245,37 +225,25 @@ public class CreateRoleAssignmentService {
 
 
     public RequestEntity persistInitialRequest(Request request) {
-        long startTime = System.currentTimeMillis();
 
         RequestEntity reqEntity = persistenceService.persistRequest(request);
-        logger.debug(
-            " >> persistInitialRequest execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
 
         return reqEntity;
     }
 
     private void deleteLiveAssignments(Collection<RoleAssignment> existingAssignments) {
-        long startTime = System.currentTimeMillis();
 
         for (RoleAssignment requestedRole : existingAssignments) {
             persistenceService.deleteRoleAssignment(requestedRole);
 
         }
-        logger.debug(
-            " >> deleteLiveAssignments execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
     }
 
     void insertRequestedRole(AssignmentRequest assignmentRequest,
                                      Status status,
                                      List<UUID> rejectedAssignmentIds) {
-        long startTime = System.currentTimeMillis();
-        logger.debug("insertRequestedRole execution started at {}", startTime);
+
         List<HistoryEntity> historyEntityList = new ArrayList<>();
         for (RoleAssignment requestedAssignment : assignmentRequest.getRequestedRoles()) {
             if (CollectionUtils.isNotEmpty(rejectedAssignmentIds)
@@ -309,11 +277,7 @@ public class CreateRoleAssignmentService {
         persistenceService.persistHistoryEntities(historyEntityList);
         //Persist request to update relationship with history entities
         persistenceService.updateRequest(requestEntity);
-        logger.debug(
-            " >> insertRequestedRole execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
     }
 
 
