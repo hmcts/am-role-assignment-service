@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Properties;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -97,7 +98,7 @@ public abstract class BaseTest {
 
             if (HttpStatus.OK.equals(response.getStatusCode())) {
                 log.info("Positive response");
-                return response.getBody().accessToken;
+                return Objects.requireNonNull(response.getBody()).accessToken;
             } else {
                 log.error("There is some problem in fetching access token {}", response
                     .getStatusCode());
@@ -118,7 +119,6 @@ public abstract class BaseTest {
         public EmbeddedPostgres embeddedPostgres() throws IOException {
             return EmbeddedPostgres
                 .builder()
-                .setPort(0)
                 .start();
         }
 
@@ -129,7 +129,8 @@ public abstract class BaseTest {
             final Properties props = new Properties();
             // Instruct JDBC to accept JSON string for JSONB
             props.setProperty("stringtype", "unspecified");
-            connection = DriverManager.getConnection(pg.getJdbcUrl("postgres", "postgres"), props);
+            props.setProperty("user", "postgres");
+            connection = DriverManager.getConnection(pg.getJdbcUrl("postgres"), props);
             return new SingleConnectionDataSource(connection, true);
         }
 
