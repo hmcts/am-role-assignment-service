@@ -1,8 +1,8 @@
 [
   {
-    "name": "judge",
-    "label": "Judge",
-    "description": "Judge role for judicial users",
+    "name": "caseworker-sscs-judge",
+    "label": "SSCS Judge",
+    "description": "SSCS Judge for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
@@ -17,21 +17,21 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC","PRIVATE"]
+          "values": ["PUBLIC"]
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA"]
+            "values": ["SSCS"]
           }
         }
       }
     ]
   },
   {
-    "name": "senior-judge",
-    "label": "Senior Judge",
-    "description": "Senior Judge role for judicial users",
+    "name": "caseworker-sscs-judge-feepaid",
+    "label": "SSCS Judge (Fee-paid)",
+    "description": "SSCS Judge (Fee-paid) for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
@@ -46,21 +46,21 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC","PRIVATE"]
+          "values": ["PUBLIC"]
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA"]
+            "values": ["SSCS"]
           }
         }
       }
     ]
   },
   {
-    "name": "leadership-judge",
-    "label": "Leadership Judge",
-    "description": "Leadership Judge role for judicial users",
+    "name": "caseworker-sscs-medical",
+    "label": "SSCS Medical",
+    "description": "SSCS Medical for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
@@ -75,21 +75,21 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC","PRIVATE"]
+          "values": ["PUBLIC"]
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA"]
+            "values": ["SSCS"]
           }
         }
       }
     ]
   },
   {
-    "name": "fee-paid-judge",
-    "label": "Fee Paid Judge",
-    "description": "Fee Paid Judge role for judicial users",
+    "name": "caseworker-sscs-medical-feepaid",
+    "label": "SSCS Medical (Fee-paid)",
+    "description": "SSCS Medical (Fee-paid) for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
@@ -104,45 +104,70 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC","PRIVATE"]
+          "values": ["PUBLIC"]
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA"]
+            "values": ["SSCS"]
           }
         }
       }
     ]
   },
   {
-    "name": "lead-judge",
-    "label": "Lead Judge",
-    "description": "Lead Judge role for judicial users",
+    "name": "caseworker-sscs-disability-feepaid",
+    "label": "SSCS Disability (Fee-paid)",
+    "description": "SSCS Disability (Fee-paid) for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
       {
         "roleType": {
           "mandatory": true,
-          "values": ["CASE"]
+          "values": ["ORGANISATION"]
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["STANDARD"]
         },
         "classification": {
-          "mandatory": true
+          "mandatory": true,
+          "values": ["PUBLIC"]
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
-          },
-          "caseType": {
-            "mandatory": true
-          },
-          "caseId": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["SSCS"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "caseworker-sscs-financial-feepaid",
+    "label": "SSCS Financial (Fee-paid)",
+    "description": "SSCS Financial (Fee-paid) for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
           }
         }
       }
@@ -151,7 +176,7 @@
   {
     "name": "hearing-judge",
     "label": "Hearing Judge",
-    "description": "Hearing Judge role for judicial users",
+    "description": "Hearing Judge for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
@@ -169,10 +194,12 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["SSCS"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["Benefit"]
           },
           "caseId": {
             "mandatory": true
@@ -182,9 +209,9 @@
     ]
   },
   {
-    "name": "ftpa-judge",
-    "label": "FTPA Judge",
-    "description": "FTPA Judge role for judicial users",
+    "name": "panel-doctor",
+    "label": "Tribunal member - Medical",
+    "description": "Tribunal member - Medical for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
@@ -202,10 +229,12 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["SSCS"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["Benefit"]
           },
           "caseId": {
             "mandatory": true
@@ -215,9 +244,9 @@
     ]
   },
   {
-    "name": "hearing-panel-judge",
-    "label": "Hearing Panel Judge",
-    "description": "Hearing Panel Judge role for judicial users",
+    "name": "panel-disability",
+    "label": "Tribunal member - Disability ",
+    "description": "Tribunal member - Disability  for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
@@ -235,10 +264,12 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["SSCS"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["Benefit"]
           },
           "caseId": {
             "mandatory": true
@@ -248,35 +279,12 @@
     ]
   },
   {
-    "name": "tribunal-caseworker",
-    "label": "Tribunal Caseworker",
-    "description": "Tribunal caseworker role for staff users",
-    "category": "LEGAL_OPERATIONS",
-    "substantive": false,
+    "name": "panel-financial",
+    "label": "Tribunal member - Financial",
+    "description": "Tribunal member - Financial for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
     "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
-          },
-          "primaryLocation": {
-            "mandatory": true
-          }
-        }
-      },
       {
         "roleType": {
           "mandatory": true,
@@ -291,10 +299,12 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["SSCS"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["Benefit"]
           },
           "caseId": {
             "mandatory": true
@@ -304,31 +314,34 @@
     ]
   },
   {
-    "name": "senior-tribunal-caseworker",
-    "label": "Senior Tribunal Caseworker",
-    "description": "Senior Tribunal caseworker role for staff users",
-    "category": "LEGAL_OPERATIONS",
+    "name": "panel-appraisal-judge",
+    "label": "Appraisal Judge",
+    "description": "Appraisal Judge for judicial users",
+    "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
       {
         "roleType": {
           "mandatory": true,
-          "values": ["ORGANISATION"]
+          "values": ["CASE"]
         },
         "grantType": {
           "mandatory": true,
-          "values": ["STANDARD"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA"]
+            "values": ["SSCS"]
           },
-          "primaryLocation": {
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit"]
+          },
+          "caseId": {
             "mandatory": true
           }
         }
@@ -336,31 +349,34 @@
     ]
   },
   {
-    "name": "hearing-centre-admin",
-    "label": "Hearing Centre Admin",
-    "description": "Hearing Centre Admin role for admin users",
-    "category": "ADMIN",
+    "name": "panel-appraisal-medical",
+    "label": "Appraisal Medical",
+    "description": "Appraisal Medical for judicial users",
+    "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
       {
         "roleType": {
           "mandatory": true,
-          "values": ["ORGANISATION"]
+          "values": ["CASE"]
         },
         "grantType": {
           "mandatory": true,
-          "values": ["STANDARD"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA"]
+            "values": ["SSCS"]
           },
-          "primaryLocation": {
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit"]
+          },
+          "caseId": {
             "mandatory": true
           }
         }
@@ -368,63 +384,34 @@
     ]
   },
   {
-    "name": "national-business-centre",
-    "label": "National Business Centre",
-    "description": "National Business Centre role for admin users",
-    "category": "ADMIN",
+    "name": "panel-interloc-judge",
+    "label": "Interlocutory Judge",
+    "description": "Interlocutory Judge for judicial users",
+    "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
       {
         "roleType": {
           "mandatory": true,
-          "values": ["ORGANISATION"]
+          "values": ["CASE"]
         },
         "grantType": {
           "mandatory": true,
-          "values": ["STANDARD"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA"]
+            "values": ["SSCS"]
           },
-          "primaryLocation": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "ctsc",
-    "label": "CTSC",
-    "description": "CTSC role for admin users",
-    "category": "ADMIN",
-    "substantive": true,
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
+          "caseType": {
             "mandatory": true,
-            "values": ["IA"]
+            "values": ["Benefit"]
           },
-          "primaryLocation": {
+          "caseId": {
             "mandatory": true
           }
         }

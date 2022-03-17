@@ -93,21 +93,13 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
                                                                 "lead-judge",
                                                                 SPECIFIC, "caseId",
                                                                 "1234567890123456", CREATE_REQUESTED);
-        RoleAssignment requestedRole2 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
-                                                                "hearing-judge",
-                                                                SPECIFIC, "caseId",
-                                                                "1234567890123456", CREATE_REQUESTED);
-
-        assignmentRequest.setRequestedRoles(List.of(requestedRole1, requestedRole2));
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
                                                           "leadership-judge",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(requestedRole2.getActorId(),
-                                                          "judge",
                                                           RoleCategory.JUDICIAL),
                                   buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
                                                           "case-allocator",
