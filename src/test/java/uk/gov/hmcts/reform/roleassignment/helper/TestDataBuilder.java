@@ -29,10 +29,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
-import static java.time.LocalDateTime.now;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
-import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.ZoneId;
@@ -46,6 +42,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import static java.time.LocalDateTime.now;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @Setter
 public class TestDataBuilder {
@@ -588,6 +588,28 @@ public class TestDataBuilder {
             .build();
         ra.setAttribute(attributeKey, attributeVal);
         ra.setAttribute("jurisdiction","IA");
+        return ra;
+    }
+
+    public static RoleAssignment getRequestedOrgRole_ra(RoleCategory roleCategory, String roleName,
+                                                        GrantType grantType, String attributeKey,
+                                                        String attributeVal, Status status,
+                                                        Classification classification,
+                                                        Boolean readOnly) {
+        RoleAssignment ra = RoleAssignment.builder()
+            .id(UUID.randomUUID())
+            .actorId(UUID.randomUUID().toString())
+            .actorIdType(ActorIdType.IDAM)
+            .roleCategory(roleCategory)
+            .roleType(RoleType.ORGANISATION)
+            .roleName(roleName)
+            .grantType(grantType)
+            .classification(classification)
+            .readOnly(readOnly)
+            .status(status)
+            .attributes(new HashMap<>())
+            .build();
+        ra.setAttribute(attributeKey, attributeVal);
         return ra;
     }
 
