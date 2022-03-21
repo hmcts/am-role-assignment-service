@@ -29,8 +29,6 @@ public class QueryRoleAssignmentOrchestrator {
                                                                                    Integer pageNumber,
                                                                         Integer size, String sort, String direction) {
 
-        long startTime = System.currentTimeMillis();
-
         ValidationUtil.validateQueryRequests(Collections.singletonList(queryRequest));
 
         List<Assignment> assignmentList =
@@ -42,7 +40,7 @@ public class QueryRoleAssignmentOrchestrator {
                 direction,
                 false
             );
-        return prepareQueryResponse(startTime, assignmentList);
+        return prepareQueryResponse(assignmentList);
 
     }
 
@@ -53,7 +51,6 @@ public class QueryRoleAssignmentOrchestrator {
         Integer pageNumber,
         Integer size, String sort, String direction) {
 
-        long startTime = System.currentTimeMillis();
 
         ValidationUtil.validateQueryRequests(queryRequest.getQueryRequests());
 
@@ -66,28 +63,22 @@ public class QueryRoleAssignmentOrchestrator {
                 direction,
                 false
             );
-        return prepareQueryResponse(startTime, assignmentList);
+        return prepareQueryResponse(assignmentList);
 
     }
 
     /**
          * prepare final query response based on search criteria.
-         * @param startTime must not be {@literal null}.
          * @param assignmentList must not be {@literal null}.
          * @return
      */
-    private ResponseEntity<RoleAssignmentResource> prepareQueryResponse(long startTime,
-                                                                        List<Assignment> assignmentList) {
+    private ResponseEntity<RoleAssignmentResource> prepareQueryResponse(List<Assignment> assignmentList) {
         var responseHeaders = new HttpHeaders();
         responseHeaders.add(
             "Total-Records",
             Long.toString(persistenceService.getTotalRecords())
         );
-        logger.debug(
-            " >> retrieveRoleAssignmentsByQueryRequest execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
         return ResponseEntity.status(HttpStatus.OK).headers(responseHeaders).body(
             new RoleAssignmentResource(assignmentList));
     }
