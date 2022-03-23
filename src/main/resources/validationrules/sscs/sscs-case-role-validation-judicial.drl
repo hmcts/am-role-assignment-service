@@ -168,17 +168,17 @@ end;
 
 
 /*
- * SSCS "panel-interloc-judge" case validation rule.
+ * SSCS "interloc-judge" case validation rule.
  */
 
-rule "sscs_panel_interloc_judge_create_case_roles"
+rule "sscs_interloc_judge_create_case_roles"
 when
     $f:  FeatureFlag(status && flagName == FeatureFlagEnum.SSCS_WA_1_0.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
                  roleAssignment.attributes["caseType"].asText() == "Benefit",
-                 roleAssignment.roleName in ("panel-interloc-judge"))
+                 roleAssignment.roleName in ("interloc-judge"))
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
@@ -186,9 +186,9 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : sscs_panel_interloc_judge_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : sscs_interloc_judge_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : sscs_panel_interloc_judge_create_case_roles");
+    logMsg("Rule : sscs_interloc_judge_create_case_roles");
 end;
 
 /*

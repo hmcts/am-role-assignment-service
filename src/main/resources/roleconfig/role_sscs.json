@@ -384,7 +384,7 @@
     ]
   },
   {
-    "name": "panel-interloc-judge",
+    "name": "interloc-judge",
     "label": "Interlocutory Judge",
     "description": "Interlocutory Judge for judicial users",
     "category": "JUDICIAL",
