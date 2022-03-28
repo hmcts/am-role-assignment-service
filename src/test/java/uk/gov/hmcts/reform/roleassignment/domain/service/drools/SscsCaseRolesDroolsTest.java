@@ -17,7 +17,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classificati
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.CASE_ALLOCATOR_ID;
-import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRoleForSSCS;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 import java.util.HashMap;
@@ -140,11 +140,15 @@ class SscsCaseRolesDroolsTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForSSCS(CASE_ALLOCATOR_ID,
-                                                           roleName,
-                                                           RoleCategory.JUDICIAL,
-                                                           existingAttributes,
-                                                           RoleType.CASE)));
+        executeDroolRules(List.of(buildExistingRole(CASE_ALLOCATOR_ID,
+                                                    roleName,
+                                                    RoleCategory.JUDICIAL,
+                                                    existingAttributes,
+                                                    RoleType.CASE,
+                                                    PUBLIC,
+                                                    GrantType.STANDARD,
+                                                    Status.LIVE
+        )));
 
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
     }
@@ -256,11 +260,14 @@ class SscsCaseRolesDroolsTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForSSCS(CASE_ALLOCATOR_ID,
-                                                           roleName,
-                                                           RoleCategory.JUDICIAL,
-                                                           existingAttributes,
-                                                           RoleType.CASE)));
+        executeDroolRules(List.of(buildExistingRole(CASE_ALLOCATOR_ID,
+                                                    roleName,
+                                                    RoleCategory.JUDICIAL,
+                                                    existingAttributes,
+                                                    RoleType.CASE,
+                                                    PUBLIC,
+                                                    GrantType.STANDARD,
+                                                    Status.LIVE)));
 
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
     }
