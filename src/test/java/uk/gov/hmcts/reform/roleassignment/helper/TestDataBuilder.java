@@ -470,35 +470,22 @@ public class TestDataBuilder {
 
     }
 
-    public static ExistingRoleAssignment buildExistingRoleForIAC(String actorId, String roleName,
-                                                                 RoleCategory roleCategory) {
-        Map<String, JsonNode> attributes = new HashMap<>();
-        attributes.put("jurisdiction", convertValueJsonNode("IA"));
-        attributes.put("caseTypeId", convertValueJsonNode("Asylum"));
-        return ExistingRoleAssignment.builder()
-            .actorId(actorId)
-            .roleType(RoleType.ORGANISATION)
-            .roleCategory(roleCategory)
-            .roleName(roleName)
-            .classification(Classification.PUBLIC)
-            .grantType(GrantType.STANDARD)
-            .attributes(attributes)
-            .build();
-    }
-
-    public static ExistingRoleAssignment buildExistingRoleForSSCS(String actorId, String roleName,
-                                                                  RoleCategory roleCategory,
-                                                                  Map<String, JsonNode> attributes,
-                                                                  RoleType roleType) {
+    public static ExistingRoleAssignment buildExistingRole(String actorId, String roleName,
+                                                           RoleCategory roleCategory,
+                                                           Map<String, JsonNode> attributes,
+                                                           RoleType roleType,
+                                                           Classification classification,
+                                                           GrantType grantType,
+                                                           Status status) {
         return ExistingRoleAssignment.builder()
             .actorId(actorId)
             .roleType(roleType)
             .roleCategory(roleCategory)
             .roleName(roleName)
-            .classification(Classification.PUBLIC)
-            .grantType(GrantType.STANDARD)
+            .classification(classification) //Public SSCS | Public IAC
+            .grantType(grantType) //Standard SSCS | Standard IAC
             .attributes(attributes)
-            .status(Status.LIVE)
+            .status(status) //Live SSCS | Null
             .build();
     }
 
