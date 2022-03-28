@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -8,25 +9,39 @@ import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.CHALLENGED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
-import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRoleForIAC;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole_ra;
 
 @RunWith(MockitoJUnitRunner.class)
 class DroolJudicialCategoryCaseRoleTest extends DroolBase {
+
+    HashMap<String, JsonNode> attributes;
+
+    public DroolJudicialCategoryCaseRoleTest() {
+        attributes = new HashMap<>();
+        attributes.put("jurisdiction", convertValueJsonNode("IA"));
+        attributes.put("caseType", convertValueJsonNode("Asylum"));
+    }
 
     @Test
     void shouldApproveRequestedRoleForCase_CaseAllocator() {
@@ -41,12 +56,15 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                  "case-allocator",
-                                                  RoleCategory.JUDICIAL)));
+        executeDroolRules(List.of(
+            TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE),
+            TestDataBuilder.buildExistingRole(assignmentRequest.getRequest().getAssignerId(),
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -75,12 +93,19 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          roleName,
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL)));
+        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
+        existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
+        existingAttributes.put("caseTypeId", convertValueJsonNode("Asylum"));
+
+        executeDroolRules(List.of(
+            TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
+                                              roleName,
+                                              RoleCategory.JUDICIAL, existingAttributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE),
+            TestDataBuilder.buildExistingRole(assignmentRequest.getRequest().getAssignerId(),
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, existingAttributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
@@ -98,12 +123,15 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "leadership-judge",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL)));
+        executeDroolRules(List.of(
+            TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
+                                              "leadership-judge",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE),
+            TestDataBuilder.buildExistingRole(assignmentRequest.getRequest().getAssignerId(),
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
@@ -127,18 +155,23 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "judge",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(requestedRole2.getActorId(),
-                                                          "judge",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL)));
+        executeDroolRules(List.of(
+            TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
+                                              "judge",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE),
+            TestDataBuilder.buildExistingRole(assignmentRequest.getRequest().getAssignerId(),
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE),
+            TestDataBuilder.buildExistingRole(requestedRole2.getActorId(),
+                                              "judge",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE),
+            TestDataBuilder.buildExistingRole(assignmentRequest.getRequest().getAssignerId(),
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
@@ -157,12 +190,15 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "hearing-panel-judge",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "Hearing-panel-judge",
-                                                          RoleCategory.JUDICIAL)));
+        executeDroolRules(List.of(
+            TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
+                                              "hearing-panel-judge",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE),
+            TestDataBuilder.buildExistingRole(assignmentRequest.getRequest().getAssignerId(),
+                                              "Hearing-panel-judge",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
@@ -181,12 +217,19 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
+        Map<String, JsonNode> attributes = new HashMap<>();
+        attributes.put("jurisdiction", convertValueJsonNode("IA"));
+        attributes.put("caseTypeId", convertValueJsonNode("Asylum"));
+
+        executeDroolRules(List.of(buildExistingRole(requestedRole1.getActorId(),
+                                                    "case-allocator",
+                                                    RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                                    Classification.PUBLIC, GrantType.STANDARD,Status.LIVE
+                                  ),
+                                  buildExistingRole(assignmentRequest.getRequest().getAssignerId(),
                                                           "case-allocator",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL)));
+                                                          RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                                    Classification.PUBLIC, GrantType.STANDARD,Status.LIVE)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
@@ -206,12 +249,15 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "12",
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL)));
+        executeDroolRules(List.of(
+            TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE),
+            TestDataBuilder.buildExistingRole(assignmentRequest.getRequest().getAssignerId() + "12",
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
@@ -232,12 +278,15 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId() + "12",
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL)));
+        executeDroolRules(List.of(
+            TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE),
+            TestDataBuilder.buildExistingRole(assignmentRequest.getRequest().getAssignerId() + "12",
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE)));
 
         //assertion
         assignmentRequest.getRequestedRoles()
@@ -254,12 +303,15 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL)));
+        executeDroolRules(List.of(
+            TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE),
+            TestDataBuilder.buildExistingRole(assignmentRequest.getRequest().getAssignerId(),
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
@@ -278,9 +330,12 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
         featureFlags.add(featureFlag);
 
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL)));
+        executeDroolRules(List.of(TestDataBuilder.buildExistingRole(assignmentRequest.getRequest().getAssignerId(),
+                                                                    "case-allocator",
+                                                                    RoleCategory.JUDICIAL,
+                                                                    attributes, RoleType.ORGANISATION,
+                                                                    Classification.PUBLIC, GrantType.STANDARD,
+                                                                    Status.LIVE)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
@@ -302,15 +357,17 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
+        ExistingRoleAssignment existingActorAssignment1 = TestDataBuilder.buildExistingRole(
             requestedRole1.getActorId(),
             "case-allocator",
-            RoleCategory.JUDICIAL
+            RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+            Classification.PUBLIC, GrantType.STANDARD,Status.LIVE
         );
 
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
+        ExistingRoleAssignment existingRequesterAssignment1 = TestDataBuilder.buildExistingRole(
             assignmentRequest.getRequest().getAssignerId(), "case-allocator",
-            RoleCategory.JUDICIAL);
+            RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+            Classification.PUBLIC, GrantType.STANDARD,Status.LIVE);
 
         existingRequesterAssignment1.getAttributes().put("jurisdiction", convertValueJsonNode("CMC"));
 
@@ -341,15 +398,17 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        ExistingRoleAssignment existingActorAssignment1 = buildExistingRoleForIAC(
+        ExistingRoleAssignment existingActorAssignment1 = TestDataBuilder.buildExistingRole(
             requestedRole1.getActorId(),
             "leadership-judge",
-            RoleCategory.JUDICIAL
+            RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+            Classification.PUBLIC, GrantType.STANDARD,Status.LIVE
         );
 
-        ExistingRoleAssignment existingRequesterAssignment1 = buildExistingRoleForIAC(
+        ExistingRoleAssignment existingRequesterAssignment1 = TestDataBuilder.buildExistingRole(
             assignmentRequest.getRequest().getAssignerId(), "case-allocator",
-            RoleCategory.JUDICIAL);
+            RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+            Classification.PUBLIC, GrantType.STANDARD,Status.LIVE);
 
         existingActorAssignment1.getAttributes().put("jurisdiction", convertValueJsonNode("CMC"));
 
@@ -377,12 +436,15 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
             .status(false).build();
         featureFlags.add(featureFlag);
 
-        executeDroolRules(List.of(buildExistingRoleForIAC(requestedRole1.getActorId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL),
-                                  buildExistingRoleForIAC(assignmentRequest.getRequest().getAssignerId(),
-                                                          "case-allocator",
-                                                          RoleCategory.JUDICIAL)));
+        executeDroolRules(List.of(
+            TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE),
+            TestDataBuilder.buildExistingRole(assignmentRequest.getRequest().getAssignerId(),
+                                              "case-allocator",
+                                              RoleCategory.JUDICIAL, attributes, RoleType.ORGANISATION,
+                                              Classification.PUBLIC, GrantType.STANDARD,Status.LIVE)));
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));

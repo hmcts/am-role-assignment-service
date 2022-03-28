@@ -470,21 +470,23 @@ public class TestDataBuilder {
 
     }
 
-    public static ExistingRoleAssignment buildExistingRoleForIAC(String actorId, String roleName,
-                                                                 RoleCategory roleCategory) {
-        Map<String, JsonNode> attributes = new HashMap<>();
-        attributes.put("jurisdiction", convertValueJsonNode("IA"));
-        attributes.put("caseTypeId", convertValueJsonNode("Asylum"));
+    public static ExistingRoleAssignment buildExistingRole(String actorId, String roleName,
+                                                           RoleCategory roleCategory,
+                                                           Map<String, JsonNode> attributes,
+                                                           RoleType roleType,
+                                                           Classification classification,
+                                                           GrantType grantType,
+                                                           Status status) {
         return ExistingRoleAssignment.builder()
             .actorId(actorId)
-            .roleType(RoleType.ORGANISATION)
+            .roleType(roleType)
             .roleCategory(roleCategory)
             .roleName(roleName)
-            .classification(Classification.PUBLIC)
-            .grantType(GrantType.STANDARD)
+            .classification(classification) //Public SSCS | Public IAC
+            .grantType(grantType) //Standard SSCS | Standard IAC
             .attributes(attributes)
+            .status(status) //Live SSCS | Null
             .build();
-
     }
 
     public static ExistingRoleAssignment buildExistingRoleForConflict(String juris, RoleCategory roleCategory) {
@@ -617,13 +619,15 @@ public class TestDataBuilder {
         String process,
         String roleName,
         RoleCategory roleCategory,
+        RoleType roleType,
         HashMap<String, JsonNode> attributes,
         Classification classification,
         GrantType grantType,
         Status status,
         String clientId,
         boolean readOnly,
-        String notes, String actorId) {
+        String notes, String actorId,
+        String requestedActorId) {
 
         return AssignmentRequest.builder()
             .request(Request.builder()
@@ -634,16 +638,16 @@ public class TestDataBuilder {
                          .assignerId(actorId)
                          .requestType(RequestType.CREATE)
                          .reference(attributes.get("caseId").asText() + "/" + attributes.get("requestedRole").asText()
-                                        + "/" + ACTORID)
+                                        + "/" + actorId)
                          .process(process)
                          .replaceExisting(true)
                          .created(ZonedDateTime.now())
                          .build())
             .requestedRoles(Collections.singletonList(
                 RoleAssignment.builder()
-                    .actorId(ACTORID)
+                    .actorId(requestedActorId)
                     .status(status)
-                    .roleType(RoleType.CASE)
+                    .roleType(roleType)
                     .roleName(roleName)
                     .roleCategory(roleCategory)
                     .grantType(grantType)
@@ -657,21 +661,23 @@ public class TestDataBuilder {
     }
 
     public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecialAccessApprover(
-        String process, String roleName,
-        RoleCategory roleCategory, HashMap<String, JsonNode> attributes, Classification classification,
-        GrantType grantType, Status status, String clientId, boolean readOnly,String notes) {
+        String process, String roleName, RoleCategory roleCategory, RoleType roleType,
+        HashMap<String, JsonNode> attributes, Classification classification,
+        GrantType grantType, Status status, String clientId, boolean readOnly,String notes, String requestedActorId) {
 
-        return buildAssignmentRequestForSpecialAccess(process, roleName, roleCategory, attributes, classification,
-                                                   grantType, status, clientId, readOnly, notes, CASE_ALLOCATOR_ID);
+        return buildAssignmentRequestForSpecialAccess(process, roleName, roleCategory, roleType, attributes,
+                                                      classification, grantType, status, clientId, readOnly,
+                                                      notes, CASE_ALLOCATOR_ID, requestedActorId);
     }
 
     public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecialAccess(
-        String process, String roleName, RoleCategory roleCategory, HashMap<String, JsonNode> attributes,
-        Classification classification, GrantType grantType, Status status, String clientId, boolean readOnly,
-        String notes) {
+        String process, String roleName, RoleCategory roleCategory, RoleType roleType,
+        HashMap<String, JsonNode> attributes, Classification classification, GrantType grantType,
+        Status status, String clientId, boolean readOnly, String notes, String requestedActorId) {
 
-        return buildAssignmentRequestForSpecialAccess(process, roleName, roleCategory, attributes, classification,
-                                                      grantType, status, clientId, readOnly, notes, ACTORID);
+        return buildAssignmentRequestForSpecialAccess(process, roleName, roleCategory, roleType, attributes,
+                                                      classification, grantType, status, clientId, readOnly,
+                                                      notes, ACTORID, requestedActorId);
     }
 
 
