@@ -490,7 +490,7 @@ dependencyManagement {
     dependencySet(group: 'net.minidev', version: '2.4.7') {
       entry 'json-smart'
     }
-    dependencySet(group: 'com.fasterxml.jackson.core', version: '2.13.1') {
+    dependencySet(group: 'com.fasterxml.jackson.core', version: '2.13.2') {
       entry 'jackson-databind'
       entry 'jackson-core'
       entry 'jackson-annotations'
