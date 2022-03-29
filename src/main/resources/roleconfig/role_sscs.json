@@ -1,8 +1,8 @@
 [
   {
-    "name": "caseworker-sscs-judge",
-    "label": "SSCS Judge",
-    "description": "SSCS Judge for judicial users",
+    "name": "medical",
+    "label": "Medical Member",
+    "description": "Medical Member for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
@@ -29,9 +29,9 @@
     ]
   },
   {
-    "name": "caseworker-sscs-judge-feepaid",
-    "label": "SSCS Judge (Fee-paid)",
-    "description": "SSCS Judge (Fee-paid) for judicial users",
+    "name": "fee-paid-medical",
+    "label": "Fee Paid Medical Member",
+    "description": "Fee Paid Medical Member for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
@@ -58,9 +58,9 @@
     ]
   },
   {
-    "name": "caseworker-sscs-medical",
-    "label": "SSCS Medical",
-    "description": "SSCS Medical for judicial users",
+    "name": "fee-paid-disability",
+    "label": "Fee Paid Disability Member",
+    "description": "Fee Paid Disability Member for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
@@ -87,67 +87,9 @@
     ]
   },
   {
-    "name": "caseworker-sscs-medical-feepaid",
-    "label": "SSCS Medical (Fee-paid)",
-    "description": "SSCS Medical (Fee-paid) for judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["SSCS"]
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "caseworker-sscs-disability-feepaid",
-    "label": "SSCS Disability (Fee-paid)",
-    "description": "SSCS Disability (Fee-paid) for judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["SSCS"]
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "caseworker-sscs-financial-feepaid",
-    "label": "SSCS Financial (Fee-paid)",
-    "description": "SSCS Financial (Fee-paid) for judicial users",
+    "name": "fee-paid-financial",
+    "label": "Fee Paid Financial Member",
+    "description": "Fee Paid Financial Member for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "patterns": [
