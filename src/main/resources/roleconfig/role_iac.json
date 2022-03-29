@@ -1,34 +1,5 @@
 [
   {
-    "name": "judge",
-    "label": "Judge",
-    "description": "Judge role for judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC","PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
-          }
-        }
-      }
-    ]
-  },
-  {
     "name": "senior-judge",
     "label": "Senior Judge",
     "description": "Senior Judge role for judicial users",
@@ -61,35 +32,6 @@
     "name": "leadership-judge",
     "label": "Leadership Judge",
     "description": "Leadership Judge role for judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC","PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "fee-paid-judge",
-    "label": "Fee Paid Judge",
-    "description": "Fee Paid Judge role for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "patterns": [

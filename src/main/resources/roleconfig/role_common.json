@@ -318,6 +318,64 @@
     ]
   },
   {
+    "name": "judge",
+    "label": "Judge",
+    "description": "Judge role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "fee-paid-judge",
+    "label": "Fee Paid Judge",
+    "description": "Fee Paid Judge role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "case-manager",
     "label": "Case Manager",
     "description": "Case Manager role for staff users",
