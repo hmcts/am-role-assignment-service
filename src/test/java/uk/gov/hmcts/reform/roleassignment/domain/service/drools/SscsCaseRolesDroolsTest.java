@@ -12,6 +12,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
+import java.util.HashMap;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification.PUBLIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
@@ -20,24 +23,21 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.CASE_ALL
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
-import java.util.HashMap;
-import java.util.List;
-
 class SscsCaseRolesDroolsTest extends DroolBase {
 
 
     @ParameterizedTest
     @CsvSource({
-        "hearing-judge,JUDICIAL,caseworker-sscs-judge",
-        "hearing-judge,JUDICIAL,caseworker-sscs-judge-feepaid",
-        "panel-doctor,JUDICIAL,caseworker-sscs-medical",
-        "panel-doctor,JUDICIAL,caseworker-sscs-medical-feepaid",
-        "panel-disability,JUDICIAL,caseworker-sscs-disability-feepaid",
-        "panel-financial,JUDICIAL,caseworker-sscs-financial-feepaid",
-        "panel-appraisal-judge,JUDICIAL,caseworker-sscs-judge",
-        "panel-appraisal-medical,JUDICIAL,caseworker-sscs-medical",
-        "panel-appraisal-medical,JUDICIAL,caseworker-sscs-medical-feepaid",
-        "interloc-judge,JUDICIAL,caseworker-sscs-judge",
+        "hearing-judge,JUDICIAL,judge",
+        "hearing-judge,JUDICIAL,fee-paid-judge",
+        "panel-doctor,JUDICIAL,medical",
+        "panel-doctor,JUDICIAL,fee-paid-medical",
+        "panel-disability,JUDICIAL,fee-paid-disability",
+        "panel-financial,JUDICIAL,fee-paid-financial",
+        "panel-appraisal-judge,JUDICIAL,judge",
+        "panel-appraisal-medical,JUDICIAL,medical",
+        "panel-appraisal-medical,JUDICIAL,fee-paid-medical",
+        "interloc-judge,JUDICIAL,judge",
         "case-allocator,JUDICIAL,case-allocator"
 
     })
@@ -155,12 +155,12 @@ class SscsCaseRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "judge,JUDICIAL,caseworker-sscs-judge,SSCS,Benefit,ORGANISATION",
-        "hearing-judge,ADMIN,caseworker-sscs-judge-feepaid,SSCS,Benefit,ORGANISATION",
+        "judge,JUDICIAL,judge,SSCS,Benefit,ORGANISATION",
+        "hearing-judge,ADMIN,fee-paid-judge,SSCS,Benefit,ORGANISATION",
         "panel-doctor,JUDICIAL,caseworker,SSCS,Benefit,ORGANISATION",
-        "panel-appraisal-medical,JUDICIAL,caseworker-sscs-medical-feepaid,IA,Benefit,ORGANISATION",
-        "interloc-judge,JUDICIAL,caseworker-sscs-judge,SSCS,Asylum,ORGANISATION",
-        "panel-appraisal-judge,JUDICIAL,caseworker-sscs-judge,SSCS,Benefit,CASE",
+        "panel-appraisal-medical,JUDICIAL,fee-paid-medical,IA,Benefit,ORGANISATION",
+        "interloc-judge,JUDICIAL,judge,SSCS,Asylum,ORGANISATION",
+        "panel-appraisal-judge,JUDICIAL,judge,SSCS,Benefit,CASE",
     })
     void shouldRejectAccessFor_SSCS_CaseRole(String roleName, String roleCategory, String existingRoleName,
                                              String jurisdiction, String caseType, String roleType) {
