@@ -33,7 +33,7 @@ when
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("caseworker-sscs-judge", "caseworker-sscs-judge-feepaid"),
+                 roleName in ("judge", "fee-paid-judge"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -57,7 +57,7 @@ when
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("caseworker-sscs-medical-feepaid", "caseworker-sscs-medical"),
+                 roleName in ("fee-paid-medical", "medical"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -82,7 +82,7 @@ when
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("caseworker-sscs-disability-feepaid"),
+                 roleName in ("fee-paid-disability"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -107,7 +107,7 @@ when
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("caseworker-sscs-financial-feepaid"),
+                 roleName in ("fee-paid-financial"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -132,7 +132,7 @@ when
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("caseworker-sscs-judge"),
+                 roleName in ("judge"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -157,7 +157,7 @@ when
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("caseworker-sscs-medical-feepaid","caseworker-sscs-medical"),
+                 roleName in ("fee-paid-medical","medical"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -182,7 +182,7 @@ when
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("caseworker-sscs-judge"),
+                 roleName in ("judge"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
