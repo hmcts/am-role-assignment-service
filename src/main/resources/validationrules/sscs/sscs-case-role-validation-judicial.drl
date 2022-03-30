@@ -1,4 +1,4 @@
-package validationrules.iac;
+package validationrules.sscs;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -16,7 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-
+import uk.gov.hmcts.reform.roleassignment.domain.model.CaseAllocatorApproval;
 
 /*
  * SSCS "hearing-judge" case validation rule.
