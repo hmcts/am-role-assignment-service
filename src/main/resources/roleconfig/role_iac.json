@@ -157,35 +157,12 @@
     ]
   },
   {
-    "name": "tribunal-caseworker",
-    "label": "Tribunal Caseworker",
-    "description": "Tribunal caseworker role for staff users",
+    "name": "case-manager",
+    "label": "Case Manager",
+    "description": "Case Manager role for staff users",
     "category": "LEGAL_OPERATIONS",
-    "substantive": false,
+    "substantive": true,
     "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
-          },
-          "primaryLocation": {
-            "mandatory": true
-          }
-        }
-      },
       {
         "roleType": {
           "mandatory": true,
@@ -200,15 +177,19 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["Asylum"]
+
           },
           "caseId": {
             "mandatory": true
           }
         }
+
       }
     ]
   },
