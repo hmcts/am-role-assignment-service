@@ -28,20 +28,21 @@ class SscsCaseRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "hearing-judge,JUDICIAL,judge",
-        "hearing-judge,JUDICIAL,fee-paid-judge",
-        "panel-doctor,JUDICIAL,medical",
-        "panel-doctor,JUDICIAL,fee-paid-medical",
-        "panel-disability,JUDICIAL,fee-paid-disability",
-        "panel-financial,JUDICIAL,fee-paid-financial",
-        "panel-appraisal-judge,JUDICIAL,judge",
-        "panel-appraisal-medical,JUDICIAL,medical",
-        "panel-appraisal-medical,JUDICIAL,fee-paid-medical",
-        "interloc-judge,JUDICIAL,judge",
-        "case-allocator,JUDICIAL,case-allocator"
-
+        "hearing-judge,JUDICIAL,judge,Y",
+        "hearing-judge,JUDICIAL,fee-paid-judge,Y",
+        "panel-doctor,JUDICIAL,medical,Y",
+        "panel-doctor,JUDICIAL,fee-paid-medical,Y",
+        "panel-disability,JUDICIAL,fee-paid-disability,Y",
+        "panel-financial,JUDICIAL,fee-paid-financial,Y",
+        "panel-appraisal-judge,JUDICIAL,judge,Y",
+        "panel-appraisal-medical,JUDICIAL,medical,Y",
+        "panel-appraisal-medical,JUDICIAL,fee-paid-medical,Y",
+        "interloc-judge,JUDICIAL,judge,Y",
+        "case-allocator,JUDICIAL,case-allocator,N",
+        "registrar,LEGAL_OPERATIONS,registrar,N"
     })
-    void shouldGrantAccessFor_SSCS_CaseRole(String roleName, String roleCategory, String existingRoleName) {
+    void shouldGrantAccessFor_SSCS_CaseRole(String roleName, String roleCategory, String existingRoleName,
+                                            String expectedSubstantive) {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("caseId", convertValueJsonNode("1212121212121212"));
@@ -97,6 +98,11 @@ class SscsCaseRolesDroolsTest extends DroolBase {
                           );
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals("SSCS", roleAssignment.getAttributes().get("jurisdiction").asText());
+            assertEquals("Benefit", roleAssignment.getAttributes().get("caseType").asText());
+            assertEquals(roleName, roleAssignment.getRoleName());
+            assertEquals(RoleCategory.valueOf(roleCategory), roleAssignment.getRoleCategory());
+            assertEquals(expectedSubstantive, roleAssignment.getAttributes().get("substantive").asText());
             Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
         });
     }
@@ -110,7 +116,8 @@ class SscsCaseRolesDroolsTest extends DroolBase {
         "panel-appraisal-judge",
         "panel-appraisal-medical",
         "interloc-judge",
-        "case-allocator"
+        "case-allocator",
+        "registrar"
     })
     void shouldDelete_SSCS_CaseRole(String roleName) {
 
