@@ -1,9 +1,12 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -11,13 +14,14 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.ACTORID;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
@@ -355,5 +359,79 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             assertEquals("task-supervisor", roleAssignment.getRoleName());
             assertEquals("N", roleAssignment.getAttributes().get("substantive").asText());
         });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "hearing-manager,LEGAL_OPERATIONS,STANDARD,north-east,SSCS",
+        "hearing-manager,ADMIN,STANDARD,north-east,SSCS",
+        "hearing-viewer,JUDICIAL,STANDARD,north-east,SSCS",
+        "hearing-viewer,LEGAL_OPERATIONS,STANDARD,north-east,SSCS",
+        "hearing-viewer,ADMIN,STANDARD,north-east,SSCS",
+        "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,SSCS"
+    })
+    void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory,
+                                          String grantType, String region, String jurisdiction) {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setAssignerId(ACTORID);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setClassification(Classification.PUBLIC);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(GrantType.valueOf(grantType));
+            roleAssignment.getAttributes().put("region", convertValueJsonNode(region));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+            roleAssignment.getAttributes().put("substantive", convertValueJsonNode("N"));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles()
+            .forEach(roleAssignment -> {
+                assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+                assertEquals(roleName, roleAssignment.getRoleName());
+                assertEquals(RoleCategory.valueOf(roleCategory), roleAssignment.getRoleCategory());
+                assertEquals("N", roleAssignment.getAttributes().get("substantive").asText());
+                assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "manager,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,ORGANISATION",
+        "hearing-manager,JUDICIAL,STANDARD,north-east,SSCS,ORGANISATION",
+        "hearing-viewer,JUDICIAL,SPECIFIC,north-east,SSCS,ORGANISATION",
+        "hearing-viewer,LEGAL_OPERATIONS,STANDARD,north-east,IA,ORGANISATION",
+        "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,SSCS,CASE"
+    })
+    void shouldRejectRequestedRoleForOrg(String roleName, String roleCategory,
+                                         String grantType, String region, String jurisdiction,
+                                         String org) {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setAssignerId(ACTORID);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.valueOf(org));
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setClassification(Classification.PUBLIC);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(GrantType.valueOf(grantType));
+            roleAssignment.getAttributes().put("region", convertValueJsonNode(region));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+            roleAssignment.getAttributes().put("substantive", convertValueJsonNode("N"));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles()
+            .forEach(roleAssignment -> assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 }
