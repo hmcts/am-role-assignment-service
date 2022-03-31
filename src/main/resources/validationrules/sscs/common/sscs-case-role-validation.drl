@@ -18,50 +18,27 @@ import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
+
 /*
- * SSCS "tribunal-caseworker" case validation rule.
+ * SSCS "case-allocator" case validation rule.
  */
 
-rule "sscs_tribunal_caseworker_create_case_roles"
+rule "sscs_case_allocator_create_case_roles"
 when
     $f:  FeatureFlag(status && flagName == FeatureFlagEnum.SSCS_WA_1_0.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
                  roleAssignment.attributes["caseType"].asText() == "Benefit",
-                 roleAssignment.roleName == "tribunal-caseworker" )
+                 roleAssignment.roleName == "case-allocator")
          ExistingRoleAssignment(
-                 actorId == $ca.getRoleAssignment().actorId,
+                 actorId == $ca.roleAssignment.actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("tribunal-caseworker"),
+                 roleName == "case-allocator",
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : sscs_tribunal_caseworker_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : sscs_case_allocator_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : sscs_tribunal_caseworker_create_case_roles");
-end;
-
-/*
- * SSCS "registrar" case validation rule.
- */
-
-rule "sscs_registrar_create_case_roles"
-when
-    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.SSCS_WA_1_0.getValue())
-    $ca: CaseAllocatorApproval(
-                 roleAssignment.status == Status.CREATE_REQUESTED,
-                 roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
-                 roleAssignment.attributes["caseType"].asText() == "Benefit",
-                 roleAssignment.roleName == "registrar")
-         ExistingRoleAssignment(
-                 actorId == $ca.getRoleAssignment().actorId,
-                 roleType == RoleType.ORGANISATION,
-                 roleName in ("registrar"),
-                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
-then
-    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : sscs_registrar_create_case_roles");
-    update($ca.getRoleAssignment());
-    logMsg("Rule : sscs_registrar_create_case_roles");
+    logMsg("Rule : sscs_case_allocator_create_case_roles");
 end;
