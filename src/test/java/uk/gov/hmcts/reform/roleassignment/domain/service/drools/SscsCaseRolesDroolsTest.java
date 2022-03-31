@@ -39,7 +39,9 @@ class SscsCaseRolesDroolsTest extends DroolBase {
         "panel-appraisal-medical,JUDICIAL,fee-paid-medical,Y",
         "interloc-judge,JUDICIAL,judge,Y",
         "case-allocator,JUDICIAL,case-allocator,N",
-        "registrar,LEGAL_OPERATIONS,registrar,N"
+        "case-allocator,LEGAL_OPERATIONS,case-allocator,N",
+        "registrar,LEGAL_OPERATIONS,registrar,N",
+        "tribunal-caseworker,LEGAL_OPERATIONS,tribunal-caseworker,N"
     })
     void shouldGrantAccessFor_SSCS_CaseRole(String roleName, String roleCategory, String existingRoleName,
                                             String expectedSubstantive) {
@@ -117,7 +119,8 @@ class SscsCaseRolesDroolsTest extends DroolBase {
         "panel-appraisal-medical",
         "interloc-judge",
         "case-allocator",
-        "registrar"
+        "registrar",
+        "tribunal-caseworker"
     })
     void shouldDelete_SSCS_CaseRole(String roleName) {
 
