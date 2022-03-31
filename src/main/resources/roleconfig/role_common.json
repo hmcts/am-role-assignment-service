@@ -376,6 +376,40 @@
     ]
   },
   {
+    "name": "hearing-judge",
+    "label": "Hearing Judge",
+    "description": "Hearing Judge role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "tribunal-caseworker",
     "label": "Tribunal Caseworker",
     "description": "Tribunal caseworker role for staff users",
