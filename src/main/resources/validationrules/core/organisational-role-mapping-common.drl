@@ -21,7 +21,8 @@ when
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.ORGANISATION,
-             roleCategory in (RoleCategory.LEGAL_OPERATIONS, RoleCategory.JUDICIAL, RoleCategory.ADMIN) )
+             roleCategory in (RoleCategory.LEGAL_OPERATIONS, RoleCategory.JUDICIAL,
+                              RoleCategory.ADMIN, RoleCategory.OTHER_GOV_DEPT) )
 then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Create approved : staff_organisational_role_mapping_service_create");
