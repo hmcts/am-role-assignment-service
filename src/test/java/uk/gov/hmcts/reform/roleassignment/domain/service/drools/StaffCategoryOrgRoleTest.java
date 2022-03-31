@@ -363,29 +363,35 @@ class StaffCategoryOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "hearing-manager,LEGAL_OPERATIONS,STANDARD,north-east,SSCS",
-        "hearing-manager,ADMIN,STANDARD,north-east,SSCS",
-        "hearing-viewer,JUDICIAL,STANDARD,north-east,SSCS",
-        "hearing-viewer,LEGAL_OPERATIONS,STANDARD,north-east,SSCS",
-        "hearing-viewer,ADMIN,STANDARD,north-east,SSCS",
-        "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,SSCS"
+        "hearing-manager,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N",
+        "hearing-manager,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,N",
+        "hearing-viewer,JUDICIAL,STANDARD,north-east,SSCS,UK,ORGANISATION,N",
+        "hearing-viewer,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N",
+        "hearing-viewer,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,N",
+        "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,SSCS,UK,ORGANISATION,N",
+        "registrar,LEGAL_OPERATIONS,STANDARD,south-east,SSCS,London,ORGANISATION,N",
+        "superuser,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,Y",
+        "clerk,ADMIN,STANDARD,south-east,SSCS,UK,ORGANISATION,Y",
+        "dwp,OTHER_GOV_DEPT,STANDARD,south-east,SSCS,UK,ORGANISATION,Y",
+        "hmrc,OTHER_GOV_DEPT,STANDARD,south-east,SSCS,UK,ORGANISATION,Y",
     })
-    void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory,
-                                          String grantType, String region, String jurisdiction) {
+    void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
+                                          String region, String jurisdiction, String primaryLocation,
+                                          String roleType, String expectedSubstantive) {
 
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.getRequest().setAssignerId(ACTORID);
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
-            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleType(RoleType.valueOf(roleType));
             roleAssignment.setStatus(Status.CREATE_REQUESTED);
             roleAssignment.setClassification(Classification.PUBLIC);
             roleAssignment.setRoleName(roleName);
             roleAssignment.setGrantType(GrantType.valueOf(grantType));
             roleAssignment.getAttributes().put("region", convertValueJsonNode(region));
+            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode(primaryLocation));
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
-            roleAssignment.getAttributes().put("substantive", convertValueJsonNode("N"));
         });
 
         //Execute Kie session
@@ -396,7 +402,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
                 assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
                 assertEquals(roleName, roleAssignment.getRoleName());
                 assertEquals(RoleCategory.valueOf(roleCategory), roleAssignment.getRoleCategory());
-                assertEquals("N", roleAssignment.getAttributes().get("substantive").asText());
+                assertEquals(expectedSubstantive, roleAssignment.getAttributes().get("substantive").asText());
                 assertEquals(Status.APPROVED, roleAssignment.getStatus());
             });
     }
