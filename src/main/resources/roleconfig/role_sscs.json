@@ -5,6 +5,7 @@
     "description": "Hearing Manager for caseworker users",
     "category": "LEGAL_OPERATIONS",
     "substantive": false,
+    "type":"ORGANISATION",
     "patterns": [
       {
         "roleType": {
@@ -34,6 +35,7 @@
     "description": "Hearing Manager for admin users",
     "category": "ADMIN",
     "substantive": false,
+    "type":"ORGANISATION",
     "patterns": [
       {
         "roleType": {
@@ -63,6 +65,7 @@
     "description": "Hearing Viewer for judicial users",
     "category": "JUDICIAL",
     "substantive": false,
+    "type":"ORGANISATION",
     "patterns": [
       {
         "roleType": {
@@ -92,6 +95,7 @@
     "description": "Hearing Viewer for caseworker users",
     "category": "LEGAL_OPERATIONS",
     "substantive": false,
+    "type":"ORGANISATION",
     "patterns": [
       {
         "roleType": {
@@ -121,6 +125,7 @@
     "description": "Hearing Viewer for admin users",
     "category": "ADMIN",
     "substantive": false,
+    "type":"ORGANISATION",
     "patterns": [
       {
         "roleType": {
@@ -150,6 +155,7 @@
     "description": "Listed Hearing Viewer for OGD users",
     "category": "OTHER_GOV_DEPT",
     "substantive": false,
+    "type":"ORGANISATION",
     "patterns": [
       {
         "roleType": {
