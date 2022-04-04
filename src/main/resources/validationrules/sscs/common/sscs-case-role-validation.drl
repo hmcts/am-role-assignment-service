@@ -42,3 +42,20 @@ then
     update($ca.getRoleAssignment());
     logMsg("Rule : sscs_case_allocator_create_case_roles");
 end;
+
+
+/*
+ * The case roles can be deleted if CaseAllocatorApproval entity is available for requested role assignment.
+ */
+rule "sscs_case_allocator_approved_delete_case_role"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.SSCS_WA_1_0.getValue())
+    $ca: CaseAllocatorApproval(
+                roleAssignment.status == Status.DELETE_REQUESTED,
+                roleAssignment.attributes["jurisdiction"].asText() == "SSCS")
+then
+    $ca.getRoleAssignment().setStatus(Status.DELETE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : sscs_case_allocator_approved_delete_case_role");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : sscs_case_allocator_approved_delete_case_role");
+end;
