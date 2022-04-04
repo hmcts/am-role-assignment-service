@@ -91,11 +91,14 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
             .status(true).build();
+        FeatureFlag featureFlag1  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
+            .status(true).build();
         featureFlags.add(featureFlag);
+        featureFlags.add(featureFlag1);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
-        existingAttributes.put("caseTypeId", convertValueJsonNode("Asylum"));
+        //existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
 
         executeDroolRules(List.of(
             TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
@@ -219,7 +222,7 @@ class DroolJudicialCategoryCaseRoleTest extends DroolBase {
 
         Map<String, JsonNode> attributes = new HashMap<>();
         attributes.put("jurisdiction", convertValueJsonNode("IA"));
-        attributes.put("caseTypeId", convertValueJsonNode("Asylum"));
+        attributes.put("caseType", convertValueJsonNode("Asylum"));
 
         executeDroolRules(List.of(buildExistingRole(requestedRole1.getActorId(),
                                                     "case-allocator",
