@@ -47,7 +47,9 @@ class ChallengedAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -106,7 +108,9 @@ class ChallengedAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -167,7 +171,9 @@ class ChallengedAccessDroolsTest extends DroolBase {
                 "anyClient",
                 false,
                 "Access required for reasons",
-                ACTORID
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
             )
             .build();
 
@@ -225,7 +231,9 @@ class ChallengedAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -280,7 +288,9 @@ class ChallengedAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -332,7 +342,9 @@ class ChallengedAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "A",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -384,7 +396,9 @@ class ChallengedAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "A",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 

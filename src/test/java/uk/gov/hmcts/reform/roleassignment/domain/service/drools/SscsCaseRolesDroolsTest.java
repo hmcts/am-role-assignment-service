@@ -64,7 +64,8 @@ class SscsCaseRolesDroolsTest extends DroolBase {
             "am_org_role_mapping_service",
             false,
             "Access required for reasons",
-            CASE_ALLOCATOR_ID
+            CASE_ALLOCATOR_ID,
+            "reference"
         )
             .build();
 
@@ -128,13 +129,12 @@ class SscsCaseRolesDroolsTest extends DroolBase {
         existingAttributes.put("jurisdiction", convertValueJsonNode("SSCS"));
         existingAttributes.put("caseType", convertValueJsonNode("Benefit"));
         existingAttributes.put("caseId", convertValueJsonNode("1212121212121212"));
-        existingAttributes.put("requestedRole", convertValueJsonNode(roleName));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessApprover(
             "delete-access",
             roleName,
             RoleCategory.valueOf(RoleCategory.JUDICIAL.name()),
-            RoleType.ORGANISATION,
+            RoleType.CASE,
             existingAttributes,
             PUBLIC,
             SPECIFIC,
@@ -142,7 +142,8 @@ class SscsCaseRolesDroolsTest extends DroolBase {
             "am_org_role_mapping_service",
             false,
             "Delete required for reasons",
-            CASE_ALLOCATOR_ID
+            CASE_ALLOCATOR_ID,
+            "reference"
         )
             .build();
 
@@ -150,8 +151,10 @@ class SscsCaseRolesDroolsTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
+        existingAttributes.put("allocatedRole", convertValueJsonNode(roleName));
+
         executeDroolRules(List.of(buildExistingRole(CASE_ALLOCATOR_ID,
-                                                    roleName,
+                                                    "case-allocator",
                                                     RoleCategory.JUDICIAL,
                                                     existingAttributes,
                                                     RoleType.CASE,
@@ -193,7 +196,8 @@ class SscsCaseRolesDroolsTest extends DroolBase {
             "am_org_role_mapping_service",
             false,
             "Access required for reasons",
-            CASE_ALLOCATOR_ID
+            CASE_ALLOCATOR_ID,
+            "reference"
         )
             .build();
 
@@ -262,7 +266,8 @@ class SscsCaseRolesDroolsTest extends DroolBase {
             clientId,
             false,
             "Delete required for reasons",
-            CASE_ALLOCATOR_ID
+            CASE_ALLOCATOR_ID,
+            "reference"
         )
             .build();
 
