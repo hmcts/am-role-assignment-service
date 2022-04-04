@@ -141,24 +141,6 @@ then
     logMsg("Rule : ia_case_allocator_create_case_roles");
 end;
 
- /*
-  * The case roles can be deleted if CaseAllocatorApproval entity is available for requested role assignment.
-  */
-
-
-rule "ia_judicial_case_allocator_approved_delete_case_role_v11"
-when
-   $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
-   $ca: CaseAllocatorApproval(
-                 roleAssignment.status == Status.DELETE_REQUESTED,
-                 roleAssignment.attributes["jurisdiction"].asText() == "IA")
-then
-   $ca.getRoleAssignment().setStatus(Status.DELETE_APPROVED);
-   $ca.getRoleAssignment().log("Stage 1 approved : ia_judicial_case_allocator_approved_delete_case_role_v11");
-   update($ca.getRoleAssignment());
-   logMsg("Rule : ia_judicial_case_allocator_approved_delete_case_role_v11");
-end;
-
 /*
  * The below rules are required for Specific and Challenged access
  * It will be toggled on with new IAC_SPECIFIC_1_0 and IAC_CHALLENGED_1_0 DB flag.
