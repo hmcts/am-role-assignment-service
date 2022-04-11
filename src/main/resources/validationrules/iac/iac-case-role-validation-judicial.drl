@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import java.time.ZonedDateTime;
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit;
 /*
  * IAC "lead-judge" case roles can be created by any existing "case-allocator" user
@@ -231,8 +232,8 @@ when
              roleName == "challenged-access-judiciary",
              roleCategory == RoleCategory.JUDICIAL,
              grantType == GrantType.CHALLENGED,
-             endTime != null && !endTime.isAfter(ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(1))
-             && !endTime.isBefore(ZonedDateTime.now()), /* request cannot have past end time */
+             endTime != null && !endTime.isAfter(ZonedDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.DAYS).plusDays(1))
+             && !endTime.isBefore(ZonedDateTime.now(ZoneOffset.UTC)), /* request cannot have past end time */
              notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     $c:  Case(
