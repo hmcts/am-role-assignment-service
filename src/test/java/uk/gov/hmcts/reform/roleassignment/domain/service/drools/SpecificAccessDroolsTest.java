@@ -53,7 +53,9 @@ class SpecificAccessDroolsTest extends DroolBase {
             "anyClient",
             true,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -109,7 +111,9 @@ class SpecificAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -172,7 +176,9 @@ class SpecificAccessDroolsTest extends DroolBase {
                 "anyClient",
                 false,
                 "Access required for reasons",
-                ACTORID
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
             )
             .build();
 
@@ -231,7 +237,9 @@ class SpecificAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -293,7 +301,9 @@ class SpecificAccessDroolsTest extends DroolBase {
             "xui_webapp",
             true,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -348,7 +358,9 @@ class SpecificAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -386,7 +398,9 @@ class SpecificAccessDroolsTest extends DroolBase {
             "xui_webapp",
             false,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -426,7 +440,9 @@ class SpecificAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         ).build();
 
         FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
@@ -480,7 +496,9 @@ class SpecificAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "A",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -533,7 +551,9 @@ class SpecificAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -586,7 +606,9 @@ class SpecificAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -626,7 +648,9 @@ class SpecificAccessDroolsTest extends DroolBase {
             "not_xui_webapp",
             true,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         ).build();
 
         FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
@@ -681,7 +705,9 @@ class SpecificAccessDroolsTest extends DroolBase {
             "anyClient",
             false,
             "Access required for reasons",
-            ACTORID
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         ).build();
 
         FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())

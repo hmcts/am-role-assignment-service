@@ -482,10 +482,10 @@ public class TestDataBuilder {
             .roleType(roleType)
             .roleCategory(roleCategory)
             .roleName(roleName)
-            .classification(classification) //Public SSCS | Public IAC
-            .grantType(grantType) //Standard SSCS | Standard IAC
+            .classification(classification)
+            .grantType(grantType)
             .attributes(attributes)
-            .status(status) //Live SSCS | Null
+            .status(status)
             .build();
     }
 
@@ -627,7 +627,8 @@ public class TestDataBuilder {
         String clientId,
         boolean readOnly,
         String notes, String actorId,
-        String requestedActorId) {
+        String requestedActorId,
+        String reference) {
 
         return AssignmentRequest.builder()
             .request(Request.builder()
@@ -637,8 +638,7 @@ public class TestDataBuilder {
                          .correlationId("38a90097-434e-47ee-8ea1-9ea2a267f51d")
                          .assignerId(actorId)
                          .requestType(RequestType.CREATE)
-                         .reference(attributes.get("caseId").asText() + "/" + attributes.get("requestedRole").asText()
-                                        + "/" + actorId)
+                         .reference(reference)
                          .process(process)
                          .replaceExisting(true)
                          .created(ZonedDateTime.now())
@@ -662,22 +662,23 @@ public class TestDataBuilder {
 
     public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecialAccessApprover(
         String process, String roleName, RoleCategory roleCategory, RoleType roleType,
-        HashMap<String, JsonNode> attributes, Classification classification,
-        GrantType grantType, Status status, String clientId, boolean readOnly,String notes, String requestedActorId) {
+        HashMap<String, JsonNode> attributes, Classification classification, GrantType grantType, Status status,
+        String clientId, boolean readOnly,String notes, String requestedActorId, String reference) {
 
         return buildAssignmentRequestForSpecialAccess(process, roleName, roleCategory, roleType, attributes,
                                                       classification, grantType, status, clientId, readOnly,
-                                                      notes, CASE_ALLOCATOR_ID, requestedActorId);
+                                                      notes, CASE_ALLOCATOR_ID, requestedActorId, reference);
     }
 
     public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecialAccess(
         String process, String roleName, RoleCategory roleCategory, RoleType roleType,
         HashMap<String, JsonNode> attributes, Classification classification, GrantType grantType,
-        Status status, String clientId, boolean readOnly, String notes, String requestedActorId) {
+        Status status, String clientId, boolean readOnly, String notes, String requestedActorId,
+        String reference) {
 
         return buildAssignmentRequestForSpecialAccess(process, roleName, roleCategory, roleType, attributes,
                                                       classification, grantType, status, clientId, readOnly,
-                                                      notes, ACTORID, requestedActorId);
+                                                      notes, ACTORID, requestedActorId, reference);
     }
 
 
