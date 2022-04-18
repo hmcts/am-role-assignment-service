@@ -365,7 +365,7 @@ dependencies {
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.1'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.1'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.1'
-  implementation group: 'org.springframework', name: 'spring-aop', version: '5.3.18'
+  implementation group: 'org.springframework', name: 'spring-aop', version: '5.3.19'
   implementation group: 'org.springframework', name: 'spring-aspects', version: '5.3.18'
   implementation group: 'org.springframework', name: 'spring-context', version: '5.3.18'
   implementation group: 'org.springframework', name: 'spring-context-support', version: '5.3.18'
