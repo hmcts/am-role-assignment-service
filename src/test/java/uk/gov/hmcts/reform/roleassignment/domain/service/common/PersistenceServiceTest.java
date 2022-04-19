@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
@@ -68,6 +73,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
+import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 class PersistenceServiceTest {
 
@@ -682,33 +688,6 @@ class PersistenceServiceTest {
 
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
-
-        List<String> actorId = Arrays.asList(
-            "123e4567-e89b-42d3-a456-556642445678",
-            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
-        );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
-        List<String> roleNames = Arrays.asList("judge", "senior judge");
-        List<String> roleCategories = Collections.singletonList("JUDICIAL");
-        List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
-        Map<String, List<String>> attributes = new HashMap<>();
-        List<String> regions = Arrays.asList("London", "JAPAN");
-        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
-        attributes.put("region", regions);
-        attributes.put("contractType", contractTypes);
-        List<String> grantTypes = Arrays.asList("SPECIFIC", "STANDARD");
-
-        QueryRequest queryRequest = QueryRequest.builder()
-            .actorId(actorId)
-            .roleType(roleType)
-            .roleCategory(roleCategories)
-            .roleName(roleNames)
-            .classification(classifications)
-            .attributes(attributes)
-            .validAt(now())
-            .grantType(grantTypes)
-            .build();
-
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
@@ -722,11 +701,36 @@ class PersistenceServiceTest {
 
         when(mockSpec.toPredicate(root, query, builder)).thenReturn(predicate);
 
+        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
+        existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
+        existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
 
         when(persistenceUtil.convertEntityToExistingRoleAssignment(page.iterator().next()))
-            .thenReturn(TestDataBuilder.buildExistingRoleForIAC("123e4567-e89b-42d3-a456-556642445678",
-                                                                "judge",
-                                                                RoleCategory.JUDICIAL));
+            .thenReturn(TestDataBuilder.buildExistingRole("123e4567-e89b-42d3-a456-556642445678",
+                                                          "judge",
+                                                          RoleCategory.JUDICIAL,
+                                                          existingAttributes,
+                                                          RoleType.ORGANISATION,
+                                                          Classification.PUBLIC,
+                                                          GrantType.STANDARD, Status.LIVE));
+
+        Map<String, List<String>> attributes = new HashMap<>();
+        attributes.put("region", Arrays.asList("London", "JAPAN"));
+        attributes.put("contractType", Arrays.asList("SALARIED", "Non SALARIED"));
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(Arrays.asList(
+                "123e4567-e89b-42d3-a456-556642445678",
+                "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+            ))
+            .roleType(Arrays.asList("CASE", "ORGANISATION"))
+            .roleCategory(Collections.singletonList("JUDICIAL"))
+            .roleName(Arrays.asList("judge", "senior judge"))
+            .classification(Arrays.asList("PUBLIC", "PRIVATE"))
+            .attributes(attributes)
+            .validAt(now())
+            .grantType(Arrays.asList("SPECIFIC", "STANDARD"))
+            .build();
 
         List<Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1,
                                                                                         1, "id",
