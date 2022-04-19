@@ -1,0 +1,1153 @@
+[
+  {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          }
+        }
+      },
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      },
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for admin users",
+    "category": "ADMIN",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "task-supervisor",
+    "label": "Task Supervisor",
+    "description": "Task Supervisor role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "task-supervisor",
+    "label": "Task Supervisor",
+    "description": "Task Supervisor role for staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "task-supervisor",
+    "label": "Task Supervisor",
+    "description": "Task Supervisor role for admin users",
+    "category": "ADMIN",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hmcts-judiciary",
+    "label": "HMCTS Judiciary",
+    "description": "HMCTS Judiciary role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PRIVATE"]
+        },
+        "attributes": {
+          "contractType": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hmcts-legal-operations",
+    "label": "HMCTS Legal Operations",
+    "description": "HMCTS Legal Operations role for staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PRIVATE"]
+        },
+        "attributes": {
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hmcts-admin",
+    "label": "HMCTS Admin",
+    "description": "HMCTS admin role for admin users",
+    "category": "ADMIN",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PRIVATE"]
+        },
+        "attributes": {
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "judge",
+    "label": "Judge",
+    "description": "Judge role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "fee-paid-judge",
+    "label": "Fee Paid Judge",
+    "description": "Fee Paid Judge role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-judge",
+    "label": "Hearing Judge",
+    "description": "Hearing Judge role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "tribunal-caseworker",
+    "label": "Tribunal Caseworker",
+    "description": "Tribunal caseworker role for staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      },
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","SSCS"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "conflict-of-interest",
+    "label": "Conflict of Interest",
+    "description": "Conflict of Interest role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": [
+            "CASE"
+          ]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": [
+            "EXCLUDED"
+          ]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": [
+            "RESTRICTED"
+          ]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "conflict-of-interest",
+    "label": "Conflict of Interest",
+    "description": "Conflict of Interest role for staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": [
+            "CASE"
+          ]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": [
+            "EXCLUDED"
+          ]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": [
+            "RESTRICTED"
+          ]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "conflict-of-interest",
+    "label": "Conflict of Interest",
+    "description": "Conflict of Interest role for admin users",
+    "category": "ADMIN",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": [
+            "CASE"
+          ]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": [
+            "EXCLUDED"
+          ]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": [
+            "RESTRICTED"
+          ]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-judiciary",
+    "label": "Specific Access (judiciary)",
+    "description": "Specific access for judicial users.",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-requested",
+    "label": "Specific Access Requested",
+    "description": "Specific access Requested for Judicial user.",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          },
+          "requestedRole": {
+            "mandatory" : true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-granted",
+    "label": "Specific Access Granted",
+    "description": "Specific access Granted for Judicial user.",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          },
+          "requestedRole": {
+            "mandatory" : true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-denied",
+    "label": "Specific Access Denied",
+    "description": "Specific access Denied for Judicial user.",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          },
+          "requestedRole": {
+            "mandatory" : true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-legal-ops",
+    "label": "Specific Access (legal-ops)",
+    "description": "Specific access for staff users.",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-requested",
+    "label": "Specific Access Requested",
+    "description": "Specific access Requested for staff user.",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          },
+          "requestedRole": {
+            "mandatory" : true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-granted",
+    "label": "Specific Access Granted",
+    "description": "Specific access Granted for staff user.",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          },
+          "requestedRole": {
+            "mandatory" : true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-denied",
+    "label": "Specific Access Denied",
+    "description": "Specific access Denied for staff user.",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          },
+          "requestedRole": {
+            "mandatory" : true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-admin",
+    "label": "Specific Access (admin)",
+    "description": "Specific access for admin users.",
+    "category": "ADMIN",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-requested",
+    "label": "Specific Access Requested",
+    "description": "Specific access Requested for admin user.",
+    "category": "ADMIN",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          },
+          "requestedRole": {
+            "mandatory" : true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-granted",
+    "label": "Specific Access Granted",
+    "description": "Specific access Granted for admin user.",
+    "category": "ADMIN",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          },
+          "requestedRole": {
+            "mandatory" : true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-denied",
+    "label": "Specific Access Denied",
+    "description": "Specific access Denied for admin user.",
+    "category": "ADMIN",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          },
+          "requestedRole": {
+            "mandatory" : true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "challenged-access-judiciary",
+    "label": "Challenged Access (judiciary)",
+    "description": "Challenged access for judicial users.",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["CHALLENGED"]
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "challenged-access-legal-ops",
+    "label": "Challenged Access (legal-operations)",
+    "description": "Challenged access for staff users.",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["CHALLENGED"]
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "challenged-access-admin",
+    "label": "Challenged Access (admin)",
+    "description": "Challenged access for admin users.",
+    "category": "ADMIN",
+    "substantive": false,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["CHALLENGED"]
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  }
+]
