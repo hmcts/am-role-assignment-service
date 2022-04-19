@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import java.util.HashMap;
 import java.util.List;
 
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.ACTORID;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -44,13 +45,17 @@ class SpecificAccessDroolsTest extends DroolBase {
             "specific-access",
             "specific-access-requested",
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.RESTRICTED,
             GrantType.BASIC,
             Status.CREATE_REQUESTED,
             "anyClient",
             true,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -64,7 +69,7 @@ class SpecificAccessDroolsTest extends DroolBase {
 
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          TestDataBuilder.ACTORID,
+                                          ACTORID,
                                           "judge",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -98,13 +103,17 @@ class SpecificAccessDroolsTest extends DroolBase {
             "specific-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.RESTRICTED,
             GrantType.SPECIFIC,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -159,13 +168,17 @@ class SpecificAccessDroolsTest extends DroolBase {
                 "specific-access",
                 roleName,
                 RoleCategory.valueOf(roleCategory),
+                RoleType.CASE,
                 roleAssignmentAttributes,
                 Classification.RESTRICTED,
                 GrantType.SPECIFIC,
                 Status.CREATE_REQUESTED,
                 "anyClient",
                 false,
-                "Access required for reasons"
+                "Access required for reasons",
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
             )
             .build();
 
@@ -182,7 +195,7 @@ class SpecificAccessDroolsTest extends DroolBase {
 
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          TestDataBuilder.ACTORID,
+                                          ACTORID,
                                           "case-allocator",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -216,13 +229,17 @@ class SpecificAccessDroolsTest extends DroolBase {
             "specific-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.RESTRICTED,
             GrantType.SPECIFIC,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -276,13 +293,17 @@ class SpecificAccessDroolsTest extends DroolBase {
             "specific-access",
             "specific-access-granted",
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.PRIVATE,
             GrantType.BASIC,
             Status.CREATE_REQUESTED,
             "xui_webapp",
             true,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -329,13 +350,17 @@ class SpecificAccessDroolsTest extends DroolBase {
             "specific-access",
             "specific-access-denied",
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.PRIVATE,
             GrantType.BASIC,
             Status.DELETE_REQUESTED,
             "anyClient",
             false,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -365,13 +390,17 @@ class SpecificAccessDroolsTest extends DroolBase {
             "specific-access",
             "specific-access-requested",
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.PRIVATE,
             GrantType.BASIC,
             Status.DELETE_REQUESTED,
             "xui_webapp",
             false,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -403,13 +432,17 @@ class SpecificAccessDroolsTest extends DroolBase {
             "specific-access",
             "specific-access-requested",
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.RESTRICTED,
             GrantType.BASIC,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         ).build();
 
         FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
@@ -455,13 +488,17 @@ class SpecificAccessDroolsTest extends DroolBase {
             "specific-access",
             "specific-access-requested",
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.RESTRICTED,
             GrantType.BASIC,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
-            "A"
+            "A",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -506,13 +543,17 @@ class SpecificAccessDroolsTest extends DroolBase {
             "specific-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.RESTRICTED,
             GrantType.SPECIFIC,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -557,13 +598,17 @@ class SpecificAccessDroolsTest extends DroolBase {
             "specific-access",
             "specific-access",
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.PRIVATE,
             GrantType.BASIC,
             Status.DELETE_REQUESTED,
             "anyClient",
             false,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -595,13 +640,17 @@ class SpecificAccessDroolsTest extends DroolBase {
             "specific-access",
             "specific-access-granted",
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.PRIVATE,
             GrantType.BASIC,
             Status.CREATE_REQUESTED,
             "not_xui_webapp",
             true,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         ).build();
 
         FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
@@ -648,13 +697,17 @@ class SpecificAccessDroolsTest extends DroolBase {
             "specific-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.RESTRICTED,
             GrantType.SPECIFIC,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         ).build();
 
         FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
