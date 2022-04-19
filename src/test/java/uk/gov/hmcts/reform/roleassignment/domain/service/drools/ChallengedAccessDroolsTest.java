@@ -17,6 +17,7 @@ import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.ACTORID;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 class ChallengedAccessDroolsTest extends DroolBase {
@@ -38,13 +39,17 @@ class ChallengedAccessDroolsTest extends DroolBase {
             "challenged-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.PUBLIC,
             GrantType.CHALLENGED,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -58,7 +63,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         existingAttributes.put("substantive", convertValueJsonNode("Y"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          TestDataBuilder.ACTORID,
+                                          ACTORID,
                                           "judge",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -95,13 +100,17 @@ class ChallengedAccessDroolsTest extends DroolBase {
             "challenged-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.PUBLIC,
             GrantType.CHALLENGED,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -154,13 +163,17 @@ class ChallengedAccessDroolsTest extends DroolBase {
                 "challenged-access",
                 roleName,
                 RoleCategory.valueOf(roleCategory),
+                RoleType.CASE,
                 roleAssignmentAttributes,
                 Classification.PUBLIC,
                 GrantType.CHALLENGED,
                 Status.CREATE_REQUESTED,
                 "anyClient",
                 false,
-                "Access required for reasons"
+                "Access required for reasons",
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
             )
             .build();
 
@@ -176,7 +189,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         existingAttributes.put("region", convertValueJsonNode("south-east"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          TestDataBuilder.ACTORID,
+                                          ACTORID,
                                           "judge",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -210,13 +223,17 @@ class ChallengedAccessDroolsTest extends DroolBase {
             "challenged-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.PUBLIC,
             GrantType.CHALLENGED,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -230,7 +247,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         existingAttributes.put("substantive", convertValueJsonNode("Y"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          TestDataBuilder.ACTORID,
+                                          ACTORID,
                                           "judge",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -263,13 +280,17 @@ class ChallengedAccessDroolsTest extends DroolBase {
             "challenged-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.PUBLIC,
             GrantType.CHALLENGED,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
-            "Access required for reasons"
+            "Access required for reasons",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -283,7 +304,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         existingAttributes.put("substantive", convertValueJsonNode("Y"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          TestDataBuilder.ACTORID,
+                                          ACTORID,
                                           "judge",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -313,13 +334,17 @@ class ChallengedAccessDroolsTest extends DroolBase {
             "challenged-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.PUBLIC,
             GrantType.CHALLENGED,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
-            "A"
+            "A",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -333,7 +358,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         existingAttributes.put("substantive", convertValueJsonNode("Y"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          TestDataBuilder.ACTORID,
+                                          ACTORID,
                                           "judge",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -363,13 +388,17 @@ class ChallengedAccessDroolsTest extends DroolBase {
             "challenged-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
+            RoleType.CASE,
             roleAssignmentAttributes,
             Classification.PUBLIC,
             GrantType.CHALLENGED,
             Status.CREATE_REQUESTED,
             "anyClient",
             false,
-            "A"
+            "A",
+            ACTORID,
+            roleAssignmentAttributes.get("caseId").asText() + "/"
+                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
 
@@ -387,7 +416,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         existingAttributes.put("substantive", convertValueJsonNode("Y"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          TestDataBuilder.ACTORID,
+                                          ACTORID,
                                           "judge",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
