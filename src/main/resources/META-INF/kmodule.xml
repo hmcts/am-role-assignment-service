@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule">
-  <kbase name="role-assignment-validation" packages="validationrules.test,
-  validationrules.core, validationrules.iac, validationrules.ccd, validationrules.iac.common, validationrules.wa">
+  <kbase name="role-assignment-validation"
+         packages="validationrules.test,
+                  validationrules.core,
+                  validationrules.iac,
+                  validationrules.ccd,
+                  validationrules.iac.common,
+                  validationrules.wa,
+                  validationrules.sscs,
+                  validationrules.sscs.common">
       <ksession name="role-assignment-validation-session" type="stateless"/>
   </kbase>
 </kmodule>

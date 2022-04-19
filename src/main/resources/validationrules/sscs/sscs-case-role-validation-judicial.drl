@@ -1,0 +1,192 @@
+package validationrules.sscs;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
+import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
+import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import uk.gov.hmcts.reform.roleassignment.domain.model.CaseAllocatorApproval;
+
+/*
+ * SSCS "hearing-judge" case validation rule.
+ */
+
+rule "sscs_hearing_judge_create_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.SSCS_WA_1_0.getValue())
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
+                 roleAssignment.attributes["caseType"].asText() == "Benefit",
+                 roleAssignment.roleName in ("hearing-judge"))
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("judge", "fee-paid-judge"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : sscs_hearing_judge_create_case_roles");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : sscs_hearing_judge_create_case_roles");
+end;
+
+/*
+ * SSCS "panel-doctor" case validation rule.
+ */
+
+rule "sscs_panel_doctor_create_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.SSCS_WA_1_0.getValue())
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
+                 roleAssignment.attributes["caseType"].asText() == "Benefit",
+                 roleAssignment.roleName in ("panel-doctor"))
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("fee-paid-medical", "medical"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : sscs_panel_doctor_create_case_roles");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : sscs_panel_doctor_create_case_roles");
+end;
+
+
+/*
+ * SSCS "panel-disability" case validation rule.
+ */
+
+rule "sscs_panel_disability_create_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.SSCS_WA_1_0.getValue())
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
+                 roleAssignment.attributes["caseType"].asText() == "Benefit",
+                 roleAssignment.roleName in ("panel-disability"))
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("fee-paid-disability"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : sscs_panel_disability_create_case_roles");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : sscs_panel_disability_create_case_roles");
+end;
+
+
+/*
+ * SSCS "panel-financial" case validation rule.
+ */
+
+rule "sscs_panel_financial_create_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.SSCS_WA_1_0.getValue())
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
+                 roleAssignment.attributes["caseType"].asText() == "Benefit",
+                 roleAssignment.roleName in ("panel-financial"))
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("fee-paid-financial"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : sscs_panel_financial_create_case_roles");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : sscs_panel_financial_create_case_roles");
+end;
+
+
+/*
+ * SSCS "panel-appraisal-judge" case validation rule.
+ */
+
+rule "sscs_panel_appraisal_judge_create_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.SSCS_WA_1_0.getValue())
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
+                 roleAssignment.attributes["caseType"].asText() == "Benefit",
+                 roleAssignment.roleName in ("panel-appraisal-judge"))
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("judge"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : sscs_panel_appraisal_judge_create_case_roles");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : sscs_panel_appraisal_judge_create_case_roles");
+end;
+
+
+/*
+ * SSCS "panel-appraisal-medical" case validation rule.
+ */
+
+rule "sscs_panel_appraisal_medical_create_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.SSCS_WA_1_0.getValue())
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
+                 roleAssignment.attributes["caseType"].asText() == "Benefit",
+                 roleAssignment.roleName in ("panel-appraisal-medical"))
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("fee-paid-medical","medical"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : sscs_panel_appraisal_medical_create_case_roles");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : sscs_panel_appraisal_medical_create_case_roles");
+end;
+
+
+/*
+ * SSCS "interloc-judge" case validation rule.
+ */
+
+rule "sscs_interloc_judge_create_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.SSCS_WA_1_0.getValue())
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
+                 roleAssignment.attributes["caseType"].asText() == "Benefit",
+                 roleAssignment.roleName in ("interloc-judge"))
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("judge"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : sscs_interloc_judge_create_case_roles");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : sscs_interloc_judge_create_case_roles");
+end;
