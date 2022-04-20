@@ -2,7 +2,7 @@
   "_guid_": "F-013_Test_Data_Base",
   "_extends_": "F-013-Base-Root",
   "productName": "Role Assignments Service",
-  "operationName": "Create SSCS Role Assignments",
+  "operationName": "Create Role Assignments",
   "specs": [
     "an active IDAM profile with full permissions"
   ],
