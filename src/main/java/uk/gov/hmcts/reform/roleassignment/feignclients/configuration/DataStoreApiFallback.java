@@ -22,11 +22,19 @@ public class DataStoreApiFallback implements DataStoreApi {
                 return Case.builder().id(caseId)
                     .caseTypeId("CARE_SUPERVISION_EPO")
                     .jurisdiction("PUBLICLAW")
+                    .securityClassification(Classification.PUBLIC)
                     .build();
             case "1114567890123456":
                 return Case.builder().id(caseId)
                     .caseTypeId("DIVORCE")
                     .jurisdiction("DIVORCE")
+                    .securityClassification(Classification.PUBLIC)
+                    .build();
+            case "1114567890123457":
+                return Case.builder().id(caseId)
+                    .caseTypeId("Benefit")
+                    .jurisdiction("SSCS")
+                    .securityClassification(Classification.PUBLIC)
                     .build();
             default:
                 return Case.builder().id(caseId)
