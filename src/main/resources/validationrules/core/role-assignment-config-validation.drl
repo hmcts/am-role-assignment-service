@@ -28,7 +28,6 @@ when
              $roleName : roleName,
              $roleCategory : roleCategory)
     $rc: RoleConfig(get($roleName, $roleCategory) != null)
-         not RoleConfigPattern(roleName == $roleName)
 then
     for (RoleConfigPattern pattern : $rc.get($roleName, $roleCategory).getPatterns()) {
         insert(pattern);
