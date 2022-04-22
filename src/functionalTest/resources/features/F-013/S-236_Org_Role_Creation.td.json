@@ -1,5 +1,5 @@
 {
-  "_guid_": "S-215_Org_Role_Creation",
+  "_guid_": "S-236_Org_Role_Creation",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
     "Befta1 - who is the actor for requested role",
@@ -15,7 +15,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S_213_Org_Role_For_Multiple_Actors",
+        "reference": "S_236_Org_Role_For_Multiple_Actors",
         "process": "sscs-access",
         "replaceExisting" : true
       },
@@ -23,7 +23,7 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "roleName": "senior-tribunal-caseworker",
+          "roleName": "caseworker-sscs-medical",
           "roleCategory": "JUDICIAL",
           "beginTime" : "2022-01-01T00:00:00Z",
           "attributes":

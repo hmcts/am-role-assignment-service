@@ -1,5 +1,5 @@
 {
-  "title": "must successfully create SSCS CASE role assignment with ",
+  "title": "must successfully create SSCS CASE role assignment with all mandatory fields",
   "_guid_": "S-231",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [

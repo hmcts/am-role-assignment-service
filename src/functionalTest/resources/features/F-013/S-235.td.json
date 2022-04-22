@@ -1,12 +1,12 @@
 {
-  "title": "must successfully create SSCS CASE role assignment with ",
-  "_guid_": "S-216",
+  "title": "must successfully create SSCS CASE role assignment with all mandatory fields",
+  "_guid_": "S-235",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
     "Befta1 - who is the actor for requested role",
     "contains case-allocator org role as assigner",
-    "contains caseworker-sscs-disability-feepaid org role as assignee",
-    "contains panel-disability case role assignment"
+    "contains caseworker-sscs-judge org role as assignee",
+    "contains panel-appraisal-judge case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -21,7 +21,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/challenged-access-legal-ops/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1607103938250138/sscs-access/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "sscs-access",
         "replaceExisting" : true
       },
