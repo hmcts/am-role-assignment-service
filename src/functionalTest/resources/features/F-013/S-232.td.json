@@ -23,7 +23,7 @@
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
         "reference": "1607103938250138/sscs-access/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "sscs-access",
-        "replaceExisting" : true
+        "replaceExisting" : false
       },
       "requestedRoles": [
         {
@@ -32,9 +32,11 @@
           "grantType" : "SPECIFIC",
           "classification" : "PUBLIC",
           "attributes": {
+            "jurisdiction": "SSCS",
             "caseId": "1607103938250138"
+
           },
-          "roleName": "case-allocator",
+          "roleName": "panel-doctor",
           "roleCategory": "JUDICIAL",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
@@ -61,7 +63,7 @@
           "_extends_": "ResponseRoleRequest",
           "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "process" : "${[scenarioContext][testData][request][body][roleRequest][process]}",
-          "replaceExisting": true
+          "replaceExisting": false
         },
         "requestedRoles": [
           {

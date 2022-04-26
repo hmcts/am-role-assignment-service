@@ -21,9 +21,9 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/challenged-access-legal-ops/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1114567890123457/hearing-judge/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "sscs-access",
-        "replaceExisting" : true
+        "replaceExisting" : false
       },
       "requestedRoles": [
         {
@@ -32,9 +32,12 @@
           "grantType" : "SPECIFIC",
           "classification" : "PUBLIC",
           "attributes": {
-            "caseId": "1607103938250138"
+            "jurisdiction": "SSCS",
+            "caseId": "1114567890123457",
+            "caseType": "Benefit"
+
           },
-          "roleName": "case-allocator",
+          "roleName": "hearing-judge",
           "roleCategory": "JUDICIAL",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",

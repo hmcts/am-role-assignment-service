@@ -23,7 +23,7 @@
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
         "reference": "1607103938250138/sscs-access/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "sscs-access",
-        "replaceExisting" : true
+        "replaceExisting" : false
       },
       "requestedRoles": [
         {
@@ -32,9 +32,10 @@
           "grantType" : "SPECIFIC",
           "classification" : "PUBLIC",
           "attributes": {
-            "caseId": "1607103938250138"
+            "caseId": "1607103938250138",
+            "caseType": "Benefit"
           },
-          "roleName": "case-allocator",
+          "roleName": "panel-financial",
           "roleCategory": "JUDICIAL",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",

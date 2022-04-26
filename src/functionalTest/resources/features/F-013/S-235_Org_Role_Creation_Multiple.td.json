@@ -1,5 +1,5 @@
 {
-  "_guid_": "S-232_Org_Role_Creation",
+  "_guid_": "S-235_Org_Role_Creation_Multiple",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester",
@@ -15,7 +15,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S_232_Org_Role_For_Multiple_Actors",
+        "reference": "S_235_Org_Role_For_Multiple",
         "process": "sscs-access",
         "replaceExisting" : true
       },
@@ -23,7 +23,18 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "roleName": "senior-tribunal-caseworker",
+          "roleName": "case-allocator",
+          "roleCategory": "ORGANISATIONAL",
+          "beginTime" : "2022-01-01T00:00:00Z",
+          "attributes":
+          {
+            "primaryLocation": "445777"
+          }
+        },
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "roleName": "caseworker-sscs-judge",
           "roleCategory": "JUDICIAL",
           "beginTime" : "2022-01-01T00:00:00Z",
           "attributes":

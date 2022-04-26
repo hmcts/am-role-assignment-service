@@ -34,7 +34,7 @@
           "attributes": {
             "caseId": "1607103938250138"
           },
-          "roleName": "case-allocator",
+          "roleName": "panel-appraisal-medical",
           "roleCategory": "JUDICIAL",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",

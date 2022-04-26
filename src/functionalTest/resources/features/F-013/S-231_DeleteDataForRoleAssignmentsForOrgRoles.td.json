@@ -21,7 +21,7 @@
     },
     "pathVariables": {
       "process": "sscs-access",
-      "reference": "${[scenarioContext][parentContext][childContexts][S-231_Org_Role_Creation][testData][request][body][roleRequest][reference]}"
+      "reference": "${[scenarioContext][parentContext][childContexts][S-231_Org_Role_Creation_Multiple][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {
