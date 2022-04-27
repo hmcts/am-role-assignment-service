@@ -9,7 +9,7 @@ Feature: F-013 : Create SSCS Role Assignments
   Scenario: must successfully create SSCS CASE role assignment with all mandatory fields
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
-    And a successful call [to create org role assignments for actors & requester] as in [S-231_Org_Role_Creation],
+    And a successful call [to create org role assignments for actors & requester] as in [S-231_Org_Role_Creation_Multiple],
     When a request is prepared with appropriate values,
     And the request [contains case-allocator org role as assigner],
     And the request [contains caseworker-sscs-judge or caseworker-sscs-judge-feepaid org role as assignee],
@@ -26,7 +26,7 @@ Feature: F-013 : Create SSCS Role Assignments
  Scenario: must successfully create SSCS CASE role assignment with all mandatory fields
    Given a user with [an active IDAM profile with full permissions],
    And a user [Befta1 - who is the actor for requested role],
-   And a successful call [to create org role assignments for actors & requester] as in [S-232_Org_Role_Creation],
+   And a successful call [to create org role assignments for actors & requester] as in [S-232_Org_Role_Creation_Multiple],
    When a request is prepared with appropriate values,
    And the request [contains case-allocator org role as assigner],
    And the request [contains caseworker-sscs-medical or caseworker-sscs-medical-feepaid org role as assignee],
@@ -43,7 +43,7 @@ Feature: F-013 : Create SSCS Role Assignments
   Scenario: must successfully create SSCS CASE role assignment with all mandatory fields
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
-    And a successful call [to create org role assignments for actors & requester] as in [S-233_Org_Role_Creation],
+    And a successful call [to create org role assignments for actors & requester] as in [S-233_Org_Role_Creation_Multiple],
     When a request is prepared with appropriate values,
     And the request [contains case-allocator org role as assigner],
     And the request [contains caseworker-sscs-disability-feepaid org role as assignee],
@@ -60,7 +60,7 @@ Feature: F-013 : Create SSCS Role Assignments
   Scenario: must successfully create SSCS CASE role assignment with all mandatory fields
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
-    And a successful call [to create org role assignments for actors & requester] as in [S-214_Org_Role_Creation],
+    And a successful call [to create org role assignments for actors & requester] as in [S-214_Org_Role_Creation_Multiple],
     When a request is prepared with appropriate values,
     And the request [contains case-allocator org role as assigner],
     And the request [contains caseworker-sscs-financial-feepaid org role as assignee],
@@ -77,7 +77,7 @@ Feature: F-013 : Create SSCS Role Assignments
   Scenario: must successfully create SSCS CASE role assignment with all mandatory fields
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
-    And a successful call [to create org role assignments for actors & requester] as in [S-235_Org_Role_Creation],
+    And a successful call [to create org role assignments for actors & requester] as in [S-235_Org_Role_Creation_Multiple],
     When a request is prepared with appropriate values,
     And the request [contains case-allocator org role as assigner],
     And the request [contains caseworker-sscs-judge org role as assignee],
@@ -94,7 +94,7 @@ Feature: F-013 : Create SSCS Role Assignments
   Scenario: must successfully create SSCS CASE role assignment with all mandatory fields
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
-    And a successful call [to create org role assignments for actors & requester] as in [S-214_Org_Role_Creation],
+    And a successful call [to create org role assignments for actors & requester] as in [S-214_Org_Role_Creation_Multiple],
     When a request is prepared with appropriate values,
     And the request [contains case-allocator org role as assigner],
     And the request [contains caseworker-sscs-medical or caseworker-sscs-medical-feepaid org role as assignee],
@@ -111,7 +111,7 @@ Feature: F-013 : Create SSCS Role Assignments
   Scenario: must successfully create SSCS CASE role assignment with all mandatory fields
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
-    And a successful call [to create org role assignments for actors & requester] as in [S-237_Org_Role_Creation],
+    And a successful call [to create org role assignments for actors & requester] as in [S-237_Org_Role_Creation_Multiple],
     When a request is prepared with appropriate values,
     And the request [contains case-allocator org role as assigner],
     And the request [contains caseworker-sscs-judge org role as assignee],
@@ -128,7 +128,7 @@ Feature: F-013 : Create SSCS Role Assignments
   Scenario: must successfully create SSCS CASE role assignment with all mandatory fields
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
-    And a successful call [to create org role assignments for actors & requester] as in [S-238_Org_Role_Creation],
+    And a successful call [to create org role assignments for actors & requester] as in [S-238_Org_Role_Creation_Multiple],
     When a request is prepared with appropriate values,
     And the request [contains case-allocator org role as assigner],
     And the request [contains case-allocator org role as assigner],
