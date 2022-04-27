@@ -97,7 +97,7 @@ Feature: F-002 : Delete Role Assignments by Process and Reference
   Scenario: must receive positive response when trying to delete a Role Assignment twice
     Given a user with [an active IDAM profile with full permissions],
     And a successful call [to create a role assignment for an actor] as in [CreationDataForRoleAssignment],
-    And another successful call [to delete role assignments just created above] as in [S-030_DeleteDataForRoleAssignments],
+    And another successful call [to delete role assignments just created above] as in [S-030X_DeleteDataForRoleAssignments],
     When a request is prepared with appropriate values,
     And the request [contains the same Process and Reference created above],
     And it is submitted to call the [Delete Role Assignments by Process] operation of [Role Assignment Service],
