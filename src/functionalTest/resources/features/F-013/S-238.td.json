@@ -1,12 +1,11 @@
 {
   "title": "must successfully create SSCS CASE role assignment with all mandatory fields",
-  "_guid_": "S-231",
+  "_guid_": "S-238",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
     "Befta1 - who is the actor for requested role",
     "contains case-allocator org role as assigner",
-    "contains judge org role as assignee",
-    "contains hearing-judge case role assignment"
+    "contains case-allocator case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -18,7 +17,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/hearing-judge/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1607103938250138/sscs-access/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "sscs-access",
         "replaceExisting" : true
       },
@@ -29,21 +28,19 @@
           "grantType" : "SPECIFIC",
           "classification" : "PUBLIC",
           "attributes": {
-            "jurisdiction": "SSCS",
             "caseId": "1114567890123457",
             "caseType": "Benefit"
-
           },
-          "roleName": "hearing-judge",
+          "roleName": "case-allocator",
           "roleCategory": "JUDICIAL",
-          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
           "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
           "readOnly": true,
           "notes" : [{
             "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "time": "2022-01-01T00:00Z",
-            "comment": "Need Access to case number 1607103938250138 for a month"
+            "comment": "Need Access to case number 1114567890123457 for a month"
           }]
         }
       ]
@@ -78,12 +75,12 @@
               "caseId": "1114567890123457",
               "jurisdiction" : "SSCS",
               "caseType" : "Benefit",
-              "substantive" : "Y"
+              "substantive" : "N"
             },
             "notes" : [{
               "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
               "time": "2022-01-01T00:00Z",
-              "comment": "Need Access to case number 1607103938250138 for a month"
+              "comment": "Need Access to case number 1114567890123457 for a month"
             }
             ]
           }

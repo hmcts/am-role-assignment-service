@@ -1,6 +1,6 @@
 {
 
-  "_guid_": "S-231_Org_Role_Creation_Multiple",
+  "_guid_": "S-237_Org_Role_Creation_Multiple",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester",
@@ -75,7 +75,7 @@
               "substantive": "Y"
             }
           },
-           {
+          {
             "_extends_": "ResponseRequestedRole",
             "actorId": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
@@ -95,3 +95,4 @@
     }
   }
 }
+

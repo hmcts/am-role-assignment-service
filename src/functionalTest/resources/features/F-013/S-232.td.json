@@ -1,12 +1,12 @@
 {
   "title": "must successfully create SSCS CASE role assignment with all mandatory fields",
-  "_guid_": "S-231",
+  "_guid_": "S-232",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
     "Befta1 - who is the actor for requested role",
     "contains case-allocator org role as assigner",
-    "contains judge org role as assignee",
-    "contains hearing-judge case role assignment"
+    "contains fee-paid-medical org role as assignee",
+    "contains panel-doctor case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -18,7 +18,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/hearing-judge/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1607103938250138/panel-doctor/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "sscs-access",
         "replaceExisting" : true
       },
@@ -32,9 +32,8 @@
             "jurisdiction": "SSCS",
             "caseId": "1114567890123457",
             "caseType": "Benefit"
-
           },
-          "roleName": "hearing-judge",
+          "roleName": "panel-doctor",
           "roleCategory": "JUDICIAL",
           "actorId": "${[scenarioContext][testData][users][befta1][id]}",
           "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",

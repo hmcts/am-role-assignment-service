@@ -1,6 +1,6 @@
 {
 
-  "_guid_": "S-231_Org_Role_Creation_Multiple",
+  "_guid_": "S-232_Org_Role_Creation_Multiple",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester",
@@ -35,7 +35,7 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta1][id]}",
-          "roleName": "judge",
+          "roleName": "fee-paid-medical",
           "roleCategory": "JUDICIAL",
           "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
@@ -67,7 +67,7 @@
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
-            "roleName": "judge",
+            "roleName": "fee-paid-medical",
             "process": "sscs-access",
             "attributes": {
               "jurisdiction": "SSCS",
@@ -75,7 +75,7 @@
               "substantive": "Y"
             }
           },
-           {
+          {
             "_extends_": "ResponseRequestedRole",
             "actorId": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
