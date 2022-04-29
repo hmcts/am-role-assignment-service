@@ -16,9 +16,7 @@ Feature: F-013 : Create SSCS Role Assignments
     And the request [contains hearing-judge case role assignment],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
-    And the response has all other details as expected,
-    And a successful call [to delete role assignments just created above] as in [S-232_DeleteDataForRoleAssignmentsForSSCS_Access].
-
+    And the response has all other details as expected.
 
 @S-232
  @FeatureToggle(RAS:sscs_wa_1_0=on)
@@ -32,9 +30,7 @@ Feature: F-013 : Create SSCS Role Assignments
    And the request [contains panel-doctor case role assignment],
    And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
    Then a positive response is received,
-   And the response has all other details as expected,
-   And a successful call [to delete role assignments just created above] as in [S-232_DeleteDataForRoleAssignmentsForSSCS_Access].
-
+   And the response has all other details as expected.
 
  @S-233
   @FeatureToggle(RAS:sscs_wa_1_0=on)
@@ -48,8 +44,7 @@ Feature: F-013 : Create SSCS Role Assignments
     And the request [contains panel-disability case role assignment],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
-    And the response has all other details as expected,
-    And a successful call [to delete role assignments just created above] as in [S-232_DeleteDataForRoleAssignmentsForSSCS_Access].
+    And the response has all other details as expected.
 
  @S-234
   @FeatureToggle(RAS:sscs_wa_1_0=on)
@@ -63,8 +58,7 @@ Feature: F-013 : Create SSCS Role Assignments
     And the request [contains panel-financial case role assignment],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
-    And the response has all other details as expected,
-    And a successful call [to delete role assignments just created above] as in [S-232_DeleteDataForRoleAssignmentsForSSCS_Access].
+    And the response has all other details as expected.
 
  @S-235
   @FeatureToggle(RAS:sscs_wa_1_0=on)
@@ -78,8 +72,7 @@ Feature: F-013 : Create SSCS Role Assignments
     And the request [contains panel-appraisal-judge case role assignment],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
-    And the response has all other details as expected,
-    And a successful call [to delete role assignments just created above] as in [S-232_DeleteDataForRoleAssignmentsForSSCS_Access].
+    And the response has all other details as expected.
 
   @S-236
     @FeatureToggle(RAS:sscs_wa_1_0=on)
@@ -93,8 +86,7 @@ Feature: F-013 : Create SSCS Role Assignments
       And the request [contains panel-appraisal-medical case role assignment],
       And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
       Then a positive response is received,
-      And the response has all other details as expected,
-      And a successful call [to delete role assignments just created above] as in [S-232_DeleteDataForRoleAssignmentsForSSCS_Access].
+      And the response has all other details as expected.
 
  @S-237
   @FeatureToggle(RAS:sscs_wa_1_0=on)
@@ -108,8 +100,7 @@ Feature: F-013 : Create SSCS Role Assignments
     And the request [contains interloc-judge case role assignment],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
-    And the response has all other details as expected,
-    And a successful call [to delete role assignments just created above] as in [S-232_DeleteDataForRoleAssignmentsForSSCS_Access].
+    And the response has all other details as expected.
 
  @S-238
   @FeatureToggle(RAS:sscs_wa_1_0=on)
@@ -122,5 +113,4 @@ Feature: F-013 : Create SSCS Role Assignments
     And the request [contains case-allocator case role assignment],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a positive response is received,
-    And the response has all other details as expected,
-    And a successful call [to delete role assignments just created above] as in [S-232_DeleteDataForRoleAssignmentsForSSCS_Access].
+    And the response has all other details as expected.
