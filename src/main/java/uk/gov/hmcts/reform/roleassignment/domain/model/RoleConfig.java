@@ -16,7 +16,7 @@ import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.getRoleConfig
 public class RoleConfig {
 
     @Getter
-    private static RoleConfig roleConfig = buildRoleConfig();
+    private static final RoleConfig roleConfig = buildRoleConfig();
 
     private final Map<String,RoleConfigRole> roleConfigByRoleName = new HashMap<>();
 
