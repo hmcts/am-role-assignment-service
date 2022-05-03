@@ -12,7 +12,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
+import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -26,6 +28,9 @@ public class QueryRoleAssignmentOrchestrator {
     public  ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByQueryRequest(QueryRequest queryRequest,
                                                                                    Integer pageNumber,
                                                                         Integer size, String sort, String direction) {
+
+        ValidationUtil.validateQueryRequests(Collections.singletonList(queryRequest));
+
         List<Assignment> assignmentList =
             persistenceService.retrieveRoleAssignmentsByQueryRequest(
                 queryRequest,
@@ -45,6 +50,9 @@ public class QueryRoleAssignmentOrchestrator {
         MultipleQueryRequest queryRequest,
         Integer pageNumber,
         Integer size, String sort, String direction) {
+
+
+        ValidationUtil.validateQueryRequests(queryRequest.getQueryRequests());
 
         List<Assignment> assignmentList =
             persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
