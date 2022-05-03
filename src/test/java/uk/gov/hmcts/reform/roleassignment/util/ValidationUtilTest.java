@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
@@ -20,7 +21,10 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -458,5 +462,88 @@ class ValidationUtilTest {
         String str1 = "mnp";
         String str2 = "abc,def,xyz";
         assertFalse(ValidationUtil.csvContains(str1,str2));
+    }
+
+    @Test
+    void validateQueryRequest_CaseIdPresent_Happy() {
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", List.of("1234567891234567"));
+        List<QueryRequest> queryRequest = List.of(QueryRequest.builder().attributes(attr).build());
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateQueryRequests(queryRequest));
+    }
+
+    @Test
+    void validateQueryRequest_AllButIdsPresent_Happy() {
+        List<QueryRequest> queryRequest =
+            List.of(QueryRequest.builder()
+                        .roleType(Collections.singletonList("ORGANISATION"))
+                        .roleCategory(Collections.singletonList("JUDICIAL"))
+                        .authorisations(Collections.singletonList("dev"))
+                        .classification(Collections.singletonList("PUBLIC"))
+                        .grantType(Collections.singletonList("STANDARD"))
+                        .hasAttributes(Collections.singletonList("JURISDICTION"))
+                        .readOnly(false)
+                        .validAt(LocalDateTime.now())
+                        .build());
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateQueryRequests(queryRequest));
+    }
+
+    @Test
+    void validateQueryRequest_AttributesPresentButEmptyValue() {
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("jurisdiction", Collections.emptyList());
+        List<QueryRequest> queryRequest =
+            List.of(QueryRequest.builder()
+                        .attributes(attr)
+                        .build());
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateQueryRequests(queryRequest));
+    }
+
+    @Test
+    void validateQueryRequest_AttributeKeyBlankButValuePresent() {
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("", Collections.singletonList("IA"));
+        List<QueryRequest> queryRequest =
+            List.of(QueryRequest.builder()
+                        .attributes(attr)
+                        .build());
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateQueryRequests(queryRequest));
+    }
+
+    @Test
+    void validateQueryRequest_AttributesPresentNoIds_Happy() {
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("jurisdiction", List.of("IA"));
+        List<QueryRequest> queryRequest =
+            List.of(QueryRequest.builder()
+                        .attributes(attr)
+                        .build());
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateQueryRequests(queryRequest));
+    }
+
+    @Test
+    void validateQueryRequest_ActorIdPresent_Happy() {
+        List<QueryRequest> queryRequest = List.of(QueryRequest.builder().actorId(List.of("123456")).build());
+        Assertions.assertDoesNotThrow(() -> ValidationUtil.validateQueryRequests(queryRequest));
+    }
+
+    @Test
+    void validateQueryRequest_Throws_NoIds_ActorIdEmpty() {
+        List<QueryRequest> queryRequest = List.of(QueryRequest.builder().actorId(Collections.emptyList()).build());
+        Assertions.assertThrows(BadRequestException.class, () -> ValidationUtil.validateQueryRequests(queryRequest));
+    }
+
+    @Test
+    void validateQueryRequest_Throws_NullIds() {
+        List<QueryRequest> queryRequest = List.of(QueryRequest.builder().build());
+        Assertions.assertThrows(BadRequestException.class, () -> ValidationUtil.validateQueryRequests(queryRequest));
+    }
+
+    @Test
+    void doesKeyAttributeExist() {
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", Collections.singletonList("123456"));
+
+        Assertions.assertTrue(ValidationUtil.doesKeyAttributeExist(attr, "caseId"));
     }
 }
