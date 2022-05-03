@@ -47,7 +47,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -118,23 +117,24 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
-    public void retrieveRoleAssignmentsByQueryRequest_emptyQueryRequestAndPageSizeAndSort() throws Exception {
+    public void retrieveRoleAssignmentsByQueryRequest_PageSizeAndSort() throws Exception {
 
-        logger.info("Retrieve Role Assignments with empty Query Request to verify return all entries with size 2");
+        logger.info("Retrieve Role Assignments verify return entries with size 2");
 
         final MvcResult result = mockMvc.perform(post(URL)
                                                  .contentType(JSON_CONTENT_TYPE)
                                                  .headers(getHttpHeaders("2", "roleCategory"))
-                                                 .content(mapper.writeValueAsBytes(QueryRequest.builder().build())))
+                                                 .content(mapper.writeValueAsBytes(
+                                                     QueryRequest.builder()
+                                                         .actorId("123e4567-e89b-42d3-a456-556642445613").build())))
             .andExpect(status().isOk())
             .andReturn();
         JsonNode responseJsonNode = new ObjectMapper().readValue(result.getResponse().getContentAsString(),
                                                            JsonNode.class);
         assertFalse(responseJsonNode.get("roleAssignmentResponse").isEmpty());
         assertEquals(2, responseJsonNode.get("roleAssignmentResponse").size());
-        assertEquals("JUDICIAL", responseJsonNode.get("roleAssignmentResponse").get(0)
-            .get("roleCategory").asText());
-        assertNull(responseJsonNode.get("roleAssignmentResponse").get(1).get("roleCategory"));
+        assertEquals("ORGANISATION", responseJsonNode.get("roleAssignmentResponse").get(0)
+            .get("roleType").asText());
     }
 
     @Test
@@ -197,7 +197,7 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void retrieveRoleAssignmentsByQueryRequestV2_queryRequests() throws Exception {
 
-        logger.info("Retrieve Role Assignments with two Query Requests in the list to verify return all entries");
+        logger.info("Retrieve Role Assignments with two Query Requests in the list to verify return entries");
         QueryRequest queryRequest = createQueryRequest();
         QueryRequest queryRequest2 = QueryRequest.builder()
             .actorId(List.of(ACTOR_ID))
@@ -226,11 +226,11 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
-    public void retrieveRoleAssignmentsByQueryRequestV2_emptyQueryRequestsAndPageSize() throws Exception {
+    public void retrieveRoleAssignmentsByQueryRequestV2_PageSize() throws Exception {
 
-        logger.info("Retrieve Role Assignments with empty Query with Sort Request to verify 2 entries sort by "
+        logger.info("Retrieve Role Assignments with Sort Request to verify 2 entries sort by "
                         + "roleCategory and NULL roleCategory should go end");
-        QueryRequest queryRequest = QueryRequest.builder().build();
+        QueryRequest queryRequest = QueryRequest.builder().actorId("123e4567-e89b-42d3-a456-556642445613").build();
         MultipleQueryRequest queryRequests  =  MultipleQueryRequest.builder().queryRequests(List.of(queryRequest))
             .build();
 
@@ -245,19 +245,89 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
             .readValue(result.getResponse().getContentAsString(),JsonNode.class);
         assertFalse(responseJsonNode.get("roleAssignmentResponse").isEmpty());
         assertEquals(2, responseJsonNode.get("roleAssignmentResponse").size());
-        assertEquals("JUDICIAL", responseJsonNode.get("roleAssignmentResponse").get(0)
-            .get("roleCategory").asText());
-        assertNull(responseJsonNode.get("roleAssignmentResponse").get(1).get("roleCategory"));
-
+        assertEquals("ORGANISATION", responseJsonNode.get("roleAssignmentResponse").get(0)
+            .get("roleType").asText());
     }
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
-    public void retrieveRoleAssignmentsByQueryRequestV2_emptyQueryRequestsAndPageSizeAndSortDesc() throws Exception {
+    public void retrieveRoleAssignmentsByQueryRequestV2_EmptyAttributeMappingDoesNotQueryEntireDb() throws Exception {
 
-        logger.info("Retrieve Role Assignments with empty Query with Sort Request to verify 2 entries sort by "
-                        + "roleCategory and NULL roleCategory should go end");
+        logger.info("Retrieve Zero Role Assignments when Empty Key or Value Attribute Pairing");
+
+        Map<String, List<String>> emptyKeyAttr = new HashMap<>();
+        emptyKeyAttr.put("", Collections.singletonList("divorce"));
+        QueryRequest queryRequest = QueryRequest.builder().attributes(emptyKeyAttr).build();
+
+        Map<String, List<String>> emptyValueAttr = new HashMap<>();
+        emptyValueAttr.put("jurisdiction", Collections.singletonList(""));
+        QueryRequest queryRequest2 = QueryRequest.builder().attributes(emptyValueAttr).build();
+
+        MultipleQueryRequest queryRequests  =
+            MultipleQueryRequest.builder().queryRequests(List.of(queryRequest, queryRequest2)).build();
+
+        final MvcResult result = mockMvc.perform(post("/am/role-assignments/query")
+                                                     .contentType(V2.MediaType.POST_ASSIGNMENTS)
+                                                     .headers(getHttpHeaders("2", "roleCategory"))
+                                                     .content(mapper.writeValueAsString(queryRequests))
+                                                     .accept(V2.MediaType.POST_ASSIGNMENTS))
+            .andExpect(status().isOk())
+            .andReturn();
+        JsonNode responseJsonNode = new ObjectMapper()
+            .readValue(result.getResponse().getContentAsString(),JsonNode.class);
+        assertEquals(0, responseJsonNode.get("roleAssignmentResponse").size());
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void retrieveRoleAssignmentsByQueryRequestV2_EmptyListPropertyDoesNotQueryEntireDb() throws Exception {
+
+        logger.info("Retrieve Zero Role Assignments when Empty List Property Present");
+
+        QueryRequest queryRequest = QueryRequest.builder().actorId(List.of("")).build();
+
+        MultipleQueryRequest queryRequests  =
+            MultipleQueryRequest.builder().queryRequests(List.of(queryRequest)).build();
+
+        final MvcResult result = mockMvc.perform(post("/am/role-assignments/query")
+                                                     .contentType(V2.MediaType.POST_ASSIGNMENTS)
+                                                     .headers(getHttpHeaders("2", "roleCategory"))
+                                                     .content(mapper.writeValueAsString(queryRequests))
+                                                     .accept(V2.MediaType.POST_ASSIGNMENTS))
+            .andExpect(status().isOk())
+            .andReturn();
+        JsonNode responseJsonNode = new ObjectMapper()
+            .readValue(result.getResponse().getContentAsString(),JsonNode.class);
+        assertEquals(0, responseJsonNode.get("roleAssignmentResponse").size());
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void retrieveRoleAssignmentsByQueryRequestV2_PageSize_EmptyRequestDoesNotQueryEntireDb() throws Exception {
+
+        logger.info("Retrieve Zero Role Assignments when Empty Request");
+
         QueryRequest queryRequest = QueryRequest.builder().build();
+
+        MultipleQueryRequest queryRequests  =
+            MultipleQueryRequest.builder().queryRequests(List.of(queryRequest)).build();
+
+        mockMvc.perform(post("/am/role-assignments/query")
+                                                     .contentType(V2.MediaType.POST_ASSIGNMENTS)
+                                                     .headers(getHttpHeaders("2", "roleCategory"))
+                                                     .content(mapper.writeValueAsString(queryRequests))
+                                                     .accept(V2.MediaType.POST_ASSIGNMENTS))
+            .andExpect(status().is4xxClientError())
+            .andReturn();
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void retrieveRoleAssignmentsByQueryRequestV2_PageSizeAndSortDesc() throws Exception {
+
+        logger.info("Retrieve Role Assignments with Sort Request to verify 2 entries sort by "
+                        + "roleCategory and NULL roleCategory should go end");
+        QueryRequest queryRequest = QueryRequest.builder().actorId("123e4567-e89b-42d3-a456-556642445613").build();
         MultipleQueryRequest queryRequests  =  MultipleQueryRequest.builder().queryRequests(List.of(queryRequest))
             .build();
         HttpHeaders headers = getHttpHeaders("2", "roleCategory");
@@ -273,9 +343,8 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
             .readValue(result.getResponse().getContentAsString(),JsonNode.class);
         assertFalse(responseJsonNode.get("roleAssignmentResponse").isEmpty());
         assertEquals(2, responseJsonNode.get("roleAssignmentResponse").size());
-        assertEquals("JUDICIAL", responseJsonNode.get("roleAssignmentResponse").get(0)
-            .get("roleCategory").asText());
-        assertNull(responseJsonNode.get("roleAssignmentResponse").get(1).get("roleCategory"));
+        assertEquals("ORGANISATION", responseJsonNode.get("roleAssignmentResponse").get(0)
+            .get("roleType").asText());
     }
 
     public static QueryRequest createQueryRequest() {

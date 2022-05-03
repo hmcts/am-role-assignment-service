@@ -22,6 +22,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
+import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
 import java.util.ArrayList;
@@ -270,6 +271,8 @@ public class DeleteRoleAssignmentOrchestrator {
     @SuppressWarnings("unchecked")
     public ResponseEntity<Void> deleteRoleAssignmentsByQuery(MultipleQueryRequest multipleQueryRequest) {
 
+        ValidationUtil.validateQueryRequests(multipleQueryRequest.getQueryRequests());
+
         //1. create the request Object
         if (CollectionUtils.isNotEmpty(multipleQueryRequest.getQueryRequests())) {
             request = parseRequestService.prepareDeleteRequest(PROCESS, REFERENCE,
@@ -317,6 +320,9 @@ public class DeleteRoleAssignmentOrchestrator {
 
     private List<Assignment> fetchRoleAssignmentsByMultipleQuery(MultipleQueryRequest multipleQueryRequest) {
         List<List<Assignment>> assignmentRecords = new ArrayList<>();
+
+        ValidationUtil.validateQueryRequests(multipleQueryRequest.getQueryRequests());
+
         assignmentRecords.add(persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
             multipleQueryRequest,
             0,
