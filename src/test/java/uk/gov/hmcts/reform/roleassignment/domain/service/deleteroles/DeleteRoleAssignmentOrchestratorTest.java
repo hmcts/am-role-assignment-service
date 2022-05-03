@@ -406,6 +406,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
         QueryRequest queryRequest = QueryRequest.builder()
             .roleType(roleType)
+            .actorId("123456")
             .build();
         MultipleQueryRequest multipleQueryRequest = MultipleQueryRequest.builder()
             .queryRequests(Collections.singletonList(queryRequest))
