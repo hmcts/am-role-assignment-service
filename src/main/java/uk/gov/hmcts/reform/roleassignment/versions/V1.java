@@ -38,9 +38,11 @@ public final class V1 {
         public static final String INVALID_ACTOR_AND_CASE_ID = "The Actor and Case are empty ";
         public static final String BAD_REQUEST_MISSING_PARAMETERS = "Mandatory Parameters are missing";
         public static final String INVALID_CASE_ID = "The Case id is invalid ";
+        public static final String BAD_QUERY_REQUEST_MISSING_CASEID_ACTORID
+            = "The query request must have either actorId or caseId if the request is empty";
         public static final String ASSIGNMENT_RECORDS_NOT_FOUND = "No Assignment records found for given criteria";
-        public static final String UNPROCESSABLE_ENTITY_REQUEST_REJECTED =
-            "Unprocessable entity as request has been rejected";
+        public static final String UNPROCESSABLE_ENTITY_REQUEST_REJECTED
+            = "Unprocessable entity as request has been rejected";
 
     }
 
