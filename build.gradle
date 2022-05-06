@@ -7,12 +7,13 @@ buildscript {
     maven { url 'https://jitpack.io' }
     }
   dependencies {
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.4.34")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.12")
     classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.7.4'
   }
 }
 
 plugins {
+  id 'eclipse'
   id 'application'
   id 'uk.gov.hmcts.java' version '0.12.12'
   id 'pmd'
@@ -428,8 +429,7 @@ dependencies {
 
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.0.1')
-
-  testImplementation('com.github.tomakehurst:wiremock-jre8:2.33.1')
+  testImplementation('com.github.tomakehurst:wiremock-jre8:2.33.2')
   testImplementation('org.springframework.cloud:spring-cloud-contract-wiremock:3.1.2')
   testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.4.0'
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit
@@ -440,6 +440,7 @@ dependencies {
   testImplementation group: 'info.solidsoft.gradle.pitest', name:'gradle-pitest-plugin', version: '1.7.4'
   testImplementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
   testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurity
+  testImplementation group: 'org.springframework.boot', name:'spring-boot-starter-test', version: versions.springBoot
   testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
