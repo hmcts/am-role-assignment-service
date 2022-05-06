@@ -41,7 +41,8 @@ when
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.ORGANISATION,
-             roleCategory in (RoleCategory.LEGAL_OPERATIONS, RoleCategory.JUDICIAL, RoleCategory.ADMIN) )
+             roleCategory in (RoleCategory.LEGAL_OPERATIONS, RoleCategory.JUDICIAL,
+                              RoleCategory.ADMIN, RoleCategory.OTHER_GOV_DEPT) )
 then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : staff_organisational_role_mapping_service_delete");
