@@ -405,7 +405,7 @@ dependencies {
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.58'
   implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.1.Final'
   implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.0'
-  implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.4'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.5'
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.23'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   implementation group: 'commons-io', name:'commons-io', version: '2.11.0'
