@@ -62,7 +62,7 @@
               "jurisdiction": "IA",
               "primaryLocation": "abc",
               "workTypes" : "hearing_work, routine_work, decision_making_work, applications",
-              "substantive": "N"
+              "substantive": "Y"
             }
           },
           {
