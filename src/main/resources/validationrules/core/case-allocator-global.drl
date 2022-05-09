@@ -76,7 +76,7 @@ when
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
-             grantType in (GrantType.SPECIFIC, GrantType.EXCLUDED, GrantType.CHALLENGED),
+             grantType in (GrantType.SPECIFIC, GrantType.EXCLUDED),
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
     // And the *assigner* has an existing role assignment
     //   - with name case-allocator
