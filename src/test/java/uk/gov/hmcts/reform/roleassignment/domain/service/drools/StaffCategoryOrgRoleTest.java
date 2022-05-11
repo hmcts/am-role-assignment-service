@@ -49,7 +49,8 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             assertEquals(APPROVED, roleAssignment.getStatus());
             assertEquals("tribunal-caseworker", roleAssignment.getRoleName());
-            assertEquals("N", roleAssignment.getAttributes().get("substantive").asText());
+            String substantive = roleAssignment.getRoleType() == RoleType.ORGANISATION ? "Y" : "N";
+            assertEquals(substantive, roleAssignment.getAttributes().get("substantive").asText());
         });
     }
 
@@ -385,7 +386,7 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         "hmcts-admin,ADMIN,BASIC,north-east,SSCS,UK,ORGANISATION,N,SALARIED,PRIVATE",
         "judge,JUDICIAL,STANDARD,north-east,SSCS,UK,ORGANISATION,Y,Null,PUBLIC",
         "fee-paid-judge,JUDICIAL,STANDARD,north-east,SSCS,UK,ORGANISATION,Y,Null,PUBLIC",
-        "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,Y,Null,PUBLIC",
     })
     void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
                                           String region, String jurisdiction, String primaryLocation,

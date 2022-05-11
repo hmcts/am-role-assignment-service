@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.model;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,16 +16,17 @@ import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.getRoleConfig
 public class RoleConfig {
 
     @Getter
-    private static RoleConfig roleConfig = buildRoleConfig();
+    private static final RoleConfig roleConfig = buildRoleConfig();
 
     private final Map<String,RoleConfigRole> roleConfigByRoleName = new HashMap<>();
 
     private RoleConfig(Collection<RoleConfigRole> roles) {
-        roles.forEach(r -> roleConfigByRoleName.put(String.join("_", r.getName(), r.getCategory().name()), r));
+        roles.forEach(r -> roleConfigByRoleName.put(String.join("_", r.getName(), r.getCategory().name(),
+                                                                r.getType().name()), r));
     }
 
-    public RoleConfigRole get(String roleName, RoleCategory roleCategory) {
-        return roleConfigByRoleName.get(String.join("_", roleName, roleCategory.name()));
+    public RoleConfigRole get(String roleName, RoleCategory roleCategory, RoleType roleType) {
+        return roleConfigByRoleName.get(String.join("_", roleName, roleCategory.name(), roleType.name()));
     }
 
     /**

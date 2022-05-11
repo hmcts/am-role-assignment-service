@@ -4,6 +4,7 @@
     "label": "Petitioner's Solicitor",
     "description": "Petitioner's Solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -38,6 +39,7 @@
     "label": "Respondent's Solicitor",
     "description": "Respondent's Solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -72,6 +74,7 @@
     "label": "Barrister",
     "description": "Barrister",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -106,6 +109,7 @@
     "label": "Cafcass Solicitor",
     "description": "Cafcass Solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -140,6 +144,7 @@
     "label": "External Professional Solicitor",
     "description": "External Professional Solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -174,6 +179,7 @@
     "label": "LA Barrister",
     "description": "LA Barrister",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -208,6 +214,7 @@
     "label": "Managing Local Authority",
     "description": "Managing Local Authority",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -242,6 +249,7 @@
     "label": "LA Solicitor",
     "description": "LA Solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -276,6 +284,7 @@
     "label": "Solicitor",
     "description": "Solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -310,6 +319,7 @@
     "label": "Solicitor A",
     "description": "Solicitor A",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -344,6 +354,7 @@
     "label": "Solicitor B",
     "description": "Solicitor B",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -378,6 +389,7 @@
     "label": "Solicitor C",
     "description": "Solicitor C",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -412,6 +424,7 @@
     "label": "Solicitor D",
     "description": "Solicitor D",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -446,6 +459,7 @@
     "label": "Solicitor E",
     "description": "Solicitor E",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -480,6 +494,7 @@
     "label": "Solicitor F",
     "description": "Solicitor F",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -514,6 +529,7 @@
     "label": "Solicitor G",
     "description": "Solicitor G",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -548,6 +564,7 @@
     "label": "Solicitor H",
     "description": "Solicitor H",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -582,6 +599,7 @@
     "label": "Solicitor I",
     "description": "Solicitor I",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -616,6 +634,7 @@
     "label": "Solicitor J",
     "description": "Solicitor J",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -650,6 +669,7 @@
     "label": "Legal Representative",
     "description": "Legal Representative",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -684,6 +704,7 @@
     "label": "Creator",
     "description": "Creator Role for Professional users",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -718,6 +739,7 @@
     "label": "Creator",
     "description": "Creator Role for Citizen users",
     "category": "CITIZEN",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -752,6 +774,7 @@
     "label": "Creator",
     "description": "Creator Role for Judicial users",
     "category": "JUDICIAL",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -786,6 +809,7 @@
     "label": "Creator",
     "description": "Creator Role for Staff users",
     "category": "LEGAL_OPERATIONS",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -820,6 +844,7 @@
     "label": "Applicant's Solicitor",
     "description": "Applicant's Solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -854,6 +879,7 @@
     "label": "Child Solicitor A",
     "description": "Child Solicitor A",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -888,6 +914,7 @@
     "label": "Child Solicitor B",
     "description": "Child Solicitor B",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -922,6 +949,7 @@
     "label": "Child Solicitor C",
     "description": "Child Solicitor C",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -956,6 +984,7 @@
     "label": "Child Solicitor D",
     "description": "Child Solicitor D",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -990,6 +1019,7 @@
     "label": "Child Solicitor E",
     "description": "Child Solicitor E",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1024,6 +1054,7 @@
     "label": "Child Solicitor F",
     "description": "Child Solicitor F",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1058,6 +1089,7 @@
     "label": "Child Solicitor G",
     "description": "Child Solicitor G",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1092,6 +1124,7 @@
     "label": "Child Solicitor H",
     "description": "Child Solicitor H",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1126,6 +1159,7 @@
     "label": "Child Solicitor I",
     "description": "Child Solicitor I",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1160,6 +1194,7 @@
     "label": "Child Solicitor J",
     "description": "Child Solicitor J",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1194,6 +1229,7 @@
     "label": "Child Solicitor K",
     "description": "Child Solicitor K",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1228,6 +1264,7 @@
     "label": "Child Solicitor L",
     "description": "Child Solicitor L",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1262,6 +1299,7 @@
     "label": "Child Solicitor M",
     "description": "Child Solicitor M",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1296,6 +1334,7 @@
     "label": "Child Solicitor N",
     "description": "Child Solicitor N",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1330,6 +1369,7 @@
     "label": "Child Solicitor O",
     "description": "Child Solicitor O",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1364,6 +1404,7 @@
     "label": "Shared local authority",
     "description": "Shared local authority",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1398,6 +1439,7 @@
     "label": "Applicant Solicitor 1",
     "description": "Applicant Solicitor 1",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1432,6 +1474,7 @@
     "label": "Applicant Solicitor 2",
     "description": "Applicant Solicitor 2",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1466,6 +1509,7 @@
     "label": "Respondent Solicitor 1",
     "description": "Respondent Solicitor 1",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1500,6 +1544,7 @@
     "label": "Respondent Solicitor 2",
     "description": "Respondent Solicitor 2",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1534,6 +1579,7 @@
     "label": "Claimant",
     "description": "Claimant",
     "category": "CITIZEN",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1568,6 +1614,7 @@
     "label": "Claimant Solicitor",
     "description": "Claimant Solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1602,6 +1649,7 @@
     "label": "Defendant",
     "description": "Defendant",
     "category": "CITIZEN",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1636,6 +1684,7 @@
     "label": "Defendant solicitor",
     "description": "Defendant solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1670,6 +1719,7 @@
     "label": "Applicant Solicitor",
     "description": "Applicant Solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1704,6 +1754,7 @@
     "label": "Other Party Solicitor",
     "description": "Other Party Solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1738,6 +1789,7 @@
     "label": "Respondent Solicitor",
     "description": "Respondent Solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1772,6 +1824,7 @@
     "label": "Applicant 1 Solicitor",
     "description": "Applicant 1 Solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1808,6 +1861,7 @@
     "label": "Applicant 2 Solicitor",
     "description": "Applicant 2 Solicitor",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1844,6 +1898,7 @@
     "label": "Applicant 2",
     "description": "Applicant 2",
     "category": "CITIZEN",
+    "type": "CASE",
     "substantive": false,
     "patterns": [
       {
@@ -1880,6 +1935,7 @@
     "label": "Applicant Solicitor 1 spec",
     "description": "Applicant Solicitor 1 spec",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1916,6 +1972,7 @@
     "label": "Applicant Solicitor 2 spec",
     "description": "Applicant Solicitor 2 spec",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1952,6 +2009,7 @@
     "label": "Respondent Solicitor 1 spec",
     "description": "Respondent Solicitor 1 spec",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {
@@ -1988,6 +2046,7 @@
     "label": "Respondent Solicitor 2 spec",
     "description": "Respondent Solicitor 2 spec",
     "category": "PROFESSIONAL",
+    "type": "CASE",
     "substantive": true,
     "patterns": [
       {

@@ -5,6 +5,7 @@
     "description": "Senior Judge role for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
+    "type": "ORGANISATION",
     "patterns": [
       {
         "roleType": {
@@ -34,6 +35,7 @@
     "description": "Leadership Judge role for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
+    "type": "ORGANISATION",
     "patterns": [
       {
         "roleType": {
@@ -63,6 +65,7 @@
     "description": "Lead Judge role for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
+    "type": "CASE",
     "patterns": [
       {
         "roleType": {
@@ -96,6 +99,7 @@
     "description": "FTPA Judge role for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
+    "type": "CASE",
     "patterns": [
       {
         "roleType": {
@@ -129,6 +133,7 @@
     "description": "Hearing Panel Judge role for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
+    "type": "CASE",
     "patterns": [
       {
         "roleType": {
@@ -162,6 +167,7 @@
     "description": "Case Manager role for staff users",
     "category": "LEGAL_OPERATIONS",
     "substantive": true,
+    "type": "CASE",
     "patterns": [
       {
         "roleType": {
@@ -199,6 +205,7 @@
     "description": "Senior Tribunal caseworker role for staff users",
     "category": "LEGAL_OPERATIONS",
     "substantive": true,
+    "type": "ORGANISATION",
     "patterns": [
       {
         "roleType": {
@@ -231,6 +238,7 @@
     "description": "Hearing Centre Admin role for admin users",
     "category": "ADMIN",
     "substantive": true,
+    "type": "ORGANISATION",
     "patterns": [
       {
         "roleType": {
@@ -263,6 +271,7 @@
     "description": "National Business Centre role for admin users",
     "category": "ADMIN",
     "substantive": true,
+    "type": "ORGANISATION",
     "patterns": [
       {
         "roleType": {
@@ -295,6 +304,7 @@
     "description": "CTSC role for admin users",
     "category": "ADMIN",
     "substantive": true,
+    "type": "ORGANISATION",
     "patterns": [
       {
         "roleType": {
