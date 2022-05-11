@@ -171,6 +171,7 @@ when
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
              roleName == "case-allocator",
+             roleCategory == $ra.roleCategory,
              grantType == GrantType.STANDARD,
              classification.isAtLeast($c.securityClassification),
              endTime == null || endTime.isAfter(ZonedDateTime.now()),
