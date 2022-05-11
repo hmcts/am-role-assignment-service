@@ -143,10 +143,10 @@ import java.time.temporal.ChronoUnit;
  end;
 
 /*
- * All services: "specific-access-admin" case creation and case-allocator as a assigner
+ * All services: "specific-access-<roleCategory?>" case creation and case-allocator as a assigner
  */
 
-rule "case_allocator_create_specific_access_admin_case_role"
+rule "case_allocator_create_specific_access_case_role"
 when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
     $rq: Request(
@@ -158,8 +158,8 @@ when
              actorId != $rq.assignerId,
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
-             roleName == "specific-access-admin",
-             roleCategory == RoleCategory.ADMIN,
+             roleName in ("specific-access-admin", "specific-access-judiciary", "specific-access-legal-ops"),
+             roleCategory in (RoleCategory.ADMIN, RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS),
              grantType == GrantType.SPECIFIC,
              notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
@@ -188,106 +188,7 @@ then
     $ra.setAttribute("jurisdiction", $c.getJurisdiction());
     $ra.setAttribute("caseType", $c.getCaseTypeId());
     $ra.setStatus(Status.CREATE_APPROVED);
-    $ra.log("Stage 1 approved : case_allocator_create_specific_access_admin_case_role");
+    $ra.log("Stage 1 approved : case_allocator_create_specific_access_case_role");
     update($ra);
-    logMsg("Rule : case_allocator_create_specific_access_admin_case_role");
-end;
-
-
-/*
- * All services: "specific-access-judiciary" case creation and case-allocator as a assigner
- */
-rule "case_allocator_create_specific_access_judicial_case_role"
-when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-    $rq: Request(
-             // The assigner must be the current user.
-             assignerId == authenticatedUserId,
-             process == "specific-access",
-             reference != null)
-    $ra: RoleAssignment(
-             actorId != $rq.assignerId,
-             status == Status.CREATE_REQUESTED,
-             roleType == RoleType.CASE,
-             roleName == "specific-access-judiciary",
-             roleCategory == RoleCategory.JUDICIAL,
-             grantType == GrantType.SPECIFIC,
-             notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
-             attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("IA","SSCS"))
-    $c:  Case(
-             id == $caseId)
-    $e: ExistingRoleAssignment(
-             actorId == $rq.assignerId,
-             roleType == RoleType.ORGANISATION,
-             roleName == "case-allocator",
-             grantType == GrantType.STANDARD,
-             classification.isAtLeast($c.securityClassification),
-             endTime == null || endTime.isAfter(ZonedDateTime.now()),
-             beginTime == null || !beginTime.isAfter(ZonedDateTime.now()),
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == $c.jurisdiction,
-             attributes["caseType"] == null || attributes["caseType"].asText() == $c.caseTypeId,
-             attributes["region"] == null || attributes["region"].asText() != $c.getRegion(),
-             attributes["baseLocation"] == null || attributes["baseLocation"].asText() != $c.getBaseLocation(),
-             attributes["managedRoleCategory"] == null || ValidationUtil.csvContains($ra.roleCategory.toString(), attributes["managedRoleCategory"].asText()),
-             attributes["managedRole"] == null || ValidationUtil.csvContains($ra.roleName, attributes["managedRole"].asText()))
-then
-    // We copy the authorisations to allow the case config to require an authorisation
-    // for (particularly judicial) role mappings
-    $ra.setAuthorisations($e.getAuthorisations());
-    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
-    $ra.setAttribute("caseType", $c.getCaseTypeId());
-    $ra.setStatus(Status.CREATE_APPROVED);
-    $ra.log("Stage 1 approved : case_allocator_create_specific_access_judicial_case_role");
-    update($ra);
-    logMsg("Rule : case_allocator_create_specific_access_judicial_case_role");
-end;
-
-/*
- * All services: "specific-access-legal-ops" case creation and case-allocator as a assigner
- */
-rule "case_allocator_create_specific_access_legal_ops_case_role"
-when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-    $rq: Request(
-             // The assigner must be the current user.
-             assignerId == authenticatedUserId,
-             process == "specific-access",
-             reference != null)
-    $ra: RoleAssignment(
-             actorId != $rq.assignerId,
-             status == Status.CREATE_REQUESTED,
-             roleType == RoleType.CASE,
-             roleName == "specific-access-legal-ops",
-             roleCategory == RoleCategory.LEGAL_OPERATIONS,
-             grantType == GrantType.SPECIFIC,
-             notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
-             attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("IA","SSCS"))
-    $c:  Case(
-             id == $caseId)
-    $e: ExistingRoleAssignment(
-             actorId == $rq.assignerId,
-             roleType == RoleType.ORGANISATION,
-             roleName == "case-allocator",
-             grantType == GrantType.STANDARD,
-             classification.isAtLeast($c.securityClassification),
-             endTime == null || endTime.isAfter(ZonedDateTime.now()),
-             beginTime == null || !beginTime.isAfter(ZonedDateTime.now()),
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == $c.jurisdiction,
-             attributes["caseType"] == null || attributes["caseType"].asText() == $c.caseTypeId,
-             attributes["region"] == null || attributes["region"].asText() != $c.getRegion(),
-             attributes["baseLocation"] == null || attributes["baseLocation"].asText() != $c.getBaseLocation(),
-             attributes["managedRoleCategory"] == null || ValidationUtil.csvContains($ra.roleCategory.toString(), attributes["managedRoleCategory"].asText()),
-             attributes["managedRole"] == null || ValidationUtil.csvContains($ra.roleName, attributes["managedRole"].asText()))
-then
-    // We copy the authorisations to allow the case config to require an authorisation
-    // for (particularly judicial) role mappings
-    $ra.setAuthorisations($e.getAuthorisations());
-    $ra.setAttribute("jurisdiction", $c.getJurisdiction());
-    $ra.setAttribute("caseType", $c.getCaseTypeId());
-    $ra.setStatus(Status.CREATE_APPROVED);
-    $ra.log("Stage 1 approved : case_allocator_create_specific_access_legal_ops_case_role");
-    update($ra);
-    logMsg("Rule : case_allocator_create_specific_access_legal_ops_case_role");
+    logMsg("Rule : case_allocator_create_specific_access_case_role");
 end;
