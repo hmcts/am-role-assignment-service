@@ -195,7 +195,7 @@ when
              grantType == GrantType.SPECIFIC,
              notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("IA"))
+             attributes["jurisdiction"] != null)
     $c:  Case(
              id == $caseId)
     $e: ExistingRoleAssignment(
