@@ -382,9 +382,9 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-                                                                   assertEquals(Status.APPROVED,roleAssignment.getStatus());
-                                                                   assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
-                                                               }
+                assertEquals(Status.APPROVED,roleAssignment.getStatus());
+                assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
+            }
         );
     }
 
