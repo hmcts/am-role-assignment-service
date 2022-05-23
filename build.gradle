@@ -442,7 +442,6 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
   implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: '2.13.3', ext: 'pom'
 
-
   testImplementation('com.opentable.components:otj-pg-embedded:1.0.1')
   testImplementation('com.github.tomakehurst:wiremock-jre8:2.33.2')
   testImplementation('org.springframework.cloud:spring-cloud-contract-wiremock:3.1.2')
@@ -470,7 +469,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:fortify-client:1.2.0:all'
-  testImplementation 'com.github.hmcts:befta-fw:8.7.2-CCD-3086.8'
+  testImplementation 'com.github.hmcts:befta-fw:9.0.0-CCD-3068.1'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
