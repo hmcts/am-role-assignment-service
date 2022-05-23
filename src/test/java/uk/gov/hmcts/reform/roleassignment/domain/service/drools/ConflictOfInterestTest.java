@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 
 import org.junit.jupiter.api.Test;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
@@ -74,11 +75,12 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void createConflictRole_Ia_Judicial_with_CaseAllocator_Ia_Admin() throws IOException {
 
-        assignmentRequest = TestDataBuilder.getAssignmentRequest()
-            .build();
+        assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
+        RoleAssignment assignment = TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.JUDICIAL);
+        assignment.setActorId(TestDataBuilder.CASE_ALLOCATOR_ID);
         assignmentRequest
             .setRequestedRoles(
-                Collections.singletonList(TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.JUDICIAL)));
+                Collections.singletonList(assignment));
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.getAttributes().clear();
@@ -93,7 +95,7 @@ class ConflictOfInterestTest extends DroolBase {
             assertEquals("IA", roleAssignment.getAttributes().get("jurisdiction").asText());
             assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
             assertTrue(roleAssignment.getLog()
-                           .contains("Stage 1 approved : self_create_conflict_of_interest"));
+                           .contains("Stage 1 approved : case_allocator_create_conflict_of_interest"));
             assertTrue(roleAssignment.getLog()
                            .contains("Approved : validate_role_assignment_against_patterns"));
         });
@@ -131,12 +133,13 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void createConflictRole_Ia_Judicial_with_CaseAllocator_Ia_LegalOps() throws IOException {
 
-        assignmentRequest = TestDataBuilder.getAssignmentRequest()
-            .build();
+        assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
+        RoleAssignment assignment = TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.JUDICIAL);
+        assignment.setActorId(TestDataBuilder.CASE_ALLOCATOR_ID);
         assignmentRequest
             .setRequestedRoles(
                 Collections.singletonList(
-                    TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.JUDICIAL)));
+                    assignment));
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.getAttributes().clear();
@@ -151,7 +154,7 @@ class ConflictOfInterestTest extends DroolBase {
             assertEquals("IA", roleAssignment.getAttributes().get("jurisdiction").asText());
             assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
             assertTrue(roleAssignment.getLog()
-                           .contains("Stage 1 approved : self_create_conflict_of_interest"));
+                           .contains("Stage 1 approved : case_allocator_create_conflict_of_interest"));
             assertTrue(roleAssignment.getLog()
                            .contains("Approved : validate_role_assignment_against_patterns"));
         });
