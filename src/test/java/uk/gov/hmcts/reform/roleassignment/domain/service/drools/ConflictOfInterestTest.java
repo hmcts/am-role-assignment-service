@@ -115,8 +115,7 @@ class ConflictOfInterestTest extends DroolBase {
             roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
         });
 
-        executeDroolRules(Collections.singletonList(
-            TestDataBuilder.buildExistingRoleForConflict("IA", RoleCategory.LEGAL_OPERATIONS)));
+        executeDroolRules(Collections.emptyList());
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(APPROVED, roleAssignment.getStatus());
