@@ -93,11 +93,7 @@ class ConflictOfInterestTest extends DroolBase {
             assertEquals("IA", roleAssignment.getAttributes().get("jurisdiction").asText());
             assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
             assertTrue(roleAssignment.getLog()
-                           .contains("Case Allocator approved : case_allocator_approve_create_case_role"));
-            assertTrue(roleAssignment.getLog()
-                           .contains("Stage 1 approved : case_allocator_create_conflict_of_interest"));
-            assertTrue(roleAssignment.getLog()
-                           .contains("Approved : validate_role_assignment_against_patterns"));
+                           .contains("Stage 1 approved : self_create_conflict_of_interest"));
         });
     }
 
@@ -125,11 +121,7 @@ class ConflictOfInterestTest extends DroolBase {
             assertEquals("IA", roleAssignment.getAttributes().get("jurisdiction").asText());
             assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
             assertTrue(roleAssignment.getLog()
-                           .contains("Case Allocator approved : case_allocator_approve_create_case_role"));
-            assertTrue(roleAssignment.getLog()
-                           .contains("Stage 1 approved : case_allocator_create_conflict_of_interest"));
-            assertTrue(roleAssignment.getLog()
-                           .contains("Approved : validate_role_assignment_against_patterns"));
+                           .contains("Stage 1 approved : self_create_conflict_of_interest"));
         });
     }
 
@@ -156,11 +148,7 @@ class ConflictOfInterestTest extends DroolBase {
             assertEquals("IA", roleAssignment.getAttributes().get("jurisdiction").asText());
             assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
             assertTrue(roleAssignment.getLog()
-                           .contains("Case Allocator approved : case_allocator_approve_create_case_role"));
-            assertTrue(roleAssignment.getLog()
-                           .contains("Stage 1 approved : case_allocator_create_conflict_of_interest"));
-            assertTrue(roleAssignment.getLog()
-                           .contains("Approved : validate_role_assignment_against_patterns"));
+                           .contains("Stage 1 approved : self_create_conflict_of_interest"));
         });
     }
 
