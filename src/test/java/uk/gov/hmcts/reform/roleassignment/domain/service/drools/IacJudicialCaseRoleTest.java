@@ -33,11 +33,11 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getReque
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole_ra;
 
 @RunWith(MockitoJUnitRunner.class)
-class DroolJudicialCategoryCaseRoleTest extends DroolBase {
+class IacJudicialCaseRoleTest extends DroolBase {
 
     HashMap<String, JsonNode> attributes;
 
-    public DroolJudicialCategoryCaseRoleTest() {
+    public IacJudicialCaseRoleTest() {
         attributes = new HashMap<>();
         attributes.put("jurisdiction", convertValueJsonNode("IA"));
         attributes.put("caseType", convertValueJsonNode("Asylum"));
