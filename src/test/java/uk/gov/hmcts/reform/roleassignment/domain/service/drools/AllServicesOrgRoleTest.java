@@ -26,7 +26,7 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getReque
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @RunWith(MockitoJUnitRunner.class)
-class StaffCategoryOrgRoleTest extends DroolBase {
+class AllServicesOrgRoleTest extends DroolBase {
 
     @Test
     void shouldApproveOrgRequestedRoleForTCW_S001() {
@@ -362,6 +362,57 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         });
     }
 
+    @Test
+    void shouldApprovedRequestedRoleForOrg() {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setClientId("not_am_org_role_mapping_service");
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setRoleName("judge");
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+                assertEquals(Status.APPROVED,roleAssignment.getStatus());
+                assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
+            }
+        );
+    }
+
+    @Test
+    void shouldRejectOrgValidation_MissingAttributeJurisdiction() {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName("judge");
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
     @ParameterizedTest
     @CsvSource({
         "hearing-manager,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
@@ -387,6 +438,11 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         "judge,JUDICIAL,STANDARD,north-east,SSCS,UK,ORGANISATION,Y,Null,PUBLIC",
         "fee-paid-judge,JUDICIAL,STANDARD,north-east,SSCS,UK,ORGANISATION,Y,Null,PUBLIC",
         "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "hmcts-judiciary,JUDICIAL,BASIC,north-east,CIVIL,UK,ORGANISATION,N,SALARIED,PRIVATE",
+        "judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "fee-paid-judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Fee-Paid,PUBLIC",
+        "circuit-judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "leadership-judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Salaried,PUBLIC"
     })
     void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
                                           String region, String jurisdiction, String primaryLocation,
@@ -428,7 +484,11 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         "hearing-manager,JUDICIAL,STANDARD,north-east,SSCS,ORGANISATION",
         "hearing-viewer,JUDICIAL,SPECIFIC,north-east,SSCS,ORGANISATION",
         "hearing-viewer,LEGAL_OPERATIONS,STANDARD,north-east,IA,ORGANISATION",
-        "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,SSCS,CASE"
+        "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,SSCS,CASE",
+        "judge,JUDICIAL,BASIC,north-east,SSCS,ORGANISATION",
+        "fee-paid-judge,JUDICIAL,STANDARD,north-east,CIVIL1,ORGANISATION",
+        "circuit-judge,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,ORGANISATION",
+        "leadership-judge,JUDICIAL,STANDARD,north-east,SSCS,ORGANISATION"
     })
     void shouldRejectRequestedRoleForOrg(String roleName, String roleCategory,
                                          String grantType, String region, String jurisdiction,
