@@ -203,39 +203,6 @@
     ]
   },
   {
-    "name": "hearing-centre-admin",
-    "label": "Hearing Centre Admin",
-    "description": "Hearing Centre Admin role for admin users",
-    "category": "ADMIN",
-    "substantive": true,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
-          },
-          "primaryLocation": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
     "name": "national-business-centre",
     "label": "National Business Centre",
     "description": "National Business Centre role for admin users",
