@@ -473,8 +473,8 @@
   },
   {
     "name": "tribunal-caseworker",
-    "label": "Tribunal Caseworker",
-    "description": "Tribunal caseworker role for staff users",
+    "label": "Legal Caseworker",
+    "description": "Legal Caseworker role for staff users",
     "category": "LEGAL_OPERATIONS",
     "substantive": true,
     "type": "ORGANISATION",
@@ -495,7 +495,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS"]
+            "values": ["IA","SSCS", "CIVIL"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1229,6 +1229,105 @@
             "mandatory": true
           },
           "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-centre-admin",
+    "label": "Hearing Centre Administrator",
+    "description": "Hearing Centre Administrator role for admin users",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA", "CIVIL"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "ctsc-admin",
+    "label": "CTSC Administrator",
+    "description": "CTSC Administrator role for admin users",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "nbc-admin",
+    "label": "NBC Administrator",
+    "description": "NBC Administrator role for admin users",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL"]
+          },
+          "primaryLocation": {
             "mandatory": true
           }
         }
