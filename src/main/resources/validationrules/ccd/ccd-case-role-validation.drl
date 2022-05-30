@@ -45,7 +45,7 @@ end;
 rule "ccd_delete_case_roles"
 when
     $f:  FeatureFlag(status && flagName == FeatureFlagEnum.CCD_1_0.getValue())
-    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment", "ccd_case_disposer"))
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,
@@ -91,7 +91,7 @@ end;
 rule "ccd_delete_case_roles_creator"
 when
     $f:  FeatureFlag(status && flagName == FeatureFlagEnum.CCD_1_0.getValue())
-    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment", "ccd_case_disposer"))
     $ra: RoleAssignment(
              roleName == "[CREATOR]",
              roleCategory in (RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS, RoleCategory.ADMIN),
@@ -132,7 +132,7 @@ end;
 rule "approve_any_dummy_jurisdiction_delete"
 when
      $f:  FeatureFlag(status && flagName == FeatureFlagEnum.CCD_BYPASS_1_0.getValue())
-     $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+     $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment", "ccd_case_disposer"))
      $ra: RoleAssignment(
          status == Status.DELETE_REQUESTED,
          attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("J1","J2","J3","BEFTA_MASTER",
