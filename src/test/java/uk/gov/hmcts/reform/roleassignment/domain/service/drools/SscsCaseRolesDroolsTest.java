@@ -33,7 +33,6 @@ class SscsCaseRolesDroolsTest extends DroolBase {
         "tribunal-member-1,JUDICIAL,medical,Y",
         "tribunal-member-1,JUDICIAL,fee-paid-medical,Y",
         "tribunal-member-2,JUDICIAL,fee-paid-disability,Y",
-        //"panel-financial,JUDICIAL,fee-paid-financial,Y",
         "appraiser-1,JUDICIAL,judge,Y",
         "appraiser-2,JUDICIAL,medical,Y",
         "appraiser-2,JUDICIAL,fee-paid-medical,Y",

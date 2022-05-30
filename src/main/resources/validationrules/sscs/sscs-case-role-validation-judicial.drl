@@ -60,7 +60,6 @@ when
                  roleName in ("fee-paid-medical", "medical", "fee-paid-disability", "fee-paid-financial"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
-    $ca.getRoleAssignment().setAttribute("workTypes", "hearing_work,priority");
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : sscs_tribunal_member_1_create_case_roles");
     update($ca.getRoleAssignment());
@@ -86,7 +85,6 @@ when
                  roleName in ("fee-paid-medical", "medical", "fee-paid-disability", "fee-paid-financial"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
-    $ca.getRoleAssignment().setAttribute("workTypes", "hearing_work,priority");
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : sscs_tribunal_member_2_create_case_roles");
     update($ca.getRoleAssignment());
@@ -112,7 +110,6 @@ when
                  roleName in ("judge", "fee-paid-judge", "fee-paid-medical", "medical", "fee-paid-disability", "fee-paid-financial"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
-    $ca.getRoleAssignment().setAttribute("workTypes", "hearing_work,priority");
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : sscs_appraiser_1_create_case_roles");
     update($ca.getRoleAssignment());
@@ -138,7 +135,6 @@ when
                  roleName in ("judge", "fee-paid-judge", "fee-paid-medical", "medical", "fee-paid-disability", "fee-paid-financial"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
-    $ca.getRoleAssignment().setAttribute("workTypes", "hearing_work,priority");
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : sscs_appraiser_2_create_case_roles");
     update($ca.getRoleAssignment());
