@@ -300,9 +300,9 @@
     ]
   },
   {
-    "name": "panel-doctor",
-    "label": "Tribunal member - Medical",
-    "description": "Tribunal member - Medical for judicial users",
+    "name": "tribunal-member-1",
+    "label": "Tribunal member 1",
+    "description": "Tribunal member - 1 for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "type": "CASE",
@@ -336,9 +336,9 @@
     ]
   },
   {
-    "name": "panel-disability",
-    "label": "Tribunal member - Disability ",
-    "description": "Tribunal member - Disability  for judicial users",
+    "name": "tribunal-member-2",
+    "label": "Tribunal member 2 ",
+    "description": "Tribunal member - 2  for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "type": "CASE",
@@ -372,9 +372,9 @@
     ]
   },
   {
-    "name": "panel-financial",
-    "label": "Tribunal member - Financial",
-    "description": "Tribunal member - Financial for judicial users",
+    "name": "appraiser-1",
+    "label": "Appraiser 1",
+    "description": "Appraiser 1 for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "type": "CASE",
@@ -408,45 +408,9 @@
     ]
   },
   {
-    "name": "panel-appraisal-judge",
-    "label": "Appraisal Judge",
-    "description": "Appraisal Judge for judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "type": "CASE",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["CASE"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["SSCS"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["Benefit"]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "panel-appraisal-medical",
-    "label": "Appraisal Medical",
-    "description": "Appraisal Medical for judicial users",
+    "name": "appraiser-2",
+    "label": "Appraiser 2",
+    "description": "Appraiser 2 for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "type": "CASE",
