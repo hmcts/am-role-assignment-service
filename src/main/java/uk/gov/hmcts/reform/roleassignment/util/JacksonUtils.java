@@ -113,7 +113,7 @@ public class JacksonUtils {
             // similarly remove the substantive flag from the subset entity
             subset.getAttributes().remove("substantive");
             if (roleAssignment.getRoleType().equals(RoleType.CASE)
-                && ("ccd_data,aac_manage_case_assignment".contains(assignmentRequest
+                && ("ccd_data,aac_manage_case_assignment,ccd_case_disposer".contains(assignmentRequest
                                                                        .getRequest().getClientId()) == false)) {
                 subset.getAttributes().remove("caseType");
                 subset.getAttributes().remove("jurisdiction");
