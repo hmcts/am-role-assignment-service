@@ -442,7 +442,14 @@ class AllServicesOrgRoleTest extends DroolBase {
         "judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Salaried,PUBLIC",
         "fee-paid-judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Fee-Paid,PUBLIC",
         "circuit-judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Salaried,PUBLIC",
-        "leadership-judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Salaried,PUBLIC"
+        "leadership-judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "ctsc-team-leader,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "ctsc-admin,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "nbc-team-leader,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "nbc-admin,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "hearing-centre-team-leader,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "hearing-centre-admin,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC"
     })
     void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
                                           String region, String jurisdiction, String primaryLocation,
@@ -488,7 +495,11 @@ class AllServicesOrgRoleTest extends DroolBase {
         "judge,JUDICIAL,BASIC,north-east,SSCS,ORGANISATION",
         "fee-paid-judge,JUDICIAL,STANDARD,north-east,CIVIL1,ORGANISATION",
         "circuit-judge,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,ORGANISATION",
-        "leadership-judge,JUDICIAL,STANDARD,north-east,SSCS,ORGANISATION"
+        "leadership-judge,JUDICIAL,STANDARD,north-east,SSCS,ORGANISATION",
+        "hearing-centre-team-leader,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,ORGANISATION",
+        "nbc-team-leader,ADMIN,STANDARD,north-east,SSCS,ORGANISATION",
+        "nbc-admin,ADMIN,STANDARD,north-east,IA,ORGANISATION",
+        "ctsc-team-leader,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,ORGANISATION",
     })
     void shouldRejectRequestedRoleForOrg(String roleName, String roleCategory,
                                          String grantType, String region, String jurisdiction,
