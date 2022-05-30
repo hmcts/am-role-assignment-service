@@ -125,8 +125,6 @@ class ConflictOfInterestTest extends DroolBase {
             assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
             assertTrue(roleAssignment.getLog()
                            .contains("Stage 1 approved : self_create_conflict_of_interest"));
-            assertTrue(roleAssignment.getLog()
-                           .contains("Approved : validate_role_assignment_against_patterns"));
         });
     }
 

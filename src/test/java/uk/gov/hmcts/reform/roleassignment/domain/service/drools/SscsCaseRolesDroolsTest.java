@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
@@ -15,7 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification.PUBLIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
@@ -30,13 +30,12 @@ class SscsCaseRolesDroolsTest extends DroolBase {
     @CsvSource({
         "hearing-judge,JUDICIAL,judge,Y",
         "hearing-judge,JUDICIAL,fee-paid-judge,Y",
-        "panel-doctor,JUDICIAL,medical,Y",
-        "panel-doctor,JUDICIAL,fee-paid-medical,Y",
-        "panel-disability,JUDICIAL,fee-paid-disability,Y",
-        "panel-financial,JUDICIAL,fee-paid-financial,Y",
-        "panel-appraisal-judge,JUDICIAL,judge,Y",
-        "panel-appraisal-medical,JUDICIAL,medical,Y",
-        "panel-appraisal-medical,JUDICIAL,fee-paid-medical,Y",
+        "tribunal-member-1,JUDICIAL,medical,Y",
+        "tribunal-member-1,JUDICIAL,fee-paid-medical,Y",
+        "tribunal-member-2,JUDICIAL,fee-paid-disability,Y",
+        "appraiser-1,JUDICIAL,judge,Y",
+        "appraiser-2,JUDICIAL,medical,Y",
+        "appraiser-2,JUDICIAL,fee-paid-medical,Y",
         "interloc-judge,JUDICIAL,judge,Y",
         "case-allocator,JUDICIAL,case-allocator,N",
         "case-allocator,LEGAL_OPERATIONS,case-allocator,N",
@@ -106,7 +105,7 @@ class SscsCaseRolesDroolsTest extends DroolBase {
             assertEquals(roleName, roleAssignment.getRoleName());
             assertEquals(RoleCategory.valueOf(roleCategory), roleAssignment.getRoleCategory());
             assertEquals(expectedSubstantive, roleAssignment.getAttributes().get("substantive").asText());
-            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            assertEquals(Status.APPROVED, roleAssignment.getStatus());
         });
     }
 
@@ -232,9 +231,8 @@ class SscsCaseRolesDroolsTest extends DroolBase {
                           )
         );
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 
     @ParameterizedTest
