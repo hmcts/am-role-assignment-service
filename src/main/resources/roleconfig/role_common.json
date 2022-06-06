@@ -23,7 +23,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS"]
+            "values": ["IA","SSCS","CIVIL"]
           }
         }
       }
@@ -187,7 +187,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS"]
+            "values": ["IA","SSCS","CIVIL"]
           }
         }
       }
@@ -473,8 +473,8 @@
   },
   {
     "name": "tribunal-caseworker",
-    "label": "Legal Caseworker",
-    "description": "Legal Caseworker role for staff users",
+    "label": "Tribunal Caseworker",
+    "description": "Tribunal Caseworker role for staff users",
     "category": "LEGAL_OPERATIONS",
     "substantive": true,
     "type": "ORGANISATION",
@@ -1269,9 +1269,9 @@
     ]
   },
   {
-    "name": "ctsc-admin",
-    "label": "CTSC Administrator",
-    "description": "CTSC Administrator role for admin users",
+    "name": "national-business-centre",
+    "label": "National Business Centre",
+    "description": "National Business Centre role for admin users",
     "category": "ADMIN",
     "substantive": true,
     "type": "ORGANISATION",
@@ -1292,7 +1292,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL"]
+            "values": ["IA","CIVIL"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1302,9 +1302,9 @@
     ]
   },
   {
-    "name": "nbc-admin",
-    "label": "NBC Administrator",
-    "description": "NBC Administrator role for admin users",
+    "name": "ctsc",
+    "label": "CTSC",
+    "description": "CTSC role for admin users",
     "category": "ADMIN",
     "substantive": true,
     "type": "ORGANISATION",
@@ -1325,7 +1325,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL"]
+            "values": ["IA", "CIVIL"]
           },
           "primaryLocation": {
             "mandatory": true
