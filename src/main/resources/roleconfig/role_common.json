@@ -154,7 +154,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS"]
+            "values": ["IA","SSCS","CIVIL"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -250,7 +250,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS"]
+            "values": ["IA","SSCS","CIVIL"]
           },
           "primaryLocation": {
             "mandatory": true
