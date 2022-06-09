@@ -279,11 +279,6 @@
         "classification": {
           "mandatory": true,
           "values": ["PRIVATE"]
-        },
-        "attributes": {
-          "contractType": {
-            "mandatory": true
-          }
         }
       }
     ]
@@ -308,11 +303,6 @@
         "classification": {
           "mandatory": true,
           "values": ["PRIVATE"]
-        },
-        "attributes": {
-          "primaryLocation": {
-            "mandatory": true
-          }
         }
       }
     ]
@@ -337,11 +327,6 @@
         "classification": {
           "mandatory": true,
           "values": ["PRIVATE"]
-        },
-        "attributes": {
-          "primaryLocation": {
-            "mandatory": true
-          }
         }
       }
     ]
