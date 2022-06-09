@@ -279,6 +279,11 @@
         "classification": {
           "mandatory": true,
           "values": ["PRIVATE"]
+        },
+        "attributes": {
+          "contractType": {
+            "mandatory": false
+          }
         }
       }
     ]
@@ -303,6 +308,11 @@
         "classification": {
           "mandatory": true,
           "values": ["PRIVATE"]
+        },
+        "attributes": {
+          "primaryLocation": {
+            "mandatory": false
+          }
         }
       }
     ]
@@ -327,6 +337,11 @@
         "classification": {
           "mandatory": true,
           "values": ["PRIVATE"]
+        },
+        "attributes": {
+          "primaryLocation": {
+            "mandatory": false
+          }
         }
       }
     ]
