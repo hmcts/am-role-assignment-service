@@ -487,6 +487,39 @@ class AllServicesOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
+        "hmcts-judiciary,JUDICIAL,BASIC,ORGANISATION,N,PRIVATE",
+        "hmcts-legal-operations,LEGAL_OPERATIONS,BASIC,ORGANISATION,N,PRIVATE",
+        "hmcts-admin,ADMIN,BASIC,ORGANISATION,N,PRIVATE"
+    })
+    void shouldApproveRequestedRoleForOrgHavingNoAttributes(String roleName, String roleCategory, String grantType,
+                                          String roleType, String expectedSubstantive, String classification) {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setAssignerId(ACTORID);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.valueOf(roleType));
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setClassification(Classification.valueOf(classification));
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(GrantType.valueOf(grantType));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles()
+            .forEach(roleAssignment -> {
+                assertEquals(roleName, roleAssignment.getRoleName());
+                assertEquals(RoleCategory.valueOf(roleCategory), roleAssignment.getRoleCategory());
+                assertEquals(expectedSubstantive, roleAssignment.getAttributes().get("substantive").asText());
+                assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
         "manager,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,ORGANISATION",
         "hearing-manager,JUDICIAL,STANDARD,north-east,SSCS,ORGANISATION",
         "hearing-viewer,JUDICIAL,SPECIFIC,north-east,SSCS,ORGANISATION",
