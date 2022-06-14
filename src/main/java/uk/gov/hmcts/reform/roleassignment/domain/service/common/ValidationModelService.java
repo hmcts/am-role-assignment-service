@@ -126,7 +126,7 @@ public class ValidationModelService {
                 true));
 
         }
-        return  assignmentRecords.stream().flatMap(Collection::stream).collect(Collectors.toList());
+        return  assignmentRecords.stream().flatMap(Collection::stream).toList();
 
     }
 

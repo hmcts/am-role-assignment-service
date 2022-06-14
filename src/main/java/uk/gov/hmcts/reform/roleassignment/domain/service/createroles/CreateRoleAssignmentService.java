@@ -76,8 +76,7 @@ public class CreateRoleAssignmentService {
         if (MapUtils.isNotEmpty(needToDeleteRoleAssignments)) {
             List<RoleAssignment> deleteApprovedAssignments = existingAssignmentRequest.getRequestedRoles().stream()
                 .filter(role -> role.getStatus().equals(
-                    Status.DELETE_APPROVED)).collect(
-                    Collectors.toList());
+                    Status.DELETE_APPROVED)).toList();
 
 
             if (deleteApprovedAssignments.size() == existingAssignmentRequest.getRequestedRoles().size()) {
@@ -92,15 +91,14 @@ public class CreateRoleAssignmentService {
                         .getRequestedRoles().stream()
                         .filter(role -> role.getStatus().equals(
                             Status.APPROVED))
-                        .collect(Collectors.toList());
+                        .toList();
 
                     if (createApprovedAssignments.size() == parsedAssignmentRequest.getRequestedRoles().size()) {
                         executeReplaceRequest(existingAssignmentRequest, parsedAssignmentRequest);
                     } else {
                         List<UUID> rejectedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()
                             .filter(role -> role.getStatus().equals(
-                                Status.REJECTED)).map(RoleAssignment::getId).collect(
-                                Collectors.toList());
+                                Status.REJECTED)).map(RoleAssignment::getId).toList();
                         rejectDeleteRequest(existingAssignmentRequest, rejectedAssignmentIds, parsedAssignmentRequest);
 
                     }
@@ -115,8 +113,7 @@ public class CreateRoleAssignmentService {
             } else {
                 List<UUID> rejectedAssignmentIds = existingAssignmentRequest.getRequestedRoles().stream()
                     .filter(role -> role.getStatus().equals(
-                        Status.DELETE_REJECTED)).map(RoleAssignment::getId).collect(
-                        Collectors.toList());
+                        Status.DELETE_REJECTED)).map(RoleAssignment::getId).toList();
 
 
                 rejectDeleteRequest(existingAssignmentRequest, rejectedAssignmentIds, parsedAssignmentRequest);
@@ -211,12 +208,11 @@ public class CreateRoleAssignmentService {
             .stream()
             .filter(entity -> entity.getStatus().equals(
                 Status.APPROVED.toString()))
-            .collect(Collectors.toList());
+            .toList();
 
         List<RoleAssignment> roleAssignments = historyEntities.stream().map(entity -> persistenceUtil
             .convertHistoryEntityToRoleAssignment(
-                entity)).collect(
-            Collectors.toList());
+                entity)).toList();
         for (RoleAssignment requestedAssignment : roleAssignments) {
             requestedAssignment.setStatus(Status.LIVE);
         }
@@ -226,9 +222,7 @@ public class CreateRoleAssignmentService {
 
     public RequestEntity persistInitialRequest(Request request) {
 
-        RequestEntity reqEntity = persistenceService.persistRequest(request);
-
-        return reqEntity;
+        return persistenceService.persistRequest(request);
     }
 
     private void deleteLiveAssignments(Collection<RoleAssignment> existingAssignments) {
@@ -461,7 +455,7 @@ public class CreateRoleAssignmentService {
 
         List<RoleAssignment> roleAssignmentList = existingAssignmentRequest.getRequestedRoles().stream().filter(
             e -> needToDeleteRoleAssignments.containsKey(
-                e.getId())).collect(Collectors.toList());
+                e.getId())).toList();
 
         needToRetainRoleAssignments = existingAssignmentRequest.getRequestedRoles().stream()
             .filter(e -> !roleAssignmentList.contains(e)).collect(Collectors.toSet());
@@ -469,8 +463,9 @@ public class CreateRoleAssignmentService {
         existingAssignmentRequest.setRequestedRoles(roleAssignmentList);
 
         //update the records status from Live to Delete_requested for drool to approve it.
-        existingAssignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> roleAssignment
-            .setStatus(Status.DELETE_REQUESTED));
+        for (RoleAssignment roleAssignment : existingAssignmentRequest.getRequestedRoles()) {
+            roleAssignment.setStatus(Status.DELETE_REQUESTED);
+        }
         //validation
         evaluateDeleteAssignments(existingAssignmentRequest);
     }
@@ -504,14 +499,13 @@ public class CreateRoleAssignmentService {
     public void checkAllApproved(AssignmentRequest parsedAssignmentRequest) {
         // decision block
         List<RoleAssignment> createApprovedAssignments = parsedAssignmentRequest.getRequestedRoles().stream()
-            .filter(role -> role.getStatus().equals(Status.APPROVED)).collect(Collectors.toList());
+            .filter(role -> role.getStatus().equals(Status.APPROVED)).toList();
 
         if (createApprovedAssignments.size() == parsedAssignmentRequest.getRequestedRoles().size()) {
             executeCreateRequest(parsedAssignmentRequest);
         } else {
             List<UUID> rejectedAssignmentIds = parsedAssignmentRequest.getRequestedRoles().stream()
-                .filter(role -> role.getStatus().equals(Status.REJECTED)).map(RoleAssignment::getId).collect(
-                    Collectors.toList());
+                .filter(role -> role.getStatus().equals(Status.REJECTED)).map(RoleAssignment::getId).toList();
             rejectCreateRequest(parsedAssignmentRequest, rejectedAssignmentIds);
         }
     }
