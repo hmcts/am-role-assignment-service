@@ -33,7 +33,6 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CRE
 public class CreateAssignmentController {
 
     private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
-    private static final Logger logger = LoggerFactory.getLogger(CreateAssignmentController.class);
 
     public CreateAssignmentController(@Autowired CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator) {
         this.createRoleAssignmentOrchestrator = createRoleAssignmentOrchestrator;
@@ -86,9 +85,6 @@ public class CreateAssignmentController {
                                                                String correlationId,
         @Validated
         @RequestBody AssignmentRequest assignmentRequest) throws ParseException {
-        ResponseEntity<RoleAssignmentRequestResource> response = createRoleAssignmentOrchestrator
-            .createRoleAssignment(assignmentRequest);
-
-        return response;
+        return createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
     }
 }

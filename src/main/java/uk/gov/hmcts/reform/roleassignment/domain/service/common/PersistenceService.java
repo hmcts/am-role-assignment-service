@@ -60,8 +60,6 @@ import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecif
 @Service
 public class PersistenceService {
 
-    private static final Logger logger = LoggerFactory.getLogger(PersistenceService.class);
-
     //1. StoreRequest which will insert records in request and history table with log,
     //2. Insert new Assignment record with updated Status in historyTable
     //3. Update Request Status
@@ -134,11 +132,8 @@ public class PersistenceService {
 
         Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
         //convert into model class
-        List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(
-            persistenceUtil::convertHistoryEntityToRoleAssignment).collect(Collectors.toList());
-
-        return roleAssignmentList;
-
+        return historyEntities.stream()
+            .map(persistenceUtil::convertHistoryEntityToRoleAssignment).toList();
     }
 
     @Transactional
@@ -165,7 +160,7 @@ public class PersistenceService {
             Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
             //convert into model class
             return roleAssignmentEntities.stream().map(persistenceUtil::convertEntityToRoleAssignment)
-                .collect(Collectors.toList());
+                .toList();
         } catch (Exception sqlException) {
             throw new UnprocessableEntityException("SQL Error get by actor id: "
                                                        + sqlException.getMessage());
@@ -297,14 +292,10 @@ public class PersistenceService {
             roleAssignmentList = PageHolder.holder.get().stream()
                 .map(persistenceUtil::convertEntityToRoleAssignment)
                 .collect(Collectors.toList());
-
-
         } else {
             roleAssignmentList = PageHolder.holder.get().stream()
                 .map(persistenceUtil::convertEntityToExistingRoleAssignment)
                 .collect(Collectors.toList());
-
-
         }
 
         return roleAssignmentList;
@@ -315,7 +306,7 @@ public class PersistenceService {
         if (roleAssignmentEntityOptional.isPresent()) {
             return roleAssignmentEntityOptional.stream()
                 .map(persistenceUtil::convertEntityToRoleAssignment)
-                .collect(Collectors.toList());
+                .toList();
         }
         return Collections.emptyList();
     }
