@@ -47,7 +47,7 @@ public class AuditInterceptor implements HandlerInterceptor {
     }
 
     private boolean hasAuditAnnotation(Object handler) {
-        return handler instanceof HandlerMethod han && han.hasMethodAnnotation(LogAudit.class);
+        return handler instanceof HandlerMethod && ((HandlerMethod) handler).hasMethodAnnotation(LogAudit.class);
     }
 
     private AuditContext populateHttpSemantics(AuditContext auditContext,
