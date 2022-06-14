@@ -31,7 +31,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.DELETE_BY_QUERY;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NO_RECORDS;
