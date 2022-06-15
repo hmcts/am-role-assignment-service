@@ -131,7 +131,7 @@ public class PersistenceService {
         Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
         //convert into model class
         return historyEntities.stream()
-            .map(persistenceUtil::convertHistoryEntityToRoleAssignment).toList();
+            .map(persistenceUtil::convertHistoryEntityToRoleAssignment).collect(Collectors.toList());
     }
 
     @Transactional
