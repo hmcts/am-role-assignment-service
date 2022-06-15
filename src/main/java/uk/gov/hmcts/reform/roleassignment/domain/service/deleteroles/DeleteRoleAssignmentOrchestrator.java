@@ -31,7 +31,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.DELETE_BY_QUERY;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NO_RECORDS;
@@ -111,9 +110,7 @@ public class DeleteRoleAssignmentOrchestrator {
             requestedRoles.stream().forEach(roleAssignment -> roleAssignment.setStatus(Status.DELETE_REQUESTED));
         }
 
-        ResponseEntity<Void> responseEntity = performOtherStepsForDelete("", requestedRoles);
-
-        return responseEntity;
+        return performOtherStepsForDelete("", requestedRoles);
     }
 
     @Transactional
@@ -204,7 +201,7 @@ public class DeleteRoleAssignmentOrchestrator {
 
         List<RoleAssignment> deleteApprovedRoles = validatedAssignmentRequest.getRequestedRoles().stream()
             .filter(role -> role.getStatus()
-                .equals(Status.DELETE_APPROVED)).collect(Collectors.toList());
+                .equals(Status.DELETE_APPROVED)).toList();
 
         if (!deleteApprovedRoles.isEmpty()
             && deleteApprovedRoles.size() == validatedAssignmentRequest.getRequestedRoles().size()) {
@@ -221,8 +218,7 @@ public class DeleteRoleAssignmentOrchestrator {
         } else {
             //Insert requested roles  into history table with status deleted-Rejected
             List<RoleAssignment> deleteApprovedRecords = validatedAssignmentRequest.getRequestedRoles().stream()
-                .filter(role -> role.getStatus() == Status.DELETE_APPROVED).collect(
-                    Collectors.toList());
+                .filter(role -> role.getStatus() == Status.DELETE_APPROVED).toList();
             validatedAssignmentRequest.setRequestedRoles(deleteApprovedRecords);
             insertRequestedRole(validatedAssignmentRequest, Status.DELETE_REJECTED);
 
@@ -350,7 +346,7 @@ public class DeleteRoleAssignmentOrchestrator {
             ));
 
         }
-        return assignmentRecords.stream().flatMap(Collection::stream).collect(Collectors.toList());
+        return assignmentRecords.stream().flatMap(Collection::stream).toList();
     }
 
 
