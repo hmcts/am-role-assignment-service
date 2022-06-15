@@ -32,7 +32,7 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.SEA
 public class QueryAssignmentController {
 
     private static final Logger logger = LoggerFactory.getLogger(QueryAssignmentController.class);
-    private QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator;
+    private final QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator;
 
     public QueryAssignmentController(QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator) {
         this.queryRoleAssignmentOrchestrator = queryRoleAssignmentOrchestrator;
@@ -76,10 +76,8 @@ public class QueryAssignmentController {
         @RequestHeader(value = "direction", required = false) String direction,
         @Validated @RequestBody(required = true) QueryRequest queryRequest) {
         logger.info("Inside Single query request method");
-        ResponseEntity<RoleAssignmentResource> response = queryRoleAssignmentOrchestrator
+        return queryRoleAssignmentOrchestrator
             .retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
-
-        return response;
     }
 
     @PostMapping(
@@ -117,9 +115,7 @@ public class QueryAssignmentController {
             throw new BadRequestException("Request Payload is invalid");
         }
         logger.info("Inside Multiple query request method");
-        ResponseEntity<RoleAssignmentResource> response = queryRoleAssignmentOrchestrator
+        return queryRoleAssignmentOrchestrator
             .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest, pageNumber, size, sort, direction);
-
-        return response;
     }
 }
