@@ -31,12 +31,12 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPRO
 @RequestScope
 public class CreateRoleAssignmentOrchestrator {
 
-    private ParseRequestService parseRequestService;
-    private PrepareResponseService prepareResponseService;
+    private final ParseRequestService parseRequestService;
+    private final PrepareResponseService prepareResponseService;
     private CreateRoleAssignmentService createRoleAssignmentService;
-    private PersistenceService persistenceService;
-    private ValidationModelService validationModelService;
-    private PersistenceUtil persistenceUtil;
+    private final PersistenceService persistenceService;
+    private final ValidationModelService validationModelService;
+    private final PersistenceUtil persistenceUtil;
 
     Request request;
     RequestEntity requestEntity;

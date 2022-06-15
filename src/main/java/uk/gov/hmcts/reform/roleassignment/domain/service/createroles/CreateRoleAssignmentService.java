@@ -144,8 +144,8 @@ public class CreateRoleAssignmentService {
         request.setStatus(Status.REJECTED);
         requestEntity.setStatus(Status.REJECTED.toString());
         if (CollectionUtils.isNotEmpty(rejectedAssignmentIds)) {
-            requestEntity.setLog(REQUEST_REJECTION_MSG + rejectedAssignmentIds.toString());
-            request.setLog(REQUEST_REJECTION_MSG + rejectedAssignmentIds.toString());
+            requestEntity.setLog(REQUEST_REJECTION_MSG + rejectedAssignmentIds);
+            request.setLog(REQUEST_REJECTION_MSG + rejectedAssignmentIds);
         }
 
         persistenceService.updateRequest(requestEntity);
@@ -248,7 +248,7 @@ public class CreateRoleAssignmentService {
                     || requestedAssignment.getStatus().equals(Status.DELETE_APPROVED))) {
                 requestedAssignment.setLog(
                     "Requested Role has been rejected due to following new/existing assignment Ids :"
-                        + rejectedAssignmentIds.toString());
+                        + rejectedAssignmentIds);
             }
             if (requestedAssignment.getStatus() == Status.APPROVED
                 || requestedAssignment.getStatus() == Status.DELETE_APPROVED || requestedAssignment.getStatus().equals(
@@ -463,9 +463,8 @@ public class CreateRoleAssignmentService {
         existingAssignmentRequest.setRequestedRoles(roleAssignmentList);
 
         //update the records status from Live to Delete_requested for drool to approve it.
-        for (RoleAssignment roleAssignment : existingAssignmentRequest.getRequestedRoles()) {
-            roleAssignment.setStatus(Status.DELETE_REQUESTED);
-        }
+        existingAssignmentRequest.getRequestedRoles().forEach(roleAssignment -> roleAssignment
+            .setStatus(Status.DELETE_REQUESTED));
         //validation
         evaluateDeleteAssignments(existingAssignmentRequest);
     }
@@ -518,10 +517,8 @@ public class CreateRoleAssignmentService {
         parsedAssignmentRequest.getRequest().setStatus(Status.REJECTED);
         requestEntity.setStatus(Status.REJECTED.toString());
         if (CollectionUtils.isNotEmpty(rejectedAssignmentIds)) {
-            requestEntity.setLog(REQUEST_REJECTION_MSG
-                                     + rejectedAssignmentIds.toString());
-            parsedAssignmentRequest.getRequest().setLog(REQUEST_REJECTION_MSG
-                                                            + rejectedAssignmentIds.toString());
+            requestEntity.setLog(REQUEST_REJECTION_MSG + rejectedAssignmentIds);
+            parsedAssignmentRequest.getRequest().setLog(REQUEST_REJECTION_MSG + rejectedAssignmentIds);
         }
 
 
