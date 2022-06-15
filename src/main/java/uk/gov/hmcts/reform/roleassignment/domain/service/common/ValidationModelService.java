@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -126,7 +125,7 @@ public class ValidationModelService {
                 true));
 
         }
-        return  assignmentRecords.stream().flatMap(Collection::stream).collect(Collectors.toList());
+        return  assignmentRecords.stream().flatMap(Collection::stream).toList();
 
     }
 

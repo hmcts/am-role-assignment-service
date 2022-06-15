@@ -5,8 +5,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +31,6 @@ import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CRE
 public class CreateAssignmentController {
 
     private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
-    private static final Logger logger = LoggerFactory.getLogger(CreateAssignmentController.class);
 
     public CreateAssignmentController(@Autowired CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator) {
         this.createRoleAssignmentOrchestrator = createRoleAssignmentOrchestrator;
@@ -86,9 +83,6 @@ public class CreateAssignmentController {
                                                                String correlationId,
         @Validated
         @RequestBody AssignmentRequest assignmentRequest) throws ParseException {
-        ResponseEntity<RoleAssignmentRequestResource> response = createRoleAssignmentOrchestrator
-            .createRoleAssignment(assignmentRequest);
-
-        return response;
+        return createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
     }
 }
