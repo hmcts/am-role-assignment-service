@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -58,17 +57,9 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     private static final Logger logger =
         LoggerFactory.getLogger(DroolPassAssignmentCreateAndDeleteIntegrationTest.class);
 
-    private static final String ASSIGNMENT_ID = "f7edb29d-e421-450c-be66-a10169b04f0a";
-    private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445612";
-    public static final String CREATED = "CREATED";
-    public static final String APPROVED = "APPROVED";
-    public static final String LIVE = "LIVE";
-    public static final String DELETED = "DELETED";
-    public static final String DELETE_APPROVED = "DELETE_APPROVED";
     private static final String AUTHORISED_SERVICE = "ccd_gw";
 
     private MockMvc mockMvc;
-    private JdbcTemplate template;
 
     @Inject
     private WebApplicationContext wac;
@@ -96,7 +87,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
 
     @Before
     public void setUp() throws Exception {
-        template = new JdbcTemplate(ds);
+
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         MockitoAnnotations.openMocks(this);
         String uid = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
@@ -146,7 +137,6 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
         {"classpath:sql/role_assignment_clean_up.sql"
-
         })
     public void shouldCreateRoleAssignmentsWithCorrectClientId() throws Exception {
         AssignmentRequest assignmentRequest = buildDroolRuleBypassRequest();
@@ -178,7 +168,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
             .andReturn();
     }
 
-    private AssignmentRequest buildDroolRuleBypassRequest() throws Exception {
+    private AssignmentRequest buildDroolRuleBypassRequest() {
         final AssignmentRequest assignmentRequest =
             TestDataBuilder.createRoleAssignmentRequest(
             true,

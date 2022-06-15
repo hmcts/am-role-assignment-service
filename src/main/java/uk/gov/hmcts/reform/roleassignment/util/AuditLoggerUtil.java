@@ -28,7 +28,7 @@ public class AuditLoggerUtil {
             if (roleAssignmentRequestResource != null) {
                 return roleAssignmentRequestResource.getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
                     .map(RoleAssignment::getId)
-                    .collect(Collectors.toList());
+                    .toList();
             }
         }
         return List.of();
