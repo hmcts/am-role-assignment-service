@@ -69,9 +69,7 @@ import java.time.temporal.ChronoUnit;
      $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
      $rq: Request(
               // The assignee and the assigner must be the current user.
-              assignerId == authenticatedUserId,
-              process == "specific-access",
-              reference != null)
+              assignerId == authenticatedUserId)
      $ra: RoleAssignment(
               actorId == $rq.authenticatedUserId,
               status == Status.DELETE_REQUESTED,
