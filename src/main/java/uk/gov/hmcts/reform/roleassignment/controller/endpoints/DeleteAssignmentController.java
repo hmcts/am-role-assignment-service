@@ -87,10 +87,7 @@ public class DeleteAssignmentController {
                                                          String process,
                                                      @RequestParam(value = "reference", required = false)
                                                          String reference) {
-        ResponseEntity<Void> responseEntity = deleteRoleAssignmentOrchestrator
-            .deleteRoleAssignmentByProcessAndReference(process, reference);
-
-        return responseEntity;
+        return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByProcessAndReference(process, reference);
     }
 
     @DeleteMapping(
@@ -170,9 +167,6 @@ public class DeleteAssignmentController {
                                                              @Validated @RequestBody(required = true)
                                                                  MultipleQueryRequest multipleQueryRequest) {
         logger.info("Inside the Delete role assignment records by multiple query request method");
-        ResponseEntity<Void> responseEntity = deleteRoleAssignmentOrchestrator
-            .deleteRoleAssignmentsByQuery(multipleQueryRequest);
-
-        return responseEntity;
+        return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentsByQuery(multipleQueryRequest);
     }
 }
