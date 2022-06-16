@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
@@ -289,11 +290,13 @@ public class PersistenceService {
         if (!existingFlag) {
             roleAssignmentList = PageHolder.holder.get().stream()
                 .map(persistenceUtil::convertEntityToRoleAssignment)
-                .collect(Collectors.toList());
+                .map(Assignment.class::cast)
+                .toList();
         } else {
             roleAssignmentList = PageHolder.holder.get().stream()
                 .map(persistenceUtil::convertEntityToExistingRoleAssignment)
-                .collect(Collectors.toList());
+                .map(Assignment.class::cast)
+                .toList();
         }
 
         return roleAssignmentList;
