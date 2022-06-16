@@ -5,7 +5,7 @@
   "specs": [
     "Befta1 - who is the actor for requested role",
     "contains case-allocator org role as assigner",
-    "contains caseworker-sscs-disability-feepaid org role as assignee",
+    "contains fee-paid-disability org role as assignee",
     "contains panel-disability case role assignment"
   ],
   "users": {
@@ -15,15 +15,12 @@
     }
   },
   "request": {
-    "headers": {
-      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForXui]}"
-    },
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/sscs-access/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1114567890123457/sscs-access/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "sscs-access",
-        "replaceExisting" : false
+        "replaceExisting" : true
       },
       "requestedRoles": [
         {
@@ -32,12 +29,12 @@
           "grantType" : "SPECIFIC",
           "classification" : "PUBLIC",
           "attributes": {
-            "caseId": "1607103938250138",
+            "caseId": "1114567890123457",
             "caseType": "Benefit"
           },
           "roleName": "panel-disability",
           "roleCategory": "JUDICIAL",
-          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
           "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
           "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
           "readOnly": true,
@@ -76,7 +73,7 @@
             "classification" : "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
             "readOnly": true,
             "attributes": {
-              "caseId": "1607103938250138",
+              "caseId": "1114567890123457",
               "jurisdiction" : "SSCS",
               "caseType" : "Benefit",
               "substantive" : "Y"

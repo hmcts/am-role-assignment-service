@@ -1,5 +1,6 @@
 {
-  "_guid_": "S-238_Org_Role_Creation",
+
+  "_guid_": "S-238_Org_Role_Creation_Multiple",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester",
@@ -15,9 +16,8 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S_238_Org_Role_For_Multiple_Actors",
-        "process": "sscs-access",
-        "replaceExisting" : true
+        "process" : "sscs-access",
+        "reference": "Org_Role_For_Multiple_Actors"
       },
       "requestedRoles": [
         {
@@ -25,12 +25,14 @@
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "case-allocator",
           "roleCategory": "JUDICIAL",
-          "beginTime" : "2022-01-01T00:00:00Z",
+          "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
           {
-            "primaryLocation": "445777"
+            "jurisdiction": "SSCS",
+            "primaryLocation": "123456"
           }
         }
+
       ]
     }
   },
@@ -44,23 +46,21 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "replaceExisting": "${[scenarioContext][testData][request][body][roleRequest][replaceExisting]}",
-          "process": "sscs-access"
+          "replaceExisting": true
         },
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
+            "actorId": "[[ANYTHING_PRESENT]]",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD",
+            "roleCategory": "JUDICIAL",
+            "roleName": "case-allocator",
             "process": "sscs-access",
-            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-            "roleType": "CASE",
-            "grantType": "SPECIFIC",
-            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
-            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
-            "attributes":
-            {
-              "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][primaryLocation]}",
+            "attributes": {
               "jurisdiction": "SSCS",
-              "substantive" : "Y"
+              "primaryLocation": "123456",
+              "substantive": "N"
             }
           }
         ]
@@ -68,3 +68,4 @@
     }
   }
 }
+

@@ -1,4 +1,5 @@
 {
+
   "_guid_": "S-235_Org_Role_Creation_Multiple",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
@@ -15,33 +16,35 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S_235_Org_Role_For_Multiple",
-        "process": "sscs-access",
-        "replaceExisting" : true
+        "process" : "sscs-access",
+        "reference": "Org_Role_For_Multiple_Actors"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "case-allocator",
-          "roleCategory": "ORGANISATIONAL",
-          "beginTime" : "2022-01-01T00:00:00Z",
+          "roleCategory": "JUDICIAL",
+          "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
           {
-            "primaryLocation": "445777"
+            "jurisdiction": "SSCS",
+            "primaryLocation": "123456"
           }
         },
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "roleName": "caseworker-sscs-judge",
+          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+          "roleName": "judge",
           "roleCategory": "JUDICIAL",
-          "beginTime" : "2022-01-01T00:00:00Z",
+          "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
           {
-            "primaryLocation": "445777"
+            "jurisdiction": "SSCS",
+            "primaryLocation": "123456"
           }
         }
+
       ]
     }
   },
@@ -55,23 +58,36 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "replaceExisting": "${[scenarioContext][testData][request][body][roleRequest][replaceExisting]}",
-          "process": "sscs-access"
+          "replaceExisting": true
         },
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
+            "actorId": "[[ANYTHING_PRESENT]]",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD",
+            "roleCategory": "JUDICIAL",
+            "roleName": "judge",
             "process": "sscs-access",
-            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-            "roleType": "CASE",
-            "grantType": "SPECIFIC",
-            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
-            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
+            "attributes": {
+              "jurisdiction": "SSCS",
+              "primaryLocation": "123456",
+              "substantive": "Y"
+            }
+          },
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "[[ANYTHING_PRESENT]]",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD",
+            "roleCategory": "JUDICIAL",
+            "roleName": "case-allocator",
+            "process" : "sscs-access",
             "attributes":
             {
-              "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][primaryLocation]}",
               "jurisdiction": "SSCS",
-              "substantive" : "Y"
+              "primaryLocation": "123456",
+              "substantive": "N"
             }
           }
         ]

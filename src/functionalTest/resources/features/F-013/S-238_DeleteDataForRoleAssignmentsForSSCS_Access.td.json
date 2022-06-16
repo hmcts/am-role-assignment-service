@@ -1,6 +1,6 @@
 {
-  "_guid_": "S-238_DeleteDataForRoleAssignmentsForRequestedRole",
-  "productName": "Role SSCS Assignment Service",
+  "_guid_": "S-238_DeleteDataForRoleAssignmentsForSSCS_Access",
+  "productName": "Role Assignment SSCS Service",
   "operationName": "Delete Role Assignments by Process",
   "method": "DELETE",
   "uri": "/am/role-assignments?process={process}&reference={reference}",

@@ -1,6 +1,6 @@
 {
-  "_guid_": "S-232_DeleteDataForRoleAssignmentsForOrgRoles",
-  "productName": "Role SSCS Assignment Service",
+  "_guid_": "S-236_DeleteDataForRoleAssignmentsForSSCS_Access",
+  "productName": "Role Assignment SSCS Service",
   "operationName": "Delete Role Assignments by Process",
   "method": "DELETE",
   "uri": "/am/role-assignments?process={process}&reference={reference}",
@@ -21,7 +21,7 @@
     },
     "pathVariables": {
       "process": "sscs-access",
-      "reference": "${[scenarioContext][parentContext][childContexts][S-232_Org_Role_Creation_Multiple][testData][request][body][roleRequest][reference]}"
+      "reference": "${[scenarioContext][parentContext][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {
