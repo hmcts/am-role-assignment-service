@@ -52,7 +52,7 @@ public class AuditLoggerUtil {
             if (roleAssignmentRequestResource != null) {
                 return roleAssignmentRequestResource.getRoleAssignmentRequest().getRequestedRoles().stream().limit(10)
                     .map(RoleAssignment::getRoleName)
-                    .collect(Collectors.toList());
+                    .toList();
             }
         }
         return List.of();
@@ -80,7 +80,7 @@ public class AuditLoggerUtil {
         if (roleAssignmentResource != null) {
             return roleAssignmentResource.getRoleAssignmentResponse().stream().limit(10)
                 .map(Assignment::getId)
-                .collect(Collectors.toList());
+                .toList();
         }
         return List.of();
     }
@@ -101,7 +101,7 @@ public class AuditLoggerUtil {
             List<? extends Assignment> roleAssignmentResponse =  roleAssignmentResource.getRoleAssignmentResponse();
             return roleAssignmentResponse.stream().limit(10)
                 .map(Assignment::getId)
-                .collect(Collectors.toList());
+                .toList();
         }
         return List.of();
     }

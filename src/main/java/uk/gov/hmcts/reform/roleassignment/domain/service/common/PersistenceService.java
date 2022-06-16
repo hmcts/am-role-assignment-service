@@ -289,11 +289,13 @@ public class PersistenceService {
         if (!existingFlag) {
             roleAssignmentList = PageHolder.holder.get().stream()
                 .map(persistenceUtil::convertEntityToRoleAssignment)
-                .collect(Collectors.toList());
+                .map(Assignment.class::cast)
+                .toList();
         } else {
             roleAssignmentList = PageHolder.holder.get().stream()
                 .map(persistenceUtil::convertEntityToExistingRoleAssignment)
-                .collect(Collectors.toList());
+                .map(Assignment.class::cast)
+                .toList();
         }
 
         return roleAssignmentList;
