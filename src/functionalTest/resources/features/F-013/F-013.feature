@@ -19,7 +19,6 @@ Feature: F-013 : Create SSCS Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [S-232_DeleteDataForRoleAssignmentsForSSCS_Access].
 
-
 @S-232
  @FeatureToggle(RAS:sscs_wa_1_0=on)
  Scenario: must successfully create SSCS CASE role assignment with all mandatory fields
