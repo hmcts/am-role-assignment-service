@@ -1,5 +1,5 @@
 {
-  "title": "must successfully create challenged-access-legal-operations Role Assignment",
+  "title": "must successfully create SSCS CASE role assignment with all mandatory fields",
   "_guid_": "S-313",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [

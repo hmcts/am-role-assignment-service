@@ -16,8 +16,7 @@
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
         "reference": "S_313_Org_Role_For_Multiple_Actors",
-        "process": "sscs-access",
-        "replaceExisting" : true
+        "process": "sscs-access"
       },
       "requestedRoles": [
         {
@@ -29,9 +28,7 @@
           "attributes":
           {
             "jurisdiction": "SSCS",
-            "primaryLocation": "123456",
-            "substantive" : "Y"
-
+            "primaryLocation": "123456"
           }
         }
       ]
