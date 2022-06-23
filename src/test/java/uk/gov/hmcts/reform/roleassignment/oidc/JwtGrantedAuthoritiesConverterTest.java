@@ -10,7 +10,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -69,7 +68,7 @@ class JwtGrantedAuthoritiesConverterTest {
         when(jwt.getClaim(anyString())).thenReturn("access_token");
         when(jwt.getTokenValue()).thenReturn("access_token");
         UserInfo userInfo = mock(UserInfo.class);
-        List<String> roles = Arrays.asList();
+        List<String> roles = List.of();
         when(userInfo.getRoles()).thenReturn(roles);
         when(idamRepositoryMock.getUserInfo(anyString())).thenReturn(userInfo);
         Collection<GrantedAuthority> authorities = sut.convert(jwt);
@@ -85,7 +84,7 @@ class JwtGrantedAuthoritiesConverterTest {
         when(jwt.getClaim(anyString())).thenReturn("access_token");
         when(jwt.getTokenValue()).thenReturn("access_token");
         UserInfo userInfo = mock(UserInfo.class);
-        List<String> roles = Arrays.asList("citizen");
+        List<String> roles = List.of("citizen");
         when(userInfo.getRoles()).thenReturn(roles);
         when(userInfo.getRoles()).thenReturn(roles);
         when(idamRepositoryMock.getUserInfo(anyString())).thenReturn(userInfo);

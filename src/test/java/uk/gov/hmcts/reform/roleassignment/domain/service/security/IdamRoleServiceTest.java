@@ -13,8 +13,8 @@ import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 import uk.gov.hmcts.reform.roleassignment.oidc.OIdcAdminConfiguration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -44,7 +44,7 @@ class IdamRoleServiceTest {
         String userId = "003352d0-e699-48bc-b6f5-5810411e60af";
         UserDetails userDetails = UserDetails.builder().email("black@betty.com").forename("ram").surname("jam").id(
             "1234567890123456")
-            .roles(Arrays.asList("role1", "role2")).build();
+            .roles(List.of("role1", "role2")).build();
 
         when(idamRepositoryMock.searchUserByUserId(any(), any()))
             .thenReturn(ResponseEntity.ok().body(new ArrayList<>() {

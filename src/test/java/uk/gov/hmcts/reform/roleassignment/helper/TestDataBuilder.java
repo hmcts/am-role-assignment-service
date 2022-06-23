@@ -35,7 +35,6 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -449,8 +448,8 @@ public class TestDataBuilder {
 
     public static QueryRequest createQueryRequest() {
         Map<String, List<String>> attributes = new HashMap<>();
-        List<String> regions = Arrays.asList("London", "JAPAN");
-        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        List<String> regions = List.of("London", "JAPAN");
+        List<String> contractTypes = List.of("SALARIED", "Non SALARIED");
         attributes.put("region", regions);
         attributes.put("contractType", contractTypes);
 

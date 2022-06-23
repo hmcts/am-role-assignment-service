@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,11 +41,11 @@ class QueryRoleAssignmentOrchestratorTest {
     @Test
     void should_PostRoleAssignmentsQueryByRequest() throws IOException {
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
@@ -75,18 +74,18 @@ class QueryRoleAssignmentOrchestratorTest {
     @Test
     void should_PostRoleAssignmentByMultipleQueryRequest() throws IOException {
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
             .roleType(roleType)
             .build();
         MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
-            .queryRequests(Arrays.asList(queryRequest))
+            .queryRequests(List.of(queryRequest))
             .build();
 
         when(persistenceServiceMock.retrieveRoleAssignmentsByQueryRequest(queryRequest,

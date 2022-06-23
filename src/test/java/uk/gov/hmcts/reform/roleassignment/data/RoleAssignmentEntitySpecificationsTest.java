@@ -58,7 +58,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldReturnPredicate_WhileSearchByActorIds() {
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
@@ -73,7 +73,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldNotReturnPredicate_WhileSearchByActorIdsWithoutMock() {
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
@@ -131,7 +131,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldReturnPredicate_WhileSearchByRoleName() {
-        List<String> roleNames = Arrays.asList("judge", "senior judge");
+        List<String> roleNames = List.of("judge", "senior judge");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleName(
             roleNames);
         specification = specification.and(mockSpec);
@@ -142,7 +142,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldNotReturnPredicate_WhileSearchByRoleNameWithoutMock() {
-        List<String> roleNames = Arrays.asList("judge", "senior judge");
+        List<String> roleNames = List.of("judge", "senior judge");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleName(
             roleNames);
         assertThat(specification).isNotNull();
@@ -170,7 +170,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldReturnPredicate_WhileSearchByRoleType() {
-        List<String> roleTypes = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleTypes = List.of("CASE", "ORGANISATION");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleType(
             roleTypes);
         specification = specification.and(mockSpec);
@@ -181,7 +181,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldNotReturnPredicate_WhileSearchByRoleTypeWithoutMock() {
-        List<String> roleTypes = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleTypes = List.of("CASE", "ORGANISATION");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleType(
             roleTypes);
         assertThat(specification).isNotNull();
@@ -200,7 +200,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldReturnPredicate_WhileSearchByClassification() {
-        List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
+        List<String> classifications = List.of("PUBLIC", "PRIVATE");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByClassification(
             classifications);
         specification = specification.and(mockSpec);
@@ -211,7 +211,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldNotReturnPredicate_WhileSearchByClassificationWithoutMock() {
-        List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
+        List<String> classifications = List.of("PUBLIC", "PRIVATE");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByClassification(
             classifications);
         assertThat(specification).isNotNull();
@@ -241,7 +241,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldReturnPredicate_WhileSearchByGrantType() {
-        List<String> grantTypes = Arrays.asList("SPECIFIC", "STANDARD");
+        List<String> grantTypes = List.of("SPECIFIC", "STANDARD");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByGrantType(
             grantTypes);
         specification = specification.and(mockSpec);
@@ -252,7 +252,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldNotReturnPredicate_WhileSearchByGrantTypeWithoutMock() {
-        List<String> grantTypes = Arrays.asList("SPECIFIC", "STANDARD");
+        List<String> grantTypes = List.of("SPECIFIC", "STANDARD");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByGrantType(
             grantTypes);
         assertThat(specification).isNotNull();
@@ -280,7 +280,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldReturnPredicate_WhileSearchByRoleCategories() {
-        List<String> roleCategories = Arrays.asList("JUDICIAL");
+        List<String> roleCategories = List.of("JUDICIAL");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleCategories(
             roleCategories);
         specification = specification.and(mockSpec);
@@ -291,7 +291,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldNotReturnPredicate_WhileSearchByRoleCategoriesWithoutMock() {
-        List<String> roleCategories = Arrays.asList("JUDICIAL");
+        List<String> roleCategories = List.of("JUDICIAL");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleCategories(
             roleCategories);
         assertThat(specification).isNotNull();
@@ -320,7 +320,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     @Test
     public void shouldReturnPredicate_WhileSearchByAttributes() {
         Map<String, List<String>> attributes = new HashMap<>();
-        List<String> regions = Arrays.asList("London", "JAPAN");
+        List<String> regions = List.of("London", "JAPAN");
         List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
         attributes.put("region", regions);
         attributes.put("contractType", contractTypes);
@@ -336,8 +336,8 @@ public class RoleAssignmentEntitySpecificationsTest {
     @Test
     public void shouldNotReturnPredicate_WhileSearchByAttributesWithoutMock() {
         Map<String, List<String>> attributes = new HashMap<>();
-        List<String> regions = Arrays.asList("London", "JAPAN");
-        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        List<String> regions = List.of("London", "JAPAN");
+        List<String> contractTypes = List.of("SALARIED", "Non SALARIED");
         attributes.put("region", regions);
         attributes.put("contractType", contractTypes);
 
@@ -372,7 +372,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldReturnPredicate_WhileSearchByAuthorisations() {
-        List<String> authorisations = Arrays.asList(
+        List<String> authorisations = List.of(
             "dev",
             "tester"
         );
@@ -387,7 +387,7 @@ public class RoleAssignmentEntitySpecificationsTest {
 
     @Test
     public void shouldNotReturnPredicate_WhileSearchByAuthorisationsWithoutMock() {
-        List<String> authorisations = Arrays.asList(
+        List<String> authorisations = List.of(
             "dev",
             "tester"
         );

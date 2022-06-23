@@ -14,7 +14,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController;
 
-import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableSwagger2WebMvc
@@ -35,7 +35,7 @@ public class SwaggerConfiguration {
             .build()
             .useDefaultResponseMessages(false)
             .apiInfo(apiV2Info())
-            .globalOperationParameters(Arrays.asList(
+            .globalOperationParameters(List.of(
                 headerServiceAuthorization(),
                 headerAuthorization()
             ));

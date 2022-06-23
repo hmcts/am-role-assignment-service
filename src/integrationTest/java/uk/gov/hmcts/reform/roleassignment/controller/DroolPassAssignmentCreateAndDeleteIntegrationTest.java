@@ -36,7 +36,7 @@ import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
-import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -93,7 +93,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
         String uid = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
         UserRoles roles = UserRoles.builder()
             .uid(uid)
-            .roles(Arrays.asList("caseworker", "am-import"))
+            .roles(List.of("caseworker", "am-import"))
             .build();
 
         doReturn(roles).when(idamRoleService).getUserRoles(anyString());

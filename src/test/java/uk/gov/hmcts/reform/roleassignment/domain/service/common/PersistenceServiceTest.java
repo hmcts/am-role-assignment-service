@@ -339,7 +339,7 @@ class PersistenceServiceTest {
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("ORGANISATION");
+        List<String> roleType = List.of("ORGANISATION");
 
         Map<String, List<String>> attr = new HashMap<>();
         attr.put("caseId", List.of("1234567891234567"));
@@ -389,11 +389,11 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("ORGANISATION");
+        List<String> roleType = List.of("ORGANISATION");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
@@ -439,20 +439,20 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
-        List<String> roleNames = Arrays.asList("judge", "senior judge");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
+        List<String> roleNames = List.of("judge", "senior judge");
         List<String> roleCategories = Collections.singletonList("JUDICIAL");
-        List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
+        List<String> classifications = List.of("PUBLIC", "PRIVATE");
         Map<String, List<String>> attributes = new HashMap<>();
-        List<String> regions = Arrays.asList("London", "JAPAN");
-        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        List<String> regions = List.of("London", "JAPAN");
+        List<String> contractTypes = List.of("SALARIED", "Non SALARIED");
         attributes.put("region", regions);
         attributes.put("contractType", contractTypes);
-        List<String> grantTypes = Arrays.asList("SPECIFIC", "STANDARD");
+        List<String> grantTypes = List.of("SPECIFIC", "STANDARD");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
@@ -501,11 +501,11 @@ class PersistenceServiceTest {
 
         ReflectionTestUtils.setField(sut, "defaultSize", 1);
         ReflectionTestUtils.setField(sut, "sortColumn", "id");
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
             .roleType(roleType)
@@ -532,7 +532,7 @@ class PersistenceServiceTest {
 
         ReflectionTestUtils.setField(sut, "defaultSize", 1);
         ReflectionTestUtils.setField(sut, "sortColumn", "id");
-        List<String> authorisations = Arrays.asList(
+        List<String> authorisations = List.of(
             "dev",
             "ops"
         );
@@ -568,7 +568,7 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> authorisations = Arrays.asList(
+        List<String> authorisations = List.of(
             "dev",
             "tester"
         );
@@ -715,21 +715,21 @@ class PersistenceServiceTest {
                                                           GrantType.STANDARD, Status.LIVE));
 
         Map<String, List<String>> attributes = new HashMap<>();
-        attributes.put("region", Arrays.asList("London", "JAPAN"));
-        attributes.put("contractType", Arrays.asList("SALARIED", "Non SALARIED"));
+        attributes.put("region", List.of("London", "JAPAN"));
+        attributes.put("contractType", List.of("SALARIED", "Non SALARIED"));
 
         QueryRequest queryRequest = QueryRequest.builder()
-            .actorId(Arrays.asList(
+            .actorId(List.of(
                 "123e4567-e89b-42d3-a456-556642445678",
                 "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
             ))
-            .roleType(Arrays.asList("CASE", "ORGANISATION"))
+            .roleType(List.of("CASE", "ORGANISATION"))
             .roleCategory(Collections.singletonList("JUDICIAL"))
-            .roleName(Arrays.asList("judge", "senior judge"))
-            .classification(Arrays.asList("PUBLIC", "PRIVATE"))
+            .roleName(List.of("judge", "senior judge"))
+            .classification(List.of("PUBLIC", "PRIVATE"))
             .attributes(attributes)
             .validAt(now())
-            .grantType(Arrays.asList("SPECIFIC", "STANDARD"))
+            .grantType(List.of("SPECIFIC", "STANDARD"))
             .build();
 
         List<Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1,
@@ -757,20 +757,20 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
-        List<String> roleNames = Arrays.asList("judge", "senior judge");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
+        List<String> roleNames = List.of("judge", "senior judge");
         List<String> roleCategories = Collections.singletonList("JUDICIAL");
-        List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
+        List<String> classifications = List.of("PUBLIC", "PRIVATE");
         Map<String, List<String>> attributes = new HashMap<>();
-        List<String> regions = Arrays.asList("London", "JAPAN");
-        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        List<String> regions = List.of("London", "JAPAN");
+        List<String> contractTypes = List.of("SALARIED", "Non SALARIED");
         attributes.put("region", regions);
         attributes.put("contractType", contractTypes);
-        List<String> grantTypes = Arrays.asList("SPECIFIC", "STANDARD");
+        List<String> grantTypes = List.of("SPECIFIC", "STANDARD");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
@@ -825,20 +825,20 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
-        List<String> roleNames = Arrays.asList("judge", "senior judge");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
+        List<String> roleNames = List.of("judge", "senior judge");
         List<String> roleCategories = Collections.singletonList("JUDICIAL");
-        List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
+        List<String> classifications = List.of("PUBLIC", "PRIVATE");
         Map<String, List<String>> attributes = new HashMap<>();
-        List<String> regions = Arrays.asList("London", "JAPAN");
-        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        List<String> regions = List.of("London", "JAPAN");
+        List<String> contractTypes = List.of("SALARIED", "Non SALARIED");
         attributes.put("region", regions);
         attributes.put("contractType", contractTypes);
-        List<String> grantTypes = Arrays.asList("SPECIFIC", "STANDARD");
+        List<String> grantTypes = List.of("SPECIFIC", "STANDARD");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
@@ -939,11 +939,11 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
@@ -996,13 +996,13 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
 
-        List<String> roleTypeCaseOrg = Arrays.asList("CASE", "ORGANISATION");
-        List<String> roleTypeOrg = Arrays.asList("ORGANISATION");
+        List<String> roleTypeCaseOrg = List.of("CASE", "ORGANISATION");
+        List<String> roleTypeOrg = List.of("ORGANISATION");
 
         String roleName = "senior-tribunal-caseworker";
 
@@ -1031,7 +1031,7 @@ class PersistenceServiceTest {
             .build();
 
         MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
-            .queryRequests(Arrays.asList(queryRequest1,queryRequest2,queryRequest3,queryRequest4))
+            .queryRequests(List.of(queryRequest1,queryRequest2,queryRequest3,queryRequest4))
             .build();
 
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
@@ -1070,7 +1070,7 @@ class PersistenceServiceTest {
     @Test
     void addCaseTypeIfIdExists_idNotExisting_noAdd() {
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
@@ -1089,7 +1089,7 @@ class PersistenceServiceTest {
     @Test
     void addCaseTypeIfIdExists_idNotExisting_emptyRoleType_noAdd() {
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
@@ -1108,11 +1108,11 @@ class PersistenceServiceTest {
     @Test
     void addCaseTypeIfIdExists_idExisting_noAdd() {
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleTypesInitial = Arrays.asList("CASE","ORGANISATION");
+        List<String> roleTypesInitial = List.of("CASE","ORGANISATION");
 
         Map<String, List<String>> attr = new HashMap<>();
         attr.put("caseId", List.of("1234567891234567"));
@@ -1131,7 +1131,7 @@ class PersistenceServiceTest {
     @Test
     void addCaseTypeIfIdExists_idExisting_add() {
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
@@ -1147,7 +1147,7 @@ class PersistenceServiceTest {
             .build();
 
         List<String> roleTypesResult = sut.addCaseTypeIfCaseIdExists(queryRequest);
-        List<String> roleTypesExpectedResult = Arrays.asList("ORGANISATION", "CASE");
+        List<String> roleTypesExpectedResult = List.of("ORGANISATION", "CASE");
 
         assertEquals(roleTypesExpectedResult, roleTypesResult);
     }
@@ -1155,7 +1155,7 @@ class PersistenceServiceTest {
     @Test
     void addCaseTypeIfIdExists_idExisting_emptyRoleTypes_add() {
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
