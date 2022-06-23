@@ -10,12 +10,15 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +36,7 @@ public class ValidationModelService {
     private StatelessKieSession kieSession;
     private RetrieveDataService retrieveDataService;
     private PersistenceService persistenceService;
+    private static CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
 
     @Value("${launchdarkly.sdk.environment}")
     private String environment;
@@ -43,13 +47,12 @@ public class ValidationModelService {
 
     public ValidationModelService(StatelessKieSession kieSession,
                                   RetrieveDataService retrieveDataService,
-                                  PersistenceService persistenceService) {
+                                  PersistenceService persistenceService,
+                                  CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator) {
         this.kieSession = kieSession;
-
         this.retrieveDataService = retrieveDataService;
-
         this.persistenceService = persistenceService;
-
+        this.createRoleAssignmentOrchestrator = createRoleAssignmentOrchestrator;
     }
 
     public void validateRequest(AssignmentRequest assignmentRequest) {
@@ -189,4 +192,9 @@ public class ValidationModelService {
         }
     }
 
+    public static void createRoleAssignment(AssignmentRequest assignmentRequest) throws ParseException {
+        log.info("Creating tag roles: {}",
+                 assignmentRequest.getRequestedRoles().stream().map(RoleAssignment::getRoleName));
+        createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
+    }
 }

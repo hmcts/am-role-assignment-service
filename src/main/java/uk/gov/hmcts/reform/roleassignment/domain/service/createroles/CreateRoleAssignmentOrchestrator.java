@@ -1,10 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -28,7 +28,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPRO
 
 @Slf4j
 @Service
-@RequestScope
+@Scope("prototype")
 public class CreateRoleAssignmentOrchestrator {
 
     private ParseRequestService parseRequestService;

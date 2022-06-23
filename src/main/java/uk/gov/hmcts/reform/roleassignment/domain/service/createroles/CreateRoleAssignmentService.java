@@ -188,8 +188,11 @@ public class CreateRoleAssignmentService {
 
         insertRequestedRole(parsedAssignmentRequest, Status.CREATE_REQUESTED, emptyUUIds);
 
-        validationModelService.validateRequest(parsedAssignmentRequest);
-
+        if ("tag-role".equals(parsedAssignmentRequest.getRequest().getProcess())) {
+            parsedAssignmentRequest.getRequestedRoles().forEach(r -> r.setStatus(Status.APPROVED));
+        } else {
+            validationModelService.validateRequest(parsedAssignmentRequest);
+        }
         //Save requested role in history table with APPROVED/REJECTED Status
         for (RoleAssignment requestedAssignment : parsedAssignmentRequest.getRequestedRoles()) {
             requestEntity.getHistoryEntities().add(persistenceUtil.prepareHistoryEntityForPersistance(

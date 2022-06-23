@@ -12,6 +12,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
@@ -44,6 +45,8 @@ class ValidationModelServiceTest {
 
     PersistenceService persistenceService = mock(PersistenceService.class);
 
+    CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator = mock(CreateRoleAssignmentOrchestrator.class);
+
     @Mock
     Logger logger = mock(Logger.class);
 
@@ -51,7 +54,8 @@ class ValidationModelServiceTest {
     ValidationModelService sut = new ValidationModelService(
         kieSessionMock,
         retrieveDataServiceMock,
-        persistenceService
+        persistenceService,
+        createRoleAssignmentOrchestrator
     );
 
     @BeforeEach
