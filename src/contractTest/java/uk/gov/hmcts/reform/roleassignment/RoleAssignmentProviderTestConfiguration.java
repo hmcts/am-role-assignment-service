@@ -28,9 +28,6 @@ public class RoleAssignmentProviderTestConfiguration {
     @MockBean
     private PersistenceService persistenceService;
 
-    @MockBean
-    private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
-
     @Bean
     @Primary
     public PrepareResponseService getPrepareResponseService() {
@@ -78,7 +75,7 @@ public class RoleAssignmentProviderTestConfiguration {
     @Primary
     public ValidationModelService getValidationModelService() {
         return new ValidationModelService(getStatelessKieSession(), getRetrieveDataService(), persistenceService,
-                                          createRoleAssignmentOrchestrator);
+                                          null);
     }
 
     @Bean
