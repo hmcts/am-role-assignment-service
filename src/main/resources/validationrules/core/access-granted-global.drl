@@ -1,0 +1,76 @@
+package validationrules.core;
+
+import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.createRoleAssignment;
+import java.time.ZonedDateTime;
+import java.util.Map
+import java.util.Arrays;
+import com.fasterxml.jackson.databind.JsonNode;
+/*
+* Create an access-granted role corresponding to any substantive SPECIFIC or CHALLENGED access case role which is
+* approved by other rules. This is used as a tag to indicate a 'new' role, and will be deleted by the UI when the
+* user has acknowledged the new case access.
+*/
+rule "create_access_granted_case_role"
+when
+    $rq: Request(
+             // The assigner must be the current user.
+             assignerId == authenticatedUserId,
+             reference != null)
+     $ra: RoleAssignment(
+              status == Status.APPROVED,
+              roleType == RoleType.CASE,
+              grantType in (GrantType.SPECIFIC, GrantType.CHALLENGED))
+              //attributes["substantive"] == "Y" // Not sure whether this needs to be more complex -
+                                               // attributes seems to be a JSON property.
+then
+     /*
+      * Create an access-granted role with some fixed properties and some inherited from the case role.
+      *
+      * The attributes collection should be copied from the original role, with the requestedRole attribute added,
+      * to conform with the specific access roles specification.   (Need to confirm whether there are any
+      * LLD-level alterations - e.g. storing the original role ID on the new role).
+      *
+      * The end date is set to a standard period so that the 'new' flag on the access will disappear automatically
+      * if not explicitly acknowledged by the user.
+      */
+      Map<String, JsonNode> attribute = $ra.getAttributes();
+      attribute.put("requestedRole", JacksonUtils.convertValueJsonNode($ra.getRoleName()));
+
+      createRoleAssignment(AssignmentRequest.builder()
+                        .request(Request.builder()
+                             .authenticatedUserId($rq.getAuthenticatedUserId())
+                             .assignerId($rq.getAssignerId())
+                             .correlationId($rq.getCorrelationId())
+                             .process("tag-role")
+                             .reference($ra.getReference())
+                             .clientId("am_role_assignment_service")
+                             .build())
+                        .requestedRoles(Arrays.asList(RoleAssignment.builder()
+                            .actorIdType($ra.getActorIdType())
+                            .actorId($ra.getActorId())
+                            .roleCategory($ra.getRoleCategory())
+                            .process($ra.getProcess())
+                            .reference(attribute.get("caseId") + "/access-granted/" + $ra.getActorId())
+                            .roleType(RoleType.CASE)
+                            .roleName("access-granted")
+                            .classification(Classification.PUBLIC)
+                            .grantType(GrantType.BASIC)
+                            .readOnly(true)
+                            .endTime(ZonedDateTime.now().plusMonths(1))
+                            .attributes(attribute)
+                            .log("Created access-granted role for case role: create_access_granted_case_role")
+                            .build()))
+                            .build());
+     logMsg("Rule : create_access_granted_case_role");
+end;

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
+
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +27,7 @@ import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
@@ -41,6 +43,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
@@ -49,6 +52,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 
 @TestPropertySource(properties = {"dbFeature.flags.enable=iac_jrd_1_0"})
 public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
@@ -59,8 +63,8 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445612";
     private static final String COUNT_HISTORY_RECORDS_QUERY = "SELECT count(1) AS n FROM role_assignment_history";
     private static final String COUNT_ASSIGNMENT_RECORDS_QUERY = "SELECT count(1) AS n FROM role_assignment";
-    private static final String GET_ACTOR_FROM_ASSIGNMENT_QUERY = "SELECT actor_id FROM role_assignment WHERE id IN "
-        + "(SELECT id FROM role_assignment_history WHERE actor_id = ?)";
+    private static final String GET_ACTOR_FROM_ASSIGNMENT_QUERY = "SELECT distinct actor_id, role_name FROM "
+        + "role_assignment WHERE id IN (SELECT id FROM role_assignment_history WHERE actor_id = ?)";
     private static final String GET_ASSIGNMENT_STATUS_QUERY = "SELECT status FROM role_assignment_history "
         + "WHERE actor_id = ? ORDER BY created";
     private static final String GET_STATUS_COUNT_QUERY = "SELECT COUNT(*) FROM role_assignment_history "
@@ -151,15 +155,21 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         logger.info(" -- Role Assignment record created successfully -- ");
         List<String> statusList = getStatusFromHistory();
         assertNotNull(statusList);
-        assertEquals(3, statusList.size());
+        assertEquals(6, statusList.size());
         assertEquals(CREATE_REQUESTED.toString(), statusList.get(0));
-        assertEquals(APPROVED, statusList.get(1));
-        assertEquals(LIVE, statusList.get(2));
-        assertEquals(4, getAssignmentRecordsCount().longValue());
-        assertEquals(ACTOR_ID, getActorFromAssignmentTable());
+        assertEquals(CREATE_REQUESTED.toString(), statusList.get(1));
+        assertEquals(APPROVED, statusList.get(2));
+        assertEquals(LIVE, statusList.get(3));
+        assertEquals(APPROVED, statusList.get(4));
+        assertEquals(LIVE, statusList.get(5));
+        assertEquals(5, getAssignmentRecordsCount().longValue());
+        List<RoleAssignment> roleAssignments = getRoleAssignmentFromTable();
+        assertEquals(ACTOR_ID, roleAssignments.get(0).getActorId());
+        assertThat(roleAssignments.stream().map(RoleAssignment::getRoleName).toList(),
+                   containsInAnyOrder("access-granted", "lead-judge"));
         logger.info(" History record count after create request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count after create assignment request: {}", getAssignmentRecordsCount());
-        logger.info(" LIVE table actor Id after create assignment request : {}", getActorFromAssignmentTable());
+        logger.info(" LIVE table actor Id after create assignment request : {}", getRoleAssignmentFromTable());
 
         //Insert role assignment records with replace existing is True
         AssignmentRequest assignmentRequestWithReplaceExistingTrue = TestDataBuilder.createRoleAssignmentRequest(
@@ -181,20 +191,29 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
         List<String> newStatusList = getStatusFromHistory();
         assertNotNull(newStatusList);
-        assertEquals(8, newStatusList.size());
+        assertEquals(14, newStatusList.size());
         assertEquals(CREATE_REQUESTED.toString(), newStatusList.get(0));
-        assertEquals(APPROVED, newStatusList.get(1));
-        assertEquals(LIVE, newStatusList.get(2));
-        assertEquals(DELETE_APPROVED, newStatusList.get(3));
-        assertEquals(CREATE_REQUESTED.toString(), newStatusList.get(4));
-        assertEquals(APPROVED, newStatusList.get(5));
-        assertEquals(DELETED, newStatusList.get(6));
-        assertEquals(LIVE, newStatusList.get(7));
-        assertEquals(4, getAssignmentRecordsCount().longValue());
-        assertEquals(ACTOR_ID, getActorFromAssignmentTable());
+        assertEquals(CREATE_REQUESTED.toString(), newStatusList.get(1));
+        assertEquals(APPROVED, newStatusList.get(2));
+        assertEquals(LIVE, newStatusList.get(3));
+        assertEquals(APPROVED, newStatusList.get(4));
+        assertEquals(LIVE, newStatusList.get(5));
+        assertEquals(DELETE_APPROVED, newStatusList.get(6));
+        assertEquals(CREATE_REQUESTED.toString(), newStatusList.get(7));
+        assertEquals(CREATE_REQUESTED.toString(), newStatusList.get(8));
+        assertEquals(APPROVED, newStatusList.get(9));
+        assertEquals(LIVE, newStatusList.get(10));
+        assertEquals(APPROVED, newStatusList.get(11));
+        assertEquals(DELETED, newStatusList.get(12));
+        assertEquals(LIVE, newStatusList.get(13));
+        assertEquals(6, getAssignmentRecordsCount().longValue());
+        roleAssignments = getRoleAssignmentFromTable();
+        assertEquals(ACTOR_ID, roleAssignments.get(0).getActorId());
+        assertThat(roleAssignments.stream().map(RoleAssignment::getRoleName).toList(),
+                   containsInAnyOrder("access-granted", "lead-judge"));
         logger.info(" History record count after create request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count after create assignment request : {}", getAssignmentRecordsCount());
-        logger.info(" LIVE table actor Id after create assignment request : {}", getActorFromAssignmentTable());
+        logger.info(" LIVE table actor Id after create assignment request : {}", getRoleAssignmentFromTable());
     }
 
     @Test
@@ -471,14 +490,17 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     }
 
     public List<String> getStatusFromHistory() {
-        return template.queryForList(GET_ASSIGNMENT_STATUS_QUERY, new Object[]{ACTOR_ID}, String.class);
+        return template.queryForList(GET_ASSIGNMENT_STATUS_QUERY, String.class, ACTOR_ID);
     }
 
     public Integer getStatusCount(String status) {
         return template.queryForObject(GET_STATUS_COUNT_QUERY + "'" + status + "'", Integer.class);
     }
 
-    public String getActorFromAssignmentTable() {
-        return template.queryForObject(GET_ACTOR_FROM_ASSIGNMENT_QUERY, new Object[]{ACTOR_ID}, String.class);
+    public List<RoleAssignment> getRoleAssignmentFromTable() {
+        return template.query(GET_ACTOR_FROM_ASSIGNMENT_QUERY, (rs, rowNum) -> RoleAssignment.builder()
+            .actorId(rs.getString("actor_id"))
+            .roleName(rs.getString("role_name"))
+            .build(), ACTOR_ID);
     }
 }
