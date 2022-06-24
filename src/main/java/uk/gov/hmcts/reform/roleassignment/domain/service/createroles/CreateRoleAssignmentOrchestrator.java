@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPRO
 
 @Slf4j
 @Service
-@Scope("prototype")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class CreateRoleAssignmentOrchestrator {
 
     private ParseRequestService parseRequestService;
