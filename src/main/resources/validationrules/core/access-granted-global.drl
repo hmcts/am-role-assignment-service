@@ -13,7 +13,8 @@ import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
 import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.createRoleAssignment;
 import java.time.ZonedDateTime;
-import java.util.Map
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Arrays;
 import com.fasterxml.jackson.databind.JsonNode;
 /*
@@ -44,9 +45,9 @@ then
       * The end date is set to a standard period so that the 'new' flag on the access will disappear automatically
       * if not explicitly acknowledged by the user.
       */
-      Map<String, JsonNode> attribute = $ra.getAttributes();
+      Map<String, JsonNode> attribute = new HashMap<>();
+      attribute.putAll($ra.getAttributes());
       attribute.put("requestedRole", JacksonUtils.convertValueJsonNode($ra.getRoleName()));
-
       createRoleAssignment(AssignmentRequest.builder()
                         .request(Request.builder()
                              .authenticatedUserId($rq.getAuthenticatedUserId())
