@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -72,9 +73,13 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @Bean
+    @Lazy
+    @Primary
     public ValidationModelService getValidationModelService() {
-        return new ValidationModelService(getStatelessKieSession(), getRetrieveDataService(), persistenceService,
-                                          createRoleAssignment());
+        ValidationModelService modelService = new ValidationModelService(getStatelessKieSession(),
+                                                                         getRetrieveDataService(), persistenceService);
+        //modelService.setCreateRoleAssignmentOrchestrator(createRoleAssignment());
+        return modelService;
     }
 
     @Bean
@@ -90,6 +95,7 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @Bean
+    @Primary
     public CreateRoleAssignmentOrchestrator createRoleAssignment() {
         return new CreateRoleAssignmentOrchestrator(getParseRequestService(), getPrepareResponseService(),
                                                     persistenceService, getValidationModelService(),

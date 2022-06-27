@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.mockito.Mockito.doReturn;
@@ -33,6 +34,8 @@ public abstract class DroolBase {
     List<FeatureFlag> featureFlags;
 
     private final RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
+    private final CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator =
+        mock(CreateRoleAssignmentOrchestrator.class);
 
     @BeforeEach
     public void setUp() {
@@ -118,9 +121,10 @@ public abstract class DroolBase {
         facts.addAll(featureFlags);
         // facts must contain all affected role assignments
         facts.addAll(assignmentRequest.getRequestedRoles());
+        kieSession.setGlobal("createRoleAssignmentOrchestrator", createRoleAssignmentOrchestrator);
+
         // Run the rules
         kieSession.execute(facts);
-
         facts.clear();
         featureFlags.clear();
     }
@@ -138,6 +142,7 @@ public abstract class DroolBase {
         facts.add(assignmentRequest.getRequest());
 
         facts.addAll(featureFlags);
+        kieSession.setGlobal("createRoleAssignmentOrchestrator", createRoleAssignmentOrchestrator);
 
         // Run the rules
         kieSession.execute(facts);

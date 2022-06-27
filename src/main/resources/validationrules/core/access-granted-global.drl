@@ -11,12 +11,12 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
-import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.createRoleAssignment;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
 import com.fasterxml.jackson.databind.JsonNode;
+global uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
 /*
 * Create an access-granted role corresponding to any substantive SPECIFIC or CHALLENGED access case role which is
 * approved by other rules. This is used as a tag to indicate a 'new' role, and will be deleted by the UI when the
@@ -48,7 +48,7 @@ then
       Map<String, JsonNode> attribute = new HashMap<>();
       attribute.putAll($ra.getAttributes());
       attribute.put("requestedRole", JacksonUtils.convertValueJsonNode($ra.getRoleName()));
-      createRoleAssignment(AssignmentRequest.builder()
+      createRoleAssignmentOrchestrator.createRoleAssignment(AssignmentRequest.builder()
                         .request(Request.builder()
                              .authenticatedUserId($rq.getAuthenticatedUserId())
                              .assignerId($rq.getAssignerId())

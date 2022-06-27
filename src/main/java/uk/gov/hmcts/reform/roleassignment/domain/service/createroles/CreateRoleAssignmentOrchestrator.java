@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class CreateRoleAssignmentOrchestrator {
     public CreateRoleAssignmentOrchestrator(ParseRequestService parseRequestService,
                                             PrepareResponseService prepareResponseService,
                                             PersistenceService persistenceService,
-                                            ValidationModelService validationModelService,
+                                            @Lazy ValidationModelService validationModelService,
                                             PersistenceUtil persistenceUtil) {
         this.parseRequestService = parseRequestService;
         this.prepareResponseService = prepareResponseService;

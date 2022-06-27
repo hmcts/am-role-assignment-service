@@ -2,7 +2,9 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.kie.api.runtime.StatelessKieSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.config.DBFlagConfigurtion;
@@ -10,7 +12,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -18,7 +19,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.service.createroles.CreateRoleAssignmentOrchestrator;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +36,7 @@ public class ValidationModelService {
     private StatelessKieSession kieSession;
     private RetrieveDataService retrieveDataService;
     private PersistenceService persistenceService;
-    private static CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
+    private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
 
     @Value("${launchdarkly.sdk.environment}")
     private String environment;
@@ -47,12 +47,16 @@ public class ValidationModelService {
 
     public ValidationModelService(StatelessKieSession kieSession,
                                   RetrieveDataService retrieveDataService,
-                                  PersistenceService persistenceService,
-                                  CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator) {
+                                  PersistenceService persistenceService) {
         this.kieSession = kieSession;
         this.retrieveDataService = retrieveDataService;
         this.persistenceService = persistenceService;
-        this.createRoleAssignmentOrchestrator = createRoleAssignmentOrchestrator;
+    }
+
+    @Autowired
+    @Lazy
+    public void setCreateRoleAssignmentOrchestrator(@Lazy CreateRoleAssignmentOrchestrator roleAssignmentOrchestrator) {
+        this.createRoleAssignmentOrchestrator = roleAssignmentOrchestrator;
     }
 
     public void validateRequest(AssignmentRequest assignmentRequest) {
@@ -170,6 +174,7 @@ public class ValidationModelService {
         // Make the retrieve data service available to rules - this allows data - e.g. case data - to be
         // loaded dynamically when needed by a rule, rather than up-front, when it may never be used.
         kieSession.setGlobal("DATA_SERVICE", retrieveDataService);
+        kieSession.setGlobal("createRoleAssignmentOrchestrator", createRoleAssignmentOrchestrator);
 
         // Run the rules
         kieSession.execute(facts);
@@ -192,9 +197,4 @@ public class ValidationModelService {
         }
     }
 
-    public static void createRoleAssignment(AssignmentRequest assignmentRequest) throws ParseException {
-        log.info("Creating tag roles: {}",
-                 assignmentRequest.getRequestedRoles().stream().map(RoleAssignment::getRoleName));
-        createRoleAssignmentOrchestrator.createRoleAssignment(assignmentRequest);
-    }
 }

@@ -54,13 +54,13 @@ class ValidationModelServiceTest {
     ValidationModelService sut = new ValidationModelService(
         kieSessionMock,
         retrieveDataServiceMock,
-        persistenceService,
-        createRoleAssignmentOrchestrator
+        persistenceService
     );
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        sut.setCreateRoleAssignmentOrchestrator(createRoleAssignmentOrchestrator);
     }
 
     @Test
@@ -90,7 +90,7 @@ class ValidationModelServiceTest {
         Mockito.verify(assignmentRequestSpy, times(2)).getRequestedRoles();
 
         Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
-        Mockito.verify(kieSessionMock, times(1)).setGlobal(any(), any());
+        Mockito.verify(kieSessionMock, times(2)).setGlobal(any(), any());
     }
 
     @Test
