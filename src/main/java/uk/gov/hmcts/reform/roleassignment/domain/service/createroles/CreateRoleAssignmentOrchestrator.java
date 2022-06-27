@@ -20,6 +20,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseS
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.Collections;
@@ -55,6 +56,11 @@ public class CreateRoleAssignmentOrchestrator {
 
         this.validationModelService = validationModelService;
         this.persistenceUtil = persistenceUtil;
+    }
+
+    @PostConstruct
+    void init(){
+        validationModelService.setCreateRoleAssignmentOrchestrator(this);
     }
 
     public ResponseEntity<RoleAssignmentRequestResource> createRoleAssignment(AssignmentRequest roleAssignmentRequest)

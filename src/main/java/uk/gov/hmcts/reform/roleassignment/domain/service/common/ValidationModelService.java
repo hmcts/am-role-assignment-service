@@ -53,8 +53,7 @@ public class ValidationModelService {
         this.persistenceService = persistenceService;
     }
 
-    @Autowired
-    @Lazy
+
     public void setCreateRoleAssignmentOrchestrator(@Lazy CreateRoleAssignmentOrchestrator roleAssignmentOrchestrator) {
         this.createRoleAssignmentOrchestrator = roleAssignmentOrchestrator;
     }

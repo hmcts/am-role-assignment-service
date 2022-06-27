@@ -600,6 +600,53 @@ class CreateRoleAssignmentOrchestratorTest {
             .prepareCreateRoleResponse(any(AssignmentRequest.class));
     }
 
+    @Test
+    void createRoleAssignment_tagrole_AcceptRoleRequests() throws Exception {
+        assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, APPROVED, false);
+        assignmentRequest.getRequestedRoles().forEach(r -> {
+            r.setRoleName("access-granted");
+        });
+        assignmentRequest.getRequest().setProcess("tag-role");
+        requestEntity = TestDataBuilder.buildRequestEntity(assignmentRequest.getRequest());
+        requestEntity.setId(UUID.fromString("ac4e8c21-27a0-4abd-aed8-810fdce22adb"));
+        historyEntity = TestDataBuilder.buildHistoryIntoEntity(
+            assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
+
+        when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
+            .thenReturn(
+                assignmentRequest);
+        when(persistenceService.persistRequest(any(Request.class))).thenReturn(requestEntity);
+        when(persistenceUtil.convertHistoryEntityToRoleAssignment(
+            any(HistoryEntity.class)
+        )).thenReturn(assignmentRequest.getRequestedRoles().stream().findFirst().get());
+
+        when(persistenceUtil.prepareHistoryEntityForPersistance(
+            any(RoleAssignment.class),
+            any(Request.class)
+        )).thenReturn(historyEntity);
+
+        when(prepareResponseService.prepareCreateRoleResponse(any()))
+            .thenReturn(ResponseEntity.status(HttpStatus.CREATED).body(
+                new RoleAssignmentRequestResource(assignmentRequest)));
+
+        doNothing().when(validationModelService).validateRequest(any());
+
+        //actual method call
+        ResponseEntity<RoleAssignmentRequestResource> response = sut.createRoleAssignment(assignmentRequest);
+        RoleAssignmentRequestResource roleAssignmentRequestResource = response.getBody();
+        AssignmentRequest result = Objects.requireNonNull(roleAssignmentRequestResource).getRoleAssignmentRequest();
+
+        //assert values
+        assert result != null;
+        assertEquals(assignmentRequest, result);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(result.getRequest().getId());
+        assertEquals(requestEntity.getId(),result.getRequest().getId());
+        result.getRequestedRoles().forEach(roleAssignment -> assertEquals(LIVE,roleAssignment.getStatus()));
+        verifyNUmberOfInvocationsForRejectedRequest();
+        verify(parseRequestService, times(1)).removeCorrelationLog();
+    }
+
     private void verifyNUmberOfInvocations() throws ParseException {
         verify(parseRequestService, times(1))
             .parseRequest(any(AssignmentRequest.class), any(RequestType.class));
