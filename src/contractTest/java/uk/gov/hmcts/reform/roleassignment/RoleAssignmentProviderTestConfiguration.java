@@ -72,7 +72,6 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @Bean
-    @Primary
     public ValidationModelService getValidationModelService() {
         return new ValidationModelService(getStatelessKieSession(), getRetrieveDataService(), persistenceService,
                                           createRoleAssignment());
@@ -91,7 +90,6 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @Bean
-    @Primary
     public CreateRoleAssignmentOrchestrator createRoleAssignment() {
         return new CreateRoleAssignmentOrchestrator(getParseRequestService(), getPrepareResponseService(),
                                                     persistenceService, getValidationModelService(),
