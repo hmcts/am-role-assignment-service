@@ -73,17 +73,9 @@ public class RoleAssignmentProviderTestConfiguration {
 
     @Bean
     @Primary
-    public CreateRoleAssignmentOrchestrator getCreateRoleAssignmentOrchestrator() {
-        return new CreateRoleAssignmentOrchestrator(getParseRequestService(), getPrepareResponseService(),
-                                                    persistenceService, getValidationModelService(),
-                                                    getPersistenceUtil());
-    }
-
-    @Bean
-    @Primary
     public ValidationModelService getValidationModelService() {
         return new ValidationModelService(getStatelessKieSession(), getRetrieveDataService(), persistenceService,
-                                          getCreateRoleAssignmentOrchestrator());
+                                          createRoleAssignment());
     }
 
     @Bean
