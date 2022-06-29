@@ -321,7 +321,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     public void shouldReturnPredicate_WhileSearchByAttributes() {
         Map<String, List<String>> attributes = new HashMap<>();
         List<String> regions = List.of("London", "JAPAN");
-        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        List<String> contractTypes = List.of("SALARIED", "Non SALARIED");
         attributes.put("region", regions);
         attributes.put("contractType", contractTypes);
 
