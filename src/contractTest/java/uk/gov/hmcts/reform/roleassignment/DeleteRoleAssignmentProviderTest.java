@@ -133,10 +133,12 @@ public class DeleteRoleAssignmentProviderTest {
 
         JsonNode attributes = buildAttributesFromFile("attributesCase.json");
         Map<String, JsonNode> attributeMap = JacksonUtils.convertValue(attributes);
-        List<Assignment> assignmentList  = new ArrayList<>();
-        assignmentList.add(ExistingRoleAssignment.builder().actorId(AUTH_USER_ID)
-                               .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
-                               .status(Status.APPROVED).build());
+        List<Assignment> assignmentList  = List.of(
+            ExistingRoleAssignment.builder().actorId(AUTH_USER_ID)
+                .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
+                .status(Status.APPROVED).build()
+        );
+
         when(persistenceService.persistRequest(any())).thenReturn(createEntity());
         doReturn(assignmentList).when(persistenceService)
             .retrieveRoleAssignmentsByQueryRequest(any(), anyInt(), anyInt(), any(), any(), anyBoolean());
