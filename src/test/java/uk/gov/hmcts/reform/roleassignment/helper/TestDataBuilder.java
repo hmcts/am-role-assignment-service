@@ -370,7 +370,7 @@ public class TestDataBuilder {
     }
 
     public static UserInfo buildUserInfo(String uuid) {
-        List<String> list = Collections.emptyList();
+        List<String> list = new ArrayList<>();
         List<RoleConfigRole> roles = TestDataBuilder.buildRolesFromFile();
         for (RoleConfigRole role : roles) {
             list.add(role.toString());
