@@ -37,7 +37,7 @@ public final class MutableHttpServletRequest extends HttpServletRequestWrapper {
     @Override
     public String getHeader(String name) {
         // check the custom headers first
-     var headerValue = customHeaders.get(name);
+        var headerValue = customHeaders.get(name);
 
         if (headerValue != null) {
             return headerValue;

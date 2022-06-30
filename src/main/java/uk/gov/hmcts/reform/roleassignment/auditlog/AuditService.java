@@ -28,8 +28,7 @@ public class AuditService {
     public void audit(AuditContext auditContext) {
 
         var entry = new AuditEntry();
-
-       var formattedDate = LocalDateTime.now(clock).format(ISO_LOCAL_DATE_TIME);
+        var formattedDate = LocalDateTime.now(clock).format(ISO_LOCAL_DATE_TIME);
         entry.setDateTime(formattedDate);
         entry.setActorId(auditContext.getActorId());
         entry.setHttpStatus(auditContext.getHttpStatus());
