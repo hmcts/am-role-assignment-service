@@ -51,7 +51,7 @@ public class FeatureToggleService {
     }
 
     public String getLaunchDarklyFlag(HttpServletRequest request) {
-       var uri = request.getRequestURI();
+        var uri = request.getRequestURI();
         switch (request.getMethod()) {
             case GET:
                 if (getRequestMap.get(uri) != null) {

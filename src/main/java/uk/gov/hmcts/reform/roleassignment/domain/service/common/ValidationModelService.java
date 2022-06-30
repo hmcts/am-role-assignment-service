@@ -68,7 +68,7 @@ public class ValidationModelService {
         // facts must contain existing role assignments for assigner and authenticatedUser,
         // if these are present in the request.
         Set<String> userIds = new HashSet<>();
-       var assignerId = assignmentRequest.getRequest().getAssignerId();
+        var assignerId = assignmentRequest.getRequest().getAssignerId();
         if (assignerId != null) {
             userIds.add(assignmentRequest.getRequest().getAssignerId());
         }
