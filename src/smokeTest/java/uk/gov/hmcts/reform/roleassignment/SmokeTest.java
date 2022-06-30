@@ -75,7 +75,7 @@ public class SmokeTest extends BaseTest {
     @Test
     public void should_receive_response_for_get_by_actor_id() {
 
-        String targetInstance = config.getRoleAssignmentUrl()
+        var targetInstance = config.getRoleAssignmentUrl()
             + "/am/role-assignments/actors/0b00bfc0-bb00-00ea-b0de-0000ac000000";
         RestAssured.useRelaxedHTTPSValidation();
 
@@ -93,7 +93,7 @@ public class SmokeTest extends BaseTest {
     @Test
     public void should_receive_response_for_delete_by_assignment_id() {
 
-        String targetInstance = config.getRoleAssignmentUrl()
+        var targetInstance = config.getRoleAssignmentUrl()
             + "/am/role-assignments/dbd4177f-94f6-4e91-bb9b-591faa81dfd5";
         RestAssured.useRelaxedHTTPSValidation();
 
@@ -112,7 +112,7 @@ public class SmokeTest extends BaseTest {
     @Test
     public void should_receive_response_for_delete_by_process_and_reference() {
 
-        String targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments?process=p2&reference=r2";
+        var targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments?process=p2&reference=r2";
         RestAssured.useRelaxedHTTPSValidation();
 
         Response response = SerenityRest
@@ -129,12 +129,12 @@ public class SmokeTest extends BaseTest {
     //@Test
     public void should_receive_response_for_add_role_assignment() throws IOException {
 
-        String targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments";
+        var targetInstance = config.getRoleAssignmentUrl() + "/am/role-assignments";
         RestAssured.useRelaxedHTTPSValidation();
 
         InputStream input = SmokeTest.class.getClassLoader().getResourceAsStream("create_request_body.json");
         assert input != null;
-        String requestBody = IOUtils.toString(input, StandardCharsets.UTF_8.name());
+        var requestBody = IOUtils.toString(input, StandardCharsets.UTF_8.name());
 
         Response response = SerenityRest
             .given()

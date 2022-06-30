@@ -329,7 +329,7 @@ public class DeleteRoleAssignmentOrchestrator {
                               )
 
         );
-        long totalRecords = persistenceService.getTotalRecords();
+        var totalRecords = persistenceService.getTotalRecords();
         double pageNumber = 0;
         if (defaultSize > 0) {
             pageNumber = (double) totalRecords / (double) defaultSize;

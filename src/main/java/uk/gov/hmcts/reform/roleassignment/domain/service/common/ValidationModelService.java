@@ -68,11 +68,11 @@ public class ValidationModelService {
         // facts must contain existing role assignments for assigner and authenticatedUser,
         // if these are present in the request.
         Set<String> userIds = new HashSet<>();
-        String assignerId = assignmentRequest.getRequest().getAssignerId();
+       var assignerId = assignmentRequest.getRequest().getAssignerId();
         if (assignerId != null) {
             userIds.add(assignmentRequest.getRequest().getAssignerId());
         }
-        String authenticatedUserId = assignmentRequest.getRequest().getAuthenticatedUserId();
+        var authenticatedUserId = assignmentRequest.getRequest().getAuthenticatedUserId();
         if (authenticatedUserId != null) {
             userIds.add(assignmentRequest.getRequest().getAuthenticatedUserId());
         }
@@ -106,7 +106,7 @@ public class ValidationModelService {
             true)
 
         );
-        long totalRecords = persistenceService.getTotalRecords();
+        var totalRecords = persistenceService.getTotalRecords();
         if (totalRecords > 100) {
             log.warn("Fetched assignments for the actor have {} total records", totalRecords);
         }

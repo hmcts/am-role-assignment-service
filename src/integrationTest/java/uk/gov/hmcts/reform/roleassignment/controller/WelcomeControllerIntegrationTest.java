@@ -51,7 +51,7 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
 
     @Test
     public void welcomeApiTest() throws Exception {
-        final String url = "/welcome";
+        final var url = "/welcome";
         logger.info(" WelcomeControllerIntegrationTest : Inside  Welcome API Test method...{}", url);
         final MvcResult result = mockMvc.perform(get(url).contentType(JSON_CONTENT_TYPE))
             .andExpect(status().is(200))
@@ -79,7 +79,7 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
         final Object[] parameters = new Object[] {
             REQUEST_ID
         };
-        String status = template.queryForObject(GET_STATUS, parameters, String.class);
+        var status = template.queryForObject(GET_STATUS, parameters, String.class);
         logger.info(" Role assignment request status is...{}", status);
         assertEquals(
             "Role assignment request status", "APPROVED", status);

@@ -34,7 +34,7 @@ public class RoleConfig {
      * for the given role.
      */
     private static void setCommonFields(RoleConfigRole role) {
-        String roleName = role.getName();
+        var roleName = role.getName();
         var roleCategory = role.getCategory();
         role.getPatterns().forEach(
             p -> {
