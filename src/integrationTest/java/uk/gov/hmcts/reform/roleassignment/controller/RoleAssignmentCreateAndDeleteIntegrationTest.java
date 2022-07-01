@@ -359,7 +359,15 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         mockMvc.perform(post(ADV_DELETE_URL)
                             .contentType(JSON_CONTENT_TYPE)
                             .content(
-                                "{\"queryRequests\" : [{\"caseId\" : [ \"1234567890123456\" ]}]}"
+                                """
+                                    {
+                                        "queryRequests" : [
+                                            {
+                                                "caseId" : [ "1234567890123456" ]
+                                            }
+                                        ]
+                                    }
+                                """
                             )
                             .headers(getHttpHeaders())
         )
@@ -413,31 +421,41 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     private String createRoleAssignmentRequestAdvanceDelete() {
 
-        return "{\"queryRequests\":[{\"actorId\":[\"123e4567-e89b-42d3-a456-556642445612\"],"
-            + "\"roleName\": [\"lead-judge\"],"
-            + "\"roleType\": [\"CASE\"]}"
-            + "]}";
+        return """
+                {
+                    "queryRequests":[
+                        {
+                            "actorId":["123e4567-e89b-42d3-a456-556642445612"],
+                            "roleName": ["lead-judge"],
+                            "roleType": ["CASE"]
+                        }
+                    ]
+                }
+                """;
     }
 
     private String createRoleAssignmentRequestAdvanceDeleteMultiple() {
-        return "{\"queryRequests\" : [ "
-            + "{"
-            + "\"attributes\" : {"
-            + "\"caseId\" : [ \"1234567890123456\" ]"
-            + "}"
-            + "},"
-            + "{"
-            + "\"attributes\" : {"
-            + "\"caseId\" : [ \"1234567890123457\" ]"
-            + "}"
-            + "},"
-            + "{"
-            + "\"attributes\" : {"
-            + "\"caseId\" : [ \"1234567890123458\" ]"
-            + "}"
-            + "}"
-            + "]"
-            + "}";
+        return """
+                {
+                    "queryRequests" : [
+                        {
+                            "attributes" : {
+                                "caseId" : [ "1234567890123456" ]
+                            }
+                        },
+                        {
+                            "attributes" : {
+                                "caseId" : [ "1234567890123457" ]
+                            }
+                        },
+                        {
+                            "attributes" : {
+                                "caseId" : [ "1234567890123458" ]
+                            }
+                        }
+                    ]
+                }
+                """;
     }
 
     private void assertAssignmentRecords() {

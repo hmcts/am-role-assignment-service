@@ -33,11 +33,19 @@ class JsonBConverterTest {
 
     @Test
     void convertToEntityAttribute() throws IOException {
-        JsonNode result = sut.convertToEntityAttribute("[{\"userId\":\"S-042\",\"time\":\"2020-01-01T00:00Z"
-                                                           + "\",\"comment\":\"Need Access to case number"
-                                                           + " 1234567890123456 for a year\"},{\"userId\":"
-                                                           + "\"HMCTS\",\"time\":\"2020-01-02T00:00Z\",\"comment"
-                                                           + "\":\"Access granted for 3 months\"}]");
+        JsonNode result = sut.convertToEntityAttribute("""
+        [
+           {
+           "userId":"S-042","time":"2020-01-01T00:00Z",
+           "comment":"Need Access to case number 1234567890123456 for a year"
+           },
+           {
+           "userId":"HMCTS",
+           "time":"2020-01-02T00:00Z",
+           "comment":"Access granted for 3 months"
+           }
+       ]
+       """);
 
         assertEquals(TestDataBuilder.buildNotesFromFile(), result);
 
@@ -53,11 +61,20 @@ class JsonBConverterTest {
 
     @Test
     void convertWrongJsonToEntityAttribute() throws IOException {
-        JsonNode result = sut.convertToEntityAttribute("[{\"userId\":\"S-042\"\"time\":\"2020-01-01T00:00Z"
-                                                           + "\",\"comment\":\"Need Access to case number"
-                                                           + " 1234567890123456 for a year\"},{\"userId\":"
-                                                           + "\"HMCTS\",\"time\":\"2020-01-02T00:00Z\",\"comment"
-                                                           + "\":\"Access granted for 3 months\"}]");
+        JsonNode result = sut.convertToEntityAttribute("""
+        [
+            {
+                "userId":"S-042"",
+                "time":"2020-01-01T00:00Z",
+                "comment":"Need Access to case number 1234567890123456 for a year"
+            },
+            {
+                "userId":"HMCTS",
+                "time":"2020-01-02T00:00Z",
+                "comment":"Access granted for 3 months"
+            }
+        ]
+        """);
 
         assertNull(result);
 

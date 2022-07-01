@@ -24,7 +24,11 @@ class IdamServiceHealthIndicatorTest {
     @BeforeEach
     void setUp() throws JsonProcessingException {
         MockitoAnnotations.openMocks(this);
-        String jsonString = "{\"status\": \"UP\"}";
+        String jsonString = """
+            {
+                "status": "UP"
+            }
+            """;
         ObjectMapper mapper = new ObjectMapper();
         JsonNode actualObj = mapper.readTree(jsonString);
         when(restTemplate.getForObject("url" + "/health", JsonNode.class)).thenReturn(actualObj);
