@@ -36,7 +36,6 @@ import uk.gov.hmcts.reform.roleassignment.versions.V2;
 
 import javax.inject.Inject;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -349,8 +348,8 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
 
     public static QueryRequest createQueryRequest() {
         Map<String, List<String>> attributes = new HashMap<>();
-        List<String> regions = Arrays.asList("London", "JAPAN", "north-east");
-        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        List<String> regions = List.of("London", "JAPAN", "north-east");
+        List<String> contractTypes = List.of("SALARIED", "Non SALARIED");
         attributes.put("region", regions);
         attributes.put("contractType", contractTypes);
 
