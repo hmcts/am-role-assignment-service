@@ -37,6 +37,8 @@ import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
