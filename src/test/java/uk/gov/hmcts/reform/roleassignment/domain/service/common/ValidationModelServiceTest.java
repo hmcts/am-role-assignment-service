@@ -112,10 +112,10 @@ class ValidationModelServiceTest {
     @Test
     void shouldExecuteQueryParamForCaseRole() throws IOException {
 
-        Set<String> actorIds = new HashSet<>();
-
-        actorIds.add("123e4567-e89b-42d3-a456-556642445678");
-        actorIds.add("4dc7dd3c-3fb5-4611-bbde-5101a97681e1");
+        Set<String> actorIds = Set.of(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
 
         doReturn(TestDataBuilder.buildRequestedRoleCollection(LIVE)).when(persistenceService)
             .retrieveRoleAssignmentsByQueryRequest(
@@ -137,10 +137,10 @@ class ValidationModelServiceTest {
     @Test
     void shouldExecuteQueryParamForMultipleCaseRole() throws IOException {
 
-        Set<String> actorIds = new HashSet<>();
-
-        actorIds.add("123e4567-e89b-42d3-a456-556642445678");
-        actorIds.add("4dc7dd3c-3fb5-4611-bbde-5101a97681e1");
+        final Set<String> actorIds = Set.of(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
 
         doReturn(TestDataBuilder.buildRequestedRoleCollection(LIVE)).when(persistenceService)
             .retrieveRoleAssignmentsByQueryRequest(
@@ -169,10 +169,10 @@ class ValidationModelServiceTest {
     @Test
     void shouldLogWhenTotalRecordsExceed100() throws IOException {
 
-        Set<String> actorIds = new HashSet<>();
-
-        actorIds.add("123e4567-e89b-42d3-a456-556642445678");
-        actorIds.add("4dc7dd3c-3fb5-4611-bbde-5101a97681e1");
+        final Set<String> actorIds = Set.of(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
 
         doReturn(TestDataBuilder.buildRequestedRoleCollection(LIVE)).when(persistenceService)
             .retrieveRoleAssignmentsByQueryRequest(
