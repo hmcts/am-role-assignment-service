@@ -9,6 +9,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.PredicateValidator;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
@@ -136,7 +137,8 @@ public class ParseRequestService {
     }
 
     public void validateGetAssignmentsByActorIdAndCaseId(String actorId, String caseId, String roleType) {
-        if (StringUtils.isEmpty(roleType) || !roleType.equalsIgnoreCase(RoleType.CASE.name())) {
+        if (StringUtils.isEmpty(roleType)
+            || !PredicateValidator.stringCheckPredicate(RoleType.CASE.name()).test(roleType)) {
             throw new BadRequestException(V1.Error.INVALID_ROLE_TYPE);
         }
 
