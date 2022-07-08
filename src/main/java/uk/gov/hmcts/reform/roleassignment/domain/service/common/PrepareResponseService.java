@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.PredicateValidator;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -21,7 +22,8 @@ public class PrepareResponseService {
         roleAssignmentRequest.getRequest().setClientId(null);
 
 
-        if (roleAssignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
+        if (PredicateValidator.assignmentRequestPredicate(roleAssignmentRequest.getRequest().getStatus())
+            .test(Status.REJECTED)) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
                 new RoleAssignmentRequestResource(
                     roleAssignmentRequest));
