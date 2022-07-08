@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.PredicateValidator;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -157,7 +158,8 @@ public class DeleteRoleAssignmentOrchestrator {
         //6. check status updated by drools and take decision
         checkAllDeleteApproved(assignmentRequest, actorId);
 
-        if (assignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
+        if (PredicateValidator.assignmentRequestPredicate(assignmentRequest.getRequest().getStatus())
+            .test(Status.REJECTED)) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
