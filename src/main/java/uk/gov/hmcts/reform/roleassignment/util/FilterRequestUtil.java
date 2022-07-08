@@ -23,12 +23,12 @@ public class FilterRequestUtil extends OncePerRequestFilter {
     protected void doFilterInternal(@NotNull HttpServletRequest request,
                                     HttpServletResponse response, FilterChain filterChain) {
 
-        final String correlationId = correlationInterceptorUtil.preHandle(request);
+        final var correlationId = correlationInterceptorUtil.preHandle(request);
 
         var mutableRequest = new MutableHttpServletRequest(request);
 
-        String whiteList = Constants.UUID_PATTERN;
-        boolean match = Pattern.matches(whiteList, correlationId);
+        var whiteList = Constants.UUID_PATTERN;
+        var match = Pattern.matches(whiteList, correlationId);
 
 
         if (!match) {
