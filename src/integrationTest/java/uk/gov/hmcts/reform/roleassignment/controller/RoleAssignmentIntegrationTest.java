@@ -92,7 +92,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             "classpath:sql/insert_actor_cache_control.sql"})
     public void shouldGetRoleAssignmentsBasedOnActorId() throws Exception {
         assertRoleAssignmentRecordSize();
-        final String url = "/am/role-assignments/actors/" + ACTOR_ID;
+        final var url = "/am/role-assignments/actors/" + ACTOR_ID;
 
         final MvcResult result = mockMvc.perform(get(url)
                                                      .contentType(JSON_CONTENT_TYPE)
@@ -123,7 +123,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void shouldGetRoleAssignmentsBasedOnRoleTypeAndActorId() throws Exception {
         assertRoleAssignmentRecordSize();
-        final String url = "/am/role-assignments";
+        final var url = "/am/role-assignments";
 
         final MvcResult result = mockMvc.perform(get(url)
                                                      .contentType(MediaType.APPLICATION_JSON)
@@ -133,7 +133,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         )
             .andExpect(status().is(200))
             .andReturn();
-        String responseAsString = result.getResponse().getContentAsString();
+        var responseAsString = result.getResponse().getContentAsString();
 
         List<RoleAssignment> response = mapper.readValue(responseAsString, new TypeReference<>() {
         });
@@ -157,7 +157,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void shouldGetRoleAssignmentsBasedOnRoleTypeAndCaseId() throws Exception {
         assertRoleAssignmentRecordSize();
-        final String url = "/am/role-assignments";
+        final var url = "/am/role-assignments";
 
         final MvcResult result = mockMvc.perform(get(url)
                                                      .contentType(MediaType.APPLICATION_JSON)
@@ -167,7 +167,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         )
             .andExpect(status().is(200))
             .andReturn();
-        String responseAsString = result.getResponse().getContentAsString();
+        var responseAsString = result.getResponse().getContentAsString();
 
         List<RoleAssignment> response = mapper.readValue(responseAsString, new TypeReference<>() {
         });
@@ -187,7 +187,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
 
     @Test
     public void shouldGetListOfRoles() throws Exception {
-        final String url = "/am/role-assignments/roles";
+        final var url = "/am/role-assignments/roles";
 
         final MvcResult result = mockMvc.perform(get(url)
                                                      .contentType(MediaType.APPLICATION_JSON)
@@ -195,7 +195,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         )
             .andExpect(status().is(200))
             .andReturn();
-        String response = result.getResponse().getContentAsString();
+        var response = result.getResponse().getContentAsString();
 
         JsonNode jsonResonse = mapper.readValue(response, JsonNode.class);
         assertEquals(200, result.getResponse().getStatus());
@@ -225,7 +225,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             .authorisations(Collections.singletonList("dev"))
             .build();
 
-        final String url = "/am/role-assignments/query";
+        final var url = "/am/role-assignments/query";
 
         final MvcResult result = mockMvc.perform(post(url)
                                                      .contentType(JSON_CONTENT_TYPE)
@@ -234,7 +234,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         ).andExpect(status().is(200)).andReturn();
 
 
-        String responseAsString = result.getResponse().getContentAsString();
+        var responseAsString = result.getResponse().getContentAsString();
 
         List<RoleAssignment> response = mapper.readValue(responseAsString, new TypeReference<>() {
         });
@@ -255,7 +255,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void shouldGetEmptyRoleAssignmentsRecordsBasedOnDynamicQuery() throws Exception {
 
-        final String url = "/am/role-assignments/query";
+        final var url = "/am/role-assignments/query";
 
         final MvcResult result = mockMvc.perform(post(url)
                                                      .contentType(JSON_CONTENT_TYPE)
@@ -264,7 +264,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         ).andExpect(status().is(200)).andReturn();
 
 
-        String responseAsString = result.getResponse().getContentAsString();
+        var responseAsString = result.getResponse().getContentAsString();
 
         List<RoleAssignment> response = mapper.readValue(responseAsString, new TypeReference<>() {
         });
@@ -278,7 +278,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         final Object[] assignmentId = new Object[]{
             ROLE_ASSIGNMENT_ID
         };
-        String actorId = template.queryForObject(GET_ASSIGNMENT_STATUS_QUERY, assignmentId, String.class);
+        var actorId = template.queryForObject(GET_ASSIGNMENT_STATUS_QUERY, assignmentId, String.class);
         logger.info(" Role assignment actor id is...{}", actorId);
         assertEquals(
             "Role assignment actor Id", ACTOR_ID, actorId);
