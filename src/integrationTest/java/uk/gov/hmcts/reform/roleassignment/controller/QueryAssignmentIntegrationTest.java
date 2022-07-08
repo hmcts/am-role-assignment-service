@@ -92,12 +92,12 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
     public void shouldGetIdLdDemo() throws Exception {
 
         logger.info("Launch Darkly flag check is successful for the endpoint");
-        final String url = "/am/role-assignments/ld/endpoint";
+        final var url = "/am/role-assignments/ld/endpoint";
 
         final MvcResult result = mockMvc.perform(get(url).contentType(JSON_CONTENT_TYPE))
             .andExpect(status().isOk())
             .andReturn();
-        String responseAsString = result.getResponse().getContentAsString();
+        var responseAsString = result.getResponse().getContentAsString();
         assertEquals("Launch Darkly flag check is successful for the endpoint", responseAsString);
     }
 
