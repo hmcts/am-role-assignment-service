@@ -31,7 +31,7 @@ public class RasDefaultMultiSourceFeatureToggleService extends DefaultMultiSourc
             }
             Boolean expectedStatus = null;
             if (tag.contains(STRING_EQUALS)) {
-                String expectedStatusString = tag.substring(tag.indexOf(STRING_EQUALS) + 1, tag.indexOf(")"));
+                var expectedStatusString = tag.substring(tag.indexOf(STRING_EQUALS) + 1, tag.indexOf(")"));
                 expectedStatus = expectedStatusString.equalsIgnoreCase("on");
                 scenarioFeatureToggleInfo.addExpectedStatus(id, expectedStatus);
             }
