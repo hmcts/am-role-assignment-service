@@ -90,7 +90,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
 
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         MockitoAnnotations.openMocks(this);
-        String uid = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
+        var uid = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
         UserRoles roles = UserRoles.builder()
             .uid(uid)
             .roles(List.of("caseworker", "am-import"))
@@ -122,7 +122,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
         AssignmentRequest assignmentRequest = buildDroolRuleBypassRequest();
         assignmentRequest.getRequest().setClientId("wrong_am_org_role_mapping_service");
         logger.info(" assignmentRequest :  {}", mapper.writeValueAsString(assignmentRequest));
-        final String url = "/am/role-assignments";
+        final var url = "/am/role-assignments";
 
 
         mockMvc.perform(post(url)
@@ -141,7 +141,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     public void shouldCreateRoleAssignmentsWithCorrectClientId() throws Exception {
         AssignmentRequest assignmentRequest = buildDroolRuleBypassRequest();
         logger.info(" assignmentRequest :  {}", mapper.writeValueAsString(assignmentRequest));
-        final String url = "/am/role-assignments";
+        final var url = "/am/role-assignments";
 
 
         mockMvc.perform(post(url)
@@ -156,7 +156,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
         {"classpath:sql/role_assignment_clean_up.sql",
             "classpath:sql/insert_assignment_records_to_delete.sql"})
     public void shouldDeleteRoleAssignmentsByProcessAndReference() throws Exception {
-        final String url = "/am/role-assignments";
+        final var url = "/am/role-assignments";
 
         mockMvc.perform(delete(url)
                             .contentType(JSON_CONTENT_TYPE)
@@ -198,7 +198,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     private HttpHeaders getHttpHeaders(final String clientId) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(AUTHORIZATION, "Bearer user1");
-        String s2SToken = MockUtils.generateDummyS2SToken(clientId);
+        var s2SToken = MockUtils.generateDummyS2SToken(clientId);
         headers.add("ServiceAuthorization", "Bearer " + s2SToken);
         headers.add(Constants.CORRELATION_ID_HEADER_NAME, "38a90097-434e-47ee-8ea1-9ea2a267f51d");
         return headers;

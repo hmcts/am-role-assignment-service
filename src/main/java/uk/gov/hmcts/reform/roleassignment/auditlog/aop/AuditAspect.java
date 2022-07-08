@@ -33,21 +33,21 @@ public class AuditAspect {
     @Around("@annotation(logAudit)")
     public Object audit(ProceedingJoinPoint joinPoint, LogAudit logAudit) throws Throwable {
 
-        long startTime = System.currentTimeMillis();
+        var startTime = System.currentTimeMillis();
         Object result = joinPoint.proceed();
 
         if (result instanceof ResponseEntity && statusCodes.contains(((ResponseEntity) result).getStatusCodeValue())) {
             return result;
         } else {
-            String roleName = getValue(joinPoint, logAudit.roleName(), result, String.class);
-            String assignerId = getValue(joinPoint, logAudit.assignerId(), result, String.class);
-            String id = getValue(joinPoint, logAudit.id(), result, String.class);
-            Integer size = getValue(joinPoint, logAudit.size(), result, Integer.class);
-            String actorId = getValue(joinPoint, logAudit.actorId(), result, String.class);
-            String process = getValue(joinPoint, logAudit.process(), result, String.class);
-            String reference = getValue(joinPoint, logAudit.reference(), result, String.class);
-            String correlationId = getValue(joinPoint, logAudit.correlationId(), result, String.class);
-            Long responseTime = Math.subtractExact(System.currentTimeMillis(), startTime);
+            var roleName = getValue(joinPoint, logAudit.roleName(), result, String.class);
+            var assignerId = getValue(joinPoint, logAudit.assignerId(), result, String.class);
+            var id = getValue(joinPoint, logAudit.id(), result, String.class);
+            var size = getValue(joinPoint, logAudit.size(), result, Integer.class);
+            var actorId = getValue(joinPoint, logAudit.actorId(), result, String.class);
+            var process = getValue(joinPoint, logAudit.process(), result, String.class);
+            var reference = getValue(joinPoint, logAudit.reference(), result, String.class);
+            var correlationId = getValue(joinPoint, logAudit.correlationId(), result, String.class);
+            var responseTime = Math.subtractExact(System.currentTimeMillis(), startTime);
 
             AuditContextHolder.setAuditContext(AuditContext.auditContextWith()
                                                    .auditOperationType(logAudit.operationType())
