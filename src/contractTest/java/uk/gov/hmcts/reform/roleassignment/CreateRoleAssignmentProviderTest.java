@@ -32,7 +32,6 @@ import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -111,13 +110,14 @@ public class CreateRoleAssignmentProviderTest {
 
         JsonNode attributes = buildAttributesFromFile("attributesCase.json");
         Map<String, JsonNode> attributeMap = JacksonUtils.convertValue(attributes);
-        List<Assignment> assignmentList  = new ArrayList<>();
-        assignmentList.add(ExistingRoleAssignment.builder().actorId("14a21569-eb80-4681-b62c-6ae2ed069e5f")
-                               .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
-                               .status(Status.APPROVED).build());
-        assignmentList.add(ExistingRoleAssignment.builder().actorId("3168da13-00b3-41e3-81fa-cbc71ac28a0f")
-                               .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
-                               .status(Status.APPROVED).build());
+        List<Assignment> assignmentList  = List.of(
+            ExistingRoleAssignment.builder().actorId("14a21569-eb80-4681-b62c-6ae2ed069e5f")
+                .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
+                .status(Status.APPROVED).build(),
+            ExistingRoleAssignment.builder().actorId("3168da13-00b3-41e3-81fa-cbc71ac28a0f")
+                .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
+                .status(Status.APPROVED).build()
+        );
         when(persistenceService.persistRequest(any())).thenReturn(createEntity());
         doReturn(assignmentList).when(persistenceService)
             .retrieveRoleAssignmentsByQueryRequest(any(), anyInt(), anyInt(), any(), any(), anyBoolean());
