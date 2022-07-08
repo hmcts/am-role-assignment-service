@@ -105,7 +105,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         template = new JdbcTemplate(ds);
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         MockitoAnnotations.openMocks(this);
-        String uid = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
+        var uid = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
         UserRoles roles = UserRoles.builder()
             .uid(uid)
             .roles(Arrays.asList("caseworker", "am-import"))
@@ -139,7 +139,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             false, false);
         assignmentRequest.getRequest().setAssignerId("6b36bfc6-bb21-11ea-b3de-0242ac130006");
         logger.info(" assignmentRequest :  {}", mapper.writeValueAsString(assignmentRequest));
-        final String url = "/am/role-assignments";
+        final var url = "/am/role-assignments";
 
 
         mockMvc.perform(post(url)
@@ -206,7 +206,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         logger.info(" Method shouldDeleteRoleAssignmentsByProcessAndReference starts :");
         logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count before create assignment request : {}", getAssignmentRecordsCount());
-        final String url = "/am/role-assignments";
+        final var url = "/am/role-assignments";
 
         mockMvc.perform(delete(url)
                             .contentType(JSON_CONTENT_TYPE)
@@ -230,7 +230,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         logger.info(" Method shouldDeleteRoleAssignmentsByAssignmentId starts : ");
         logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count before create assignment request : {}", getAssignmentRecordsCount());
-        final String url = "/am/role-assignments/" + ASSIGNMENT_ID;
+        final var url = "/am/role-assignments/" + ASSIGNMENT_ID;
 
         mockMvc.perform(delete(url)
                             .contentType(JSON_CONTENT_TYPE)
@@ -482,7 +482,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.add(AUTHORIZATION, "Bearer user1");
-        String s2SToken = MockUtils.generateDummyS2SToken(AUTHORISED_SERVICE);
+        var s2SToken = MockUtils.generateDummyS2SToken(AUTHORISED_SERVICE);
         headers.add("ServiceAuthorization", "Bearer " + s2SToken);
         headers.add(Constants.CORRELATION_ID_HEADER_NAME, "38a90097-434e-47ee-8ea1-9ea2a267f51d");
         return headers;
