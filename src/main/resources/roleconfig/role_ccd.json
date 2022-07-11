@@ -1958,7 +1958,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["CIVIL"]
+            "values": ["CIVIL","GENERALAPPLICATION"]
           },
           "caseId": {
             "mandatory": true
@@ -1995,7 +1995,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["CIVIL"]
+            "values": ["CIVIL","GENERALAPPLICATION"]
           },
           "caseId": {
             "mandatory": true
@@ -2032,7 +2032,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["CIVIL"]
+            "values": ["CIVIL","GENERALAPPLICATION"]
           },
           "caseId": {
             "mandatory": true
@@ -2069,7 +2069,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["CIVIL"]
+            "values": ["CIVIL","GENERALAPPLICATION"]
           },
           "caseId": {
             "mandatory": true
