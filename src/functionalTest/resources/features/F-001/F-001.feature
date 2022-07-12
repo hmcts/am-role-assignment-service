@@ -262,7 +262,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
   @S-114
-  @FeatureToggle(RAS:ccd_1_0=on)
+  @FeatureToggle(DB:ccd_1_0=on)
   Scenario: must successfully create single Role Assignment for CCD Case roles having role category as professional.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
@@ -278,7 +278,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId].
 
   @S-115
-  @FeatureToggle(RAS:ccd_1_0=on)
+  @FeatureToggle(DB:ccd_1_0=on)
   Scenario: must reject create Role Assignment for CCD Case roles having role category as professional and invalid clientId.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
@@ -293,7 +293,7 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected.
 
   @S-116
-  @FeatureToggle(RAS:ccd_1_0=on)
+  @FeatureToggle(DB:ccd_1_0=on)
   Scenario: must successfully create single Role Assignment for CCD Case roles having role category as Judicial.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
@@ -309,7 +309,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId].
 
   @S-117
-  @FeatureToggle(RAS:ccd_1_0=on)
+  @FeatureToggle(DB:ccd_1_0=on)
   Scenario: must successfully create single Role Assignment for CCD Case roles having role category as LEGAL_OPERATIONS.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
@@ -325,7 +325,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId].
 
   @S-118
-  @FeatureToggle(RAS:ccd_1_0=on) @FeatureToggle(RAS:ccd_bypass_1_0=on)
+  @FeatureToggle(DB:ccd_1_0=on) @FeatureToggle(RAS:ccd_bypass_1_0=on)
   Scenario: must successfully create single Role Assignment for CCD Case roles having valid role with dummy jurisdiction.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
@@ -341,7 +341,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId].
 
   @S-119
-  @FeatureToggle(RAS:ccd_1_0=on)
+  @FeatureToggle(DB:ccd_1_0=on)
   Scenario: must successfully create single Role Assignment for CCD Case roles having role category as CITIZEN.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
@@ -357,7 +357,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignmentsByServiceId].
 
   @S-121
-  @FeatureToggle(RAS:ccd_bypass_1_0=on)
+  @FeatureToggle(DB:ccd_bypass_1_0=on)
   Scenario: must successfully create single Role Assignment for CCD Case dummy roles with dummy jurisdiction.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
@@ -374,7 +374,7 @@ Feature: F-001 : Create Role Assignments
     Then a positive response is received.
 
   @S-122
-  @FeatureToggle(RAS:ccd_1_0=on)
+  @FeatureToggle(DB:ccd_1_0=on)
   Scenario: must successfully create single Role Assignment for CCD Case roles with byPassOrgDroolRule true.
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
@@ -391,7 +391,7 @@ Feature: F-001 : Create Role Assignments
     Then a positive response is received.
 
   @S-123
-  @FeatureToggle(RAS:ccd_bypass_1_0=on)
+  @FeatureToggle(DB:ccd_bypass_1_0=on)
   Scenario: must successfully create Org dummy roles with replace another dummy jurisdiction with ReplaceExisting set to True
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta2 - who invokes the API],
@@ -407,7 +407,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
   @S-202
-  @FeatureToggle(RAS:iac_jrd_1_0=on)
+  @FeatureToggle(DB:iac_jrd_1_0=on)
   Scenario: must successfully create lead-judge Case Role Assignment
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -424,7 +424,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-202_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-203
-  @FeatureToggle(RAS:iac_jrd_1_0=on)
+  @FeatureToggle(DB:iac_jrd_1_0=on)
   Scenario: must successfully create hearing-judge Case Role Assignment
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -441,7 +441,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-203_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-204
-  @FeatureToggle(RAS:iac_jrd_1_0=on)
+  @FeatureToggle(DB:iac_jrd_1_0=on)
   Scenario: must successfully create ftpa-judge Case Role Assignment
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -458,7 +458,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-204_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-205
-  @FeatureToggle(RAS:iac_jrd_1_0=on)
+  @FeatureToggle(DB:iac_jrd_1_0=on)
   Scenario: must successfully create hearing-panel-judge Case Role Assignment
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -475,7 +475,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-205_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-206
-  @FeatureToggle(RAS:iac_jrd_1_0=on)
+  @FeatureToggle(DB:iac_jrd_1_0=on)
   Scenario: must successfully create case-allocator Case Role Assignment
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
