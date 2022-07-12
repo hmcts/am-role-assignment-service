@@ -51,7 +51,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA"]
           },
           "caseType": {
             "mandatory": true
@@ -85,7 +86,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA"]
           },
           "caseType": {
             "mandatory": true
@@ -119,7 +121,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA"]
           },
           "caseType": {
             "mandatory": true
