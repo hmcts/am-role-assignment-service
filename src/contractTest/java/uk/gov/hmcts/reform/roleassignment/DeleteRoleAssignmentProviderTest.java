@@ -135,6 +135,9 @@ public class DeleteRoleAssignmentProviderTest {
         List<Assignment> assignmentList  = List.of(
             ExistingRoleAssignment.builder().actorId(AUTH_USER_ID)
                 .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
+                .status(Status.APPROVED).build(),
+            ExistingRoleAssignment.builder().actorId(AUTH_USER_ID)
+                .roleType(RoleType.ORGANISATION).roleName("case-allocator").attributes(attributeMap)
                 .status(Status.APPROVED).build()
         );
         when(persistenceService.persistRequest(any())).thenReturn(createEntity());

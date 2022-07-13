@@ -112,7 +112,7 @@ public class CreateRoleAssignmentProviderTest {
         Map<String, JsonNode> attributeMap = JacksonUtils.convertValue(attributes);
         List<Assignment> assignmentList  = List.of(
             ExistingRoleAssignment.builder().actorId("14a21569-eb80-4681-b62c-6ae2ed069e5f")
-                .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
+                .roleType(RoleType.ORGANISATION).roleName("case-allocator").attributes(attributeMap)
                 .status(Status.APPROVED).build(),
             ExistingRoleAssignment.builder().actorId("3168da13-00b3-41e3-81fa-cbc71ac28a0f")
                 .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
