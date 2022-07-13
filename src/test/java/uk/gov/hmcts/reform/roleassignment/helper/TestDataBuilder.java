@@ -94,7 +94,7 @@ public class TestDataBuilder {
             .roleType(roleType)
             .roleName(roleName)
             .classification(Classification.PRIVATE)
-            .grantType(GrantType.STANDARD)
+            .grantType(GrantType.SPECIFIC)
             .roleCategory(RoleCategory.LEGAL_OPERATIONS)
             .readOnly(false)
             .beginTime(timeStamp.plusDays(1))

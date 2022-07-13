@@ -25,6 +25,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -133,10 +134,7 @@ public class DeleteRoleAssignmentProviderTest {
         JsonNode attributes = buildAttributesFromFile("attributesCase.json");
         Map<String, JsonNode> attributeMap = JacksonUtils.convertValue(attributes);
         List<Assignment> assignmentList  = List.of(
-            ExistingRoleAssignment.builder().actorId(AUTH_USER_ID)
-                .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
-                .status(Status.APPROVED).build(),
-            ExistingRoleAssignment.builder().actorId(AUTH_USER_ID)
+            ExistingRoleAssignment.builder().actorId(AUTH_USER_ID).roleCategory(RoleCategory.LEGAL_OPERATIONS)
                 .roleType(RoleType.ORGANISATION).roleName("case-allocator").attributes(attributeMap)
                 .status(Status.APPROVED).build()
         );
