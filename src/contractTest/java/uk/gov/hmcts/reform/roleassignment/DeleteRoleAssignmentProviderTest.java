@@ -25,6 +25,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -43,7 +44,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildAttributesFromFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -95,12 +95,12 @@ public class DeleteRoleAssignmentProviderTest {
     }
 
     @State({"An actor with provided id is available in role assignment service"})
-    public void deleteRoleAssignmentById() throws IOException {
+    public void deleteRoleAssignmentById() {
         initMocksId();
     }
 
     @State({"An actor with provided process & reference is available in role assignment service"})
-    public void deleteRoleAssignmentByPr() throws IOException {
+    public void deleteRoleAssignmentByPr() {
         initMocksPr();
     }
 
@@ -109,14 +109,14 @@ public class DeleteRoleAssignmentProviderTest {
         setInitMockAdvanceDelete();
     }
 
-    private void initMocksId() throws IOException {
+    private void initMocksId() {
         initCommonMocks();
         when(persistenceService.getAssignmentById(UUID.fromString(ASSIGNMENT_ID)))
             .thenReturn(roleAssignmentList());
 
     }
 
-    private void initMocksPr() throws IOException {
+    private void initMocksPr() {
         initCommonMocks();
         when(persistenceService.getAssignmentsByProcess("p2", "r2", Status.LIVE.toString()))
             .thenReturn(roleAssignmentList());
@@ -147,10 +147,11 @@ public class DeleteRoleAssignmentProviderTest {
             "IA").caseTypeId("Asylum").build());
     }
 
-    private List<RoleAssignment> roleAssignmentList() throws IOException {
-        return TestDataBuilder
-            .buildRoleAssignmentList_Custom(Status.LIVE,"1234",
+    private List<RoleAssignment> roleAssignmentList() {
+        List<RoleAssignment> roleAssignments = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE,"1234",
                                             "attributesCase.json", RoleType.CASE, "tribunal-caseworker");
+        roleAssignments.forEach(r -> r.setGrantType(GrantType.SPECIFIC));
+        return roleAssignments;
     }
 
     private void setInitMockAdvanceDelete() {
