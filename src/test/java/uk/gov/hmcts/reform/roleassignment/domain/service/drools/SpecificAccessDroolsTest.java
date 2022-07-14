@@ -65,7 +65,7 @@ class SpecificAccessDroolsTest extends DroolBase {
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode("CIVIL"));
-        existingAttributes.put("caseTypeId", convertValueJsonNode("Benefit"));
+        existingAttributes.put("caseTypeId", convertValueJsonNode("UNSPECIFIED_CLAIMS"));
 
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
@@ -81,7 +81,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
             Assertions.assertEquals("CIVIL", roleAssignment.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals("Benefit", roleAssignment.getAttributes().get("caseType").asText());
+            Assertions.assertEquals("UNSPECIFIED_CLAIMS", roleAssignment.getAttributes().get("caseType").asText());
         });
     }
 
@@ -94,10 +94,10 @@ class SpecificAccessDroolsTest extends DroolBase {
     void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String roleName, String roleCategory) {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123458"));
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
         roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
         roleAssignmentAttributes.put("caseType", convertValueJsonNode("notAsylum"));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("CIVIL"));
+        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("IA"));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessApprover(
             "specific-access",
@@ -122,11 +122,11 @@ class SpecificAccessDroolsTest extends DroolBase {
         featureFlags.add(featureFlag);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode("CIVIL"));
-        existingAttributes.put("caseType", convertValueJsonNode("Benefit"));
+        existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
+        existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
         existingAttributes.put("managedRoleCategory", convertValueJsonNode(roleCategory));
         existingAttributes.put("managedRole", convertValueJsonNode(roleName));
-        existingAttributes.put("caseId", convertValueJsonNode("1234567890123458"));
+        existingAttributes.put("caseId", convertValueJsonNode("1234567890123456"));
 
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
@@ -141,8 +141,8 @@ class SpecificAccessDroolsTest extends DroolBase {
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals("CIVIL", roleAssignment.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals("Benefit", roleAssignment.getAttributes().get("caseType").asText());
+            Assertions.assertEquals("IA", roleAssignment.getAttributes().get("jurisdiction").asText());
+            Assertions.assertEquals("Asylum", roleAssignment.getAttributes().get("caseType").asText());
             Assertions.assertEquals(
                 List.of("CCD", "ExUI", "SSIC", "RefData"),
                 roleAssignment.getAuthorisations()
@@ -188,7 +188,7 @@ class SpecificAccessDroolsTest extends DroolBase {
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode("CIVIL"));
-        existingAttributes.put("caseType", convertValueJsonNode("Benefit"));
+        existingAttributes.put("caseType", convertValueJsonNode("UNSPECIFIED_CLAIMS"));
         existingAttributes.put("managedRoleCategory", convertValueJsonNode(roleCategory));
         existingAttributes.put("managedRole", convertValueJsonNode(roleName));
         existingAttributes.put("caseId", convertValueJsonNode("1234567890123458"));
@@ -207,7 +207,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus());
             Assertions.assertEquals("CIVIL", roleAssignment.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals("Benefit", roleAssignment.getAttributes().get("caseType").asText());
+            Assertions.assertEquals("UNSPECIFIED_CLAIMS", roleAssignment.getAttributes().get("caseType").asText());
         });
     }
 
@@ -249,7 +249,7 @@ class SpecificAccessDroolsTest extends DroolBase {
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode("CIVIL"));
-        existingAttributes.put("caseType", convertValueJsonNode("Benefit"));
+        existingAttributes.put("caseType", convertValueJsonNode("UNSPECIFIED_CLAIMS"));
         existingAttributes.put("managedRoleCategory", convertValueJsonNode(roleCategory));
         existingAttributes.put("managedRole", convertValueJsonNode(roleName));
         existingAttributes.put("baseLocation", convertValueJsonNode("Newcastle"));
@@ -270,7 +270,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
             Assertions.assertEquals("CIVIL", roleAssignment.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals("Benefit", roleAssignment.getAttributes().get("caseType").asText());
+            Assertions.assertEquals("UNSPECIFIED_CLAIMS", roleAssignment.getAttributes().get("caseType").asText());
             Assertions.assertEquals(List.of("CCD", "ExUI", "SSIC", "RefData"), roleAssignment.getAuthorisations());
         });
     }
@@ -508,7 +508,7 @@ class SpecificAccessDroolsTest extends DroolBase {
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode("CIVIL"));
-        existingAttributes.put("caseTypeId", convertValueJsonNode("Asylum"));
+        existingAttributes.put("caseTypeId", convertValueJsonNode("UNSPECIFIED_CLAIMS"));
 
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
