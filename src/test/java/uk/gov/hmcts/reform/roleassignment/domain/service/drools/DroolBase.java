@@ -104,7 +104,7 @@ public abstract class DroolBase {
 
         Case caseObj6 = Case.builder().id("1234567890123458")
             .jurisdiction("CIVIL")
-            .caseTypeId("Benefit")
+            .caseTypeId("UNSPECIFIED_CLAIMS")
             .securityClassification(Classification.PUBLIC)
             .build();
         doReturn(caseObj6).when(retrieveDataService).getCaseById("1234567890123458");
