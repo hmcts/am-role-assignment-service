@@ -162,7 +162,7 @@ when
              notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
              // Add all the jurisdiction Ids of the on-boarded services
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("IA","SSCS"))
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("IA","SSCS","CIVIL"))
     $c:  Case(
              id == $caseId)
     $e: ExistingRoleAssignment(
