@@ -44,7 +44,7 @@ public class RasDefaultMultiSourceFeatureToggleService extends DefaultMultiSourc
 
     @Override
     protected FeatureToggleService getToggleService(String toggleDomain) {
-        if (toggleDomain.equalsIgnoreCase("IAC") || toggleDomain.equalsIgnoreCase("RAS")) {
+        if (toggleDomain.equalsIgnoreCase("DB") || toggleDomain.equalsIgnoreCase("RAS")) {
             return new RasFeatureToggleService();
         } else {
             return super.getToggleService(toggleDomain);

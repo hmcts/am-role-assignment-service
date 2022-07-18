@@ -5,7 +5,7 @@ Feature: F-012 : Create Challenged Access Role
     Given an appropriate test context as detailed in the test data source
 
   @S-213
-  @FeatureToggle(RAS:iac_challenged_1_0=on)
+  @FeatureToggle(DB:iac_challenged_1_0=on)
   Scenario: must successfully create challenged-access-legal-operations role
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -19,7 +19,7 @@ Feature: F-012 : Create Challenged Access Role
     And a successful call [to delete role assignments just created above] as in [S-213_DeleteDataForRoleAssignmentsForChallengedAccess].
 
   @S-214
-  @FeatureToggle(RAS:iac_challenged_1_0=on)
+  @FeatureToggle(DB:iac_challenged_1_0=on)
   Scenario: must successfully create challenged-access-judiciary role
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -33,7 +33,7 @@ Feature: F-012 : Create Challenged Access Role
     And a successful call [to delete role assignments just created above] as in [S-214_DeleteDataForRoleAssignmentsForChallengedAccess].
 
   @S-215
-  @FeatureToggle(RAS:iac_challenged_1_0=on)
+  @FeatureToggle(DB:iac_challenged_1_0=on)
   Scenario: must successfully create challenged-access-admin role
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
