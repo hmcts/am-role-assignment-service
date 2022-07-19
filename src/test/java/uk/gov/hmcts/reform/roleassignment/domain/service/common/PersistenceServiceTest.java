@@ -883,11 +883,11 @@ class PersistenceServiceTest {
 
     @Test
     void getFlagStatus() {
-        String flagName = "iac_1_0";
+        String flagName = "iac_1_1";
         String env = "pr";
         FlagConfig flagConfig = FlagConfig.builder()
             .env("pr")
-            .flagName("iac_1_0")
+            .flagName("iac_1_1")
             .serviceName("iac")
             .status(Boolean.TRUE)
             .build();
@@ -902,7 +902,7 @@ class PersistenceServiceTest {
 
         FlagConfig flagConfig = FlagConfig.builder()
             .env("pr")
-            .flagName("iac_1_0")
+            .flagName("iac_1_1")
             .serviceName("iac")
             .status(Boolean.TRUE)
             .build();
@@ -914,11 +914,11 @@ class PersistenceServiceTest {
 
     @Test
     void getFlagStatus_False() {
-        String flagName = "iac_1_0";
+        String flagName = "iac_1_1";
         String env = "pr";
         FlagConfig flagConfig = FlagConfig.builder()
             .env("pr")
-            .flagName("iac_1_0")
+            .flagName("iac_1_1")
             .serviceName("iac")
             .status(Boolean.FALSE)
             .build();
