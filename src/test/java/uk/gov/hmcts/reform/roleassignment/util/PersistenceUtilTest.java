@@ -244,7 +244,7 @@ class PersistenceUtilTest {
     void convertFlagRequestToFlagConfig() {
         FlagRequest flagRequest = FlagRequest.builder()
             .env("pr")
-            .flagName("iac_1_0")
+            .flagName("iac_1_1")
             .serviceName("iac")
             .status(Boolean.TRUE)
             .build();
@@ -252,7 +252,7 @@ class PersistenceUtilTest {
         FlagConfig flagConfig = persistenceUtil.convertFlagRequestToFlagConfig(flagRequest);
         assertNotNull(flagConfig);
         assertEquals("pr", flagConfig.getEnv());
-        assertEquals("iac_1_0", flagConfig.getFlagName());
+        assertEquals("iac_1_1", flagConfig.getFlagName());
         assertEquals("iac", flagConfig.getServiceName());
         assertEquals(true, flagConfig.getStatus());
 
