@@ -41,7 +41,7 @@ class FeatureFlagControllerTest {
     @Test
     void getFlagStatus() {
 
-        String flagName = "iac_1_0";
+        String flagName = "iac_1_1";
         String env = "pr";
 
         Mockito.when(persistenceService.getStatusByParam(flagName, env)).thenReturn(Boolean.TRUE);
@@ -56,7 +56,7 @@ class FeatureFlagControllerTest {
 
         FlagRequest flagRequest = FlagRequest.builder()
             .env("pr")
-            .flagName("iac_1_0")
+            .flagName("iac_1_1")
             .serviceName("iac")
             .status(Boolean.TRUE)
             .build();
