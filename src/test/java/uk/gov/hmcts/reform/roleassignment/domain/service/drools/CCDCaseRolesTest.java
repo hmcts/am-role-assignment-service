@@ -250,7 +250,7 @@ class CCDCaseRolesTest extends DroolBase {
 
         buildExecuteKieSession();
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
     }
 
     @Test
