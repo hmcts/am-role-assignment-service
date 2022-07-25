@@ -22,6 +22,53 @@ import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJ
 
 @RunWith(MockitoJUnitRunner.class)
 class CCDCaseRolesTest extends DroolBase {
+    @Test
+    void shouldRejectCaseRequestedRolesForUnauthoriseRequest() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
+                                   "[PETSOLICITOR]", SPECIFIC, "caseId",
+                                 "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        FeatureFlag featureFlag  =  FeatureFlag.builder()
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        buildExecuteKieSession();
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+    }
+
+    @Test
+    void shouldApproveCreaterCaseRole() {
+        verifyCreateCaseRequestedRole_CCD_1_0("[CREATOR]", "ccd_data", RoleCategory.JUDICIAL);
+        verifyCreateCaseRequestedRole_CCD_1_0("[CREATOR]", "aac_manage_case_assignment",
+                                              RoleCategory.LEGAL_OPERATIONS);
+        verifyCreateCaseRequestedRole_CCD_1_0("[CREATOR]", "aac_manage_case_assignment",
+                                              RoleCategory.CITIZEN);
+    }
+
+    @Test
+    void shouldApprovePetSolicitiorCaseRole() {
+        verifyCreateCaseRequestedRole_CCD_1_0("[PETSOLICITOR]", "ccd_data", RoleCategory.PROFESSIONAL);
+    }
+
+    private void verifyCreateCaseRequestedRole_CCD_1_0(String roleName, String clientId, RoleCategory category) {
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(category, roleName,
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        requestedRole1.setClassification(Classification.RESTRICTED);
+        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+                                                     "caseType", convertValueJsonNode("Asylum"),
+                                                     "caseId", convertValueJsonNode("1234567890123456")));
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        assignmentRequest.getRequest().setClientId(clientId);
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().build();
+        featureFlags.add(featureFlag);
+
+        buildExecuteKieSession();
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+    }
 
     @Test
     void shouldApproveDummyCaseRoleCreation_CCD_1_0_enableByPassDroolRule() {
@@ -62,6 +109,61 @@ class CCDCaseRolesTest extends DroolBase {
         buildExecuteKieSession();
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+    }
+
+    @Test
+    void shouldRejectDummyCaseRoleCreation_CCD_1_0_disableByPassDroolRule() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.SYSTEM, "[RESPSOLICITOR]",
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        requestedRole1.setClassification(Classification.RESTRICTED);
+        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+                                                     "caseType", convertValueJsonNode("Asylum"),
+                                                     "caseId", convertValueJsonNode("1234567890123456")));
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        assignmentRequest.getRequest().setClientId("ccd_data");
+        assignmentRequest.getRequest().setByPassOrgDroolRule(false);
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().build();
+        featureFlags.add(featureFlag);
+
+        buildExecuteKieSession();
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+    }
+
+    @Test
+    void shouldApproveDeletePetsolicitorCaserole() {
+        verifyDeleteCaseRequestRole_CCD_1_0("[PETSOLICITOR]", "ccd_data", RoleCategory.PROFESSIONAL);
+    }
+
+    @Test
+    void shouldApproveDeleteCreaterCaseRequestedRoles() {
+        verifyDeleteCaseRequestRole_CCD_1_0("[CREATOR]", "ccd_data", RoleCategory.JUDICIAL);
+        verifyDeleteCaseRequestRole_CCD_1_0("[CREATOR]", "aac_manage_case_assignment",
+                                            RoleCategory.LEGAL_OPERATIONS);
+        verifyDeleteCaseRequestRole_CCD_1_0("[CREATOR]", "aac_manage_case_assignment",
+                                            RoleCategory.CITIZEN);
+        verifyDeleteCaseRequestRole_CCD_1_0("[DUMMYCREATOR]", "ccd_data", RoleCategory.PROFESSIONAL);
+    }
+
+    private void verifyDeleteCaseRequestRole_CCD_1_0(String roleName, String clientId, RoleCategory category) {
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(category, roleName,
+                                                             SPECIFIC, "caseId",
+                                                             "1234567890123456", DELETE_REQUESTED);
+        requestedRole1.setClassification(Classification.RESTRICTED);
+        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+                                                     "caseType", convertValueJsonNode("Asylum"),
+                                                     "caseId", convertValueJsonNode("1234567890123456")));
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        assignmentRequest.getRequest().setClientId(clientId);
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().build();
+        featureFlags.add(featureFlag);
+
+        buildExecuteKieSession();
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
     }
 
     @Test
@@ -145,6 +247,26 @@ class CCDCaseRolesTest extends DroolBase {
 
         buildExecuteKieSession();
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+    }
+
+    @Test
+    void shouldApproveCaseRoleCreation_enableByPassDroolRule_enableFlag() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
+                                                               "[PETSOLICITOR]", SPECIFIC, "caseId",
+                                                             "1234567890123456", CREATE_REQUESTED);
+        requestedRole1.setClassification(Classification.RESTRICTED);
+        requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+                                                     "caseType", convertValueJsonNode("Asylum"),
+                                                     "caseId", convertValueJsonNode("1234567890123456")));
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        assignmentRequest.getRequest().setClientId("ccd_data");
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().build();
+        featureFlags.add(featureFlag);
+
+        buildExecuteKieSession();
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
     }
 }
