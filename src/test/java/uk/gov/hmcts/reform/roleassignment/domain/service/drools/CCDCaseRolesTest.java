@@ -28,7 +28,7 @@ class CCDCaseRolesTest extends DroolBase {
                                    "[PETSOLICITOR]", SPECIFIC, "caseId",
                                  "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
+        FeatureFlag featureFlag  =  FeatureFlag.builder()
             .status(true).build();
         featureFlags.add(featureFlag);
 
@@ -62,8 +62,7 @@ class CCDCaseRolesTest extends DroolBase {
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         assignmentRequest.getRequest().setClientId(clientId);
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
-            .status(true).build();
+        FeatureFlag featureFlag  =  FeatureFlag.builder().build();
         featureFlags.add(featureFlag);
 
         buildExecuteKieSession();
@@ -125,8 +124,7 @@ class CCDCaseRolesTest extends DroolBase {
         assignmentRequest.getRequest().setClientId("ccd_data");
         assignmentRequest.getRequest().setByPassOrgDroolRule(false);
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
-            .status(true).build();
+        FeatureFlag featureFlag  =  FeatureFlag.builder().build();
         featureFlags.add(featureFlag);
 
         buildExecuteKieSession();
@@ -160,8 +158,7 @@ class CCDCaseRolesTest extends DroolBase {
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         assignmentRequest.getRequest().setClientId(clientId);
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
-            .status(true).build();
+        FeatureFlag featureFlag  =  FeatureFlag.builder().build();
         featureFlags.add(featureFlag);
 
         buildExecuteKieSession();
@@ -265,8 +262,7 @@ class CCDCaseRolesTest extends DroolBase {
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         assignmentRequest.getRequest().setClientId("ccd_data");
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.CCD_1_0.getValue())
-            .status(true).build();
+        FeatureFlag featureFlag  =  FeatureFlag.builder().build();
         featureFlags.add(featureFlag);
 
         buildExecuteKieSession();
