@@ -11,9 +11,9 @@ java:
         - role-assignment-service-LD-SDK-KEY
   environment:
     ROLE_ASSIGNMENT_DB_HOST: "{{ .Release.Name }}-postgresql"
-    ROLE_ASSIGNMENT_DB_NAME: "{{ .Values.postgresql.postgresqlDatabase}}"
-    ROLE_ASSIGNMENT_DB_USERNAME: "{{ .Values.postgresql.postgresqlUsername}}"
-    ROLE_ASSIGNMENT_DB_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
+    ROLE_ASSIGNMENT_DB_NAME: "{{ .Values.postgresql.auth.database}}"
+    ROLE_ASSIGNMENT_DB_USERNAME: "{{ .Values.postgresql.auth.username}}"
+    ROLE_ASSIGNMENT_DB_PASSWORD: "{{ .Values.postgresql.auth.password}}"
     ROLE_ASSIGNMENT_DB_PORT: "{{ .Values.postgresql.postgresqlPort}}"
     ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
     CCD_DATA_STORE_URL: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
