@@ -36,8 +36,6 @@ public abstract class BaseTest {
     @MockBean
     IdamServiceHealthIndicator idamServiceHealthIndicator;
 
-
-
     @MockBean
     CcdDataStoreHealthIndicator ccdDataStoreHealthIndicator;
 
@@ -61,7 +59,6 @@ public abstract class BaseTest {
         public EmbeddedPostgres embeddedPostgres() throws IOException {
             return EmbeddedPostgres
                 .builder()
-                .setPort(0)
                 .start();
         }
 
@@ -71,9 +68,9 @@ public abstract class BaseTest {
             final Properties props = new Properties();
             // Instruct JDBC to accept JSON string for JSONB
             props.setProperty("stringtype", "unspecified");
-            connection = DriverManager.getConnection(pg.getJdbcUrl("postgres", "postgres"), props);
-            DataSource datasource = new SingleConnectionDataSource(connection, true);
-            return datasource;
+            props.setProperty("user", "postgres");
+            connection = DriverManager.getConnection(pg.getJdbcUrl("postgres"), props);
+            return new SingleConnectionDataSource(connection, true);
         }
 
 

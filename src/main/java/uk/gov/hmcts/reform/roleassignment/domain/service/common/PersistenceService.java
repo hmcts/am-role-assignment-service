@@ -1,9 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -28,10 +26,13 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
+import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -56,8 +57,6 @@ import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecif
 
 @Service
 public class PersistenceService {
-
-    private static final Logger logger = LoggerFactory.getLogger(PersistenceService.class);
 
     //1. StoreRequest which will insert records in request and history table with log,
     //2. Insert new Assignment record with updated Status in historyTable
@@ -128,19 +127,11 @@ public class PersistenceService {
     }
 
     public List<RoleAssignment> getAssignmentsByProcess(String process, String reference, String status) {
-        long startTime = System.currentTimeMillis();
 
         Set<HistoryEntity> historyEntities = historyRepository.findByReference(process, reference, status);
         //convert into model class
-        List<RoleAssignment> roleAssignmentList = historyEntities.stream().map(
-            persistenceUtil::convertHistoryEntityToRoleAssignment).collect(Collectors.toList());
-        logger.debug(
-            " >> getAssignmentsByProcess execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
-        return roleAssignmentList;
-
+        return historyEntities.stream()
+            .map(persistenceUtil::convertHistoryEntityToRoleAssignment).collect(Collectors.toList());
     }
 
     @Transactional
@@ -167,7 +158,7 @@ public class PersistenceService {
             Set<RoleAssignmentEntity> roleAssignmentEntities = roleAssignmentRepository.findByActorId(actorId);
             //convert into model class
             return roleAssignmentEntities.stream().map(persistenceUtil::convertEntityToRoleAssignment)
-                .collect(Collectors.toList());
+                .toList();
         } catch (Exception sqlException) {
             throw new UnprocessableEntityException("SQL Error get by actor id: "
                                                        + sqlException.getMessage());
@@ -181,7 +172,7 @@ public class PersistenceService {
                                                                   String direction,
                                                                   boolean existingFlag) {
 
-
+        List<String> roleTypes = addCaseTypeIfCaseIdExists(searchRequest);
 
         Page<RoleAssignmentEntity> pageRoleAssignmentEntities = roleAssignmentRepository.findAll(
             Objects.requireNonNull(Objects.requireNonNull(
@@ -196,7 +187,7 @@ public class PersistenceService {
                                         .and(searchByGrantType(searchRequest.getGrantType())))
                                     .and(searchByValidDate(searchRequest.getValidAt())))
                                 .and(searchByAttributes(searchRequest.getAttributes())))
-                            .and(searchByRoleType(searchRequest.getRoleType())))
+                            .and(searchByRoleType(roleTypes)))
                         .and(searchByRoleName(searchRequest.getRoleName())))
                     .and(searchByClassification(searchRequest.getClassification())))
                                        .and(searchByRoleCategories(searchRequest.getRoleCategory())))
@@ -224,15 +215,17 @@ public class PersistenceService {
                                                                           String direction,
                                                                           boolean existingFlag) {
 
-
         Specification<RoleAssignmentEntity> finalQuery = null;
         if (CollectionUtils.isNotEmpty(multipleQueryRequest.getQueryRequests())) {
+
+            List<String> roleTypes = addCaseTypeIfCaseIdExists(multipleQueryRequest.getQueryRequests().get(0));
+
             Specification<RoleAssignmentEntity> initialQuery = Specification.where(
                 searchByActorIds(multipleQueryRequest.getQueryRequests().get(0).getActorId()))
                 .and(searchByGrantType(multipleQueryRequest.getQueryRequests().get(0).getGrantType()))
                 .and(searchByValidDate(multipleQueryRequest.getQueryRequests().get(0).getValidAt()))
                 .and(searchByAttributes(multipleQueryRequest.getQueryRequests().get(0).getAttributes()))
-                .and(searchByRoleType(multipleQueryRequest.getQueryRequests().get(0).getRoleType()))
+                .and(searchByRoleType(roleTypes))
                 .and(searchByRoleName(multipleQueryRequest.getQueryRequests().get(0).getRoleName()))
                 .and(searchByClassification(multipleQueryRequest.getQueryRequests().get(0).getClassification()))
                 .and(searchByRoleCategories(multipleQueryRequest.getQueryRequests().get(0).getRoleCategory()))
@@ -243,6 +236,11 @@ public class PersistenceService {
 
             if (multipleQueryRequest.getQueryRequests().size() > 1) {
                 for (var i = 1; i < multipleQueryRequest.getQueryRequests().size(); i++) {
+
+                    List<String> roleTypesMulti = addCaseTypeIfCaseIdExists(multipleQueryRequest
+                                                                                .getQueryRequests()
+                                                                                .get(i));
+
                     finalQuery = initialQuery.or(
                           searchByActorIds(multipleQueryRequest.getQueryRequests().get(i).getActorId())
                            .and(searchByRoleName(multipleQueryRequest.getQueryRequests().get(i).getRoleName()))
@@ -253,13 +251,13 @@ public class PersistenceService {
                            .and(searchByGrantType(multipleQueryRequest.getQueryRequests().get(i).getGrantType()))
                            .and(searchByValidDate(multipleQueryRequest.getQueryRequests().get(i).getValidAt()))
                            .and(searchByAttributes(multipleQueryRequest.getQueryRequests().get(i).getAttributes()))
-                           .and(searchByRoleType(multipleQueryRequest.getQueryRequests().get(i).getRoleType()))
+                           .and(searchByRoleType(roleTypesMulti))
                            .and(searchByClassification(multipleQueryRequest.getQueryRequests().get(i)
                                                            .getClassification()))
                            .and(searchByRoleCategories(multipleQueryRequest.getQueryRequests()
                                                            .get(i).getRoleCategory()))
                            .and(searchByReadOnly(multipleQueryRequest.getQueryRequests().get(i).getReadOnly())));
-
+                    initialQuery = finalQuery;
                 }
             } else {
                 finalQuery = initialQuery;
@@ -287,27 +285,18 @@ public class PersistenceService {
     }
 
     private List<Assignment> prepareQueryRequestResponse(boolean existingFlag) {
-        long startTime = System.currentTimeMillis();
         List<Assignment> roleAssignmentList;
         if (!existingFlag) {
             roleAssignmentList = PageHolder.holder.get().stream()
                 .map(persistenceUtil::convertEntityToRoleAssignment)
-                .collect(Collectors.toList());
-
-
+                .map(Assignment.class::cast)
+                .toList();
         } else {
             roleAssignmentList = PageHolder.holder.get().stream()
                 .map(persistenceUtil::convertEntityToExistingRoleAssignment)
-                .collect(Collectors.toList());
-
-
+                .map(Assignment.class::cast)
+                .toList();
         }
-
-        logger.debug(
-            " >> retrieveRoleAssignmentsByQueryRequest execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
 
         return roleAssignmentList;
     }
@@ -317,7 +306,7 @@ public class PersistenceService {
         if (roleAssignmentEntityOptional.isPresent()) {
             return roleAssignmentEntityOptional.stream()
                 .map(persistenceUtil::convertEntityToRoleAssignment)
-                .collect(Collectors.toList());
+                .toList();
         }
         return Collections.emptyList();
     }
@@ -337,7 +326,18 @@ public class PersistenceService {
 
     public FlagConfig persistFlagConfig(FlagConfig flagConfig) {
         return flagConfigRepository.save(flagConfig);
+    }
 
+    public List<String> addCaseTypeIfCaseIdExists(QueryRequest queryRequest) {
+        List<String> roleTypes = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(queryRequest.getRoleType())) {
+            roleTypes.addAll(queryRequest.getRoleType());
+        }
+        if (ValidationUtil.doesKeyAttributeExist(queryRequest.getAttributes(), "caseId")
+            && !roleTypes.contains("CASE")) {
+            roleTypes.add(RoleType.CASE.name());
+        }
+        return roleTypes;
     }
 
 }

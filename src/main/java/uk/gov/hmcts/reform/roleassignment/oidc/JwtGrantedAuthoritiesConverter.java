@@ -12,7 +12,6 @@ import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
 
@@ -40,25 +39,19 @@ public class JwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        long startTime = System.currentTimeMillis();
         if (jwt.containsClaim(TOKEN_NAME).equals(true) && jwt.getClaim(TOKEN_NAME).equals(ACCESS_TOKEN)) {
-            log.debug(String.format("convert execution started at %s", startTime));
             UserInfo userInfo = idamRepository.getUserInfo(jwt.getTokenValue());
             authorities = extractAuthorityFromClaims(userInfo.getRoles());
 
         }
-        log.debug(String.format(
-            " >> convert execution finished at %s . Time taken = %s milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        ));
         return authorities;
     }
 
     private List<GrantedAuthority> extractAuthorityFromClaims(List<String> roles) {
         return roles.stream()
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
+            .map(SimpleGrantedAuthority::new)
+            .map(GrantedAuthority.class::cast)
+            .toList();
     }
 
 }

@@ -36,7 +36,6 @@ import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -105,10 +104,10 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         template = new JdbcTemplate(ds);
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         MockitoAnnotations.openMocks(this);
-        String uid = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
+        var uid = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
         UserRoles roles = UserRoles.builder()
             .uid(uid)
-            .roles(Arrays.asList("caseworker", "am-import"))
+            .roles(List.of("caseworker", "am-import"))
             .build();
 
         doReturn(roles).when(idamRoleService).getUserRoles(anyString());
@@ -139,7 +138,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             false, false);
         assignmentRequest.getRequest().setAssignerId("6b36bfc6-bb21-11ea-b3de-0242ac130006");
         logger.info(" assignmentRequest :  {}", mapper.writeValueAsString(assignmentRequest));
-        final String url = "/am/role-assignments";
+        final var url = "/am/role-assignments";
 
 
         mockMvc.perform(post(url)
@@ -206,7 +205,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         logger.info(" Method shouldDeleteRoleAssignmentsByProcessAndReference starts :");
         logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count before create assignment request : {}", getAssignmentRecordsCount());
-        final String url = "/am/role-assignments";
+        final var url = "/am/role-assignments";
 
         mockMvc.perform(delete(url)
                             .contentType(JSON_CONTENT_TYPE)
@@ -230,7 +229,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         logger.info(" Method shouldDeleteRoleAssignmentsByAssignmentId starts : ");
         logger.info(" History record count before create assignment request : {}", getHistoryRecordsCount());
         logger.info(" LIVE table record count before create assignment request : {}", getAssignmentRecordsCount());
-        final String url = "/am/role-assignments/" + ASSIGNMENT_ID;
+        final var url = "/am/role-assignments/" + ASSIGNMENT_ID;
 
         mockMvc.perform(delete(url)
                             .contentType(JSON_CONTENT_TYPE)
@@ -292,8 +291,13 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
             .caseTypeId("Asylum")
             .jurisdiction("IA")
             .build();
+        Case retrievedCase3 = Case.builder().id("1234567890123456")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .build();
         doReturn(retrievedCase1).when(retrieveDataService).getCaseById("1234567890123457");
         doReturn(retrievedCase2).when(retrieveDataService).getCaseById("1234567890123458");
+        doReturn(retrievedCase3).when(retrieveDataService).getCaseById("1234567890123456");
         assertEquals(Integer.valueOf(4), getAssignmentRecordsCount());
         assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
 
@@ -319,6 +323,56 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         assertEquals(Integer.valueOf(3), getStatusCount(LIVE));
         assertEquals(Integer.valueOf(3), getStatusCount(DELETE_APPROVED));
         assertEquals(Integer.valueOf(3), getStatusCount(DELETED));
+
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
+        {"classpath:sql/role_assignment_clean_up.sql",
+            "classpath:sql/insert_multiple_assignments_to_delete.sql"})
+    public void shouldNotDeleteAllRoleAssignmentWhenQueryInvalid() throws Exception {
+        Case retrievedCase1 = Case.builder().id("1234567890123457")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .build();
+        Case retrievedCase2 = Case.builder().id("1234567890123458")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .build();
+        Case retrievedCase3 = Case.builder().id("1234567890123456")
+            .caseTypeId("Asylum")
+            .jurisdiction("IA")
+            .build();
+        doReturn(retrievedCase1).when(retrieveDataService).getCaseById("1234567890123457");
+        doReturn(retrievedCase2).when(retrieveDataService).getCaseById("1234567890123458");
+        doReturn(retrievedCase3).when(retrieveDataService).getCaseById("1234567890123456");
+        assertEquals(Integer.valueOf(4), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
+
+        assertEquals(Integer.valueOf(3), getStatusCount(CREATED));
+        assertEquals(Integer.valueOf(3), getStatusCount(APPROVED));
+        assertEquals(Integer.valueOf(3), getStatusCount(LIVE));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETE_APPROVED));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETED));
+
+        mockMvc.perform(post(ADV_DELETE_URL)
+                            .contentType(JSON_CONTENT_TYPE)
+                            .content(
+                                "{\"queryRequests\" : [{\"caseId\" : [ \"1234567890123456\" ]}]}"
+                            )
+                            .headers(getHttpHeaders())
+        )
+            .andExpect(status().is4xxClientError())
+            .andReturn();
+
+        assertEquals(Integer.valueOf(4), getAssignmentRecordsCount());
+        assertEquals(Integer.valueOf(9), getHistoryRecordsCount());
+
+        assertEquals(Integer.valueOf(3), getStatusCount(CREATED));
+        assertEquals(Integer.valueOf(3), getStatusCount(APPROVED));
+        assertEquals(Integer.valueOf(3), getStatusCount(LIVE));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETE_APPROVED));
+        assertEquals(Integer.valueOf(0), getStatusCount(DELETED));
 
     }
 
@@ -358,19 +412,31 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     private String createRoleAssignmentRequestAdvanceDelete() {
 
-        return "{\"queryRequests\":[{\"actorId\":[\"23e4567-e89b-42d3-a456-556642445612\"]},"
-            + "{\"roleName\": [\"lead-judge\"]},"
-            + "{\"roleType\": [\"CASE\"]},"
-            + "{\"attributes\": {"
-            + "\"caseId\": [\"1234567890123456\"]}}"
+        return "{\"queryRequests\":[{\"actorId\":[\"123e4567-e89b-42d3-a456-556642445612\"],"
+            + "\"roleName\": [\"lead-judge\"],"
+            + "\"roleType\": [\"CASE\"]}"
             + "]}";
     }
 
     private String createRoleAssignmentRequestAdvanceDeleteMultiple() {
-        return "{\"queryRequests\":["
-            + "{\"roleName\": [\"lead-judge\"]},"
-            + "{\"roleType\": [\"CASE\"]}"
-            + "]}";
+        return "{\"queryRequests\" : [ "
+            + "{"
+            + "\"attributes\" : {"
+            + "\"caseId\" : [ \"1234567890123456\" ]"
+            + "}"
+            + "},"
+            + "{"
+            + "\"attributes\" : {"
+            + "\"caseId\" : [ \"1234567890123457\" ]"
+            + "}"
+            + "},"
+            + "{"
+            + "\"attributes\" : {"
+            + "\"caseId\" : [ \"1234567890123458\" ]"
+            + "}"
+            + "}"
+            + "]"
+            + "}";
     }
 
     private void assertAssignmentRecords() {
@@ -397,7 +463,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.add(AUTHORIZATION, "Bearer user1");
-        String s2SToken = MockUtils.generateDummyS2SToken(AUTHORISED_SERVICE);
+        var s2SToken = MockUtils.generateDummyS2SToken(AUTHORISED_SERVICE);
         headers.add("ServiceAuthorization", "Bearer " + s2SToken);
         headers.add(Constants.CORRELATION_ID_HEADER_NAME, "38a90097-434e-47ee-8ea1-9ea2a267f51d");
         return headers;

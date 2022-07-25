@@ -47,7 +47,7 @@
             "contractType" : "Salaried",
             "primaryLocation" : "abc",
             "jurisdiction" : "IA",
-            "substantive": "N"
+            "substantive": "Y"
           }
         },
         {
@@ -60,7 +60,7 @@
             "contractType" : "Salaried",
             "primaryLocation" : "abc",
             "jurisdiction" : "IA",
-            "substantive": "N"
+            "substantive": "Y"
           }
         }
       ]

@@ -2,27 +2,31 @@ package uk.gov.hmcts.reform.roleassignment.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.CASE;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
-
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.CASE;
-import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 @Named
 @Singleton
@@ -179,5 +183,41 @@ public class ValidationUtil {
 
     public static boolean csvContains(String value, String csv) {
         return Arrays.stream(csv.split(",")).map(String::trim).anyMatch(value::equals);
+    }
+
+    public static boolean doesKeyAttributeExist(Map<String, List<String>> attributes, String attribute) {
+        if (MapUtils.isNotEmpty(attributes)) {
+            return attributes.containsKey(attribute);
+        } else {
+            return false;
+        }
+    }
+
+    public static void validateQueryRequests(List<QueryRequest> queryRequests) {
+        if (queryRequests.isEmpty()) {
+            throw new BadRequestException(V1.Error.BAD_QUERY_REQUEST_MISSING_CASEID_ACTORID);
+        } else {
+            queryRequests.forEach(ValidationUtil::validateQueryRequests);
+        }
+    }
+
+    public static void validateQueryRequests(QueryRequest query) {
+        if (isQueryRequestEmpty(query)) {
+            throw new BadRequestException(V1.Error.BAD_QUERY_REQUEST_MISSING_CASEID_ACTORID);
+        }
+    }
+
+    public static boolean isQueryRequestEmpty(QueryRequest query) {
+        return CollectionUtils.isEmpty(query.getAuthorisations())
+            && CollectionUtils.isEmpty(query.getActorId())
+            && CollectionUtils.isEmpty(query.getClassification())
+            && CollectionUtils.isEmpty(query.getGrantType())
+            && CollectionUtils.isEmpty(query.getHasAttributes())
+            && CollectionUtils.isEmpty(query.getRoleCategory())
+            && CollectionUtils.isEmpty(query.getRoleName())
+            && CollectionUtils.isEmpty(query.getRoleType())
+            && query.getReadOnly() == null
+            && query.getValidAt() == null
+            && MapUtils.isEmpty(query.getAttributes());
     }
 }

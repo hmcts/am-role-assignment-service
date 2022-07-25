@@ -25,6 +25,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -42,9 +44,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildAttributesFromFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -95,12 +95,12 @@ public class DeleteRoleAssignmentProviderTest {
     }
 
     @State({"An actor with provided id is available in role assignment service"})
-    public void deleteRoleAssignmentById() throws IOException {
+    public void deleteRoleAssignmentById() {
         initMocksId();
     }
 
     @State({"An actor with provided process & reference is available in role assignment service"})
-    public void deleteRoleAssignmentByPr() throws IOException {
+    public void deleteRoleAssignmentByPr() {
         initMocksPr();
     }
 
@@ -109,14 +109,14 @@ public class DeleteRoleAssignmentProviderTest {
         setInitMockAdvanceDelete();
     }
 
-    private void initMocksId() throws IOException {
+    private void initMocksId() {
         initCommonMocks();
         when(persistenceService.getAssignmentById(UUID.fromString(ASSIGNMENT_ID)))
             .thenReturn(roleAssignmentList());
 
     }
 
-    private void initMocksPr() throws IOException {
+    private void initMocksPr() {
         initCommonMocks();
         when(persistenceService.getAssignmentsByProcess("p2", "r2", Status.LIVE.toString()))
             .thenReturn(roleAssignmentList());
@@ -128,15 +128,16 @@ public class DeleteRoleAssignmentProviderTest {
             .thenReturn(TestDataBuilder.buildRequestEntity(
                 TestDataBuilder.buildRequest(Status.LIVE, false)));
         when(securityUtils.getServiceName()).thenReturn("am_org_role_mapping_service");
-        when(persistenceService.getStatusByParam(FeatureFlagEnum.IAC_1_0.getValue(), "pr")).thenReturn(true);
+        when(persistenceService.getStatusByParam(FeatureFlagEnum.IAC_1_1.getValue(), "pr")).thenReturn(true);
         when(securityUtils.getUserId()).thenReturn(AUTH_USER_ID);
 
         JsonNode attributes = buildAttributesFromFile("attributesCase.json");
         Map<String, JsonNode> attributeMap = JacksonUtils.convertValue(attributes);
-        List<Assignment> assignmentList  = new ArrayList<>();
-        assignmentList.add(ExistingRoleAssignment.builder().actorId(AUTH_USER_ID)
-                               .roleType(RoleType.ORGANISATION).roleName("tribunal-caseworker").attributes(attributeMap)
-                               .status(Status.APPROVED).build());
+        List<Assignment> assignmentList  = List.of(
+            ExistingRoleAssignment.builder().actorId(AUTH_USER_ID).roleCategory(RoleCategory.LEGAL_OPERATIONS)
+                .roleType(RoleType.ORGANISATION).roleName("case-allocator").attributes(attributeMap)
+                .status(Status.APPROVED).build()
+        );
         when(persistenceService.persistRequest(any())).thenReturn(createEntity());
         doReturn(assignmentList).when(persistenceService)
             .retrieveRoleAssignmentsByQueryRequest(any(), anyInt(), anyInt(), any(), any(), anyBoolean());
@@ -146,10 +147,11 @@ public class DeleteRoleAssignmentProviderTest {
             "IA").caseTypeId("Asylum").build());
     }
 
-    private List<RoleAssignment> roleAssignmentList() throws IOException {
-        return TestDataBuilder
-            .buildRoleAssignmentList_Custom(Status.LIVE,"1234",
+    private List<RoleAssignment> roleAssignmentList() {
+        List<RoleAssignment> roleAssignments = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE,"1234",
                                             "attributesCase.json", RoleType.CASE, "tribunal-caseworker");
+        roleAssignments.forEach(r -> r.setGrantType(GrantType.SPECIFIC));
+        return roleAssignments;
     }
 
     private void setInitMockAdvanceDelete() {

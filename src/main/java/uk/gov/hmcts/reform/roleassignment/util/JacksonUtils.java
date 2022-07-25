@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.SerializationUtils;
+import org.apache.commons.lang.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
@@ -113,7 +113,7 @@ public class JacksonUtils {
             // similarly remove the substantive flag from the subset entity
             subset.getAttributes().remove("substantive");
             if (roleAssignment.getRoleType().equals(RoleType.CASE)
-                && ("ccd_data,aac_manage_case_assignment".contains(assignmentRequest
+                && ("ccd_data,aac_manage_case_assignment,ccd_case_disposer".contains(assignmentRequest
                                                                        .getRequest().getClientId()) == false)) {
                 subset.getAttributes().remove("caseType");
                 subset.getAttributes().remove("jurisdiction");

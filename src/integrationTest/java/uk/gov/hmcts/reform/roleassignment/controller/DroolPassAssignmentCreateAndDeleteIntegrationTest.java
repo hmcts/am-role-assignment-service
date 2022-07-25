@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,7 +36,8 @@ import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
-import java.util.Arrays;
+
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -57,17 +57,9 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     private static final Logger logger =
         LoggerFactory.getLogger(DroolPassAssignmentCreateAndDeleteIntegrationTest.class);
 
-    private static final String ASSIGNMENT_ID = "f7edb29d-e421-450c-be66-a10169b04f0a";
-    private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445612";
-    public static final String CREATED = "CREATED";
-    public static final String APPROVED = "APPROVED";
-    public static final String LIVE = "LIVE";
-    public static final String DELETED = "DELETED";
-    public static final String DELETE_APPROVED = "DELETE_APPROVED";
     private static final String AUTHORISED_SERVICE = "ccd_gw";
 
     private MockMvc mockMvc;
-    private JdbcTemplate template;
 
     @Inject
     private WebApplicationContext wac;
@@ -95,13 +87,13 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
 
     @Before
     public void setUp() throws Exception {
-        template = new JdbcTemplate(ds);
+
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         MockitoAnnotations.openMocks(this);
-        String uid = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
+        var uid = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
         UserRoles roles = UserRoles.builder()
             .uid(uid)
-            .roles(Arrays.asList("caseworker", "am-import"))
+            .roles(List.of("caseworker", "am-import"))
             .build();
 
         doReturn(roles).when(idamRoleService).getUserRoles(anyString());
@@ -124,12 +116,11 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts =
         {"classpath:sql/role_assignment_clean_up.sql"
-
         })
     public void shouldCreateRoleAssignmentsWithCorrectClientId() throws Exception {
         AssignmentRequest assignmentRequest = buildDroolRuleBypassRequest();
         logger.info(" assignmentRequest :  {}", mapper.writeValueAsString(assignmentRequest));
-        final String url = "/am/role-assignments";
+        final var url = "/am/role-assignments";
 
 
         mockMvc.perform(post(url)
@@ -144,7 +135,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
         {"classpath:sql/role_assignment_clean_up.sql",
             "classpath:sql/insert_assignment_records_to_delete.sql"})
     public void shouldDeleteRoleAssignmentsByProcessAndReference() throws Exception {
-        final String url = "/am/role-assignments";
+        final var url = "/am/role-assignments";
 
         mockMvc.perform(delete(url)
                             .contentType(JSON_CONTENT_TYPE)
@@ -156,7 +147,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
             .andReturn();
     }
 
-    private AssignmentRequest buildDroolRuleBypassRequest() throws Exception {
+    private AssignmentRequest buildDroolRuleBypassRequest() {
         final AssignmentRequest assignmentRequest =
             TestDataBuilder.createRoleAssignmentRequest(
             true,
@@ -186,7 +177,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     private HttpHeaders getHttpHeaders(final String clientId) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(AUTHORIZATION, "Bearer user1");
-        String s2SToken = MockUtils.generateDummyS2SToken(clientId);
+        var s2SToken = MockUtils.generateDummyS2SToken(clientId);
         headers.add("ServiceAuthorization", "Bearer " + s2SToken);
         headers.add(Constants.CORRELATION_ID_HEADER_NAME, "38a90097-434e-47ee-8ea1-9ea2a267f51d");
         return headers;

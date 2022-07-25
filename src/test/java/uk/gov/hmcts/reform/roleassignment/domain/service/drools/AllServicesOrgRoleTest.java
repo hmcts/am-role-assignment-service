@@ -1,9 +1,12 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -11,18 +14,19 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.ACTORID;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @RunWith(MockitoJUnitRunner.class)
-class StaffCategoryOrgRoleTest extends DroolBase {
+class AllServicesOrgRoleTest extends DroolBase {
 
     @Test
     void shouldApproveOrgRequestedRoleForTCW_S001() {
@@ -45,7 +49,8 @@ class StaffCategoryOrgRoleTest extends DroolBase {
         assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
             assertEquals(APPROVED, roleAssignment.getStatus());
             assertEquals("tribunal-caseworker", roleAssignment.getRoleName());
-            assertEquals("N", roleAssignment.getAttributes().get("substantive").asText());
+            String substantive = roleAssignment.getRoleType() == RoleType.ORGANISATION ? "Y" : "N";
+            assertEquals(substantive, roleAssignment.getAttributes().get("substantive").asText());
         });
     }
 
@@ -355,5 +360,203 @@ class StaffCategoryOrgRoleTest extends DroolBase {
             assertEquals("task-supervisor", roleAssignment.getRoleName());
             assertEquals("N", roleAssignment.getAttributes().get("substantive").asText());
         });
+    }
+
+    @Test
+    void shouldApprovedRequestedRoleForOrg() {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setClientId("not_am_org_role_mapping_service");
+        assignmentRequest.getRequest().setByPassOrgDroolRule(true);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setRoleName("judge");
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+                assertEquals(Status.APPROVED,roleAssignment.getStatus());
+                assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
+            }
+        );
+    }
+
+    @Test
+    void shouldRejectOrgValidation_MissingAttributeJurisdiction() {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName("judge");
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.getAttributes().put("region", convertValueJsonNode("north-east"));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+                                                                   assertEquals(
+                                                                       Status.REJECTED,
+                                                                       roleAssignment.getStatus()
+                                                                   )
+        );
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "hearing-manager,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "hearing-manager,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "hearing-viewer,JUDICIAL,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "hearing-viewer,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "hearing-viewer,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "registrar,LEGAL_OPERATIONS,STANDARD,south-east,SSCS,London,ORGANISATION,Y,Null,PUBLIC",
+        "superuser,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "clerk,ADMIN,STANDARD,south-east,SSCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "dwp,OTHER_GOV_DEPT,STANDARD,south-east,SSCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "hmrc,OTHER_GOV_DEPT,STANDARD,south-east,SSCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "case-allocator,JUDICIAL,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "case-allocator,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "case-allocator,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "task-supervisor,JUDICIAL,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "task-supervisor,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "task-supervisor,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "hmcts-judiciary,JUDICIAL,BASIC,north-east,SSCS,UK,ORGANISATION,N,SALARIED,PRIVATE",
+        "hmcts-legal-operations,LEGAL_OPERATIONS,BASIC,north-east,SSCS,UK,ORGANISATION,N,SALARIED,PRIVATE",
+        "hmcts-admin,ADMIN,BASIC,north-east,SSCS,UK,ORGANISATION,N,SALARIED,PRIVATE",
+        "judge,JUDICIAL,STANDARD,north-east,SSCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "fee-paid-judge,JUDICIAL,STANDARD,north-east,SSCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "hmcts-judiciary,JUDICIAL,BASIC,north-east,CIVIL,UK,ORGANISATION,N,SALARIED,PRIVATE",
+        "judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "fee-paid-judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Fee-Paid,PUBLIC",
+        "circuit-judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "leadership-judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "ctsc-team-leader,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "ctsc,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "nbc-team-leader,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "national-business-centre,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "hearing-centre-team-leader,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "hearing-centre-admin,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC"
+    })
+    void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
+                                          String region, String jurisdiction, String primaryLocation,
+                                          String roleType, String expectedSubstantive, String contractType,
+                                          String classification) {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setAssignerId(ACTORID);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.valueOf(roleType));
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setClassification(Classification.valueOf(classification));
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(GrantType.valueOf(grantType));
+            roleAssignment.getAttributes().put("region", convertValueJsonNode(region));
+            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode(primaryLocation));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+            roleAssignment.getAttributes().put("contractType", convertValueJsonNode(contractType));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles()
+            .forEach(roleAssignment -> {
+                assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+                assertEquals(roleName, roleAssignment.getRoleName());
+                assertEquals(RoleCategory.valueOf(roleCategory), roleAssignment.getRoleCategory());
+                assertEquals(expectedSubstantive, roleAssignment.getAttributes().get("substantive").asText());
+                assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "hmcts-judiciary,JUDICIAL,BASIC,ORGANISATION,N,PRIVATE",
+        "hmcts-legal-operations,LEGAL_OPERATIONS,BASIC,ORGANISATION,N,PRIVATE",
+        "hmcts-admin,ADMIN,BASIC,ORGANISATION,N,PRIVATE"
+    })
+    void shouldApproveRequestedRoleForOrgHavingNoAttributes(String roleName, String roleCategory, String grantType,
+                                          String roleType, String expectedSubstantive, String classification) {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setAssignerId(ACTORID);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.valueOf(roleType));
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setClassification(Classification.valueOf(classification));
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(GrantType.valueOf(grantType));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles()
+            .forEach(roleAssignment -> {
+                assertEquals(roleName, roleAssignment.getRoleName());
+                assertEquals(RoleCategory.valueOf(roleCategory), roleAssignment.getRoleCategory());
+                assertEquals(expectedSubstantive, roleAssignment.getAttributes().get("substantive").asText());
+                assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "manager,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,ORGANISATION",
+        "hearing-manager,JUDICIAL,STANDARD,north-east,SSCS,ORGANISATION",
+        "hearing-viewer,JUDICIAL,SPECIFIC,north-east,SSCS,ORGANISATION",
+        "hearing-viewer,LEGAL_OPERATIONS,STANDARD,north-east,IA,ORGANISATION",
+        "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,SSCS,CASE",
+        "judge,JUDICIAL,BASIC,north-east,SSCS,ORGANISATION",
+        "fee-paid-judge,JUDICIAL,STANDARD,north-east,CIVIL1,ORGANISATION",
+        "circuit-judge,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,ORGANISATION",
+        "leadership-judge,JUDICIAL,STANDARD,north-east,SSCS,ORGANISATION",
+        "hearing-centre-team-leader,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,ORGANISATION",
+        "nbc-team-leader,ADMIN,STANDARD,north-east,SSCS,ORGANISATION",
+        "national-business-centre,ADMIN,STANDARD,north-east,IA,ORGANISATION",
+        "ctsc-team-leader,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,ORGANISATION",
+    })
+    void shouldRejectRequestedRoleForOrg(String roleName, String roleCategory,
+                                         String grantType, String region, String jurisdiction,
+                                         String org) {
+
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setAssignerId(ACTORID);
+        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.valueOf(org));
+            roleAssignment.setStatus(Status.CREATE_REQUESTED);
+            roleAssignment.setClassification(Classification.PUBLIC);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(GrantType.valueOf(grantType));
+            roleAssignment.getAttributes().put("region", convertValueJsonNode(region));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+            roleAssignment.getAttributes().put("substantive", convertValueJsonNode("N"));
+        });
+
+        //Execute Kie session
+        buildExecuteKieSession();
+
+        assignmentRequest.getRequestedRoles()
+            .forEach(roleAssignment -> assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 }

@@ -3,8 +3,6 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.PredicateValidator;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -24,6 +23,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestServ
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
+import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
 import java.util.ArrayList;
@@ -32,7 +32,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.DELETE_BY_QUERY;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NO_RECORDS;
@@ -43,7 +42,6 @@ import static uk.gov.hmcts.reform.roleassignment.util.Constants.REFERENCE;
 @RequestScope
 public class DeleteRoleAssignmentOrchestrator {
 
-    private static final Logger logger = LoggerFactory.getLogger(DeleteRoleAssignmentOrchestrator.class);
 
     private PersistenceService persistenceService;
     private ParseRequestService parseRequestService;
@@ -80,8 +78,6 @@ public class DeleteRoleAssignmentOrchestrator {
     @Transactional
     public ResponseEntity<Void> deleteRoleAssignmentByProcessAndReference(String process,
                                                                           String reference) {
-        long startTime = System.currentTimeMillis();
-        logger.debug("deleteRoleAssignmentByProcessAndReference execution started at {}", startTime);
 
         List<RoleAssignment> requestedRoles;
 
@@ -115,13 +111,7 @@ public class DeleteRoleAssignmentOrchestrator {
             requestedRoles.stream().forEach(roleAssignment -> roleAssignment.setStatus(Status.DELETE_REQUESTED));
         }
 
-        ResponseEntity<Void> responseEntity = performOtherStepsForDelete("", requestedRoles);
-        logger.debug(
-            " >> deleteRoleAssignmentByProcessAndReference execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
-        return responseEntity;
+        return performOtherStepsForDelete("", requestedRoles);
     }
 
     @Transactional
@@ -157,8 +147,6 @@ public class DeleteRoleAssignmentOrchestrator {
     @NotNull
     private ResponseEntity<Void> performOtherStepsForDelete(String actorId,
                                                             List<RoleAssignment> requestedRoles) {
-        long startTime = System.currentTimeMillis();
-        logger.debug("performOtherStepsForDelete execution started at {}", startTime);
 
 
         //4. call validation rule
@@ -169,12 +157,9 @@ public class DeleteRoleAssignmentOrchestrator {
 
         //6. check status updated by drools and take decision
         checkAllDeleteApproved(assignmentRequest, actorId);
-        logger.debug(
-            " >> performOtherStepsForDelete execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
-        if (assignmentRequest.getRequest().getStatus().equals(Status.REJECTED)) {
+
+        if (PredicateValidator.assignmentRequestPredicate(assignmentRequest.getRequest().getStatus())
+            .test(Status.REJECTED)) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -189,17 +174,12 @@ public class DeleteRoleAssignmentOrchestrator {
     }
 
     private void validationByDrool(List<RoleAssignment> requestedRoles) {
-        long startTime = System.currentTimeMillis();
 
         assignmentRequest.setRequestedRoles(requestedRoles);
 
         //calling drools rules for validation
         validationModelService.validateRequest(assignmentRequest);
-        logger.debug(
-            " >> validationByDrool execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
 
     }
 
@@ -220,11 +200,10 @@ public class DeleteRoleAssignmentOrchestrator {
     @Transactional
     public void checkAllDeleteApproved(AssignmentRequest validatedAssignmentRequest, String actorId) {
         // decision block
-        long startTime = System.currentTimeMillis();
 
         List<RoleAssignment> deleteApprovedRoles = validatedAssignmentRequest.getRequestedRoles().stream()
             .filter(role -> role.getStatus()
-                .equals(Status.DELETE_APPROVED)).collect(Collectors.toList());
+                .equals(Status.DELETE_APPROVED)).toList();
 
         if (!deleteApprovedRoles.isEmpty()
             && deleteApprovedRoles.size() == validatedAssignmentRequest.getRequestedRoles().size()) {
@@ -241,19 +220,14 @@ public class DeleteRoleAssignmentOrchestrator {
         } else {
             //Insert requested roles  into history table with status deleted-Rejected
             List<RoleAssignment> deleteApprovedRecords = validatedAssignmentRequest.getRequestedRoles().stream()
-                .filter(role -> role.getStatus() == Status.DELETE_APPROVED).collect(
-                    Collectors.toList());
+                .filter(role -> role.getStatus() == Status.DELETE_APPROVED).toList();
             validatedAssignmentRequest.setRequestedRoles(deleteApprovedRecords);
             insertRequestedRole(validatedAssignmentRequest, Status.DELETE_REJECTED);
 
             // Update request status to REJECTED
             updateRequestStatus(validatedAssignmentRequest, Status.REJECTED);
         }
-        logger.debug(
-            " >> checkAllDeleteApproved execution finished at {} . Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
     }
 
     public void deleteLiveRecords(AssignmentRequest validatedAssignmentRequest, String actorId) {
@@ -294,6 +268,8 @@ public class DeleteRoleAssignmentOrchestrator {
 
     @SuppressWarnings("unchecked")
     public ResponseEntity<Void> deleteRoleAssignmentsByQuery(MultipleQueryRequest multipleQueryRequest) {
+
+        ValidationUtil.validateQueryRequests(multipleQueryRequest.getQueryRequests());
 
         //1. create the request Object
         if (CollectionUtils.isNotEmpty(multipleQueryRequest.getQueryRequests())) {
@@ -342,6 +318,9 @@ public class DeleteRoleAssignmentOrchestrator {
 
     private List<Assignment> fetchRoleAssignmentsByMultipleQuery(MultipleQueryRequest multipleQueryRequest) {
         List<List<Assignment>> assignmentRecords = new ArrayList<>();
+
+        ValidationUtil.validateQueryRequests(multipleQueryRequest.getQueryRequests());
+
         assignmentRecords.add(persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
             multipleQueryRequest,
             0,
@@ -352,7 +331,7 @@ public class DeleteRoleAssignmentOrchestrator {
                               )
 
         );
-        long totalRecords = persistenceService.getTotalRecords();
+        var totalRecords = persistenceService.getTotalRecords();
         double pageNumber = 0;
         if (defaultSize > 0) {
             pageNumber = (double) totalRecords / (double) defaultSize;
@@ -369,7 +348,7 @@ public class DeleteRoleAssignmentOrchestrator {
             ));
 
         }
-        return assignmentRecords.stream().flatMap(Collection::stream).collect(Collectors.toList());
+        return assignmentRecords.stream().flatMap(Collection::stream).toList();
     }
 
 

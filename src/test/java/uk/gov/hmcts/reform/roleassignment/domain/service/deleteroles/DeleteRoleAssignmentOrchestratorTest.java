@@ -31,7 +31,6 @@ import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -402,10 +401,11 @@ class DeleteRoleAssignmentOrchestratorTest {
 
         );
         mockHistoryEntity();
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .roleType(roleType)
+            .actorId("123456")
             .build();
         MultipleQueryRequest multipleQueryRequest = MultipleQueryRequest.builder()
             .queryRequests(Collections.singletonList(queryRequest))
@@ -467,7 +467,7 @@ class DeleteRoleAssignmentOrchestratorTest {
         );
         mockHistoryEntity();
 
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .roleType(roleType)

@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.kie.api.runtime.StatelessKieSession;
@@ -12,16 +11,12 @@ import org.slf4j.Logger;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.Role;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,9 +42,6 @@ class ValidationModelServiceTest {
     AssignmentRequest assignmentRequest;
 
     PersistenceService persistenceService = mock(PersistenceService.class);
-
-    @Getter
-    private static final Map<String, List<Role>> configuredRoles = new HashMap<>();
 
     @Mock
     Logger logger = mock(Logger.class);
@@ -113,10 +105,10 @@ class ValidationModelServiceTest {
     @Test
     void shouldExecuteQueryParamForCaseRole() throws IOException {
 
-        Set<String> actorIds = new HashSet<>();
-
-        actorIds.add("123e4567-e89b-42d3-a456-556642445678");
-        actorIds.add("4dc7dd3c-3fb5-4611-bbde-5101a97681e1");
+        Set<String> actorIds = Set.of(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
 
         doReturn(TestDataBuilder.buildRequestedRoleCollection(LIVE)).when(persistenceService)
             .retrieveRoleAssignmentsByQueryRequest(
@@ -138,10 +130,10 @@ class ValidationModelServiceTest {
     @Test
     void shouldExecuteQueryParamForMultipleCaseRole() throws IOException {
 
-        Set<String> actorIds = new HashSet<>();
-
-        actorIds.add("123e4567-e89b-42d3-a456-556642445678");
-        actorIds.add("4dc7dd3c-3fb5-4611-bbde-5101a97681e1");
+        final Set<String> actorIds = Set.of(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
 
         doReturn(TestDataBuilder.buildRequestedRoleCollection(LIVE)).when(persistenceService)
             .retrieveRoleAssignmentsByQueryRequest(
@@ -170,10 +162,10 @@ class ValidationModelServiceTest {
     @Test
     void shouldLogWhenTotalRecordsExceed100() throws IOException {
 
-        Set<String> actorIds = new HashSet<>();
-
-        actorIds.add("123e4567-e89b-42d3-a456-556642445678");
-        actorIds.add("4dc7dd3c-3fb5-4611-bbde-5101a97681e1");
+        final Set<String> actorIds = Set.of(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
 
         doReturn(TestDataBuilder.buildRequestedRoleCollection(LIVE)).when(persistenceService)
             .retrieveRoleAssignmentsByQueryRequest(

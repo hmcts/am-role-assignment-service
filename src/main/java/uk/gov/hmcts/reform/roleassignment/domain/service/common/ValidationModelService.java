@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -55,13 +54,9 @@ public class ValidationModelService {
     }
 
     public void validateRequest(AssignmentRequest assignmentRequest) {
-        long startTime = System.currentTimeMillis();
 
         runRulesOnAllRequestedAssignments(assignmentRequest);
-        log.debug(
-            "Execution time of validateRequest() : {} in milli seconds ",
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
+
 
     }
 
@@ -74,11 +69,11 @@ public class ValidationModelService {
         // facts must contain existing role assignments for assigner and authenticatedUser,
         // if these are present in the request.
         Set<String> userIds = new HashSet<>();
-        String assignerId = assignmentRequest.getRequest().getAssignerId();
+        var assignerId = assignmentRequest.getRequest().getAssignerId();
         if (assignerId != null) {
             userIds.add(assignmentRequest.getRequest().getAssignerId());
         }
-        String authenticatedUserId = assignmentRequest.getRequest().getAuthenticatedUserId();
+        var authenticatedUserId = assignmentRequest.getRequest().getAuthenticatedUserId();
         if (authenticatedUserId != null) {
             userIds.add(assignmentRequest.getRequest().getAuthenticatedUserId());
         }
@@ -112,7 +107,7 @@ public class ValidationModelService {
             true)
 
         );
-        long totalRecords = persistenceService.getTotalRecords();
+        var totalRecords = persistenceService.getTotalRecords();
         if (totalRecords > 100) {
             log.warn("Fetched assignments for the actor have {} total records", totalRecords);
         }
@@ -131,7 +126,7 @@ public class ValidationModelService {
                 true));
 
         }
-        return  assignmentRecords.stream().flatMap(Collection::stream).collect(Collectors.toList());
+        return  assignmentRecords.stream().flatMap(Collection::stream).toList();
 
     }
 

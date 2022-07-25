@@ -87,15 +87,7 @@ public class DeleteAssignmentController {
                                                          String process,
                                                      @RequestParam(value = "reference", required = false)
                                                          String reference) {
-        long startTime = System.currentTimeMillis();
-        ResponseEntity<Void> responseEntity = deleteRoleAssignmentOrchestrator
-            .deleteRoleAssignmentByProcessAndReference(process, reference);
-        logger.debug(
-            " >> deleteRoleAssignmentByProcessAndReference execution finished at {} .Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
-        return responseEntity;
+        return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentByProcessAndReference(process, reference);
     }
 
     @DeleteMapping(
@@ -174,15 +166,7 @@ public class DeleteAssignmentController {
                                                              @ApiParam(value = "multipleQueryRequest", required = true)
                                                              @Validated @RequestBody(required = true)
                                                                  MultipleQueryRequest multipleQueryRequest) {
-        long startTime = System.currentTimeMillis();
         logger.info("Inside the Delete role assignment records by multiple query request method");
-        ResponseEntity<Void> responseEntity = deleteRoleAssignmentOrchestrator
-            .deleteRoleAssignmentsByQuery(multipleQueryRequest);
-        logger.debug(
-            " >> deleteRoleAssignmentsByQuery execution finished at {} .Time taken = {} milliseconds",
-            System.currentTimeMillis(),
-            Math.subtractExact(System.currentTimeMillis(), startTime)
-        );
-        return responseEntity;
+        return deleteRoleAssignmentOrchestrator.deleteRoleAssignmentsByQuery(multipleQueryRequest);
     }
 }

@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
@@ -44,7 +49,6 @@ import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -68,6 +72,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
+import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 class PersistenceServiceTest {
 
@@ -320,7 +325,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void postRoleAssignmentsByQueryRequest() throws IOException {
+    void postRoleAssignmentsByQueryRequest_withCaseId() throws IOException {
 
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
@@ -329,11 +334,65 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleType = List.of("ORGANISATION");
+
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", List.of("1234567891234567"));
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleType)
+            .attributes(attr)
+            .build();
+
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
+            Pageable.class);
+
+        Specification<RoleAssignmentEntity> spec = Specification.where(any());
+        Pageable pageableCapture = pageableCaptor.capture();
+
+        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        ))
+            .thenReturn(page);
+
+
+        when(mockSpec.toPredicate(root, query, builder)).thenReturn(predicate);
+
+
+        when(persistenceUtil.convertEntityToRoleAssignment(page.iterator().next()))
+            .thenReturn(TestDataBuilder.buildRoleAssignment(LIVE));
+
+        List<? extends Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1,
+                                                                                                  1, "id",
+                                                                                                  "desc", false
+        );
+        assertNotNull(roleAssignmentList);
+        assertFalse(roleAssignmentList.isEmpty());
+        assertFalse(roleAssignmentList.contains(null));
+        verify(persistenceUtil, times(1))
+            .convertEntityToRoleAssignment(page.iterator().next());
+
+    }
+
+    @Test
+    void postRoleAssignmentsByQueryRequest_withoutCaseId() throws IOException {
+
+
+        List<RoleAssignmentEntity> tasks = new ArrayList<>();
+        tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
+
+        Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
+
+
+        List<String> actorId = List.of(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleType = List.of("ORGANISATION");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
@@ -379,20 +438,20 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
-        List<String> roleNames = Arrays.asList("judge", "senior judge");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
+        List<String> roleNames = List.of("judge", "senior judge");
         List<String> roleCategories = Collections.singletonList("JUDICIAL");
-        List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
+        List<String> classifications = List.of("PUBLIC", "PRIVATE");
         Map<String, List<String>> attributes = new HashMap<>();
-        List<String> regions = Arrays.asList("London", "JAPAN");
-        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        List<String> regions = List.of("London", "JAPAN");
+        List<String> contractTypes = List.of("SALARIED", "Non SALARIED");
         attributes.put("region", regions);
         attributes.put("contractType", contractTypes);
-        List<String> grantTypes = Arrays.asList("SPECIFIC", "STANDARD");
+        List<String> grantTypes = List.of("SPECIFIC", "STANDARD");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
@@ -441,11 +500,11 @@ class PersistenceServiceTest {
 
         ReflectionTestUtils.setField(sut, "defaultSize", 1);
         ReflectionTestUtils.setField(sut, "sortColumn", "id");
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
             .roleType(roleType)
@@ -472,7 +531,7 @@ class PersistenceServiceTest {
 
         ReflectionTestUtils.setField(sut, "defaultSize", 1);
         ReflectionTestUtils.setField(sut, "sortColumn", "id");
-        List<String> authorisations = Arrays.asList(
+        List<String> authorisations = List.of(
             "dev",
             "ops"
         );
@@ -508,7 +567,7 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> authorisations = Arrays.asList(
+        List<String> authorisations = List.of(
             "dev",
             "tester"
         );
@@ -628,33 +687,6 @@ class PersistenceServiceTest {
 
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
-
-        List<String> actorId = Arrays.asList(
-            "123e4567-e89b-42d3-a456-556642445678",
-            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
-        );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
-        List<String> roleNames = Arrays.asList("judge", "senior judge");
-        List<String> roleCategories = Collections.singletonList("JUDICIAL");
-        List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
-        Map<String, List<String>> attributes = new HashMap<>();
-        List<String> regions = Arrays.asList("London", "JAPAN");
-        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
-        attributes.put("region", regions);
-        attributes.put("contractType", contractTypes);
-        List<String> grantTypes = Arrays.asList("SPECIFIC", "STANDARD");
-
-        QueryRequest queryRequest = QueryRequest.builder()
-            .actorId(actorId)
-            .roleType(roleType)
-            .roleCategory(roleCategories)
-            .roleName(roleNames)
-            .classification(classifications)
-            .attributes(attributes)
-            .validAt(now())
-            .grantType(grantTypes)
-            .build();
-
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
@@ -668,11 +700,36 @@ class PersistenceServiceTest {
 
         when(mockSpec.toPredicate(root, query, builder)).thenReturn(predicate);
 
+        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
+        existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
+        existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
 
         when(persistenceUtil.convertEntityToExistingRoleAssignment(page.iterator().next()))
-            .thenReturn(TestDataBuilder.buildExistingRoleForIAC("123e4567-e89b-42d3-a456-556642445678",
-                                                                "judge",
-                                                                RoleCategory.JUDICIAL));
+            .thenReturn(TestDataBuilder.buildExistingRole("123e4567-e89b-42d3-a456-556642445678",
+                                                          "judge",
+                                                          RoleCategory.JUDICIAL,
+                                                          existingAttributes,
+                                                          RoleType.ORGANISATION,
+                                                          Classification.PUBLIC,
+                                                          GrantType.STANDARD, Status.LIVE));
+
+        Map<String, List<String>> attributes = new HashMap<>();
+        attributes.put("region", List.of("London", "JAPAN"));
+        attributes.put("contractType", List.of("SALARIED", "Non SALARIED"));
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(List.of(
+                "123e4567-e89b-42d3-a456-556642445678",
+                "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+            ))
+            .roleType(List.of("CASE", "ORGANISATION"))
+            .roleCategory(Collections.singletonList("JUDICIAL"))
+            .roleName(List.of("judge", "senior judge"))
+            .classification(List.of("PUBLIC", "PRIVATE"))
+            .attributes(attributes)
+            .validAt(now())
+            .grantType(List.of("SPECIFIC", "STANDARD"))
+            .build();
 
         List<Assignment> roleAssignmentList = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest, 1,
                                                                                         1, "id",
@@ -699,20 +756,20 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
-        List<String> roleNames = Arrays.asList("judge", "senior judge");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
+        List<String> roleNames = List.of("judge", "senior judge");
         List<String> roleCategories = Collections.singletonList("JUDICIAL");
-        List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
+        List<String> classifications = List.of("PUBLIC", "PRIVATE");
         Map<String, List<String>> attributes = new HashMap<>();
-        List<String> regions = Arrays.asList("London", "JAPAN");
-        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        List<String> regions = List.of("London", "JAPAN");
+        List<String> contractTypes = List.of("SALARIED", "Non SALARIED");
         attributes.put("region", regions);
         attributes.put("contractType", contractTypes);
-        List<String> grantTypes = Arrays.asList("SPECIFIC", "STANDARD");
+        List<String> grantTypes = List.of("SPECIFIC", "STANDARD");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
@@ -767,20 +824,20 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
-        List<String> roleNames = Arrays.asList("judge", "senior judge");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
+        List<String> roleNames = List.of("judge", "senior judge");
         List<String> roleCategories = Collections.singletonList("JUDICIAL");
-        List<String> classifications = Arrays.asList("PUBLIC", "PRIVATE");
+        List<String> classifications = List.of("PUBLIC", "PRIVATE");
         Map<String, List<String>> attributes = new HashMap<>();
-        List<String> regions = Arrays.asList("London", "JAPAN");
-        List<String> contractTypes = Arrays.asList("SALARIED", "Non SALARIED");
+        List<String> regions = List.of("London", "JAPAN");
+        List<String> contractTypes = List.of("SALARIED", "Non SALARIED");
         attributes.put("region", regions);
         attributes.put("contractType", contractTypes);
-        List<String> grantTypes = Arrays.asList("SPECIFIC", "STANDARD");
+        List<String> grantTypes = List.of("SPECIFIC", "STANDARD");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
@@ -826,11 +883,11 @@ class PersistenceServiceTest {
 
     @Test
     void getFlagStatus() {
-        String flagName = "iac_1_0";
+        String flagName = "iac_1_1";
         String env = "pr";
         FlagConfig flagConfig = FlagConfig.builder()
             .env("pr")
-            .flagName("iac_1_0")
+            .flagName("iac_1_1")
             .serviceName("iac")
             .status(Boolean.TRUE)
             .build();
@@ -845,7 +902,7 @@ class PersistenceServiceTest {
 
         FlagConfig flagConfig = FlagConfig.builder()
             .env("pr")
-            .flagName("iac_1_0")
+            .flagName("iac_1_1")
             .serviceName("iac")
             .status(Boolean.TRUE)
             .build();
@@ -857,11 +914,11 @@ class PersistenceServiceTest {
 
     @Test
     void getFlagStatus_False() {
-        String flagName = "iac_1_0";
+        String flagName = "iac_1_1";
         String env = "pr";
         FlagConfig flagConfig = FlagConfig.builder()
             .env("pr")
-            .flagName("iac_1_0")
+            .flagName("iac_1_1")
             .serviceName("iac")
             .status(Boolean.FALSE)
             .build();
@@ -881,11 +938,11 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
 
         QueryRequest queryRequest = QueryRequest.builder()
             .actorId(actorId)
@@ -928,7 +985,6 @@ class PersistenceServiceTest {
 
     }
 
-
     @Test
     void postRoleAssignmentsByMultipleQueryRequest() throws IOException {
 
@@ -939,24 +995,42 @@ class PersistenceServiceTest {
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
 
-        List<String> actorId = Arrays.asList(
+        List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
         );
-        List<String> roleType = Arrays.asList("CASE", "ORGANISATION");
+
+        List<String> roleTypeCaseOrg = List.of("CASE", "ORGANISATION");
+        List<String> roleTypeOrg = List.of("ORGANISATION");
 
         String roleName = "senior-tribunal-caseworker";
 
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", List.of("1234567891234567"));
+
         QueryRequest queryRequest1 = QueryRequest.builder()
             .actorId(actorId)
-            .roleType(roleType)
+            .roleType(roleTypeCaseOrg)
             .build();
         QueryRequest queryRequest2 = QueryRequest.builder()
+            .actorId(actorId)
             .roleName(roleName)
+            .roleType(roleTypeOrg)
+            .build();
+        QueryRequest queryRequest3 = QueryRequest.builder()
+            .actorId(actorId)
+            .roleName(roleName)
+            .roleType(roleTypeOrg)
+            .attributes(attr)
+            .build();
+        QueryRequest queryRequest4 = QueryRequest.builder()
+            .roleName(roleName)
+            .roleType(roleTypeCaseOrg)
+            .attributes(attr)
             .build();
 
         MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
-            .queryRequests(Arrays.asList(queryRequest1,queryRequest2))
+            .queryRequests(List.of(queryRequest1,queryRequest2,queryRequest3,queryRequest4))
             .build();
 
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
@@ -978,12 +1052,12 @@ class PersistenceServiceTest {
 
         List<? extends Assignment> roleAssignmentList = sut
             .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
-                                                                             1,
-                                                                             1,
-                                                                             "id",
-                                                                             "desc",
-                                                                             false
-        );
+                                                           1,
+                                                           1,
+                                                           "id",
+                                                           "desc",
+                                                           false
+            );
         assertNotNull(roleAssignmentList);
         assertFalse(roleAssignmentList.isEmpty());
         assertFalse(roleAssignmentList.contains(null));
@@ -992,4 +1066,112 @@ class PersistenceServiceTest {
 
     }
 
+    @Test
+    void addCaseTypeIfIdExists_idNotExisting_noAdd() {
+
+        List<String> actorId = List.of(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleTypesInitial = Collections.singletonList("ORGANISATION");
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleTypesInitial)
+            .build();
+
+        List<String> roleTypesResult = sut.addCaseTypeIfCaseIdExists(queryRequest);
+
+        assertEquals(roleTypesInitial, roleTypesResult);
+    }
+
+    @Test
+    void addCaseTypeIfIdExists_idNotExisting_emptyRoleType_noAdd() {
+
+        List<String> actorId = List.of(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleTypesInitial = Collections.emptyList();
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleTypesInitial)
+            .build();
+
+        List<String> roleTypesResult = sut.addCaseTypeIfCaseIdExists(queryRequest);
+
+        assertEquals(roleTypesInitial, roleTypesResult);
+    }
+
+    @Test
+    void addCaseTypeIfIdExists_idExisting_noAdd() {
+
+        List<String> actorId = List.of(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleTypesInitial = List.of("CASE","ORGANISATION");
+
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", List.of("1234567891234567"));
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleTypesInitial)
+            .attributes(attr)
+            .build();
+
+        List<String> roleTypesResult = sut.addCaseTypeIfCaseIdExists(queryRequest);
+
+        assertEquals(roleTypesInitial, roleTypesResult);
+    }
+
+    @Test
+    void addCaseTypeIfIdExists_idExisting_add() {
+
+        List<String> actorId = List.of(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleTypesInitial = Collections.singletonList("ORGANISATION");
+
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", List.of("1234567891234567"));
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleTypesInitial)
+            .attributes(attr)
+            .build();
+
+        List<String> roleTypesResult = sut.addCaseTypeIfCaseIdExists(queryRequest);
+        List<String> roleTypesExpectedResult = List.of("ORGANISATION", "CASE");
+
+        assertEquals(roleTypesExpectedResult, roleTypesResult);
+    }
+
+    @Test
+    void addCaseTypeIfIdExists_idExisting_emptyRoleTypes_add() {
+
+        List<String> actorId = List.of(
+            "123e4567-e89b-42d3-a456-556642445678",
+            "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
+        );
+        List<String> roleTypesInitial = Collections.emptyList();
+
+        Map<String, List<String>> attr = new HashMap<>();
+        attr.put("caseId", List.of("1234567891234567"));
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleTypesInitial)
+            .attributes(attr)
+            .build();
+
+        List<String> roleTypesResult = sut.addCaseTypeIfCaseIdExists(queryRequest);
+        List<String> roleTypesExpectedResult = Collections.singletonList("CASE");
+
+        assertEquals(roleTypesExpectedResult, roleTypesResult);
+    }
 }
