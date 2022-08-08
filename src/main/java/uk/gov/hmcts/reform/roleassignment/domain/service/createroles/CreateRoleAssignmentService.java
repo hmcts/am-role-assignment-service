@@ -473,11 +473,11 @@ public class CreateRoleAssignmentService {
     public AssignmentRequest retrieveExistingAssignments(AssignmentRequest parsedAssignmentRequest) {
 
         var request = parsedAssignmentRequest.getRequest();
-        List<RoleAssignment> existingAssignments = persistenceService.getAssignmentsByProcess(
+        List<RoleAssignment> existingAssignments = new ArrayList<>(persistenceService.getAssignmentsByProcess(
             request.getProcess(),
             request.getReference(),
             Status.LIVE.toString()
-        );
+        ));
 
         createdTimeComparator = new CreatedTimeComparator();
         existingAssignments.sort(createdTimeComparator);
