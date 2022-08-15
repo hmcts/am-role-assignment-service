@@ -271,6 +271,8 @@ pitest {
                      'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot',
                      'uk.gov.hmcts.reform.roleassignment.util.JacksonUtils',
                      'uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest',
+                     'uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig',
+                     'uk.gov.hmcts.reform.roleassignment.domain.model.enums.*',
                      'uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType',
                      'uk.gov.hmcts.reform.roleassignment.data.*',
                      'uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback',
