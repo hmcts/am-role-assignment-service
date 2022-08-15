@@ -1,9 +1,9 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import com.launchdarkly.sdk.server.LDClient;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
@@ -28,7 +28,7 @@ class FeatureToggleServiceTest {
     HttpServletRequest request;
 
     @InjectMocks
-    FeatureToggleService featureToggleService;
+    FeatureToggleService featureToggleService = new FeatureToggleService();
 
     @BeforeEach
     public void setUp() {
