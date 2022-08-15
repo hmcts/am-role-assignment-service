@@ -135,7 +135,7 @@ class DeleteRoleAssignmentOrchestratorTest {
 
     @Test
     @DisplayName("should get 422 when role assignment records delete  not successful due to invalid status")
-    void shouldRejectedWithDeleteRoleAssignmentByProcessWhenRolesNotEmpty() throws Exception {
+    void shouldRejectedWithDeleteRoleAssignmentByProcessWhenRolesNotEmpty() {
 
         //Set the status approved of all requested role manually for drool validation process
         assignmentRequest.getRequest().setLog("Assignment Request Log");
@@ -416,6 +416,39 @@ class DeleteRoleAssignmentOrchestratorTest {
         verify(validationModelService, times(1)).validateRequest(any(AssignmentRequest.class));
         verify(persistenceService, times(3)).updateRequest(any(RequestEntity.class));
         verify(persistenceService, times(2)).persistHistoryEntities(any());
+
+    }
+
+    @Test
+    @DisplayName("should throw Bad Request when requests empty")
+    void shouldThrowBadRequestExceptionByMultipleQueryRequest() throws Exception {
+        //Set the status approved of all requested role manually for drool validation process
+        setApprovedStatusByDrool();
+        mockRequest();
+        doReturn(TestDataBuilder.buildRequestedRoleCollection(LIVE)).when(persistenceService)
+            .retrieveRoleAssignmentsByMultipleQueryRequest(
+                any(),
+                anyInt(),
+                anyInt(),
+                any(),
+                any(),
+                anyBoolean()
+            );
+        when(persistenceService.getTotalRecords()).thenReturn(21L);
+        ReflectionTestUtils.setField(
+            sut,
+            "defaultSize", 20
+
+        );
+        mockHistoryEntity();
+
+        MultipleQueryRequest multipleQueryRequest = MultipleQueryRequest.builder()
+            .queryRequests(Collections.emptyList())
+            .build();
+
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.deleteRoleAssignmentsByQuery(multipleQueryRequest)
+        );
 
     }
 
