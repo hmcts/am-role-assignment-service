@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.queryroles;
 
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -8,13 +9,12 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
-import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,8 +30,6 @@ class QueryRoleAssignmentOrchestratorTest {
     @Mock
     private PersistenceService persistenceServiceMock = mock(PersistenceService.class);
 
-    private ParseRequestService parseRequestService = new ParseRequestService();
-
     @InjectMocks
     private QueryRoleAssignmentOrchestrator sut = new QueryRoleAssignmentOrchestrator(
         persistenceServiceMock
@@ -39,7 +37,7 @@ class QueryRoleAssignmentOrchestratorTest {
 
 
     @Test
-    void should_PostRoleAssignmentsQueryByRequest() throws IOException {
+    void should_PostRoleAssignmentsQueryByRequest() {
 
         List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
@@ -72,7 +70,28 @@ class QueryRoleAssignmentOrchestratorTest {
     }
 
     @Test
-    void should_PostRoleAssignmentByMultipleQueryRequest() throws IOException {
+    void shouldFail_PostRoleAssignmentsQueryByRequest() {
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .build();
+
+        when(persistenceServiceMock.retrieveRoleAssignmentsByQueryRequest(queryRequest,
+                                                                          1,
+                                                                          2,
+                                                                          "id",
+                                                                          "asc",
+                                                                          false))
+            .thenReturn(Collections.emptyList());
+        when(persistenceServiceMock.getTotalRecords()).thenReturn(Long.valueOf(10));
+        Assertions.assertThrows(BadRequestException.class, () -> sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,
+                                                                                                          1,
+                                                                                                          2,
+                                                                                                          "id",
+                                                                                                          "asc"));
+    }
+
+    @Test
+    void should_PostRoleAssignmentByMultipleQueryRequest() {
 
         List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
@@ -106,6 +125,31 @@ class QueryRoleAssignmentOrchestratorTest {
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getBody());
         assertTrue(result.getHeaders().containsKey("Total-Records"));
+    }
+
+    @Test
+    void shouldFail_PostRoleAssignmentsQueryByMultipleRequest() {
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .build();
+        MultipleQueryRequest multipleQueryRequest =  MultipleQueryRequest.builder()
+            .queryRequests(List.of(queryRequest))
+            .build();
+
+        when(persistenceServiceMock.retrieveRoleAssignmentsByQueryRequest(queryRequest,
+                                                                          1,
+                                                                          2,
+                                                                          "id",
+                                                                          "asc",
+                                                                          false))
+            .thenReturn(Collections.emptyList());
+        when(persistenceServiceMock.getTotalRecords()).thenReturn(Long.valueOf(10));
+        Assertions.assertThrows(BadRequestException.class, () ->
+            sut.retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
+                                                              1,
+                                                              2,
+                                                              "id",
+                                                              "asc"));
     }
 
 }
