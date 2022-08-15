@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 

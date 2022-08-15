@@ -432,8 +432,7 @@ class DeleteRoleAssignmentOrchestratorTest {
                 anyInt(),
                 any(),
                 any(),
-                anyBoolean()
-            );
+                anyBoolean());
         when(persistenceService.getTotalRecords()).thenReturn(21L);
         ReflectionTestUtils.setField(
             sut,
