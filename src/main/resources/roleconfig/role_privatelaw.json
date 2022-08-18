@@ -1,0 +1,196 @@
+[
+  {
+    "name": "ctsc",
+    "label": "CTSC",
+    "description": "CTSC role for CTSC users",
+    "category": "CTSC",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PRIVATELAW"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hmcts-ctsc",
+    "label": "HMCTS CTSC",
+    "description": "HMCTS CTSC role for staff users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PRIVATE"]
+        },
+        "attributes": {
+          "primaryLocation": {
+            "mandatory": false
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "ctsc-team-leader",
+    "label": "CTSC Team Leader",
+    "description": "CTSC Team Leader role for CTSC users",
+    "category": "CTSC",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PRIVATELAW"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "task-supervisor",
+    "label": "Task Supervisor",
+    "description": "Task Supervisor role for CTSC users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PRIVATELAW"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for CTSC users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PRIVATELAW"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "legal-caseworker",
+    "label": "Legal Caseworker",
+    "description": "Legal Caseworker role for staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PRIVATELAW"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  }
+]
