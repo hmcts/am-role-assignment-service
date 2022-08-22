@@ -2,7 +2,7 @@
   {
     "name": "ctsc",
     "label": "CTSC",
-    "description": "CTSC role for CTSC users",
+    "description": "CTSC role for ctsc users",
     "category": "CTSC",
     "substantive": true,
     "type": "ORGANISATION",
@@ -18,7 +18,7 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC"]
+          "values": ["PUBLIC", "PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
@@ -35,7 +35,7 @@
   {
     "name": "hmcts-ctsc",
     "label": "HMCTS CTSC",
-    "description": "HMCTS CTSC role for staff users",
+    "description": "HMCTS CTSC role for ctsc users",
     "category": "CTSC",
     "substantive": false,
     "type": "ORGANISATION",
@@ -51,12 +51,10 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PRIVATE"]
+          "values": ["PUBLIC", "PRIVATE"]
         },
         "attributes": {
-          "primaryLocation": {
-            "mandatory": false
-          }
+
         }
       }
     ]
@@ -64,7 +62,7 @@
   {
     "name": "ctsc-team-leader",
     "label": "CTSC Team Leader",
-    "description": "CTSC Team Leader role for CTSC users",
+    "description": "CTSC Team Leader role for ctsc users",
     "category": "CTSC",
     "substantive": true,
     "type": "ORGANISATION",
@@ -80,7 +78,7 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC"]
+          "values": ["PUBLIC", "PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
@@ -97,7 +95,7 @@
   {
     "name": "task-supervisor",
     "label": "Task Supervisor",
-    "description": "Task Supervisor role for CTSC users",
+    "description": "Task Supervisor role for ctsc users",
     "category": "CTSC",
     "substantive": false,
     "type": "ORGANISATION",
@@ -113,15 +111,12 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC"]
+          "values": ["PUBLIC", "PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
             "values": ["PRIVATELAW"]
-          },
-          "primaryLocation": {
-            "mandatory": true
           }
         }
       }
@@ -130,7 +125,7 @@
   {
     "name": "case-allocator",
     "label": "Case Allocator",
-    "description": "Case Allocator role for CTSC users",
+    "description": "Case Allocator role for ctsc users",
     "category": "CTSC",
     "substantive": false,
     "type": "ORGANISATION",
@@ -146,15 +141,12 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC"]
+          "values": ["PUBLIC", "PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
             "values": ["PRIVATELAW"]
-          },
-          "primaryLocation": {
-            "mandatory": true
           }
         }
       }
