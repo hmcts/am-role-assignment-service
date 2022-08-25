@@ -24,6 +24,12 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .jurisdiction("PUBLICLAW")
                     .securityClassification(Classification.PUBLIC)
                     .build();
+            case "1114567890123455":
+                return Case.builder().id(caseId)
+                    .caseTypeId("PRLAPPS")
+                    .jurisdiction("PRIVATELAW")
+                    .securityClassification(Classification.PUBLIC)
+                    .build();
             case "1114567890123456":
                 return Case.builder().id(caseId)
                     .caseTypeId("DIVORCE")
@@ -34,6 +40,18 @@ public class DataStoreApiFallback implements DataStoreApi {
                 return Case.builder().id(caseId)
                     .caseTypeId("Benefit")
                     .jurisdiction("SSCS")
+                    .securityClassification(Classification.PUBLIC)
+                    .build();
+            case "1114567890123458":
+                return Case.builder().id(caseId)
+                    .caseTypeId("CIVIL")
+                    .jurisdiction("CIVIL")
+                    .securityClassification(Classification.PUBLIC)
+                    .build();
+            case "1114567890123459":
+                return Case.builder().id(caseId)
+                    .caseTypeId("GENERALAPPLICATION")
+                    .jurisdiction("CIVIL")
                     .securityClassification(Classification.PUBLIC)
                     .build();
             default:
