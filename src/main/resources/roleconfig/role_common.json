@@ -87,7 +87,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS"]
+            "values": ["IA","SSCS", "CIVIL"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -217,7 +217,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS"]
+            "values": ["IA","SSCS", "CIVIL"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1539,6 +1539,39 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["CIVIL","PRIVATELAW"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "senior-tribunal-caseworker",
+    "label": "Senior Tribunal Caseworker",
+    "description": "Senior Tribunal caseworker role for staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA", "CIVIL"]
           },
           "primaryLocation": {
             "mandatory": true
