@@ -168,38 +168,5 @@
 
       }
     ]
-  },
-  {
-    "name": "senior-tribunal-caseworker",
-    "label": "Senior Tribunal Caseworker",
-    "description": "Senior Tribunal caseworker role for staff users",
-    "category": "LEGAL_OPERATIONS",
-    "substantive": true,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
-          },
-          "primaryLocation": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
   }
 ]
