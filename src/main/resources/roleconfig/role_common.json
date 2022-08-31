@@ -495,7 +495,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL"]
+            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW"]
           },
           "primaryLocation": {
             "mandatory": true
