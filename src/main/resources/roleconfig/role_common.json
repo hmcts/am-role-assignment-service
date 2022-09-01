@@ -429,7 +429,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS"]
+            "values": ["IA","SSCS","PRIVATELAW"]
           },
           "caseType": {
             "mandatory": true
