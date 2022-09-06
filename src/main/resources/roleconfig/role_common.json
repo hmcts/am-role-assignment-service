@@ -22,8 +22,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW"]
+            "mandatory": true
           }
         }
       }
@@ -86,8 +85,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL"]
+            "mandatory": true
           },
           "primaryLocation": {
             "mandatory": true
@@ -153,8 +151,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW"]
+            "mandatory": true
           },
           "primaryLocation": {
             "mandatory": true
@@ -217,7 +214,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL"]
+            "values": ["IA","SSCS", "CIVIL","PRIVATELAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1571,7 +1568,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL"]
+            "values": ["IA", "CIVIL", "PRIVATELAW"]
           },
           "primaryLocation": {
             "mandatory": true
