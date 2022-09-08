@@ -51,10 +51,12 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["Asylum"]
           },
           "caseId": {
             "mandatory": true
@@ -85,10 +87,12 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["Asylum"]
           },
           "caseId": {
             "mandatory": true
@@ -119,10 +123,12 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["Asylum"]
           },
           "caseId": {
             "mandatory": true
