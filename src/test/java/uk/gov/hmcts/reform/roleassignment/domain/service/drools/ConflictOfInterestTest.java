@@ -2,27 +2,65 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
-import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
-
 import java.io.IOException;
 import java.util.Collections;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.*;
+import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 class ConflictOfInterestTest extends DroolBase {
 
     //CREATE Self Conflict Roles
+    @ParameterizedTest
+    @CsvSource({
+        "IA,1616161616161616,Asylum",
+        "PRIVATELAW,1212121212121213,PRLAPPS",
+        "SSCS,1212121212121212,Benefit",
+        "CIVIL,1234567890123458,CIVIL "
+    })
+    void createConflictOfInterest_Role_for_allServices(String jurisdiction, String caseId,String caseTypeId)  {
+
+
+        assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
+        RoleAssignment assignment = TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.JUDICIAL);
+        assignment.setActorId(TestDataBuilder.CASE_ALLOCATOR_ID);
+        assignmentRequest
+            .setRequestedRoles(
+                Collections.singletonList(assignment));
+
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.getAttributes().clear();
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(caseId));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+            roleAssignment.getAttributes().put("caseTypeId", convertValueJsonNode(caseTypeId));
+        });
+
+        executeDroolRules(Collections.singletonList(
+            TestDataBuilder.buildExistingRoleForConflict(jurisdiction, RoleCategory.ADMIN)));
+
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(APPROVED, roleAssignment.getStatus());
+            assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+            assertEquals(caseId, roleAssignment.getAttributes().get("caseId").asText());
+            assertEquals(caseTypeId, roleAssignment.getAttributes().get("caseTypeId").asText());
+
+            assertTrue(roleAssignment.getLog()
+                           .contains("Stage 1 approved : case_allocator_create_conflict_of_interest"));
+            assertTrue(roleAssignment.getLog()
+                           .contains("Approved : validate_role_assignment_against_patterns"));
+        });
+    }
+
 
     @Test
     void createSelfSubmittedConflictRole_Ia_Judicial() throws IOException {
