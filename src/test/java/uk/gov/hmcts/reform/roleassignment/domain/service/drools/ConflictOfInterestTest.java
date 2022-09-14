@@ -15,8 +15,13 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.*;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REJECTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
+
 
 class ConflictOfInterestTest extends DroolBase {
 
