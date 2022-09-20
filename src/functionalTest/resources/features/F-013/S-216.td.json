@@ -1,5 +1,5 @@
 {
-  "title": "must successfully create judge ORG Role Assignment",
+  "title": "must successfully create CIVIL Judge ORG role assignment",
   "_guid_": "S-216",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
@@ -28,7 +28,8 @@
           "grantType": "STANDARD",
           "attributes":
           {
-            "jurisdiction": "CIVIL"
+            "jurisdiction": "CIVIL",
+            "substantive" : "Y"
 
           }
         }
