@@ -1,5 +1,5 @@
 {
-  "title": "must successfully create leadership-judge Case Role Assignment",
+  "title": "must successfully create CIVIL Leadership Judge ORG role assignment",
   "_guid_": "S-218",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
@@ -16,7 +16,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/circuit-judge/${[scenarioContext][testData][users][invokingUser][id]}"
+        "reference": "1607103938250138/leadership-judge/${[scenarioContext][testData][users][invokingUser][id]}"
       },
       "requestedRoles": [
         {
@@ -53,7 +53,7 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][befta1][id]}",
-            "roleName": "circuit-judge",
+            "roleName": "leadership-judge",
             "roleCategory": "JUDICIAL",
             "roleType": "ORGANISATIONAL",
             "grantType": "STANDARD",

@@ -1,9 +1,10 @@
 {
-  "title": "must successfully create circuit-judge judicial Role Assignment",
-  "_guid_": "S-217",
+  "title": "must successfully create CIVIL Circuit Judge ORG role assignment",
+  "_guid_": "S-218",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
-    "to create judicial org role assignments for an actor"
+    "to create judicial org role assignments for an actor",
+    "Befta1 - who is the actor for requested role"
   ],
   "users": {
     "invokingUser": {

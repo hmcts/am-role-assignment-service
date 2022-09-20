@@ -21,7 +21,7 @@
     },
     "pathVariables": {
       "process": "judicial-organisational-role-mapping",
-      "reference": "${[scenarioContext][parentContext][childContexts][S-216_Org_Role_Creation][testData][request][body][roleRequest][reference]}"
+      "reference": "${[scenarioContext][parentContext][childContexts][S-219_Org_Role_Creation][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {

@@ -15,7 +15,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/circuit-judge/${[scenarioContext][testData][users][invokingUser][id]}"
+        "reference": "1607103938250138/leadership-judge/${[scenarioContext][testData][users][invokingUser][id]}"
       },
       "requestedRoles": [
         {
@@ -52,7 +52,7 @@
             "roleType": "ORGANISATIONAL",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
-            "roleName": "circuit-judge",
+            "roleName": "leadership-judge",
             "attributes":
             {
               "jurisdiction": "CIVIL",
@@ -65,7 +65,7 @@
             "roleType": "ORGANISATIONAL",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
-            "roleName": "circuit-judge",
+            "roleName": "leadership-judge",
             "attributes":
             {
               "jurisdiction": "CIVIL",

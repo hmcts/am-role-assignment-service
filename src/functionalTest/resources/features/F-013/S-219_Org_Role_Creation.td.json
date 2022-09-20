@@ -24,7 +24,7 @@
           "roleType": "ORGANISATIONAL",
           "grantType": "STANDARD",
           "roleCategory": "JUDICIAL",
-          "roleName": "circuit-judge",
+          "roleName": "fee-paid-Judge",
           "attributes":
           {
             "jurisdiction": "CIVIL",
