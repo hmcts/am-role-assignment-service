@@ -8,7 +8,8 @@
                   validationrules.iac.common,
                   validationrules.wa,
                   validationrules.sscs,
-                  validationrules.sscs.common">
+                  validationrules.sscs.common,
+                  validationrules.privatelaw">
       <ksession name="role-assignment-validation-session" type="stateless"/>
   </kbase>
 </kmodule>
