@@ -23,11 +23,12 @@
           "actorId": "${[scenarioContext][testData][users][befta1][id]}",
           "roleName": "circuit-judge",
           "roleCategory": "JUDICIAL",
-          "roleType": "ORGANISATION",
+          "roleType": "ORGANISATIONAL",
           "grantType": "STANDARD",
           "attributes":
           {
-            "jurisdiction": "CIVIL"
+            "jurisdiction": "CIVIL",
+            "substantive" : "Y"
 
           }
         }

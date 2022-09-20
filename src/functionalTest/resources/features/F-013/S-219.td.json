@@ -24,7 +24,7 @@
           "actorId": "${[scenarioContext][testData][users][befta1][id]}",
           "roleName": "fee-paid-Judge",
           "roleCategory": "JUDICIAL",
-          "roleType": "ORG",
+          "roleType": "ORGANISATIONAL",
           "grantType": "STANDARD",
           "attributes":
           {
@@ -59,7 +59,8 @@
             "grantType": "STANDARD",
             "attributes":
             {
-              "jurisdiction" : "CIVIL"
+              "jurisdiction" : "CIVIL",
+              "substantive" : "Y"
 
             }
           }

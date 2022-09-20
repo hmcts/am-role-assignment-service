@@ -24,7 +24,7 @@
           "actorId": "${[scenarioContext][testData][users][befta1][id]}",
           "roleName": "judge",
           "roleCategory": "JUDICIAL",
-          "roleType": "ORGANISATION",
+          "roleType": "ORGANISATIONAL",
           "grantType": "STANDARD",
           "attributes":
           {

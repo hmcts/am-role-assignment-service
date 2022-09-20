@@ -1,6 +1,6 @@
 {
   "_guid_": "F-013_Test_Data_Base",
-  "_extends_": "F-014-Base-Root",
+  "_extends_": "F-013-Base-Root",
   "productName": "Role Assignment Service",
   "operationName": "Fetch Assignment From Role Assignment Service",
   "specs": [

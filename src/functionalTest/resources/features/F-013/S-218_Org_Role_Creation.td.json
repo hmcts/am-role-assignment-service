@@ -1,5 +1,5 @@
 {
-  "_guid_": "S-217_Org_Role_Creation",
+  "_guid_": "S-218_Org_Role_Creation",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester",
@@ -28,18 +28,6 @@
           {
             "jurisdiction": "CIVIL",
             "substantive" : "Y"
-          }
-        },
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
-          "roleName": "leadership-judge",
-          "roleCategory": "JUDICIAL",
-          "beginTime" : "2022-08-02T00:00:00Z",
-          "attributes":
-          {
-            "jurisdiction": "CIVIL",
-            "primaryLocation": "123456"
           }
         }
       ]

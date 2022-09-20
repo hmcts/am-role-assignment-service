@@ -2,7 +2,8 @@
   "_guid_": "S-216_Org_Role_Creation",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
-    "to create judicial org role assignments for an actor"
+    "to create judicial org role assignments for an actor",
+    "Befta1 - who is the actor for requested role"
   ],
   "users": {
     "invokingUser": {
