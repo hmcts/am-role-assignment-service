@@ -22,8 +22,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA","SSCS","CIVIL"]
+            "mandatory": true
           }
         }
       }
@@ -86,8 +85,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL"]
+            "mandatory": true
           },
           "primaryLocation": {
             "mandatory": true
@@ -153,8 +151,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA","SSCS","CIVIL"]
+            "mandatory": true
           },
           "primaryLocation": {
             "mandatory": true
@@ -187,7 +184,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW"]
           }
         }
       }
@@ -217,7 +214,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL"]
+            "values": ["IA","SSCS", "CIVIL","PRIVATELAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -250,7 +247,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -370,7 +367,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW"]
           }
         }
       }
@@ -400,7 +397,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW"]
           }
         }
       }
@@ -429,7 +426,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS"]
+            "values": ["IA","SSCS","PRIVATELAW"]
           },
           "caseType": {
             "mandatory": true
@@ -465,7 +462,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL"]
+            "values": ["IA","CIVIL","PRIVATELAW"]
           }
         }
       }
@@ -495,7 +492,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL"]
+            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1259,7 +1256,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL"]
+            "values": ["IA", "CIVIL","PRIVATELAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1358,7 +1355,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS"]
+            "values": ["SSCS","PRIVATELAW"]
           }
         }
       }
@@ -1388,7 +1385,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS"]
+            "values": ["SSCS","PRIVATELAW"]
           }
         }
       }
@@ -1418,7 +1415,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS"]
+            "values": ["SSCS", "PRIVATELAW"]
           }
         }
       }
@@ -1448,7 +1445,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS"]
+            "values": ["SSCS","PRIVATELAW"]
           }
         }
       }
@@ -1478,7 +1475,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS"]
+            "values": ["SSCS","PRIVATELAW"]
           }
         }
       }
@@ -1508,7 +1505,40 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS"]
+            "values": ["SSCS", "PRIVATELAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-centre-team-leader",
+    "label": "Hearing Centre Team Leader",
+    "description": "Hearing Centre Team Leader role for admin users",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL","PRIVATELAW"]
+          },
+          "primaryLocation": {
+            "mandatory": true
           }
         }
       }
@@ -1538,10 +1568,40 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL"]
+            "values": ["IA", "CIVIL", "PRIVATELAW"]
           },
           "primaryLocation": {
             "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "circuit-judge",
+    "label": "Circuit Judge",
+    "description": "Circuit Judge role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL", "PRIVATELAW"]
           }
         }
       }
