@@ -33,6 +33,9 @@ public abstract class DroolBase {
     List<FeatureFlag> featureFlags;
 
     private final RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
+    Map<String, String> caseMap = Map.of("CIVIL", "1234567890123458", "SSCS", "1212121212121212",
+                                         "PRIVATELAW", "1212121212121213");
+    Map<String, String> caseTypeMap = Map.of("CIVIL", "CIVIL", "PRIVATELAW", "PRLAPPS");
 
     @BeforeEach
     public void setUp() {
@@ -108,6 +111,13 @@ public abstract class DroolBase {
             .securityClassification(Classification.PUBLIC)
             .build();
         doReturn(caseObj6).when(retrieveDataService).getCaseById("1234567890123458");
+
+        Case caseObj7 = Case.builder().id("1212121212121213")
+            .jurisdiction("PRIVATELAW")
+            .caseTypeId("PRLAPPS")
+            .securityClassification(Classification.PUBLIC)
+            .build();
+        doReturn(caseObj7).when(retrieveDataService).getCaseById("1212121212121213");
 
         // Set up the rule engine for validation.
         KieServices ks = KieServices.Factory.get();
