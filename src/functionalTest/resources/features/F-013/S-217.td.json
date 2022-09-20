@@ -1,0 +1,68 @@
+{
+  "title": "must successfully create circuit-judge judicial Role Assignment",
+  "_guid_": "S-217",
+  "_extends_": "F-013_Test_Data_Base",
+  "specs": [
+    "to create judicial org role assignments for an actor"
+  ],
+  "users": {
+    "invokingUser": {
+      "username": "TEST_AM_USER6_BEFTA@test.local",
+      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+    }
+  },
+  "request": {
+    "body": {
+      "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1607103938250138/circuit-judge/${[scenarioContext][testData][users][invokingUser][id]}"
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+          "roleName": "circuit-judge",
+          "roleCategory": "JUDICIAL",
+          "roleType": "ORGANISATION",
+          "grantType": "STANDARD",
+          "attributes":
+          {
+            "jurisdiction": "CIVIL"
+
+          }
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest",
+          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "replaceExisting": false
+        },
+        "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+            "roleName": "circuit-judge",
+            "roleCategory": "JUDICIAL",
+            "roleType": "ORGANISATIONAL",
+            "grantType": "STANDARD",
+            "attributes":
+            {
+              "jurisdiction" : "CIVIL",
+              "substantive" : "Y"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

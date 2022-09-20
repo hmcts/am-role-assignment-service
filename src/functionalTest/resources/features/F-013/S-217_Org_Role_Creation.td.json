@@ -1,0 +1,66 @@
+{
+  "_guid_": "S-217_Org_Role_Creation",
+  "_extends_": "F-013_Test_Data_Base",
+  "specs": [
+    "to create judicial org role assignments for an actor"
+
+  ],
+  "users": {
+    "invokingUser": {
+      "username": "TEST_AM_USER6_BEFTA@test.local",
+      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+    }
+  },
+  "request": {
+    "body": {
+      "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1607103938250138/judge/${[scenarioContext][testData][users][invokingUser][id]}"
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "roleName": "judge",
+          "roleCategory": "JUDICIAL",
+          "beginTime" : "2020-11-02T00:00:00Z",
+          "attributes":
+          {
+            "jurisdiction": "CIVIL",
+            "substantive" : "Y"
+          }
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest",
+          "replaceExisting": false
+        },
+        "requestedRoles": [
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "roleType": "ORGANISATIONAL",
+            "grantType": "STANDARD",
+            "roleCategory": "JUDICIAL",
+            "roleName": "circuit-judge",
+            "attributes":
+            {
+              "jurisdiction": "CIVIL",
+              "substantive" : "Y"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
