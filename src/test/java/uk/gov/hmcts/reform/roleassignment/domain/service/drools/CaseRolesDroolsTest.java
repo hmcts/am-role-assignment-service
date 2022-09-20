@@ -23,33 +23,34 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.CASE_ALL
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
-class SscsCaseRolesDroolsTest extends DroolBase {
+class CaseRolesDroolsTest extends DroolBase {
 
 
     @ParameterizedTest
     @CsvSource({
-        "hearing-judge,JUDICIAL,judge,Y",
-        "hearing-judge,JUDICIAL,fee-paid-judge,Y",
-        "tribunal-member-1,JUDICIAL,medical,Y",
-        "tribunal-member-1,JUDICIAL,fee-paid-medical,Y",
-        "tribunal-member-2,JUDICIAL,fee-paid-disability,Y",
-        "appraiser-1,JUDICIAL,judge,Y",
-        "appraiser-2,JUDICIAL,medical,Y",
-        "appraiser-2,JUDICIAL,fee-paid-medical,Y",
-        "interloc-judge,JUDICIAL,judge,Y",
-        "case-allocator,JUDICIAL,case-allocator,N",
-        "case-allocator,LEGAL_OPERATIONS,case-allocator,N",
-        "registrar,LEGAL_OPERATIONS,registrar,N",
-        "tribunal-caseworker,LEGAL_OPERATIONS,tribunal-caseworker,N"
+        "SSCS,Benefit,hearing-judge,JUDICIAL,judge,Y",
+        "SSCS,Benefit,hearing-judge,JUDICIAL,fee-paid-judge,Y",
+        "SSCS,Benefit,tribunal-member-1,JUDICIAL,medical,Y",
+        "SSCS,Benefit,tribunal-member-1,JUDICIAL,fee-paid-medical,Y",
+        "SSCS,Benefit,tribunal-member-2,JUDICIAL,fee-paid-disability,Y",
+        "SSCS,Benefit,appraiser-1,JUDICIAL,judge,Y",
+        "SSCS,Benefit,appraiser-2,JUDICIAL,medical,Y",
+        "SSCS,Benefit,appraiser-2,JUDICIAL,fee-paid-medical,Y",
+        "SSCS,Benefit,interloc-judge,JUDICIAL,judge,Y",
+        "SSCS,Benefit,case-allocator,JUDICIAL,case-allocator,N",
+        "SSCS,Benefit,case-allocator,LEGAL_OPERATIONS,case-allocator,N",
+        "SSCS,Benefit,registrar,LEGAL_OPERATIONS,registrar,N",
+        "SSCS,Benefit,tribunal-caseworker,LEGAL_OPERATIONS,tribunal-caseworker,N",
+        "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,judge,"
     })
-    void shouldGrantAccessFor_SSCS_CaseRole(String roleName, String roleCategory, String existingRoleName,
-                                            String expectedSubstantive) {
+    void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName, String roleCategory,
+                                       String existingRoleName, String expectedSubstantive) {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode("1212121212121212"));
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseMap.get(jurisdiction)));
         roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
-        roleAssignmentAttributes.put("caseType", convertValueJsonNode("Benefit"));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("SSCS"));
+        roleAssignmentAttributes.put("caseType", convertValueJsonNode(caseType));
+        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessApprover(
             "sscs-access",
@@ -73,8 +74,8 @@ class SscsCaseRolesDroolsTest extends DroolBase {
         featureFlags.add(featureFlag);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode("SSCS"));
-        existingAttributes.put("caseType", convertValueJsonNode("Benefit"));
+        existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
+        existingAttributes.put("caseType", convertValueJsonNode(caseType));
 
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
@@ -100,34 +101,37 @@ class SscsCaseRolesDroolsTest extends DroolBase {
                           );
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals("SSCS", roleAssignment.getAttributes().get("jurisdiction").asText());
-            assertEquals("Benefit", roleAssignment.getAttributes().get("caseType").asText());
+            assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+            assertEquals(caseType, roleAssignment.getAttributes().get("caseType").asText());
             assertEquals(roleName, roleAssignment.getRoleName());
             assertEquals(RoleCategory.valueOf(roleCategory), roleAssignment.getRoleCategory());
-            assertEquals(expectedSubstantive, roleAssignment.getAttributes().get("substantive").asText());
+            if (expectedSubstantive != null) {
+                assertEquals(expectedSubstantive, roleAssignment.getAttributes().get("substantive").asText());
+            }
             assertEquals(Status.APPROVED, roleAssignment.getStatus());
         });
     }
 
     @ParameterizedTest
     @CsvSource({
-        "hearing-judge",
-        "panel-doctor",
-        "panel-disability",
-        "panel-financial",
-        "panel-appraisal-judge",
-        "panel-appraisal-medical",
-        "interloc-judge",
-        "case-allocator",
-        "registrar",
-        "tribunal-caseworker"
+        "SSCS,Benefit,hearing-judge",
+        "SSCS,Benefit,panel-doctor",
+        "SSCS,Benefit,panel-disability",
+        "SSCS,Benefit,panel-financial",
+        "SSCS,Benefit,panel-appraisal-judge",
+        "SSCS,Benefit,panel-appraisal-medical",
+        "SSCS,Benefit,interloc-judge",
+        "SSCS,Benefit,case-allocator",
+        "SSCS,Benefit,registrar",
+        "SSCS,Benefit,tribunal-caseworker",
+        "PRIVATELAW,PRLAPPS,hearing-judge"
     })
-    void shouldDelete_SSCS_CaseRole(String roleName) {
+    void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode("SSCS"));
-        existingAttributes.put("caseType", convertValueJsonNode("Benefit"));
-        existingAttributes.put("caseId", convertValueJsonNode("1212121212121212"));
+        existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
+        existingAttributes.put("caseType", convertValueJsonNode(caseType));
+        existingAttributes.put("caseId", convertValueJsonNode(caseMap.get(jurisdiction)));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessApprover(
             "delete-access",
