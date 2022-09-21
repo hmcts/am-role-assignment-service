@@ -550,7 +550,6 @@ configurations.all {
   exclude group: "org.glassfish", module: "jakarta.el"
   exclude group: "io.github.x-stream", module: "mxparser"
   exclude group: 'io.netty', module: 'netty-tcnative-classes'
-  exclude group: 'org.springframework.security', module: 'spring-security-crypto'
 }
 
 cucumberReports {
