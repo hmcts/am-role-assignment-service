@@ -2,10 +2,10 @@
   "_guid_": "F-013_Test_Data_Base",
   "_extends_": "F-013-Base-Root",
   "productName": "Role Assignment Service",
-  "operationName": "Fetch Assignment From Role Assignment Service",
+  "operationName": "Create Role Assignments",
   "specs": [
     "an active IDAM profile with full permissions"
   ],
-  "method": "GET",
-  "uri": "{{ROLE_ASSIGNMENT_URL}}/am/role-assignments/actors/{actorId}"
+  "method": "POST",
+  "uri": "am/role-assignments"
 }
