@@ -21,6 +21,7 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "roleType": "ORGANISATION",
           "roleName": "judge",
           "roleCategory": "JUDICIAL",
           "beginTime" : "2020-11-02T00:00:00Z",
@@ -49,7 +50,7 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-            "roleType": "ORGANISATIONAL",
+            "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
             "roleName": "judge",

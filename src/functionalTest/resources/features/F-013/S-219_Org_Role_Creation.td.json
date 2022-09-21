@@ -21,7 +21,7 @@
         {
           "_extends_": "ResponseRequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "roleType": "ORGANISATIONAL",
+          "roleType": "ORGANISATION",
           "grantType": "STANDARD",
           "roleCategory": "JUDICIAL",
           "roleName": "fee-paid-Judge",
@@ -50,7 +50,7 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-            "roleType": "ORGANISATIONAL",
+            "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
             "roleName": "fee-paid-Judge",

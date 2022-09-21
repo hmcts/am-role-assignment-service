@@ -49,7 +49,7 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-            "roleType": "ORGANISATIONAL",
+            "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
             "roleName": "leadership-judge",
@@ -62,7 +62,7 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][befta1][id]}",
-            "roleType": "ORGANISATIONAL",
+            "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
             "roleName": "leadership-judge",
