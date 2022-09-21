@@ -18,7 +18,7 @@ plugins {
   id 'uk.gov.hmcts.java' version '0.12.12'
   id 'pmd'
   id 'jacoco'
-  id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+  id 'io.spring.dependency-management' version '1.0.14.RELEASE'
   id 'org.springframework.boot' version '2.4.9'
   id 'info.solidsoft.pitest' version '1.7.4'
   id 'com.github.ben-manes.versions' version '0.41.0' //do not update this version from 0.41.0
@@ -47,9 +47,9 @@ def versions = [
   sonarPitest    : '0.5',
   springBoot     : '2.6.6',
   spring         : '5.3.20',
-  springSecurity : '5.6.3',
+  springSecurity : '5.7.3',
   springHystrix  : '2.1.1.RELEASE',
-  swagger2Version: '2.10.5',
+  swagger2Version: '3.0.0',
   pact_version   : '4.1.7',
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
@@ -386,7 +386,7 @@ dependencies {
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.10.RELEASE'
   implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.2.2'
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'
-  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
+  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.3'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.2'
   implementation group: 'org.springframework', name: 'spring-core', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-beans', version: versions.spring
@@ -413,6 +413,7 @@ dependencies {
     exclude group: 'org.glassfish', module: 'jakarta.el'
     exclude group: 'jakarta.el', module: 'jakarta.el-api'
     exclude group: 'com.google.protobuf', module: 'protobuf-java'
+    exclude group: 'org.apache.maven', module: 'maven-compat'
   }
   //Dependent on drools Jar. Can be removed CVE-2021-26291
   implementation group: 'org.apache.maven', name: 'maven-core', version: '3.8.6'
@@ -451,7 +452,7 @@ dependencies {
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: versions.junit
   testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junit
-  testImplementation group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.9.0'
+  testImplementation group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.9.1'
   testImplementation group: 'org.pitest', name: 'pitest', version: versions.pitest
   testImplementation group: 'info.solidsoft.gradle.pitest', name:'gradle-pitest-plugin', version: '1.7.4'
   testImplementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
@@ -549,6 +550,8 @@ configurations.all {
   exclude group: "org.glassfish", module: "jakarta.el"
   exclude group: "io.github.x-stream", module: "mxparser"
   exclude group: 'io.netty', module: 'netty-tcnative-classes'
+  exclude group: 'org.springframework.security', module: 'spring-security-crypto'
+  exclude group: 'com.thoughtworks.xstream', module: 'xstream'
 }
 
 cucumberReports {
