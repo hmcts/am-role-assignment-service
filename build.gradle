@@ -551,7 +551,6 @@ configurations.all {
   exclude group: "io.github.x-stream", module: "mxparser"
   exclude group: 'io.netty', module: 'netty-tcnative-classes'
   exclude group: 'org.springframework.security', module: 'spring-security-crypto'
-  exclude group: 'com.thoughtworks.xstream', module: 'xstream'
 }
 
 cucumberReports {
