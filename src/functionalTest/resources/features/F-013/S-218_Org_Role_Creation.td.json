@@ -26,8 +26,8 @@
           "beginTime" : "2020-11-02T00:00:00Z",
           "attributes":
           {
-            "jurisdiction": "CIVIL",
-            "substantive" : "Y"
+            "jurisdiction": "CIVIL"
+
           }
         }
       ]
@@ -43,6 +43,7 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
+          "process" : "civil-judicial",
           "replaceExisting": false
         },
         "requestedRoles": [

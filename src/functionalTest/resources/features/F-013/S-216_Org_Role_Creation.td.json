@@ -15,7 +15,9 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/judge/${[scenarioContext][testData][users][invokingUser][id]}"
+        "reference": "1607103938250138/judge/${[scenarioContext][testData][users][invokingUser][id]}",
+        "process" : "civil-judicial",
+        "replaceExisting": true
       },
       "requestedRoles": [
         {
@@ -27,8 +29,8 @@
           "beginTime" : "2020-11-02T00:00:00Z",
           "attributes":
           {
-            "jurisdiction": "CIVIL",
-            "substantive" : "Y"
+            "jurisdiction": "CIVIL"
+
           }
         }
       ]
@@ -44,6 +46,7 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
+          "process" : "civil-judicial",
           "replaceExisting": false
         },
         "requestedRoles": [
