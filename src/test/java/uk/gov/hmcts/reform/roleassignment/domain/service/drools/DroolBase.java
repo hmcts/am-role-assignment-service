@@ -33,9 +33,10 @@ public abstract class DroolBase {
     List<FeatureFlag> featureFlags;
 
     private final RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
-    Map<String, String> caseMap = Map.of("CIVIL", "1234567890123458", "SSCS", "1212121212121212",
-                                         "PRIVATELAW", "1212121212121213");
-    Map<String, String> caseTypeMap = Map.of("CIVIL", "CIVIL", "PRIVATELAW", "PRLAPPS");
+    Map<String, Case> caseMap = Map.of("IA",Case.builder().id("1234567890123456").caseTypeId("Asylum").build(),
+                               "CIVIL", Case.builder().id("1234567890123458").caseTypeId("CIVIL").build(),
+                               "SSCS", Case.builder().id("1212121212121212").caseTypeId("Benefit").build(),
+                               "PRIVATELAW", Case.builder().id("1212121212121213").caseTypeId("PRLAPPS").build());
 
     @BeforeEach
     public void setUp() {
@@ -71,14 +72,6 @@ public abstract class DroolBase {
             .build();
         doReturn(caseObj1).when(retrieveDataService).getCaseById("1234567890123457");
 
-        //mock the retrieveDataService to fetch the Case Object with incorrect Jurisdiction ID
-        Case caseObj2 = Case.builder().id("1234567890123458")
-            .caseTypeId("Asylum")
-            .jurisdiction("Not IA")
-            .securityClassification(Classification.PUBLIC)
-            .build();
-        doReturn(caseObj2).when(retrieveDataService).getCaseById("1234567890123458");
-
         Case caseObj3 = Case.builder().id("1234567890123459")
             .jurisdiction("CMC")
             .caseTypeId("Asylum")
@@ -87,7 +80,7 @@ public abstract class DroolBase {
         doReturn(caseObj3).when(retrieveDataService).getCaseById("1234567890123459");
 
         HashMap<String, JsonNode> caseAttributes = new HashMap<>();
-        caseAttributes.put(REGION, convertValueJsonNode("south-east"));
+        caseAttributes.put(REGION, convertValueJsonNode("1"));
         caseAttributes.put(BASE_LOCATION, convertValueJsonNode("London"));
 
         Case caseObj4 = Case.builder().id("1616161616161616")
@@ -109,6 +102,7 @@ public abstract class DroolBase {
             .jurisdiction("CIVIL")
             .caseTypeId("CIVIL")
             .securityClassification(Classification.PUBLIC)
+            .data(Map.of(CASE_MANAGEMENT_LOCATION, convertValueJsonNode(caseAttributes)))
             .build();
         doReturn(caseObj6).when(retrieveDataService).getCaseById("1234567890123458");
 
