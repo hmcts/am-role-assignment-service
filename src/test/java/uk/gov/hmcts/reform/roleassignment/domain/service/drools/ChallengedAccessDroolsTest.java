@@ -33,7 +33,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
     })
     void shouldGrantAccessFor_ChallengedAccess(String jurisdiction, String roleName, String roleCategory) {
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseMap.get(jurisdiction)));
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseMap.get(jurisdiction).getId()));
         roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
         roleAssignmentAttributes.put("caseType", convertValueJsonNode("notAsylum"));
         roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode("IA"));
@@ -62,7 +62,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
-        existingAttributes.put("caseType", convertValueJsonNode(caseTypeMap.get(jurisdiction)));
+        existingAttributes.put("caseType", convertValueJsonNode(caseMap.get(jurisdiction).getCaseTypeId()));
         existingAttributes.put("substantive", convertValueJsonNode("Y"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
@@ -77,7 +77,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals(caseTypeMap.get(jurisdiction),
+            Assertions.assertEquals(caseMap.get(jurisdiction).getCaseTypeId(),
                                     roleAssignment.getAttributes().get("caseType").asText());
             Assertions.assertEquals(Classification.PUBLIC, roleAssignment.getClassification());
             Assertions.assertEquals(
