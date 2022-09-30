@@ -14,6 +14,7 @@ public class DataStoreApiFallback implements DataStoreApi {
     public static final String DATA_STORE_NOT_AVAILABLE = "The data store Service is not available";
     public static final String CIVIL = "CIVIL";
     public static final String LOCATION = "20262";
+
     @Override
     public String getServiceStatus() {
         return DATA_STORE_NOT_AVAILABLE;
