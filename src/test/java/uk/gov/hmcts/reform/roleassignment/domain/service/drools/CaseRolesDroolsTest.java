@@ -47,12 +47,12 @@ class CaseRolesDroolsTest extends DroolBase {
                                        String existingRoleName, String expectedSubstantive) {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseMap.get(jurisdiction)));
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseMap.get(jurisdiction).getId()));
         roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
         roleAssignmentAttributes.put("caseType", convertValueJsonNode(caseType));
         roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
 
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessApprover(
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessGrant(
             "sscs-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
@@ -131,9 +131,9 @@ class CaseRolesDroolsTest extends DroolBase {
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
         existingAttributes.put("caseType", convertValueJsonNode(caseType));
-        existingAttributes.put("caseId", convertValueJsonNode(caseMap.get(jurisdiction)));
+        existingAttributes.put("caseId", convertValueJsonNode(caseMap.get(jurisdiction).getId()));
 
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessApprover(
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessGrant(
             "delete-access",
             roleName,
             RoleCategory.valueOf(RoleCategory.JUDICIAL.name()),
@@ -187,7 +187,7 @@ class CaseRolesDroolsTest extends DroolBase {
         roleAssignmentAttributes.put("caseType", convertValueJsonNode(caseType));
         roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
 
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessApprover(
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessGrant(
             "sscs-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
@@ -256,7 +256,7 @@ class CaseRolesDroolsTest extends DroolBase {
         existingAttributes.put("caseId", convertValueJsonNode("1212121212121212"));
         existingAttributes.put("requestedRole", convertValueJsonNode(roleName));
 
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessApprover(
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessGrant(
             "delete-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
