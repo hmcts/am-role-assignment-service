@@ -4,12 +4,16 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreApi;
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
+
+import java.util.Map;
 
 @Component
 public class DataStoreApiFallback implements DataStoreApi {
 
     public static final String DATA_STORE_NOT_AVAILABLE = "The data store Service is not available";
-
+    public static final String CIVIL = "CIVIL";
+    public static final String LOCATION = "20262";
     @Override
     public String getServiceStatus() {
         return DATA_STORE_NOT_AVAILABLE;
@@ -29,6 +33,9 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .caseTypeId("PRLAPPS")
                     .jurisdiction("PRIVATELAW")
                     .securityClassification(Classification.PUBLIC)
+                    .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(1),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
                     .build();
             case "1114567890123456":
                 return Case.builder().id(caseId)
@@ -44,15 +51,21 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .build();
             case "1114567890123458":
                 return Case.builder().id(caseId)
-                    .caseTypeId("CIVIL")
-                    .jurisdiction("CIVIL")
+                    .caseTypeId(CIVIL)
+                    .jurisdiction(CIVIL)
                     .securityClassification(Classification.PUBLIC)
+                    .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(1),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
                     .build();
             case "1114567890123459":
                 return Case.builder().id(caseId)
                     .caseTypeId("GENERALAPPLICATION")
-                    .jurisdiction("CIVIL")
+                    .jurisdiction(CIVIL)
                     .securityClassification(Classification.PUBLIC)
+                    .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(1),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
                     .build();
             default:
                 return Case.builder().id(caseId)
