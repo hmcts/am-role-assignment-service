@@ -35,7 +35,7 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .jurisdiction("PRIVATELAW")
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
-                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(1),
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
                                Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
                     .build();
             case "1114567890123456":
@@ -56,7 +56,7 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .jurisdiction(CIVIL)
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
-                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(1),
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
                                Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
                     .build();
             case "1114567890123459":
@@ -65,7 +65,7 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .jurisdiction(CIVIL)
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
-                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(1),
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
                                Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
                     .build();
             default:
