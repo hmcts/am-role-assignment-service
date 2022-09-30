@@ -643,7 +643,7 @@ public class TestDataBuilder {
                          .replaceExisting(true)
                          .created(ZonedDateTime.now())
                          .build())
-            .requestedRoles(Collections.singletonList(
+            .requestedRoles(List.of(
                 RoleAssignment.builder()
                     .actorId(requestedActorId)
                     .status(status)
@@ -660,7 +660,7 @@ public class TestDataBuilder {
             ));
     }
 
-    public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecialAccessApprover(
+    public static AssignmentRequest.AssignmentRequestBuilder buildAssignmentRequestSpecialAccessGrant(
         String process, String roleName, RoleCategory roleCategory, RoleType roleType,
         HashMap<String, JsonNode> attributes, Classification classification, GrantType grantType, Status status,
         String clientId, boolean readOnly,String notes, String requestedActorId, String reference) {
