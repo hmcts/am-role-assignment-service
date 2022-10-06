@@ -4,13 +4,13 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
-import java.io.IOException;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,26 +28,24 @@ class ConflictOfInterestTest extends DroolBase {
     //CREATE Self Conflict Roles
     @ParameterizedTest
     @CsvSource({
-        "IA,1616161616161616,Asylum",
-        "PRIVATELAW,1212121212121213,PRLAPPS",
-        "SSCS,1212121212121212,Benefit",
-        "CIVIL,1234567890123458,CIVIL "
+        "IA",
+        "PRIVATELAW",
+        "SSCS",
+        "CIVIL"
     })
-    void createConflictOfInterest_Role_for_allServices(String jurisdiction, String caseId,String caseTypeId)  {
-
+    void createConflictOfInterest_Role_for_allServices(String jurisdiction)  {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
         RoleAssignment assignment = TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.JUDICIAL);
         assignment.setActorId(TestDataBuilder.CASE_ALLOCATOR_ID);
-        assignmentRequest
-            .setRequestedRoles(
-                Collections.singletonList(assignment));
+        assignmentRequest.setRequestedRoles(Collections.singletonList(assignment));
 
+        Case caseDetails = caseMap.get(jurisdiction);
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.getAttributes().clear();
-            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(caseId));
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(caseDetails.getId()));
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
-            roleAssignment.getAttributes().put("caseTypeId", convertValueJsonNode(caseTypeId));
+            roleAssignment.getAttributes().put("caseTypeId", convertValueJsonNode(caseDetails.getCaseTypeId()));
         });
 
         executeDroolRules(Collections.singletonList(
@@ -56,8 +54,8 @@ class ConflictOfInterestTest extends DroolBase {
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(APPROVED, roleAssignment.getStatus());
             assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
-            assertEquals(caseId, roleAssignment.getAttributes().get("caseId").asText());
-            assertEquals(caseTypeId, roleAssignment.getAttributes().get("caseTypeId").asText());
+            assertEquals(caseDetails.getId(), roleAssignment.getAttributes().get("caseId").asText());
+            assertEquals(caseDetails.getCaseTypeId(), roleAssignment.getAttributes().get("caseTypeId").asText());
 
             assertTrue(roleAssignment.getLog()
                            .contains("Stage 1 approved : case_allocator_create_conflict_of_interest"));
@@ -68,16 +66,14 @@ class ConflictOfInterestTest extends DroolBase {
 
 
     @Test
-    void createSelfSubmittedConflictRole_Ia_Judicial() throws IOException {
+    void createSelfSubmittedConflictRole_Ia_Judicial() {
 
-        assignmentRequest = TestDataBuilder.getAssignmentRequest()
-            .build();
-        assignmentRequest
-            .setRequestedRoles(
+        assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
+        assignmentRequest.setRequestedRoles(
                 Collections.singletonList(TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.JUDICIAL)));
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.getAttributes().clear();
-            roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(IA_CASE_ID));
         });
 
         buildExecuteKieSession();
@@ -91,13 +87,10 @@ class ConflictOfInterestTest extends DroolBase {
     }
 
     @Test
-    void createSelfSubmittedConflictRole_Cmc_LegalOps() throws IOException {
+    void createSelfSubmittedConflictRole_Cmc_LegalOps() {
 
-        assignmentRequest = TestDataBuilder.getAssignmentRequest()
-            .build();
-        assignmentRequest
-            .setRequestedRoles(
-                Collections.singletonList(
+        assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
+        assignmentRequest.setRequestedRoles(Collections.singletonList(
                     TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.LEGAL_OPERATIONS)));
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.getAttributes().clear();
@@ -116,7 +109,7 @@ class ConflictOfInterestTest extends DroolBase {
     //CREATE Conflict Roles
 
     @Test
-    void createConflictRole_Ia_Judicial_with_CaseAllocator_Ia_Admin() throws IOException {
+    void createConflictRole_Ia_Judicial_with_CaseAllocator_Ia_Admin() {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
         RoleAssignment assignment = TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.JUDICIAL);
@@ -127,7 +120,7 @@ class ConflictOfInterestTest extends DroolBase {
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.getAttributes().clear();
-            roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(IA_CASE_ID));
         });
 
         executeDroolRules(Collections.singletonList(
@@ -145,7 +138,7 @@ class ConflictOfInterestTest extends DroolBase {
     }
 
     @Test
-    void createConflictRole_Ia_LegalOps_with_CaseAllocator_Ia_LegalOps() throws IOException {
+    void createConflictRole_Ia_LegalOps_with_CaseAllocator_Ia_LegalOps() {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -157,7 +150,7 @@ class ConflictOfInterestTest extends DroolBase {
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.getAttributes().clear();
-            roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(IA_CASE_ID));
         });
 
         executeDroolRules(Collections.emptyList());
@@ -172,7 +165,7 @@ class ConflictOfInterestTest extends DroolBase {
     }
 
     @Test
-    void createConflictRole_Ia_Judicial_with_CaseAllocator_Ia_LegalOps() throws IOException {
+    void createConflictRole_Ia_Judicial_with_CaseAllocator_Ia_LegalOps() {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
         RoleAssignment assignment = TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.JUDICIAL);
@@ -184,7 +177,7 @@ class ConflictOfInterestTest extends DroolBase {
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.getAttributes().clear();
-            roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(IA_CASE_ID));
         });
 
         executeDroolRules(Collections.singletonList(
@@ -205,7 +198,7 @@ class ConflictOfInterestTest extends DroolBase {
     //DELETE Conflict Roles
 
     @Test
-    void deleteConflictRole_Ia_Judicial_with_CaseAllocator_Ia_Admin() throws IOException {
+    void deleteConflictRole_Ia_Judicial_with_CaseAllocator_Ia_Admin() {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -233,7 +226,7 @@ class ConflictOfInterestTest extends DroolBase {
     }
 
     @Test
-    void deleteConflictRole_Ia_LegalOps_with_CaseAllocator_Ia_LegalOps() throws IOException {
+    void deleteConflictRole_Ia_LegalOps_with_CaseAllocator_Ia_LegalOps() {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -266,7 +259,7 @@ class ConflictOfInterestTest extends DroolBase {
     //Do Not Create Self Conflict
 
     @Test
-    void doNot_createSelfSubmittedConflictRole_Ia_LegalOps_UndefinedCaseId() throws IOException {
+    void doNot_createSelfSubmittedConflictRole_Ia_LegalOps_UndefinedCaseId() {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -281,13 +274,12 @@ class ConflictOfInterestTest extends DroolBase {
 
         buildExecuteKieSession();
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          assertEquals(REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
-    void doNot_createSelfSubmittedConflictRole_Ia_LegalOps_AuthId_ActorId_Mismatch() throws IOException {
+    void doNot_createSelfSubmittedConflictRole_Ia_LegalOps_AuthId_ActorId_Mismatch() {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -303,15 +295,14 @@ class ConflictOfInterestTest extends DroolBase {
 
         buildExecuteKieSession();
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+            assertEquals(REJECTED, roleAssignment.getStatus()));
     }
 
     //Do Not Create Conflict
 
     @Test
-    void doNot_createConflictRole_PublicClassification_with_CaseAllocator_Ia_LegalOps() throws IOException {
+    void doNot_createConflictRole_PublicClassification_with_CaseAllocator_Ia_LegalOps() {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -329,13 +320,12 @@ class ConflictOfInterestTest extends DroolBase {
         executeDroolRules(Collections.singletonList(
             TestDataBuilder.buildExistingRoleForConflict("IA", RoleCategory.LEGAL_OPERATIONS)));
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          assertEquals(REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
-    void doNot_createConflictRole_SpecificGrant_with_CaseAllocator_Ia_LegalOps() throws IOException {
+    void doNot_createConflictRole_SpecificGrant_with_CaseAllocator_Ia_LegalOps() {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -353,13 +343,12 @@ class ConflictOfInterestTest extends DroolBase {
         executeDroolRules(Collections.singletonList(
             TestDataBuilder.buildExistingRoleForConflict("IA", RoleCategory.LEGAL_OPERATIONS)));
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          assertEquals(REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
-    void doNot_createConflictRole_CaseIdUndefined_with_CaseAllocator_Ia_LegalOps() throws IOException {
+    void doNot_createConflictRole_CaseIdUndefined_with_CaseAllocator_Ia_LegalOps() {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -376,13 +365,12 @@ class ConflictOfInterestTest extends DroolBase {
         executeDroolRules(Collections.singletonList(
             TestDataBuilder.buildExistingRoleForConflict("IA", RoleCategory.LEGAL_OPERATIONS)));
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          assertEquals(REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
-    void doNot_createConflictRole_with_CaseAllocator_Cmc_LegalOps() throws IOException {
+    void doNot_createConflictRole_with_CaseAllocator_Cmc_LegalOps() {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -400,15 +388,14 @@ class ConflictOfInterestTest extends DroolBase {
         executeDroolRules(Collections.singletonList(
             TestDataBuilder.buildExistingRoleForConflict("CMC", RoleCategory.LEGAL_OPERATIONS)));
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          assertEquals(REJECTED, roleAssignment.getStatus()));
     }
 
     //Do Not Delete
 
     @Test
-    void doNot_deleteConflictRole_Ia_Judicial_with_CaseAllocator_Cmc_Admin() throws IOException {
+    void doNot_deleteConflictRole_Ia_Judicial_with_CaseAllocator_Cmc_Admin() {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -426,13 +413,12 @@ class ConflictOfInterestTest extends DroolBase {
         executeDroolRules(Collections.singletonList(
             TestDataBuilder.buildExistingRoleForConflict("CMC", RoleCategory.ADMIN)));
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(DELETE_REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          assertEquals(DELETE_REJECTED, roleAssignment.getStatus()));
     }
 
     @Test
-    void doNot_deleteConflictRole_CaseIdUndefined_with_CaseAllocator_Ia_Admin() throws IOException {
+    void doNot_deleteConflictRole_CaseIdUndefined_with_CaseAllocator_Ia_Admin() {
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -450,9 +436,8 @@ class ConflictOfInterestTest extends DroolBase {
         executeDroolRules(Collections.singletonList(
             TestDataBuilder.buildExistingRoleForConflict("CMC", RoleCategory.ADMIN)));
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(DELETE_REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
+                                                          assertEquals(DELETE_REJECTED, roleAssignment.getStatus()));
     }
 
 }
