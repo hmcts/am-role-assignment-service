@@ -49,7 +49,7 @@ class IacJudicialCaseRoleTest extends DroolBase {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
                                                                 "case-allocator",
                                                                 SPECIFIC, "caseId",
-                                                                "1234567890123456", CREATE_REQUESTED);
+                                                                IA_CASE_ID, CREATE_REQUESTED);
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
@@ -120,7 +120,7 @@ class IacJudicialCaseRoleTest extends DroolBase {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
                                                                 "lead-judge",
                                                                 SPECIFIC, "caseId",
-                                                                "1234567890123456", CREATE_REQUESTED);
+                                                                IA_CASE_ID, CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
             .status(true).build();
@@ -147,11 +147,11 @@ class IacJudicialCaseRoleTest extends DroolBase {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
                                                                 "ftpa-judge",
                                                                 SPECIFIC, "caseId",
-                                                                "1234567890123456", CREATE_REQUESTED);
+                                                                IA_CASE_ID, CREATE_REQUESTED);
         RoleAssignment requestedRole2 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
                                                                 "hearing-panel-judge",
                                                                 SPECIFIC, "caseId",
-                                                                "1234567890123456", CREATE_REQUESTED);
+                                                                IA_CASE_ID, CREATE_REQUESTED);
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1, requestedRole2));
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
@@ -186,7 +186,7 @@ class IacJudicialCaseRoleTest extends DroolBase {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
                                                                 "hearing-panel-judge",
                                                                 SPECIFIC, "caseId",
-                                                                "1234567890123456", CREATE_REQUESTED);
+                                                                IA_CASE_ID, CREATE_REQUESTED);
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
