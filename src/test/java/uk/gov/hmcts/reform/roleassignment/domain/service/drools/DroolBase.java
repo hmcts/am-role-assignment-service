@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
@@ -12,18 +11,21 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
+import uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.Case.REGION;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.Case.BASE_LOCATION;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.Case.CASE_MANAGEMENT_LOCATION;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PUBLIC_LAW_CASE_ID;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
 
 public abstract class DroolBase {
 
@@ -32,11 +34,14 @@ public abstract class DroolBase {
     List<Object> facts;
     List<FeatureFlag> featureFlags;
 
+    public static final String IA_CASE_ID = "1234567890123450";
+
     private final RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
-    Map<String, Case> caseMap = Map.of("IA",Case.builder().id("1234567890123456").caseTypeId("Asylum").build(),
-                               "CIVIL", Case.builder().id("1234567890123458").caseTypeId("CIVIL").build(),
-                               "SSCS", Case.builder().id("1212121212121212").caseTypeId("Benefit").build(),
-                               "PRIVATELAW", Case.builder().id("1212121212121213").caseTypeId("PRLAPPS").build());
+    Map<String, Case> caseMap = Map.of("IA",Case.builder().id(IA_CASE_ID).caseTypeId("Asylum").build(),
+                               "SSCS", Case.builder().id(SSCS_CASE_ID).caseTypeId("Benefit").build(),
+                               "CIVIL", Case.builder().id(CIVIL_CASE_ID).caseTypeId("CIVIL").build(),
+                               "PRIVATELAW", Case.builder().id(PRIVATE_LAW_CASE_ID).caseTypeId("PRLAPPS").build(),
+                               "PUBLICLAW", Case.builder().id(PUBLIC_LAW_CASE_ID).caseTypeId("PUBLICLAW").build());
 
     @BeforeEach
     public void setUp() {
@@ -46,16 +51,25 @@ public abstract class DroolBase {
         featureFlags = new ArrayList<>();
 
         //build assignmentRequest
-        assignmentRequest = TestDataBuilder.getAssignmentRequest()
-            .build();
+        assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
 
         //mock the retrieveDataService to fetch the Case Object
-        Case caseObj = Case.builder().id("1234567890123456")
-            .caseTypeId("Asylum")
-            .jurisdiction("IA")
-            .securityClassification(Classification.PUBLIC)
-            .build();
-        doReturn(caseObj).when(retrieveDataService).getCaseById("1234567890123456");
+        DataStoreApiFallback dummyCases = new DataStoreApiFallback();
+        //IA
+        doReturn(dummyCases.getCaseDataV2(IA_CASE_ID))
+            .when(retrieveDataService).getCaseById(IA_CASE_ID);
+
+        //SSCS
+        doReturn(dummyCases.getCaseDataV2(SSCS_CASE_ID))
+            .when(retrieveDataService).getCaseById(SSCS_CASE_ID);
+
+        //CIVIL
+        doReturn(dummyCases.getCaseDataV2(CIVIL_CASE_ID))
+            .when(retrieveDataService).getCaseById(CIVIL_CASE_ID);
+
+        //PRIVATELAW
+        doReturn(dummyCases.getCaseDataV2(PRIVATE_LAW_CASE_ID))
+            .when(retrieveDataService).getCaseById(PRIVATE_LAW_CASE_ID);
 
         Case caseObj0 = Case.builder().id("9234567890123456")
             .caseTypeId("Asylum")
@@ -79,40 +93,6 @@ public abstract class DroolBase {
             .build();
         doReturn(caseObj3).when(retrieveDataService).getCaseById("1234567890123459");
 
-        HashMap<String, JsonNode> caseAttributes = new HashMap<>();
-        caseAttributes.put(REGION, convertValueJsonNode("1"));
-        caseAttributes.put(BASE_LOCATION, convertValueJsonNode("London"));
-
-        Case caseObj4 = Case.builder().id("1616161616161616")
-            .caseTypeId("Asylum")
-            .jurisdiction("IA")
-            .securityClassification(Classification.PUBLIC)
-            .data(Map.of(CASE_MANAGEMENT_LOCATION, convertValueJsonNode(caseAttributes)))
-            .build();
-        doReturn(caseObj4).when(retrieveDataService).getCaseById("1616161616161616");
-
-        Case caseObj5 = Case.builder().id("1212121212121212")
-            .jurisdiction("SSCS")
-            .caseTypeId("Benefit")
-            .securityClassification(Classification.PUBLIC)
-            .build();
-        doReturn(caseObj5).when(retrieveDataService).getCaseById("1212121212121212");
-
-        Case caseObj6 = Case.builder().id("1234567890123458")
-            .jurisdiction("CIVIL")
-            .caseTypeId("CIVIL")
-            .securityClassification(Classification.PUBLIC)
-            .data(Map.of(CASE_MANAGEMENT_LOCATION, convertValueJsonNode(caseAttributes)))
-            .build();
-        doReturn(caseObj6).when(retrieveDataService).getCaseById("1234567890123458");
-
-        Case caseObj7 = Case.builder().id("1212121212121213")
-            .jurisdiction("PRIVATELAW")
-            .caseTypeId("PRLAPPS")
-            .securityClassification(Classification.PUBLIC)
-            .build();
-        doReturn(caseObj7).when(retrieveDataService).getCaseById("1212121212121213");
-
         // Set up the rule engine for validation.
         KieServices ks = KieServices.Factory.get();
         KieContainer kieContainer = ks.getKieClasspathContainer();
@@ -122,18 +102,7 @@ public abstract class DroolBase {
     }
 
     void buildExecuteKieSession() {
-        // facts must contain the role config, for access to the patterns
-        facts.add(RoleConfig.getRoleConfig());
-        // facts must contain the request
-        facts.add(assignmentRequest.getRequest());
-        facts.addAll(featureFlags);
-        // facts must contain all affected role assignments
-        facts.addAll(assignmentRequest.getRequestedRoles());
-        // Run the rules
-        kieSession.execute(facts);
-
-        facts.clear();
-        featureFlags.clear();
+        executeDroolRules(Collections.emptyList());
     }
 
     void executeDroolRules(List<ExistingRoleAssignment> existingRoleAssignments) {
