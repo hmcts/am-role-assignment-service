@@ -2077,5 +2077,79 @@
         }
       }
     ]
+  },
+  {
+    "name":  "[APPBARRISTER]",
+    "label": "Applicant's Barrister",
+    "description": "Applicant's Barrister",
+    "category": "PROFESSIONAL",
+    "type": "CASE",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["DIVORCE"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["FinancialRemedyContested"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[RESPBARRISTER]",
+    "label": "Respondent's Barrister",
+    "description": "Respondent's Barrister",
+    "category": "PROFESSIONAL",
+    "type": "CASE",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["DIVORCE"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["FinancialRemedyContested"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
