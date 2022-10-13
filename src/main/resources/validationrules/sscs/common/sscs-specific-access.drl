@@ -1,4 +1,4 @@
-package validationrules.iac.common;
+package validationrules.sscs.common;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -11,7 +11,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
-import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import java.time.ZonedDateTime;
@@ -22,7 +21,7 @@ import java.time.temporal.ChronoUnit;
  * All services: "specific-access-<roleCategory?>" case creation and leadership-judge as a assigner
  */
 
-rule "iac_create_specific_access_case_role"
+rule "sscs_create_specific_access_case_role"
 when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
     $rq: Request(
@@ -35,32 +34,40 @@ when
              actorId != $rq.assignerId,
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
-             // For IAC, all roles can be approved by the same set of approver roles.
-             roleName in ("specific-access-admin", "specific-access-judiciary", "specific-access-legal-ops", "specific-access-legal-ctsc"),
-             roleCategory in (RoleCategory.ADMIN, RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS, RoleCategory.CTSC),
+             // Any of the specific-access-xxx roles, but with the right role category.
+             // TBC if the syntax below works - if not we will need 4 rules.
+             (roleName == "specific-access-admin" && roleCategory == RoleCategory.ADMIN) ||
+             (roleName == "specific-access-judiciary" && roleCategory == RoleCategory.JUDICIAL) ||
+             (roleName == "specific-access-legal-ops" && roleCategory == RoleCategory.LEGAL_OPERATIONS) ||
+             (roleName == "specific-access-ctsc" && roleCategory == RoleCategory.CTSC),
              grantType == GrantType.SPECIFIC,
              notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
-             // Only applies to IAC
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+             // Only applies to SSCS.
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
     $c:  Case(
              id == $caseId,
-             jurisdiction == "IA")
+             jurisdiction == "SSCS")
     $e: ExistingRoleAssignment(
              // The assigner must have an organisational role ...
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
-             // ... which is any of the IAC roles that can approve specific access requests ...
-             roleName == "leadership-judge",
+             // ... which is one of the SSCS approver roles ...
+             // ... and it is approving a request from the right kind of user ...
+             (roleName == "admin-approver-role" && $ra.roleName == "specific-access-admin") ||
+             (roleName == "judiciary-approver-role" && $ra.roleName == "specific-access-judiciary") ||
+             (roleName == "legal-ops-approver-role" && $ra.roleName == "specific-access-legal-ops") ||
+             (roleName == "ctsc-approver-role" && $ra.roleName == "specific-access-ctsc"),
+             // ... and the role category should match the category of the role being created ...
+             roleCategory == $ra.roleCategory,
              // ... with the usual constraints ...
              grantType == GrantType.STANDARD,
              classification.isAtLeast($c.securityClassification),
              endTime == null || endTime.isAfter(ZonedDateTime.now()),
              beginTime == null || !beginTime.isAfter(ZonedDateTime.now()),
-             // ... within the IA service.
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA",
-             // All the following should be null currently for IAC.
-             // The rules are left in place to support any changes IAC may make to how they use roles in the future.
+             // ... within the SSCS service ...
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS",
+             // ... restricted by case type, region, location and managed roles / categories, if specified ...
              attributes["caseType"] == null || attributes["caseType"].asText() == $c.caseTypeId,
              attributes["region"] == null || attributes["region"].asText() == $c.getRegion(),
              attributes["baseLocation"] == null || attributes["baseLocation"].asText() == $c.getBaseLocation(),
@@ -70,10 +77,10 @@ then
     // We copy the authorisations to allow the case config to require an authorisation
     // for (particularly judicial) role mappings
     $ra.setAuthorisations($e.getAuthorisations());
-    $ra.setAttribute("jurisdiction", "IA");
+    $ra.setAttribute("jurisdiction", "SSCS");
     $ra.setAttribute("caseType", $c.getCaseTypeId());
     $ra.setStatus(Status.CREATE_APPROVED);
-    $ra.log("Stage 1 approved : iac_create_specific_access_case_role");
+    $ra.log("Stage 1 approved : sscs_create_specific_access_case_role");
     update($ra);
-    logMsg("Rule : iac_create_specific_access_case_role");
+    logMsg("Rule : sscs_create_specific_access_case_role");
 end;
