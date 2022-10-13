@@ -42,10 +42,10 @@ when
              notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
              // Only applies to IAC
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
+             attributes["jurisdiction"] != null && $jurisdiction : attributes["jurisdiction"].asText() && attributes["jurisdiction"].asText() == "IA")
     $c:  Case(
              id == $caseId,
-             jurisdiction == "IA")
+             jurisdiction == $jurisdiction)
     $e: ExistingRoleAssignment(
              // The assigner must have an organisational role ...
              actorId == $rq.assignerId,
@@ -57,10 +57,10 @@ when
              classification.isAtLeast($c.securityClassification),
              endTime == null || endTime.isAfter(ZonedDateTime.now()),
              beginTime == null || !beginTime.isAfter(ZonedDateTime.now()),
-             // ... within the IA service.
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA",
+             // ... within the service.
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == $jurisdiction,
              // All the following should be null currently for IAC.
-             // The rules are left in place to support any changes IAC may make to how they use roles in the future.
+             // The rules are left in place to support any changes service may make to how they use roles in the future.
              attributes["caseType"] == null || attributes["caseType"].asText() == $c.caseTypeId,
              attributes["region"] == null || attributes["region"].asText() == $c.getRegion(),
              attributes["baseLocation"] == null || attributes["baseLocation"].asText() == $c.getBaseLocation(),
@@ -70,7 +70,7 @@ then
     // We copy the authorisations to allow the case config to require an authorisation
     // for (particularly judicial) role mappings
     $ra.setAuthorisations($e.getAuthorisations());
-    $ra.setAttribute("jurisdiction", "IA");
+    $ra.setAttribute("jurisdiction", $jurisdiction);
     $ra.setAttribute("caseType", $c.getCaseTypeId());
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Stage 1 approved : iac_create_specific_access_case_role");
