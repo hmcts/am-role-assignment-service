@@ -175,8 +175,11 @@ when
              // The assigner must have an organisational role ...
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION,
-             // ... with name specific-access-approver ...
-             roleName == "specific-access-approver",
+             // ... with name specific-access-approver-xxx, and correct for the requested role ...
+             (roleName == "specific-access-approver-admin" && $ra.roleName == "specific-access-admin") ||
+             (roleName == "specific-access-approver-judiciary" && $ra.roleName == "specific-access-judiciary") ||
+             (roleName == "specific-access-approver-legal-ops" && $ra.roleName == "specific-access-legal-ops") ||
+             (roleName == "specific-access-approver-ctsc" && $ra.roleName == "specific-access-ctsc"),
              // ... with all the usual constraints ...
              grantType == GrantType.STANDARD,
              classification.isAtLeast($c.securityClassification),
