@@ -45,10 +45,10 @@ when
              notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
              // Only applies to CIVIL.
-             attributes["jurisdiction"] != null && $jurisdiction : attributes["jurisdiction"].asText() && attributes["jurisdiction"].asText() == "CIVIL")
+             attributes["jurisdiction"] == null || attributes["jurisdiction"].asText() == "CIVIL")
     $c:  Case(
              id == $caseId,
-             jurisdiction == $jurisdiction)
+             jurisdiction == "CIVIL")
     $e: ExistingRoleAssignment(
              // The assigner must have an organisational role ...
              actorId == $rq.assignerId,
@@ -66,7 +66,7 @@ when
              endTime == null || endTime.isAfter(ZonedDateTime.now()),
              beginTime == null || !beginTime.isAfter(ZonedDateTime.now()),
              // ... within the service ...
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == $jurisdiction,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "CIVIL",
              // ... restricted by case type, region, location and managed roles / categories, if specified ...
              attributes["caseType"] == null || attributes["caseType"].asText() == $c.caseTypeId,
              attributes["region"] == null || attributes["region"].asText() == $c.getRegion(),
@@ -77,7 +77,7 @@ then
     // We copy the authorisations to allow the case config to require an authorisation
     // for (particularly judicial) role mappings
     $ra.setAuthorisations($e.getAuthorisations());
-    $ra.setAttribute("jurisdiction", $jurisdiction);
+    $ra.setAttribute("jurisdiction", "CIVIL");
     $ra.setAttribute("caseType", $c.getCaseTypeId());
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Stage 1 approved : civil_create_specific_access_case_role");
