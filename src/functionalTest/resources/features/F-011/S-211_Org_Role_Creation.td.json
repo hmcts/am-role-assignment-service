@@ -28,7 +28,7 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "case-allocator",
+          "roleName": "leadership-judge",
           "roleCategory": "JUDICIAL",
           "beginTime" : "2022-01-01T00:00:00Z",
           "attributes":
@@ -74,11 +74,11 @@
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
-            "roleName": "case-allocator",
+            "roleName": "leadership-judge",
             "attributes":
             {
               "jurisdiction": "IA",
-              "substantive" : "N"
+              "substantive" : "Y"
             }
           }
         ]
