@@ -93,18 +93,18 @@ class SpecificAccessDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "IA,specific-access-judiciary,JUDICIAL",
-        "IA,specific-access-admin,ADMIN",
-        "IA,specific-access-legal-ops,LEGAL_OPERATIONS",
-        "CIVIL,specific-access-judiciary,JUDICIAL",
-        "CIVIL,specific-access-admin,ADMIN",
-        "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS",
-        "PRIVATELAW,specific-access-judiciary,JUDICIAL",
-        "PRIVATELAW,specific-access-admin,ADMIN",
-        "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "IA,specific-access-judiciary,JUDICIAL,leadership-judge",
+        "IA,specific-access-admin,ADMIN,leadership-judge",
+        "IA,specific-access-legal-ops,LEGAL_OPERATIONS,leadership-judge",
+        "CIVIL,specific-access-judiciary,JUDICIAL,leadership-judge",
+        "CIVIL,specific-access-admin,ADMIN,nbc-team-leader",
+        "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS,senior-tribunal-caseworker",
+        "PRIVATELAW,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary",
+        "PRIVATELAW,specific-access-admin,ADMIN,specific-access-approver-admin",
+        "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
     })
     void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction, String roleName,
-                                                           String roleCategory) {
+                                                           String roleCategory, String approver) {
 
         Case caseDetails = caseMap.get(caseJurisdiction);
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
@@ -146,7 +146,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
                                           TestDataBuilder.CASE_ALLOCATOR_ID,
-                                          "case-allocator",
+                                          approver,
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
                                           Classification.PRIVATE,
