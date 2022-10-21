@@ -1606,5 +1606,130 @@
         }
       }
     ]
+  },
+  {
+    "name": "specific-access-approver-judicary",
+    "label": "Specific Access Approver Judicary",
+    "description": "Specific Access Approver role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-approver-legal-ops",
+    "label": "Specific Access Approver Legal Ops",
+    "description": "Specific Access Approver role for staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-approver-admin",
+    "label": "Specific Access Approver Admin",
+    "description": "Specific Access Approver role for admin users",
+    "category": "ADMIN",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-approver-ctsc",
+    "label": "Specific Access Approver CTSC",
+    "description": "Specific Access Approver role for ctsc users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
