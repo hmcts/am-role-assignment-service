@@ -48,7 +48,7 @@ when
              roleName == "[CREATOR]",
              attributes["caseType"].asText() == "Asylum",
              attributes["jurisdiction"].asText() == "IA",
-             attributes["caseId"].asText() != null)
+             attributes["caseId"] != null)
 then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : ia_delete_creator_case_roles");
