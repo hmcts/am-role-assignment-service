@@ -36,3 +36,24 @@ then
     logMsg("Rule : ia_staff_case_allocator_approved_delete_case_role_v11");
 end;
 
+/*
+ */
+rule "ia_delete_creator_case_roles"
+when
+    $rq: Request(clientId == "iac")
+    $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleCategory == RoleCategory.CITIZEN,
+             roleName == "[CREATOR]",
+             attributes["caseType"].asText() == "Asylum",
+             attributes["jurisdiction"].asText() == "IA",
+             attributes["caseId"] != null)
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : ia_delete_creator_case_roles");
+
+    update($ra);
+    logMsg("Rule :: ia_delete_creator_case_roles");
+end;
+
