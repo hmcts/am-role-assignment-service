@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
@@ -13,14 +15,17 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.CHALLENGED;
@@ -28,6 +33,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SP
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRole;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole_Ia;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole_ra;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole;
@@ -905,6 +911,73 @@ class IacStaffCaseRoleTest extends DroolBase {
 
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
+    }
+
+    @Test
+    @DisplayName("Should Approve Deletion Of Citizen Role Based On ia_delete_creator_case_roles Drool Rule")
+    void shouldApproveDeletionRequestOfCreatorRoleFromIac() {
+        Map<String,JsonNode> listOfAttributes = new HashMap<>();
+        listOfAttributes.put("caseId", JacksonUtils.convertValueJsonNode("12345"));
+        listOfAttributes.put("caseType", JacksonUtils.convertValueJsonNode("Asylum"));
+        RoleAssignment requestedRole1 = getRequestedCaseRole_Ia(RoleCategory.CITIZEN,
+                                                             "[CREATOR]",
+                                                             SPECIFIC,
+                                                             listOfAttributes,
+                                                             DELETE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        assignmentRequest.getRequest().setClientId("iac");
+        assignmentRequest.getRequest().setRequestType(RequestType.DELETE);
+
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(
+            roleAssignment -> assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus()));
+    }
+
+    static Stream<Arguments> rejectData() {
+        return Stream.of(
+            Arguments.of(null, "Asylum", RoleCategory.CITIZEN, "[CREATOR]", "iac", DELETE_REQUESTED),
+            Arguments.of("12345", "Unknown", RoleCategory.CITIZEN, "[CREATOR]", "iac", DELETE_REQUESTED),
+            Arguments.of("12345", "Asylum", RoleCategory.LEGAL_OPERATIONS, "[CREATOR]", "iac", DELETE_REQUESTED),
+            Arguments.of("12345", "Asylum", RoleCategory.CITIZEN, "[APPLICANTTWO]", "iac", DELETE_REQUESTED),
+            Arguments.of("12345", "Asylum", RoleCategory.CITIZEN, "[CREATOR]", "wa", DELETE_REQUESTED),
+            Arguments.of("12345", "Asylum", RoleCategory.CITIZEN, "[CREATOR]", "iac", CREATE_REQUESTED)
+        );
+    }
+
+    @DisplayName("Should Reject Deletion Of Citizen Role Based On ia_delete_creator_case_roles Drool Rule")
+    @ParameterizedTest
+    @MethodSource("rejectData")
+    void shouldRejectDeletionRequestOfCreatorRoleFromIac(String caseId, String caseType, RoleCategory roleCat,
+                                                         String roleName, String clientId, Status status) {
+        Map<String,JsonNode> listOfAttributes = new HashMap<>();
+        if (caseId == null) {
+            listOfAttributes.put("caseId", null);
+        } else {
+            listOfAttributes.put("caseId", JacksonUtils.convertValueJsonNode(caseId));
+        }
+        listOfAttributes.put("caseType", JacksonUtils.convertValueJsonNode(caseType));
+        RoleAssignment requestedRole1 = getRequestedCaseRole_Ia(roleCat,
+                                                             roleName,
+                                                             SPECIFIC,
+                                                             listOfAttributes,
+                                                             status);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        assignmentRequest.getRequest().setClientId(clientId);
+        assignmentRequest.getRequest().setRequestType(RequestType.DELETE);
+
+        buildExecuteKieSession();
+
+        //assertion
+        if (status == CREATE_REQUESTED) {
+            assignmentRequest.getRequestedRoles().forEach(
+                roleAssignment -> assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+        } else {
+            assignmentRequest.getRequestedRoles().forEach(
+                roleAssignment -> assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus()));
+        }
+
     }
 
 }
