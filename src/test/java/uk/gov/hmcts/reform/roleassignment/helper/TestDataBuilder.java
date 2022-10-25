@@ -131,7 +131,7 @@ public class TestDataBuilder {
         return requestedRoles;
     }
 
-    public static RoleAssignment buildRoleAssignment(Status status) throws IOException {
+    public static RoleAssignment buildRoleAssignment(Status status) {
         ZonedDateTime timeStamp = ZonedDateTime.now(ZoneOffset.UTC);
         return RoleAssignment.builder()
             .id(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
@@ -589,6 +589,28 @@ public class TestDataBuilder {
             .attributes(new HashMap<>())
             .build();
         ra.setAttribute(attributeKey, attributeVal);
+        ra.setAttribute("jurisdiction","IA");
+        return ra;
+    }
+
+    public static RoleAssignment getRequestedCaseRole_Ia(RoleCategory roleCategory, String roleName,
+                                                         GrantType grantType,
+                                                         Map<String,JsonNode> listOfAttributes,
+                                                         Status status) {
+        RoleAssignment ra = RoleAssignment.builder()
+            .id(UUID.randomUUID())
+            .actorId(UUID.randomUUID().toString())
+            .actorIdType(ActorIdType.IDAM)
+            .roleCategory(roleCategory)
+            .roleType(RoleType.CASE)
+            .roleName(roleName)
+            .grantType(grantType)
+            .classification(Classification.PUBLIC)
+            .readOnly(true)
+            .status(status)
+            .attributes(new HashMap<>())
+            .build();
+        ra.setAttributes(listOfAttributes);
         ra.setAttribute("jurisdiction","IA");
         return ra;
     }
