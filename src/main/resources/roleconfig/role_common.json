@@ -214,7 +214,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL","PRIVATELAW"]
+            "values": ["IA","SSCS", "CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -247,7 +247,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -492,7 +492,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW"]
+            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1256,7 +1256,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL","PRIVATELAW"]
+            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1355,7 +1355,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW"]
           }
         }
       }
@@ -1385,7 +1385,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW"]
           }
         }
       }
@@ -1445,7 +1445,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW"]
           }
         }
       }
@@ -1475,7 +1475,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW"]
           }
         }
       }
@@ -1535,7 +1535,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1568,7 +1568,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL", "PRIVATELAW"]
+            "values": ["IA", "CIVIL", "PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1731,5 +1731,66 @@
         }
       }
     ]
+  },
+  {
+    "name": "hearing-manager",
+    "label": "Hearing Manager",
+    "description": "Hearing Manager for ctsc users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-viewer",
+    "label": "Hearing Viewer",
+    "description": "Hearing Viewer for ctsc users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          }
+        }
+      }
+    ]
   }
 ]
+
