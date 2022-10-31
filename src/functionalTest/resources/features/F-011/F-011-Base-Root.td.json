@@ -2,20 +2,16 @@
   "_guid_": "F-011-Base-Root",
   "users": {
       "invokingUser": {
-        "username": "TEST_AM_USER2_BEFTA@test.local",
-        "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+        "_extends_": "AmBeftaUser2"
       },
     "befta4": {
-      "username": "TEST_AM_USER4_BEFTA@test.local",
-      "password": "[[$TEST_AM_USER1_BEFTA_PWD]]"
+      "_extends_": "AmBeftaUser4_2"
     },
       "befta1": {
-        "username": "TEST_AM_USER1_BEFTA@test.local",
-        "password": "[[$TEST_AM_USER1_BEFTA_PWD]]"
+        "_extends_": "AmBeftaUser1"
       },
       "befta3": {
-        "username": "TEST_AM_USER3_BEFTA@test.local",
-        "password": "[[$TEST_AM_USER3_BEFTA_PWD]]"
+        "_extends_": "AmBeftaUser3"
       }
 
   },
