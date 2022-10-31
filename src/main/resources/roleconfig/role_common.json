@@ -1839,22 +1839,15 @@
       {
         "roleType": {
           "mandatory": true,
-          "values": [
-            "ORGANISATION"
-          ]
+          "values": ["ORGANISATION"]
         },
         "grantType": {
           "mandatory": true,
-          "values": [
-            "BASIC"
-          ]
+          "values": ["BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": [
-            "PUBLIC",
-            "PRIVATE"
-          ]
+          "values": ["PUBLIC", "PRIVATE"]
         },
         "attributes": {
           "primaryLocation": {
@@ -1873,30 +1866,20 @@
           {
             "roleType": {
               "mandatory": true,
-              "values": [
-                "ORGANISATION"
-              ]
+              "values": ["ORGANISATION"]
             },
             "grantType": {
               "mandatory": true,
-              "values": [
-                "STANDARD"
-              ]
+              "values": ["STANDARD"]
             },
             "classification": {
               "mandatory": true,
-              "values": [
-                "PUBLIC",
-                "PRIVATE"
-              ]
+              "values": ["PUBLIC", "PRIVATE"]
             },
             "attributes": {
               "jurisdiction": {
                 "mandatory": true,
-                "values": [
-                  "PUBLICLAW",
-                  "PRIVATELAW"
-                ]
+                "values": ["PUBLICLAW", "PRIVATELAW"]
               },
               "primaryLocation": {
                 "mandatory": true
@@ -1916,30 +1899,20 @@
           {
             "roleType": {
               "mandatory": true,
-              "values": [
-                "ORGANISATION"
-              ]
+              "values": ["ORGANISATION"]
             },
             "grantType": {
               "mandatory": true,
-              "values": [
-                "STANDARD"
-              ]
+              "values": ["STANDARD"]
             },
             "classification": {
               "mandatory": true,
-              "values": [
-                "PUBLIC",
-                "PRIVATE"
-              ]
+              "values": ["PUBLIC", "PRIVATE"]
             },
             "attributes": {
               "jurisdiction": {
                 "mandatory": true,
-                "values": [
-                  "PUBLICLAW",
-                  "PRIVATELAW"
-                ]
+                "values": ["PUBLICLAW", "PRIVATELAW"]
               }
             }
           }
@@ -1956,30 +1929,20 @@
           {
             "roleType": {
               "mandatory": true,
-              "values": [
-                "ORGANISATION"
-              ]
+              "values": ["ORGANISATION"]
             },
             "grantType": {
               "mandatory": true,
-              "values": [
-                "STANDARD"
-              ]
+              "values": ["STANDARD"]
             },
             "classification": {
               "mandatory": true,
-              "values": [
-                "PUBLIC",
-                "PRIVATE"
-              ]
+              "values": ["PUBLIC", "PRIVATE"]
             },
             "attributes": {
               "jurisdiction": {
                 "mandatory": true,
-                "values": [
-                  "PUBLICLAW",
-                  "PRIVATELAW"
-                ]
+                "values": ["PUBLICLAW", "PRIVATELAW"]
               }
             }
           }
@@ -1988,5 +1951,3 @@
     ]
   }
  ]
-
-
