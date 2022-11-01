@@ -1659,8 +1659,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "primaryLocation": {
             "mandatory": true
@@ -1692,8 +1691,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "primaryLocation": {
             "mandatory": true
@@ -1725,8 +1723,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "mandatory": true
           },
           "primaryLocation": {
             "mandatory": true
