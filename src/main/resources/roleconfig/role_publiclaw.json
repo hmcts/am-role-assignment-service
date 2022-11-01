@@ -1,0 +1,30 @@
+{
+  "name": "specific-access-approver-judiciary",
+  "label": "Specific Access Approver Judiciary",
+  "description": "Specific access approver role for judicial users",
+  "category": "JUDICIAL",
+  "substantive": false,
+  "type": "ORGANISATION",
+  "patterns": [
+    {
+      "roleType": {
+        "mandatory": true,
+        "values": ["ORGANISATION"]
+      },
+      "grantType": {
+        "mandatory": true,
+        "values": ["STANDARD"]
+      },
+      "classification": {
+        "mandatory": true,
+        "values": ["PUBLIC", "PRIVATE"]
+      },
+      "attributes": {
+        "jurisdiction": {
+          "mandatory": true,
+          "values": ["PUBLICLAW"]
+        }
+      }
+    }
+  ]
+}
