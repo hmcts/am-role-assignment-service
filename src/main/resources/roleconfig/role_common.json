@@ -1857,98 +1857,128 @@
       }
     ]
   },
+  {
+    "name": "ctsc-team-leader",
+    "label": "CTSC Team Leader",
+    "description": "CTSC Team Leader role for ctsc users",
+    "category": "CTSC",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
       {
-        "name": "ctsc-team-leader",
-        "label": "CTSC Team Leader",
-        "description": "CTSC Team Leader role for ctsc users",
-        "category": "CTSC",
-        "substantive": true,
-        "type": "ORGANISATION",
-        "patterns": [
-          {
-            "roleType": {
-              "mandatory": true,
-              "values": ["ORGANISATION"]
-            },
-            "grantType": {
-              "mandatory": true,
-              "values": ["STANDARD"]
-            },
-            "classification": {
-              "mandatory": true,
-              "values": ["PUBLIC", "PRIVATE"]
-            },
-            "attributes": {
-              "jurisdiction": {
-                "mandatory": true,
-                "values": ["PUBLICLAW", "PRIVATELAW"]
-              },
-              "primaryLocation": {
-                "mandatory": true
-              }
-            }
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW", "PRIVATELAW"]
+          },
+          "primaryLocation": {
+            "mandatory": true
           }
-        ]
-      },
-      {
-        "name": "task-supervisor",
-        "label": "Task Supervisor",
-        "description": "Task Supervisor role for ctsc users",
-        "category": "CTSC",
-        "substantive": false,
-        "type": "ORGANISATION",
-        "patterns": [
-          {
-            "roleType": {
-              "mandatory": true,
-              "values": ["ORGANISATION"]
-            },
-            "grantType": {
-              "mandatory": true,
-              "values": ["STANDARD"]
-            },
-            "classification": {
-              "mandatory": true,
-              "values": ["PUBLIC", "PRIVATE"]
-            },
-            "attributes": {
-              "jurisdiction": {
-                "mandatory": true,
-                "values": ["PUBLICLAW", "PRIVATELAW"]
-              }
-            }
-          }
-        ]
-      },
-      {
-        "name": "case-allocator",
-        "label": "Case Allocator",
-        "description": "Case Allocator role for ctsc users",
-        "category": "CTSC",
-        "substantive": false,
-        "type": "ORGANISATION",
-        "patterns": [
-          {
-            "roleType": {
-              "mandatory": true,
-              "values": ["ORGANISATION"]
-            },
-            "grantType": {
-              "mandatory": true,
-              "values": ["STANDARD"]
-            },
-            "classification": {
-              "mandatory": true,
-              "values": ["PUBLIC", "PRIVATE"]
-            },
-            "attributes": {
-              "jurisdiction": {
-                "mandatory": true,
-                "values": ["PUBLICLAW", "PRIVATELAW"]
-              }
-            }
-          }
-        ]
+        }
       }
+    ]
+  },
+  {
+    "name": "task-supervisor",
+    "label": "Task Supervisor",
+    "description": "Task Supervisor role for ctsc users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW", "PRIVATELAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for ctsc users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW", "PRIVATELAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-approver-judiciary",
+    "label": "Specific Access Approver Judiciary",
+    "description": "Specific access approver role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          }
+        }
+      }
+    ]
+  }
 ]
 
