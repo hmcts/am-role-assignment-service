@@ -689,6 +689,42 @@
     ]
   },
   {
+    "name": "specific-access-judiciary",
+    "label": "Specific Access (judiciary)",
+    "description": "Specific access for judicial users.",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["CARE_SUPERVISION_EPO"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "specific-access-requested",
     "label": "Specific Access Requested",
     "description": "Specific access Requested for Judicial user.",
@@ -1148,6 +1184,46 @@
           },
           "caseType": {
             "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "challenged-access-judiciary",
+    "label": "Challenged Access (judiciary)",
+    "description": "Challenged access for judicial users.",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["CHALLENGED"]
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["CARE_SUPERVISION_EPO"]
           },
           "caseId": {
             "mandatory": true
