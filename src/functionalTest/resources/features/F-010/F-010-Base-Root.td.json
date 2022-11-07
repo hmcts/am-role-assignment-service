@@ -2,8 +2,7 @@
   "_guid_": "F-010-Base-Root",
   "users": {
     "invokingUser": {
-      "username": "TEST_AM_USER2_BEFTA@test.local",
-      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+      "_extends_": "AmBeftaUser2"
     }
   },
   "request": {
