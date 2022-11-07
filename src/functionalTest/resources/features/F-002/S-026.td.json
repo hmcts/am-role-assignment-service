@@ -9,8 +9,7 @@
   "uri": "/am/role-assignments?process={process}&reference={reference}",
   "users": {
     "invokingUser": {
-      "username": "TEST_AM_USER6_BEFTA@test.local",
-      "password": "[[$TEST_AM_USER2_BEFTA_PWD]]"
+      "_extends_": "AmBeftaUser6"
     }
   },
   "request": {
