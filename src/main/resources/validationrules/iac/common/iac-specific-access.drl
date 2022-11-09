@@ -36,7 +36,7 @@ when
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
              // For IAC, all roles can be approved by the same set of approver roles.
-             roleName in ("specific-access-admin", "specific-access-judiciary", "specific-access-legal-ops", "specific-access-legal-ctsc"),
+             roleName in ("specific-access-admin", "specific-access-judiciary", "specific-access-legal-ops", "specific-access-ctsc"),
              roleCategory in (RoleCategory.ADMIN, RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS, RoleCategory.CTSC),
              grantType == GrantType.SPECIFIC,
              notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
