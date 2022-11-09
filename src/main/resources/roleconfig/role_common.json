@@ -1608,8 +1608,8 @@
     ]
   },
   {
-    "name": "specific-access-approver-judicary",
-    "label": "Specific Access Approver Judicary",
+    "name": "specific-access-approver-judiciary",
+    "label": "Specific Access Approver judiciary",
     "description": "Specific Access Approver role for judicial users",
     "category": "JUDICIAL",
     "substantive": false,
