@@ -1731,5 +1731,98 @@
         }
       }
     ]
+  },
+  {
+    "name": "hmcts-ctsc",
+    "label": "HMCTS CTSC",
+    "description": "HMCTS CTSC role for ctsc users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+
+        }
+      }
+    ]
+  },
+  {
+    "name": "ctsc",
+    "label": "CTSC",
+    "description": "CTSC role for ctsc users",
+    "category": "CTSC",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL","PRIVATELAW"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "ctsc-team-leader",
+    "label": "CTSC Team Leader",
+    "description": "CTSC Team Leader role for ctsc users",
+    "category": "CTSC",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL","PRIVATELAW"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
