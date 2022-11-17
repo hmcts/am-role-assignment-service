@@ -823,15 +823,16 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["SPECIFIC","BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["RESTRICTED","PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -978,15 +979,16 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["SPECIFIC","BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["RESTRICTED","PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1182,7 +1184,86 @@
         },
         "attributes": {
           "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
+          },
+          "caseType": {
             "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "challenged-access-ctsc",
+    "label": "Challenged Access (ctsc)",
+    "description": "Challenged access for staff users.",
+    "category": "ADMIN",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["CHALLENGED"]
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-ctsc",
+    "label": "Specific Access (ctsc)",
+    "description": "Specific Access CTSC users.",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC","BASIC"]
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1220,7 +1301,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
