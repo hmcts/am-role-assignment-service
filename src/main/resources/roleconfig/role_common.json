@@ -676,46 +676,11 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "specific-access-judiciary",
-    "label": "Specific Access (judiciary)",
-    "description": "Specific access for judicial users.",
-    "category": "JUDICIAL",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
           },
           "caseId": {
             "mandatory": true
@@ -859,15 +824,16 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["SPECIFIC","BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["RESTRICTED","PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1014,15 +980,16 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["SPECIFIC","BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["RESTRICTED","PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1180,90 +1147,11 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "challenged-access-judiciary",
-    "label": "Challenged Access (judiciary)",
-    "description": "Challenged access for judicial users.",
-    "category": "JUDICIAL",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["CHALLENGED"]
-        },
-        "endTime": {
-          "mandatory": true
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "challenged-access-legal-operations",
-    "label": "Challenged Access (legal-operations)",
-    "description": "Challenged access for staff users.",
-    "category": "LEGAL_OPERATIONS",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["CHALLENGED"]
-        },
-        "endTime": {
-          "mandatory": true
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
           },
           "caseId": {
             "mandatory": true
@@ -1298,7 +1186,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1336,7 +1225,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1354,12 +1244,12 @@
     "description": "Challenged access for staff users.",
     "category": "ADMIN",
     "substantive": false,
-    "type": "ORGANISATION",
+    "type": "CASE",
     "patterns": [
       {
         "roleType": {
           "mandatory": true,
-          "values": ["ORGANISATION"]
+          "values": ["CASE"]
         },
         "grantType": {
           "mandatory": true,
@@ -1378,8 +1268,7 @@
             "values": ["PUBLICLAW"]
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -1429,108 +1318,28 @@
     ]
   },
   {
-    "name": "specific-access-legal-operations",
-    "label": "Specific Access (legal-ops)",
-    "description": "Specific Access Legal Ops users.",
-    "category": "LEGAL_OPERATIONS",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "endTime": {
-          "mandatory": true
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
     "name": "specific-access-ctsc",
     "label": "Specific Access (ctsc)",
     "description": "Specific Access CTSC users.",
     "category": "CTSC",
     "substantive": false,
-    "type": "ORGANISATION",
+    "type": "CASE",
     "patterns": [
       {
         "roleType": {
           "mandatory": true,
-          "values": ["ORGANISATION"]
+          "values": ["CASE"]
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["SPECIFIC","BASIC"]
         },
         "endTime": {
           "mandatory": true
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "specific-access-admin",
-    "label": "Specific Access (Admin)",
-    "description": "Specific Access admin users.",
-    "category": "ADMIN",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "endTime": {
-          "mandatory": true
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
+          "values": ["PUBLIC","PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
