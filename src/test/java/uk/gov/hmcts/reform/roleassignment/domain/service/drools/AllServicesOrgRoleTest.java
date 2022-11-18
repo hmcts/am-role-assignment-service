@@ -449,7 +449,8 @@ class AllServicesOrgRoleTest extends DroolBase {
         "national-business-centre,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
         "hearing-centre-team-leader,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
         "hearing-centre-admin,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
-        "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC"
+        "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "magistrate,JUDICIAL,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC"
     })
     void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
                                           String region, String jurisdiction, String primaryLocation,
@@ -533,6 +534,8 @@ class AllServicesOrgRoleTest extends DroolBase {
         "nbc-team-leader,ADMIN,STANDARD,north-east,SSCS,ORGANISATION",
         "national-business-centre,ADMIN,STANDARD,north-east,IA,ORGANISATION",
         "ctsc-team-leader,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,ORGANISATION",
+        "magistrate,LEGAL_OPERATIONS,STANDARD,north-east,PRIVATELAW,ORGANISATION"
+
     })
     void shouldRejectRequestedRoleForOrg(String roleName, String roleCategory,
                                          String grantType, String region, String jurisdiction,
