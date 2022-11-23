@@ -37,8 +37,8 @@ when
              actorId == $rq.authenticatedUserId,
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.CASE,
-             roleName in ("challenged-access-admin", "challenged-access-judiciary", "challenged-access-legal-ops"),
-             roleCategory in (RoleCategory.ADMIN, RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS),
+             roleName in ("challenged-access-admin", "challenged-access-judiciary", "challenged-access-legal-ops","challenged-access-ctsc"),
+             roleCategory in (RoleCategory.ADMIN, RoleCategory.JUDICIAL, RoleCategory.LEGAL_OPERATIONS,RoleCategory.CTSC),
              grantType == GrantType.CHALLENGED,
              endTime != null && !endTime.isAfter(ZonedDateTime.now(ZoneOffset.UTC).truncatedTo(ChronoUnit.DAYS).plusDays(1))
              && !endTime.isBefore(ZonedDateTime.now(ZoneOffset.UTC)), /* request cannot have past end time */

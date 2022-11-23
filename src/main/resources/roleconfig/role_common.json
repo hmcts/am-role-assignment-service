@@ -1448,6 +1448,44 @@
     ]
   },
   {
+    "name": "challenged-access-ctsc",
+    "label": "Challenged Access (ctsc)",
+    "description": "Challenged access for ctsc users.",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["CHALLENGED"]
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "hearing-centre-admin",
     "label": "Hearing Centre Administrator",
     "description": "Hearing Centre Administrator role for admin users",
