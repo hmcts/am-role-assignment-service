@@ -32,6 +32,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "CIVIL,challenged-access-judiciary,JUDICIAL",
         "CIVIL,challenged-access-admin,ADMIN",
         "CIVIL,challenged-access-legal-ops,LEGAL_OPERATIONS",
+        "CIVIL,challenged-access-ctsc,CTSC",
         "PRIVATELAW,challenged-access-judiciary,JUDICIAL",
         "PRIVATELAW,challenged-access-admin,ADMIN",
         "PRIVATELAW,challenged-access-legal-ops,LEGAL_OPERATIONS",
@@ -98,6 +99,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "IA,challenged-access-legal-ops,LEGAL_OPERATIONS",
         "CIVIL,challenged-access-judiciary,JUDICIAL",
         "CIVIL,challenged-access-admin,ADMIN",
+        "CIVIL,challenged-access-ctsc,CTSC",
         "CIVIL,challenged-access-legal-ops,LEGAL_OPERATIONS",
         "PRIVATELAW,challenged-access-judiciary,JUDICIAL",
         "PRIVATELAW,challenged-access-admin,ADMIN",
@@ -166,6 +168,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "CIVIL,challenged-access-judiciary,JUDICIAL",
         "CIVIL,challenged-access-admin,ADMIN",
         "CIVIL,challenged-access-legal-ops,LEGAL_OPERATIONS",
+        "CIVIL,challenged-access-ctsc,CTSC",
         "PRIVATELAW,challenged-access-judiciary,JUDICIAL",
         "PRIVATELAW,challenged-access-admin,ADMIN",
         "PRIVATELAW,challenged-access-legal-ops,LEGAL_OPERATIONS",
@@ -225,6 +228,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
     @CsvSource({
         "challenged-access-legal-ops,JUDICIAL",
         "challenged-access-judiciary,ADMIN",
+        "challenged-access-ctsc,CTSC",
         "challenged-access-admin,LEGAL_OPERATIONS",
     })
     void shouldRejectAccessFor_ChallengedAccess_IncorrectRoleName(String roleName, String roleCategory) {
@@ -280,6 +284,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
     @CsvSource({
         "challenged-access-judiciary,JUDICIAL",
         "challenged-access-admin,ADMIN",
+        "challenged-access-ctsc,CTSC",
         "challenged-access-legal-ops,LEGAL_OPERATIONS",
     })
     void shouldRejectAccessFor_ChallengedAccess_IncorrectFlagEnabled(String roleName,
@@ -336,6 +341,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
     @CsvSource({
         "challenged-access-judiciary,JUDICIAL",
         "challenged-access-admin,ADMIN",
+        "challenged-access-ctsc,CTSC",
         "challenged-access-legal-ops,LEGAL_OPERATIONS",
     })
     void shouldRejectAccessFor_ChallengedAccess_InsufficientNotes(String roleName, String roleCategory) {
@@ -390,6 +396,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
     @CsvSource({
         "challenged-access-judiciary,JUDICIAL",
         "challenged-access-admin,ADMIN",
+        "challenged-access-ctsc,CTSC",
         "challenged-access-legal-ops,LEGAL_OPERATIONS",
     })
     void shouldRejectAccessFor_ChallengedAccess_PastEndTime(String roleName, String roleCategory) {
@@ -448,6 +455,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
     @CsvSource({
         "challenged-access-judiciary,JUDICIAL",
         "challenged-access-admin,ADMIN",
+        "challenged-access-ctsc,CTSC",
         "challenged-access-legal-ops,LEGAL_OPERATIONS",
     })
     void shouldRejectAccessFor_ChallengedAccess_ExistingPastEndTime(String roleName, String roleCategory) {
