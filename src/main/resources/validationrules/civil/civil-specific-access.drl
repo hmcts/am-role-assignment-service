@@ -57,7 +57,8 @@ when
              // ... and it is approving a request from the right kind of user ...
             (roleName in ("nbc-team-leader", "hearing-centre-team-leader", "ctsc-team-leader") && $ra.roleName == "specific-access-admin") ||
             (roleName == "leadership-judge" && $ra.roleName == "specific-access-judiciary") ||
-            (roleName == "senior-tribunal-caseworker" && $ra.roleName == "specific-access-legal-ops"),
+            (roleName == "senior-tribunal-caseworker" && $ra.roleName == "specific-access-legal-ops")||
+            (roleName == "ctsc-team-leader" && $ra.roleName == "specific-access-ctsc"),
              // ... and the role category should match the category of the role being created ...
              roleCategory == $ra.roleCategory,
              // ... with the usual constraints ...
