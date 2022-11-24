@@ -32,6 +32,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "CIVIL,specific-access-judiciary,JUDICIAL,STANDARD",
         "CIVIL,specific-access-admin,ADMIN,STANDARD",
         "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
+        "CIVIL,specific-access-ctsc,CTSC,STANDARD",
         "CIVIL,specific-access-judiciary,JUDICIAL,BASIC",
         "CIVIL,specific-access-admin,ADMIN,BASIC",
         "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS,BASIC",
@@ -99,6 +100,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "CIVIL,specific-access-judiciary,JUDICIAL,leadership-judge",
         "CIVIL,specific-access-admin,ADMIN,nbc-team-leader",
         "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS,senior-tribunal-caseworker",
+        "CIVIL,specific-access-ctsc,CTSC,ctsc-team-leader",
         "PRIVATELAW,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary",
         "PRIVATELAW,specific-access-admin,ADMIN,specific-access-approver-admin",
         "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
@@ -177,6 +179,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "CIVIL,specific-access-judiciary,JUDICIAL",
         "CIVIL,specific-access-admin,ADMIN",
         "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "CIVIL,specific-access-ctsc,CTSC",
         "PRIVATELAW,specific-access-judiciary,JUDICIAL",
         "PRIVATELAW,specific-access-admin,ADMIN",
         "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS"
@@ -242,6 +245,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "CIVIL,specific-access-judiciary,JUDICIAL",
         "CIVIL,specific-access-admin,ADMIN",
         "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "CIVIL,specific-access-ctsc,CTSC",
         "PRIVATELAW,specific-access-judiciary,JUDICIAL",
         "PRIVATELAW,specific-access-admin,ADMIN",
         "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS",
@@ -314,6 +318,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "specific-access-denied,anyClient,JUDICIAL",
         "specific-access-denied,anyClient,ADMIN",
         "specific-access-denied,anyClient,LEGAL_OPERATIONS",
+        "specific-access-denied,anyClient,CTSC",
         "specific-access-requested,xui_webapp,JUDICIAL",
         "specific-access-requested,xui_webapp,ADMIN",
         "specific-access-requested,xui_webapp,LEGAL_OPERATIONS"
@@ -356,6 +361,7 @@ class SpecificAccessDroolsTest extends DroolBase {
     @CsvSource({
         "specific-access-judiciary,JUDICIAL",
         "specific-access-admin,ADMIN",
+        "specific-access-ctsc,CTSC",
         "specific-access-legal-ops,LEGAL_OPERATIONS"
     })
     void shouldRejectAccessFor_SpecificAccess_IncorrectFlagEnabled(String roleName, String roleCategory) {
@@ -412,6 +418,7 @@ class SpecificAccessDroolsTest extends DroolBase {
     @CsvSource({
         "specific-access-judiciary,JUDICIAL",
         "specific-access-admin,ADMIN",
+        "specific-access-ctsc,CTSC",
         "specific-access-legal-ops,LEGAL_OPERATIONS"
     })
     void shouldRejectAccessFor_SpecificAccess_InsufficientNotes(String roleName, String roleCategory) {
