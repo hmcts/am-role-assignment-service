@@ -45,7 +45,7 @@ end;
  * PRIVATELAW "allocated-magistrate" case validation rule.
  */
 
-rule "privatelaw_allocated-magistrate_create_case_roles"
+rule "privatelaw_allocated_magistrate_create_case_roles"
 when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
@@ -61,7 +61,7 @@ then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : privatelaw_allocated-magistrate_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : privatelaw_allocated-magistrate_create_case_roles");
+    logMsg("Rule : privatelaw_allocated_magistrate_create_case_roles");
 end;
 
 /*
