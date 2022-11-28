@@ -59,7 +59,7 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PRIVATELAW")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : privatelaw_allocated-magistrate_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : privatelaw_allocated_magistrate_create_case_roles");
     update($ca.getRoleAssignment());
     logMsg("Rule : privatelaw_allocated_magistrate_create_case_roles");
 end;
