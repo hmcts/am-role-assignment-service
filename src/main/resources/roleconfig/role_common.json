@@ -2263,8 +2263,7 @@
           "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
