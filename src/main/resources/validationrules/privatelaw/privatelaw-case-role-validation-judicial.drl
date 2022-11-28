@@ -42,6 +42,29 @@ then
 end;
 
 /*
+ * PRIVATELAW "allocated-magistrate" case validation rule.
+ */
+
+rule "privatelaw_allocated_magistrate_create_case_roles"
+when
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "PRIVATELAW",
+                 roleAssignment.attributes["caseType"].asText() == "PRLAPPS",
+                 roleAssignment.roleName in ("allocated-magistrate"))
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("magistrate"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PRIVATELAW")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : privatelaw_allocated_magistrate_create_case_roles");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : privatelaw_allocated_magistrate_create_case_roles");
+end;
+
+/*
  * The case roles can be deleted if CaseAllocatorApproval entity is available for requested role assignment.
  */
 rule "privatelaw_staff_case_allocator_approved_delete_case_role"
