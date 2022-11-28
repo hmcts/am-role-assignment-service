@@ -425,7 +425,7 @@ dependencies {
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.69'
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.69'
   implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.14.Final'
-  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.1'
+  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.2'
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.5.0'
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.23'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
@@ -440,7 +440,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '2.1.1'
   //Added for S2S and User Authentication
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.reformS2sClient
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.0'
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.1'
   implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: '2.14.0', ext: 'pom'
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.0.1')
