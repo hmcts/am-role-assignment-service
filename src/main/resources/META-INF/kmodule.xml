@@ -10,7 +10,8 @@
                   validationrules.sscs,
                   validationrules.sscs.common,
                   validationrules.civil.common,
-                  validationrules.privatelaw">
+                  validationrules.privatelaw,
+                  validationrules.publiclaw">
       <ksession name="role-assignment-validation-session" type="stateless"/>
   </kbase>
 </kmodule>
