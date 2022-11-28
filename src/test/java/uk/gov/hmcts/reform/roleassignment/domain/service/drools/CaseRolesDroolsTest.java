@@ -41,7 +41,9 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,case-allocator,LEGAL_OPERATIONS,case-allocator,N",
         "SSCS,Benefit,registrar,LEGAL_OPERATIONS,registrar,N",
         "SSCS,Benefit,tribunal-caseworker,LEGAL_OPERATIONS,tribunal-caseworker,N",
-        "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,judge,"
+        "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,judge,",
+        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,magistrate,Y"
+
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName, String roleCategory,
                                        String existingRoleName, String expectedSubstantive) {
@@ -124,7 +126,8 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,case-allocator",
         "SSCS,Benefit,registrar",
         "SSCS,Benefit,tribunal-caseworker",
-        "PRIVATELAW,PRLAPPS,hearing-judge"
+        "PRIVATELAW,PRLAPPS,hearing-judge",
+        "PRIVATELAW,PRLAPPS,allocated-magistrate"
     })
     void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
 
