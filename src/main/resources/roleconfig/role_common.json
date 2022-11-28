@@ -486,7 +486,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","PRIVATELAW"]
+            "values": ["IA","SSCS","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1493,126 +1493,6 @@
     ]
   },
   {
-    "name": "challenged-access-admin",
-    "label": "Challenged Access (admin)",
-    "description": "Challenged access for admin users.",
-    "category": "ADMIN",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["CHALLENGED"]
-        },
-        "endTime": {
-          "mandatory": true
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "specific-access-ctsc",
-    "label": "Specific Access (ctsc)",
-    "description": "Specific Access CTSC users.",
-    "category": "CTSC",
-    "substantive": false,
-    "type": "CASE",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["CASE"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC","BASIC"]
-        },
-        "endTime": {
-          "mandatory": true
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC","PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-    {
-    "name": "challenged-access-admin",
-    "label": "Challenged Access (admin)",
-    "description": "Challenged access for admin users.",
-    "category": "ADMIN",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["CHALLENGED"]
-        },
-        "endTime": {
-          "mandatory": true
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["CARE_SUPERVISION_EPO"]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
     "name": "challenged-access-ctsc",
     "label": "Challenged Access (ctsc)",
     "description": "Challenged access for ctsc users.",
@@ -2360,6 +2240,71 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["PUBLICLAW", "PRIVATELAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-judge",
+    "label": "Allocated Judge",
+    "description": "Allocated Judge role for Judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-magistrate",
+    "label": "Allocated Magistrate",
+    "description": "Allocated Magistrate role for Judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
           }
         }
       }
