@@ -499,6 +499,41 @@
     ]
   },
   {
+    "name": "allocated-magistrate",
+    "label": "Allocated-Magistrate",
+    "description": "Allocated Magistrate role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PRIVATELAW"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "leadership-judge",
     "label": "Leadership Judge",
     "description": "Leadership Judge role for judicial users",
@@ -1953,6 +1988,37 @@
       }
     ]
   },
+  {
+    "name": "magistrate",
+    "label": "Magistrate",
+    "description": "Magistrate role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PRIVATELAW"]
+          }
+        }
+      }
+    ]
+  },
+
   {
     "name": "specific-access-approver-ctsc",
     "label": "Specific Access Approver CTSC",
