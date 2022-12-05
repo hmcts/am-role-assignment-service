@@ -56,7 +56,7 @@ def versions = [
   drools         : '7.69.0.Final',
   launchDarklySdk: '5.10.3',
   log4JVersion   : '2.17.1',
-  logbackVersion : '1.2.10'
+  logbackVersion : '1.4.5'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
