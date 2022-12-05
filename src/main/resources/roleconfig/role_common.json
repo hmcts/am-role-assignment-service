@@ -1575,7 +1575,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL"]
+            "values": ["CIVIL"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2036,7 +2036,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW"]
+            "values": ["CIVIL","PRIVATELAW","IA"]
           },
           "primaryLocation": {
             "mandatory": true

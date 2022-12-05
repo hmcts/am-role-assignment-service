@@ -96,6 +96,7 @@ class SpecificAccessDroolsTest extends DroolBase {
     @CsvSource({
         "IA,specific-access-judiciary,JUDICIAL,leadership-judge",
         "IA,specific-access-admin,ADMIN,leadership-judge",
+        "IA,specific-access-ctsc,CTSC,leadership-judge",
         "IA,specific-access-legal-ops,LEGAL_OPERATIONS,leadership-judge",
         "CIVIL,specific-access-judiciary,JUDICIAL,leadership-judge",
         "CIVIL,specific-access-admin,ADMIN,nbc-team-leader",
