@@ -106,7 +106,7 @@ import java.time.temporal.ChronoUnit;
      $e: ExistingRoleAssignment(
               actorId == $ra.actorId,
               roleType == RoleType.CASE,
-              roleName == "specific-access-requested",
+              roleName == "specific-access-requested" || roleName == $ra.roleName,
               roleCategory == $ra.roleCategory,
               attributes["requestedRole"] != null && $ra.attributes["requestedRole"] != null &&
               attributes["requestedRole"].asText() == $ra.attributes["requestedRole"].asText())

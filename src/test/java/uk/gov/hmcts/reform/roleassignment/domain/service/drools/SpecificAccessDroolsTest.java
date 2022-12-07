@@ -242,6 +242,80 @@ class SpecificAccessDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
+        "IA,specific-access-judiciary,JUDICIAL,specific-access-requested,specific-access-granted",
+        "IA,specific-access-admin,ADMIN,specific-access-requested,specific-access-granted",
+        "IA,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-requested,specific-access-granted",
+        "IA,specific-access-judiciary,JUDICIAL,specific-access-requested,specific-access-denied",
+        "IA,specific-access-admin,ADMIN,specific-access-requested,specific-access-denied",
+        "IA,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-requested,specific-access-denied",
+        "IA,specific-access-judiciary,JUDICIAL,specific-access-denied,specific-access-denied",
+        "IA,specific-access-admin,ADMIN,specific-access-denied,specific-access-denied",
+        "IA,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-denied,specific-access-denied",
+        "IA,specific-access-judiciary,JUDICIAL,specific-access-granted,specific-access-granted",
+        "IA,specific-access-admin,ADMIN,specific-access-granted,specific-access-granted",
+        "IA,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-granted,specific-access-granted"
+    })
+    void shouldReplace_SpecificAccessGrantedAndDenied_XuiClient(String jurisdiction,
+                                                                String requestedCategorisedRole,
+                                                                String roleCategory,
+                                                                String existingRole,
+                                                                String requestedGrantedOrDeniedRole) {
+
+        Case caseDetails = caseMap.get(jurisdiction);
+        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
+        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
+        roleAssignmentAttributes.put("caseTypeId", convertValueJsonNode(caseDetails.getCaseTypeId()));
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(requestedCategorisedRole));
+
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
+                "specific-access",
+                requestedGrantedOrDeniedRole,
+                RoleCategory.valueOf(roleCategory),
+                RoleType.CASE,
+                roleAssignmentAttributes,
+                Classification.PRIVATE,
+                GrantType.BASIC,
+                Status.CREATE_REQUESTED,
+                "xui_webapp",
+                true,
+                "Access required for reasons",
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
+            )
+            .build();
+
+        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
+        existingAttributes.put("jurisdiction", convertValueJsonNode(caseDetails.getJurisdiction()));
+        existingAttributes.put("caseTypeId", convertValueJsonNode(caseDetails.getCaseTypeId()));
+        existingAttributes.put("requestedRole", convertValueJsonNode(requestedCategorisedRole));
+
+        executeDroolRules(List.of(TestDataBuilder
+                                      .buildExistingRoleForDrools(
+                                          "4772dc44-268f-4d0c-8f83-f0fb662aac84",
+                                          existingRole,
+                                          RoleCategory.valueOf(roleCategory),
+                                          existingAttributes,
+                                          Classification.PRIVATE,
+                                          GrantType.BASIC,
+                                          RoleType.CASE
+                                      )));
+
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            Assertions.assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+            Assertions.assertEquals(caseDetails.getCaseTypeId(),
+                                    roleAssignment.getAttributes().get("caseType").asText());
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
         "CIVIL,specific-access-judiciary,JUDICIAL",
         "CIVIL,specific-access-admin,ADMIN",
         "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS",
@@ -699,8 +773,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         existingRoleAssignment.setBeginTime(ZonedDateTime.now().plusDays(2L));
         executeDroolRules(List.of(existingRoleAssignment));
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles()
+            .forEach(roleAssignment -> Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
 }
