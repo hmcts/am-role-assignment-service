@@ -104,6 +104,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PRIVATELAW,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary",
         "PRIVATELAW,specific-access-admin,ADMIN,specific-access-approver-admin",
         "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
+        "PRIVATELAW,specific-access-ctsc,CTSC,specific-access-approver-ctsc",
     })
     void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction, String roleName,
                                                            String roleCategory, String approver) {
