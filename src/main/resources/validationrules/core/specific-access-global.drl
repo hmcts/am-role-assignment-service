@@ -132,7 +132,7 @@ import java.time.temporal.ChronoUnit;
      $ra: RoleAssignment(
               status == Status.DELETE_REQUESTED,
               roleType == RoleType.CASE,
-              roleName == "specific-access-requested"
+              roleName == "specific-access-requested")
  then
      $ra.setStatus(Status.DELETE_APPROVED);
      $ra.log("Stage 1 approved : delete_specific_access_granted_or_denied_case_role");
