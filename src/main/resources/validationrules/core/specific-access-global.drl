@@ -106,7 +106,7 @@ import java.time.temporal.ChronoUnit;
      $e: ExistingRoleAssignment(
               actorId == $ra.actorId,
               roleType == RoleType.CASE,
-              roleName == "specific-access-requested",
+              roleName == "specific-access-requested" || roleName == $ra.roleName,
               roleCategory == $ra.roleCategory,
               attributes["requestedRole"] != null && $ra.attributes["requestedRole"] != null &&
               attributes["requestedRole"].asText() == $ra.attributes["requestedRole"].asText())
@@ -132,7 +132,10 @@ import java.time.temporal.ChronoUnit;
      $ra: RoleAssignment(
               status == Status.DELETE_REQUESTED,
               roleType == RoleType.CASE,
-              roleName == "specific-access-requested")
+              roleName == "specific-access-requested" ||
+              roleName == "specific-access-granted" || roleName == "specific-access-denied" ||
+              roleName == "specific-access-legal-ops" || roleName == "specific-access-admin" ||
+              roleName == "specific-access-ctsc" || roleName == "specific-access-judiciary")
  then
      $ra.setStatus(Status.DELETE_APPROVED);
      $ra.log("Stage 1 approved : delete_specific_access_granted_or_denied_case_role");
