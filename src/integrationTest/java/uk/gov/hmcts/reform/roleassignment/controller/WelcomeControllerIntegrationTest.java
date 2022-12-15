@@ -75,11 +75,8 @@ public class WelcomeControllerIntegrationTest extends BaseTest {
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
          scripts = {"classpath:sql/insert_role_assignment_request.sql"})
-    public void shouldGetRequestStatusFromRequestTable() throws Exception {
-        final Object[] parameters = new Object[] {
-            REQUEST_ID
-        };
-        var status = template.queryForObject(GET_STATUS, parameters, String.class);
+    public void shouldGetRequestStatusFromRequestTable() {
+        var status = template.queryForObject(GET_STATUS, String.class, REQUEST_ID);
         logger.info(" Role assignment request status is...{}", status);
         assertEquals(
             "Role assignment request status", "APPROVED", status);

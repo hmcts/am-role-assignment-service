@@ -470,7 +470,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     }
 
     public List<String> getStatusFromHistory() {
-        return template.queryForList(GET_ASSIGNMENT_STATUS_QUERY, new Object[]{ACTOR_ID}, String.class);
+        return template.queryForList(GET_ASSIGNMENT_STATUS_QUERY, String.class, ACTOR_ID);
     }
 
     public Integer getStatusCount(String status) {
@@ -478,6 +478,6 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     }
 
     public String getActorFromAssignmentTable() {
-        return template.queryForObject(GET_ACTOR_FROM_ASSIGNMENT_QUERY, new Object[]{ACTOR_ID}, String.class);
+        return template.queryForObject(GET_ACTOR_FROM_ASSIGNMENT_QUERY, String.class, ACTOR_ID);
     }
 }

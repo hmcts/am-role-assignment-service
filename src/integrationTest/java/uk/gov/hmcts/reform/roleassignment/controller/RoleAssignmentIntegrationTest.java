@@ -275,10 +275,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     }
 
     private void assertRoleAssignmentRecordSize() {
-        final Object[] assignmentId = new Object[]{
-            ROLE_ASSIGNMENT_ID
-        };
-        var actorId = template.queryForObject(GET_ASSIGNMENT_STATUS_QUERY, assignmentId, String.class);
+        var actorId = template.queryForObject(GET_ASSIGNMENT_STATUS_QUERY, String.class, ROLE_ASSIGNMENT_ID);
         logger.info(" Role assignment actor id is...{}", actorId);
         assertEquals(
             "Role assignment actor Id", ACTOR_ID, actorId);
