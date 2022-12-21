@@ -771,8 +771,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
             "mandatory": true
@@ -927,8 +926,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
             "mandatory": true
@@ -1083,8 +1081,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
             "mandatory": true
@@ -1397,8 +1394,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
             "mandatory": true
@@ -1436,8 +1432,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
             "mandatory": true
@@ -1475,8 +1470,7 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
+            "mandatory": true
           },
           "caseType": {
             "mandatory": true
@@ -2106,7 +2100,7 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC"]
+          "values": ["PUBLIC", "PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
@@ -2324,7 +2318,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "values": ["PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
