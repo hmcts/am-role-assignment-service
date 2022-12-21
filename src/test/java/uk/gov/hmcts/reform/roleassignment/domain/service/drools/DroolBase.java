@@ -71,6 +71,10 @@ public abstract class DroolBase {
         doReturn(dummyCases.getCaseDataV2(PRIVATE_LAW_CASE_ID))
             .when(retrieveDataService).getCaseById(PRIVATE_LAW_CASE_ID);
 
+        //PUBLICLAW
+        doReturn(dummyCases.getCaseDataV2(PUBLIC_LAW_CASE_ID))
+            .when(retrieveDataService).getCaseById(PUBLIC_LAW_CASE_ID);
+
         Case caseObj0 = Case.builder().id("9234567890123456")
             .caseTypeId("Asylum")
             .jurisdiction("IA")
