@@ -16,7 +16,7 @@
       "grantType": "SPECIFIC",
       "readOnly": false,
       "beginTime": "2021-01-01T00:00Z",
-      "endTime": "2024-01-01T00:00Z",
+      "endTime": "2025-01-01T00:00Z",
       "attributes": {
         "jurisdiction": "divorce",
         "region": "south-east",
@@ -43,7 +43,7 @@
       "classification": "PUBLIC",
       "readOnly": false,
       "beginTime": "2021-01-01T00:00Z",
-      "endTime": "2024-01-01T00:00Z",
+      "endTime": "2025-01-01T00:00Z",
       "attributes": {
         "jurisdiction": "divorce",
         "region": "south-east",
