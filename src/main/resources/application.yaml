@@ -120,6 +120,8 @@ idam:
       userId: ${ROLE_ASSIGNMENT_IDAM_ADMIN_USERID:}
       secret: ${ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:}
       scope: ${ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE:openid profile roles authorities}
+  apachehttpclient:
+    enable: false
 
 
 testS2S:
@@ -137,6 +139,10 @@ feign:
         url: ${CCD_DATA_STORE_URL:http://localhost:4452}
   hystrix:
     enabled: ${ENABLE_FEIGN_HYSTRIX:true}
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true
 
 swaggerUrl: ${TEST_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
