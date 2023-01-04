@@ -2012,7 +2012,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW"]
+            "values": ["PRIVATELAW","PUBLICLAW"]
           }
         }
       }
