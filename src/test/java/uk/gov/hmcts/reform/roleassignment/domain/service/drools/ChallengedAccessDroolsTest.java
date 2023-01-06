@@ -29,6 +29,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "IA,challenged-access-judiciary,JUDICIAL",
         "IA,challenged-access-admin,ADMIN",
         "IA,challenged-access-legal-ops,LEGAL_OPERATIONS",
+        "IA,challenged-access-ctsc,CTSC",
         "CIVIL,challenged-access-judiciary,JUDICIAL",
         "CIVIL,challenged-access-admin,ADMIN",
         "CIVIL,challenged-access-legal-ops,LEGAL_OPERATIONS",
@@ -36,6 +37,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "PRIVATELAW,challenged-access-judiciary,JUDICIAL",
         "PRIVATELAW,challenged-access-admin,ADMIN",
         "PRIVATELAW,challenged-access-legal-ops,LEGAL_OPERATIONS",
+        "PRIVATELAW,challenged-access-ctsc,CTSC",
     })
     void shouldGrantAccessFor_ChallengedAccess(String jurisdiction, String roleName, String roleCategory) {
         Case caseDetails = caseMap.get(jurisdiction);
@@ -97,6 +99,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "IA,challenged-access-judiciary,JUDICIAL",
         "IA,challenged-access-admin,ADMIN",
         "IA,challenged-access-legal-ops,LEGAL_OPERATIONS",
+        "IA,challenged-access-ctsc,CTSC",
         "CIVIL,challenged-access-judiciary,JUDICIAL",
         "CIVIL,challenged-access-admin,ADMIN",
         "CIVIL,challenged-access-ctsc,CTSC",
@@ -104,6 +107,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "PRIVATELAW,challenged-access-judiciary,JUDICIAL",
         "PRIVATELAW,challenged-access-admin,ADMIN",
         "PRIVATELAW,challenged-access-legal-ops,LEGAL_OPERATIONS",
+        "PRIVATELAW,challenged-access-ctsc,CTSC",
     })
     void shouldGrantAccessFor_ChallengedAccess_MaxAttributes(String jurisdiction, String roleName,
                                                              String roleCategory) {

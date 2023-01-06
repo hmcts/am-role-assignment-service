@@ -96,6 +96,7 @@ class SpecificAccessDroolsTest extends DroolBase {
     @CsvSource({
         "IA,specific-access-judiciary,JUDICIAL,leadership-judge",
         "IA,specific-access-admin,ADMIN,leadership-judge",
+        "IA,specific-access-ctsc,CTSC,leadership-judge",
         "IA,specific-access-legal-ops,LEGAL_OPERATIONS,leadership-judge",
         "CIVIL,specific-access-judiciary,JUDICIAL,leadership-judge",
         "CIVIL,specific-access-admin,ADMIN,nbc-team-leader",
@@ -104,6 +105,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PRIVATELAW,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary",
         "PRIVATELAW,specific-access-admin,ADMIN,specific-access-approver-admin",
         "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
+        "PRIVATELAW,specific-access-ctsc,CTSC,specific-access-approver-ctsc",
     })
     void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction, String roleName,
                                                            String roleCategory, String approver) {
