@@ -294,3 +294,4 @@ class CaseRolesDroolsTest extends DroolBase {
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
     }
 }
+
