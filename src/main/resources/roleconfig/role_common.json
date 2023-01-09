@@ -1616,10 +1616,40 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL"]
+            "values": ["CIVIL"]
           },
           "primaryLocation": {
             "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-manager",
+    "label": "Hearing Manager",
+    "description": "Hearing Manager for judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
           }
         }
       }
@@ -1709,7 +1739,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW"]
+            "values": ["SSCS", "PRIVATELAW", "PUBLICLAW"]
           }
         }
       }
@@ -1995,6 +2025,37 @@
     ]
   },
   {
+    "name": "magistrate",
+    "label": "Magistrate",
+    "description": "Magistrate role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PRIVATELAW","PUBLICLAW"]
+          }
+        }
+      }
+    ]
+  },
+
+  {
     "name": "specific-access-approver-ctsc",
     "label": "Specific Access Approver CTSC",
     "description": "Specific Access Approver role for ctsc users",
@@ -2075,7 +2136,7 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC"]
+          "values": ["PUBLIC", "PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
@@ -2110,7 +2171,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2293,7 +2354,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "values": ["PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
