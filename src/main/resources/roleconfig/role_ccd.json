@@ -1931,43 +1931,6 @@
     ]
   },
   {
-    "name":  "[APPLICANTSOLICITORONESPEC]",
-    "label": "Applicant Solicitor 1 spec",
-    "description": "Applicant Solicitor 1 spec",
-    "category": "PROFESSIONAL",
-    "type": "CASE",
-    "substantive": true,
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["CASE"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["CIVIL"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["CIVIL","GENERALAPPLICATION"]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
     "name":  "[APPLICANTSOLICITORTWOSPEC]",
     "label": "Applicant Solicitor 2 spec",
     "description": "Applicant Solicitor 2 spec",
