@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
@@ -17,11 +16,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification.PUBLIC;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.CASE_ALLOCATOR_ID;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 class CaseRolesDroolsTest extends DroolBase {
+
+
     @ParameterizedTest
     @CsvSource({
         "SSCS,Benefit,hearing-judge,JUDICIAL,judge,Y",
@@ -39,8 +43,8 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,tribunal-caseworker,LEGAL_OPERATIONS,tribunal-caseworker,N",
         "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,judge,",
         "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,judge,",
-        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-magistrate,JUDICIAL,judge,",
-        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-judge,JUDICIAL,leadership-judge,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-magistrate,JUDICIAL,magistrate,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-judge,JUDICIAL,judge,",
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName, String roleCategory,
                                        String existingRoleName, String expectedSubstantive) {
@@ -52,13 +56,13 @@ class CaseRolesDroolsTest extends DroolBase {
         roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessGrant(
-            "access",
+            "sscs-access",
             roleName,
             RoleCategory.valueOf(roleCategory),
             RoleType.CASE,
             roleAssignmentAttributes,
-            Classification.PUBLIC,
-            GrantType.SPECIFIC,
+            PUBLIC,
+            SPECIFIC,
             Status.CREATE_REQUESTED,
             "am_org_role_mapping_service",
             false,
@@ -82,7 +86,7 @@ class CaseRolesDroolsTest extends DroolBase {
                                           "case-allocator",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
-                                          Classification.PUBLIC,
+                                          PUBLIC,
                                           GrantType.STANDARD,
                                           RoleType.ORGANISATION
                                       ),
@@ -92,7 +96,7 @@ class CaseRolesDroolsTest extends DroolBase {
                                           existingRoleName,
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
-                                          Classification.PRIVATE,
+                                          PUBLIC,
                                           GrantType.STANDARD,
                                           RoleType.ORGANISATION
                                       )
@@ -123,7 +127,8 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,case-allocator",
         "SSCS,Benefit,registrar",
         "SSCS,Benefit,tribunal-caseworker",
-        "PRIVATELAW,PRLAPPS,hearing-judge"
+        "PRIVATELAW,PRLAPPS,hearing-judge",
+        "PRIVATELAW,PRLAPPS,allocated-magistrate"
     })
     void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
 
@@ -138,9 +143,9 @@ class CaseRolesDroolsTest extends DroolBase {
             RoleCategory.valueOf(RoleCategory.JUDICIAL.name()),
             RoleType.CASE,
             existingAttributes,
-            Classification.PUBLIC,
-            GrantType.SPECIFIC,
-            Status.DELETE_REQUESTED,
+            PUBLIC,
+            SPECIFIC,
+            DELETE_REQUESTED,
             "am_org_role_mapping_service",
             false,
             "Delete required for reasons",
@@ -160,7 +165,7 @@ class CaseRolesDroolsTest extends DroolBase {
                                                     RoleCategory.JUDICIAL,
                                                     existingAttributes,
                                                     RoleType.CASE,
-                                                    Classification.PUBLIC,
+                                                    PUBLIC,
                                                     GrantType.STANDARD,
                                                     Status.LIVE
         )));
@@ -192,8 +197,8 @@ class CaseRolesDroolsTest extends DroolBase {
             RoleCategory.valueOf(roleCategory),
             RoleType.CASE,
             roleAssignmentAttributes,
-            Classification.PUBLIC,
-            GrantType.SPECIFIC,
+            PUBLIC,
+            SPECIFIC,
             Status.CREATE_REQUESTED,
             "am_org_role_mapping_service",
             false,
@@ -217,7 +222,7 @@ class CaseRolesDroolsTest extends DroolBase {
                                           "case-allocator",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
-                                          Classification.PUBLIC,
+                                          PUBLIC,
                                           GrantType.STANDARD,
                                           RoleType.ORGANISATION
                                       ),
@@ -227,7 +232,7 @@ class CaseRolesDroolsTest extends DroolBase {
                                           existingRoleName,
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
-                                          Classification.PUBLIC,
+                                          PUBLIC,
                                           GrantType.STANDARD,
                                           RoleType.valueOf(roleType)
                                       )
@@ -261,9 +266,9 @@ class CaseRolesDroolsTest extends DroolBase {
             RoleCategory.valueOf(roleCategory),
             RoleType.valueOf(roleType),
             existingAttributes,
-            Classification.PUBLIC,
-            GrantType.SPECIFIC,
-            Status.DELETE_REQUESTED,
+            PUBLIC,
+            SPECIFIC,
+            DELETE_REQUESTED,
             clientId,
             false,
             "Delete required for reasons",
@@ -281,7 +286,7 @@ class CaseRolesDroolsTest extends DroolBase {
                                                     RoleCategory.JUDICIAL,
                                                     existingAttributes,
                                                     RoleType.CASE,
-                                                    Classification.PUBLIC,
+                                                    PUBLIC,
                                                     GrantType.STANDARD,
                                                     Status.LIVE)));
 

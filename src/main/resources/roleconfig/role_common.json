@@ -499,6 +499,41 @@
     ]
   },
   {
+    "name": "allocated-magistrate",
+    "label": "Allocated-Magistrate",
+    "description": "Allocated Magistrate role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PRIVATELAW","PUBLICLAW"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "leadership-judge",
     "label": "Leadership Judge",
     "description": "Leadership Judge role for judicial users",

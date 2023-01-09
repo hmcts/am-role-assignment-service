@@ -36,6 +36,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "PRIVATELAW,challenged-access-judiciary,JUDICIAL",
         "PRIVATELAW,challenged-access-admin,ADMIN",
         "PRIVATELAW,challenged-access-legal-ops,LEGAL_OPERATIONS",
+        "PRIVATELAW,challenged-access-ctsc,CTSC",
     })
     void shouldGrantAccessFor_ChallengedAccess(String jurisdiction, String roleName, String roleCategory) {
         Case caseDetails = caseMap.get(jurisdiction);
