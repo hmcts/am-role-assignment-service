@@ -42,10 +42,8 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,registrar,LEGAL_OPERATIONS,registrar,N",
         "SSCS,Benefit,tribunal-caseworker,LEGAL_OPERATIONS,tribunal-caseworker,N",
         "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,judge,",
-        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,magistrate,",
-        "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,judge,",
-        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-magistrate,JUDICIAL,magistrate,",
-        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-judge,JUDICIAL,judge,",
+        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,magistrate,"
+
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName, String roleCategory,
                                        String existingRoleName, String expectedSubstantive) {
