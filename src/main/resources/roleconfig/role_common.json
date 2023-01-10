@@ -1680,6 +1680,36 @@
     ]
   },
   {
+    "name": "hearing-manager",
+    "label": "Hearing Manager",
+    "description": "Hearing Manager for admin users",
+      "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PRIVATELAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "hearing-viewer",
     "label": "Hearing Viewer",
     "description": "Hearing Viewer for judicial users",
@@ -1764,6 +1794,36 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["SSCS","PRIVATELAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-viewer",
+    "label": "Hearing Viewer",
+    "description": "Hearing Viewer for admin users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PRIVATELAW"]
           }
         }
       }
