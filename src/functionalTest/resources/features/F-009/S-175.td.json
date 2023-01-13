@@ -11,7 +11,8 @@
       "queryRequests": [
         {
           "attributes": {
-            "primaryLocation": [null]
+            "primaryLocation": [null],
+            "jurisdiction" : "IA"
           },
           "actorId": ["${[scenarioContext][childContexts][S-175_CreationDataForRoleAssignment][testData][request][body][requestedRoles][0][actorId]}",
                       "${[scenarioContext][childContexts][S-106_Multiple_Org_Role_Creation][testData][request][body][requestedRoles][0][actorId]}",
