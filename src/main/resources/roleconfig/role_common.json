@@ -619,7 +619,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS"]
+            "values": ["IA","SSCS","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -2381,6 +2381,42 @@
             "mandatory": true,
             "values": ["PUBLICLAW"]
           }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-legal-adviser",
+    "label": "Allocated Legal Adviser",
+    "description": "Allocated Judge role for Staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          },
+        "caseType": {
+          "mandatory": true
+        },
+        "caseId": {
+          "mandatory": true
+        }
         }
       }
     ]
