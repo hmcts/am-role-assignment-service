@@ -619,7 +619,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","PUBLICLAW"]
+            "values": ["IA","SSCS"]
           },
           "caseType": {
             "mandatory": true
@@ -1111,8 +1111,7 @@
           "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
