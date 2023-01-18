@@ -73,6 +73,9 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .caseTypeId("CARE_SUPERVISION_EPO")
                     .jurisdiction("PUBLICLAW")
                     .securityClassification(Classification.PUBLIC)
+                    .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
                     .build();
             default:
                 return Case.builder().id(caseId)
