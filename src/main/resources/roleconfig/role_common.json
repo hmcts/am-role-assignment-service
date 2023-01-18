@@ -280,7 +280,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW"]
           }
         }
       }
@@ -310,7 +310,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW"]
           }
         }
       }
@@ -1732,7 +1732,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW"]
+            "values": ["PUBLICLAW","PRIVATELAW"]
           }
         }
       }
@@ -1852,7 +1852,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW"]
+            "values": ["PRIVATELAW","PUBLICLAW"]
           }
         }
       }
@@ -2141,66 +2141,6 @@
     ]
   },
   {
-    "name": "hearing-manager",
-    "label": "Hearing Manager",
-    "description": "Hearing Manager for ctsc users",
-    "category": "CTSC",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "hearing-viewer",
-    "label": "Hearing Viewer",
-    "description": "Hearing Viewer for ctsc users",
-    "category": "CTSC",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
-          }
-        }
-      }
-    ]
-  },
-  {
     "name": "ctsc",
     "label": "CTSC",
     "description": "CTSC role for ctsc users",
@@ -2290,66 +2230,6 @@
           },
           "primaryLocation": {
             "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "task-supervisor",
-    "label": "Task Supervisor",
-    "description": "Task Supervisor role for ctsc users",
-    "category": "CTSC",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW", "PRIVATELAW"]
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "case-allocator",
-    "label": "Case Allocator",
-    "description": "Case Allocator role for ctsc users",
-    "category": "CTSC",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW", "PRIVATELAW"]
           }
         }
       }
