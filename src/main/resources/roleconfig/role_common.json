@@ -280,7 +280,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW"]
           }
         }
       }
@@ -310,7 +310,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW"]
           }
         }
       }
@@ -1114,8 +1114,7 @@
           "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
@@ -1716,6 +1715,36 @@
     ]
   },
   {
+    "name": "hearing-manager",
+    "label": "Hearing Manager",
+    "description": "Hearing Manager for admin users",
+      "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW","PRIVATELAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "hearing-viewer",
     "label": "Hearing Viewer",
     "description": "Hearing Viewer for judicial users",
@@ -1800,6 +1829,36 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["SSCS","PRIVATELAW","PUBLICLAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-viewer",
+    "label": "Hearing Viewer",
+    "description": "Hearing Viewer for admin users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PRIVATELAW","PUBLICLAW"]
           }
         }
       }
@@ -2088,66 +2147,6 @@
     ]
   },
   {
-    "name": "hearing-manager",
-    "label": "Hearing Manager",
-    "description": "Hearing Manager for ctsc users",
-    "category": "CTSC",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "hearing-viewer",
-    "label": "Hearing Viewer",
-    "description": "Hearing Viewer for ctsc users",
-    "category": "CTSC",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW"]
-          }
-        }
-      }
-    ]
-  },
-  {
     "name": "ctsc",
     "label": "CTSC",
     "description": "CTSC role for ctsc users",
@@ -2243,66 +2242,6 @@
     ]
   },
   {
-    "name": "task-supervisor",
-    "label": "Task Supervisor",
-    "description": "Task Supervisor role for ctsc users",
-    "category": "CTSC",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW", "PRIVATELAW"]
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "case-allocator",
-    "label": "Case Allocator",
-    "description": "Case Allocator role for ctsc users",
-    "category": "CTSC",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PUBLICLAW", "PRIVATELAW"]
-          }
-        }
-      }
-    ]
-  },
-  {
     "name": "allocated-judge",
     "label": "Allocated Judge",
     "description": "Allocated Judge role for Judicial users",
@@ -2327,6 +2266,42 @@
             "mandatory": true,
             "values": ["PUBLICLAW"]
           }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-legal-adviser",
+    "label": "Allocated Legal Adviser",
+    "description": "Allocated Judge role for Staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          },
+        "caseType": {
+          "mandatory": true
+        },
+        "caseId": {
+          "mandatory": true
+        }
         }
       }
     ]
