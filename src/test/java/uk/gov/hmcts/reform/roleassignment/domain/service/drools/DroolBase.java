@@ -41,7 +41,8 @@ public abstract class DroolBase {
                                "SSCS", Case.builder().id(SSCS_CASE_ID).caseTypeId("Benefit").build(),
                                "CIVIL", Case.builder().id(CIVIL_CASE_ID).caseTypeId("CIVIL").build(),
                                "PRIVATELAW", Case.builder().id(PRIVATE_LAW_CASE_ID).caseTypeId("PRLAPPS").build(),
-                               "PUBLICLAW", Case.builder().id(PUBLIC_LAW_CASE_ID).caseTypeId("PUBLICLAW").build());
+                               "PUBLICLAW", Case.builder().id(PUBLIC_LAW_CASE_ID)
+                                     .caseTypeId("CARE_SUPERVISION_EPO").build());
 
     @BeforeEach
     public void setUp() {
