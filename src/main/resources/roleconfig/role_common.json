@@ -771,7 +771,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -926,7 +927,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1081,7 +1083,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1393,7 +1396,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1431,7 +1435,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1469,7 +1474,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
