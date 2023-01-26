@@ -41,7 +41,7 @@ def versions = [
   gradlePitest   : '1.3.0',
   pitest         : '1.7.4',
   reformLogging  : '5.1.9',
-  reformS2sClient: '4.0.2',
+  reformS2sClient: '4.1.2',
   serenity       : '2.2.12',
   sonarPitest    : '0.5',
   springBoot     : '2.6.6',
