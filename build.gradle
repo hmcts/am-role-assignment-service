@@ -46,7 +46,7 @@ def versions = [
   sonarPitest    : '0.5',
   springBoot     : '2.6.6',
   spring         : '5.3.25',
-  springSecurity : '5.6.3',
+  springSecurity : '5.8.1',
   springHystrix  : '2.1.1.RELEASE',
   swagger2Version: '2.10.5',
   pact_version   : '4.1.7',
