@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification.PUBLIC;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification.RESTRICTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.CASE_ALLOCATOR_ID;
@@ -42,8 +43,11 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,registrar,LEGAL_OPERATIONS,registrar,N",
         "SSCS,Benefit,tribunal-caseworker,LEGAL_OPERATIONS,tribunal-caseworker,N",
         "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,judge,",
-        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,magistrate,Y"
-
+        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,magistrate,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,judge,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-magistrate,JUDICIAL,magistrate,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-judge,JUDICIAL,judge,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-legal-adviser,LEGAL_OPERATIONS,tribunal-caseworker,",
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName, String roleCategory,
                                        String existingRoleName, String expectedSubstantive) {
@@ -60,7 +64,7 @@ class CaseRolesDroolsTest extends DroolBase {
             RoleCategory.valueOf(roleCategory),
             RoleType.CASE,
             roleAssignmentAttributes,
-            PUBLIC,
+            RESTRICTED,
             SPECIFIC,
             Status.CREATE_REQUESTED,
             "am_org_role_mapping_service",
