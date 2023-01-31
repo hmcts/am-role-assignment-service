@@ -53,7 +53,7 @@ def versions = [
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
   feign_jackson  : '12.1',
-  drools         : '7.69.0.Final',
+  drools         : '8.33.0.Final',
   launchDarklySdk: '5.10.5',
   log4JVersion   : '2.19.0',
   logbackVersion : '1.2.10'
