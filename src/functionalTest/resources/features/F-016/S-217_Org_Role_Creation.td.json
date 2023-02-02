@@ -1,6 +1,6 @@
 {
-  "_guid_": "S-218_Org_Role_Creation",
-  "_extends_": "F-013_Test_Data_Base",
+  "_guid_": "S-217_Org_Role_Creation",
+  "_extends_": "F-016_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester",
     "Befta1 - who is the actor for requested role"
@@ -14,16 +14,15 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S_218_Org_Role_For_Multiple_Actors",
-        "process": "specific-access",
-        "replaceExisting" : true
+        "reference": "S_217_Org_Role_For_Multiple_Actors",
+        "process": "specific-access"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "roleName": "hmcts-ctsc",
-          "roleCategory": "CTSC",
+          "roleName": "hmcts-judiciary",
+          "roleCategory": "JUDICIAL",
           "beginTime" : "2022-01-01T00:00:00Z",
           "attributes":
           {
@@ -43,7 +42,7 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "replaceExisting": "${[scenarioContext][testData][request][body][roleRequest][replaceExisting]}",
+          "replaceExisting": false,
           "process": "specific-access"
         },
         "requestedRoles": [
@@ -53,12 +52,12 @@
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
-            "roleCategory": "CTSC",
-            "roleName": "hmcts-ctsc",
+            "roleCategory": "JUDICIAL",
+            "roleName": "hmcts-judiciary",
             "attributes":
             {
               "jurisdiction": "CIVIL",
-              "substantive" : "Y"
+              "substantive" : "N"
             }
           }
         ]

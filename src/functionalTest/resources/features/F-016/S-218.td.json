@@ -1,10 +1,10 @@
 {
-  "title": "must successfully create access-requested Case Role Assignment",
-  "_guid_": "S-217",
-  "_extends_": "F-013_Test_Data_Base",
+  "title": "must successfully create challenged-access-legal-operations Role Assignment",
+  "_guid_": "S-218",
+  "_extends_": "F-016_Test_Data_Base",
   "specs": [
     "Befta1 - who is the actor for requested role",
-    "contains specific-access-judiciary case requested role assignment"
+    "contains challenged-access-legal-operations case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -18,7 +18,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1662666441316010/specific-access-judiciary/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1662666441316010/specific-access-ctsc/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "specific-access",
         "replaceExisting" : true
       },
@@ -29,18 +29,18 @@
           "grantType" : "SPECIFIC",
           "classification" : "RESTRICTED",
           "attributes": {
-            "caseId": "1662666441316010",
-            "requestedRole":"specific-access-judiciary"
+            "caseId": "1662666441316010"
           },
-          "roleName": "specific-access-requested",
-          "roleCategory": "JUDICIAL",
+          "roleName": "specific-access-ctsc",
+          "roleCategory": "CTSC",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "endTime" : "2024-03-02T00:00Z",
+          "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
+          "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
           "readOnly": true,
           "notes" : [{
             "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "time": "2022-01-01T00:00Z",
-            "comment": "Need Access to case number 1649753913215769 for a month"
+            "comment": "Need Access to case number 1662666441316010 for a month"
           }]
         }
       ]
@@ -57,7 +57,7 @@
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
           "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "process" : "specific-access",
+          "process" : "${[scenarioContext][testData][request][body][roleRequest][process]}",
           "replaceExisting": true
         },
         "requestedRoles": [
@@ -72,7 +72,6 @@
             "classification" : "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
             "readOnly": true,
             "attributes": {
-              "requestedRole":"specific-access-judiciary",
               "caseId": "1662666441316010",
               "jurisdiction" : "CIVIL",
               "caseType" : "Civil",
@@ -81,7 +80,7 @@
             "notes" : [{
               "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
               "time": "2022-01-01T00:00Z",
-              "comment": "Need Access to case number 1662666441316010  for a month"
+              "comment": "Need Access to case number 1662666441316010 for a month"
             }
             ]
           }
