@@ -5,7 +5,7 @@ Feature: F-013 : Create Specific and Challenged Access Role
     Given an appropriate test context as detailed in the test data source
 
   @S-216
-  @FeatureToggle(RAS:civil_challenged_1_0=on)
+  @FeatureToggle(RAS:iac_challenged_1_0=on)
   Scenario: must successfully create challenged-access-judiciary role
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -19,7 +19,7 @@ Feature: F-013 : Create Specific and Challenged Access Role
     And a successful call [to delete role assignments just created above] as in [S-216_DeleteDataForRoleAssignmentsForChallengedAccess].
 
   @S-217
-  @FeatureToggle(RAS:civil_specific_1_0=on)
+  @FeatureToggle(RAS:iac_challenged_1_0=on)
   Scenario: must successfully create specific-access-judiciary role
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -33,7 +33,7 @@ Feature: F-013 : Create Specific and Challenged Access Role
     And a successful call [to delete role assignments just created above] as in [S-217_DeleteDataForRoleAssignmentsForChallengedAccess].
 
   @S-218
-  @FeatureToggle(RAS:civil_specific_1_0=on)
+  @FeatureToggle(RAS:iac_challenged_1_0=on)
   Scenario: must successfully create specific-access-ctsc role
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],

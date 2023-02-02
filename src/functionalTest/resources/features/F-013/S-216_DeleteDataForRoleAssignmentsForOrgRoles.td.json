@@ -1,5 +1,5 @@
 {
-  "_guid_": "S-222_DeleteDataForRoleAssignmentsForOrgRoles",
+  "_guid_": "S-216_DeleteDataForRoleAssignmentsForOrgRoles",
   "productName": "Role Assignment Service",
   "operationName": "Delete Role Assignments by Process",
   "method": "DELETE",
@@ -20,7 +20,7 @@
     },
     "pathVariables": {
       "process": "challenged-access",
-      "reference": "${[scenarioContext][parentContext][childContexts][S-213_Org_Role_Creation][testData][request][body][roleRequest][reference]}"
+      "reference": "${[scenarioContext][parentContext][childContexts][S-216_Org_Role_Creation][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {
