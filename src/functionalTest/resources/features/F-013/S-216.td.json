@@ -36,7 +36,7 @@
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
           "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
-          "readOnly": false,
+          "readOnly": true,
           "notes" : [{
             "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "time": "2022-01-01T00:00Z",

@@ -56,10 +56,13 @@
             "grantType": "STANDARD",
             "classification": "PUBLIC",
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
-            "attributes":
-            {
+            "attributes": {
+              "substantive": "Y",
+              "contractType": "Salaried",
+              "primaryLocation": "[[ANYTHING_PRESENT]]",
               "jurisdiction": "CIVIL",
-              "substantive" : "Y"
+              "region": "[[ANYTHING_PRESENT]]",
+              "workTypes": "[[ANYTHING_PRESENT]]"
             }
           }
         ]

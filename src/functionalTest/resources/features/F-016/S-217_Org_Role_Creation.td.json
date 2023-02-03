@@ -26,7 +26,8 @@
           "beginTime" : "2022-01-01T00:00:00Z",
           "attributes":
           {
-            "jurisdiction": "CIVIL"
+            "substantive": "N",
+            "contractType": "Salaried"
           }
         }
       ]
@@ -55,9 +56,9 @@
             "classification": "PRIVATE",
             "roleCategory": "JUDICIAL",
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
-            "attributes":
-            {
-              "substantive" : "N"
+            "attributes": {
+              "substantive": "N",
+              "contractType": "Salaried"
             }
           }
         ]
