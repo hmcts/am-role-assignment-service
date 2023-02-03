@@ -36,7 +36,7 @@
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
           "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
-          "readOnly": true,
+          "readOnly": false,
           "notes" : [{
             "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "time": "2022-01-01T00:00Z",
@@ -70,7 +70,7 @@
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
             "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
             "classification" : "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
-            "readOnly": true,
+            "readOnly": "${[scenarioContext][testData][request][body][requestedRoles][0][readOnly]}",
             "attributes": {
               "caseId": "1662666441316010",
               "jurisdiction" : "CIVIL",

@@ -51,12 +51,12 @@
             "process": "specific-access",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
+            "grantType": "BASIC",
+            "classification": "PRIVATE",
             "roleCategory": "JUDICIAL",
-            "roleName": "hmcts-judiciary",
+            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "attributes":
             {
-              "jurisdiction": "CIVIL",
               "substantive" : "N"
             }
           }

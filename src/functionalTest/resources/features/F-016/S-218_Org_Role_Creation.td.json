@@ -52,12 +52,12 @@
             "process": "specific-access",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
+            "grantType": "BASIC",
+            "classification": "PRIVATE",
             "roleCategory": "CTSC",
-            "roleName": "hmcts-ctsc",
+            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "attributes":
             {
-              "jurisdiction": "CIVIL",
               "substantive" : "Y"
             }
           }
