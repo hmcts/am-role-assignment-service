@@ -5,7 +5,7 @@
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
     "Befta1 - who is the actor for requested role",
-    "contains case-manager case role assignment"
+    "contains allocated-magistrate role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -16,7 +16,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/case-manager"
+        "reference": "1607103938250138/allocated-magistrate"
       },
       "requestedRoles": [
         {

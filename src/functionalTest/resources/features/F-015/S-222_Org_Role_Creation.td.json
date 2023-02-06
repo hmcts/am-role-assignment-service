@@ -58,7 +58,8 @@
             "attributes":
             {
               "jurisdiction": "PRIVATELAW",
-              "substantive" : "N"
+              "substantive" : "N",
+              "primaryLocation" : "445777"
             }
           }
         ]
