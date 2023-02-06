@@ -1,10 +1,10 @@
 {
-  "title": "must successfully create challenged-access-judiciary Role Assignment",
+  "title": "must successfully create challenged-access-judiciary role",
   "_guid_": "S-216",
   "_extends_": "F-013_Test_Data_Base",
   "specs": [
     "Befta1 - who is the actor for requested role",
-    "contains challenged-access-judiciary case role assignment"
+    "contains challenged-access-judiciary case requested role assignment"
   ],
   "users": {
     "invokingUser": {

@@ -1,10 +1,10 @@
 {
-  "title": "must successfully create challenged-access-legal-operations Role Assignment",
+  "title": "must successfully create specific-access-ctsc role",
   "_guid_": "S-218",
   "_extends_": "F-016_Test_Data_Base",
   "specs": [
     "Befta1 - who is the actor for requested role",
-    "contains challenged-access-legal-operations case role assignment"
+    "contains specific-access-ctsc case requested role assignment"
   ],
   "users": {
     "invokingUser": {
