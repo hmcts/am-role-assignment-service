@@ -23,7 +23,7 @@
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "ctsc-team-leader",
-          "roleCategory": "ADMIN",
+          "roleCategory": "CTSC",
           "beginTime" : "2022-01-01T00:00:00Z",
           "attributes":
           {
