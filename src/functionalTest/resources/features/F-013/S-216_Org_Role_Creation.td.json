@@ -58,11 +58,7 @@
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "attributes": {
               "substantive": "Y",
-              "contractType": "Salaried",
-              "primaryLocation": "[[ANYTHING_PRESENT]]",
-              "jurisdiction": "CIVIL",
-              "region": "[[ANYTHING_PRESENT]]",
-              "workTypes": "[[ANYTHING_PRESENT]]"
+              "jurisdiction": "CIVIL"
             }
           }
         ]

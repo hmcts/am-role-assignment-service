@@ -22,12 +22,13 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "roleName": "hmcts-ctsc",
-          "roleCategory": "CTSC",
+          "roleName": "ctsc-team-leader",
+          "roleCategory": "ADMIN",
           "beginTime" : "2022-01-01T00:00:00Z",
           "attributes":
           {
-            "substantive" : "Y"
+            "primaryLocation": "123321",
+            "jurisdiction": "CIVIL"
           }
         }
       ]
@@ -44,7 +45,7 @@
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
           "replaceExisting": "${[scenarioContext][testData][request][body][roleRequest][replaceExisting]}",
-          "process": "specific-access"
+          "process": "challenged-access"
         },
         "requestedRoles": [
           {
@@ -52,12 +53,13 @@
             "process": "specific-access",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "roleType": "ORGANISATION",
-            "grantType": "BASIC",
-            "classification": "PRIVATE",
-            "roleCategory": "CTSC",
+            "grantType": "STANDARD",
+            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "attributes":
             {
+              "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][primaryLocation]}",
+              "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "substantive" : "Y"
             }
           }
