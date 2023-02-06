@@ -1,5 +1,5 @@
 {
-  "_guid_": "S-218_DeleteDataForRoleAssignmentsForChallengedAccess",
+  "_guid_": "S-218_DeleteDataForRoleAssignmentsForRequestedRole",
   "productName": "Role Assignment Service",
   "operationName": "Delete Role Assignments by Process",
   "method": "DELETE",
