@@ -20,7 +20,7 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "actorId": "${[scenarioContext][testData][users][befta4][id]}",
           "roleName": "case-allocator",
           "roleCategory": "JUDICIAL",
           "beginTime" : "2022-01-01T00:00:00Z",
@@ -53,7 +53,7 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "replaceExisting": false,
+          "replaceExisting": true,
           "process": "specific-access"
         },
         "requestedRoles": [

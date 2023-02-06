@@ -45,7 +45,7 @@
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
           "replaceExisting": "${[scenarioContext][testData][request][body][roleRequest][replaceExisting]}",
-          "process": "challenged-access"
+          "process": "specific-access"
         },
         "requestedRoles": [
           {
