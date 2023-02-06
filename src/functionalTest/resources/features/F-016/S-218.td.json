@@ -29,6 +29,7 @@
           "grantType" : "SPECIFIC",
           "classification" : "RESTRICTED",
           "attributes": {
+            "jurisdiction": "CIVIL",
             "caseId": "1662666441316010"
           },
           "roleName": "specific-access-ctsc",

@@ -29,6 +29,7 @@
           "grantType" : "CHALLENGED",
           "classification" : "PUBLIC",
           "attributes": {
+            "jurisdiction": "CIVIL",
             "caseId": "1662666441316010"
           },
           "roleName": "challenged-access-judiciary",
