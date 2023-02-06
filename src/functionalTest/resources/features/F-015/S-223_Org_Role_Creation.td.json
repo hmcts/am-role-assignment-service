@@ -59,6 +59,22 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+            "process": "specific-access",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD",
+            "roleCategory": "JUDICIAL",
+            "roleName": "magistrate",
+            "attributes":
+            {
+              "jurisdiction": "PRIVATELAW",
+              "primaryLocation": "abc",
+              "substantive": "Y"
+            }
+          },
+          {
+            "_extends_": "ResponseRequestedRole",
+            "process": "specific-access",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
@@ -69,20 +85,6 @@
               "jurisdiction": "PRIVATELAW",
               "primaryLocation": "abc",
               "substantive": "N"
-            }
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][users][befta1][id]}",
-            "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
-            "roleCategory": "JUDICIAL",
-            "roleName": "magistrate",
-            "attributes":
-            {
-              "jurisdiction": "PRIVATELAW",
-              "primaryLocation": "abc",
-              "substantive": "Y"
             }
           }
         ]

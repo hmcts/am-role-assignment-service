@@ -1,11 +1,11 @@
 {
-  "title": "must successfully create allocated-magistrate case role",
+  "title": "must successfully create hearing-judge case role",
   "_guid_": "S-224",
   "_extends_": "F-015_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
     "Befta1 - who is the actor for requested role",
-    "contains case-manager case role assignment"
+    "contains hearing-judge case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -16,7 +16,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/case-manager"
+        "reference": "1607103938250138/hearing-judge"
       },
       "requestedRoles": [
         {
