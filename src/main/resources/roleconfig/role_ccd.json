@@ -2040,5 +2040,301 @@
         }
       }
     ]
+  },
+  {
+    "name":  "[INTVRSOLICITOR1]",
+    "label": "Intervener Solicitor 1",
+    "description": "Role to isolate events for Intervener's Solicitor 1",
+    "category": "PROFESSIONAL",
+    "type": "CASE",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["DIVORCE"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["FinancialRemedyContested"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[INTVRSOLICITOR2]",
+    "label": "Intervener Solicitor 2",
+    "description": "Role to isolate events for Intervener's Solicitor 2",
+    "category": "PROFESSIONAL",
+    "type": "CASE",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["DIVORCE"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["FinancialRemedyContested"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[INTVRSOLICITOR3]",
+    "label": "Intervener Solicitor 3",
+    "description": "Role to isolate events for Intervener's Solicitor 3",
+    "category": "PROFESSIONAL",
+    "type": "CASE",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["DIVORCE"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["FinancialRemedyContested"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[INTVRSOLICITOR4]",
+    "label": "Intervener Solicitor 4",
+    "description": "Role to isolate events for Intervener's Solicitor 4",
+    "category": "PROFESSIONAL",
+    "type": "CASE",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["DIVORCE"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["FinancialRemedyContested"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[INTVRBARRISTER1]",
+    "label": "Intervener Barrister1",
+    "description": "Role to isolate events for Intervener's Barrister 1",
+    "category": "PROFESSIONAL",
+    "type": "CASE",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["DIVORCE"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["FinancialRemedyContested"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[INTVRBARRISTER2]",
+    "label": "Intervener Barrister2",
+    "description": "Role to isolate events for Intervener's Barrister 2",
+    "category": "PROFESSIONAL",
+    "type": "CASE",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["DIVORCE"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["FinancialRemedyContested"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[INTVRBARRISTER3]",
+    "label": "Intervener Barrister3",
+    "description": "Role to isolate events for Intervener's Barrister 3",
+    "category": "PROFESSIONAL",
+    "type": "CASE",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["DIVORCE"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["FinancialRemedyContested"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "[INTVRBARRISTER4]",
+    "label": "Intervener Barrister4",
+    "description": "Role to isolate events for Intervener's Barrister 4",
+    "category": "PROFESSIONAL",
+    "type": "CASE",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["DIVORCE"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["FinancialRemedyContested"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
