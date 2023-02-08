@@ -20,7 +20,7 @@
     },
     "pathVariables": {
       "process": "businessProcess1",
-      "reference": "${[scenarioContext][parentContext][childContexts][S-201_Org_Role_Creation][testData][request][body][roleRequest][reference]}"
+      "reference": "${[scenarioContext][parentContext][childContexts][S-224_Org_Role_Creation][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {
