@@ -1,19 +1,12 @@
 {
   "_guid_": "F-015-Base-Root",
   "users": {
-      "invokingUser": {
-        "_extends_": "AmBeftaUser2"
-      },
-    "befta4": {
-      "_extends_": "AmBeftaUser4"
+    "invokingUser": {
+      "_extends_": "AmBeftaUser2"
     },
-      "befta1": {
-        "_extends_": "AmBeftaUser1"
-      },
-      "befta3": {
-        "_extends_": "AmBeftaUser3"
-      }
-
+    "befta1": {
+      "_extends_": "AmBeftaUser1"
+    }
   },
   "request": {
     "headers": {

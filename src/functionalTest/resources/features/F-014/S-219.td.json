@@ -29,6 +29,7 @@
           "grantType" : "CHALLENGED",
           "classification" : "PUBLIC",
           "attributes": {
+            "jurisdiction" : "PRIVATELAW",
             "caseId": "1675782944487896"
           },
           "roleName": "challenged-access-ctsc",

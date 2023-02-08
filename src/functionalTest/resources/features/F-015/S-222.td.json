@@ -29,6 +29,7 @@
           "grantType" : "BASIC",
           "classification" : "RESTRICTED",
           "attributes": {
+            "jurisdiction" : "PRIVATELAW",
             "caseId": "1675782944487896",
             "requestedRole":"specific-access-ctsc"
           },
