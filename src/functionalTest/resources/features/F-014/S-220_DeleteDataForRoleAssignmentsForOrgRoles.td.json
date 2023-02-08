@@ -20,7 +20,7 @@
     },
     "pathVariables": {
       "process": "challenged-access",
-      "reference": "${[scenarioContext][parentContext][childContexts][S-217_Org_Role_Creation][testData][request][body][roleRequest][reference]}"
+      "reference": "${[scenarioContext][parentContext][childContexts][S-220_Org_Role_Creation][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {
