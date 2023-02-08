@@ -18,7 +18,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1675782944487896/challenged-access-judiciary/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1675782944487896/challenged-access-legal-ops/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "challenged-access",
         "replaceExisting" : true
       },

@@ -18,7 +18,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1675782944487896/specific-access-judiciary/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1675782944487896/specific-access-ctsc/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "specific-access",
         "replaceExisting" : true
       },
