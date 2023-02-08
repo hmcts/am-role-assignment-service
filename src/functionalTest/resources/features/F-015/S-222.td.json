@@ -18,7 +18,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/specific-access-judiciary/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1675782944487896/specific-access-judiciary/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "specific-access",
         "replaceExisting" : true
       },
@@ -29,7 +29,7 @@
           "grantType" : "BASIC",
           "classification" : "RESTRICTED",
           "attributes": {
-            "caseId": "1607103938250138",
+            "caseId": "1675782944487896",
             "requestedRole":"specific-access-ctsc"
           },
           "roleName": "specific-access-requested",
@@ -73,7 +73,7 @@
             "readOnly": true,
             "attributes": {
               "requestedRole":"specific-access-ctsc",
-              "caseId": "1607103938250138",
+              "caseId": "1675782944487896",
               "jurisdiction" : "PRIVATELAW",
               "caseType" : "PRLAPPS",
               "substantive" : "N"
