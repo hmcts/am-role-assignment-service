@@ -30,7 +30,8 @@
           "classification" : "PUBLIC",
           "attributes": {
             "jurisdiction" : "PRIVATELAW",
-            "caseId": "1675782944487896"
+            "caseId": "1675782944487896",
+            "region": "1"
           },
           "roleName": "challenged-access-ctsc",
           "roleCategory": "CTSC",
@@ -76,7 +77,8 @@
               "caseId": "1675782944487896",
               "jurisdiction" : "PRIVATELAW",
               "caseType" : "PRLAPPS",
-              "substantive" : "N"
+              "substantive" : "N",
+              "region": "1"
             },
             "notes" : [{
               "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
