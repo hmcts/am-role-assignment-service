@@ -53,6 +53,7 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+            "process" : "specific-access",
             "roleName": "hearing-judge",
             "roleCategory": "JUDICIAL",
             "roleType": "CASE",

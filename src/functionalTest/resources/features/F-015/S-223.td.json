@@ -53,6 +53,7 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+            "process" : "specific-access",
             "roleName": "allocated-magistrate",
             "roleCategory": "JUDICIAL",
             "roleType": "CASE",
@@ -61,7 +62,8 @@
             {
               "caseId" : "1675782944487896",
               "jurisdiction" : "PRIVATELAW",
-              "caseType" : "PRLAPPS"
+              "caseType" : "PRLAPPS",
+              "substantive" : "N"
             }
           }
         ]
