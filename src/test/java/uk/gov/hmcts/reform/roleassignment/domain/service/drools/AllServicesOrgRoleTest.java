@@ -583,8 +583,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(APPROVED, roleAssignment.getStatus());
             assertEquals(roleName, roleAssignment.getRoleName());
-            String substantive = roleAssignment.getRoleType() == RoleType.ORGANISATION ? "Y" : "N";
-            assertEquals(substantive, roleAssignment.getAttributes().get("substantive").asText());
+            assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
         });
     }
 }
