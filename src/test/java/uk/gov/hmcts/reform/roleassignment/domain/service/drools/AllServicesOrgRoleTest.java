@@ -95,7 +95,8 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertNotEquals(Status.APPROVED, roleAssignment.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertNotEquals(Status.APPROVED,
+                                                                                        roleAssignment.getStatus()));
     }
 
     @Test
@@ -201,7 +202,8 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.REJECTED,
+                                                                                     roleAssignment.getStatus()));
     }
 
     @Test
@@ -237,7 +239,8 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_APPROVED,
+                                                                                     roleAssignment.getStatus()));
     }
 
     @Test
@@ -254,7 +257,8 @@ class AllServicesOrgRoleTest extends DroolBase {
 
         //assertion
         assertTrue(assignmentRequest.getRequest().isByPassOrgDroolRule());
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_APPROVED,
+                                                                                     roleAssignment.getStatus()));
     }
 
     @Test
@@ -271,7 +275,8 @@ class AllServicesOrgRoleTest extends DroolBase {
 
         //assertion
         assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_APPROVED,
+                                                                                     roleAssignment.getStatus()));
     }
 
     @Test
@@ -288,7 +293,8 @@ class AllServicesOrgRoleTest extends DroolBase {
 
         //assertion
         assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_REJECTED,
+                                                                                     roleAssignment.getStatus()));
     }
 
     @Test
@@ -320,7 +326,8 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_REJECTED,
+                                                                                     roleAssignment.getStatus()));
     }
 
     @Test
