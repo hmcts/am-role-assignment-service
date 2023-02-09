@@ -52,7 +52,7 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+            "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "process" : "specific-access",
             "roleName": "allocated-magistrate",
             "roleCategory": "JUDICIAL",
