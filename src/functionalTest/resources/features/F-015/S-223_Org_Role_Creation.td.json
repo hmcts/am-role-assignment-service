@@ -3,11 +3,11 @@
   "_extends_": "F-015_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester",
-    "Befta1 - who is the actor for requested role"
+    "Befta3 - who is the actor for requested role"
   ],
   "users": {
     "invokingUser": {
-      "_extends_": "AmBeftaUser6"
+      "_extends_": "AmBeftaUser4"
     }
   },
   "request": {
@@ -31,7 +31,7 @@
         },
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+          "actorId": "${[scenarioContext][testData][users][befta3][id]}",
           "roleName": "magistrate",
           "roleCategory": "JUDICIAL",
           "beginTime" : "2020-09-01T00:00:00Z",
@@ -59,7 +59,7 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][users][befta1][id]}",
+            "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "process": "specific-access",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
