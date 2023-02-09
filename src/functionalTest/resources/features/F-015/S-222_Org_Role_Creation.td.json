@@ -7,7 +7,7 @@
   ],
   "users": {
     "invokingUser": {
-      "_extends_": "AmBeftaUser6"
+      "_extends_": "AmBeftaUser4"
     }
   },
   "request": {
