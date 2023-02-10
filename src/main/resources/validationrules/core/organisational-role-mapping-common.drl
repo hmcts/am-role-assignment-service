@@ -72,3 +72,18 @@ then
     update($ra);
     logMsg("Rule : sscs_system_user_hearings_roles_create");
 end;
+
+rule "sscs_system_user_hearings_roles_delete"
+when
+    $rq: Request(clientId == "sscs")
+    $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.ORGANISATION,
+             roleCategory in (RoleCategory.SYSTEM) )
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : sscs_system_user_hearings_roles_delete");
+
+    update($ra);
+    logMsg("Rule :: sscs_system_user_hearings_roles_delete");
+end;
