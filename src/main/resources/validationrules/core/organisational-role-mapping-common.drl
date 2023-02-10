@@ -79,7 +79,9 @@ when
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.ORGANISATION,
-             roleCategory in (RoleCategory.SYSTEM) )
+             roleCategory in (RoleCategory.SYSTEM),
+             roleName in ('hearing-manager','hearing-viewer'),
+             attributes["jurisdiction"].asText() == "SSCS")
 then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : sscs_system_user_hearings_roles_delete");
