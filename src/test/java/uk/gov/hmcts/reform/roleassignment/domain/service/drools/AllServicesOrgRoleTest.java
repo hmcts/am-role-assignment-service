@@ -20,6 +20,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SP
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.ACTORID;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
@@ -589,6 +590,34 @@ class AllServicesOrgRoleTest extends DroolBase {
         assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(APPROVED, roleAssignment.getStatus());
+            assertEquals(roleName, roleAssignment.getRoleName());
+            assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "hearing-manager,SYSTEM,SSCS",
+        "hearing-viewer,SYSTEM,SSCS"
+    })
+    void shouldDeleteOrgRequestedRoleForHearing(String roleName, String roleCategory, String jurisdiction) {
+        assignmentRequest.getRequest().setClientId("sscs");
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(Status.DELETE_REQUESTED);
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(DELETE_APPROVED, roleAssignment.getStatus());
             assertEquals(roleName, roleAssignment.getRoleName());
             assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
         });
