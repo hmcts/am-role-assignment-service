@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -87,6 +88,59 @@ class SpecificAccessDroolsTest extends DroolBase {
                                           GrantType.valueOf(orgGrantType),
                                           RoleType.ORGANISATION
                                       )));
+
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            Assertions.assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+            Assertions.assertEquals(caseDetails.getCaseTypeId(),
+                                    roleAssignment.getAttributes().get("caseType").asText());
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "CIVIL,specific-access-judiciary,JUDICIAL",
+        "CIVIL,specific-access-admin,ADMIN",
+        "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "CIVIL,specific-access-ctsc,CTSC",
+        "PRIVATELAW,specific-access-judiciary,JUDICIAL",
+        "PRIVATELAW,specific-access-admin,ADMIN",
+        "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "PUBLICLAW,specific-access-judiciary,JUDICIAL",
+        "PUBLICLAW,specific-access-admin,ADMIN",
+        "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "PUBLICLAW,specific-access-ctsc,CTSC"
+    })
+    void shouldCreate_SpecificAccessDenied(String jurisdiction, String roleName, String roleCategory) {
+        Case caseDetails = caseMap.get(jurisdiction);
+        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
+        roleAssignmentAttributes.put("isNew", convertValueJsonNode(false));
+
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
+                "specific-access",
+                "specific-access-denied",
+                RoleCategory.valueOf(roleCategory),
+                RoleType.CASE,
+                roleAssignmentAttributes,
+                Classification.RESTRICTED,
+                GrantType.BASIC,
+                Status.CREATE_REQUESTED,
+                "anyClient",
+                true,
+                "Access required for reasons",
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
+            )
+            .build();
+
+        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(Collections.emptyList());
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
