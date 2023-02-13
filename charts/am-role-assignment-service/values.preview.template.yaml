@@ -23,6 +23,7 @@ java:
     BYPASS_ORG_DROOL_RULE: true
     RUN_DB_MIGRATION_ON_STARTUP: true
     RUN_LD_ON_STARTUP: true
+    APPLICATION_LOGGING_LEVEL: DEBUG
   postgresql:
     enabled: true
     postgresqlPort: 5432
