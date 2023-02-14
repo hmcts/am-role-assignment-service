@@ -2042,9 +2042,9 @@
     ]
   },
   {
-    "name":  "[INTVRSOLICITOR1]",
-    "label": "Intervener Solicitor 1",
-    "description": "Role to isolate events for Intervener's Solicitor 1",
+    "name":  "[INTVRSOLICITORONE]",
+    "label": "Intervener Solicitor one",
+    "description": "Role to isolate events for Intervener's Solicitor one",
     "category": "PROFESSIONAL",
     "type": "CASE",
     "substantive": true,
@@ -2079,9 +2079,9 @@
     ]
   },
   {
-    "name":  "[INTVRSOLICITOR2]",
-    "label": "Intervener Solicitor 2",
-    "description": "Role to isolate events for Intervener's Solicitor 2",
+    "name":  "[INTVRSOLICITORTWO]",
+    "label": "Intervener Solicitor two",
+    "description": "Role to isolate events for Intervener's Solicitor two",
     "category": "PROFESSIONAL",
     "type": "CASE",
     "substantive": true,
@@ -2116,9 +2116,9 @@
     ]
   },
   {
-    "name":  "[INTVRSOLICITOR3]",
-    "label": "Intervener Solicitor 3",
-    "description": "Role to isolate events for Intervener's Solicitor 3",
+    "name":  "[INTVRSOLICITORTHREE]",
+    "label": "Intervener Solicitor three",
+    "description": "Role to isolate events for Intervener's Solicitor three",
     "category": "PROFESSIONAL",
     "type": "CASE",
     "substantive": true,
@@ -2153,9 +2153,9 @@
     ]
   },
   {
-    "name":  "[INTVRSOLICITOR4]",
-    "label": "Intervener Solicitor 4",
-    "description": "Role to isolate events for Intervener's Solicitor 4",
+    "name":  "[INTVRSOLICITORFOUR]",
+    "label": "Intervener Solicitor four",
+    "description": "Role to isolate events for Intervener's Solicitor four",
     "category": "PROFESSIONAL",
     "type": "CASE",
     "substantive": true,
@@ -2190,9 +2190,9 @@
     ]
   },
   {
-    "name":  "[INTVRBARRISTER1]",
-    "label": "Intervener Barrister1",
-    "description": "Role to isolate events for Intervener's Barrister 1",
+    "name":  "[INTVRBARRISTERONE]",
+    "label": "Intervener Barrister one",
+    "description": "Role to isolate events for Intervener's Barrister one",
     "category": "PROFESSIONAL",
     "type": "CASE",
     "substantive": true,
@@ -2227,9 +2227,9 @@
     ]
   },
   {
-    "name":  "[INTVRBARRISTER2]",
-    "label": "Intervener Barrister2",
-    "description": "Role to isolate events for Intervener's Barrister 2",
+    "name":  "[INTVRBARRISTERTWO]",
+    "label": "Intervener Barristertwo",
+    "description": "Role to isolate events for Intervener's Barrister two",
     "category": "PROFESSIONAL",
     "type": "CASE",
     "substantive": true,
@@ -2264,9 +2264,9 @@
     ]
   },
   {
-    "name":  "[INTVRBARRISTER3]",
-    "label": "Intervener Barrister3",
-    "description": "Role to isolate events for Intervener's Barrister 3",
+    "name":  "[INTVRBARRISTERTHREE]",
+    "label": "Intervener Barristerthree",
+    "description": "Role to isolate events for Intervener's Barrister three",
     "category": "PROFESSIONAL",
     "type": "CASE",
     "substantive": true,
@@ -2301,9 +2301,9 @@
     ]
   },
   {
-    "name":  "[INTVRBARRISTER4]",
-    "label": "Intervener Barrister4",
-    "description": "Role to isolate events for Intervener's Barrister 4",
+    "name":  "[INTVRBARRISTERFOUR]",
+    "label": "Intervener Barristerfour",
+    "description": "Role to isolate events for Intervener's Barrister four",
     "category": "PROFESSIONAL",
     "type": "CASE",
     "substantive": true,
