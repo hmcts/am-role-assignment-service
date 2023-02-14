@@ -2191,7 +2191,7 @@
   },
   {
     "name":  "[INTVRBARRISTERONE]",
-    "label": "Intervener Barrister one",
+    "label": "Intervener Barristerone",
     "description": "Role to isolate events for Intervener's Barrister one",
     "category": "PROFESSIONAL",
     "type": "CASE",
