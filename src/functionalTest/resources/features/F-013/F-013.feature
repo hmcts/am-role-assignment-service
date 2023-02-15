@@ -1,5 +1,5 @@
 @F-013
-Feature: F-013 : Create Challenged Access Role
+Feature: F-013 : Create CIVIL Challenged Access Role Assignments
 
   Background:
     Given an appropriate test context as detailed in the test data source

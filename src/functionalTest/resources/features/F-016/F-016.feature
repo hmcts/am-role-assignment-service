@@ -1,5 +1,5 @@
 @F-016
-Feature: F-016 : Create Specific Role Assignments
+Feature: F-016 : Create CIVIL Specific Role Assignments
 
   Background:
     Given an appropriate test context as detailed in the test data source
