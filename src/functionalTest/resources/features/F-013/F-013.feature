@@ -17,4 +17,3 @@ Feature: F-013 : Create CIVIL Challenged Access Role Assignments
     And the response has all other details as expected.
     And a successful call [to delete role assignments just created above] as in [S-216_DeleteDataForRoleAssignmentsForOrgRoles],
     And a successful call [to delete role assignments just created above] as in [S-216_DeleteDataForRoleAssignmentsForChallengedAccess].
-
