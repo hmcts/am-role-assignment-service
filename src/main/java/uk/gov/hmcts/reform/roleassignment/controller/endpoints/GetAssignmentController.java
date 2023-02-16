@@ -1,11 +1,12 @@
 
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,6 @@ import java.util.List;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.GET_ASSIGNMENTS_BY_ACTOR;
 
 @Slf4j
-@Api(value = "roles")
 @RestController
 public class GetAssignmentController {
 
@@ -41,18 +41,21 @@ public class GetAssignmentController {
         path = "/am/role-assignments/actors/{actorId}",
         produces = V1.MediaType.GET_ASSIGNMENTS
     )
-    @ApiOperation("Retrieve JSON representation of multiple Role Assignment records.")
-    @ApiResponses({
-        @ApiResponse(
-            code = 200,
-            message = "Success",
-            response = RoleAssignmentResource.class
-        ),
-        @ApiResponse(
-            code = 400,
-            message = V1.Error.INVALID_REQUEST
-        )
-    })
+    @Operation(summary = "Get role assignments by actor Id",
+        security =
+            {
+                @SecurityRequirement(name = "Authorization"),
+                @SecurityRequirement(name = "ServiceAuthorization")
+            })
+    @ApiResponse(
+        responseCode = "200",
+        description = "Success",
+        content = @Content(schema = @Schema(implementation = RoleAssignmentResource.class))
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = V1.Error.INVALID_REQUEST
+    )
     @LogAudit(operationType = GET_ASSIGNMENTS_BY_ACTOR,
         size = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).sizeOfAssignments(#result)",
         actorId = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).getActorIds(#result)",
@@ -63,7 +66,7 @@ public class GetAssignmentController {
                                  @RequestHeader(value = "x-correlation-id",
                                  required = false) String correlationId,
                                 @RequestHeader(value = "If-None-Match", required = false) String ifNoneMatch,
-                                 @ApiParam(value = "Actor Id ", required = true)
+                                 @Parameter(required = true)
                        @PathVariable("actorId") String actorId) {
 
         ResponseEntity<RoleAssignmentResource> responseEntity = retrieveRoleAssignmentService.getAssignmentsByActor(
@@ -78,15 +81,18 @@ public class GetAssignmentController {
         path = "/am/role-assignments/roles",
         produces = V1.MediaType.GET_ROLES
     )
+    @Operation(summary = "Get roles",
+        security =
+            {
+                @SecurityRequirement(name = "Authorization"),
+                @SecurityRequirement(name = "ServiceAuthorization")
+            })
     @ResponseStatus(code = HttpStatus.OK)
-    @ApiOperation("retrieves a list of roles configurations available in role assignment service")
-    @ApiResponses({
-        @ApiResponse(
-            code = 200,
-            message = "Ok",
-            response = Object.class
-        )
-    })
+    @ApiResponse(
+        responseCode = "200",
+        description = "Ok",
+        content = @Content(schema = @Schema(implementation = Object.class))
+    )
     public ResponseEntity<List<RoleConfigRole>> getListOfRoles(@RequestHeader(value = "x-correlation-id",
         required = false) String correlationId)  {
         List<RoleConfigRole> rootNode = retrieveRoleAssignmentService.getListOfRoles();

@@ -41,19 +41,24 @@ security:
     - "/loggers/**"
     - "/am/role-assignments/fetchFlagStatus"
     - "/swagger-ui.html"
+    - "/swagger-ui/**"
     - "/swagger-resources/**"
-    - "/v2/api-docs"
+    - "/v3/api-docs"
     - "/webjars/springfox-swagger-ui/**"
     - "/search/**"
     - "/csrf"
     - "/error"
     - "/favicon.ico"
-
+    - "/v3/**"
+    - "/status/health"
+    - "/welcome"
+    - "/health/liveness"
 spring:
   application:
     name: Role Assignment Service
   main:
     allow-bean-definition-overriding: true
+    allow-circular-references: true
   jackson:
     default-property-inclusion: NON_NULL
   spring:
@@ -167,8 +172,6 @@ roleassignment:
 org :
   request:
     byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:false}
-
-logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:INFO}
 
 dbFeature:
   flags:

@@ -1,10 +1,11 @@
 
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,6 @@ import java.text.ParseException;
 
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CREATE_ASSIGNMENTS;
 
-@Api(value = "roles")
 @RestController
 public class CreateAssignmentController {
 
@@ -43,28 +43,31 @@ public class CreateAssignmentController {
         produces = V1.MediaType.CREATE_ASSIGNMENTS,
         consumes = {"application/json"}
     )
+    @Operation(summary = "Creates role assignments",
+        security =
+            {
+                @SecurityRequirement(name = "Authorization"),
+                @SecurityRequirement(name = "ServiceAuthorization")
+            })
     @ResponseStatus(code = HttpStatus.CREATED)
-    @ApiOperation("creates multiple role assignments")
-    @ApiResponses({
-        @ApiResponse(
-            code = 201,
-            message = "Created",
-            response = RoleAssignmentRequestResource.class
-        ),
-        @ApiResponse(
-            code = 400,
-            message = V1.Error.INVALID_ROLE_NAME
-        ),
-        @ApiResponse(
-            code = 400,
-            message = V1.Error.INVALID_REQUEST
-        ),
-        @ApiResponse(
-            code = 422,
-            message = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
-        )
-
-    })
+    //@ApiOperation("creates multiple role assignments")
+    @ApiResponse(
+        responseCode = "201",
+        description = "Created",
+        content = @Content(schema = @Schema(implementation = RoleAssignmentRequestResource.class))
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = V1.Error.INVALID_ROLE_NAME
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = V1.Error.INVALID_REQUEST
+    )
+    @ApiResponse(
+        responseCode = "422",
+        description = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
+    )
     @LogAudit(operationType = CREATE_ASSIGNMENTS,
         process = "#assignmentRequest.request.process",
         reference = "#assignmentRequest.request.reference",
