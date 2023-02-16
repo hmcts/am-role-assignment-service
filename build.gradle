@@ -49,13 +49,13 @@ def versions = [
   spring         : '5.3.25',
   springSecurity : '5.7.5',
   springHystrix  : '2.1.1.RELEASE',
-  swagger2Version: '2.10.5',
+  swagger2Version: '3.0.0',
   pact_version   : '4.1.7',
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
   feign_jackson  : '12.1',
   drools         : '7.69.0.Final',
-  launchDarklySdk: '5.10.5',
+  launchDarklySdk: '5.10.7',
   log4JVersion   : '2.19.0',
   logbackVersion : '1.2.10'
 ]
@@ -64,7 +64,7 @@ mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
 def jarName = 'am-role-assignment-service.jar'
 
 pmd {
-  toolVersion = '6.53.0'
+  toolVersion = '6.54.0'
   sourceSets = []
 }
 
@@ -443,7 +443,7 @@ dependencies {
   //Added for S2S and User Authentication
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.reformS2sClient
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.1'
-  implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: '2.14.0', ext: 'pom'
+  implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: '2.14.2', ext: 'pom'
   implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.20'
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.0.1')
@@ -531,7 +531,7 @@ dependencyManagement {
     dependencySet(group: 'net.minidev', version: '2.4.8') {
       entry 'json-smart'
     }
-    dependencySet(group: 'com.fasterxml.jackson.core', version: '2.14.1') {
+    dependencySet(group: 'com.fasterxml.jackson.core', version: '2.14.2') {
       entry 'jackson-databind'
       entry 'jackson-core'
       entry 'jackson-annotations'
