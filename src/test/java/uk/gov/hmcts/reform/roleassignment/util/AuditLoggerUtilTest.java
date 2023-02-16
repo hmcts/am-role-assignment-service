@@ -62,14 +62,6 @@ class AuditLoggerUtilTest {
     }
 
     @Test
-    void checkAddLinks() {
-        roleAssignmentRequestResource = Mockito.mock(RoleAssignmentRequestResource.class);
-        roleAssignmentRequestResource.addLinks(assignmentRequest.getRequest().getId());
-        Mockito.verify(roleAssignmentRequestResource, Mockito.times(1))
-            .addLinks(assignmentRequest.getRequest().getId());
-    }
-
-    @Test
     void checkAssignmentIdsNullResponse() {
         List<UUID> assignmentIds = AuditLoggerUtil.buildAssignmentIds(ResponseEntity.ok().build());
         assertEquals(0, assignmentIds.size());
