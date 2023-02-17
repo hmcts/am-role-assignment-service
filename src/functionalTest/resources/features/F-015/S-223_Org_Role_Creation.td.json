@@ -38,7 +38,9 @@
           "attributes":
           {
             "jurisdiction": "PRIVATELAW",
-            "primaryLocation": "abc"
+            "primaryLocation": "abc",
+            "contractType": "Voluntary",
+            "region": "2"
           }
         }
       ]
@@ -69,7 +71,9 @@
             {
               "jurisdiction": "PRIVATELAW",
               "primaryLocation": "abc",
-              "substantive": "Y"
+              "substantive": "Y",
+              "contractType": "Voluntary",
+              "region": "2"
             }
           },
           {
