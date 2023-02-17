@@ -61,21 +61,6 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "process": "specific-access",
-            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-            "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
-            "roleCategory": "JUDICIAL",
-            "roleName": "case-allocator",
-            "attributes":
-            {
-              "jurisdiction": "PRIVATELAW",
-              "primaryLocation": "abc",
-              "substantive": "N"
-            }
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "process": "specific-access",
             "roleType": "ORGANISATION",
@@ -89,6 +74,21 @@
               "substantive": "Y",
               "contractType": "Voluntary",
               "region": "2"
+            }
+          },
+          {
+            "_extends_": "ResponseRequestedRole",
+            "process": "specific-access",
+            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD",
+            "roleCategory": "JUDICIAL",
+            "roleName": "case-allocator",
+            "attributes":
+            {
+              "jurisdiction": "PRIVATELAW",
+              "primaryLocation": "abc",
+              "substantive": "N"
             }
           }
         ]
