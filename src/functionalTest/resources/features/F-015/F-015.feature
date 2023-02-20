@@ -1,5 +1,5 @@
 @F-015
-Feature: F-015 : Create Specific Role Assignments for Privatelaw
+Feature: F-015 : Create Case Role Assignments for Privatelaw
 
   Background:
     Given an appropriate test context as detailed in the test data source
