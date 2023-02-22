@@ -1,5 +1,5 @@
 @F-012
-Feature: F-012 : Create Challenged Access Role
+Feature: F-012 : Create Challenged Access Role for IA
 
   Background:
     Given an appropriate test context as detailed in the test data source
