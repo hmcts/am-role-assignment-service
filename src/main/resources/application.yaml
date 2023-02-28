@@ -62,6 +62,7 @@ spring:
         enabled: false
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
     properties:
       hibernate:
         order_by.default_null_ordering: ${DEFAULT_NULL_ORDERING:last}
