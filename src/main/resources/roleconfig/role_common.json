@@ -1678,7 +1678,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW","PUBLICLAW"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL"]
           }
         }
       }
@@ -1708,7 +1708,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW","PUBLICLAW"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL"]
           }
         }
       }
@@ -1836,7 +1836,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW", "PUBLICLAW"]
+            "values": ["SSCS", "PRIVATELAW", "PUBLICLAW","CIVIL"]
           }
         }
       }
@@ -1866,7 +1866,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW","PUBLICLAW"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL"]
           }
         }
       }
@@ -1896,7 +1896,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW","PUBLICLAW"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL"]
           }
         }
       }
@@ -1926,7 +1926,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","PUBLICLAW"]
+            "values": ["PRIVATELAW","PUBLICLAW","CIVIL"]
           }
         }
       }
