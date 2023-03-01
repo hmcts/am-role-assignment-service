@@ -8,7 +8,7 @@
   ],
   "users": {
     "invokingUser": {
-      "_extends_": "AmBeftaUser6"
+      "_extends_": "AmBeftaUser2"
     }
   },
   "request": {
@@ -73,6 +73,7 @@
             "classification" : "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
             "readOnly": true,
             "attributes": {
+
               "caseId": "1662666441316010",
               "jurisdiction" : "CIVIL",
               "caseType" : "Civil",
