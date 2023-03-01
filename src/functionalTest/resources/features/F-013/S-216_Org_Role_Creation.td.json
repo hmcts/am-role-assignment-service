@@ -57,8 +57,9 @@
             "classification": "PUBLIC",
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "attributes": {
-              "substantive": "Y",
-              "jurisdiction": "CIVIL"
+              "jurisdiction": "CIVIL",
+              "contractType" : "Salaried",
+              "substantive": "Y"
             }
           }
         ]

@@ -74,6 +74,7 @@
             "readOnly": "${[scenarioContext][testData][request][body][requestedRoles][0][readOnly]}",
             "attributes": {
               "caseId": "1662666441316010",
+              "contractType" : "Salaried",
               "jurisdiction" : "CIVIL",
               "caseType" : "CIVIL",
               "substantive" : "N"
