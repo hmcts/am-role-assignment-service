@@ -28,8 +28,8 @@
           "attributes":
           {
             "jurisdiction": "CIVIL",
-            "region": "2"
-
+            "region": "2",
+            "primaryLocation": "222342"
           }
         }
       ]
@@ -61,7 +61,10 @@
             "attributes": {
               "jurisdiction": "CIVIL",
               "contractType" : "Salaried",
-              "substantive": "Y"
+              "substantive": "Y",
+              "region": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][region]}",
+              "primaryLocation":"${[scenarioContext][testData][request][body][requestedRoles][0][attributes][primaryLocation]}"
+
             }
           }
         ]

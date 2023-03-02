@@ -62,6 +62,7 @@
             {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "substantive" : "Y",
+              "region": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][region]}",
               "primaryLocation":"${[scenarioContext][testData][request][body][requestedRoles][0][attributes][primaryLocation]}"
             }
           }
