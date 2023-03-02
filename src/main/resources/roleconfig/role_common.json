@@ -2373,40 +2373,5 @@
         }
       }
     ]
-  },
-  {
-    "name": "allocated-magistrate",
-    "label": "Allocated Magistrate",
-    "description": "Allocated Magistrate role for Judicial users",
-    "category": "JUDICIAL",
-    "substantive": false,
-    "type": "CASE",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["CASE"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PRIVATELAW","PUBLICLAW"]
-          },
-          "caseType": {
-            "mandatory": true
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
   }
 ]
