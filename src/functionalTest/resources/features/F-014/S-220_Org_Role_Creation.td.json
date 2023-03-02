@@ -28,7 +28,9 @@
           "attributes":
           {
             "jurisdiction": "PRIVATELAW",
-            "primaryLocation": "445777"
+            "primaryLocation": "445777",
+            "region": "2"
+
           }
         }
       ]
