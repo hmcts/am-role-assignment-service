@@ -79,7 +79,7 @@
               "jurisdiction" : "CIVIL",
               "caseType" : "CIVIL",
               "substantive" : "N",
-              "region": "7"
+              "region": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][region]}"
             },
             "notes" : [{
               "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
