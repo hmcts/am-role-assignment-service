@@ -10,6 +10,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
   broker_app:
     image: pactfoundation/pact-broker
     links:
@@ -21,4 +22,5 @@ services:
       PACT_BROKER_DATABASE_HOST: postgres
       PACT_BROKER_DATABASE_NAME: postgres
       PACT_BROKER_WEBHOOK_SCHEME_WHITELIST: http
+      PACT_BROKER_DATABASE_PASSWORD: postgres
 
