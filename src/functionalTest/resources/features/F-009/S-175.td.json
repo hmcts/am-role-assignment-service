@@ -34,7 +34,8 @@
           "readOnly" : false,
           "attributes" : {
             "contractType" : "Salaried",
-            "jurisdiction" : "IA"
+            "jurisdiction" : "IA",
+            "substantive" : "N"
           }
         },
         {
@@ -45,7 +46,8 @@
           "readOnly" : false,
           "attributes" : {
             "contractType" : "Salaried",
-            "jurisdiction" : "IA"
+            "jurisdiction" : "IA",
+            "substantive" : "N"
           }
         }
       ]
