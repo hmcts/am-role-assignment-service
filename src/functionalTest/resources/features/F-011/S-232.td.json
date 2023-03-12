@@ -6,19 +6,21 @@
     "Befta1 - who is the actor for requested role",
     "contains specific-access-admin case denied role assignment"
   ],
+
   "users": {
     "invokingUser": {
-      "_extends_": "AmBeftaUser3"
+      "_extends_": "AmBeftaUser1"
     }
   },
+
   "request": {
     "headers": {
       "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForXui]}"
     },
     "body": {
       "roleRequest": {
-        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/specific-access-admin/${[scenarioContext][testData][users][befta4][id]}",
+        "assignerId": "${[scenarioContext][testData][users][befta4][id]}",
+        "reference": "1607103938250138/specific-access-admin/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "specific-access",
         "replaceExisting" : true
       },
@@ -34,7 +36,7 @@
           },
           "roleName": "specific-access-denied",
           "roleCategory": "ADMIN",
-          "actorId": "${[scenarioContext][testData][users][befta4][id]}",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "endTime" : "2024-03-02T00:00Z",
           "readOnly": true,
           "notes" : [{

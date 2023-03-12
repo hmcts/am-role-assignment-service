@@ -1,10 +1,10 @@
 {
-  "title": "must successfully create access-denied Case Role Assignment",
+  "title": "must successfully create specific access denied by requester",
   "_guid_": "S-212",
   "_extends_": "F-011_Test_Data_Base",
   "specs": [
     "Befta1 - who is the actor for requested role",
-    "contains specific-access-legal-ops case denied role assignment"
+    "contains specific-access-judiciary case denied role assignment"
   ],
   "users": {
     "invokingUser": {

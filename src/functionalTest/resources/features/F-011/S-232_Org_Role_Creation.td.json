@@ -16,7 +16,7 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][users][befta4][id]}",
+          "actorId": "${[scenarioContext][testData][users][befta1][id]}",
           "roleName": "case-allocator",
           "roleCategory": "ADMIN",
           "beginTime" : "2022-01-01T00:00:00Z",
@@ -28,7 +28,7 @@
         },
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][users][befta3][id]}",
+          "actorId": "${[scenarioContext][testData][users][befta4][id]}",
           "roleName": "leadership-judge",
           "roleCategory": "JUDICIAL",
           "beginTime" : "2022-01-01T00:00:00Z",
