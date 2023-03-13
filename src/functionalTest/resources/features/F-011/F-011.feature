@@ -1,5 +1,5 @@
 @F-011
-Feature: F-011 : Create Specific Role Assignments
+Feature: F-011 : Create Specific Role Assignments for IA
 
   Background:
     Given an appropriate test context as detailed in the test data source

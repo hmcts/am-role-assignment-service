@@ -184,7 +184,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW"]
           }
         }
       }
@@ -214,7 +214,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL","PRIVATELAW"]
+            "values": ["IA","SSCS", "CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -247,7 +247,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -280,7 +280,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW"]
           }
         }
       }
@@ -310,7 +310,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW"]
           }
         }
       }
@@ -427,7 +427,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW"]
           }
         }
       }
@@ -457,7 +457,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW"]
           }
         }
       }
@@ -486,7 +486,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","PRIVATELAW"]
+            "values": ["IA","SSCS","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -521,7 +521,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW"]
+            "values": ["PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -557,7 +557,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW"]
+            "values": ["IA","CIVIL","PRIVATELAW", "PUBLICLAW"]
           }
         }
       }
@@ -587,7 +587,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW"]
+            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -771,7 +771,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -918,15 +919,16 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["SPECIFIC","BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["RESTRICTED","PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1073,15 +1075,16 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["SPECIFIC","BASIC"]
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["RESTRICTED","PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1111,8 +1114,7 @@
           "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
@@ -1394,7 +1396,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1432,7 +1435,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1470,7 +1474,8 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "caseType": {
             "mandatory": true
@@ -1544,7 +1549,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL","PRIVATELAW"]
+            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1622,6 +1627,36 @@
   {
     "name": "hearing-manager",
     "label": "Hearing Manager",
+    "description": "Hearing Manager for judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-manager",
+    "label": "Hearing Manager",
     "description": "Hearing Manager for caseworker users",
     "category": "LEGAL_OPERATIONS",
     "substantive": false,
@@ -1643,7 +1678,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL"]
           }
         }
       }
@@ -1673,7 +1708,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL"]
           }
         }
       }
@@ -1703,7 +1738,75 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW"]
+            "values": ["PUBLICLAW","PRIVATELAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-manager",
+    "label": "Hearing Manager",
+    "description": "Hearing Manager for system users",
+    "category": "SYSTEM",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hearing-viewer",
+    "label": "Hearing Viewer",
+    "description": "Hearing Viewer for system users",
+    "category": "SYSTEM",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit"]
           }
         }
       }
@@ -1733,7 +1836,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW"]
+            "values": ["SSCS", "PRIVATELAW", "PUBLICLAW","CIVIL"]
           }
         }
       }
@@ -1763,7 +1866,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL"]
           }
         }
       }
@@ -1793,7 +1896,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL"]
           }
         }
       }
@@ -1823,7 +1926,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW"]
+            "values": ["PRIVATELAW","PUBLICLAW","CIVIL"]
           }
         }
       }
@@ -1883,7 +1986,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1916,7 +2019,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL", "PRIVATELAW"]
+            "values": ["IA", "CIVIL", "PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1949,7 +2052,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL", "PRIVATELAW"]
+            "values": ["CIVIL", "PRIVATELAW", "PUBLICLAW"]
           }
         }
       }
@@ -1957,7 +2060,7 @@
   },
   {
     "name": "specific-access-approver-judiciary",
-    "label": "Specific Access Approver judiciary",
+    "label": "Specific Access Approver Judiciary",
     "description": "Specific Access Approver role for judicial users",
     "category": "JUDICIAL",
     "substantive": false,
@@ -2072,7 +2175,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW"]
+            "values": ["PRIVATELAW","PUBLICLAW"]
           }
         }
       }
@@ -2112,33 +2215,6 @@
     ]
   },
   {
-    "name": "hmcts-ctsc",
-    "label": "HMCTS CTSC",
-    "description": "HMCTS CTSC role for ctsc users",
-    "category": "CTSC",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["BASIC"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-
-        }
-      }
-    ]
-  },
-  {
     "name": "ctsc",
     "label": "CTSC",
     "description": "CTSC role for ctsc users",
@@ -2162,10 +2238,39 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","IA"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA"]
           },
           "primaryLocation": {
             "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hmcts-ctsc",
+    "label": "HMCTS CTSC",
+    "description": "HMCTS CTSC role for ctsc users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "primaryLocation": {
+            "mandatory": false
           }
         }
       }
@@ -2195,11 +2300,76 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
           }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-judge",
+    "label": "Allocated Judge",
+    "description": "Allocated Judge role for Judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-legal-adviser",
+    "label": "Allocated Legal Adviser",
+    "description": "Allocated Judge role for Staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          },
+        "caseType": {
+          "mandatory": true
+        },
+        "caseId": {
+          "mandatory": true
+        }
         }
       }
     ]
