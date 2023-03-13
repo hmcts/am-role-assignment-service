@@ -34,7 +34,8 @@
           "beginTime" : "2022-01-01T00:00:00Z",
           "attributes":
           {
-            "jurisdiction": "IA"
+            "jurisdiction": "IA",
+            "primaryLocation": "12346"
           }
         }
       ]
@@ -80,7 +81,8 @@
             "attributes":
             {
               "jurisdiction": "[[ANYTHING_PRESENT]]",
-              "substantive" : "[[ANYTHING_PRESENT]]"
+              "substantive" : "[[ANYTHING_PRESENT]]",
+              "primaryLocation" : "[[ANYTHING_PRESENT]]"
             }
           }
         ]
