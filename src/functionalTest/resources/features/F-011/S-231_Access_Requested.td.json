@@ -1,10 +1,9 @@
 {
-  "title": "must successfully create specific access denied by requester",
-  "_guid_": "S-212",
+  "title": "must successfully create access-requested Case Role Assignment",
+  "_guid_": "S-231_Access_Requested",
   "_extends_": "F-011_Test_Data_Base",
   "specs": [
-    "Befta1 - who is the actor for requested role",
-    "contains specific-access-judiciary case denied role assignment"
+    "to create role assignments for requested role"
   ],
   "users": {
     "invokingUser": {
@@ -27,12 +26,12 @@
           "_extends_": "RequestedRole",
           "roleType" : "CASE",
           "grantType" : "BASIC",
-          "classification" : "PRIVATE",
+          "classification" : "RESTRICTED",
           "attributes": {
             "caseId": "1607103938250138",
             "requestedRole":"specific-access-judiciary"
           },
-          "roleName": "specific-access-denied",
+          "roleName": "specific-access-requested",
           "roleCategory": "JUDICIAL",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "endTime" : "2024-03-02T00:00Z",
@@ -87,7 +86,7 @@
           }
         ]
       }
-
     }
   }
 }
+
