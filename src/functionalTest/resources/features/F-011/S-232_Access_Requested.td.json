@@ -1,14 +1,13 @@
 {
-  "title": "must successfully create specific access denied by requester",
-  "_guid_": "S-212",
+  "title": "must successfully create access-requested Case Role Assignment",
+  "_guid_": "S-232_Access_Requested",
   "_extends_": "F-011_Test_Data_Base",
   "specs": [
-    "Befta1 - who is the actor for requested role",
-    "contains specific-access-judiciary case denied role assignment"
+    "to create role assignments for requested role"
   ],
   "users": {
     "invokingUser": {
-      "_extends_": "AmBeftaUser4"
+      "_extends_": "AmBeftaUser1"
     }
   },
   "request": {
@@ -18,7 +17,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/specific-access-judiciary/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1607103938250138/specific-access-admin/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "specific-access",
         "replaceExisting" : true
       },
@@ -27,13 +26,13 @@
           "_extends_": "RequestedRole",
           "roleType" : "CASE",
           "grantType" : "BASIC",
-          "classification" : "PRIVATE",
+          "classification" : "RESTRICTED",
           "attributes": {
             "caseId": "1607103938250138",
-            "requestedRole":"specific-access-judiciary"
+            "requestedRole":"specific-access-admin"
           },
-          "roleName": "specific-access-denied",
-          "roleCategory": "JUDICIAL",
+          "roleName": "specific-access-requested",
+          "roleCategory": "ADMIN",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "endTime" : "2024-03-02T00:00Z",
           "readOnly": true,
@@ -72,7 +71,7 @@
             "classification" : "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
             "readOnly": true,
             "attributes": {
-              "requestedRole":"specific-access-judiciary",
+              "requestedRole":"specific-access-admin",
               "caseId": "1607103938250138",
               "jurisdiction" : "IA",
               "caseType" : "Asylum",
@@ -87,7 +86,7 @@
           }
         ]
       }
-
     }
   }
 }
+
