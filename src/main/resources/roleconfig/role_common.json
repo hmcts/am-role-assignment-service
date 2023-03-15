@@ -184,7 +184,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW","EMPLOYMENT"]
           }
         }
       }
@@ -310,7 +310,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT"]
           }
         }
       }
@@ -587,7 +587,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW","PUBLICLAW"]
+            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1549,7 +1549,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW"]
+            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1615,7 +1615,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL"]
+            "values": ["CIVIL","EMPLOYMENT"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1986,7 +1986,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2019,7 +2019,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL", "PRIVATELAW","PUBLICLAW"]
+            "values": ["IA", "CIVIL", "PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2300,7 +2300,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT"]
           },
           "primaryLocation": {
             "mandatory": true
