@@ -1,5 +1,35 @@
 [
   {
+    "name": "specific-access-approver-legal-operations",
+    "label": "Specific Access Approver Legal Operations",
+    "description": "Specific Access Approver Legal Operations role for staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT"]
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "regional-centre-team-leader",
     "label": "Regional Centre Team Leader",
     "description": "Regional Centre Team Leader role for admin users",
@@ -70,6 +100,36 @@
     "label": "tribunal-member",
     "description": "tribunal-member role for judicial users",
     "category": "JUDICIAL",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "clerk",
+    "label": "clerk",
+    "description": "clerk role for staff users",
+    "category": "ADMIN",
     "substantive": false,
     "type": "ORGANISATION",
     "patterns": [
