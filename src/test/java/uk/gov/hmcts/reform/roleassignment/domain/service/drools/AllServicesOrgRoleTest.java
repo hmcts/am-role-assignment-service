@@ -20,6 +20,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SP
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.ACTORID;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
@@ -32,7 +33,7 @@ class AllServicesOrgRoleTest extends DroolBase {
     void shouldApproveOrgRequestedRoleForTCW_S001() {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
@@ -46,7 +47,7 @@ class AllServicesOrgRoleTest extends DroolBase {
 
         //assertion
         assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(APPROVED, roleAssignment.getStatus());
             assertEquals("tribunal-caseworker", roleAssignment.getRoleName());
             String substantive = roleAssignment.getRoleType() == RoleType.ORGANISATION ? "Y" : "N";
@@ -58,7 +59,7 @@ class AllServicesOrgRoleTest extends DroolBase {
     void shouldApproveOrgRequestedRoleForSTCW_S002() {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("senior-tribunal-caseworker");
@@ -72,7 +73,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(APPROVED, roleAssignment.getStatus());
             assertEquals("senior-tribunal-caseworker", roleAssignment.getRoleName());
             assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
@@ -84,7 +85,7 @@ class AllServicesOrgRoleTest extends DroolBase {
 
         assignmentRequest.getRequest().setClientId("ccd-gw");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
@@ -95,16 +96,15 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertNotEquals(Status.APPROVED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertNotEquals(Status.APPROVED,
+                                                                                        roleAssignment.getStatus()));
     }
 
     @Test
     void shouldRejectOrgValidationForTCW_WrongRoleCategory_S004() {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
@@ -116,7 +116,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(RoleCategory.JUDICIAL, roleAssignment.getRoleCategory());
             assertEquals("tribunal-caseworker", roleAssignment.getRoleName());
             assertEquals(Status.REJECTED, roleAssignment.getStatus());
@@ -127,7 +127,7 @@ class AllServicesOrgRoleTest extends DroolBase {
     void shouldRejectOrgValidationForTCW_WrongGrantType_S005() {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
@@ -138,7 +138,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(SPECIFIC, roleAssignment.getGrantType());
             assertEquals(Status.REJECTED, roleAssignment.getStatus());
         });
@@ -148,7 +148,7 @@ class AllServicesOrgRoleTest extends DroolBase {
     void shouldRejectOrgValidationForTCW_WrongClassification_S006() {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setClassification(Classification.RESTRICTED);
@@ -161,7 +161,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(Classification.RESTRICTED, roleAssignment.getClassification());
             assertEquals(Status.REJECTED, roleAssignment.getStatus());
         });
@@ -171,7 +171,7 @@ class AllServicesOrgRoleTest extends DroolBase {
     void shouldRejectOrgValidationForSTCW_MissingJurisdiction_S007() {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("senior-tribunal-caseworker");
@@ -182,7 +182,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertNull(roleAssignment.getAttributes().get("jurisdiction"));
             assertEquals(Status.REJECTED, roleAssignment.getStatus());
         });
@@ -192,7 +192,7 @@ class AllServicesOrgRoleTest extends DroolBase {
     void shouldRejectOrgValidationForTCW_WrongJurisdiction_S008() {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
@@ -203,16 +203,15 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.REJECTED,
+                                                                                     roleAssignment.getStatus()));
     }
 
     @Test
     void shouldRejectOrgValidationForTCW_MissingPrimaryLocation_S009() {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("tribunal-caseworker");
@@ -223,7 +222,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertNull(roleAssignment.getAttributes().get("primaryLocation"));
             assertEquals(Status.REJECTED, roleAssignment.getStatus());
         });
@@ -233,7 +232,7 @@ class AllServicesOrgRoleTest extends DroolBase {
     void shouldApproveDeleteRequestedRoleForOrg_S010() {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setStatus(Status.DELETE_REQUESTED);
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
@@ -241,9 +240,8 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_APPROVED,
+                                                                                     roleAssignment.getStatus()));
     }
 
     @Test
@@ -251,7 +249,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         assignmentRequest.getRequest().setClientId("not_am_org_role_mapping_service");
         assignmentRequest.getRequest().setByPassOrgDroolRule(true);
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setStatus(Status.DELETE_REQUESTED);
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
@@ -260,9 +258,8 @@ class AllServicesOrgRoleTest extends DroolBase {
 
         //assertion
         assertTrue(assignmentRequest.getRequest().isByPassOrgDroolRule());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_APPROVED,
+                                                                                     roleAssignment.getStatus()));
     }
 
     @Test
@@ -270,7 +267,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.getRequest().setByPassOrgDroolRule(false);
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setStatus(Status.DELETE_REQUESTED);
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
@@ -279,9 +276,8 @@ class AllServicesOrgRoleTest extends DroolBase {
 
         //assertion
         assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(Status.DELETE_APPROVED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_APPROVED,
+                                                                                     roleAssignment.getStatus()));
     }
 
     @Test
@@ -289,7 +285,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         assignmentRequest.getRequest().setClientId("not_am_org_role_mapping_service");
         assignmentRequest.getRequest().setByPassOrgDroolRule(false);
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setStatus(DELETE_REQUESTED);
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
@@ -298,22 +294,21 @@ class AllServicesOrgRoleTest extends DroolBase {
 
         //assertion
         assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_REJECTED,
+                                                                                     roleAssignment.getStatus()));
     }
 
     @Test
     void shouldRejectDeleteRequestedRole_MissingRoleType_S012() {
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setStatus(Status.DELETE_REQUESTED);
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
         });
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertNull(roleAssignment.getRoleType());
             assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
         });
@@ -324,7 +319,7 @@ class AllServicesOrgRoleTest extends DroolBase {
 
         assignmentRequest.getRequest().setClientId("ccd-gw");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setStatus(DELETE_REQUESTED);
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
@@ -332,16 +327,15 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
-            assertEquals(Status.DELETE_REJECTED, roleAssignment.getStatus());
-        });
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> assertEquals(Status.DELETE_REJECTED,
+                                                                                     roleAssignment.getStatus()));
     }
 
     @Test
     void shouldApproveOrgRequestedRoleForSTCW_withoutSubstantive() {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.LEGAL_OPERATIONS);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("task-supervisor");
@@ -355,7 +349,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         buildExecuteKieSession();
 
         //assertion
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             assertEquals(APPROVED, roleAssignment.getStatus());
             assertEquals("task-supervisor", roleAssignment.getRoleName());
             assertEquals("N", roleAssignment.getAttributes().get("substantive").asText());
@@ -368,7 +362,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequest().setClientId("not_am_org_role_mapping_service");
         assignmentRequest.getRequest().setByPassOrgDroolRule(true);
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setStatus(Status.CREATE_REQUESTED);
@@ -381,7 +375,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         //Execute Kie session
         buildExecuteKieSession();
 
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
                 assertEquals(Status.APPROVED,roleAssignment.getStatus());
                 assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
             }
@@ -393,7 +387,7 @@ class AllServicesOrgRoleTest extends DroolBase {
 
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
 
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.JUDICIAL);
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName("judge");
@@ -405,7 +399,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         //Execute Kie session
         buildExecuteKieSession();
 
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment ->
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
                                                                    assertEquals(
                                                                        Status.REJECTED,
                                                                        roleAssignment.getStatus()
@@ -465,7 +459,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.getRequest().setAssignerId(ACTORID);
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
             roleAssignment.setRoleType(RoleType.valueOf(roleType));
             roleAssignment.setStatus(Status.CREATE_REQUESTED);
@@ -503,7 +497,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.getRequest().setAssignerId(ACTORID);
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
             roleAssignment.setRoleType(RoleType.valueOf(roleType));
             roleAssignment.setStatus(Status.CREATE_REQUESTED);
@@ -549,7 +543,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.getRequest().setAssignerId(ACTORID);
-        assignmentRequest.getRequestedRoles().stream().forEach(roleAssignment -> {
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
             roleAssignment.setRoleType(RoleType.valueOf(org));
             roleAssignment.setStatus(Status.CREATE_REQUESTED);
@@ -566,5 +560,66 @@ class AllServicesOrgRoleTest extends DroolBase {
 
         assignmentRequest.getRequestedRoles()
             .forEach(roleAssignment -> assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "hearing-manager,SYSTEM,SSCS,Benefit",
+        "hearing-viewer,SYSTEM,SSCS,Benefit"
+    })
+    void shouldApproveOrgRequestedRoleForHearing(String roleName, String roleCategory, String jurisdiction,
+                                                 String caseType) {
+        assignmentRequest.getRequest().setClientId("sscs");
+        assignmentRequest.getRequest().setProcess("sscs-system-users");
+        assignmentRequest.getRequest().setReference("sscs-hearings-system-user");
+        assignmentRequest.getRequest().setReplaceExisting(true);
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(CREATE_REQUESTED);
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+            roleAssignment.getAttributes().put("caseType", convertValueJsonNode(caseType));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(APPROVED, roleAssignment.getStatus());
+            assertEquals(roleName, roleAssignment.getRoleName());
+            assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "hearing-manager,SYSTEM,SSCS",
+        "hearing-viewer,SYSTEM,SSCS"
+    })
+    void shouldDeleteOrgRequestedRoleForHearing(String roleName, String roleCategory, String jurisdiction) {
+        assignmentRequest.getRequest().setClientId("sscs");
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(Status.DELETE_REQUESTED);
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(DELETE_APPROVED, roleAssignment.getStatus());
+            assertEquals(roleName, roleAssignment.getRoleName());
+            assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+        });
     }
 }

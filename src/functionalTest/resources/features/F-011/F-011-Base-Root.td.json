@@ -13,7 +13,6 @@
       "befta3": {
         "_extends_": "AmBeftaUser3"
       }
-
   },
   "request": {
     "headers": {

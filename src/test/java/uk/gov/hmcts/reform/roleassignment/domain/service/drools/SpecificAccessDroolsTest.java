@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,7 +39,11 @@ class SpecificAccessDroolsTest extends DroolBase {
         "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS,BASIC",
         "PRIVATELAW,specific-access-judiciary,JUDICIAL,STANDARD",
         "PRIVATELAW,specific-access-admin,ADMIN,STANDARD",
-        "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD"
+        "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
+        "PUBLICLAW,specific-access-judiciary,JUDICIAL,STANDARD",
+        "PUBLICLAW,specific-access-admin,ADMIN,STANDARD",
+        "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
+        "PUBLICLAW,specific-access-ctsc,CTSC,STANDARD"
     })
     void shouldCreate_SpecificAccessRequested(String jurisdiction, String roleName, String roleCategory,
                                                            String orgGrantType) {
@@ -94,6 +99,59 @@ class SpecificAccessDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
+        "CIVIL,specific-access-judiciary,JUDICIAL",
+        "CIVIL,specific-access-admin,ADMIN",
+        "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "CIVIL,specific-access-ctsc,CTSC",
+        "PRIVATELAW,specific-access-judiciary,JUDICIAL",
+        "PRIVATELAW,specific-access-admin,ADMIN",
+        "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "PUBLICLAW,specific-access-judiciary,JUDICIAL",
+        "PUBLICLAW,specific-access-admin,ADMIN",
+        "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "PUBLICLAW,specific-access-ctsc,CTSC"
+    })
+    void shouldCreate_SpecificAccessDenied(String jurisdiction, String roleName, String roleCategory) {
+        Case caseDetails = caseMap.get(jurisdiction);
+        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
+        roleAssignmentAttributes.put("isNew", convertValueJsonNode(false));
+
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
+                "specific-access",
+                "specific-access-denied",
+                RoleCategory.valueOf(roleCategory),
+                RoleType.CASE,
+                roleAssignmentAttributes,
+                Classification.RESTRICTED,
+                GrantType.BASIC,
+                Status.CREATE_REQUESTED,
+                "anyClient",
+                true,
+                "Access required for reasons",
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
+            )
+            .build();
+
+        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        executeDroolRules(Collections.emptyList());
+
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            Assertions.assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+            Assertions.assertEquals(caseDetails.getCaseTypeId(),
+                                    roleAssignment.getAttributes().get("caseType").asText());
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
         "IA,specific-access-judiciary,JUDICIAL,leadership-judge",
         "IA,specific-access-admin,ADMIN,leadership-judge",
         "IA,specific-access-ctsc,CTSC,leadership-judge",
@@ -106,6 +164,10 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PRIVATELAW,specific-access-admin,ADMIN,specific-access-approver-admin",
         "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
         "PRIVATELAW,specific-access-ctsc,CTSC,specific-access-approver-ctsc",
+        "PUBLICLAW,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary",
+        "PUBLICLAW,specific-access-admin,ADMIN,specific-access-approver-admin",
+        "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
+        "PUBLICLAW,specific-access-ctsc,CTSC,specific-access-approver-ctsc"
     })
     void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction, String roleName,
                                                            String roleCategory, String approver) {
@@ -184,7 +246,10 @@ class SpecificAccessDroolsTest extends DroolBase {
         "CIVIL,specific-access-ctsc,CTSC",
         "PRIVATELAW,specific-access-judiciary,JUDICIAL",
         "PRIVATELAW,specific-access-admin,ADMIN",
-        "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS"
+        "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "PUBLICLAW,specific-access-judiciary,JUDICIAL",
+        "PUBLICLAW,specific-access-admin,ADMIN",
+        "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS"
     })
     void shouldGrantAccessFor_SpecificAccessGranted_XuiClient(String jurisdiction, String roleName,
                                                               String roleCategory) {
@@ -256,7 +321,11 @@ class SpecificAccessDroolsTest extends DroolBase {
         "IA,specific-access-legal-ops,LEGAL_OPERATIONS",
         "SSCS,specific-access-judiciary,JUDICIAL",
         "SSCS,specific-access-admin,ADMIN",
-        "SSCS,specific-access-legal-ops,LEGAL_OPERATIONS"
+        "SSCS,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "PUBLICLAW,specific-access-judiciary,JUDICIAL",
+        "PUBLICLAW,specific-access-admin,ADMIN",
+        "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "PUBLICLAW,specific-access-ctsc,CTSC",
 
     })
     void shouldRejectAccessFor_SpecificAccess_CaseAllocator_selfApproval(String jurisdiction,String roleName,
