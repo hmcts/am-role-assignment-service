@@ -47,7 +47,12 @@ class CaseRolesDroolsTest extends DroolBase {
         "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,judge,",
         "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-magistrate,JUDICIAL,magistrate,",
         "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-judge,JUDICIAL,judge,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-judge,JUDICIAL,fee-paid-judge,",
         "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-legal-adviser,LEGAL_OPERATIONS,tribunal-caseworker,",
+        "EMPLOYMENT,ET_EnglandWales,lead-judge,JUDICIAL,hmcts-judiciary,",
+        "EMPLOYMENT,ET_EnglandWales,hearing-judge,JUDICIAL,hmcts-judiciary,",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-1,JUDICIAL,hmcts-judiciary,",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-2,JUDICIAL,hmcts-judiciary,",
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName, String roleCategory,
                                        String existingRoleName, String expectedSubstantive) {
@@ -131,7 +136,11 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,registrar",
         "SSCS,Benefit,tribunal-caseworker",
         "PRIVATELAW,PRLAPPS,hearing-judge",
-        "PRIVATELAW,PRLAPPS,allocated-magistrate"
+        "PRIVATELAW,PRLAPPS,allocated-magistrate",
+        "EMPLOYMENT,ET_EnglandWales,lead-judge",
+        "EMPLOYMENT,ET_EnglandWales,hearing-judge",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-1",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-2",
     })
     void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
 

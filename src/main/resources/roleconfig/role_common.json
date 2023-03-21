@@ -478,7 +478,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC"]
+          "values": ["SPECIFIC", "STANDARD"]
         },
         "classification": {
           "mandatory": true
@@ -486,7 +486,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","PRIVATELAW","PUBLICLAW"]
+            "values": ["IA","SSCS","PRIVATELAW","PUBLICLAW", "EMPLOYMENT"]
           },
           "caseType": {
             "mandatory": true
@@ -557,7 +557,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW", "PUBLICLAW","EMPLOYMENT"]
+            "values": ["IA","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT"]
           }
         }
       }
@@ -2370,6 +2370,114 @@
         "caseId": {
           "mandatory": true
         }
+        }
+      }
+    ]
+  },
+  {
+    "name": "lead-judge",
+    "label": "Lead Judge",
+    "description": "Lead Judge role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC", "STANDARD"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA", "EMPLOYMENT"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Asylum", "ET_EnglandWales", "ET_Scotland"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "tribunal-member-1",
+    "label": "Tribunal member 1",
+    "description": "Tribunal member - 1 for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC", "STANDARD"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS", "EMPLOYMENT"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit", "ET_EnglandWales"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "tribunal-member-2",
+    "label": "Tribunal member 2 ",
+    "description": "Tribunal member - 2  for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC", "STANDARD"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS", "EMPLOYMENT"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit", "ET_EnglandWales"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
         }
       }
     ]

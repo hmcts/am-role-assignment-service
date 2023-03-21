@@ -20,6 +20,7 @@ import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.Data
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PUBLIC_LAW_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_CASE_ID;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +43,9 @@ public abstract class DroolBase {
                                "CIVIL", Case.builder().id(CIVIL_CASE_ID).caseTypeId("CIVIL").build(),
                                "PRIVATELAW", Case.builder().id(PRIVATE_LAW_CASE_ID).caseTypeId("PRLAPPS").build(),
                                "PUBLICLAW", Case.builder().id(PUBLIC_LAW_CASE_ID)
-                                     .caseTypeId("CARE_SUPERVISION_EPO").build());
+                                     .caseTypeId("CARE_SUPERVISION_EPO").build(),
+                               "EMPLOYMENT", Case.builder().id(EMPLOYMENT_CASE_ID)
+                                     .caseTypeId("ET_EnglandWzales").build());
 
     @BeforeEach
     public void setUp() {
@@ -75,6 +78,14 @@ public abstract class DroolBase {
         //PUBLICLAW
         doReturn(dummyCases.getCaseDataV2(PUBLIC_LAW_CASE_ID))
             .when(retrieveDataService).getCaseById(PUBLIC_LAW_CASE_ID);
+
+        //EMPLOYMENT
+        Case caseObj10 = Case.builder().id(EMPLOYMENT_CASE_ID)
+            .caseTypeId("ET_EnglandWales")
+            .jurisdiction("EMPLOYMENT")
+            .securityClassification(Classification.PUBLIC)
+            .build();
+        doReturn(caseObj10).when(retrieveDataService).getCaseById(EMPLOYMENT_CASE_ID);
 
         Case caseObj0 = Case.builder().id("9234567890123456")
             .caseTypeId("Asylum")
