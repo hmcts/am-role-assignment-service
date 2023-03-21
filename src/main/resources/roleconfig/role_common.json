@@ -81,7 +81,7 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE","EMPLOYMENT"]
+          "values": ["PUBLIC", "PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
@@ -147,7 +147,7 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE","EMPLOYMENT"]
+          "values": ["PUBLIC", "PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
