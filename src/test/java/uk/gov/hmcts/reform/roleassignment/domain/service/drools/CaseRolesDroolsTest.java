@@ -53,6 +53,9 @@ class CaseRolesDroolsTest extends DroolBase {
         "EMPLOYMENT,ET_EnglandWales,hearing-judge,JUDICIAL,hmcts-judiciary,",
         "EMPLOYMENT,ET_EnglandWales,tribunal-member-1,JUDICIAL,hmcts-judiciary,",
         "EMPLOYMENT,ET_EnglandWales,tribunal-member-2,JUDICIAL,hmcts-judiciary,",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-caseworker,LEGAL_OPERATIONS,tribunal-caseworker,",
+        "EMPLOYMENT,ET_EnglandWales,admin-caseworker,LEGAL_OPERATIONS,hearing-centre-admin,",
+        "EMPLOYMENT,ET_EnglandWales,ctsc-caseworker,LEGAL_OPERATIONS,ctsc,",
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName, String roleCategory,
                                        String existingRoleName, String expectedSubstantive) {
@@ -141,6 +144,9 @@ class CaseRolesDroolsTest extends DroolBase {
         "EMPLOYMENT,ET_EnglandWales,hearing-judge",
         "EMPLOYMENT,ET_EnglandWales,tribunal-member-1",
         "EMPLOYMENT,ET_EnglandWales,tribunal-member-2",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-caseworker",
+        "EMPLOYMENT,ET_EnglandWales,admin-caseworker",
+        "EMPLOYMENT,ET_EnglandWales,ctsc-caseworker",
     })
     void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
 
