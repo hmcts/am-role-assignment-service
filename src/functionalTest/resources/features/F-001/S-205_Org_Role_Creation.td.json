@@ -77,7 +77,8 @@
             "roleName": "fee-paid-judge",
             "attributes":
             {
-              "jurisdiction": "IA"
+              "jurisdiction": "IA",
+              "substantive" : "N"
             }
           }
         ]
