@@ -68,7 +68,7 @@ class CaseRolesDroolsTest extends DroolBase {
                                        String existingRoleName, String expectedSubstantive,
                                        String expectedRoleAssignmentStatus, String employmentFlag) {
 
-        Status expectedRoleAssignmentStatusObj = Status.valueOf(expectedRoleAssignmentStatus);
+        final Status expectedRoleAssignmentStatusObj = Status.valueOf(expectedRoleAssignmentStatus);
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseMap.get(jurisdiction).getId()));
@@ -97,7 +97,7 @@ class CaseRolesDroolsTest extends DroolBase {
             .status(true).build();
         featureFlags.add(featureFlag);
 
-        if(Boolean.valueOf(employmentFlag)) {
+        if (Boolean.valueOf(employmentFlag)) {
             FeatureFlag featureFlag2 = FeatureFlag.builder().flagName(FeatureFlagEnum.EMPLOYMENT_WA_1_0.getValue())
                 .status(true).build();
             featureFlags.add(featureFlag2);
