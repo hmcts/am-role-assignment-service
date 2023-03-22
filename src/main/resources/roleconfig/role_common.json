@@ -2437,7 +2437,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "ET_EnglandWales"]
+            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
           },
           "caseId": {
             "mandatory": true
@@ -2473,7 +2473,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "ET_EnglandWales"]
+            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
           },
           "caseId": {
             "mandatory": true
