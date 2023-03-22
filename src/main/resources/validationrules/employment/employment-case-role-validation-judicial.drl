@@ -25,6 +25,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.CaseAllocatorApproval;
  */
 rule "employment_lead_judge_create_case_roles"
 when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.EMPLOYMENT_WA_1_0.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "EMPLOYMENT",
@@ -46,6 +47,7 @@ end;
  */
 rule "employment_hearing_judge_create_case_roles"
 when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.EMPLOYMENT_WA_1_0.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "EMPLOYMENT",
@@ -67,6 +69,7 @@ end;
  */
 rule "employment_tribunal_member_1_create_case_roles"
 when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.EMPLOYMENT_WA_1_0.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "EMPLOYMENT",
@@ -88,6 +91,7 @@ end;
  */
 rule "employment_tribunal_member_2_create_case_roles"
 when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.EMPLOYMENT_WA_1_0.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "EMPLOYMENT",
@@ -110,6 +114,7 @@ end;
  */
 rule "employment_case_allocator_approved_delete_case_role"
 when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.EMPLOYMENT_WA_1_0.getValue())
     $ca: CaseAllocatorApproval(
                 roleAssignment.status == Status.DELETE_REQUESTED,
                 roleAssignment.attributes["jurisdiction"].asText() == "EMPLOYMENT")
