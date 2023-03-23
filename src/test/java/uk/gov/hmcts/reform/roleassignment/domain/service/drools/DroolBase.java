@@ -45,7 +45,7 @@ public abstract class DroolBase {
                                "PUBLICLAW", Case.builder().id(PUBLIC_LAW_CASE_ID)
                                      .caseTypeId("CARE_SUPERVISION_EPO").build(),
                                "EMPLOYMENT", Case.builder().id(EMPLOYMENT_CASE_ID)
-                                     .caseTypeId("ET_EnglandWzales").build());
+                                     .caseTypeId("ET_EnglandWales").build());
 
     @BeforeEach
     public void setUp() {
