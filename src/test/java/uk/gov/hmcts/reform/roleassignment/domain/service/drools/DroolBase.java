@@ -80,12 +80,8 @@ public abstract class DroolBase {
             .when(retrieveDataService).getCaseById(PUBLIC_LAW_CASE_ID);
 
         //EMPLOYMENT
-        Case caseObj10 = Case.builder().id(EMPLOYMENT_CASE_ID)
-            .caseTypeId("ET_EnglandWales")
-            .jurisdiction("EMPLOYMENT")
-            .securityClassification(Classification.PUBLIC)
-            .build();
-        doReturn(caseObj10).when(retrieveDataService).getCaseById(EMPLOYMENT_CASE_ID);
+        doReturn(dummyCases.getCaseDataV2(EMPLOYMENT_CASE_ID))
+            .when(retrieveDataService).getCaseById(EMPLOYMENT_CASE_ID);
 
         Case caseObj0 = Case.builder().id("9234567890123456")
             .caseTypeId("Asylum")
