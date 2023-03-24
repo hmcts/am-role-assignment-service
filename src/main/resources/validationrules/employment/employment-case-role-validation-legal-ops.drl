@@ -24,7 +24,6 @@ import java.time.temporal.ChronoUnit;
  */
 rule "employment_tribunal_caseworker_create_case_roles"
 when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.EMPLOYMENT_WA_1_0.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "EMPLOYMENT",
@@ -46,7 +45,6 @@ end;
  */
 rule "employment_admin_caseworker_create_case_roles"
 when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.EMPLOYMENT_WA_1_0.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "EMPLOYMENT",
@@ -68,7 +66,6 @@ end;
  */
 rule "employment_ctsc_caseworker_create_case_roles"
 when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.EMPLOYMENT_WA_1_0.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "EMPLOYMENT",
