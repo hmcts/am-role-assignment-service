@@ -438,7 +438,7 @@
     "label": "Fee Paid Judge",
     "description": "Fee Paid Judge role for judicial users",
     "category": "JUDICIAL",
-    "substantive": true,
+    "substantive": false,
     "type": "ORGANISATION",
     "patterns": [
       {
