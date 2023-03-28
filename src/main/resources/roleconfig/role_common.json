@@ -2238,7 +2238,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT"]
           },
           "primaryLocation": {
             "mandatory": true
