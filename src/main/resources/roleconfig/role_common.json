@@ -587,7 +587,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
+            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW","PUBLICLAW"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1836,7 +1836,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW", "PUBLICLAW","CIVIL"]
+            "values": ["SSCS", "PRIVATELAW", "PUBLICLAW","CIVIL","EMPLOYMENT"]
           }
         }
       }
