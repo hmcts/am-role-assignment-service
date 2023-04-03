@@ -634,8 +634,8 @@ class AllServicesOrgRoleTest extends DroolBase {
                                                            String jurisdiction,
                                                            String caseType) {
         assignmentRequest.getRequest().setClientId("fis_hmc_api");
-        assignmentRequest.getRequest().setProcess("fis-hmc-api-system-users");
-        assignmentRequest.getRequest().setReference("fis-hmc-api-hearings-system-user");
+        assignmentRequest.getRequest().setProcess("private-law-system-users");
+        assignmentRequest.getRequest().setReference("private-law-hearings-system-user");
         assignmentRequest.getRequest().setReplaceExisting(true);
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
