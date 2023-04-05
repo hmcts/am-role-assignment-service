@@ -100,7 +100,7 @@
     "label": "tribunal-member",
     "description": "tribunal-member role for judicial users",
     "category": "JUDICIAL",
-    "substantive": false,
+    "substantive": true,
     "type": "ORGANISATION",
     "patterns": [
       {
