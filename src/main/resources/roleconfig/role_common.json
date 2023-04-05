@@ -280,7 +280,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA"]
           }
         }
       }
@@ -310,7 +310,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA"]
           }
         }
       }
@@ -2300,7 +2300,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA"]
           },
           "primaryLocation": {
             "mandatory": true
