@@ -97,7 +97,7 @@ withNightlyPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
   }
 
-  afterAlways('build') {
+  afterSuccess('build') {
     stage("integration tests") {
       sh "./gradlew integration"
       steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
@@ -106,6 +106,16 @@ withNightlyPipeline(type, product, component) {
 
   afterAlways('fullFunctionalTest') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/cucumber/**/*'
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "target/cucumber/functional-html-reports",
+      reportFiles          : "overview-features.html,overview-failures.html,",
+      reportTitles         : "Features,Failures",
+      reportName           : "Functional Test Report"
+    ]
   }
 
   afterAlways('fortify-scan') {
