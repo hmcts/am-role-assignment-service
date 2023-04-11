@@ -10,7 +10,7 @@
   <!-- Overrides for Befta test runs -->
   <logger name="org.apache" level="ERROR"/>
   <logger name="httpclient" level="ERROR"/>
-  <logger name="uk.gov.hmcts" level="DEBUG"/>
+  <logger name="uk.gov.hmcts.befta" level="ERROR"/>
 
   <root level="debug">
     <appender-ref ref="STDOUT" />
