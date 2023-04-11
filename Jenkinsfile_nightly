@@ -89,7 +89,8 @@ withNightlyPipeline(type, product, component) {
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
 
-  enableSecurityScan()
+  // temp disable for AM-2742 / AM-2747
+  // enableSecurityScan()
   enableFullFunctionalTest()
   enableFortifyScan()
 
