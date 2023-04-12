@@ -5,7 +5,15 @@
       <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %thread %X{correlationId} [%-5level] %class{0} - %msg%n</pattern>
     </encoder>
   </appender>
+
+  <!-- JUnit Test settings -->
   <logger name="uk.gov.hmcts.reform.roleassignment.auditlog.AuditInterceptor" level="debug"/>
+
+  <!-- Befta Test settings -->
+  <logger name="io.restassured" level="ERROR"/>
+  <logger name="org.apache" level="ERROR"/>
+  <logger name="httpclient" level="ERROR"/>
+  <logger name="uk.gov.hmcts" level="DEBUG"/>
 
   <root level="debug">
     <appender-ref ref="STDOUT" />
