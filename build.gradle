@@ -35,6 +35,7 @@ apply plugin: 'project-report'
 apply plugin: 'idea'
 apply plugin: 'io.spring.dependency-management'
 
+ext['snakeyaml.version'] = '1.32'
 
 def versions = [
   junit          : '5.9.0',
