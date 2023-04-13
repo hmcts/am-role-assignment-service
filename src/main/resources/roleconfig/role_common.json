@@ -1768,11 +1768,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS"]
+            "values": ["SSCS", "PRIVATELAW"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit"]
+            "values": ["Benefit", "PRLAPPS"]
           }
         }
       }
@@ -1802,11 +1802,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS"]
+            "values": ["SSCS", "PRIVATELAW"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit"]
+            "values": ["Benefit", "PRLAPPS"]
           }
         }
       }
