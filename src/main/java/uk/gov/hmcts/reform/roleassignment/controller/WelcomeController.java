@@ -11,8 +11,10 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidReq
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
+import io.swagger.v3.oas.annotations.Hidden;
 
 @RestController
+@Hidden
 public class WelcomeController {
 
     @Autowired
