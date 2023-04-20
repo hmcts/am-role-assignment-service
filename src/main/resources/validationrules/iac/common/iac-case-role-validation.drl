@@ -25,7 +25,6 @@ import java.time.ZonedDateTime;
  */
 rule "ia_staff_case_allocator_approved_delete_case_role_v11"
 when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
     $ca: CaseAllocatorApproval(
                 roleAssignment.status == Status.DELETE_REQUESTED,
                 roleAssignment.attributes["jurisdiction"].asText() == "IA")

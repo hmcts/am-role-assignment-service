@@ -24,7 +24,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -128,7 +127,6 @@ public class DeleteRoleAssignmentProviderTest {
             .thenReturn(TestDataBuilder.buildRequestEntity(
                 TestDataBuilder.buildRequest(Status.LIVE, false)));
         when(securityUtils.getServiceName()).thenReturn("am_org_role_mapping_service");
-        when(persistenceService.getStatusByParam(FeatureFlagEnum.IAC_1_1.getValue(), "pr")).thenReturn(true);
         when(securityUtils.getUserId()).thenReturn(AUTH_USER_ID);
 
         JsonNode attributes = buildAttributesFromFile("attributesCase.json");

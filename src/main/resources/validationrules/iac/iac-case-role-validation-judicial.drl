@@ -24,7 +24,6 @@ import java.time.temporal.ChronoUnit;
 
 rule "ia_lead_judge_create_case_roles"
 when
-    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "IA",
@@ -49,7 +48,6 @@ end;
 
 rule "ia_hearing_judge_create_case_roles"
 when
-   $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
    $ca: CaseAllocatorApproval(
                 roleAssignment.status == Status.CREATE_REQUESTED,
                 roleAssignment.attributes["jurisdiction"].asText() == "IA",
@@ -74,7 +72,6 @@ end;
 
 rule "ia_ftpa_judge_create_case_roles"
 when
-  $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
   $ca: CaseAllocatorApproval(
                roleAssignment.status == Status.CREATE_REQUESTED,
                roleAssignment.attributes["jurisdiction"].asText() == "IA",
@@ -99,7 +96,6 @@ end;
 
 rule "ia_hearing_panel_judge_create_case_roles"
 when
-  $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
   $ca: CaseAllocatorApproval(
                roleAssignment.status == Status.CREATE_REQUESTED,
                roleAssignment.attributes["jurisdiction"].asText() == "IA",
@@ -124,7 +120,6 @@ end;
 
 rule "ia_case_allocator_create_case_roles"
 when
-    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "IA",
@@ -149,7 +144,6 @@ end;
 
 rule "ia_judicial_case_allocator_approved_delete_case_role_v11"
 when
-   $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_JRD_1_0.getValue())
    $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.DELETE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "IA")

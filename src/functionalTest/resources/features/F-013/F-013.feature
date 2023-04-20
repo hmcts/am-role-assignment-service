@@ -5,7 +5,6 @@ Feature: F-013 : Create CIVIL Challenged Access Role Assignments
     Given an appropriate test context as detailed in the test data source
 
   @S-216
-  @FeatureToggle(RAS:iac_challenged_1_0=on)
   Scenario: must successfully create challenged-access-judiciary role
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],

@@ -883,12 +883,12 @@ class PersistenceServiceTest {
 
     @Test
     void getFlagStatus() {
-        String flagName = "iac_1_1";
+        String flagName = "ccd_bypass_1_0";
         String env = "pr";
         FlagConfig flagConfig = FlagConfig.builder()
             .env("pr")
-            .flagName("iac_1_1")
-            .serviceName("iac")
+            .flagName("ccd_bypass_1_0")
+            .serviceName("ccd")
             .status(Boolean.TRUE)
             .build();
         when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
@@ -902,8 +902,8 @@ class PersistenceServiceTest {
 
         FlagConfig flagConfig = FlagConfig.builder()
             .env("pr")
-            .flagName("iac_1_1")
-            .serviceName("iac")
+            .flagName("ccd_bypass_1_0")
+            .serviceName("ccd")
             .status(Boolean.TRUE)
             .build();
         when(flagConfigRepository.save(flagConfig)).thenReturn(flagConfig);
@@ -914,12 +914,12 @@ class PersistenceServiceTest {
 
     @Test
     void getFlagStatus_False() {
-        String flagName = "iac_1_1";
+        String flagName = "ccd_bypass_1_0";
         String env = "pr";
         FlagConfig flagConfig = FlagConfig.builder()
             .env("pr")
-            .flagName("iac_1_1")
-            .serviceName("iac")
+            .flagName("ccd_bypass_1_0")
+            .serviceName("ccd")
             .status(Boolean.FALSE)
             .build();
         when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);

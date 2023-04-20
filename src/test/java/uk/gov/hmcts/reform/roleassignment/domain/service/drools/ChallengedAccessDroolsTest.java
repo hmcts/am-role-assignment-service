@@ -67,10 +67,6 @@ class ChallengedAccessDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
         existingAttributes.put("caseType", convertValueJsonNode(caseDetails.getCaseTypeId()));
@@ -142,10 +138,6 @@ class ChallengedAccessDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
         existingAttributes.put("caseType", convertValueJsonNode(caseDetails.getCaseTypeId()));
@@ -214,10 +206,6 @@ class ChallengedAccessDroolsTest extends DroolBase {
             )
             .build();
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
         existingAttributes.put("caseType", convertValueJsonNode(caseDetails.getCaseTypeId()));
@@ -273,10 +261,6 @@ class ChallengedAccessDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
         existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
@@ -330,10 +314,6 @@ class ChallengedAccessDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
         existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
@@ -384,10 +364,6 @@ class ChallengedAccessDroolsTest extends DroolBase {
                 + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
         )
             .build();
-
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
@@ -444,10 +420,6 @@ class ChallengedAccessDroolsTest extends DroolBase {
         assignmentRequest.getRequestedRoles().stream().findFirst()
             .get().setEndTime(ZonedDateTime.now().minusHours(1L));
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
         existingAttributes.put("caseType", convertValueJsonNode("Asylum"));
@@ -498,11 +470,6 @@ class ChallengedAccessDroolsTest extends DroolBase {
                     + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
             )
             .build();
-
-
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));

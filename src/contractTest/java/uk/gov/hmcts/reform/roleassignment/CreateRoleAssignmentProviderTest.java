@@ -22,7 +22,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -124,7 +123,6 @@ public class CreateRoleAssignmentProviderTest {
         when(persistenceService.persistRequest(any())).thenReturn(createEntity());
         doReturn(assignmentList).when(persistenceService)
             .retrieveRoleAssignmentsByQueryRequest(any(), anyInt(), anyInt(), any(), any(), anyBoolean());
-        when(persistenceService.getStatusByParam(FeatureFlagEnum.IAC_1_1.getValue(), "pr")).thenReturn(true);
         when(dataStoreApi.getCaseDataV2(anyString())).thenReturn(Case.builder().id("1212121212121213").jurisdiction(
             "IA").caseTypeId("Asylum").securityClassification(Classification.PUBLIC).build());
         when(securityUtils.getUserId()).thenReturn("3168da13-00b3-41e3-81fa-cbc71ac28a0f");
