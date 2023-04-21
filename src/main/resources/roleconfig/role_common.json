@@ -478,7 +478,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC", "STANDARD"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
           "mandatory": true
@@ -611,7 +611,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC", "STANDARD"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
           "mandatory": true
@@ -2389,7 +2389,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC", "STANDARD"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
           "mandatory": true
@@ -2425,7 +2425,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC", "STANDARD"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
           "mandatory": true
@@ -2461,7 +2461,7 @@
         },
         "grantType": {
           "mandatory": true,
-          "values": ["SPECIFIC", "STANDARD"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
           "mandatory": true
