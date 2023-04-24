@@ -39,7 +39,7 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "roleType": "ORGANISATION",
+            "roleType": "CASE",
             "grantType": "STANDARD"
           }
         ]
