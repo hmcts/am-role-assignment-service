@@ -424,10 +424,12 @@ class AllServicesOrgRoleTest extends DroolBase {
         "case-allocator,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
         "case-allocator,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
         "case-allocator,CTSC,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,N,Null,PUBLIC",
+        "case-allocator,CTSC,STANDARD,north-east,IA,UK,ORGANISATION,N,Null,PUBLIC",
         "task-supervisor,JUDICIAL,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
         "task-supervisor,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
         "task-supervisor,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
         "task-supervisor,CTSC,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,N,Null,PUBLIC",
+        "task-supervisor,CTSC,STANDARD,north-east,IA,UK,ORGANISATION,N,Null,PUBLIC",
         "hmcts-judiciary,JUDICIAL,BASIC,north-east,SSCS,UK,ORGANISATION,N,SALARIED,PRIVATE",
         "hmcts-legal-operations,LEGAL_OPERATIONS,BASIC,north-east,SSCS,UK,ORGANISATION,N,SALARIED,PRIVATE",
         "hmcts-admin,ADMIN,BASIC,north-east,SSCS,UK,ORGANISATION,N,SALARIED,PRIVATE",
@@ -441,6 +443,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         "leadership-judge,JUDICIAL,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Salaried,PUBLIC",
         "ctsc-team-leader,CTSC,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
         "ctsc-team-leader,CTSC,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC",
+        "ctsc-team-leader,CTSC,STANDARD,north-east,IA,UK,ORGANISATION,Y,Null,PUBLIC",
         "ctsc,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
         "ctsc,CTSC,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC",
         "nbc-team-leader,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
@@ -602,6 +605,72 @@ class AllServicesOrgRoleTest extends DroolBase {
     })
     void shouldDeleteOrgRequestedRoleForHearing(String roleName, String roleCategory, String jurisdiction) {
         assignmentRequest.getRequest().setClientId("sscs");
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(Status.DELETE_REQUESTED);
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(DELETE_APPROVED, roleAssignment.getStatus());
+            assertEquals(roleName, roleAssignment.getRoleName());
+            assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+        });
+    }
+
+
+    @ParameterizedTest
+    @CsvSource({
+        "hearing-manager,SYSTEM,PRIVATELAW,PRLAPPS",
+        "hearing-viewer,SYSTEM,PRIVATELAW,PRLAPPS"
+    })
+    void shouldApprovePrivateLawOrgRequestedRoleForHearing(String roleName,
+                                                           String roleCategory,
+                                                           String jurisdiction,
+                                                           String caseType) {
+        assignmentRequest.getRequest().setClientId("fis_hmc_api");
+        assignmentRequest.getRequest().setProcess("private-law-system-users");
+        assignmentRequest.getRequest().setReference("private-law-hearings-system-user");
+        assignmentRequest.getRequest().setReplaceExisting(true);
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(CREATE_REQUESTED);
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+            roleAssignment.getAttributes().put("caseType", convertValueJsonNode(caseType));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(APPROVED, roleAssignment.getStatus());
+            assertEquals(roleName, roleAssignment.getRoleName());
+            assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "hearing-manager,SYSTEM,PRIVATELAW",
+        "hearing-viewer,SYSTEM,PRIVATELAW"
+    })
+    void shouldDeletePrivateLawOrgRequestedRoleForHearing(String roleName,
+                                                String roleCategory,
+                                                String jurisdiction) {
+        assignmentRequest.getRequest().setClientId("fis_hmc_api");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
