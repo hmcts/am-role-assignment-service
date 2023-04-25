@@ -928,7 +928,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW", "EMPLOYMENT"]
           },
           "caseType": {
             "mandatory": true
