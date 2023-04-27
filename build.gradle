@@ -427,8 +427,8 @@ dependencies {
   implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.swagger2Version
   implementation group: 'io.springfox', name: 'springfox-spring-webmvc', version: versions.swagger2Version
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.71'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.73'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.74'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.74'
   implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.15.Final'
   implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.5'
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.5.3'
@@ -532,7 +532,7 @@ dependencyManagement {
       entry 'logback-classic'
       entry 'logback-core'
     }
-    dependencySet(group: 'net.minidev', version: '2.4.8') {
+    dependencySet(group: 'net.minidev', version: '2.4.10') {
       entry 'json-smart'
     }
     dependencySet(group: 'com.fasterxml.jackson.core', version: '2.14.2') {
