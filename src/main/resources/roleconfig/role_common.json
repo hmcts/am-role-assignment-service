@@ -2366,10 +2366,10 @@
           },
         "caseType": {
           "mandatory": true
-        },
-        "caseId": {
-          "mandatory": true
-        }
+          },
+          "caseId": {
+            "mandatory": true
+          }
         }
       }
     ]
