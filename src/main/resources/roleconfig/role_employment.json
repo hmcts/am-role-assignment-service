@@ -299,5 +299,40 @@
         }
       }
     ]
+  },
+  {
+    "name": "allocated-admin-caseworker",
+    "label": "Allocated Admin Caseworker",
+    "description": "Allocated Admin Caseworker for Staff users",
+    "category": "ADMIN",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
