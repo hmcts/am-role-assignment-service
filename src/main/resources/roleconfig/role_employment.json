@@ -234,7 +234,7 @@
     "name": "allocated-ctsc-caseworker",
     "label": "Allocated CTSC Caseworker",
     "description": "Allocated CTSC Caseworker for Staff users",
-    "category": "LEGAL_OPERATIONS",
+    "category": "CTSC",
     "substantive": false,
     "type": "CASE",
     "patterns": [
