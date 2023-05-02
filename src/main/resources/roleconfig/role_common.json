@@ -280,7 +280,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","SSCS"]
           }
         }
       }
@@ -310,7 +310,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","SSCS"]
           }
         }
       }
@@ -1549,7 +1549,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW"]
+            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW","SSCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1986,7 +1986,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","SSCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2019,7 +2019,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL", "PRIVATELAW","PUBLICLAW"]
+            "values": ["IA", "CIVIL", "PRIVATELAW","PUBLICLAW","SSCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2238,7 +2238,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","SSCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2300,7 +2300,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","SSCS"]
           },
           "primaryLocation": {
             "mandatory": true
