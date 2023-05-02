@@ -192,6 +192,42 @@
     ]
   },
   {
+    "name": "tribunal-member-3",
+    "label": "Tribunal member 3",
+    "description": "Tribunal member - 3  for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "appraiser-1",
     "label": "Appraiser 1",
     "description": "Appraiser 1 for judicial users",
@@ -267,6 +303,42 @@
     "name": "interloc-judge",
     "label": "Interlocutory Judge",
     "description": "Interlocutory Judge for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "post-hearing-judge",
+    "label": "Post Hearing Judge",
+    "description": "Post Hearing Judge for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "type": "CASE",
