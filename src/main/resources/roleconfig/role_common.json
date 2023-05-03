@@ -749,6 +749,45 @@
     ]
   },
   {
+    "name": "conflict-of-interest",
+    "label": "Conflict of Interest",
+    "description": "Conflict of Interest role for ctsc users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": [
+            "EXCLUDED"
+          ]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": [
+            "RESTRICTED"
+          ]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "specific-access-judiciary",
     "label": "Specific Access (judiciary)",
     "description": "Specific access for judicial users.",
