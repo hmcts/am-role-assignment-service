@@ -751,7 +751,7 @@
   {
     "name": "conflict-of-interest",
     "label": "Conflict of Interest",
-    "description": "Conflict of Interest role for admin users",
+    "description": "Conflict of Interest role for ctsc users",
     "category": "CTSC",
     "substantive": false,
     "type": "CASE",
