@@ -16,8 +16,6 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory.OTHER_GOV_DEPT;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.ORGANISATION;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_CASE_ID;
@@ -121,9 +119,7 @@ public abstract class DroolBase {
 
     void executeDroolRules(List<ExistingRoleAssignment> existingRoleAssignments) {
         // facts must contain the role config, for access to the patterns
-        var roles = RoleConfig.getRoleConfig();
-        var hearingJudge = roles.get("post-hearing-judge", OTHER_GOV_DEPT, ORGANISATION);
-        facts.add(roles);
+        facts.add(RoleConfig.getRoleConfig());
         // facts must contain all affected role assignments
         facts.addAll(assignmentRequest.getRequestedRoles());
 
