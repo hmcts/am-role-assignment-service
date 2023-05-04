@@ -16,9 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory.JUDICIAL;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory.OTHER_GOV_DEPT;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.CASE;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType.ORGANISATION;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
