@@ -14,6 +14,7 @@
   <suppress>
     <notes>CVE-2022-1471 https://tools.hmcts.net/jira/browse/AM-2728 snakeyaml</notes>
     <cve>CVE-2022-1471</cve>
+    <cve>CVE-2023-28708</cve>
   </suppress>
   <suppress>
     <notes>https://tools.hmcts.net/jira/browse/AM-2737 spring</notes>
