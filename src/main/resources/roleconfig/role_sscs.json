@@ -231,29 +231,32 @@
     "name": "post-hearing-judge",
     "label": "Post Hearing Judge",
     "description": "Post Hearing Judge role for judicial users",
-    "category": "OTHER_GOV_DEPT",
+    "category": "JUDICIAL",
     "substantive": true,
-    "type": "ORGANISATION",
+    "type": "CASE",
     "patterns": [
       {
         "roleType": {
           "mandatory": true,
-          "values": ["ORGANISATION"]
+          "values": ["CASE"]
         },
         "grantType": {
           "mandatory": true,
-          "values": ["STANDARD"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
             "values": ["SSCS"]
           },
-          "primaryLocation": {
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit"]
+          },
+          "caseId": {
             "mandatory": true
           }
         }

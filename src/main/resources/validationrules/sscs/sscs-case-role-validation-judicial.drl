@@ -29,14 +29,15 @@ when
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
                  roleAssignment.attributes["caseType"].asText() == "Benefit",
-                 roleAssignment.roleName in ("hearing-judge"),
-                 roleAssignment.grantType in (GrantType.SPECIFIC))
-         ExistingRoleAssignment(
+                 roleAssignment.roleName in ("hearing-judge"))
+         $era: ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
                  roleName in ("judge", "fee-paid-judge"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
+    System.out.println($ca.getRoleAssignment());
+    System.out.println($era);
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : sscs_hearing_judge_create_case_roles");
     update($ca.getRoleAssignment());
@@ -54,8 +55,7 @@ when
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
                  roleAssignment.attributes["caseType"].asText() == "Benefit",
-                 roleAssignment.roleName in ("tribunal-member-1"),
-                 roleAssignment.grantType in (GrantType.SPECIFIC))
+                 roleAssignment.roleName in ("tribunal-member-1"))
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
@@ -80,12 +80,11 @@ when
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
                  roleAssignment.attributes["caseType"].asText() == "Benefit",
-                 roleAssignment.roleName in ("tribunal-member-2"),
-                 roleAssignment.grantType in (GrantType.SPECIFIC))
+                 roleAssignment.roleName in ("tribunal-member-2"))
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("fee-paid-medical", "medical", "fee-paid-disability", "fee-paid-financial"),
+                 roleName in ("fee-paid-medical", "medical", "fee-paid-disability", "fee-paid-financial", "fee-paid-tribunal-member"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -95,30 +94,29 @@ then
 end;
 
 
-   /*
-    * SSCS "tribunal-member-3" case validation rule.
-    */
+ /*
+  * SSCS "tribunal-member-3" case validation rule.
+  */
 
-   rule "sscs_tribunal_member_3_create_case_roles"
-   when
-       $f:  FeatureFlag(status && flagName == FeatureFlagEnum.SSCS_WA_1_0.getValue())
-       $ca: CaseAllocatorApproval(
-                    roleAssignment.status == Status.CREATE_REQUESTED,
-                    roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
-                    roleAssignment.attributes["caseType"].asText() == "Benefit",
-                    roleAssignment.roleName in ("tribunal-member-3"),
-                    roleAssignment.grantType in (GrantType.SPECIFIC))
-            ExistingRoleAssignment(
-                    actorId == $ca.getRoleAssignment().actorId,
-                    roleType == RoleType.ORGANISATION,
-                    roleName in ("fee-paid-medical", "medical", "fee-paid-disability", "fee-paid-financial"),
-                    attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
-   then
-       $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-       $ca.getRoleAssignment().log("Stage 1 approved : sscs_tribunal_member_3_create_case_roles");
-       update($ca.getRoleAssignment());
-       logMsg("Rule : sscs_tribunal_member_3_create_case_roles");
-   end;
+ rule "sscs_tribunal_member_3_create_case_roles"
+ when
+     $f:  FeatureFlag(status && flagName == FeatureFlagEnum.SSCS_WA_1_0.getValue())
+     $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
+                 roleAssignment.attributes["caseType"].asText() == "Benefit",
+                 roleAssignment.roleName in ("tribunal-member-3"))
+          ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("fee-paid-medical", "medical", "fee-paid-disability", "fee-paid-financial", "fee-paid-tribunal-member"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
+ then
+     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+     $ca.getRoleAssignment().log("Stage 1 approved : sscs_tribunal_member_3_create_case_roles");
+     update($ca.getRoleAssignment());
+     logMsg("Rule : sscs_tribunal_member_3_create_case_roles");
+ end;
 
 
 /*
@@ -186,7 +184,7 @@ when
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("judge"),
+                 roleName in ("judge", "fee-paid-judge"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -197,7 +195,7 @@ end;
 
 
 /*
- * SSCS "interloc-judge" case validation rule.
+ * SSCS "post-hearing-judge" case validation rule.
  */
 
 rule "sscs_post_hearing_judge_create_case_roles"
