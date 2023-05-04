@@ -6,10 +6,13 @@
     </encoder>
   </appender>
 
-  <!-- JUnit Test settings -->
-  <logger name="uk.gov.hmcts.reform.roleassignment.auditlog.AuditInterceptor" level="debug"/>
+  <!-- Befta Test settings -->
+  <logger name="io.restassured" level="ERROR"/>
+  <logger name="org.apache" level="ERROR"/>
+  <logger name="httpclient" level="ERROR"/>
+  <logger name="uk.gov.hmcts" level="DEBUG"/>
 
-  <root level="debug">
-    <appender-ref ref="STDOUT" />
+  <root level="info">
+    <appender-ref ref="STDOUT"/>
   </root>
 </configuration>

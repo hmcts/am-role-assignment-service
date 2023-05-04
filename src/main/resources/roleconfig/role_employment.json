@@ -1,5 +1,35 @@
 [
   {
+    "name": "specific-access-approver-legal-operations",
+    "label": "Specific Access Approver Legal Operations",
+    "description": "Specific Access Approver Legal Operations role for staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT"]
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "regional-centre-team-leader",
     "label": "Regional Centre Team Leader",
     "description": "Regional Centre Team Leader role for admin users",
@@ -70,7 +100,7 @@
     "label": "tribunal-member",
     "description": "tribunal-member role for judicial users",
     "category": "JUDICIAL",
-    "substantive": false,
+    "substantive": true,
     "type": "ORGANISATION",
     "patterns": [
       {
@@ -90,6 +120,216 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["EMPLOYMENT"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "ctsc-caseworker",
+    "label": "CTSC Caseworker",
+    "description": "CTSC Caseworker for Staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "admin-caseworker",
+    "label": "Admin Caseworker",
+    "description": "Admin Caseworker for Staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-tribunal-caseworker",
+    "label": "Allocated Tribunal Caseworker",
+    "description": "Allocated Tribunal Caseworker for Staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-ctsc-caseworker",
+    "label": "Allocated CTSC Caseworker",
+    "description": "Allocated CTSC Caseworker for Staff users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-admin-caseworker",
+    "label": "Allocated Admin Caseworker",
+    "description": "Allocated Admin Caseworker for Staff users",
+    "category": "ADMIN",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-admin-caseworker",
+    "label": "Allocated Admin Caseworker",
+    "description": "Allocated Admin Caseworker for Staff users",
+    "category": "ADMIN",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
           }
         }
       }
