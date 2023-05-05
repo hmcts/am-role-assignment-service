@@ -772,7 +772,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
           },
           "caseType": {
             "mandatory": true
@@ -1436,7 +1436,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW", "EMPLOYMENT"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
           },
           "caseType": {
             "mandatory": true
