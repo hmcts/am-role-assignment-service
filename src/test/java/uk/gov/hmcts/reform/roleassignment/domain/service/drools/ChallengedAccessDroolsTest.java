@@ -43,6 +43,10 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "PUBLICLAW,challenged-access-ctsc,CTSC",
         "PUBLICLAW,challenged-access-judiciary,JUDICIAL",
         "EMPLOYMENT,challenged-access-judiciary,JUDICIAL",
+        "SSCS,challenged-access-judiciary,JUDICIAL",
+        "SSCS,challenged-access-legal-ops,LEGAL_OPERATIONS",
+        "SSCS,challenged-access-admin,ADMIN",
+        "SSCS,challenged-access-ctsc,CTSC",
     })
     void shouldGrantAccessFor_ChallengedAccess(String jurisdiction, String roleName, String roleCategory) {
         Case caseDetails = caseMap.get(jurisdiction);
@@ -118,6 +122,10 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "PUBLICLAW,challenged-access-legal-ops,LEGAL_OPERATIONS",
         "PUBLICLAW,challenged-access-ctsc,CTSC",
         "EMPLOYMENT,challenged-access-judiciary,JUDICIAL",
+        "SSCS,challenged-access-judiciary,JUDICIAL",
+        "SSCS,challenged-access-legal-ops,LEGAL_OPERATIONS",
+        "SSCS,challenged-access-admin,ADMIN",
+        "SSCS,challenged-access-ctsc,CTSC",
     })
     void shouldGrantAccessFor_ChallengedAccess_MaxAttributes(String jurisdiction, String roleName,
                                                              String roleCategory) {
@@ -191,6 +199,10 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "PUBLICLAW,challenged-access-legal-ops,LEGAL_OPERATIONS",
         "PUBLICLAW,challenged-access-ctsc,CTSC",
         "EMPLOYMENT,challenged-access-judiciary,JUDICIAL",
+        "SSCS,challenged-access-judiciary,JUDICIAL",
+        "SSCS,challenged-access-legal-ops,LEGAL_OPERATIONS",
+        "SSCS,challenged-access-admin,ADMIN",
+        "SSCS,challenged-access-ctsc,CTSC",
     })
     void shouldRejectAccessFor_ChallengedAccess_MaxAttributes_sameRegion(String jurisdiction, String roleName,
                                                              String roleCategory) {
