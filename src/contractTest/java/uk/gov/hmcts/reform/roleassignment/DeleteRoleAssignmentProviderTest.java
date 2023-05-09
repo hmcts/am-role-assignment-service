@@ -86,7 +86,7 @@ public class DeleteRoleAssignmentProviderTest {
     @BeforeEach
     void beforeCreate(PactVerificationContext context) {
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
-        System.getProperties().setProperty("pact.verifier.publishResults", "true");
+        //System.getProperties().setProperty("pact.verifier.publishResults", "true");
         testTarget.setControllers(new DeleteAssignmentController(
             deleteRoleAssignmentOrchestrator
         ));
