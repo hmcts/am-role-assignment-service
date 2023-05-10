@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
@@ -17,7 +18,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification.PUBLIC;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification.RESTRICTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.CASE_ALLOCATOR_ID;
@@ -29,28 +29,30 @@ class CaseRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "SSCS,Benefit,hearing-judge,JUDICIAL,judge,Y",
-        "SSCS,Benefit,hearing-judge,JUDICIAL,fee-paid-judge,Y",
-        "SSCS,Benefit,tribunal-member-1,JUDICIAL,medical,Y",
-        "SSCS,Benefit,tribunal-member-1,JUDICIAL,fee-paid-medical,Y",
-        "SSCS,Benefit,tribunal-member-2,JUDICIAL,fee-paid-disability,Y",
-        "SSCS,Benefit,appraiser-1,JUDICIAL,judge,Y",
-        "SSCS,Benefit,appraiser-2,JUDICIAL,medical,Y",
-        "SSCS,Benefit,appraiser-2,JUDICIAL,fee-paid-medical,Y",
-        "SSCS,Benefit,interloc-judge,JUDICIAL,judge,Y",
-        "SSCS,Benefit,case-allocator,JUDICIAL,case-allocator,N",
-        "SSCS,Benefit,case-allocator,LEGAL_OPERATIONS,case-allocator,N",
-        "SSCS,Benefit,registrar,LEGAL_OPERATIONS,registrar,N",
-        "SSCS,Benefit,tribunal-caseworker,LEGAL_OPERATIONS,tribunal-caseworker,N",
-        "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,judge,",
-        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,magistrate,",
-        "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,judge,",
-        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-magistrate,JUDICIAL,magistrate,",
-        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-judge,JUDICIAL,judge,",
-        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-legal-adviser,LEGAL_OPERATIONS,tribunal-caseworker,",
+        "SSCS,Benefit,hearing-judge,JUDICIAL,judge,RESTRICTED,Y",
+        "SSCS,Benefit,hearing-judge,JUDICIAL,fee-paid-judge,RESTRICTED,Y",
+        "SSCS,Benefit,tribunal-member-1,JUDICIAL,medical,RESTRICTED,Y",
+        "SSCS,Benefit,tribunal-member-1,JUDICIAL,fee-paid-medical,RESTRICTED,Y",
+        "SSCS,Benefit,tribunal-member-2,JUDICIAL,fee-paid-disability,RESTRICTED,Y",
+        "SSCS,Benefit,appraiser-1,JUDICIAL,judge,RESTRICTED,Y",
+        "SSCS,Benefit,appraiser-2,JUDICIAL,medical,RESTRICTED,Y",
+        "SSCS,Benefit,appraiser-2,JUDICIAL,fee-paid-medical,RESTRICTED,Y",
+        "SSCS,Benefit,interloc-judge,JUDICIAL,judge,RESTRICTED,Y",
+        "SSCS,Benefit,case-allocator,JUDICIAL,case-allocator,RESTRICTED,N",
+        "SSCS,Benefit,case-allocator,LEGAL_OPERATIONS,case-allocator,RESTRICTED,N",
+        "SSCS,Benefit,registrar,LEGAL_OPERATIONS,registrar,RESTRICTED,N",
+        "SSCS,Benefit,tribunal-caseworker,LEGAL_OPERATIONS,tribunal-caseworker,RESTRICTED,N",
+        "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,judge,RESTRICTED,",
+        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,magistrate,RESTRICTED,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,judge,RESTRICTED,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-magistrate,JUDICIAL,magistrate,RESTRICTED,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-judge,JUDICIAL,judge,RESTRICTED,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-legal-adviser,LEGAL_OPERATIONS,tribunal-caseworker,RESTRICTED,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,admin-case-manager,ADMIN,case-allocator,PUBLIC,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,ctsc-case-manager,CTSC,case-allocator,PUBLIC,"
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName, String roleCategory,
-                                       String existingRoleName, String expectedSubstantive) {
+                                       String existingRoleName, String classification, String expectedSubstantive) {
 
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseMap.get(jurisdiction).getId()));
@@ -64,7 +66,7 @@ class CaseRolesDroolsTest extends DroolBase {
             RoleCategory.valueOf(roleCategory),
             RoleType.CASE,
             roleAssignmentAttributes,
-            RESTRICTED,
+            Classification.valueOf(classification),
             SPECIFIC,
             Status.CREATE_REQUESTED,
             "am_org_role_mapping_service",
@@ -131,7 +133,9 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,registrar",
         "SSCS,Benefit,tribunal-caseworker",
         "PRIVATELAW,PRLAPPS,hearing-judge",
-        "PRIVATELAW,PRLAPPS,allocated-magistrate"
+        "PRIVATELAW,PRLAPPS,allocated-magistrate",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,admin-case-manager",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,ctsc-case-manager"
     })
     void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
 

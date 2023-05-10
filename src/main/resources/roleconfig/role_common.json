@@ -749,6 +749,70 @@
     ]
   },
   {
+    "name": "admin-case-manager",
+    "label": "Admin Case Manager",
+    "description": "Admin Case Manager",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "ctsc-case-manager",
+    "label": "CTSC Case Manager",
+    "description": "CTSC Case Manager",
+    "category": "CTSC",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "specific-access-judiciary",
     "label": "Specific Access (judiciary)",
     "description": "Specific access for judicial users.",

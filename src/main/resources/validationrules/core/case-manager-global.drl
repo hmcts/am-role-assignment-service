@@ -1,0 +1,46 @@
+package validationrules.core;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+
+/*
+* All services: "admin-case-manager" and "ctsc-case-manager" case roles
+*/
+rule "create_case_manager_role"
+when
+    $rq: Request(assignerId == authenticatedUserId)
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleName in ("admin-case-manager", "ctsc-case-manager"),
+             grantType in (GrantType.SPECIFIC))
+    ExistingRoleAssignment(
+             actorId == $rq.assignerId,
+             roleType == RoleType.ORGANISATION)
+then
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : create_case_manager_role");
+    update($ra);
+    logMsg("Rule : create_case_manager_role");
+end;
+
+/*
+* All services: "admin-case-manager" and "ctsc-case-manager" case roles deletion
+*/
+rule "delete_case_manager_role"
+when
+   $rq: Request(assignerId == authenticatedUserId)
+   $ra: RoleAssignment(
+            actorId == $rq.authenticatedUserId,
+            status == Status.DELETE_REQUESTED,
+            roleType == RoleType.CASE,
+            roleName in ("admin-case-manager", "ctsc-case-manager"))
+then
+   $ra.setStatus(Status.DELETE_APPROVED);
+   $ra.log("Stage 1 approved : delete_case_manager_role");
+   update($ra);
+   logMsg("Rule : delete_case_manager_role");
+end;
