@@ -1,38 +1,40 @@
 package uk.gov.hmcts.reform.roleassignment.config;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
-
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.reform.roleassignment.BaseTest;
+import javax.inject.Inject;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Built-in feature which saves service's swagger specs in temporary directory.
  * Each travis run on master should automatically save and upload (if updated) documentation.
  */
-@SpringJUnitWebConfig
-@SpringBootTest
-@AutoConfigureMockMvc
-class SwaggerPublisher {
+public class SwaggerPublisher extends BaseTest {
 
-    @Autowired
-    private transient MockMvc mvc;
+    private MockMvc mockMvc;
 
-    @DisplayName("Generate swagger documentation")
+    @Inject
+    private WebApplicationContext wac;
+
+    @Before
+    public void setUp() throws Exception {
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
-    @Disabled
-    void generateDocs() throws Exception {
-        byte[] specs = mvc.perform(get("/v2/api-docs"))
+    public void generateDocs() throws Exception {
+        byte[] specs = mockMvc.perform(get("/v3/api-docs"))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse()
@@ -40,7 +42,7 @@ class SwaggerPublisher {
 
         try (OutputStream outputStream = Files.newOutputStream(Paths.get("/tmp/swagger-specs.json"))) {
             outputStream.write(specs);
-            
+
         }
     }
 }
