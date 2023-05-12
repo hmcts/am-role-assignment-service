@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.config;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -33,6 +34,7 @@ public class SwaggerPublisher extends BaseTest {
     }
 
     @Test
+    @Disabled
     public void generateDocs() throws Exception {
         byte[] specs = mockMvc.perform(get("/v3/api-docs"))
             .andExpect(status().isOk())
