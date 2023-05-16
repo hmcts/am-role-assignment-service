@@ -155,7 +155,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Criminal Injuries Compensation"]
+            "values": ["CRIMINAL_INJURIES_COMPENSATION"]
           },
           "caseId": {
             "mandatory": true
