@@ -127,5 +127,41 @@
         }
       }
     ]
+  },
+  {
+    "name": "tribunal-member-3",
+    "label": "Tribunal member 3 ",
+    "description": "Tribunal member - 3  for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["ST_CIC"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Criminal Injuries Compensation"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
