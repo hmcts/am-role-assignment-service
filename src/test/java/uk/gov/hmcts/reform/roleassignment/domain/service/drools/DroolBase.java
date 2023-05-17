@@ -16,10 +16,7 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_CASE_ID;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_CASE_ID;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PUBLIC_LAW_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +39,9 @@ public abstract class DroolBase {
                                "CIVIL", Case.builder().id(CIVIL_CASE_ID).caseTypeId("CIVIL").build(),
                                "PRIVATELAW", Case.builder().id(PRIVATE_LAW_CASE_ID).caseTypeId("PRLAPPS").build(),
                                "PUBLICLAW", Case.builder().id(PUBLIC_LAW_CASE_ID)
-                                     .caseTypeId("CARE_SUPERVISION_EPO").build());
+                                     .caseTypeId("CARE_SUPERVISION_EPO").build(),
+                               "ST_CIC", Case.builder().id(SPECIALTRIBUNALS_CASE_ID)
+                                     .caseTypeId("CriminalInjuriesCompensation").build());
 
     @BeforeEach
     public void setUp() {
@@ -75,6 +74,10 @@ public abstract class DroolBase {
         //PUBLICLAW
         doReturn(dummyCases.getCaseDataV2(PUBLIC_LAW_CASE_ID))
             .when(retrieveDataService).getCaseById(PUBLIC_LAW_CASE_ID);
+
+        //SPECIALTRIBUNALS
+        doReturn(dummyCases.getCaseDataV2(SPECIALTRIBUNALS_CASE_ID))
+            .when(retrieveDataService).getCaseById(SPECIALTRIBUNALS_CASE_ID);
 
         Case caseObj0 = Case.builder().id("9234567890123456")
             .caseTypeId("Asylum")
