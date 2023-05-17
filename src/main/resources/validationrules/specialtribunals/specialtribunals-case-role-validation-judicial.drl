@@ -27,7 +27,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "ST_CIC",
-                 roleAssignment.attributes["caseType"].asText() == "Criminal Injuries Compensation",
+                 roleAssignment.attributes["caseType"].asText() == "CriminalInjuriesCompensation",
                  roleAssignment.roleName == "hearing-judge")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
@@ -50,7 +50,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "ST_CIC",
-                 roleAssignment.attributes["caseType"].asText() == "Criminal Injuries Compensation",
+                 roleAssignment.attributes["caseType"].asText() == "CriminalInjuriesCompensation",
                  roleAssignment.roleName == "interloc-judge")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
@@ -73,7 +73,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "ST_CIC",
-                 roleAssignment.attributes["caseType"].asText() == "Criminal Injuries Compensation",
+                 roleAssignment.attributes["caseType"].asText() == "CriminalInjuriesCompensation",
                  roleAssignment.roleName == "tribunal-member-1")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
@@ -96,7 +96,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "ST_CIC",
-                 roleAssignment.attributes["caseType"].asText() == "Criminal Injuries Compensation",
+                 roleAssignment.attributes["caseType"].asText() == "CriminalInjuriesCompensation",
                  roleAssignment.roleName == "tribunal-member-2")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
@@ -119,7 +119,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "ST_CIC",
-                 roleAssignment.attributes["caseType"].asText() == "Criminal Injuries Compensation",
+                 roleAssignment.attributes["caseType"].asText() == "CriminalInjuriesCompensation",
                  roleAssignment.roleName == "tribunal-member-3")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
@@ -142,7 +142,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "ST_CIC",
-                 roleAssignment.attributes["caseType"].asText() == "Criminal Injuries Compensation",
+                 roleAssignment.attributes["caseType"].asText() == "CriminalInjuriesCompensation",
                  roleAssignment.roleName == "appraiser-1")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
@@ -165,7 +165,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "ST_CIC",
-                 roleAssignment.attributes["caseType"].asText() == "Criminal Injuries Compensation",
+                 roleAssignment.attributes["caseType"].asText() == "CriminalInjuriesCompensation",
                  roleAssignment.roleName == "appraiser-2")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,

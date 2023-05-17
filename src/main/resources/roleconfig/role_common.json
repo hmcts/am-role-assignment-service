@@ -2551,7 +2551,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit","Criminal Injuries Compensation"]
+            "values": ["Benefit","CriminalInjuriesCompensation"]
           },
           "caseId": {
             "mandatory": true
@@ -2587,7 +2587,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit","Criminal Injuries Compensation"]
+            "values": ["Benefit","CriminalInjuriesCompensation"]
           },
           "caseId": {
             "mandatory": true
@@ -2623,7 +2623,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit","Criminal Injuries Compensation"]
+            "values": ["Benefit","CriminalInjuriesCompensation"]
           },
           "caseId": {
             "mandatory": true
@@ -2659,7 +2659,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit","Criminal Injuries Compensation"]
+            "values": ["Benefit","CriminalInjuriesCompensation"]
           },
           "caseId": {
             "mandatory": true
@@ -2695,7 +2695,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit","Criminal Injuries Compensation"]
+            "values": ["Benefit","CriminalInjuriesCompensation"]
           },
           "caseId": {
             "mandatory": true
