@@ -767,12 +767,12 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["RESTRICTED","PRIVATE"]
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","ST_CIC"]
           },
           "caseType": {
             "mandatory": true
@@ -928,7 +928,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","ST_CIC"]
           },
           "caseType": {
             "mandatory": true
@@ -1084,7 +1084,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","ST_CIC"]
           },
           "caseType": {
             "mandatory": true
