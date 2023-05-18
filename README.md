@@ -1,11 +1,11 @@
 # role-assignment-service
 
 [![API Docs](https://img.shields.io/badge/API%20Docs-site-e140ad.svg)](https://hmcts.github.io/cnp-api-docs/swagger.html?url=https://hmcts.github.io/cnp-api-docs/specs/am-role-assignment-service.json)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=am-role-assignment-service&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=am-role-assignment-service)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=am-role-assignment-service&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=am-role-assignment-service)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=am-role-assignment-service&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=am-role-assignment-service)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=am-role-assignment-service&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=am-role-assignment-service)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=am-role-assignment-service&metric=coverage)](https://sonarcloud.io/summary/new_code?id=am-role-assignment-service)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=am-role-assignment-service&metric=alert_status)](https://sonarcloud.io/summary/overall?id=am-role-assignment-service)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=am-role-assignment-service&metric=security_rating)](https://sonarcloud.io/summary/overall?id=am-role-assignment-service)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=am-role-assignment-service&metric=vulnerabilities)](https://sonarcloud.io/summary/overall?id=am-role-assignment-service)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=am-role-assignment-service&metric=sqale_rating)](https://sonarcloud.io/summary/overall?id=am-role-assignment-service)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=am-role-assignment-service&metric=coverage)](https://sonarcloud.io/summary/overall?id=am-role-assignment-service)
 
 Role Assignment Service
 
