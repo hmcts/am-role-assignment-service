@@ -43,7 +43,11 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PUBLICLAW,specific-access-judiciary,JUDICIAL,STANDARD",
         "PUBLICLAW,specific-access-admin,ADMIN,STANDARD",
         "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
-        "PUBLICLAW,specific-access-ctsc,CTSC,STANDARD"
+        "PUBLICLAW,specific-access-ctsc,CTSC,STANDARD",
+        "ST_CIC,specific-access-judiciary,JUDICIAL,STANDARD",
+        "ST_CIC,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
+        "ST_CIC,specific-access-admin,ADMIN,STANDARD",
+        "ST_CIC,specific-access-ctsc,CTSC,STANDARD"
     })
     void shouldCreate_SpecificAccessRequested(String jurisdiction, String roleName, String roleCategory,
                                                            String orgGrantType) {
@@ -109,7 +113,11 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PUBLICLAW,specific-access-judiciary,JUDICIAL",
         "PUBLICLAW,specific-access-admin,ADMIN",
         "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS",
-        "PUBLICLAW,specific-access-ctsc,CTSC"
+        "PUBLICLAW,specific-access-ctsc,CTSC",
+        "ST_CIC,specific-access-judiciary,JUDICIAL",
+        "ST_CIC,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "ST_CIC,specific-access-admin,ADMIN",
+        "ST_CIC,specific-access-ctsc,CTSC"
     })
     void shouldCreate_SpecificAccessDenied(String jurisdiction, String roleName, String roleCategory) {
         Case caseDetails = caseMap.get(jurisdiction);
@@ -167,7 +175,11 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PUBLICLAW,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary",
         "PUBLICLAW,specific-access-admin,ADMIN,specific-access-approver-admin",
         "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
-        "PUBLICLAW,specific-access-ctsc,CTSC,specific-access-approver-ctsc"
+        "PUBLICLAW,specific-access-ctsc,CTSC,specific-access-approver-ctsc",
+        "ST_CIC,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary",
+        "ST_CIC,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
+        "ST_CIC,specific-access-admin,ADMIN,specific-access-approver-admin",
+        "ST_CIC,specific-access-ctsc,CTSC,specific-access-approver-ctsc"
     })
     void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction, String roleName,
                                                            String roleCategory, String approver) {
@@ -249,7 +261,11 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS",
         "PUBLICLAW,specific-access-judiciary,JUDICIAL",
         "PUBLICLAW,specific-access-admin,ADMIN",
-        "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS"
+        "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "ST_CIC,specific-access-judiciary,JUDICIAL",
+        "ST_CIC,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "ST_CIC,specific-access-admin,ADMIN",
+        "ST_CIC,specific-access-ctsc,CTSC"
     })
     void shouldGrantAccessFor_SpecificAccessGranted_XuiClient(String jurisdiction, String roleName,
                                                               String roleCategory) {
@@ -326,7 +342,10 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PUBLICLAW,specific-access-admin,ADMIN",
         "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS",
         "PUBLICLAW,specific-access-ctsc,CTSC",
-
+        "ST_CIC,specific-access-judiciary,JUDICIAL",
+        "ST_CIC,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "ST_CIC,specific-access-admin,ADMIN",
+        "ST_CIC,specific-access-ctsc,CTSC"
     })
     void shouldRejectAccessFor_SpecificAccess_CaseAllocator_selfApproval(String jurisdiction,String roleName,
                                                                          String roleCategory) {
