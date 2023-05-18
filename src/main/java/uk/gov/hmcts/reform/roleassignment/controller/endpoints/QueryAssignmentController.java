@@ -26,7 +26,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAss
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
 import uk.gov.hmcts.reform.roleassignment.versions.V2;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.SEARCH_ASSIGNMENTS;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION2;
 
 @RestController
 public class QueryAssignmentController {
@@ -52,8 +54,8 @@ public class QueryAssignmentController {
     @Operation(summary = "Query role assignments",
         security =
             {
-                @SecurityRequirement(name = "Authorization"),
-                @SecurityRequirement(name = "ServiceAuthorization")
+                @SecurityRequirement(name = AUTHORIZATION),
+                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
             })
     @ApiResponse(
         responseCode = "200",
@@ -62,7 +64,8 @@ public class QueryAssignmentController {
     )
     @ApiResponse(
         responseCode = "400",
-        description = V1.Error.BAD_REQUEST_INVALID_PARAMETER
+        description = V1.Error.BAD_REQUEST_INVALID_PARAMETER,
+        content = @Content()
     )
 
     @LogAudit(operationType = SEARCH_ASSIGNMENTS,
@@ -91,8 +94,8 @@ public class QueryAssignmentController {
     @Operation(summary = "Query role assignments v2",
         security =
             {
-                @SecurityRequirement(name = "Authorization"),
-                @SecurityRequirement(name = "ServiceAuthorization")
+                @SecurityRequirement(name = AUTHORIZATION),
+                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
             })
     @ApiResponse(
         responseCode = "200",
@@ -101,7 +104,8 @@ public class QueryAssignmentController {
     )
     @ApiResponse(
         responseCode = "400",
-        description = V1.Error.BAD_REQUEST_INVALID_PARAMETER
+        description = V1.Error.BAD_REQUEST_INVALID_PARAMETER,
+        content = @Content()
     )
     @LogAudit(operationType = SEARCH_ASSIGNMENTS,
         size = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).sizeOfAssignments(#result)",
