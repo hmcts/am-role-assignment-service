@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
@@ -26,9 +27,11 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles.DeleteRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DELETE_ASSIGNMENTS_BY_ID;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DELETE_ASSIGNMENTS_BY_PROCESS;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.DELETE_ASSIGNMENTS_BY_QUERY;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION2;
 
 
 @RestController
@@ -52,25 +55,26 @@ public class DeleteAssignmentController {
     @Operation(summary = "Delete role assignments",
         security =
             {
-                @SecurityRequirement(name = "Authorization"),
-                @SecurityRequirement(name = "ServiceAuthorization")
+                @SecurityRequirement(name = AUTHORIZATION),
+                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
             })
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @ApiResponse(
         responseCode = "204",
-        description = "No Content"
+        description = "No Content",
+        content = @Content()
     )
     @ApiResponse(
         responseCode = "400",
-        description = V1.Error.BAD_REQUEST_INVALID_PARAMETER
-    )
-    @ApiResponse(
-        responseCode = "400",
-        description = V1.Error.BAD_REQUEST_MISSING_PARAMETERS
+        description = "One of the following reasons:\n"
+            + "1. " + V1.Error.BAD_REQUEST_INVALID_PARAMETER + "\n"
+            + "2. " + V1.Error.BAD_REQUEST_MISSING_PARAMETERS + "\n",
+        content = @Content()
     )
     @ApiResponse(
         responseCode = "422",
-        description = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
+        description = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED,
+        content = @Content()
     )
     @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_PROCESS,
         process = "#process",
@@ -96,25 +100,26 @@ public class DeleteAssignmentController {
     @Operation(summary = "Delete role assignments by assignment Id",
         security =
             {
-                @SecurityRequirement(name = "Authorization"),
-                @SecurityRequirement(name = "ServiceAuthorization")
+                @SecurityRequirement(name = AUTHORIZATION),
+                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
             })
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @ApiResponse(
         responseCode = "204",
-        description = "No Content"
+        description = "No Content",
+        content = @Content()
     )
     @ApiResponse(
         responseCode = "400",
-        description = V1.Error.BAD_REQUEST_INVALID_PARAMETER
-    )
-    @ApiResponse(
-        responseCode = "400",
-        description = V1.Error.BAD_REQUEST_MISSING_PARAMETERS
+        description = "One of the following reasons:\n"
+            + "1. " + V1.Error.BAD_REQUEST_INVALID_PARAMETER + "\n"
+            + "2. " + V1.Error.BAD_REQUEST_MISSING_PARAMETERS + "\n",
+        content = @Content()
     )
     @ApiResponse(
         responseCode = "422",
-        description = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
+        description = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED,
+        content = @Content()
     )
     @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_ID,
         assignmentId = "#assignmentId",
@@ -139,25 +144,26 @@ public class DeleteAssignmentController {
     @Operation(summary = "Delete role assignments by query",
         security =
             {
-                @SecurityRequirement(name = "Authorization"),
-                @SecurityRequirement(name = "ServiceAuthorization")
+                @SecurityRequirement(name = AUTHORIZATION),
+                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
             })
     @ResponseStatus(code = HttpStatus.OK)
     @ApiResponse(
         responseCode = "200",
-        description = "The assignment records have been deleted."
+        description = "The assignment records have been deleted.",
+        content = @Content()
     )
     @ApiResponse(
         responseCode = "400",
-        description = V1.Error.BAD_REQUEST_INVALID_PARAMETER
-    )
-    @ApiResponse(
-        responseCode = "400",
-        description = V1.Error.BAD_REQUEST_MISSING_PARAMETERS
+        description = "One of the following reasons:\n"
+            + "1. " + V1.Error.BAD_REQUEST_INVALID_PARAMETER + "\n"
+            + "2. " + V1.Error.BAD_REQUEST_MISSING_PARAMETERS + "\n",
+        content = @Content()
     )
     @ApiResponse(
         responseCode = "422",
-        description = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
+        description = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED,
+        content = @Content()
     )
     @LogAudit(operationType = DELETE_ASSIGNMENTS_BY_QUERY,
         requestPayload = "#auditContextWith.requestPayload",
