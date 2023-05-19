@@ -442,7 +442,6 @@ dependencies {
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
 
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.reformLogging
   implementation group: 'com.github.hmcts', name:'properties-volume-spring-boot-starter', version:'0.1.1'
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '2.1.1'
   //Added for S2S and User Authentication
@@ -450,6 +449,8 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.1'
   implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: '2.14.2', ext: 'pom'
   implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.20'
+
+  implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.0.1')
   testImplementation('com.github.tomakehurst:wiremock-jre8:2.35.0')
