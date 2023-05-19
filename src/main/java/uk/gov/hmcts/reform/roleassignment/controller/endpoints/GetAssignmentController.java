@@ -24,7 +24,9 @@ import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
 import java.util.List;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.GET_ASSIGNMENTS_BY_ACTOR;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION2;
 
 @Slf4j
 @RestController
@@ -44,8 +46,8 @@ public class GetAssignmentController {
     @Operation(summary = "Get role assignments by actor Id",
         security =
             {
-                @SecurityRequirement(name = "Authorization"),
-                @SecurityRequirement(name = "ServiceAuthorization")
+                @SecurityRequirement(name = AUTHORIZATION),
+                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
             })
     @ApiResponse(
         responseCode = "200",
@@ -54,7 +56,8 @@ public class GetAssignmentController {
     )
     @ApiResponse(
         responseCode = "400",
-        description = V1.Error.INVALID_REQUEST
+        description = V1.Error.INVALID_REQUEST,
+        content = @Content()
     )
     @LogAudit(operationType = GET_ASSIGNMENTS_BY_ACTOR,
         size = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).sizeOfAssignments(#result)",
@@ -84,8 +87,8 @@ public class GetAssignmentController {
     @Operation(summary = "Get roles",
         security =
             {
-                @SecurityRequirement(name = "Authorization"),
-                @SecurityRequirement(name = "ServiceAuthorization")
+                @SecurityRequirement(name = AUTHORIZATION),
+                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
             })
     @ResponseStatus(code = HttpStatus.OK)
     @ApiResponse(

@@ -25,7 +25,9 @@ import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
 import java.text.ParseException;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.CREATE_ASSIGNMENTS;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION2;
 
 @RestController
 public class CreateAssignmentController {
@@ -46,11 +48,10 @@ public class CreateAssignmentController {
     @Operation(summary = "Creates role assignments",
         security =
             {
-                @SecurityRequirement(name = "Authorization"),
-                @SecurityRequirement(name = "ServiceAuthorization")
+                @SecurityRequirement(name = AUTHORIZATION),
+                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
             })
     @ResponseStatus(code = HttpStatus.CREATED)
-    //@ApiOperation("creates multiple role assignments")
     @ApiResponse(
         responseCode = "201",
         description = "Created",
@@ -58,15 +59,15 @@ public class CreateAssignmentController {
     )
     @ApiResponse(
         responseCode = "400",
-        description = V1.Error.INVALID_ROLE_NAME
-    )
-    @ApiResponse(
-        responseCode = "400",
-        description = V1.Error.INVALID_REQUEST
+        description = "One of the following reasons:\n"
+            + "1. " + V1.Error.INVALID_ROLE_NAME + "\n"
+            + "2. " + V1.Error.INVALID_REQUEST + "\n",
+        content = @Content()
     )
     @ApiResponse(
         responseCode = "422",
-        description = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED
+        description = V1.Error.UNPROCESSABLE_ENTITY_REQUEST_REJECTED,
+        content = @Content()
     )
     @LogAudit(operationType = CREATE_ASSIGNMENTS,
         process = "#assignmentRequest.request.process",
