@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.roleassignment.config;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -13,12 +12,14 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Built-in feature which saves service's swagger specs in temporary directory.
- * Each travis run on master should automatically save and upload (if updated) documentation.
+ * Each run of workflow .github/workflows/swagger.yml on master should automatically save and upload (if updated)
+ * documentation.
  */
 public class SwaggerPublisher extends BaseTest {
 
@@ -34,9 +35,8 @@ public class SwaggerPublisher extends BaseTest {
     }
 
     @Test
-    @Disabled
     public void generateDocs() throws Exception {
-        byte[] specs = mockMvc.perform(get("/v3/api-docs"))
+        byte[] specs = mockMvc.perform(get(DEFAULT_API_DOCS_URL))
             .andExpect(status().isOk())
             .andReturn()
             .getResponse()
