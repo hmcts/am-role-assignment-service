@@ -52,7 +52,7 @@ public class JwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection
         return roles.stream()
             .map(SimpleGrantedAuthority::new)
             .map(GrantedAuthority.class::cast)
-            .collect(Collectors.toList());
+            .toList();
     }
 
 }
