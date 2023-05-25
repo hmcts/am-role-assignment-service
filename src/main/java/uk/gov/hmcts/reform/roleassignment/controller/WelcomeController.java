@@ -6,21 +6,26 @@ import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
+import io.swagger.v3.oas.annotations.Hidden;
+
+import static org.springdoc.core.Constants.SWAGGER_UI_URL;
 
 @RestController
+@Hidden
 public class WelcomeController {
 
     @Autowired
     PersistenceService persistenceService;
 
     @GetMapping(value = "/swagger")
-    public String index() {
-        return "redirect:swagger-ui.html";
+    public RedirectView swaggerRedirect() {
+        return new RedirectView(SWAGGER_UI_URL, true, false);
     }
 
 
