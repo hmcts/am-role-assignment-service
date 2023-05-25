@@ -12,7 +12,6 @@ import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
 
@@ -52,7 +51,7 @@ public class JwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection
         return roles.stream()
             .map(SimpleGrantedAuthority::new)
             .map(GrantedAuthority.class::cast)
-            .collect(Collectors.toList());
+            .toList();
     }
 
 }
