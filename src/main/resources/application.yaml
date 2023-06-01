@@ -40,20 +40,23 @@ security:
     - "/health/**"
     - "/loggers/**"
     - "/am/role-assignments/fetchFlagStatus"
+    - "/swagger"
     - "/swagger-ui.html"
-    - "/swagger-resources/**"
-    - "/v2/api-docs"
-    - "/webjars/springfox-swagger-ui/**"
+    - "/swagger-ui/**"
+    - "/v3/api-docs/**"
     - "/search/**"
     - "/csrf"
     - "/error"
     - "/favicon.ico"
-
+    - "/status/health"
+    - "/welcome"
+    - "/health/liveness"
 spring:
   application:
     name: Role Assignment Service
   main:
     allow-bean-definition-overriding: true
+    allow-circular-references: true
   jackson:
     default-property-inclusion: NON_NULL
   spring:
