@@ -1,4 +1,4 @@
-package validationrules.specialtribunals;
+package validationrules.stcic;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -19,10 +19,10 @@ import java.time.temporal.ChronoUnit;
 import uk.gov.hmcts.reform.roleassignment.domain.model.CaseAllocatorApproval;
 
 /*
- * 1: SPECIALTRIBUNALS "hearing-judge" case validation rule.
+ * 1: ST_CIC "hearing-judge" case validation rule.
  */
 
-rule "specialtribunals_hearing_judge_create_case_roles"
+rule "st_cic_hearing_judge_create_case_roles"
 when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
@@ -36,16 +36,16 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "ST_CIC")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : specialtribunals_hearing_judge_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : st_cic_hearing_judge_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : specialtribunals_hearing_judge_create_case_roles");
+    logMsg("Rule : st_cic_hearing_judge_create_case_roles");
 end;
 
 /*
- * 2: SPECIALTRIBUNALS "interloc-judge" case validation rule.
+ * 2: ST_CIC "interloc-judge" case validation rule.
  */
 
-rule "specialtribunals_interloc_judge_create_case_roles"
+rule "st_cic_interloc_judge_create_case_roles"
 when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
@@ -59,16 +59,16 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "ST_CIC")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : specialtribunals_interloc_judge_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : st_cic_interloc_judge_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : specialtribunals_interloc_judge_create_case_roles");
+    logMsg("Rule : st_cic_interloc_judge_create_case_roles");
 end;
 
 /*
- * 3: SPECIALTRIBUNALS "tribunal-member-1" case validation rule.
+ * 3: ST_CIC "tribunal-member-1" case validation rule.
  */
 
-rule "specialtribunals_tribunal_member_1_create_case_roles"
+rule "st_cic_tribunal_member_1_create_case_roles"
 when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
@@ -82,16 +82,16 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "ST_CIC")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : specialtribunals_tribunal_member_1_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : st_cic_tribunal_member_1_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : specialtribunals_tribunal_member_1_create_case_roles");
+    logMsg("Rule : st_cic_tribunal_member_1_create_case_roles");
 end;
 
 /*
- * 4: SPECIALTRIBUNALS "tribunal-member-2" case validation rule.
+ * 4: ST_CIC "tribunal-member-2" case validation rule.
  */
 
-rule "specialtribunals_tribunal_member_2_create_case_roles"
+rule "st_cic_tribunal_member_2_create_case_roles"
 when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
@@ -105,16 +105,16 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "ST_CIC")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : specialtribunals_tribunal_member_2_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : st_cic_tribunal_member_2_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : specialtribunals_tribunal_member_2_create_case_roles");
+    logMsg("Rule : st_cic_tribunal_member_2_create_case_roles");
 end;
 
 /*
- * 5: SPECIALTRIBUNALS "tribunal-member-3" case validation rule.
+ * 5: ST_CIC "tribunal-member-3" case validation rule.
  */
 
-rule "specialtribunals_tribunal_member_3_create_case_roles"
+rule "st_cic_tribunal_member_3_create_case_roles"
 when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
@@ -128,16 +128,16 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "ST_CIC")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : specialtribunals_tribunal_member_3_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : st_cic_tribunal_member_3_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : specialtribunals_tribunal_member_3_create_case_roles");
+    logMsg("Rule : st_cic_tribunal_member_3_create_case_roles");
 end;
 
 /*
- * 6: SPECIALTRIBUNALS "appraiser-1" case validation rule.
+ * 6: ST_CIC "appraiser-1" case validation rule.
  */
 
-rule "specialtribunals_appraiser_1_create_case_roles"
+rule "st_cic_appraiser_1_create_case_roles"
 when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
@@ -151,16 +151,16 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "ST_CIC")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : specialtribunals_appraiser_1_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : st_cic_appraiser_1_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : specialtribunals_appraiser_1_create_case_roles");
+    logMsg("Rule : st_cic_appraiser_1_create_case_roles");
 end;
 
 /*
- * 7: SPECIALTRIBUNALS "appraiser-2" case validation rule.
+ * 7: ST_CIC "appraiser-2" case validation rule.
  */
 
-rule "specialtribunals_appraiser_2_create_case_roles"
+rule "st_cic_appraiser_2_create_case_roles"
 when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
@@ -174,23 +174,23 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "ST_CIC")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : specialtribunals_appraiser_2_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : st_cic_appraiser_2_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : specialtribunals_appraiser_2_create_case_roles");
+    logMsg("Rule : st_cic_appraiser_2_create_case_roles");
 end;
 
 /*
  * The case roles can be deleted if CaseAllocatorApproval entity is available for requested role assignment.
  */
 
-rule "specialtribunals_case_allocator_approved_delete_case_role"
+rule "st_cic_case_allocator_approved_delete_case_role"
 when
     $ca: CaseAllocatorApproval(
                 roleAssignment.status == Status.DELETE_REQUESTED,
                 roleAssignment.attributes["jurisdiction"].asText() == "ST_CIC")
 then
     $ca.getRoleAssignment().setStatus(Status.DELETE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : specialtribunals_case_allocator_approved_delete_case_role");
+    $ca.getRoleAssignment().log("Stage 1 approved : st_cic_case_allocator_approved_delete_case_role");
     update($ca.getRoleAssignment());
-    logMsg("Rule : specialtribunals_case_allocator_approved_delete_case_role");
+    logMsg("Rule : st_cic_case_allocator_approved_delete_case_role");
 end;

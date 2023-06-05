@@ -16,7 +16,11 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.*;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PUBLIC_LAW_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.ST_CIC_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,7 +44,7 @@ public abstract class DroolBase {
                                "PRIVATELAW", Case.builder().id(PRIVATE_LAW_CASE_ID).caseTypeId("PRLAPPS").build(),
                                "PUBLICLAW", Case.builder().id(PUBLIC_LAW_CASE_ID)
                                      .caseTypeId("CARE_SUPERVISION_EPO").build(),
-                               "ST_CIC", Case.builder().id(SPECIALTRIBUNALS_CASE_ID)
+                               "ST_CIC", Case.builder().id(ST_CIC_CASE_ID)
                                      .caseTypeId("CriminalInjuriesCompensation").build());
 
     @BeforeEach
@@ -75,9 +79,9 @@ public abstract class DroolBase {
         doReturn(dummyCases.getCaseDataV2(PUBLIC_LAW_CASE_ID))
             .when(retrieveDataService).getCaseById(PUBLIC_LAW_CASE_ID);
 
-        //SPECIALTRIBUNALS
-        doReturn(dummyCases.getCaseDataV2(SPECIALTRIBUNALS_CASE_ID))
-            .when(retrieveDataService).getCaseById(SPECIALTRIBUNALS_CASE_ID);
+        //ST_CIC
+        doReturn(dummyCases.getCaseDataV2(ST_CIC_CASE_ID))
+            .when(retrieveDataService).getCaseById(ST_CIC_CASE_ID);
 
         Case caseObj0 = Case.builder().id("9234567890123456")
             .caseTypeId("Asylum")
