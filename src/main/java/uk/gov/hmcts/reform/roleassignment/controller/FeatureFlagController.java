@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FlagRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
+import io.swagger.v3.oas.annotations.Hidden;
 
 @RestController
+@Hidden
 public class FeatureFlagController {
 
     @Autowired
