@@ -76,6 +76,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
+                 roleAssignment.attributes["caseType"].asText() == "Benefit",
                  roleAssignment.roleName == "allocated-tribunal-caseworker")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
@@ -98,6 +99,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
+                 roleAssignment.attributes["caseType"].asText() == "Benefit",
                  roleAssignment.roleName == "allocated-admin-caseworker")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
@@ -120,6 +122,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
+                 roleAssignment.attributes["caseType"].asText() == "Benefit",
                  roleAssignment.roleName == "allocated-ctsc-caseworker")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,

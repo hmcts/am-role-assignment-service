@@ -30,14 +30,12 @@ when
                  roleAssignment.attributes["jurisdiction"].asText() == "SSCS",
                  roleAssignment.attributes["caseType"].asText() == "Benefit",
                  roleAssignment.roleName in ("hearing-judge"))
-         $era: ExistingRoleAssignment(
+         ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
                  roleName in ("judge", "fee-paid-judge"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
-    System.out.println($ca.getRoleAssignment());
-    System.out.println($era);
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : sscs_hearing_judge_create_case_roles");
     update($ca.getRoleAssignment());
