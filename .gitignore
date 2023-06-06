@@ -21,3 +21,6 @@ bin/main/application.yaml
 
 .DS_Store
 target/
+
+lib/applicationinsights-agent-*.jar
+lib/applicationinsights.log
