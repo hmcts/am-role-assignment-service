@@ -184,7 +184,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW","ST_CIC"]
           }
         }
       }
@@ -427,7 +427,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW","ST_CIC"]
           }
         }
       }
@@ -457,7 +457,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW","ST_CIC"]
           }
         }
       }
@@ -2370,6 +2370,156 @@
         "caseId": {
           "mandatory": true
         }
+        }
+      }
+    ]
+  },
+  {
+    "name": "senior-judge",
+    "label": "Senior Judge",
+    "description": "Senior Judge role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA", "ST_CIC"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "medical",
+    "label": "Medical Member",
+    "description": "Medical Member for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "fee-paid-medical",
+    "label": "Fee Paid Medical Member",
+    "description": "Fee Paid Medical Member for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "fee-paid-disability",
+    "label": "Fee Paid Disability Member",
+    "description": "Fee Paid Disability Member for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "fee-paid-financial",
+    "label": "Fee Paid Financial Member",
+    "description": "Fee Paid Financial Member for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          }
         }
       }
     ]
