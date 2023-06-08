@@ -486,7 +486,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","PRIVATELAW","PUBLICLAW"]
+            "values": ["IA","SSCS","PRIVATELAW","PUBLICLAW","ST_CIC"]
           },
           "caseType": {
             "mandatory": true
@@ -2519,6 +2519,186 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["SSCS","ST_CIC"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "interloc-judge",
+    "label": "Interlocutory Judge",
+    "description": "Interlocutory Judge for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit","CriminalInjuriesCompensation"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "tribunal-member-1",
+    "label": "Tribunal member 1",
+    "description": "Tribunal member - 1 for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit","CriminalInjuriesCompensation"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "tribunal-member-2",
+    "label": "Tribunal member 2 ",
+    "description": "Tribunal member - 2  for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit","CriminalInjuriesCompensation"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "appraiser-1",
+    "label": "Appraiser 1",
+    "description": "Appraiser 1 for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit","CriminalInjuriesCompensation"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "appraiser-2",
+    "label": "Appraiser 2",
+    "description": "Appraiser 2 for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit","CriminalInjuriesCompensation"]
+          },
+          "caseId": {
+            "mandatory": true
           }
         }
       }
