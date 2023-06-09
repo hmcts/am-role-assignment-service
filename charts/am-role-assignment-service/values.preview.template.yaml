@@ -5,7 +5,7 @@ java:
     am:
       secrets:
         - am-role-assignment-service-s2s-secret
-        - AppInsightsInstrumentationKey
+        - app-insights-connection-string
         - role-assignment-service-IDAM-CLIENT-SECRET
         - role-assignment-service-IDAM-ADMIN-SECRET
         - role-assignment-service-LD-SDK-KEY

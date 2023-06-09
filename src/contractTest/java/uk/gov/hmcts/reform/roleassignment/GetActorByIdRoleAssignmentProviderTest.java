@@ -55,6 +55,7 @@ public class GetActorByIdRoleAssignmentProviderTest {
     @BeforeEach
     void before(PactVerificationContext context) {
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
+        //System.getProperties().setProperty("pact.verifier.publishResults", "true");
         testTarget.setControllers(new GetAssignmentController(
             retrieveRoleAssignmentServiceMock
         ));
