@@ -28,7 +28,7 @@ services:
        ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD: Pa55word11
        ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE: search-user
        CCD_DATA_STORE_URL: http://localhost:4452
-       AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY:
+       app-insights-connection-string:
        REFORM_SERVICE_NAME: am-role-assignment-service
        REFORM_TEAM: am
        REFORM_ENVIRONMENT: local
