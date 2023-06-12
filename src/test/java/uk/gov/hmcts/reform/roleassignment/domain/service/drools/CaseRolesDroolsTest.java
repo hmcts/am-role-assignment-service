@@ -156,9 +156,9 @@ class CaseRolesDroolsTest extends DroolBase {
         "EMPLOYMENT,ET_EnglandWales,hearing-judge",
         "EMPLOYMENT,ET_EnglandWales,tribunal-member-1",
         "EMPLOYMENT,ET_EnglandWales,tribunal-member-2",
-        "EMPLOYMENT,ET_EnglandWales,tribunal-caseworker",
-        "EMPLOYMENT,ET_EnglandWales,admin-caseworker",
-        "EMPLOYMENT,ET_EnglandWales,ctsc-caseworker",
+        "EMPLOYMENT,ET_EnglandWales,allocated-tribunal-caseworker",
+        "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker",
+        "EMPLOYMENT,ET_EnglandWales,allocated-ctsc-caseworker",
     })
     void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
 
