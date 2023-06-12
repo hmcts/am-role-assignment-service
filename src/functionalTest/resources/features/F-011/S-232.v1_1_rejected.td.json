@@ -13,7 +13,7 @@
     },
     "body": {
       "roleRequest": {
-        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "assignerId": "${[scenarioContext][testData][users][befta4][id]}",
         "reference": "1607103938250138/specific-access-admin/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "specific-access",
         "replaceExisting" : true
@@ -23,12 +23,12 @@
           "_extends_": "RequestedRole",
           "roleType" : "CASE",
           "grantType" : "BASIC",
-          "classification" : "RESTRICTED",
+          "classification" : "PRIVATE",
           "attributes": {
             "caseId": "1607103938250138",
             "requestedRole":"specific-access-admin"
           },
-          "roleName": "specific-access-requested",
+          "roleName": "specific-access-denied",
           "roleCategory": "ADMIN",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "beginTime": "2025-12-01T00:00Z",
