@@ -45,6 +45,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
         "PUBLICLAW,specific-access-ctsc,CTSC,STANDARD"
     })
+    // TODO: test to be retired as part of AM-2824 once IAC_SPECIFIC_1_1 enabled in prod
     void shouldCreate_SpecificAccessRequested(String jurisdiction, String roleName, String roleCategory,
                                                            String orgGrantType) {
         Case caseDetails = caseMap.get(jurisdiction);
@@ -70,9 +71,12 @@ class SpecificAccessDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
             .status(true).build();
-        featureFlags.add(featureFlag);
+        featureFlags.add(iacSpecific10);
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(false).build();
+        featureFlags.add(iacSpecific11);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -141,9 +145,12 @@ class SpecificAccessDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
             .status(true).build();
-        featureFlags.add(featureFlag);
+        featureFlags.add(iacSpecific10);
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific11);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -215,9 +222,12 @@ class SpecificAccessDroolsTest extends DroolBase {
         assignmentRequest.getRequestedRoles()
             .forEach(roleAssignment -> roleAssignment.setBeginTime(ZonedDateTime.now().minusDays(1L)));
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
             .status(true).build();
-        featureFlags.add(featureFlag);
+        featureFlags.add(iacSpecific10);
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific11);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -289,9 +299,12 @@ class SpecificAccessDroolsTest extends DroolBase {
         assignmentRequest.getRequestedRoles()
             .forEach(roleAssignment -> roleAssignment.setBeginTime(ZonedDateTime.now().plusHours(1L)));
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
             .status(true).build();
-        featureFlags.add(featureFlag);
+        featureFlags.add(iacSpecific10);
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific11);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -385,6 +398,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
         "PUBLICLAW,specific-access-ctsc,CTSC,specific-access-approver-ctsc"
     })
+    // TODO: test to be retired as part of AM-2824 once IAC_SPECIFIC_1_1 enabled in prod
     void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction, String roleName,
                                                            String roleCategory, String approver) {
 
@@ -412,8 +426,12 @@ class SpecificAccessDroolsTest extends DroolBase {
         )
             .build();
 
-        featureFlags.add(FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-                             .status(true).build());
+        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific10);
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(false).build();
+        featureFlags.add(iacSpecific11);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(caseJurisdiction));
@@ -496,8 +514,12 @@ class SpecificAccessDroolsTest extends DroolBase {
         )
             .build();
 
-        featureFlags.add(FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
-                             .status(true).build());
+        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific10);
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific11);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(caseJurisdiction));
@@ -583,8 +605,12 @@ class SpecificAccessDroolsTest extends DroolBase {
         assignmentRequest.getRequestedRoles()
             .forEach(roleAssignment -> roleAssignment.setBeginTime(ZonedDateTime.now().minusDays(1L)));
 
-        featureFlags.add(FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
-                             .status(true).build());
+        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific10);
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific11);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(caseJurisdiction));
@@ -670,8 +696,12 @@ class SpecificAccessDroolsTest extends DroolBase {
         assignmentRequest.getRequestedRoles()
             .forEach(roleAssignment -> roleAssignment.setBeginTime(ZonedDateTime.now().plusDays(1L)));
 
-        featureFlags.add(FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
-                             .status(true).build());
+        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific10);
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific11);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(caseJurisdiction));
@@ -745,9 +775,12 @@ class SpecificAccessDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
             .status(true).build();
-        featureFlags.add(featureFlag);
+        featureFlags.add(iacSpecific10);
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific11);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(caseDetails.getJurisdiction()));
@@ -821,9 +854,12 @@ class SpecificAccessDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
             .status(true).build();
-        featureFlags.add(featureFlag);
+        featureFlags.add(iacSpecific10);
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific11);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(caseDetails.getJurisdiction()));
@@ -900,9 +936,12 @@ class SpecificAccessDroolsTest extends DroolBase {
         assignmentRequest.getRequestedRoles()
             .forEach(roleAssignment -> roleAssignment.setBeginTime(ZonedDateTime.now().minusDays(1L)));
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
             .status(true).build();
-        featureFlags.add(featureFlag);
+        featureFlags.add(iacSpecific10);
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific11);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(caseDetails.getJurisdiction()));
@@ -979,9 +1018,12 @@ class SpecificAccessDroolsTest extends DroolBase {
         assignmentRequest.getRequestedRoles()
             .forEach(roleAssignment -> roleAssignment.setBeginTime(ZonedDateTime.now().plusDays(1L)));
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
             .status(true).build();
-        featureFlags.add(featureFlag);
+        featureFlags.add(iacSpecific10);
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific11);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(caseDetails.getJurisdiction()));

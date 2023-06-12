@@ -25,10 +25,12 @@ import java.time.temporal.ChronoUnit;
 
 /*
  * All services: "specific-access-requested" case roles self creation user
+ * TODO: rule to be retired as part of AM-2824 once IAC_SPECIFIC_1_1 enabled in prod
  */
 rule "create_specific_access_requested_case_role_for_self"
 when
    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+   $f1 : FeatureFlag(!status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
    $rq: Request(
             // The assigner must be the current user.
             assignerId == authenticatedUserId,
@@ -62,7 +64,7 @@ then
 end;
 
 /*
- * All services: "specific-access-requested" case roles self creation user. added for CR:AM2794
+ * All services: "specific-access-requested" case roles self creation user
  */
 rule "create_specific_access_requested_case_role_for_self_v11"
 when
@@ -80,6 +82,7 @@ when
             readOnly == true,
             notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
             attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
+            // extra check added for CR:AM2794 to ensure no future specific access requests
             beginTime == null || !beginTime.isAfter(ZonedDateTime.now()))
    $c: Case(
             id == $caseId)
@@ -152,10 +155,12 @@ end;
 
 /*
  * All services: "specific-access" case approval or denied roles
+ * TODO: rule to be retired as part of AM-2824 once IAC_SPECIFIC_1_1 enabled in prod
  */
 rule "create_specific_access_granted_or_denied_case_role"
 when
    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+   $f1 : FeatureFlag(!status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
    $rq: Request(
             clientId == "xui_webapp",
             process == "specific-access",
@@ -188,7 +193,7 @@ then
 end;
 
 /*
- * All services: "specific-access" case approval or denied roles. added for CR:AM2794
+ * All services: "specific-access" case approval or denied roles
  */
 rule "create_specific_access_granted_or_denied_case_role_v11"
 when
@@ -205,6 +210,7 @@ when
             endTime != null,
             notes != null && notes.size > 0 && notes.toString().length() > 5, /* Make sure there is at least one note with content in it */
             attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
+            // extra check added for CR:AM2794 to ensure no future specific access requests
             beginTime == null || !beginTime.isAfter(ZonedDateTime.now()))
    $c:  Case(
             id == $caseId)
@@ -248,11 +254,13 @@ end;
 
 /*
  * All services: "specific-access-<roleCategory?>" case creation and specific_access_approver as a assigner
+ * TODO: rule to be retired as part of AM-2824 once IAC_SPECIFIC_1_1 enabled in prod
  */
 
 rule "specific_access_approver_create_specific_access_case_role"
 when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+    $f1 : FeatureFlag(!status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
     $rq: Request(
              // The assigner must be the current user.
              assignerId == authenticatedUserId,
@@ -313,7 +321,6 @@ end;
 
 /*
  * All services: "specific-access-<roleCategory?>" case creation and specific_access_approver as a assigner
- * Added for CR:AM2794
  */
 
 rule "specific_access_approver_create_specific_access_case_role_v11"
@@ -340,6 +347,7 @@ when
              // Add all the jurisdiction Ids of the on-boarded services
              // Do we really need to constrain the jurisdiction here?
              attributes["jurisdiction"] != null && $jurisdiction : attributes["jurisdiction"].asText() && attributes["jurisdiction"].asText() in ("IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW"),
+             // extra check added for CR:AM2794 to ensure no future specific access requests
              beginTime == null || !beginTime.isAfter(ZonedDateTime.now()))
     $c:  Case(
              id == $caseId,

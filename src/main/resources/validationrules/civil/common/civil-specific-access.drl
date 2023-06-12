@@ -20,11 +20,13 @@ import java.time.temporal.ChronoUnit;
 
 /*
  * All services: "specific-access-<roleCategory?>" case creation and leadership-judge as a assigner
+ * TODO: rule to be retired as part of AM-2824 once IAC_SPECIFIC_1_1 enabled in prod
  */
 
 rule "civil_create_specific_access_case_role"
 when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
+    $f1 : FeatureFlag(!status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
     $rq: Request(
              // The assigner must be the current user.
              assignerId == authenticatedUserId,
@@ -89,7 +91,6 @@ end;
 
 /*
  * All services: "specific-access-<roleCategory?>" case creation and leadership-judge as a assigner
- * Added for CR:AM2794
  */
 
 rule "civil_create_specific_access_case_role_v11"
@@ -116,6 +117,7 @@ when
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
              // Only applies to CIVIL.
              attributes["jurisdiction"] == null || attributes["jurisdiction"].asText() == "CIVIL",
+             // extra check added for CR:AM2794 to ensure no future specific access requests
              beginTime == null || !beginTime.isAfter(ZonedDateTime.now()))
     $c:  Case(
              id == $caseId,
