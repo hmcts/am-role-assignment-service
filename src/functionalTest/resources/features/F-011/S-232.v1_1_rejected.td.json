@@ -55,6 +55,7 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
+          "replaceExisting" : true,
           "status": "REJECTED"
         },
         "requestedRoles": [
@@ -71,9 +72,7 @@
             "attributes": {
               "requestedRole":"specific-access-admin",
               "caseId": "1607103938250138",
-              "jurisdiction" : "IA",
-              "caseType" : "Asylum",
-              "substantive" : "N"
+              "jurisdiction" : "IA"
             },
             "notes" : [{
               "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
