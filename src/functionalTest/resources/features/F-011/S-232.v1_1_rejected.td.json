@@ -58,31 +58,7 @@
           "replaceExisting" : true,
           "status": "REJECTED"
         },
-        "requestedRoles": [
-          {
-            "_extends_": "ResponseRequestedRole",
-            "process" : "specific-access",
-            "actorId": "${[scenarioContext][testData][request][body][requestedRoles][0][actorId]}",
-            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
-            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
-            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
-            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
-            "classification" : "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
-            "readOnly": true,
-            "attributes": {
-              "requestedRole":"specific-access-admin",
-              "caseId": "1607103938250138",
-              "jurisdiction" : "IA"
-            },
-            "notes" : [{
-              "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
-              "time": "2022-01-01T00:00Z",
-              "comment": "Need Access to case number 1607103938250138 for a month"
-            }
-            ],
-            "status" : "REJECTED"
-          }
-        ]
+        "requestedRoles": "[[ANYTHING_PRESENT]]"
       }
     }
   }
