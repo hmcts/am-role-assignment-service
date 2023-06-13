@@ -1,5 +1,5 @@
 {
-  "title": "must receive a Reject response when begin date is in the future for specific access granted role for CIVIL judiciary",
+  "title": "must receive a rejected response when begin date is in the future for specific access granted role for CIVIL judiciary",
   "_guid_": "S-231.v1_1",
   "_extends_": "F-011_Test_Data_Base",
   "specs": [

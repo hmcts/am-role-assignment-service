@@ -51,7 +51,7 @@ Feature: F-011 : Create Specific Role Assignments
 
   @S-231.v1_1
   @FeatureToggle(RAS:iac_specific_1_1=on)
-  Scenario: must receive a Reject response when begin date is in the future for specific access granted role for CIVIL judiciary
+  Scenario: must receive a rejected response when begin date is in the future for specific access granted role for CIVIL judiciary
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
     And a successful call [to create org role assignments for actors & requester] as in [S-231_Org_Role_Creation],
