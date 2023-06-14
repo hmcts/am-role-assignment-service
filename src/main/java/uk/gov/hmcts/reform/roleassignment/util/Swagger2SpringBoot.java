@@ -5,10 +5,8 @@ import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 @SpringBootApplication
-@EnableSwagger2WebMvc
 @ComponentScan(basePackages = {"uk.gov.hmcts.reform.roleassignment"})
 public class Swagger2SpringBoot implements CommandLineRunner {
 
