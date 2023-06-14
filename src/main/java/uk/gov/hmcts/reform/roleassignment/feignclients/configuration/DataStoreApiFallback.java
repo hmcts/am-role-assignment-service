@@ -21,7 +21,6 @@ public class DataStoreApiFallback implements DataStoreApi {
     public static final String PRIVATE_LAW_CASE_ID = "1234567890123455";
     public static final String PUBLIC_LAW_CASE_ID = "1234567890123456";
     public static final String EMPLOYMENT_CASE_ID = "1234567890123460";
-
     public static final String EMPLOYMENT_SCTL_CASE_ID = "1234567890123461";
 
     @Override
