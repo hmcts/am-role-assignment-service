@@ -1,7 +1,7 @@
 package validationrules.core;
+import uk.gov.hmcts.reform.roleassignment.domain.model.CaseAllocatorApproval;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
-import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -11,19 +11,20 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 */
 rule "create_case_manager_role"
 when
+    $f: FeatureFlag(status && flagName == FeatureFlagEnum.CASE_MANAGER_1_0.getValue())
     $rq: Request(assignerId == authenticatedUserId)
-    $ra: RoleAssignment(
-             status == Status.CREATE_REQUESTED,
-             roleType == RoleType.CASE,
-             roleName in ("admin-case-manager", "ctsc-case-manager"),
-             grantType in (GrantType.SPECIFIC))
+    $ca: CaseAllocatorApproval(
+             roleAssignment.status == Status.CREATE_REQUESTED,
+             roleAssignment.roleType == RoleType.CASE,
+             roleAssignment.roleName in ("admin-case-manager", "ctsc-case-manager"),
+             roleAssignment.grantType in (GrantType.SPECIFIC))
     ExistingRoleAssignment(
              actorId == $rq.assignerId,
              roleType == RoleType.ORGANISATION)
 then
-    $ra.setStatus(Status.CREATE_APPROVED);
-    $ra.log("Stage 1 approved : create_case_manager_role");
-    update($ra);
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : create_case_manager_role");
+    update($ca.getRoleAssignment());
     logMsg("Rule : create_case_manager_role");
 end;
 
@@ -32,15 +33,16 @@ end;
 */
 rule "delete_case_manager_role"
 when
+   $f: FeatureFlag(status && flagName == FeatureFlagEnum.CASE_MANAGER_1_0.getValue())
    $rq: Request(assignerId == authenticatedUserId)
-   $ra: RoleAssignment(
-            actorId == $rq.authenticatedUserId,
-            status == Status.DELETE_REQUESTED,
-            roleType == RoleType.CASE,
-            roleName in ("admin-case-manager", "ctsc-case-manager"))
+   $ca: CaseAllocatorApproval(
+            roleAssignment.actorId == $rq.authenticatedUserId,
+            roleAssignment.status == Status.DELETE_REQUESTED,
+            roleAssignment.roleType == RoleType.CASE,
+            roleAssignment.roleName in ("admin-case-manager", "ctsc-case-manager"))
 then
-   $ra.setStatus(Status.DELETE_APPROVED);
-   $ra.log("Stage 1 approved : delete_case_manager_role");
-   update($ra);
+   $ca.getRoleAssignment().setStatus(Status.DELETE_APPROVED);
+   $ca.getRoleAssignment().log("Stage 1 approved : delete_case_manager_role");
+   update($ca.getRoleAssignment());
    logMsg("Rule : delete_case_manager_role");
 end;

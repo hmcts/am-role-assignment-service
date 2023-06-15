@@ -80,6 +80,9 @@ class CaseRolesDroolsTest extends DroolBase {
         FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_WA_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
+        FeatureFlag featureFlag1 = FeatureFlag.builder().flagName(FeatureFlagEnum.CASE_MANAGER_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag1);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -164,6 +167,9 @@ class CaseRolesDroolsTest extends DroolBase {
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_WA_1_0.getValue())
             .status(true).build();
         featureFlags.add(featureFlag);
+        FeatureFlag featureFlag1 = FeatureFlag.builder().flagName(FeatureFlagEnum.CASE_MANAGER_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag1);
 
         existingAttributes.put("allocatedRole", convertValueJsonNode(roleName));
 
