@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_SCTL_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_CASE_ID;
@@ -38,14 +39,48 @@ public abstract class DroolBase {
     public static final String IA_CASE_ID = "1234567890123450";
 
     private final RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
-    Map<String, Case> caseMap = Map.of("IA",Case.builder().id(IA_CASE_ID).caseTypeId("Asylum").build(),
-                               "SSCS", Case.builder().id(SSCS_CASE_ID).caseTypeId("Benefit").build(),
-                               "CIVIL", Case.builder().id(CIVIL_CASE_ID).caseTypeId("CIVIL").build(),
-                               "PRIVATELAW", Case.builder().id(PRIVATE_LAW_CASE_ID).caseTypeId("PRLAPPS").build(),
-                               "PUBLICLAW", Case.builder().id(PUBLIC_LAW_CASE_ID)
-                                     .caseTypeId("CARE_SUPERVISION_EPO").build(),
-                               "EMPLOYMENT", Case.builder().id(EMPLOYMENT_CASE_ID)
-                                     .caseTypeId("ET_EnglandWales").build());
+    Map<String, Case> caseMap = Map.of("IA", Case.builder()
+                                           .id(IA_CASE_ID)
+                                           .jurisdiction("IA")
+                                           .caseTypeId("Asylum")
+                                           .build(),
+
+                                       "SSCS", Case.builder()
+                                           .id(SSCS_CASE_ID)
+                                           .jurisdiction("SSCS")
+                                           .caseTypeId("Benefit")
+                                           .build(),
+
+                                       "CIVIL", Case.builder()
+                                           .id(CIVIL_CASE_ID)
+                                           .jurisdiction("CIVIL")
+                                           .caseTypeId("CIVIL")
+                                           .build(),
+
+                                       "PRIVATELAW", Case.builder()
+                                           .id(PRIVATE_LAW_CASE_ID)
+                                           .jurisdiction("PRIVATELAW")
+                                           .caseTypeId("PRLAPPS")
+                                           .build(),
+
+                                       "PUBLICLAW", Case.builder()
+                                           .id(PUBLIC_LAW_CASE_ID)
+                                           .jurisdiction("PUBLICLAW")
+                                           .caseTypeId("CARE_SUPERVISION_EPO")
+                                           .build(),
+
+                                       "EMPLOYMENT", Case.builder()
+                                           .id(EMPLOYMENT_CASE_ID)
+                                           .jurisdiction("EMPLOYMENT")
+                                           .caseTypeId("ET_EnglandWales")
+                                           .build(),
+
+                                       "EMPLOYMENT|ET_Scotland", Case.builder()
+                                           .id(EMPLOYMENT_SCTL_CASE_ID)
+                                           .jurisdiction("EMPLOYMENT")
+                                           .caseTypeId("ET_Scotland")
+                                           .build()
+    );
 
     @BeforeEach
     public void setUp() {
@@ -82,6 +117,8 @@ public abstract class DroolBase {
         //EMPLOYMENT
         doReturn(dummyCases.getCaseDataV2(EMPLOYMENT_CASE_ID))
             .when(retrieveDataService).getCaseById(EMPLOYMENT_CASE_ID);
+        doReturn(dummyCases.getCaseDataV2(EMPLOYMENT_SCTL_CASE_ID))
+            .when(retrieveDataService).getCaseById(EMPLOYMENT_SCTL_CASE_ID);
 
         Case caseObj0 = Case.builder().id("9234567890123456")
             .caseTypeId("Asylum")
@@ -111,6 +148,15 @@ public abstract class DroolBase {
         this.kieSession = kieContainer.newStatelessKieSession("role-assignment-validation-session");
         this.kieSession.setGlobal("DATA_SERVICE", retrieveDataService);
 
+    }
+
+    Case getCaseFromMap(String jurisdiction, String caseType) {
+        String key = jurisdiction + "|" + caseType;
+        if (!caseMap.containsKey(key)) {
+            // fallback to search on jurisdiction only
+            key = jurisdiction;
+        }
+        return caseMap.get(key);
     }
 
     void buildExecuteKieSession() {

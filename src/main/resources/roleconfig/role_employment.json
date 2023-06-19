@@ -113,7 +113,8 @@
           "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true
+          "mandatory": true,
+          "values": ["PUBLIC"]
         },
         "attributes": {
           "jurisdiction": {
@@ -121,7 +122,8 @@
             "values": ["EMPLOYMENT"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["ET_EnglandWales", "ET_Scotland"]
           },
           "caseId": {
             "mandatory": true
@@ -148,7 +150,8 @@
           "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true
+          "mandatory": true,
+          "values": ["PUBLIC"]
         },
         "attributes": {
           "jurisdiction": {
@@ -156,7 +159,8 @@
             "values": ["EMPLOYMENT"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["ET_EnglandWales", "ET_Scotland"]
           },
           "caseId": {
             "mandatory": true
@@ -183,7 +187,8 @@
           "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true
+          "mandatory": true,
+          "values": ["PUBLIC"]
         },
         "attributes": {
           "jurisdiction": {
@@ -191,7 +196,8 @@
             "values": ["EMPLOYMENT"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["ET_EnglandWales", "ET_Scotland"]
           },
           "caseId": {
             "mandatory": true
