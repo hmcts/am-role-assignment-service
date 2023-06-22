@@ -301,7 +301,7 @@
     "label": "Registrar",
     "description": "Registrar role for staff users",
     "category": "LEGAL_OPERATIONS",
-    "substantive": false,
+    "substantive": true,
     "type": "CASE",
     "patterns": [
       {
@@ -318,10 +318,12 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["SSCS"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["Benefit"]
           },
           "caseId": {
             "mandatory": true
