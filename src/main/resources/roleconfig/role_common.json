@@ -619,7 +619,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","EMPLOYMENT"]
+            "values": ["IA","SSCS"]
           },
           "caseType": {
             "mandatory": true
