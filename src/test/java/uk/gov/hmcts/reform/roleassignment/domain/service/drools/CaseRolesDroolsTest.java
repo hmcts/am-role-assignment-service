@@ -65,7 +65,7 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,post-hearing-judge,JUDICIAL,RESTRICTED,judge,Y",
         "SSCS,Benefit,case-allocator,JUDICIAL,RESTRICTED,case-allocator,N",
         "SSCS,Benefit,case-allocator,LEGAL_OPERATIONS,RESTRICTED,case-allocator,N",
-        "SSCS,Benefit,registrar,LEGAL_OPERATIONS,RESTRICTED,registrar,Y",
+        "SSCS,Benefit,registrar,LEGAL_OPERATIONS,RESTRICTED,registrar,N",
         "SSCS,Benefit,tribunal-caseworker,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,N",
         "SSCS,Benefit,allocated-tribunal-caseworker,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,N",
         "SSCS,Benefit,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,N",

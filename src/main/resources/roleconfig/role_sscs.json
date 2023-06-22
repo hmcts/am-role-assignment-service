@@ -301,7 +301,7 @@
     "label": "Registrar",
     "description": "Registrar role for staff users",
     "category": "LEGAL_OPERATIONS",
-    "substantive": true,
+    "substantive": false,
     "type": "CASE",
     "patterns": [
       {
