@@ -22,7 +22,7 @@
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "case-allocator",
           "roleCategory": "JUDICIAL",
-          "beginTime" : "2020-09-01T00:00:00Z",
+          "beginTime" : "${[scenarioContext][customValues][yesterday]}T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "IA"
@@ -33,7 +33,7 @@
           "actorId": "${[scenarioContext][testData][users][befta1][id]}",
           "roleName": "fee-paid-judge",
           "roleCategory": "JUDICIAL",
-          "beginTime" : "2020-09-01T00:00:00Z",
+          "beginTime" : "${[scenarioContext][customValues][yesterday]}T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "IA"

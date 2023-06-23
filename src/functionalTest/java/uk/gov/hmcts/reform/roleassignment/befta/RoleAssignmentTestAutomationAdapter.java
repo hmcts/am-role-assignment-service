@@ -27,10 +27,16 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
                 return new TokenUtils().generateServiceToken(buildCcdSpecificConfig());
             case ("generateS2STokenForXui"):
                 return new TokenUtils().generateServiceToken(buildXuiSpecificConfig());
-            case ("tomorrow"):
-                return LocalDate.now().plusDays(1);
             case ("today"):
                 return LocalDate.now();
+            case ("yesterday"):
+                return LocalDate.now().minusDays(1);
+            case ("tomorrow"):
+                return LocalDate.now().plusDays(1);
+            case ("nextMonth"):
+                return LocalDate.now().plusMonths(1);
+            case ("nextYear"):
+                return LocalDate.now().plusYears(1);
             default:
                 return super.calculateCustomValue(scenarioContext, key);
         }
