@@ -24,6 +24,9 @@
     "body": {
       "roleAssignmentResponse" : [
         {
+          "__ordering__": "ordered"
+        },
+        {
           "_extends_": "ResponseRoleAssignment",
           "actorId": "${}${[scenarioContext][testData][request][body][actorId][0]}"
         },

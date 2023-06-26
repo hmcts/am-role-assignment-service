@@ -19,9 +19,6 @@
       },
       "requestedRoles": [
         {
-          "__ordering__": "ordered"
-        },
-        {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta1][id]}",
           "roleName": "tribunal-caseworker",
@@ -73,6 +70,9 @@
           "replaceExisting": true
         },
         "requestedRoles": [
+          {
+            "__ordering__": "ordered"
+          },
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "[[ANYTHING_PRESENT]]",
