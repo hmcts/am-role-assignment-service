@@ -26,6 +26,9 @@
     "body": {
       "roleAssignmentResponse" : [
         {
+          "__ordering__": "ordered"
+        },
+        {
           "_extends_": "ResponseRoleAssignment",
           "actorId": "[[ANYTHING_PRESENT]]",
           "roleCategory" : "LEGAL_OPERATIONS",
