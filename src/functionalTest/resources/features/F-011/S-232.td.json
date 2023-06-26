@@ -64,7 +64,7 @@
         },
         "requestedRoles": [
           {
-            "_ordering_": "ordered"
+            "__ordering__": "ordered"
           },
           {
             "_extends_": "ResponseRequestedRole",
