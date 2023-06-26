@@ -61,6 +61,9 @@
         },
         "requestedRoles": [
           {
+            "__elementId__": "roleName"
+          },
+          {
             "_extends_": "ResponseRequestedRole",
             "process" : "specific-access",
             "actorId": "${[scenarioContext][testData][request][body][requestedRoles][0][actorId]}",

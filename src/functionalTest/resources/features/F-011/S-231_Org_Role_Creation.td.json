@@ -54,6 +54,9 @@
         },
         "requestedRoles": [
           {
+            "__elementId__": "process"
+          },
+          {
             "_extends_": "ResponseRequestedRole",
             "process": "specific-access",
             "actorId": "[[ANYTHING_PRESENT]]",

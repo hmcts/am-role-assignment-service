@@ -39,6 +39,9 @@
         },
         "requestedRoles": [
           {
+            "__elementId__": "roleName"
+          },
+          {
             "_extends_": "ResponseRequestedRole",
             "authorisations" : ["CCD","ExUI","SSIC", "RefData"]
           },

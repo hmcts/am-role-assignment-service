@@ -33,6 +33,9 @@
         },
         "requestedRoles": [
           {
+            "__elementId__": "roleName"
+          },
+          {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
