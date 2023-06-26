@@ -60,10 +60,6 @@
         },
         "requestedRoles": [
           {
-            "__ordering__": "UNORDERED",
-            "__elementId__": "roleName"
-          },
-          {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "process": "specific-access",
