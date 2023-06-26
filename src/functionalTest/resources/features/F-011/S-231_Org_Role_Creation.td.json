@@ -54,7 +54,7 @@
         },
         "requestedRoles": [
           {
-            "__elementId__": "process"
+            "_ordering_": "ordered"
           },
           {
             "_extends_": "ResponseRequestedRole",

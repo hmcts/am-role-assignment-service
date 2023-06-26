@@ -40,7 +40,7 @@
         },
         "requestedRoles": [
           {
-            "__elementId__": "roleName"
+            "_ordering_": "ordered"
           },
           {
             "_extends_": "ResponseRequestedRole"
