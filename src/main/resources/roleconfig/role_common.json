@@ -1678,7 +1678,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL","IA"]
           }
         }
       }
@@ -1708,7 +1708,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL","IA"]
           }
         }
       }
@@ -1717,8 +1717,8 @@
   {
     "name": "hearing-manager",
     "label": "Hearing Manager",
-    "description": "Hearing Manager for admin users",
-      "category": "CTSC",
+    "description": "Hearing Manager for ctsc users",
+    "category": "CTSC",
     "substantive": false,
     "type": "ORGANISATION",
     "patterns": [
@@ -1738,7 +1738,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW","PRIVATELAW"]
+            "values": ["PUBLICLAW","PRIVATELAW","IA"]
           }
         }
       }
@@ -1866,7 +1866,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL","IA"]
           }
         }
       }
@@ -1896,7 +1896,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL"]
+            "values": ["SSCS","PRIVATELAW","PUBLICLAW","CIVIL","IA"]
           }
         }
       }
@@ -1905,7 +1905,7 @@
   {
     "name": "hearing-viewer",
     "label": "Hearing Viewer",
-    "description": "Hearing Viewer for admin users",
+    "description": "Hearing Viewer for ctsc users",
     "category": "CTSC",
     "substantive": false,
     "type": "ORGANISATION",
@@ -1926,7 +1926,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","PUBLICLAW","CIVIL"]
+            "values": ["PRIVATELAW","PUBLICLAW","CIVIL","IA"]
           }
         }
       }

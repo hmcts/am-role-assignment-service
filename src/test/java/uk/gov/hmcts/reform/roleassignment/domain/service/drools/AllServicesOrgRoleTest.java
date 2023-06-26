@@ -410,8 +410,11 @@ class AllServicesOrgRoleTest extends DroolBase {
     @ParameterizedTest
     @CsvSource({
         "hearing-manager,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "hearing-manager,LEGAL_OPERATIONS,STANDARD,north-east,IA,UK,ORGANISATION,N,Null,PUBLIC",
         "hearing-manager,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "hearing-manager,ADMIN,STANDARD,north-east,IA,UK,ORGANISATION,N,Null,PUBLIC",
         "hearing-viewer,JUDICIAL,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "hearing-viewer,LEGAL_OPERATIONS,STANDARD,north-east,IA,UK,ORGANISATION,N,Null,PUBLIC",
         "hearing-viewer,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
         "hearing-viewer,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
         "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
@@ -526,7 +529,6 @@ class AllServicesOrgRoleTest extends DroolBase {
         "manager,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,ORGANISATION",
         "hearing-manager,JUDICIAL,STANDARD,north-east,SSCS,ORGANISATION",
         "hearing-viewer,JUDICIAL,SPECIFIC,north-east,SSCS,ORGANISATION",
-        "hearing-viewer,LEGAL_OPERATIONS,STANDARD,north-east,IA,ORGANISATION",
         "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,SSCS,CASE",
         "judge,JUDICIAL,BASIC,north-east,SSCS,ORGANISATION",
         "fee-paid-judge,JUDICIAL,STANDARD,north-east,CIVIL1,ORGANISATION",
