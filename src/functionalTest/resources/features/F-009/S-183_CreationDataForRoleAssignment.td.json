@@ -41,6 +41,9 @@
       "roleAssignmentResponse": {
         "requestedRoles": [
           {
+            "__ordering__": "ordered"
+          },
+          {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
