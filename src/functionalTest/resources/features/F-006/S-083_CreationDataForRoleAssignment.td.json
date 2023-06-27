@@ -41,7 +41,8 @@
       "roleAssignmentResponse": {
         "requestedRoles": [
           {
-            "__ordering__": "ordered"
+            "__ordering__": "unordered",
+            "__elementId__": "roleName"
           },
           {
             "_extends_": "ResponseRequestedRole",
