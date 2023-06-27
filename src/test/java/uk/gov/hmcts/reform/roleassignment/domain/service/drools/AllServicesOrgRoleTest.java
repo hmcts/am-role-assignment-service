@@ -414,6 +414,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         "hearing-manager,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
         "hearing-manager,ADMIN,STANDARD,north-east,IA,UK,ORGANISATION,N,Null,PUBLIC",
         "hearing-viewer,JUDICIAL,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "hearing-viewer,JUDICIAL,STANDARD,north-east,IA,UK,ORGANISATION,N,Null,PUBLIC",
         "hearing-viewer,LEGAL_OPERATIONS,STANDARD,north-east,IA,UK,ORGANISATION,N,Null,PUBLIC",
         "hearing-viewer,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
         "hearing-viewer,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
