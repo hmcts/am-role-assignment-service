@@ -629,8 +629,8 @@ class AllServicesOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "hearing-manager,SYSTEM,PRIVATELAW,Benefit",
-        "hearing-viewer,SYSTEM,PRIVATELAW,Benefit"
+        "hearing-manager,SYSTEM,PRIVATELAW,PRLAPPS",
+        "hearing-viewer,SYSTEM,PRIVATELAW,PRLAPPS"
     })
     void shouldRejectSscsOrgRequestedRoleForHearingFromAnotherJurisdiction(String roleName,
                                                                            String roleCategory,
@@ -726,8 +726,8 @@ class AllServicesOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "hearing-manager,SYSTEM,SSCS,PRLAPPS",
-        "hearing-viewer,SYSTEM,SSCS,PRLAPPS"
+        "hearing-manager,SYSTEM,SSCS,Benefit",
+        "hearing-viewer,SYSTEM,SSCS,Benefit"
     })
     void shouldRejectPrivateLawOrgRequestedRoleForHearingFromAnotherJurisdiction(String roleName,
                                                                                  String roleCategory,
