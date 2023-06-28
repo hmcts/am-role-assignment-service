@@ -25,7 +25,7 @@ plugins {
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.25'
   id 'au.com.dius.pact' version '4.3.12' //do not change this version or serenity reports will fail to generate
   id 'org.flywaydb.flyway' version '8.5.12'
-  id 'org.owasp.dependencycheck' version '8.1.0'
+  id 'org.owasp.dependencycheck' version '8.1.2'
 }
 
 apply plugin: "info.solidsoft.pitest"
