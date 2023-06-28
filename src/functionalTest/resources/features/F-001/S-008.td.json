@@ -20,7 +20,7 @@
         {
           "_extends_": "RequestedRole",
           "beginTime" : "${[scenarioContext][customValues][yesterday]}T00:00:00Z",
-          "endTime" : "2025-01-01T00:00Z",
+          "endTime" : "${[scenarioContext][customValues][nextYear]}T00:00:00Z",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
           "attributes": {
