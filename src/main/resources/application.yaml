@@ -127,11 +127,6 @@ idam:
   apachehttpclient:
     enable: false
 
-
-testS2S:
-  api:
-    url: "/testS2SAuthorization"
-
 feign:
   client:
     config:
