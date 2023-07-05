@@ -30,42 +30,6 @@
     ]
   },
   {
-    "name": "lead-judge",
-    "label": "Lead Judge",
-    "description": "Lead Judge role for judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "type": "CASE",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["CASE"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["IA"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["Asylum"]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
     "name": "ftpa-judge",
     "label": "FTPA Judge",
     "description": "FTPA Judge role for judicial users",
