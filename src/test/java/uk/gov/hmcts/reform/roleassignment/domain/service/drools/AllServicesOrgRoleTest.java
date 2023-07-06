@@ -632,6 +632,38 @@ class AllServicesOrgRoleTest extends DroolBase {
         "hearing-manager,SYSTEM,PRIVATELAW,PRLAPPS",
         "hearing-viewer,SYSTEM,PRIVATELAW,PRLAPPS"
     })
+    void shouldRejectSscsOrgRequestedRoleForHearingFromAnotherJurisdiction(String roleName,
+                                                                           String roleCategory,
+                                                                           String jurisdiction,
+                                                                           String caseType) {
+        assignmentRequest.getRequest().setClientId("sscs");
+        assignmentRequest.getRequest().setProcess("sscs-system-users");
+        assignmentRequest.getRequest().setReference("sscs-hearings-system-user");
+        assignmentRequest.getRequest().setReplaceExisting(true);
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(CREATE_REQUESTED);
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+            roleAssignment.getAttributes().put("caseType", convertValueJsonNode(caseType));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "hearing-manager,SYSTEM,PRIVATELAW,PRLAPPS",
+        "hearing-viewer,SYSTEM,PRIVATELAW,PRLAPPS"
+    })
     void shouldApprovePrivateLawOrgRequestedRoleForHearing(String roleName,
                                                            String roleCategory,
                                                            String jurisdiction,
@@ -689,6 +721,38 @@ class AllServicesOrgRoleTest extends DroolBase {
             assertEquals(DELETE_APPROVED, roleAssignment.getStatus());
             assertEquals(roleName, roleAssignment.getRoleName());
             assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "hearing-manager,SYSTEM,SSCS,Benefit",
+        "hearing-viewer,SYSTEM,SSCS,Benefit"
+    })
+    void shouldRejectPrivateLawOrgRequestedRoleForHearingFromAnotherJurisdiction(String roleName,
+                                                                                 String roleCategory,
+                                                                                 String jurisdiction,
+                                                                                 String caseType) {
+        assignmentRequest.getRequest().setClientId("fis_hmc_api");
+        assignmentRequest.getRequest().setProcess("private-law-system-users");
+        assignmentRequest.getRequest().setReference("private-law-hearings-system-user");
+        assignmentRequest.getRequest().setReplaceExisting(true);
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(CREATE_REQUESTED);
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+            roleAssignment.getAttributes().put("caseType", convertValueJsonNode(caseType));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
         });
     }
 }

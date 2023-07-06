@@ -281,7 +281,7 @@ when
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText(),
              // Add all the jurisdiction Ids of the on-boarded services
              // Do we really need to constrain the jurisdiction here?
-             attributes["jurisdiction"] != null && $jurisdiction : attributes["jurisdiction"].asText() && attributes["jurisdiction"].asText() in ("IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW"))
+             attributes["jurisdiction"] != null && $jurisdiction : attributes["jurisdiction"].asText() && attributes["jurisdiction"].asText() in ("IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW", "EMPLOYMENT"))
     $c:  Case(
              id == $caseId,
              jurisdiction == $jurisdiction)
