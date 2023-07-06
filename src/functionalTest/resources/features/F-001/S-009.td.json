@@ -14,8 +14,8 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "beginTime" : "2023-01-01T00:00Z",
-          "endTime" : "2020-01-01T00:00Z"
+          "beginTime" : "${[scenarioContext][customValues][nextYear]}T00:00:00Z",
+          "endTime" : "${[scenarioContext][customValues][yesterday]}T00:00:00Z"
         }
       ]
     }
