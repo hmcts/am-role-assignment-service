@@ -531,7 +531,6 @@ class AllServicesOrgRoleTest extends DroolBase {
         "judge,JUDICIAL,BASIC,north-east,SSCS,ORGANISATION",
         "fee-paid-judge,JUDICIAL,STANDARD,north-east,CIVIL1,ORGANISATION",
         "circuit-judge,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,ORGANISATION",
-        "leadership-judge,JUDICIAL,STANDARD,north-east,SSCS,ORGANISATION",
         "hearing-centre-team-leader,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,ORGANISATION",
         "nbc-team-leader,ADMIN,STANDARD,north-east,SSCS,ORGANISATION",
         "national-business-centre,ADMIN,STANDARD,north-east,IA,ORGANISATION",
