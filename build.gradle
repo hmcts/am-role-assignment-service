@@ -35,7 +35,7 @@ apply plugin: 'project-report'
 apply plugin: 'idea'
 apply plugin: 'io.spring.dependency-management'
 
-ext['snakeyaml.version'] = '1.32'
+ext['snakeyaml.version'] = '2.0'
 
 def versions = [
   junit          : '5.9.0',
@@ -46,7 +46,7 @@ def versions = [
   reformS2sClient: '4.0.2',
   serenity       : '2.2.12',
   sonarPitest    : '0.5',
-  springBoot     : '2.6.15',
+  springBoot     : '2.7.12',
   spring         : '5.3.27',
   springSecurity : '5.7.8',
   springHystrix  : '2.1.1.RELEASE',
@@ -56,7 +56,7 @@ def versions = [
   cucumber       : '5.7.0',
   feign_jackson  : '12.1',
   drools         : '7.69.0.Final',
-  launchDarklySdk: '5.10.7',
+  launchDarklySdk: '5.10.8',
   log4JVersion   : '2.19.0',
   logbackVersion : '1.2.10'
 ]
