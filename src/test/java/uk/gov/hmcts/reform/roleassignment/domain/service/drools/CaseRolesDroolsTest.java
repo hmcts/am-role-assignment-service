@@ -66,7 +66,6 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,case-allocator,JUDICIAL,RESTRICTED,case-allocator,N",
         "SSCS,Benefit,case-allocator,LEGAL_OPERATIONS,RESTRICTED,case-allocator,N",
         "SSCS,Benefit,registrar,LEGAL_OPERATIONS,RESTRICTED,registrar,N",
-        "SSCS,Benefit,tribunal-caseworker,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,N",
         "SSCS,Benefit,allocated-tribunal-caseworker,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,N",
         "SSCS,Benefit,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,N",
         "SSCS,Benefit,allocated-admin-caseworker,ADMIN,RESTRICTED,regional-centre-admin,N",
@@ -240,11 +239,6 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,tribunal-member-3",
         "SSCS,Benefit,appraiser-1",
         "SSCS,Benefit,appraiser-2",
-        "SSCS,Benefit,panel-doctor",
-        "SSCS,Benefit,panel-disability",
-        "SSCS,Benefit,panel-financial",
-        "SSCS,Benefit,panel-appraisal-judge",
-        "SSCS,Benefit,panel-appraisal-medical",
         "SSCS,Benefit,interloc-judge",
         "SSCS,Benefit,post-hearing-judge",
         "SSCS,Benefit,case-allocator",
@@ -252,7 +246,6 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,allocated-tribunal-caseworker",
         "SSCS,Benefit,allocated-admin-caseworker",
         "SSCS,Benefit,allocated-ctsc-caseworker",
-        "SSCS,Benefit,tribunal-caseworker",
         "PRIVATELAW,PRLAPPS,hearing-judge",
         "PRIVATELAW,PRLAPPS,allocated-magistrate",
         "EMPLOYMENT,ET_EnglandWales,lead-judge",
@@ -317,10 +310,7 @@ class CaseRolesDroolsTest extends DroolBase {
     @CsvSource({
         "judge,JUDICIAL,judge,SSCS,Benefit,ORGANISATION",
         "hearing-judge,ADMIN,fee-paid-judge,SSCS,Benefit,ORGANISATION",
-        "panel-doctor,JUDICIAL,caseworker,SSCS,Benefit,ORGANISATION",
-        "panel-appraisal-medical,JUDICIAL,fee-paid-medical,IA,Benefit,ORGANISATION",
         "interloc-judge,JUDICIAL,judge,SSCS,Asylum,ORGANISATION",
-        "panel-appraisal-judge,JUDICIAL,judge,SSCS,Benefit,CASE",
     })
     void shouldRejectAccessFor_SSCS_CaseRole(String roleName, String roleCategory, String existingRoleName,
                                              String jurisdiction, String caseType, String roleType) {
@@ -385,7 +375,6 @@ class CaseRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "panel-appraisal-judge,CITIZEN,am_org_role_mapping_service,ORGANISATION",
         "interloc-judge,JUDICIAL,am_role_assignment_service,ORGANISATION",
         "hearing-judge,JUDICIAL,am_org_role_mapping_service,CASE"
     })
