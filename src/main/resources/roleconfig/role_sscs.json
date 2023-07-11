@@ -228,6 +228,42 @@
     ]
   },
   {
+    "name": "post-hearing-judge",
+    "label": "Post Hearing Judge",
+    "description": "Post Hearing Judge role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "registrar",
     "label": "Registrar",
     "description": "Registrar role for staff users",
@@ -282,10 +318,12 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["SSCS"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["Benefit"]
           },
           "caseId": {
             "mandatory": true

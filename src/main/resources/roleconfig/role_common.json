@@ -2487,8 +2487,8 @@
   },
   {
     "name": "tribunal-member-2",
-    "label": "Tribunal member 2 ",
-    "description": "Tribunal member - 2  for judicial users",
+    "label": "Tribunal member 2",
+    "description": "Tribunal member - 2 for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "type": "CASE",
@@ -2509,6 +2509,150 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["SSCS", "EMPLOYMENT"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "tribunal-member-3",
+    "label": "Tribunal member 3",
+    "description": "Tribunal member - 3 for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-tribunal-caseworker",
+    "label": "Allocated Tribunal Caseworker",
+    "description": "Allocated Tribunal Caseworker for Staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT","SSCS"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-admin-caseworker",
+    "label": "Allocated Admin Caseworker",
+    "description": "Allocated Admin Caseworker for Staff users",
+    "category": "ADMIN",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT","SSCS"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-ctsc-caseworker",
+    "label": "Allocated CTSC Caseworker",
+    "description": "Allocated CTSC Caseworker for Staff users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT","SSCS"]
           },
           "caseType": {
             "mandatory": true,
