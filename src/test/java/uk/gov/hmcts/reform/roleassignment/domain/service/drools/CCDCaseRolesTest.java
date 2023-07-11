@@ -47,7 +47,7 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Test
-    void shouldApprovePetSolicitiorCaseRole() {
+    void shouldApprovePetSolicitorCaseRole() {
         verifyCreateCaseRequestedRole_CCD_1_0("[PETSOLICITOR]", "ccd_data", RoleCategory.PROFESSIONAL);
     }
 
@@ -260,6 +260,51 @@ class CCDCaseRolesTest extends DroolBase {
                                                      "caseType", convertValueJsonNode("Asylum"),
                                                      "caseId", convertValueJsonNode("1234567890123456")));
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        assignmentRequest.getRequest().setClientId("ccd_data");
+
+        FeatureFlag featureFlag  =  FeatureFlag.builder().build();
+        featureFlags.add(featureFlag);
+
+        buildExecuteKieSession();
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+    }
+
+    @Test
+    void shouldApprovePrivateLawSolicitorCaseRoles() {
+        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR1]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR2]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR3]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR4]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR5]");
+        verifyCreatePrivateLawCaseRequestedRole("[FL401APPLICANTSOLICITOR]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR1]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR2]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR3]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR4]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR5]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR1]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR2]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR3]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR4]");
+        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR5]");
+        verifyCreatePrivateLawCaseRequestedRole("[FL401RESPONDENTSOLICITOR]");
+    }
+
+    private void verifyCreatePrivateLawCaseRequestedRole(String roleName) {
+        RoleAssignment requestedRole = getRequestedCaseRole_ra(
+            RoleCategory.PROFESSIONAL,
+            roleName,
+            SPECIFIC,
+            "caseId",
+            "1234567890123456",
+            CREATE_REQUESTED
+        );
+        requestedRole.setClassification(Classification.RESTRICTED);
+        requestedRole.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("PRIVATELAW"),
+                                                     "caseType", convertValueJsonNode("PRLAPPS"),
+                                                     "caseId", convertValueJsonNode("1234567890123456")));
+        assignmentRequest.setRequestedRoles(List.of(requestedRole));
         assignmentRequest.getRequest().setClientId("ccd_data");
 
         FeatureFlag featureFlag  =  FeatureFlag.builder().build();
