@@ -2353,7 +2353,7 @@
     "label": "Allocated Judge",
     "description": "Allocated Judge role for Judicial users",
     "category": "JUDICIAL",
-    "substantive": false,
+    "substantive": true,
     "type": "CASE",
     "patterns": [
       {
@@ -2372,6 +2372,12 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["PUBLICLAW"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
           }
         }
       }
