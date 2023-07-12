@@ -333,39 +333,6 @@
     ]
   },
   {
-    "name": "clerk",
-    "label": "Clerk",
-    "description": "Clerk role for admin users",
-    "category": "ADMIN",
-    "substantive": true,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["SSCS"]
-          },
-          "primaryLocation": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
     "name": "dwp",
     "label": "DWP",
     "description": "DWP role for other gov dept users",
