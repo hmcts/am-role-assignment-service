@@ -280,7 +280,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS"]
           }
         }
       }
@@ -310,7 +310,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS"]
           }
         }
       }
@@ -557,7 +557,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT"]
+            "values": ["IA","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT","SSCS"]
           }
         }
       }
@@ -619,7 +619,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS"]
+            "values": ["IA"]
           },
           "caseType": {
             "mandatory": true
@@ -811,7 +811,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
           },
           "caseType": {
             "mandatory": true
@@ -967,7 +967,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW", "EMPLOYMENT"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
           },
           "caseType": {
             "mandatory": true
@@ -1123,7 +1123,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW", "EMPLOYMENT"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
           },
           "caseType": {
             "mandatory": true
@@ -1436,7 +1436,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
           },
           "caseType": {
             "mandatory": true
@@ -1475,7 +1475,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW", "EMPLOYMENT"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
           },
           "caseType": {
             "mandatory": true
@@ -1514,7 +1514,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW", "EMPLOYMENT"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
           },
           "caseType": {
             "mandatory": true
@@ -1588,7 +1588,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
+            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2025,7 +2025,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2058,7 +2058,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL", "PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
+            "values": ["IA", "CIVIL", "PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2277,7 +2277,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2339,7 +2339,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2493,8 +2493,8 @@
   },
   {
     "name": "tribunal-member-2",
-    "label": "Tribunal member 2 ",
-    "description": "Tribunal member - 2  for judicial users",
+    "label": "Tribunal member 2",
+    "description": "Tribunal member - 2 for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "type": "CASE",
@@ -2515,6 +2515,150 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["SSCS", "EMPLOYMENT"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "tribunal-member-3",
+    "label": "Tribunal member 3",
+    "description": "Tribunal member - 3 for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-tribunal-caseworker",
+    "label": "Allocated Tribunal Caseworker",
+    "description": "Allocated Tribunal Caseworker for Staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT","SSCS"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-admin-caseworker",
+    "label": "Allocated Admin Caseworker",
+    "description": "Allocated Admin Caseworker for Staff users",
+    "category": "ADMIN",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT","SSCS"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-ctsc-caseworker",
+    "label": "Allocated CTSC Caseworker",
+    "description": "Allocated CTSC Caseworker for Staff users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT","SSCS"]
           },
           "caseType": {
             "mandatory": true,
@@ -2552,6 +2696,72 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["SSCS","EMPLOYMENT"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "regional-centre-team-leader",
+    "label": "Regional Centre Team Leader",
+    "description": "Regional Centre Team Leader role for admin users",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT","SSCS"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "regional-centre-admin",
+    "label": "Regional Centre Admin",
+    "description": "Regional Centre Admin role for admin users",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["EMPLOYMENT","SSCS"]
           },
           "primaryLocation": {
             "mandatory": true
