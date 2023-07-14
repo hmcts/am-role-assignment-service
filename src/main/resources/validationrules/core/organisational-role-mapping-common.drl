@@ -65,7 +65,8 @@ when
              classification == Classification.PUBLIC,
              roleName in ("hearing-manager","hearing-viewer"),
              roleCategory == RoleCategory.SYSTEM,
-             grantType == GrantType.STANDARD)
+             grantType == GrantType.STANDARD,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "SSCS")
 then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Create approved : sscs_system_user_hearings_roles_create");
@@ -102,7 +103,8 @@ when
              classification == Classification.PUBLIC,
              roleName in ("hearing-manager","hearing-viewer"),
              roleCategory == RoleCategory.SYSTEM,
-             grantType == GrantType.STANDARD)
+             grantType == GrantType.STANDARD,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PRIVATELAW")
 then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Create approved : private_law_system_user_hearings_roles_create");
