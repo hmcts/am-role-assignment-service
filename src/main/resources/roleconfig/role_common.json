@@ -2478,11 +2478,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "EMPLOYMENT"]
+            "values": ["SSCS", "EMPLOYMENT","ST_CIC"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
+            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland","CriminalInjuriesCompensation"]
           },
           "caseId": {
             "mandatory": true
@@ -2514,11 +2514,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "EMPLOYMENT"]
+            "values": ["SSCS", "EMPLOYMENT","ST_CIC"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
+            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland","CriminalInjuriesCompensation"]
           },
           "caseId": {
             "mandatory": true
@@ -2550,11 +2550,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS"]
+            "values": ["SSCS","ST_CIC"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit"]
+            "values": ["Benefit","CriminalInjuriesCompensation"]
           },
           "caseId": {
             "mandatory": true
@@ -2728,7 +2728,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT","SSCS"]
+            "values": ["EMPLOYMENT","SSCS","ST_CIC"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2761,15 +2761,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT","SSCS"]
+            "values": ["EMPLOYMENT","SSCS","ST_CIC"]
           },
           "primaryLocation": {
             "mandatory": true
           }
-        },
-        "caseId": {
-          "mandatory": true
-        }
         }
       }
     ]
@@ -2928,78 +2924,6 @@
     "name": "interloc-judge",
     "label": "Interlocutory Judge",
     "description": "Interlocutory Judge for judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "type": "CASE",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["CASE"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["SSCS","ST_CIC"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["Benefit","CriminalInjuriesCompensation"]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "tribunal-member-1",
-    "label": "Tribunal member 1",
-    "description": "Tribunal member - 1 for judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "type": "CASE",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["CASE"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["SSCS","ST_CIC"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["Benefit","CriminalInjuriesCompensation"]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "tribunal-member-2",
-    "label": "Tribunal member 2 ",
-    "description": "Tribunal member - 2  for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "type": "CASE",
