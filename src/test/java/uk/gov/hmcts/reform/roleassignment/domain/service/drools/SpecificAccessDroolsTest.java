@@ -48,6 +48,10 @@ class SpecificAccessDroolsTest extends DroolBase {
         "EMPLOYMENT,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
         "EMPLOYMENT,specific-access-admin,ADMIN,STANDARD",
         "EMPLOYMENT,specific-access-ctsc,CTSC,STANDARD",
+        "SSCS,specific-access-judiciary,JUDICIAL,STANDARD",
+        "SSCS,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
+        "SSCS,specific-access-admin,ADMIN,STANDARD",
+        "SSCS,specific-access-ctsc,CTSC,STANDARD",
     })
     void shouldCreate_SpecificAccessRequested(String jurisdiction, String roleName, String roleCategory,
                                                            String orgGrantType) {
@@ -118,6 +122,10 @@ class SpecificAccessDroolsTest extends DroolBase {
         "EMPLOYMENT,specific-access-admin,ADMIN",
         "EMPLOYMENT,specific-access-legal-ops,LEGAL_OPERATIONS",
         "EMPLOYMENT,specific-access-ctsc,CTSC",
+        "SSCS,specific-access-judiciary,JUDICIAL",
+        "SSCS,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "SSCS,specific-access-admin,ADMIN",
+        "SSCS,specific-access-ctsc,CTSC",
     })
     void shouldCreate_SpecificAccessDenied(String jurisdiction, String roleName, String roleCategory) {
         Case caseDetails = caseMap.get(jurisdiction);
@@ -180,6 +188,10 @@ class SpecificAccessDroolsTest extends DroolBase {
         "EMPLOYMENT,specific-access-admin,ADMIN,specific-access-approver-admin",
         "EMPLOYMENT,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
         "EMPLOYMENT,specific-access-ctsc,CTSC,specific-access-approver-ctsc",
+        "SSCS,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary",
+        "SSCS,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
+        "SSCS,specific-access-admin,ADMIN,specific-access-approver-admin",
+        "SSCS,specific-access-ctsc,CTSC,specific-access-approver-ctsc",
     })
     void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction, String roleName,
                                                            String roleCategory, String approver) {
@@ -252,6 +264,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "SSCS,specific-access-judiciary,JUDICIAL",
         "SSCS,specific-access-admin,ADMIN",
         "SSCS,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "SSCS,specific-access-ctsc,CTSC",
         "CIVIL,specific-access-judiciary,JUDICIAL",
         "CIVIL,specific-access-admin,ADMIN",
         "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS",
@@ -346,6 +359,10 @@ class SpecificAccessDroolsTest extends DroolBase {
         "EMPLOYMENT,specific-access-admin,ADMIN",
         "EMPLOYMENT,specific-access-legal-ops,LEGAL_OPERATIONS",
         "EMPLOYMENT,specific-access-ctsc,CTSC",
+        "SSCS,specific-access-judiciary,JUDICIAL",
+        "SSCS,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "SSCS,specific-access-admin,ADMIN",
+        "SSCS,specific-access-ctsc,CTSC",
     })
     void shouldRejectAccessFor_SpecificAccess_CaseAllocator_selfApproval(String jurisdiction,String roleName,
                                                                          String roleCategory) {
