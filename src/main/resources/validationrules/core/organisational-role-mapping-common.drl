@@ -139,7 +139,6 @@ when
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.ORGANISATION,
-             classification: "PUBLIC",
              roleName in ("case-allocator"),
              roleCategory == RoleCategory.SYSTEM,
              grantType == GrantType.STANDARD,
