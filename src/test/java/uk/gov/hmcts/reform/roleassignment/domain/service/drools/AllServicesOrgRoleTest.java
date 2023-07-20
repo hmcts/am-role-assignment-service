@@ -461,7 +461,9 @@ class AllServicesOrgRoleTest extends DroolBase {
         "hearing-centre-admin,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
         "hearing-centre-admin,ADMIN,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC",
         "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
-        "magistrate,JUDICIAL,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC"
+        "magistrate,JUDICIAL,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC",
+        "caseworker-privatelaw-externaluser-viewonly,OTHER_GOV_DEPT,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,N,Null,PUBLIC",
+        "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,N,Null,PUBLIC"
     })
     void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
                                           String region, String jurisdiction, String primaryLocation,
