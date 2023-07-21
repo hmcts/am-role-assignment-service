@@ -54,10 +54,10 @@ public class DeleteAssignmentController {
     )
     @Operation(summary = "Delete role assignments",
         security =
-            {
-                @SecurityRequirement(name = AUTHORIZATION),
-                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
-            })
+        {
+            @SecurityRequirement(name = AUTHORIZATION),
+            @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
+        })
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @ApiResponse(
         responseCode = "204",
@@ -99,10 +99,10 @@ public class DeleteAssignmentController {
     )
     @Operation(summary = "Delete role assignments by assignment Id",
         security =
-            {
-                @SecurityRequirement(name = AUTHORIZATION),
-                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
-            })
+        {
+            @SecurityRequirement(name = AUTHORIZATION),
+            @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
+        })
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @ApiResponse(
         responseCode = "204",
@@ -143,10 +143,10 @@ public class DeleteAssignmentController {
     )
     @Operation(summary = "Delete role assignments by query",
         security =
-            {
-                @SecurityRequirement(name = AUTHORIZATION),
-                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
-            })
+        {
+            @SecurityRequirement(name = AUTHORIZATION),
+            @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
+        })
     @ResponseStatus(code = HttpStatus.OK)
     @ApiResponse(
         responseCode = "200",

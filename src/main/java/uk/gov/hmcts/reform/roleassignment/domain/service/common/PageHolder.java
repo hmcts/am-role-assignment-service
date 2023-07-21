@@ -7,7 +7,7 @@ public final class PageHolder {
 
     public static ThreadLocal<Page<RoleAssignmentEntity>> holder =  new ThreadLocal<>();
 
-    private PageHolder(){
+    private PageHolder() {
 
     }
 }
