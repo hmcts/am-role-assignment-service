@@ -22,7 +22,7 @@
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleName": "tribunal-caseworker",
           "roleCategory": "LEGAL_OPERATIONS",
-          "beginTime" : "2020-09-01T00:00:00Z",
+          "beginTime" : "${[scenarioContext][customValues][yesterday]}T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "IA",
@@ -35,7 +35,7 @@
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleName": "senior-tribunal-caseworker",
           "roleCategory": "LEGAL_OPERATIONS",
-          "beginTime" : "2020-09-01T00:00:00Z",
+          "beginTime" : "${[scenarioContext][customValues][yesterday]}T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "IA",

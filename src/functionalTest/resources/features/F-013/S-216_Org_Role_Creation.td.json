@@ -24,7 +24,7 @@
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "circuit-judge",
           "roleCategory": "JUDICIAL",
-          "beginTime" : "2022-01-01T00:00:00Z",
+          "beginTime" : "${[scenarioContext][customValues][yesterday]}T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "CIVIL",

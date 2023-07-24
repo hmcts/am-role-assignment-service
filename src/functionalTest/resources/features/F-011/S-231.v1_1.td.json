@@ -14,11 +14,11 @@
       "requestedRoles": [
         {
           "_extends_": "S-231__RequestedRole1_Base",
-          "beginTime": "2025-12-01T00:00Z"
+          "beginTime": "${[scenarioContext][customValues][nextMonth]}T00:00:00Z"
         },
         {
           "_extends_": "S-231__RequestedRole2_Base",
-          "beginTime": "2025-12-01T00:00Z"
+          "beginTime": "${[scenarioContext][customValues][nextMonth]}T00:00:00Z"
         }
       ]
     }

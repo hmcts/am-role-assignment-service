@@ -14,7 +14,7 @@
       "requestedRoles": [
         {
           "_extends_": "S-210__RequestedRole_Base",
-          "beginTime": "2025-12-01T00:00Z"
+          "beginTime": "${[scenarioContext][customValues][nextMonth]}T00:00:00Z"
         }
       ]
     }

@@ -40,7 +40,7 @@
           "readOnly": true,
           "notes" : [{
             "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
-            "time": "2022-01-01T00:00Z",
+            "time": "${[scenarioContext][customValues][yesterday]}T00:00:00Z",
             "comment": "Need Access to case number 1675782944487896 for a month"
           }]
         }
@@ -80,7 +80,7 @@
             },
             "notes" : [{
               "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
-              "time": "2022-01-01T00:00Z",
+              "time": "${[scenarioContext][customValues][yesterday]}T00:00:00Z",
               "comment": "Need Access to case number 1675782944487896 for a month"
             }
             ]
