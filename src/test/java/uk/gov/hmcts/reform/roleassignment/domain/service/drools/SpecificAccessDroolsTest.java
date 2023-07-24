@@ -48,29 +48,7 @@ class SpecificAccessDroolsTest extends DroolBase {
     // TODO: test to be retired as part of AM-2824 once IAC_SPECIFIC_1_1 enabled in prod
     void shouldCreate_SpecificAccessRequested(String jurisdiction, String roleName, String roleCategory,
                                                            String orgGrantType) {
-        Case caseDetails = caseMap.get(jurisdiction);
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
-            "specific-access",
-            "specific-access-requested",
-            RoleCategory.valueOf(roleCategory),
-            RoleType.CASE,
-            roleAssignmentAttributes,
-            Classification.RESTRICTED,
-            GrantType.BASIC,
-            Status.CREATE_REQUESTED,
-            "anyClient",
-            true,
-            "Access required for reasons",
-            ACTORID,
-            roleAssignmentAttributes.get("caseId").asText() + "/"
-                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
-        )
-            .build();
-
+        // set flags for behaviour
         FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
             .status(true).build();
         featureFlags.add(iacSpecific10);
@@ -78,27 +56,13 @@ class SpecificAccessDroolsTest extends DroolBase {
             .status(false).build();
         featureFlags.add(iacSpecific11);
 
-        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
-        existingAttributes.put("caseTypeId", convertValueJsonNode(caseDetails.getCaseTypeId()));
-
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools(
-                                          ACTORID,
-                                          "judge",
-                                          RoleCategory.valueOf(roleCategory),
-                                          existingAttributes,
-                                          Classification.PRIVATE,
-                                          GrantType.valueOf(orgGrantType),
-                                          RoleType.ORGANISATION
-                                      )));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals(caseDetails.getCaseTypeId(),
-                                    roleAssignment.getAttributes().get("caseType").asText());
-        });
+        // run tests
+        runSpecificAccessRequestedTestWithBeginTime(jurisdiction,
+                                                    roleName,
+                                                    roleCategory,
+                                                    orgGrantType,
+                                                    null,
+                                                    true);
     }
 
     @ParameterizedTest
@@ -122,57 +86,18 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                               String roleName,
                                                               String roleCategory,
                                                               String orgGrantType) {
-        Case caseDetails = caseMap.get(jurisdiction);
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
-            "specific-access",
-            "specific-access-requested",
-            RoleCategory.valueOf(roleCategory),
-            RoleType.CASE,
-            roleAssignmentAttributes,
-            Classification.RESTRICTED,
-            GrantType.BASIC,
-            Status.CREATE_REQUESTED,
-            "anyClient",
-            true,
-            "Access required for reasons",
-            ACTORID,
-            roleAssignmentAttributes.get("caseId").asText() + "/"
-                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
-        )
-            .build();
-
-        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(iacSpecific10);
+        // set flags for behaviour
         FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
             .status(true).build();
         featureFlags.add(iacSpecific11);
 
-        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
-        existingAttributes.put("caseTypeId", convertValueJsonNode(caseDetails.getCaseTypeId()));
-
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools(
-                                          ACTORID,
-                                          "judge",
-                                          RoleCategory.valueOf(roleCategory),
-                                          existingAttributes,
-                                          Classification.PRIVATE,
-                                          GrantType.valueOf(orgGrantType),
-                                          RoleType.ORGANISATION
-                                      )));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals(caseDetails.getCaseTypeId(),
-                                    roleAssignment.getAttributes().get("caseType").asText());
-        });
+        // run tests
+        runSpecificAccessRequestedTestWithBeginTime(jurisdiction,
+                                                    roleName,
+                                                    roleCategory,
+                                                    orgGrantType,
+                                                    null,
+                                                    true);
     }
 
     @ParameterizedTest
@@ -196,60 +121,18 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                                    String roleName,
                                                                    String roleCategory,
                                                                    String orgGrantType) {
-        Case caseDetails = caseMap.get(jurisdiction);
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
-            "specific-access",
-            "specific-access-requested",
-            RoleCategory.valueOf(roleCategory),
-            RoleType.CASE,
-            roleAssignmentAttributes,
-            Classification.RESTRICTED,
-            GrantType.BASIC,
-            Status.CREATE_REQUESTED,
-            "anyClient",
-            true,
-            "Access required for reasons",
-            ACTORID,
-            roleAssignmentAttributes.get("caseId").asText() + "/"
-                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
-        )
-            .build();
-
-        assignmentRequest.getRequestedRoles()
-            .forEach(roleAssignment -> roleAssignment.setBeginTime(ZonedDateTime.now().minusDays(1L)));
-
-        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(iacSpecific10);
+        // set flags for behaviour
         FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
             .status(true).build();
         featureFlags.add(iacSpecific11);
 
-        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
-        existingAttributes.put("caseTypeId", convertValueJsonNode(caseDetails.getCaseTypeId()));
-
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools(
-                                          ACTORID,
-                                          "judge",
-                                          RoleCategory.valueOf(roleCategory),
-                                          existingAttributes,
-                                          Classification.PRIVATE,
-                                          GrantType.valueOf(orgGrantType),
-                                          RoleType.ORGANISATION
-                                      )));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals(caseDetails.getCaseTypeId(),
-                                    roleAssignment.getAttributes().get("caseType").asText());
-        });
+        // run tests
+        runSpecificAccessRequestedTestWithBeginTime(jurisdiction,
+                                                    roleName,
+                                                    roleCategory,
+                                                    orgGrantType,
+                                                    ZonedDateTime.now().minusDays(1L),
+                                                    true);
     }
 
     @ParameterizedTest
@@ -273,38 +156,53 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                                      String roleName,
                                                                      String roleCategory,
                                                                      String orgGrantType) {
+        // set flags for behaviour
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific11);
+
+        // run tests
+        runSpecificAccessRequestedTestWithBeginTime(jurisdiction,
+                                                    roleName,
+                                                    roleCategory,
+                                                    orgGrantType,
+                                                    ZonedDateTime.now().plusDays(1L),
+                                                    false);
+
+    }
+
+    private void runSpecificAccessRequestedTestWithBeginTime(String jurisdiction,
+                                                             String roleName,
+                                                             String roleCategory,
+                                                             String orgGrantType,
+                                                             ZonedDateTime beginTime,
+                                                             boolean expectApproved) {
         Case caseDetails = caseMap.get(jurisdiction);
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
         roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
-            "specific-access",
-            "specific-access-requested",
-            RoleCategory.valueOf(roleCategory),
-            RoleType.CASE,
-            roleAssignmentAttributes,
-            Classification.RESTRICTED,
-            GrantType.BASIC,
-            Status.CREATE_REQUESTED,
-            "anyClient",
-            true,
-            "Access required for reasons",
-            ACTORID,
-            roleAssignmentAttributes.get("caseId").asText() + "/"
-                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
-        )
+                "specific-access",
+                "specific-access-requested",
+                RoleCategory.valueOf(roleCategory),
+                RoleType.CASE,
+                roleAssignmentAttributes,
+                Classification.RESTRICTED,
+                GrantType.BASIC,
+                Status.CREATE_REQUESTED,
+                "anyClient",
+                true,
+                "Access required for reasons",
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
+            )
             .build();
 
+        // override begin times
         assignmentRequest.getRequestedRoles()
-            .forEach(roleAssignment -> roleAssignment.setBeginTime(ZonedDateTime.now().plusHours(1L)));
-
-        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(iacSpecific10);
-        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
-            .status(true).build();
-        featureFlags.add(iacSpecific11);
+            .forEach(roleAssignment -> roleAssignment.setBeginTime(beginTime));
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -321,9 +219,19 @@ class SpecificAccessDroolsTest extends DroolBase {
                                           RoleType.ORGANISATION
                                       )));
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus());
-        });
+        if (expectApproved) {
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
+                Assertions.assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+                Assertions.assertEquals(
+                    caseDetails.getCaseTypeId(),
+                    roleAssignment.getAttributes().get("caseType").asText()
+                );
+            });
+        } else {
+            assignmentRequest.getRequestedRoles()
+                .forEach(roleAssignment -> Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+        }
     }
 
     @ParameterizedTest
@@ -401,31 +309,7 @@ class SpecificAccessDroolsTest extends DroolBase {
     // TODO: test to be retired as part of AM-2824 once IAC_SPECIFIC_1_1 enabled in prod
     void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction, String roleName,
                                                            String roleCategory, String approver) {
-
-        Case caseDetails = caseMap.get(caseJurisdiction);
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(caseJurisdiction));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessGrant(
-            "specific-access",
-            roleName,
-            RoleCategory.valueOf(roleCategory),
-            RoleType.CASE,
-            roleAssignmentAttributes,
-            Classification.RESTRICTED,
-            GrantType.SPECIFIC,
-            Status.CREATE_REQUESTED,
-            "xui_webapp",
-            false,
-            "Access required for reasons",
-            ACTORID,
-            roleAssignmentAttributes.get("caseId").asText() + "/"
-                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
-        )
-            .build();
-
+        // set flags for behaviour
         FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
             .status(true).build();
         featureFlags.add(iacSpecific10);
@@ -433,37 +317,13 @@ class SpecificAccessDroolsTest extends DroolBase {
             .status(false).build();
         featureFlags.add(iacSpecific11);
 
-        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode(caseJurisdiction));
-        existingAttributes.put("caseType", convertValueJsonNode(caseDetails.getCaseTypeId()));
-        existingAttributes.put("managedRoleCategory", convertValueJsonNode(roleCategory));
-        existingAttributes.put("managedRole", convertValueJsonNode(roleName));
-        if (!"IA".equals(caseJurisdiction)) {
-            existingAttributes.put("baseLocation", convertValueJsonNode("20262"));
-            existingAttributes.put("region", convertValueJsonNode("1"));
-        }
-
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools(
-                                          TestDataBuilder.CASE_ALLOCATOR_ID,
-                                          approver,
-                                          RoleCategory.valueOf(roleCategory),
-                                          existingAttributes,
-                                          Classification.PRIVATE,
-                                          GrantType.STANDARD,
-                                          RoleType.ORGANISATION
-                                      )));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals(caseJurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals(caseDetails.getCaseTypeId(),
-                                    roleAssignment.getAttributes().get("caseType").asText());
-            Assertions.assertEquals(
-                List.of("CCD", "ExUI", "SSIC", "RefData"),
-                roleAssignment.getAuthorisations()
-            );
-        });
+        // run tests
+        runSpecificAccessCaseAllocatorTestWithBeginTime(caseJurisdiction,
+                                                        roleName,
+                                                        roleCategory,
+                                                        approver,
+                                                        null,
+                                                        true);
     }
 
     @ParameterizedTest
@@ -489,69 +349,18 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                                            String roleName,
                                                                            String roleCategory,
                                                                            String approver) {
-
-        Case caseDetails = caseMap.get(caseJurisdiction);
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(caseJurisdiction));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessGrant(
-            "specific-access",
-            roleName,
-            RoleCategory.valueOf(roleCategory),
-            RoleType.CASE,
-            roleAssignmentAttributes,
-            Classification.RESTRICTED,
-            GrantType.SPECIFIC,
-            Status.CREATE_REQUESTED,
-            "xui_webapp",
-            false,
-            "Access required for reasons",
-            ACTORID,
-            roleAssignmentAttributes.get("caseId").asText() + "/"
-                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
-        )
-            .build();
-
-        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(iacSpecific10);
+        // set flags for behaviour
         FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
             .status(true).build();
         featureFlags.add(iacSpecific11);
 
-        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode(caseJurisdiction));
-        existingAttributes.put("caseType", convertValueJsonNode(caseDetails.getCaseTypeId()));
-        existingAttributes.put("managedRoleCategory", convertValueJsonNode(roleCategory));
-        existingAttributes.put("managedRole", convertValueJsonNode(roleName));
-        if (!"IA".equals(caseJurisdiction)) {
-            existingAttributes.put("baseLocation", convertValueJsonNode("20262"));
-            existingAttributes.put("region", convertValueJsonNode("1"));
-        }
-
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools(
-                                          TestDataBuilder.CASE_ALLOCATOR_ID,
-                                          approver,
-                                          RoleCategory.valueOf(roleCategory),
-                                          existingAttributes,
-                                          Classification.PRIVATE,
-                                          GrantType.STANDARD,
-                                          RoleType.ORGANISATION
-                                      )));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals(caseJurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals(caseDetails.getCaseTypeId(),
-                                    roleAssignment.getAttributes().get("caseType").asText());
-            Assertions.assertEquals(
-                List.of("CCD", "ExUI", "SSIC", "RefData"),
-                roleAssignment.getAuthorisations()
-            );
-        });
+        // run tests
+        runSpecificAccessCaseAllocatorTestWithBeginTime(caseJurisdiction,
+                                                        roleName,
+                                                        roleCategory,
+                                                        approver,
+                                                        null,
+                                                        true);
     }
 
     @ParameterizedTest
@@ -577,72 +386,18 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                                                 String roleName,
                                                                                 String roleCategory,
                                                                                 String approver) {
-
-        Case caseDetails = caseMap.get(caseJurisdiction);
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(caseJurisdiction));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessGrant(
-            "specific-access",
-            roleName,
-            RoleCategory.valueOf(roleCategory),
-            RoleType.CASE,
-            roleAssignmentAttributes,
-            Classification.RESTRICTED,
-            GrantType.SPECIFIC,
-            Status.CREATE_REQUESTED,
-            "xui_webapp",
-            false,
-            "Access required for reasons",
-            ACTORID,
-            roleAssignmentAttributes.get("caseId").asText() + "/"
-                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
-        )
-            .build();
-
-        assignmentRequest.getRequestedRoles()
-            .forEach(roleAssignment -> roleAssignment.setBeginTime(ZonedDateTime.now().minusDays(1L)));
-
-        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(iacSpecific10);
+        // set flags for behaviour
         FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
             .status(true).build();
         featureFlags.add(iacSpecific11);
 
-        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode(caseJurisdiction));
-        existingAttributes.put("caseType", convertValueJsonNode(caseDetails.getCaseTypeId()));
-        existingAttributes.put("managedRoleCategory", convertValueJsonNode(roleCategory));
-        existingAttributes.put("managedRole", convertValueJsonNode(roleName));
-        if (!"IA".equals(caseJurisdiction)) {
-            existingAttributes.put("baseLocation", convertValueJsonNode("20262"));
-            existingAttributes.put("region", convertValueJsonNode("1"));
-        }
-
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools(
-                                          TestDataBuilder.CASE_ALLOCATOR_ID,
-                                          approver,
-                                          RoleCategory.valueOf(roleCategory),
-                                          existingAttributes,
-                                          Classification.PRIVATE,
-                                          GrantType.STANDARD,
-                                          RoleType.ORGANISATION
-                                      )));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals(caseJurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals(caseDetails.getCaseTypeId(),
-                                    roleAssignment.getAttributes().get("caseType").asText());
-            Assertions.assertEquals(
-                List.of("CCD", "ExUI", "SSIC", "RefData"),
-                roleAssignment.getAuthorisations()
-            );
-        });
+        // run tests
+        runSpecificAccessCaseAllocatorTestWithBeginTime(caseJurisdiction,
+                                                        roleName,
+                                                        roleCategory,
+                                                        approver,
+                                                        ZonedDateTime.now().minusDays(1L),
+                                                        true);
     }
 
     @ParameterizedTest
@@ -668,7 +423,26 @@ class SpecificAccessDroolsTest extends DroolBase {
                                                                                    String roleName,
                                                                                    String roleCategory,
                                                                                    String approver) {
+        // set flags for behaviour
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific11);
 
+        // run tests
+        runSpecificAccessCaseAllocatorTestWithBeginTime(caseJurisdiction,
+                                                        roleName,
+                                                        roleCategory,
+                                                        approver,
+                                                        ZonedDateTime.now().plusDays(1L),
+                                                        false);
+    }
+
+    private void runSpecificAccessCaseAllocatorTestWithBeginTime(String caseJurisdiction,
+                                                                 String roleName,
+                                                                 String roleCategory,
+                                                                 String approver,
+                                                                 ZonedDateTime beginTime,
+                                                                 boolean expectApproved) {
         Case caseDetails = caseMap.get(caseJurisdiction);
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
@@ -676,32 +450,26 @@ class SpecificAccessDroolsTest extends DroolBase {
         roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(caseJurisdiction));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessGrant(
-            "specific-access",
-            roleName,
-            RoleCategory.valueOf(roleCategory),
-            RoleType.CASE,
-            roleAssignmentAttributes,
-            Classification.RESTRICTED,
-            GrantType.SPECIFIC,
-            Status.CREATE_REQUESTED,
-            "xui_webapp",
-            false,
-            "Access required for reasons",
-            ACTORID,
-            roleAssignmentAttributes.get("caseId").asText() + "/"
-                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
-        )
+                "specific-access",
+                roleName,
+                RoleCategory.valueOf(roleCategory),
+                RoleType.CASE,
+                roleAssignmentAttributes,
+                Classification.RESTRICTED,
+                GrantType.SPECIFIC,
+                Status.CREATE_REQUESTED,
+                "xui_webapp",
+                false,
+                "Access required for reasons",
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
+            )
             .build();
 
+        // override begin times
         assignmentRequest.getRequestedRoles()
-            .forEach(roleAssignment -> roleAssignment.setBeginTime(ZonedDateTime.now().plusDays(1L)));
-
-        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(iacSpecific10);
-        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
-            .status(true).build();
-        featureFlags.add(iacSpecific11);
+            .forEach(roleAssignment -> roleAssignment.setBeginTime(beginTime));
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(caseJurisdiction));
@@ -724,8 +492,21 @@ class SpecificAccessDroolsTest extends DroolBase {
                                           RoleType.ORGANISATION
                                       )));
 
-        assignmentRequest.getRequestedRoles()
-            .forEach(roleAssignment -> Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+        if (expectApproved) {
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
+                Assertions.assertEquals(caseJurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+                Assertions.assertEquals(caseDetails.getCaseTypeId(),
+                                        roleAssignment.getAttributes().get("caseType").asText());
+                Assertions.assertEquals(
+                    List.of("CCD", "ExUI", "SSIC", "RefData"),
+                    roleAssignment.getAuthorisations()
+                );
+            });
+        } else {
+            assignmentRequest.getRequestedRoles()
+                .forEach(roleAssignment -> Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+        }
     }
 
     @ParameterizedTest
@@ -747,34 +528,10 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PUBLICLAW,specific-access-admin,ADMIN",
         "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS"
     })
+    // TODO: test to be retired as part of AM-2824 once IAC_SPECIFIC_1_1 enabled in prod
     void shouldGrantAccessFor_SpecificAccessGranted_XuiClient(String jurisdiction, String roleName,
                                                               String roleCategory) {
-
-        Case caseDetails = caseMap.get(jurisdiction);
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
-        roleAssignmentAttributes.put("caseTypeId", convertValueJsonNode(caseDetails.getCaseTypeId()));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
-            "specific-access",
-            "specific-access-granted",
-            RoleCategory.valueOf(roleCategory),
-            RoleType.CASE,
-            roleAssignmentAttributes,
-            Classification.PRIVATE,
-            GrantType.BASIC,
-            Status.CREATE_REQUESTED,
-            "xui_webapp",
-            true,
-            "Access required for reasons",
-            ACTORID,
-            roleAssignmentAttributes.get("caseId").asText() + "/"
-                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
-        )
-            .build();
-
+        // set flags for behaviour
         FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
             .status(true).build();
         featureFlags.add(iacSpecific10);
@@ -782,28 +539,12 @@ class SpecificAccessDroolsTest extends DroolBase {
             .status(true).build();
         featureFlags.add(iacSpecific11);
 
-        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode(caseDetails.getJurisdiction()));
-        existingAttributes.put("caseTypeId", convertValueJsonNode(caseDetails.getCaseTypeId()));
-        existingAttributes.put("requestedRole", convertValueJsonNode(roleName));
-
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools(
-                                          "4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                          "specific-access-requested",
-                                          RoleCategory.valueOf(roleCategory),
-                                          existingAttributes,
-                                          Classification.PRIVATE,
-                                          GrantType.BASIC,
-                                          RoleType.CASE
-                                      )));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals(caseDetails.getCaseTypeId(),
-                                    roleAssignment.getAttributes().get("caseType").asText());
-        });
+        // run tests
+        runSpecificAccessRequestedTest_XuiClient_WithBeginTime(jurisdiction,
+                                                               roleName,
+                                                               roleCategory,
+                                                               null,
+                                                               true);
     }
 
     @ParameterizedTest
@@ -828,61 +569,17 @@ class SpecificAccessDroolsTest extends DroolBase {
     void shouldGrantAccessFor_SpecificAccessGranted_XuiClientBeginTimeNullV11(String jurisdiction,
                                                                               String roleName,
                                                                               String roleCategory) {
-
-        Case caseDetails = caseMap.get(jurisdiction);
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
-        roleAssignmentAttributes.put("caseTypeId", convertValueJsonNode(caseDetails.getCaseTypeId()));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
-            "specific-access",
-            "specific-access-granted",
-            RoleCategory.valueOf(roleCategory),
-            RoleType.CASE,
-            roleAssignmentAttributes,
-            Classification.PRIVATE,
-            GrantType.BASIC,
-            Status.CREATE_REQUESTED,
-            "xui_webapp",
-            true,
-            "Access required for reasons",
-            ACTORID,
-            roleAssignmentAttributes.get("caseId").asText() + "/"
-                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
-        )
-            .build();
-
-        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(iacSpecific10);
+        // set flags for behaviour
         FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
             .status(true).build();
         featureFlags.add(iacSpecific11);
 
-        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode(caseDetails.getJurisdiction()));
-        existingAttributes.put("caseTypeId", convertValueJsonNode(caseDetails.getCaseTypeId()));
-        existingAttributes.put("requestedRole", convertValueJsonNode(roleName));
-
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools(
-                                          "4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                          "specific-access-requested",
-                                          RoleCategory.valueOf(roleCategory),
-                                          existingAttributes,
-                                          Classification.PRIVATE,
-                                          GrantType.BASIC,
-                                          RoleType.CASE
-                                      )));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals(caseDetails.getCaseTypeId(),
-                                    roleAssignment.getAttributes().get("caseType").asText());
-        });
+        // run tests
+        runSpecificAccessRequestedTest_XuiClient_WithBeginTime(jurisdiction,
+                                                               roleName,
+                                                               roleCategory,
+                                                               null,
+                                                               true);
     }
 
     @ParameterizedTest
@@ -907,64 +604,17 @@ class SpecificAccessDroolsTest extends DroolBase {
     void shouldGrantAccessFor_SpecificAccessGranted_XuiClientBeginTimeInPastV11(String jurisdiction,
                                                                                 String roleName,
                                                                                 String roleCategory) {
-
-        Case caseDetails = caseMap.get(jurisdiction);
-        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
-        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
-        roleAssignmentAttributes.put("caseTypeId", convertValueJsonNode(caseDetails.getCaseTypeId()));
-        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
-
-        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
-            "specific-access",
-            "specific-access-granted",
-            RoleCategory.valueOf(roleCategory),
-            RoleType.CASE,
-            roleAssignmentAttributes,
-            Classification.PRIVATE,
-            GrantType.BASIC,
-            Status.CREATE_REQUESTED,
-            "xui_webapp",
-            true,
-            "Access required for reasons",
-            ACTORID,
-            roleAssignmentAttributes.get("caseId").asText() + "/"
-                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
-        )
-            .build();
-
-        assignmentRequest.getRequestedRoles()
-            .forEach(roleAssignment -> roleAssignment.setBeginTime(ZonedDateTime.now().minusDays(1L)));
-
-        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(iacSpecific10);
+        // set flags for behaviour
         FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
             .status(true).build();
         featureFlags.add(iacSpecific11);
 
-        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode(caseDetails.getJurisdiction()));
-        existingAttributes.put("caseTypeId", convertValueJsonNode(caseDetails.getCaseTypeId()));
-        existingAttributes.put("requestedRole", convertValueJsonNode(roleName));
-
-        executeDroolRules(List.of(TestDataBuilder
-                                      .buildExistingRoleForDrools(
-                                          "4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                          "specific-access-requested",
-                                          RoleCategory.valueOf(roleCategory),
-                                          existingAttributes,
-                                          Classification.PRIVATE,
-                                          GrantType.BASIC,
-                                          RoleType.CASE
-                                      )));
-
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
-            Assertions.assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
-            Assertions.assertEquals(caseDetails.getCaseTypeId(),
-                                    roleAssignment.getAttributes().get("caseType").asText());
-        });
+        // run tests
+        runSpecificAccessRequestedTest_XuiClient_WithBeginTime(jurisdiction,
+                                                               roleName,
+                                                               roleCategory,
+                                                               ZonedDateTime.now().minusDays(1L),
+                                                               true);
     }
 
     @ParameterizedTest
@@ -989,7 +639,24 @@ class SpecificAccessDroolsTest extends DroolBase {
     void shouldRejectAccessFor_SpecificAccessGranted_XuiClientBeginTimeInFutureV11(String jurisdiction,
                                                                                    String roleName,
                                                                                    String roleCategory) {
+        // set flags for behaviour
+        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
+            .status(true).build();
+        featureFlags.add(iacSpecific11);
 
+        // run tests
+        runSpecificAccessRequestedTest_XuiClient_WithBeginTime(jurisdiction,
+                                                               roleName,
+                                                               roleCategory,
+                                                               ZonedDateTime.now().plusDays(1L),
+                                                               false);
+    }
+
+    private void runSpecificAccessRequestedTest_XuiClient_WithBeginTime(String jurisdiction,
+                                                                        String roleName,
+                                                                        String roleCategory,
+                                                                        ZonedDateTime beginTime,
+                                                                        boolean expectApproved) {
         Case caseDetails = caseMap.get(jurisdiction);
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
@@ -998,32 +665,26 @@ class SpecificAccessDroolsTest extends DroolBase {
         roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
-            "specific-access",
-            "specific-access-granted",
-            RoleCategory.valueOf(roleCategory),
-            RoleType.CASE,
-            roleAssignmentAttributes,
-            Classification.PRIVATE,
-            GrantType.BASIC,
-            Status.CREATE_REQUESTED,
-            "xui_webapp",
-            true,
-            "Access required for reasons",
-            ACTORID,
-            roleAssignmentAttributes.get("caseId").asText() + "/"
-                + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
-        )
+                "specific-access",
+                "specific-access-granted",
+                RoleCategory.valueOf(roleCategory),
+                RoleType.CASE,
+                roleAssignmentAttributes,
+                Classification.PRIVATE,
+                GrantType.BASIC,
+                Status.CREATE_REQUESTED,
+                "xui_webapp",
+                true,
+                "Access required for reasons",
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
+            )
             .build();
 
+        // override begin times
         assignmentRequest.getRequestedRoles()
-            .forEach(roleAssignment -> roleAssignment.setBeginTime(ZonedDateTime.now().plusDays(1L)));
-
-        FeatureFlag iacSpecific10 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(iacSpecific10);
-        FeatureFlag iacSpecific11 = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_SPECIFIC_1_1.getValue())
-            .status(true).build();
-        featureFlags.add(iacSpecific11);
+            .forEach(roleAssignment -> roleAssignment.setBeginTime(beginTime));
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(caseDetails.getJurisdiction()));
@@ -1041,8 +702,17 @@ class SpecificAccessDroolsTest extends DroolBase {
                                           RoleType.CASE
                                       )));
 
-        assignmentRequest.getRequestedRoles()
-            .forEach(roleAssignment -> Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+        if (expectApproved) {
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
+                Assertions.assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+                Assertions.assertEquals(caseDetails.getCaseTypeId(),
+                                        roleAssignment.getAttributes().get("caseType").asText());
+            });
+        } else {
+            assignmentRequest.getRequestedRoles()
+                .forEach(roleAssignment -> Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+        }
     }
 
     @ParameterizedTest
