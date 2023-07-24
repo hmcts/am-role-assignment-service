@@ -47,7 +47,8 @@ Feature: F-011 : Create Specific Role Assignments
     Then a positive response is received,
     And the response has all other details as expected.
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments],
-    And a successful call [to delete role assignments just created above] as in [S-212_DeleteDataForRoleAssignmentsForOrgRoles].
+    And a successful call [to delete role assignments just created above] as in [S-212_DeleteDataForRoleAssignmentsForOrgRoles],
+    And a successful call [to delete role assignments just created above] as in [S-212_DeleteDataForRoleAssignmentsForDeniedRole].
 
   @S-231
   @FeatureToggle(RAS:iac_specific_1_0=on)
