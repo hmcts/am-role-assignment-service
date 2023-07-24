@@ -1,0 +1,25 @@
+{
+  "_guid_": "S-232__Base",
+  "_extends_": "F-011_Test_Data_Base",
+
+  "users": {
+    "invokingUser": {
+      "_extends_": "AmBeftaUser1"
+    }
+  },
+
+  "request": {
+    "headers": {
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForXui]}"
+    },
+    "body": {
+      "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][befta4][id]}",
+        "reference": "1607103938250138/specific-access-admin/${[scenarioContext][testData][users][invokingUser][id]}",
+        "process" : "specific-access",
+        "replaceExisting" : true
+      },
+      "requestedRoles": []
+    }
+  }
+}
