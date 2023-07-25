@@ -70,7 +70,7 @@ public class QueryRoleAssignmentOrchestrator {
     /**
          * prepare final query response based on search criteria.
          * @param assignmentList must not be {@literal null}.
-         * @return
+         * @return ResponseEntity RoleAssignmentResource
      */
     private ResponseEntity<RoleAssignmentResource> prepareQueryResponse(List<Assignment> assignmentList) {
         var responseHeaders = new HttpHeaders();
