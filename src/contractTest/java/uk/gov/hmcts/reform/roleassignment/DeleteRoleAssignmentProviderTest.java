@@ -53,7 +53,7 @@ import java.util.UUID;
 @Provider("am_roleAssignment_deleteAssignment")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
     host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
-    @VersionSelector(tag = "master")})
+        @VersionSelector(tag = "master")})
 @TestPropertySource(properties = {"roleassignment.query.size=20", "launchdarkly.sdk.environment=pr",
     "spring.cache.type=none"})
 @Import(RoleAssignmentProviderTestConfiguration.class)

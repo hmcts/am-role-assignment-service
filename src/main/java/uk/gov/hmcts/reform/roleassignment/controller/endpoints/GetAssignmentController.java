@@ -45,10 +45,10 @@ public class GetAssignmentController {
     )
     @Operation(summary = "Get role assignments by actor Id",
         security =
-            {
-                @SecurityRequirement(name = AUTHORIZATION),
-                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
-            })
+        {
+            @SecurityRequirement(name = AUTHORIZATION),
+            @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
+        })
     @ApiResponse(
         responseCode = "200",
         description = "Success",
@@ -86,10 +86,10 @@ public class GetAssignmentController {
     )
     @Operation(summary = "Get roles",
         security =
-            {
-                @SecurityRequirement(name = AUTHORIZATION),
-                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
-            })
+        {
+            @SecurityRequirement(name = AUTHORIZATION),
+            @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
+        })
     @ResponseStatus(code = HttpStatus.OK)
     @ApiResponse(
         responseCode = "200",
