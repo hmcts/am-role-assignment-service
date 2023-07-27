@@ -50,7 +50,7 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildAtt
 @Provider("am_roleAssignment_createAssignment")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
     host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
-    @VersionSelector(tag = "master")})
+        @VersionSelector(tag = "master")})
 @TestPropertySource(properties = {"org.request.byPassOrgDroolRule=true", "roleassignment.query.size=20",
     "spring.cache.type=none", "launchdarkly.sdk.environment=pr"})
 @Import(RoleAssignmentProviderTestConfiguration.class)
