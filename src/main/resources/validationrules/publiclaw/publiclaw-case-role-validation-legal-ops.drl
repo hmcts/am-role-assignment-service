@@ -39,4 +39,25 @@ then
     logMsg("Rule : publiclaw_allocated_legal_adviser_create_case_roles");
 end;
 
+/*
+ * PUBLICLAW "hearing-legal-adviser" case validation rule.
+ */
 
+rule "publiclaw_hearing_legal_adviser_create_case_roles"
+when
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "PUBLICLAW",
+                 roleAssignment.attributes["caseType"].asText() == "CARE_SUPERVISION_EPO",
+                 roleAssignment.roleName == "hearing-legal-adviser")
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("tribunal-caseworker"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PUBLICLAW")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : publiclaw_hearing_legal_adviser_create_case_roles");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : publiclaw_hearing_legal_adviser_create_case_roles");
+end;

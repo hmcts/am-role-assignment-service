@@ -53,10 +53,10 @@ public class QueryAssignmentController {
     )
     @Operation(summary = "Query role assignments",
         security =
-            {
-                @SecurityRequirement(name = AUTHORIZATION),
-                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
-            })
+        {
+            @SecurityRequirement(name = AUTHORIZATION),
+            @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
+        })
     @ApiResponse(
         responseCode = "200",
         description = "Success",
@@ -93,10 +93,10 @@ public class QueryAssignmentController {
     )
     @Operation(summary = "Query role assignments v2",
         security =
-            {
-                @SecurityRequirement(name = AUTHORIZATION),
-                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
-            })
+        {
+            @SecurityRequirement(name = AUTHORIZATION),
+            @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
+        })
     @ApiResponse(
         responseCode = "200",
         description = "Success",

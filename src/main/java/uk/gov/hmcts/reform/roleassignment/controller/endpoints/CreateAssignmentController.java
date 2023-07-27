@@ -47,10 +47,10 @@ public class CreateAssignmentController {
     )
     @Operation(summary = "Creates role assignments",
         security =
-            {
-                @SecurityRequirement(name = AUTHORIZATION),
-                @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
-            })
+        {
+            @SecurityRequirement(name = AUTHORIZATION),
+            @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
+        })
     @ResponseStatus(code = HttpStatus.CREATED)
     @ApiResponse(
         responseCode = "201",
