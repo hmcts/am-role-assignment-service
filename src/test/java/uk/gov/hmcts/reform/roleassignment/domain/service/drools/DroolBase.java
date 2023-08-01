@@ -194,5 +194,12 @@ public abstract class DroolBase {
         featureFlags.clear();
     }
 
+    Case getCaseByJurisdictionAndCaseType(String jurisdiction, String caseTypeId) {
+        return caseMap.values().stream()
+            .filter(obj -> obj.getJurisdiction().equals(jurisdiction) && obj.getCaseTypeId().equals(caseTypeId))
+            .findFirst()
+            .orElse(null);
+    }
+
 
 }

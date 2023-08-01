@@ -26,33 +26,44 @@ class ChallengedAccessDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "IA,challenged-access-judiciary,JUDICIAL",
-        "IA,challenged-access-admin,ADMIN",
-        "IA,challenged-access-legal-ops,LEGAL_OPERATIONS",
-        "IA,challenged-access-ctsc,CTSC",
-        "CIVIL,challenged-access-judiciary,JUDICIAL",
-        "CIVIL,challenged-access-admin,ADMIN",
-        "CIVIL,challenged-access-legal-ops,LEGAL_OPERATIONS",
-        "CIVIL,challenged-access-ctsc,CTSC",
-        "PRIVATELAW,challenged-access-judiciary,JUDICIAL",
-        "PRIVATELAW,challenged-access-admin,ADMIN",
-        "PRIVATELAW,challenged-access-legal-ops,LEGAL_OPERATIONS",
-        "PRIVATELAW,challenged-access-ctsc,CTSC",
-        "PUBLICLAW,challenged-access-admin,ADMIN",
-        "PUBLICLAW,challenged-access-legal-ops,LEGAL_OPERATIONS",
-        "PUBLICLAW,challenged-access-ctsc,CTSC",
-        "PUBLICLAW,challenged-access-judiciary,JUDICIAL",
-        "EMPLOYMENT,challenged-access-judiciary,JUDICIAL",
-        "EMPLOYMENT,challenged-access-admin,ADMIN",
-        "EMPLOYMENT,challenged-access-legal-ops,LEGAL_OPERATIONS",
-        "EMPLOYMENT,challenged-access-ctsc,CTSC",
-        "SSCS,challenged-access-judiciary,JUDICIAL",
-        "SSCS,challenged-access-legal-ops,LEGAL_OPERATIONS",
-        "SSCS,challenged-access-admin,ADMIN",
-        "SSCS,challenged-access-ctsc,CTSC",
+        "IA,challenged-access-judiciary,JUDICIAL,Asylum",
+        "IA,challenged-access-admin,ADMIN,Asylum",
+        "IA,challenged-access-legal-ops,LEGAL_OPERATIONS,Asylum",
+        "IA,challenged-access-ctsc,CTSC,Asylum",
+        "CIVIL,challenged-access-judiciary,JUDICIAL,CIVIL",
+        "CIVIL,challenged-access-admin,ADMIN,CIVIL",
+        "CIVIL,challenged-access-legal-ops,LEGAL_OPERATIONS,CIVIL",
+        "CIVIL,challenged-access-ctsc,CTSC,CIVIL",
+        "PRIVATELAW,challenged-access-judiciary,JUDICIAL,PRLAPPS",
+        "PRIVATELAW,challenged-access-admin,ADMIN,PRLAPPS",
+        "PRIVATELAW,challenged-access-legal-ops,LEGAL_OPERATIONS,PRLAPPS",
+        "PRIVATELAW,challenged-access-ctsc,CTSC,PRLAPPS",
+        "PRIVATELAW,challenged-access-admin,ADMIN,PRIVATELAW_ExceptionRecord",
+        "PRIVATELAW,challenged-access-legal-ops,LEGAL_OPERATIONS,PRIVATELAW_ExceptionRecord",
+        "PRIVATELAW,challenged-access-ctsc,CTSC,PRIVATELAW_ExceptionRecord",
+        "PUBLICLAW,challenged-access-admin,ADMIN,CARE_SUPERVISION_EPO",
+        "PUBLICLAW,challenged-access-legal-ops,LEGAL_OPERATIONS,CARE_SUPERVISION_EPO",
+        "PUBLICLAW,challenged-access-ctsc,CTSC,CARE_SUPERVISION_EPO",
+        "PUBLICLAW,challenged-access-judiciary,JUDICIAL,CARE_SUPERVISION_EPO",
+        "EMPLOYMENT,challenged-access-judiciary,JUDICIAL,ET_EnglandWales",
+        "EMPLOYMENT,challenged-access-admin,ADMIN,ET_EnglandWales",
+        "EMPLOYMENT,challenged-access-legal-ops,LEGAL_OPERATIONS,ET_EnglandWales",
+        "EMPLOYMENT,challenged-access-ctsc,CTSC,ET_EnglandWales",
+        "EMPLOYMENT,challenged-access-judiciary,JUDICIAL,ET_Scotland",
+        "EMPLOYMENT,challenged-access-admin,ADMIN,ET_Scotland",
+        "EMPLOYMENT,challenged-access-legal-ops,LEGAL_OPERATIONS,ET_Scotland",
+        "EMPLOYMENT,challenged-access-ctsc,CTSC,ET_Scotland",
+        "SSCS,challenged-access-judiciary,JUDICIAL,Benefit",
+        "SSCS,challenged-access-legal-ops,LEGAL_OPERATIONS,Benefit",
+        "SSCS,challenged-access-admin,ADMIN,Benefit",
+        "SSCS,challenged-access-ctsc,CTSC,Benefit",
     })
-    void shouldGrantAccessFor_ChallengedAccess(String jurisdiction, String roleName, String roleCategory) {
-        Case caseDetails = caseMap.get(jurisdiction);
+    void shouldGrantAccessFor_ChallengedAccess(String jurisdiction, String roleName, String roleCategory,
+                                               String caseType) {
+        Case caseDetails = getCaseByJurisdictionAndCaseType(jurisdiction, caseType);
+
+        Assertions.assertNotNull(caseDetails);
+
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
         roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));

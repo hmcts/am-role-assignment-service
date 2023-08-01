@@ -30,32 +30,39 @@ class SpecificAccessDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "CIVIL,specific-access-judiciary,JUDICIAL,STANDARD",
-        "CIVIL,specific-access-admin,ADMIN,STANDARD",
-        "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
-        "CIVIL,specific-access-ctsc,CTSC,STANDARD",
-        "CIVIL,specific-access-judiciary,JUDICIAL,BASIC",
-        "CIVIL,specific-access-admin,ADMIN,BASIC",
-        "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS,BASIC",
-        "PRIVATELAW,specific-access-judiciary,JUDICIAL,STANDARD",
-        "PRIVATELAW,specific-access-admin,ADMIN,STANDARD",
-        "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
-        "PUBLICLAW,specific-access-judiciary,JUDICIAL,STANDARD",
-        "PUBLICLAW,specific-access-admin,ADMIN,STANDARD",
-        "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
-        "PUBLICLAW,specific-access-ctsc,CTSC,STANDARD",
-        "EMPLOYMENT,specific-access-judiciary,JUDICIAL,STANDARD",
-        "EMPLOYMENT,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
-        "EMPLOYMENT,specific-access-admin,ADMIN,STANDARD",
-        "EMPLOYMENT,specific-access-ctsc,CTSC,STANDARD",
-        "SSCS,specific-access-judiciary,JUDICIAL,STANDARD",
-        "SSCS,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
-        "SSCS,specific-access-admin,ADMIN,STANDARD",
-        "SSCS,specific-access-ctsc,CTSC,STANDARD",
+        "CIVIL,specific-access-judiciary,JUDICIAL,STANDARD,CIVIL",
+        "CIVIL,specific-access-admin,ADMIN,STANDARD,CIVIL",
+        "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD,CIVIL",
+        "CIVIL,specific-access-ctsc,CTSC,STANDARD,CIVIL",
+        "CIVIL,specific-access-judiciary,JUDICIAL,BASIC,CIVIL",
+        "CIVIL,specific-access-admin,ADMIN,BASIC,CIVIL",
+        "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS,BASIC,CIVIL",
+        "PRIVATELAW,specific-access-judiciary,JUDICIAL,STANDARD,PRLAPPS",
+        "PRIVATELAW,specific-access-admin,ADMIN,STANDARD,PRLAPPS",
+        "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD,PRLAPPS",
+        "PUBLICLAW,specific-access-judiciary,JUDICIAL,STANDARD,CARE_SUPERVISION_EPO",
+        "PUBLICLAW,specific-access-admin,ADMIN,STANDARD,CARE_SUPERVISION_EPO",
+        "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD,CARE_SUPERVISION_EPO",
+        "PUBLICLAW,specific-access-ctsc,CTSC,STANDARD,CARE_SUPERVISION_EPO",
+        "EMPLOYMENT,specific-access-judiciary,JUDICIAL,STANDARD,ET_EnglandWales",
+        "EMPLOYMENT,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD,ET_EnglandWales",
+        "EMPLOYMENT,specific-access-admin,ADMIN,STANDARD,ET_EnglandWales",
+        "EMPLOYMENT,specific-access-ctsc,CTSC,STANDARD,ET_EnglandWales",
+        "EMPLOYMENT,specific-access-judiciary,JUDICIAL,STANDARD,ET_Scotland",
+        "EMPLOYMENT,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD,ET_Scotland",
+        "EMPLOYMENT,specific-access-admin,ADMIN,STANDARD,ET_Scotland",
+        "EMPLOYMENT,specific-access-ctsc,CTSC,STANDARD,ET_Scotland",
+        "SSCS,specific-access-judiciary,JUDICIAL,STANDARD,Benefit",
+        "SSCS,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD,Benefit",
+        "SSCS,specific-access-admin,ADMIN,STANDARD,Benefit",
+        "SSCS,specific-access-ctsc,CTSC,STANDARD,Benefit",
     })
     void shouldCreate_SpecificAccessRequested(String jurisdiction, String roleName, String roleCategory,
-                                                           String orgGrantType) {
-        Case caseDetails = caseMap.get(jurisdiction);
+                                                           String orgGrantType, String caseType) {
+        Case caseDetails = getCaseByJurisdictionAndCaseType(jurisdiction, caseType);
+
+        Assertions.assertNotNull(caseDetails);
+
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
         roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
         roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
@@ -114,6 +121,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PRIVATELAW,specific-access-judiciary,JUDICIAL",
         "PRIVATELAW,specific-access-admin,ADMIN",
         "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS",
+        "PRIVATELAW,specific-access-ctsc,CTSC",
         "PUBLICLAW,specific-access-judiciary,JUDICIAL",
         "PUBLICLAW,specific-access-admin,ADMIN",
         "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS",
