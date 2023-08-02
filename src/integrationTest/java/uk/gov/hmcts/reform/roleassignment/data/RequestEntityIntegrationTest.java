@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
-import uk.gov.hmcts.reform.roleassignment.controller.SwaggerRedirectControllerIntegrationTest;
 
 import javax.sql.DataSource;
 
