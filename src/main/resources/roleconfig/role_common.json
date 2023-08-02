@@ -161,6 +161,39 @@
     ]
   },
   {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for system users",
+    "category": "SYSTEM",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "task-supervisor",
     "label": "Task Supervisor",
     "description": "Task Supervisor role for judicial users",
@@ -2002,6 +2035,36 @@
     ]
   },
   {
+    "name": "caseworker-privatelaw-externaluser-viewonly",
+    "label": "Cafcass Cymru Caseworker",
+    "description": "Cafcass Cymru Caseworker",
+    "category": "OTHER_GOV_DEPT",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PRIVATELAW"]
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "hearing-centre-team-leader",
     "label": "Hearing Centre Team Leader",
     "description": "Hearing Centre Team Leader role for admin users",
@@ -2420,6 +2483,42 @@
     ]
   },
   {
+    "name": "hearing-legal-adviser",
+    "label": "Hearing Legal Adviser",
+    "description": "Hearing Legal Adviser case role for Staff users",
+    "category": "LEGAL_OPERATIONS",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PUBLICLAW"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "lead-judge",
     "label": "Lead Judge",
     "description": "Lead Judge role for judicial users",
@@ -2568,7 +2667,7 @@
     "label": "Allocated Tribunal Caseworker",
     "description": "Allocated Tribunal Caseworker for Staff users",
     "category": "LEGAL_OPERATIONS",
-    "substantive": false,
+    "substantive": true,
     "type": "CASE",
     "patterns": [
       {
@@ -2604,7 +2703,7 @@
     "label": "Allocated Admin Caseworker",
     "description": "Allocated Admin Caseworker for Staff users",
     "category": "ADMIN",
-    "substantive": false,
+    "substantive": true,
     "type": "CASE",
     "patterns": [
       {
@@ -2640,7 +2739,7 @@
     "label": "Allocated CTSC Caseworker",
     "description": "Allocated CTSC Caseworker for Staff users",
     "category": "CTSC",
-    "substantive": false,
+    "substantive": true,
     "type": "CASE",
     "patterns": [
       {

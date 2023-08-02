@@ -465,7 +465,10 @@ class AllServicesOrgRoleTest extends DroolBase {
         "hearing-centre-admin,ADMIN,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
         "hearing-centre-admin,ADMIN,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC",
         "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
-        "magistrate,JUDICIAL,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC"
+        "magistrate,JUDICIAL,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC",
+        "caseworker-privatelaw-externaluser-viewonly,OTHER_GOV_DEPT,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,"
+            + "N,Null,PUBLIC",
+        "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,N,Null,PUBLIC"
     })
     void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
                                           String region, String jurisdiction, String primaryLocation,
@@ -757,6 +760,98 @@ class AllServicesOrgRoleTest extends DroolBase {
             roleAssignment.setStatus(CREATE_REQUESTED);
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
             roleAssignment.getAttributes().put("caseType", convertValueJsonNode(caseType));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(Status.REJECTED, roleAssignment.getStatus());
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "case-allocator,SYSTEM,PUBLICLAW,UK"
+    })
+    void shouldApprovePublicLawOrgRequestedRoleForCaseAllocator(String roleName,
+                                                                String roleCategory,
+                                                                String jurisdiction,
+                                                                String primaryLocation) {
+        assignmentRequest.getRequest().setClientId("fpl_case_service");
+        assignmentRequest.getRequest().setProcess("public-law-system-users");
+        assignmentRequest.getRequest().setReference("public-law-case-allocator-system-user");
+        assignmentRequest.getRequest().setReplaceExisting(true);
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(CREATE_REQUESTED);
+            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode(primaryLocation));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(APPROVED, roleAssignment.getStatus());
+            assertEquals(roleName, roleAssignment.getRoleName());
+            assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "case-allocator,SYSTEM,PUBLICLAW"
+    })
+    void shouldDeletePublicLawOrgRequestedRoleForCaseAllocator(String roleName,
+                                                               String roleCategory,
+                                                               String jurisdiction) {
+        assignmentRequest.getRequest().setClientId("fpl_case_service");
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(Status.DELETE_REQUESTED);
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(DELETE_APPROVED, roleAssignment.getStatus());
+            assertEquals(roleName, roleAssignment.getRoleName());
+            assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "case-allocator,SYSTEM,SSCS"
+    })
+    void shouldRejectPublicLawOrgRequestedRoleForCaseAllocatorFromAnotherJurisdiction(String roleName,
+                                                                                      String roleCategory,
+                                                                                      String jurisdiction) {
+        assignmentRequest.getRequest().setClientId("fpl_case_service");
+        assignmentRequest.getRequest().setProcess("public-law-system-users");
+        assignmentRequest.getRequest().setReference("public-law-case-allocator-system-user");
+        assignmentRequest.getRequest().setReplaceExisting(true);
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(CREATE_REQUESTED);
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
         });
 
         buildExecuteKieSession();
