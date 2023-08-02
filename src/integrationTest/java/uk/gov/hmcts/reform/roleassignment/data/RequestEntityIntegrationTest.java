@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 public class RequestEntityIntegrationTest extends BaseTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(SwaggerRedirectControllerIntegrationTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(RequestEntityIntegrationTest.class);
 
     private static final String COUNT_RECORDS = "SELECT count(1) as n FROM role_assignment_request";
     private static final String GET_STATUS = "SELECT status FROM role_assignment_request where id = ?";

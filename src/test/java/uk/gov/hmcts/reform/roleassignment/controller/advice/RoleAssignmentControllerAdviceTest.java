@@ -10,7 +10,6 @@ import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import uk.gov.hmcts.reform.roleassignment.controller.SwaggerRedirectController;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ForbiddenException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
@@ -44,8 +43,6 @@ class RoleAssignmentControllerAdviceTest {
     private transient RoleAssignmentControllerAdvice csda = new RoleAssignmentControllerAdvice();
 
     private transient HttpServletRequest servletRequestMock = mock(HttpServletRequest.class);
-
-    private transient SwaggerRedirectController swaggerRedirectController = new SwaggerRedirectController();
 
     @Test
     void customValidationError() {
