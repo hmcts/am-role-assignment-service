@@ -19,6 +19,7 @@ import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_SCTL_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_EXC_RECORD_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PUBLIC_LAW_CASE_ID;
@@ -61,6 +62,12 @@ public abstract class DroolBase {
                                            .id(PRIVATE_LAW_CASE_ID)
                                            .jurisdiction("PRIVATELAW")
                                            .caseTypeId("PRLAPPS")
+                                           .build(),
+
+                                       "PRIVATELAW|PRIVATELAW_ExceptionRecord", Case.builder()
+                                           .id(PRIVATE_LAW_EXC_RECORD_CASE_ID)
+                                           .jurisdiction("PRIVATELAW")
+                                           .caseTypeId("PRIVATELAW_ExceptionRecord")
                                            .build(),
 
                                        "PUBLICLAW", Case.builder()
@@ -109,6 +116,8 @@ public abstract class DroolBase {
         //PRIVATELAW
         doReturn(dummyCases.getCaseDataV2(PRIVATE_LAW_CASE_ID))
             .when(retrieveDataService).getCaseById(PRIVATE_LAW_CASE_ID);
+        doReturn(dummyCases.getCaseDataV2(PRIVATE_LAW_EXC_RECORD_CASE_ID))
+            .when(retrieveDataService).getCaseById(PRIVATE_LAW_EXC_RECORD_CASE_ID);
 
         //PUBLICLAW
         doReturn(dummyCases.getCaseDataV2(PUBLIC_LAW_CASE_ID))
