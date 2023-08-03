@@ -10,7 +10,6 @@ import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import uk.gov.hmcts.reform.roleassignment.controller.WelcomeController;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ForbiddenException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.InvalidRequest;
@@ -44,8 +43,6 @@ class RoleAssignmentControllerAdviceTest {
     private transient RoleAssignmentControllerAdvice csda = new RoleAssignmentControllerAdvice();
 
     private transient HttpServletRequest servletRequestMock = mock(HttpServletRequest.class);
-
-    private transient WelcomeController welcomeController = new WelcomeController();
 
     @Test
     void customValidationError() {
@@ -172,34 +169,6 @@ class RoleAssignmentControllerAdviceTest {
         String time = csda.getTimeStamp();
         assertEquals(time.substring(0,16), new SimpleDateFormat("dd-MM-yyyy HH:mm",
                                                                 Locale.ENGLISH).format(new Date()));
-    }
-
-    @Test
-    void testInvalidRequest() {
-        Assertions.assertThrows(InvalidRequest.class, () ->
-            welcomeController.getException("invalidRequest")
-        );
-    }
-
-    @Test
-    void testResourceNotFoundException() {
-        Assertions.assertThrows(ResourceNotFoundException.class, () ->
-            welcomeController.getException("resourceNotFoundException")
-        );
-    }
-
-    @Test
-    void testHttpMessageConversionException() {
-        Assertions.assertThrows(HttpMessageConversionException.class, () ->
-            welcomeController.getException("httpMessageConversionException")
-        );
-    }
-
-    @Test
-    void testBadRequestException() {
-        Assertions.assertThrows(BadRequestException.class, () ->
-            welcomeController.getException("badRequestException")
-        );
     }
 
     @Test
