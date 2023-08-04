@@ -42,3 +42,4 @@ Feature: F-016 : Create Case Role Assignments for PublicLaw
     And the response has all other details as expected,
     And a successful call [to delete case role assignment for the same actor] as in [S-243_Delete_Case_Role],
     And a successful call [to delete role assignments just created above] as in [S-243_DeleteDataForRoleAssignmentsForOrgRoles].
+
