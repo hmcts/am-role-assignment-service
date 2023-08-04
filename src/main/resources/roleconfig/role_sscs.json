@@ -120,78 +120,6 @@
     ]
   },
   {
-    "name": "tribunal-member-1",
-    "label": "Tribunal member 1",
-    "description": "Tribunal member - 1 for judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "type": "CASE",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["CASE"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["SSCS"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["Benefit"]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "tribunal-member-2",
-    "label": "Tribunal member 2 ",
-    "description": "Tribunal member - 2  for judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "type": "CASE",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["CASE"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["SSCS"]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": ["Benefit"]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
     "name": "appraiser-1",
     "label": "Appraiser 1",
     "description": "Appraiser 1 for judicial users",
@@ -300,44 +228,11 @@
     ]
   },
   {
-    "name": "registrar",
-    "label": "Registrar",
-    "description": "Registrar role for staff users",
-    "category": "LEGAL_OPERATIONS",
+    "name": "post-hearing-judge",
+    "label": "Post Hearing Judge",
+    "description": "Post Hearing Judge role for judicial users",
+    "category": "JUDICIAL",
     "substantive": true,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["SSCS"]
-          },
-          "primaryLocation": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "registrar",
-    "label": "Registrar",
-    "description": "Registrar role for staff users",
-    "category": "LEGAL_OPERATIONS",
-    "substantive": false,
     "type": "CASE",
     "patterns": [
       {
@@ -354,10 +249,12 @@
         },
         "attributes": {
           "jurisdiction": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["SSCS"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": ["Benefit"]
           },
           "caseId": {
             "mandatory": true
@@ -367,10 +264,10 @@
     ]
   },
   {
-    "name": "superuser",
-    "label": "Superuser",
-    "description": "Superuser role for admin users",
-    "category": "ADMIN",
+    "name": "registrar",
+    "label": "Registrar",
+    "description": "Registrar role for staff users",
+    "category": "LEGAL_OPERATIONS",
     "substantive": true,
     "type": "ORGANISATION",
     "patterns": [
@@ -400,32 +297,35 @@
     ]
   },
   {
-    "name": "clerk",
-    "label": "Clerk",
-    "description": "Clerk role for admin users",
-    "category": "ADMIN",
+    "name": "registrar",
+    "label": "Registrar",
+    "description": "Registrar role for staff users",
+    "category": "LEGAL_OPERATIONS",
     "substantive": true,
-    "type": "ORGANISATION",
+    "type": "CASE",
     "patterns": [
       {
         "roleType": {
           "mandatory": true,
-          "values": ["ORGANISATION"]
+          "values": ["CASE"]
         },
         "grantType": {
           "mandatory": true,
-          "values": ["STANDARD"]
+          "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC", "PRIVATE"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
             "values": ["SSCS"]
           },
-          "primaryLocation": {
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit"]
+          },
+          "caseId": {
             "mandatory": true
           }
         }
@@ -493,6 +393,36 @@
           },
           "primaryLocation": {
             "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "fee-paid-tribunal-member",
+    "label": "Fee Paid Tribunal Member",
+    "description": "Fee Paid Tribunal Member for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS"]
           }
         }
       }

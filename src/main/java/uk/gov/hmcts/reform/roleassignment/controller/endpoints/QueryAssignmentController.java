@@ -1,10 +1,11 @@
 
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +26,10 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAss
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
 import uk.gov.hmcts.reform.roleassignment.versions.V2;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType.SEARCH_ASSIGNMENTS;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION2;
 
-@Api(value = "roles")
 @RestController
 public class QueryAssignmentController {
 
@@ -49,19 +51,23 @@ public class QueryAssignmentController {
         path = "/am/role-assignments/query",
         produces = V1.MediaType.POST_ASSIGNMENTS
     )
-    @ApiOperation("Fetch Role assignment records by QueryRequest.")
-    @ApiResponses({
-        @ApiResponse(
-            code = 200,
-            message = "Success",
-            response = RoleAssignmentResource.class
-        ),
-        @ApiResponse(
-            code = 400,
-            message = V1.Error.BAD_REQUEST_INVALID_PARAMETER
-        ),
+    @Operation(summary = "Query role assignments",
+        security =
+        {
+            @SecurityRequirement(name = AUTHORIZATION),
+            @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
+        })
+    @ApiResponse(
+        responseCode = "200",
+        description = "Success",
+        content = @Content(schema = @Schema(implementation = RoleAssignmentResource.class))
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = V1.Error.BAD_REQUEST_INVALID_PARAMETER,
+        content = @Content()
+    )
 
-    })
     @LogAudit(operationType = SEARCH_ASSIGNMENTS,
         size = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).sizeOfAssignments(#result)",
         correlationId = "#corsrelationId",
@@ -85,19 +91,22 @@ public class QueryAssignmentController {
         consumes = V2.MediaType.POST_ASSIGNMENTS,
         produces = V2.MediaType.POST_ASSIGNMENTS
     )
-    @ApiOperation("Fetch Role assignment records by QueryRequests.")
-    @ApiResponses({
-        @ApiResponse(
-            code = 200,
-            message = "Success",
-            response = RoleAssignmentResource.class
-        ),
-        @ApiResponse(
-            code = 400,
-            message = V1.Error.BAD_REQUEST_INVALID_PARAMETER
-        ),
-
-    })
+    @Operation(summary = "Query role assignments v2",
+        security =
+        {
+            @SecurityRequirement(name = AUTHORIZATION),
+            @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
+        })
+    @ApiResponse(
+        responseCode = "200",
+        description = "Success",
+        content = @Content(schema = @Schema(implementation = RoleAssignmentResource.class))
+    )
+    @ApiResponse(
+        responseCode = "400",
+        description = V1.Error.BAD_REQUEST_INVALID_PARAMETER,
+        content = @Content()
+    )
     @LogAudit(operationType = SEARCH_ASSIGNMENTS,
         size = "T(uk.gov.hmcts.reform.roleassignment.util.AuditLoggerUtil).sizeOfAssignments(#result)",
         correlationId = "#corsrelationId",

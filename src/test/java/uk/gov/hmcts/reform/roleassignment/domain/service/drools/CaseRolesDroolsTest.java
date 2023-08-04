@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
@@ -17,9 +18,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification.PUBLIC;
-import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification.RESTRICTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.CASE_ALLOCATOR_ID;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
@@ -29,31 +31,138 @@ class CaseRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "SSCS,Benefit,hearing-judge,JUDICIAL,judge,Y",
-        "SSCS,Benefit,hearing-judge,JUDICIAL,fee-paid-judge,Y",
-        "SSCS,Benefit,tribunal-member-1,JUDICIAL,medical,Y",
-        "SSCS,Benefit,tribunal-member-1,JUDICIAL,fee-paid-medical,Y",
-        "SSCS,Benefit,tribunal-member-2,JUDICIAL,fee-paid-disability,Y",
-        "SSCS,Benefit,appraiser-1,JUDICIAL,judge,Y",
-        "SSCS,Benefit,appraiser-2,JUDICIAL,medical,Y",
-        "SSCS,Benefit,appraiser-2,JUDICIAL,fee-paid-medical,Y",
-        "SSCS,Benefit,interloc-judge,JUDICIAL,judge,Y",
-        "SSCS,Benefit,case-allocator,JUDICIAL,case-allocator,N",
-        "SSCS,Benefit,case-allocator,LEGAL_OPERATIONS,case-allocator,N",
-        "SSCS,Benefit,registrar,LEGAL_OPERATIONS,registrar,N",
-        "SSCS,Benefit,tribunal-caseworker,LEGAL_OPERATIONS,tribunal-caseworker,N",
-        "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,judge,",
-        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,magistrate,",
-        "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,judge,",
-        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-magistrate,JUDICIAL,magistrate,",
-        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-judge,JUDICIAL,judge,",
-        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-legal-adviser,LEGAL_OPERATIONS,tribunal-caseworker,",
+        "SSCS,Benefit,hearing-judge,JUDICIAL,RESTRICTED,judge,Y",
+        "SSCS,Benefit,hearing-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
+        "SSCS,Benefit,tribunal-member-1,JUDICIAL,RESTRICTED,medical,Y",
+        "SSCS,Benefit,tribunal-member-1,JUDICIAL,RESTRICTED,fee-paid-medical,Y",
+        "SSCS,Benefit,tribunal-member-1,JUDICIAL,RESTRICTED,fee-paid-disability,Y",
+        "SSCS,Benefit,tribunal-member-1,JUDICIAL,RESTRICTED,fee-paid-financial,Y",
+        "SSCS,Benefit,tribunal-member-1,JUDICIAL,RESTRICTED,fee-paid-tribunal-member,Y",
+        "SSCS,Benefit,tribunal-member-2,JUDICIAL,RESTRICTED,medical,Y",
+        "SSCS,Benefit,tribunal-member-2,JUDICIAL,RESTRICTED,fee-paid-medical,Y",
+        "SSCS,Benefit,tribunal-member-2,JUDICIAL,RESTRICTED,fee-paid-disability,Y",
+        "SSCS,Benefit,tribunal-member-2,JUDICIAL,RESTRICTED,fee-paid-financial,Y",
+        "SSCS,Benefit,tribunal-member-2,JUDICIAL,RESTRICTED,fee-paid-tribunal-member,Y",
+        "SSCS,Benefit,tribunal-member-3,JUDICIAL,RESTRICTED,medical,Y",
+        "SSCS,Benefit,tribunal-member-3,JUDICIAL,RESTRICTED,fee-paid-medical,Y",
+        "SSCS,Benefit,tribunal-member-3,JUDICIAL,RESTRICTED,fee-paid-disability,Y",
+        "SSCS,Benefit,tribunal-member-3,JUDICIAL,RESTRICTED,fee-paid-financial,Y",
+        "SSCS,Benefit,tribunal-member-3,JUDICIAL,RESTRICTED,fee-paid-tribunal-member,Y",
+        "SSCS,Benefit,appraiser-1,JUDICIAL,RESTRICTED,judge,Y",
+        "SSCS,Benefit,appraiser-1,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
+        "SSCS,Benefit,appraiser-1,JUDICIAL,RESTRICTED,fee-paid-medical,Y",
+        "SSCS,Benefit,appraiser-1,JUDICIAL,RESTRICTED,medical,Y",
+        "SSCS,Benefit,appraiser-1,JUDICIAL,RESTRICTED,fee-paid-disability,Y",
+        "SSCS,Benefit,appraiser-1,JUDICIAL,RESTRICTED,fee-paid-financial,Y",
+        "SSCS,Benefit,appraiser-2,JUDICIAL,RESTRICTED,medical,Y",
+        "SSCS,Benefit,appraiser-2,JUDICIAL,RESTRICTED,fee-paid-medical,Y",
+        "SSCS,Benefit,appraiser-2,JUDICIAL,RESTRICTED,judge,Y",
+        "SSCS,Benefit,appraiser-2,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
+        "SSCS,Benefit,appraiser-2,JUDICIAL,RESTRICTED,fee-paid-disability,Y",
+        "SSCS,Benefit,appraiser-2,JUDICIAL,RESTRICTED,fee-paid-financial,Y",
+        "SSCS,Benefit,interloc-judge,JUDICIAL,RESTRICTED,judge,Y",
+        "SSCS,Benefit,interloc-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
+        "SSCS,Benefit,post-hearing-judge,JUDICIAL,RESTRICTED,judge,Y",
+        "SSCS,Benefit,case-allocator,JUDICIAL,RESTRICTED,case-allocator,N",
+        "SSCS,Benefit,case-allocator,LEGAL_OPERATIONS,RESTRICTED,case-allocator,N",
+        "SSCS,Benefit,registrar,LEGAL_OPERATIONS,RESTRICTED,registrar,Y",
+        "SSCS,Benefit,allocated-tribunal-caseworker,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
+        "SSCS,Benefit,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,Y",
+        "SSCS,Benefit,allocated-admin-caseworker,ADMIN,RESTRICTED,regional-centre-admin,Y",
+        "SSCS,Benefit,allocated-admin-caseworker,ADMIN,RESTRICTED,clerk,Y",
+        "SSCS,Benefit,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
+        "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,RESTRICTED,judge,",
+        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,RESTRICTED,magistrate,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,RESTRICTED,judge,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-magistrate,JUDICIAL,RESTRICTED,magistrate,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-judge,JUDICIAL,RESTRICTED,judge,Y",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,",
+        "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
+        "EMPLOYMENT,ET_EnglandWales,lead-judge,JUDICIAL,PUBLIC,leadership-judge,Y",
+        "EMPLOYMENT,ET_EnglandWales,lead-judge,JUDICIAL,PUBLIC,judge,Y",
+        "EMPLOYMENT,ET_EnglandWales,hearing-judge,JUDICIAL,PUBLIC,leadership-judge,Y",
+        "EMPLOYMENT,ET_EnglandWales,hearing-judge,JUDICIAL,PUBLIC,judge,Y",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-1,JUDICIAL,PUBLIC,tribunal-member,Y",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-2,JUDICIAL,PUBLIC,tribunal-member,Y",
+        "EMPLOYMENT,ET_EnglandWales,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC,tribunal-caseworker,Y",
+        "EMPLOYMENT,ET_EnglandWales,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC,senior-tribunal-caseworker,Y",
+        "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker,ADMIN,PUBLIC,hearing-centre-admin,Y",
+        "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker,ADMIN,PUBLIC,hearing-centre-team-leader,Y",
+        "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker,ADMIN,PUBLIC,regional-centre-admin,Y",
+        "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker,ADMIN,PUBLIC,regional-centre-team-leader,Y",
+        "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker,ADMIN,PUBLIC,clerk,Y",
+        "EMPLOYMENT,ET_EnglandWales,allocated-ctsc-caseworker,CTSC,PUBLIC,ctsc,Y",
+        "EMPLOYMENT,ET_EnglandWales,allocated-ctsc-caseworker,CTSC,PUBLIC,ctsc-team-leader,Y",
+        "EMPLOYMENT,ET_Scotland,lead-judge,JUDICIAL,PUBLIC,leadership-judge,Y",
+        "EMPLOYMENT,ET_Scotland,lead-judge,JUDICIAL,PUBLIC,judge,Y",
+        "EMPLOYMENT,ET_Scotland,hearing-judge,JUDICIAL,PUBLIC,leadership-judge,Y",
+        "EMPLOYMENT,ET_Scotland,hearing-judge,JUDICIAL,PUBLIC,judge,Y",
+        "EMPLOYMENT,ET_Scotland,tribunal-member-1,JUDICIAL,PUBLIC,tribunal-member,Y",
+        "EMPLOYMENT,ET_Scotland,tribunal-member-2,JUDICIAL,PUBLIC,tribunal-member,Y",
+        "EMPLOYMENT,ET_Scotland,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC,tribunal-caseworker,Y",
+        "EMPLOYMENT,ET_Scotland,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC,senior-tribunal-caseworker,Y",
+        "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker,ADMIN,PUBLIC,hearing-centre-admin,Y",
+        "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker,ADMIN,PUBLIC,hearing-centre-team-leader,Y",
+        "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker,ADMIN,PUBLIC,regional-centre-admin,Y",
+        "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker,ADMIN,PUBLIC,regional-centre-team-leader,Y",
+        "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker,ADMIN,PUBLIC,clerk,Y",
+        "EMPLOYMENT,ET_Scotland,allocated-ctsc-caseworker,CTSC,PUBLIC,ctsc,Y",
+        "EMPLOYMENT,ET_Scotland,allocated-ctsc-caseworker,CTSC,PUBLIC,ctsc-team-leader,Y",
     })
-    void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName, String roleCategory,
+    void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName,
+                                       String roleCategory, String classification,
                                        String existingRoleName, String expectedSubstantive) {
 
+        verifyGrantOrRejectAccessFor_CaseRole(
+            jurisdiction,
+            caseType,
+            roleName,
+            roleCategory,
+            classification,
+            existingRoleName,
+            expectedSubstantive,
+            APPROVED
+        );
+    }
+
+
+    @ParameterizedTest
+    @CsvSource({
+        "EMPLOYMENT,ET_EnglandWales,lead-judge,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_EnglandWales,hearing-judge,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-1,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-2,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_EnglandWales,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC",
+        "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker,ADMIN,PUBLIC",
+        "EMPLOYMENT,ET_EnglandWales,allocated-ctsc-caseworker,CTSC,PUBLIC",
+        "EMPLOYMENT,ET_Scotland,lead-judge,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_Scotland,hearing-judge,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_Scotland,tribunal-member-1,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-2,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_Scotland,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC",
+        "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker,ADMIN,PUBLIC",
+        "EMPLOYMENT,ET_Scotland,allocated-ctsc-caseworker,CTSC,PUBLIC",
+    })
+    void shouldRejectAccessFor_CaseRole_BadExistingRole(String jurisdiction, String caseType, String roleName,
+                                                        String roleCategory, String classification) {
+        verifyGrantOrRejectAccessFor_CaseRole(jurisdiction,
+                                              caseType,
+                                              roleName,
+                                              roleCategory,
+                                              classification,
+                                              "bad-role-name",
+                                              null,
+                                              REJECTED);
+    }
+
+    private void verifyGrantOrRejectAccessFor_CaseRole(String jurisdiction, String caseType, String roleName,
+                                                       String roleCategory, String classification,
+                                                       String existingRoleName, String expectedSubstantive,
+                                                       Status expectedRoleAssignmentStatus) {
+
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
-        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseMap.get(jurisdiction).getId()));
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode(getCaseFromMap(jurisdiction, caseType).getId()));
         roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
         roleAssignmentAttributes.put("caseType", convertValueJsonNode(caseType));
         roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -64,7 +173,7 @@ class CaseRolesDroolsTest extends DroolBase {
             RoleCategory.valueOf(roleCategory),
             RoleType.CASE,
             roleAssignmentAttributes,
-            RESTRICTED,
+            Classification.valueOf(classification),
             SPECIFIC,
             Status.CREATE_REQUESTED,
             "am_org_role_mapping_service",
@@ -106,39 +215,61 @@ class CaseRolesDroolsTest extends DroolBase {
                                 )
                           );
 
-        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
-            assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
-            assertEquals(caseType, roleAssignment.getAttributes().get("caseType").asText());
-            assertEquals(roleName, roleAssignment.getRoleName());
-            assertEquals(RoleCategory.valueOf(roleCategory), roleAssignment.getRoleCategory());
-            if (expectedSubstantive != null) {
-                assertEquals(expectedSubstantive, roleAssignment.getAttributes().get("substantive").asText());
-            }
-            assertEquals(Status.APPROVED, roleAssignment.getStatus());
-        });
+        if (expectedRoleAssignmentStatus == APPROVED) {
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+                assertEquals(caseType, roleAssignment.getAttributes().get("caseType").asText());
+                assertEquals(roleName, roleAssignment.getRoleName());
+                assertEquals(RoleCategory.valueOf(roleCategory), roleAssignment.getRoleCategory());
+                assertEquals(Classification.valueOf(classification), roleAssignment.getClassification());
+                if (expectedSubstantive != null) {
+                    assertEquals(expectedSubstantive, roleAssignment.getAttributes().get("substantive").asText());
+                }
+                assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            });
+        } else {
+            assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+        }
     }
 
     @ParameterizedTest
     @CsvSource({
         "SSCS,Benefit,hearing-judge",
-        "SSCS,Benefit,panel-doctor",
-        "SSCS,Benefit,panel-disability",
-        "SSCS,Benefit,panel-financial",
-        "SSCS,Benefit,panel-appraisal-judge",
-        "SSCS,Benefit,panel-appraisal-medical",
+        "SSCS,Benefit,tribunal-member-1",
+        "SSCS,Benefit,tribunal-member-2",
+        "SSCS,Benefit,tribunal-member-3",
+        "SSCS,Benefit,appraiser-1",
+        "SSCS,Benefit,appraiser-2",
         "SSCS,Benefit,interloc-judge",
+        "SSCS,Benefit,post-hearing-judge",
         "SSCS,Benefit,case-allocator",
         "SSCS,Benefit,registrar",
-        "SSCS,Benefit,tribunal-caseworker",
+        "SSCS,Benefit,allocated-tribunal-caseworker",
+        "SSCS,Benefit,allocated-admin-caseworker",
+        "SSCS,Benefit,allocated-ctsc-caseworker",
         "PRIVATELAW,PRLAPPS,hearing-judge",
-        "PRIVATELAW,PRLAPPS,allocated-magistrate"
+        "PRIVATELAW,PRLAPPS,allocated-magistrate",
+        "EMPLOYMENT,ET_EnglandWales,lead-judge",
+        "EMPLOYMENT,ET_EnglandWales,hearing-judge",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-1",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-2",
+        "EMPLOYMENT,ET_EnglandWales,allocated-tribunal-caseworker",
+        "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker",
+        "EMPLOYMENT,ET_EnglandWales,allocated-ctsc-caseworker",
+        "EMPLOYMENT,ET_Scotland,lead-judge",
+        "EMPLOYMENT,ET_Scotland,hearing-judge",
+        "EMPLOYMENT,ET_Scotland,tribunal-member-1",
+        "EMPLOYMENT,ET_Scotland,tribunal-member-2",
+        "EMPLOYMENT,ET_Scotland,allocated-tribunal-caseworker",
+        "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker",
+        "EMPLOYMENT,ET_Scotland,allocated-ctsc-caseworker",
     })
     void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
         existingAttributes.put("caseType", convertValueJsonNode(caseType));
-        existingAttributes.put("caseId", convertValueJsonNode(caseMap.get(jurisdiction).getId()));
+        existingAttributes.put("caseId", convertValueJsonNode(getCaseFromMap(jurisdiction, caseType).getId()));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessGrant(
             "delete-access",
@@ -180,10 +311,7 @@ class CaseRolesDroolsTest extends DroolBase {
     @CsvSource({
         "judge,JUDICIAL,judge,SSCS,Benefit,ORGANISATION",
         "hearing-judge,ADMIN,fee-paid-judge,SSCS,Benefit,ORGANISATION",
-        "panel-doctor,JUDICIAL,caseworker,SSCS,Benefit,ORGANISATION",
-        "panel-appraisal-medical,JUDICIAL,fee-paid-medical,IA,Benefit,ORGANISATION",
         "interloc-judge,JUDICIAL,judge,SSCS,Asylum,ORGANISATION",
-        "panel-appraisal-judge,JUDICIAL,judge,SSCS,Benefit,CASE",
     })
     void shouldRejectAccessFor_SSCS_CaseRole(String roleName, String roleCategory, String existingRoleName,
                                              String jurisdiction, String caseType, String roleType) {
@@ -248,7 +376,6 @@ class CaseRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "panel-appraisal-judge,CITIZEN,am_org_role_mapping_service,ORGANISATION",
         "interloc-judge,JUDICIAL,am_role_assignment_service,ORGANISATION",
         "hearing-judge,JUDICIAL,am_org_role_mapping_service,CASE"
     })

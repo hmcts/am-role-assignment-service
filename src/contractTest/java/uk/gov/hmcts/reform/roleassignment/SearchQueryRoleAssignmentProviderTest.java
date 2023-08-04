@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 @Provider("am_roleAssignment_queryAssignment")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
     host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
-    @VersionSelector(tag = "master")})
+        @VersionSelector(tag = "master")})
 @TestPropertySource(properties = {"roleassignment.query.size=20"})
 @Import(RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
@@ -59,6 +59,7 @@ public class SearchQueryRoleAssignmentProviderTest {
     @BeforeEach
     void before(PactVerificationContext context) {
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
+        //System.getProperties().setProperty("pact.verifier.publishResults", "true");
         testTarget.setControllers(new QueryAssignmentController(
             queryRoleAssignmentOrchestrator
         ));
