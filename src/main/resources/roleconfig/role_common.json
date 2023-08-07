@@ -1844,7 +1844,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "PRLAPPS"]
+            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord"]
           }
         }
       }
@@ -1878,7 +1878,7 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "PRLAPPS"]
+            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord"]
           }
         }
       }
@@ -2667,7 +2667,7 @@
     "label": "Allocated Tribunal Caseworker",
     "description": "Allocated Tribunal Caseworker for Staff users",
     "category": "LEGAL_OPERATIONS",
-    "substantive": false,
+    "substantive": true,
     "type": "CASE",
     "patterns": [
       {
@@ -2703,7 +2703,7 @@
     "label": "Allocated Admin Caseworker",
     "description": "Allocated Admin Caseworker for Staff users",
     "category": "ADMIN",
-    "substantive": false,
+    "substantive": true,
     "type": "CASE",
     "patterns": [
       {
@@ -2739,7 +2739,7 @@
     "label": "Allocated CTSC Caseworker",
     "description": "Allocated CTSC Caseworker for Staff users",
     "category": "CTSC",
-    "substantive": false,
+    "substantive": true,
     "type": "CASE",
     "patterns": [
       {
