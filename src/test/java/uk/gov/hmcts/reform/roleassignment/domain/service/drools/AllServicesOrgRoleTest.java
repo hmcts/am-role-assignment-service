@@ -501,6 +501,10 @@ class AllServicesOrgRoleTest extends DroolBase {
         "specific-access-approver-judiciary,JUDICIAL,STANDARD,north-east,ST_CIC,UK,ORGANISATION,N,Null,PUBLIC",
         "case-allocator,JUDICIAL,STANDARD,north-east,ST_CIC,UK,ORGANISATION,N,Null,PUBLIC",
         "task-supervisor,JUDICIAL,STANDARD,north-east,ST_CIC,UK,ORGANISATION,N,Null,PUBLIC",
+        "magistrate,JUDICIAL,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC",
+        "caseworker-privatelaw-externaluser-viewonly,OTHER_GOV_DEPT,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,"
+            + "N,Null,PUBLIC",
+        "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,N,Null,PUBLIC"
     })
     void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
                                           String region, String jurisdiction, String primaryLocation,
@@ -677,7 +681,9 @@ class AllServicesOrgRoleTest extends DroolBase {
     @ParameterizedTest
     @CsvSource({
         "hearing-manager,SYSTEM,PRIVATELAW,PRLAPPS",
-        "hearing-viewer,SYSTEM,PRIVATELAW,PRLAPPS"
+        "hearing-viewer,SYSTEM,PRIVATELAW,PRLAPPS",
+        "hearing-manager,SYSTEM,PRIVATELAW,PRIVATELAW_ExceptionRecord",
+        "hearing-viewer,SYSTEM,PRIVATELAW,PRIVATELAW_ExceptionRecord"
     })
     void shouldRejectSscsOrgRequestedRoleForHearingFromAnotherJurisdiction(String roleName,
                                                                            String roleCategory,
@@ -709,7 +715,9 @@ class AllServicesOrgRoleTest extends DroolBase {
     @ParameterizedTest
     @CsvSource({
         "hearing-manager,SYSTEM,PRIVATELAW,PRLAPPS",
-        "hearing-viewer,SYSTEM,PRIVATELAW,PRLAPPS"
+        "hearing-viewer,SYSTEM,PRIVATELAW,PRLAPPS",
+        "hearing-manager,SYSTEM,PRIVATELAW,PRIVATELAW_ExceptionRecord",
+        "hearing-viewer,SYSTEM,PRIVATELAW,PRIVATELAW_ExceptionRecord"
     })
     void shouldApprovePrivateLawOrgRequestedRoleForHearing(String roleName,
                                                            String roleCategory,
