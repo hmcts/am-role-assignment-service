@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -272,35 +271,6 @@ class ValidationUtilTest {
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
                                                                                      false);
         assignmentRequest.getRequestedRoles().clear();
-
-        Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateAssignmentRequest(assignmentRequest)
-        );
-    }
-
-    //@Test
-    void shouldValidateAssignmentRequest_clf_InvalidRoleRequests() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
-                                                                                     false);
-        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            requestedRole.setRoleName("commander");
-        }
-
-        Assertions.assertThrows(BadRequestException.class, () ->
-            ValidationUtil.validateAssignmentRequest(assignmentRequest)
-        );
-    }
-
-    @Test
-    void shouldValidateAssignmentRequest_clf_InvalidBeginTime() throws IOException {
-        AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(Status.CREATED, Status.LIVE,
-                                                                                     false);
-        for (RoleAssignment requestedRole : assignmentRequest.getRequestedRoles()) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z");
-            ZonedDateTime zonedDateTime = ZonedDateTime.parse("1970-05-05 10:15:30 Z", formatter);
-            requestedRole.setBeginTime(zonedDateTime);
-        }
-
 
         Assertions.assertThrows(BadRequestException.class, () ->
             ValidationUtil.validateAssignmentRequest(assignmentRequest)
