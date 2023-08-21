@@ -2465,7 +2465,7 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PUBLIC"]
         },
         "attributes": {
           "jurisdiction": {
@@ -2501,7 +2501,7 @@
         },
         "classification": {
           "mandatory": true,
-          "values": ["RESTRICTED"]
+          "values": ["PUBLIC"]
         },
         "attributes": {
           "jurisdiction": {
