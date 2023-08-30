@@ -217,7 +217,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT","ST_CIC"]
           }
         }
       }
@@ -247,7 +247,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
+            "values": ["IA","SSCS", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -280,7 +280,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -313,7 +313,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC"]
           }
         }
       }
@@ -343,7 +343,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC"]
           }
         }
       }
@@ -460,7 +460,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT", "ST_CIC"]
           }
         }
       }
@@ -490,7 +490,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT", "ST_CIC"]
           }
         }
       }
@@ -519,7 +519,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","PRIVATELAW","PUBLICLAW", "EMPLOYMENT"]
+            "values": ["IA","SSCS","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC"]
           },
           "caseType": {
             "mandatory": true
@@ -590,7 +590,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT","SSCS"]
+            "values": ["IA","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT","SSCS","ST_CIC"]
           }
         }
       }
@@ -620,7 +620,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW","PUBLICLAW", "EMPLOYMENT"]
+            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW","PUBLICLAW", "EMPLOYMENT","ST_CIC"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -844,7 +844,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC"]
           },
           "caseType": {
             "mandatory": true
@@ -1000,7 +1000,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC"]
           },
           "caseType": {
             "mandatory": true
@@ -1156,7 +1156,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC"]
           },
           "caseType": {
             "mandatory": true
@@ -1621,7 +1621,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
+            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2088,7 +2088,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2121,7 +2121,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL", "PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
+            "values": ["IA", "CIVIL", "PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2340,7 +2340,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2402,7 +2402,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2577,11 +2577,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "EMPLOYMENT"]
+            "values": ["SSCS", "EMPLOYMENT","ST_CIC"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
+            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland","CriminalInjuriesCompensation"]
           },
           "caseId": {
             "mandatory": true
@@ -2613,11 +2613,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "EMPLOYMENT"]
+            "values": ["SSCS", "EMPLOYMENT","ST_CIC"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
+            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland","CriminalInjuriesCompensation"]
           },
           "caseId": {
             "mandatory": true
@@ -2649,11 +2649,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS"]
+            "values": ["SSCS","ST_CIC"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit"]
+            "values": ["Benefit","CriminalInjuriesCompensation"]
           },
           "caseId": {
             "mandatory": true
@@ -2827,7 +2827,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT","SSCS"]
+            "values": ["EMPLOYMENT","SSCS","ST_CIC"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2860,9 +2860,297 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT","SSCS"]
+            "values": ["EMPLOYMENT","SSCS","ST_CIC"]
           },
           "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "senior-judge",
+    "label": "Senior Judge",
+    "description": "Senior Judge role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC","PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["IA", "ST_CIC"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "medical",
+    "label": "Medical Member",
+    "description": "Medical Member for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "fee-paid-medical",
+    "label": "Fee Paid Medical Member",
+    "description": "Fee Paid Medical Member for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "fee-paid-disability",
+    "label": "Fee Paid Disability Member",
+    "description": "Fee Paid Disability Member for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "fee-paid-financial",
+    "label": "Fee Paid Financial Member",
+    "description": "Fee Paid Financial Member for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "fee-paid-tribunal-member",
+    "label": "Fee Paid Tribunal Member",
+    "description": "Fee Paid Tribunal Member for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "interloc-judge",
+    "label": "Interlocutory Judge",
+    "description": "Interlocutory Judge for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit","CriminalInjuriesCompensation"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "appraiser-1",
+    "label": "Appraiser 1",
+    "description": "Appraiser 1 for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit","CriminalInjuriesCompensation"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "appraiser-2",
+    "label": "Appraiser 2",
+    "description": "Appraiser 2 for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["SSCS","ST_CIC"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["Benefit","CriminalInjuriesCompensation"]
+          },
+          "caseId": {
             "mandatory": true
           }
         }
