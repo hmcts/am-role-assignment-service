@@ -22,7 +22,7 @@ java:
     ROLE_ASSIGNMENT_DB_PASSWORD: "{{ .Values.postgresql.auth.password}}"
     ROLE_ASSIGNMENT_DB_PORT: "{{ .Values.postgresql.postgresqlPort}}"
     ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
-    CCD_DATA_STORE_URL: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    CCD_DATA_STORE_URL: https://ccd-data-store-api-et-ccd-definitions-admin-pr-113.preview.platform.hmcts.net
     S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     LAUNCH_DARKLY_ENV: pr
     ENABLE_DB_MIGRATE: true

@@ -179,7 +179,7 @@ public class ValidationModelService {
      * This utility method is used to capture the log in drools.
      */
     public static void logMsg(final String message) {
-        log.debug(message);
+        log.info(message);
     }
 
     private void getFlagValuesFromDB(Map<String, Boolean> droolFlagStates) {
