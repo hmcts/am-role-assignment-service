@@ -1,14 +1,14 @@
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
-  keyVaults:
-    am:
-      secrets:
-        - am-role-assignment-service-s2s-secret
-        - app-insights-connection-string
-        - role-assignment-service-IDAM-CLIENT-SECRET
-        - role-assignment-service-IDAM-ADMIN-SECRET
-        - role-assignment-service-LD-SDK-KEY
+#  keyVaults:
+#    am:
+#      secrets:
+#        - am-role-assignment-service-s2s-secret
+#        - app-insights-connection-string
+#        - role-assignment-service-IDAM-CLIENT-SECRET
+#        - role-assignment-service-IDAM-ADMIN-SECRET
+#        - role-assignment-service-LD-SDK-KEY
 #  overidding dev memory and cpu limits to make it match with standard limits
 #  https://github.com/hmcts/chart-java/blob/master/java/values.yaml
   devmemoryRequests: 1024Mi
@@ -30,6 +30,19 @@ java:
     RUN_DB_MIGRATION_ON_STARTUP: true
     RUN_LD_ON_STARTUP: true
     APPLICATION_LOGGING_LEVEL: DEBUG
+  secrets:
+    LD_SDK_KEY:
+      secretRef: role-assignment-service-LD-SDK-KEY
+      key: key
+      disabled: true
+    ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET:
+      secretRef: role-assignment-service-IDAM-CLIENT-SECRET
+      key: key
+      disabled: true
+    ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD:
+      secretRef: role-assignment-service-IDAM-ADMIN-SECRET
+      key: key
+      disabled: true
   postgresql:
     enabled: true
     postgresqlPort: 5432
