@@ -59,7 +59,7 @@ public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEn
     public interface JurisdictionRoleCategoryNameAndCount {
         String getJurisdiction();
 
-        String getCategoryType();
+        String getRoleCategory();
 
         String getRoleName();
 

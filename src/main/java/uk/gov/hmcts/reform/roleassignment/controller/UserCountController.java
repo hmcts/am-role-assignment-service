@@ -55,7 +55,6 @@ public class UserCountController {
 
         List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> userCount2 =
             roleAssignmentRepository.getUserCount2();
-        String json2 = ow.writeValueAsString(userCount2);
         counts.put("UserCount2", userCount2);
         logger.warn(ow.writeValueAsString(counts));
         telemetryClient.trackEvent(ow.writeValueAsString(counts));
