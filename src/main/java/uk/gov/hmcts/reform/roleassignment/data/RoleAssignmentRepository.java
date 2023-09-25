@@ -1,6 +1,7 @@
 
 package uk.gov.hmcts.reform.roleassignment.data;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -46,23 +47,30 @@ public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEn
         nativeQuery = true)
     List<JurisdictionRoleCategoryNameAndCount> getOrgUserCountByJurisdictionAndRoleName() throws SQLException;
 
-    @JsonPropertyOrder({ "jurisdiction", "count"})
+    @JsonPropertyOrder({ "jurisdiction", "role_category", "count"})
     public interface JurisdictionRoleCategoryAndCount {
+        @JsonProperty("jurisdiction")
         String getJurisdiction();
 
+        @JsonProperty("role_category")
         String getRoleCategory();
 
+        @JsonProperty("count")
         BigInteger getCount();
     }
 
     @JsonPropertyOrder({ "jurisdiction", "role_category", "role_name", "count"})
     public interface JurisdictionRoleCategoryNameAndCount {
+        @JsonProperty("jurisdiction")
         String getJurisdiction();
 
+        @JsonProperty("role_category")
         String getRoleCategory();
 
+        @JsonProperty("role_name")
         String getRoleName();
 
+        @JsonProperty("count")
         BigInteger getCount();
     }
 

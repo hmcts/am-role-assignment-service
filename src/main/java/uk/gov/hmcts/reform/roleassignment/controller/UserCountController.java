@@ -4,6 +4,7 @@ package uk.gov.hmcts.reform.roleassignment.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.google.common.collect.ImmutableMap;
 import com.microsoft.applicationinsights.TelemetryClient;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -57,7 +58,13 @@ public class UserCountController {
             roleAssignmentRepository.getOrgUserCountByJurisdictionAndRoleName();
         counts.put("OrgUserCountByJurisdictionAndRoleName", orgUserCountByJurisdictionAndRoleName);
         logger.debug(ow.writeValueAsString(counts));
-        telemetryClient.trackEvent(ow.writeValueAsString(counts));
+
+        Map<String, String> properties = ImmutableMap.of(
+            "orgUserCountByJurisdiction", ow.writeValueAsString(orgUserCountByJurisdiction),
+            "orgUserCountByJurisdictionAndRoleName", ow.writeValueAsString(orgUserCountByJurisdictionAndRoleName)
+        );
+
+        telemetryClient.trackEvent("orgUserCount", properties,null);
         return ResponseEntity.status(HttpStatus.OK).body(counts);
     }
 }

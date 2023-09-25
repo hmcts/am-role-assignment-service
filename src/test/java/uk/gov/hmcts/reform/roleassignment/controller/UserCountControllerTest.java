@@ -90,13 +90,17 @@ class UserCountControllerTest {
 
         ResponseEntity<Map<String, Object>> response = sut.getOrgUserCount();
         final List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount> responseOrgUserCountByJurisdiction =
-            (List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount>) response.getBody().get("OrgUserCountByJurisdiction");
-        final List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> responseOrgUserCountByJurisdictionAndRoleName =
-            (List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount>) response.getBody().get("OrgUserCountByJurisdictionAndRoleName");
+            (List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount>)
+                response.getBody().get("OrgUserCountByJurisdiction");
+        final List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount>
+            responseOrgUserCountByJurisdictionAndRoleName =
+            (List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount>)
+                response.getBody().get("OrgUserCountByJurisdictionAndRoleName");
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(BigInteger.TEN, responseOrgUserCountByJurisdiction.get(0).getCount());
+        assertEquals("some role category", responseOrgUserCountByJurisdiction.get(0).getRoleCategory());
         assertEquals(BigInteger.TWO, responseOrgUserCountByJurisdictionAndRoleName.get(0).getCount());
     }
 
