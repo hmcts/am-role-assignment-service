@@ -46,17 +46,17 @@ public class UserCountController {
             @SecurityRequirement(name = AUTHORIZATION),
             @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
         })
-    public ResponseEntity<Map<String, Object>> getUserCount() throws SQLException, JsonProcessingException {
-        List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount> userCount =
-            roleAssignmentRepository.getUserCount();
+    public ResponseEntity<Map<String, Object>> getOrgUserCount() throws SQLException, JsonProcessingException {
+        List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount> orgUserCountByJurisdiction =
+            roleAssignmentRepository.getOrgUserCountByJurisdiction();
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         Map<String, Object> counts = new HashMap<>();
-        counts.put("UserCount1", userCount);
+        counts.put("OrgUserCountByJurisdiction", orgUserCountByJurisdiction);
 
-        List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> userCount2 =
-            roleAssignmentRepository.getUserCount2();
-        counts.put("UserCount2", userCount2);
-        logger.warn(ow.writeValueAsString(counts));
+        List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> orgUserCountByJurisdictionAndRoleName =
+            roleAssignmentRepository.getOrgUserCountByJurisdictionAndRoleName();
+        counts.put("OrgUserCountByJurisdictionAndRoleName", orgUserCountByJurisdictionAndRoleName);
+        logger.debug(ow.writeValueAsString(counts));
         telemetryClient.trackEvent(ow.writeValueAsString(counts));
         return ResponseEntity.status(HttpStatus.OK).body(counts);
     }

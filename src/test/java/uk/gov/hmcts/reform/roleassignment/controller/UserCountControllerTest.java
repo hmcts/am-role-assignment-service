@@ -85,19 +85,19 @@ class UserCountControllerTest {
                 }
             };
 
-        doReturn(List.of(userCount1)).when(roleAssignmentRepositoryMock).getUserCount();
-        doReturn(List.of(userCount2)).when(roleAssignmentRepositoryMock).getUserCount2();
+        doReturn(List.of(userCount1)).when(roleAssignmentRepositoryMock).getOrgUserCountByJurisdiction();
+        doReturn(List.of(userCount2)).when(roleAssignmentRepositoryMock).getOrgUserCountByJurisdictionAndRoleName();
 
-        ResponseEntity<Map<String, Object>> response = sut.getUserCount();
-        final List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount> responseCount1 =
-            (List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount>) response.getBody().get("UserCount1");
-        final List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> responseCount2 =
-            (List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount>) response.getBody().get("UserCount2");
+        ResponseEntity<Map<String, Object>> response = sut.getOrgUserCount();
+        final List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount> responseOrgUserCountByJurisdiction =
+            (List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount>) response.getBody().get("OrgUserCountByJurisdiction");
+        final List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> responseOrgUserCountByJurisdictionAndRoleName =
+            (List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount>) response.getBody().get("OrgUserCountByJurisdictionAndRoleName");
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(BigInteger.TEN, responseCount1.get(0).getCount());
-        assertEquals(BigInteger.TWO, responseCount2.get(0).getCount());
+        assertEquals(BigInteger.TEN, responseOrgUserCountByJurisdiction.get(0).getCount());
+        assertEquals(BigInteger.TWO, responseOrgUserCountByJurisdictionAndRoleName.get(0).getCount());
     }
 
 }

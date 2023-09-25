@@ -31,7 +31,7 @@ public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEn
             + " GROUP BY jsonb_extract_path_text(attributes ,'jurisdiction'), role_category"
             + " ORDER BY jsonb_extract_path_text(attributes ,'jurisdiction') asc, role_category asc;",
         nativeQuery = true)
-    List<JurisdictionRoleCategoryAndCount> getUserCount() throws SQLException;
+    List<JurisdictionRoleCategoryAndCount> getOrgUserCountByJurisdiction() throws SQLException;
 
     @Query(
         value = "SELECT"
@@ -44,7 +44,7 @@ public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEn
             + " GROUP BY jsonb_extract_path_text(attributes ,'jurisdiction'), role_category, role_name"
             + " ORDER BY jsonb_extract_path_text(attributes ,'jurisdiction') asc, role_category ASC, role_name ASC;",
         nativeQuery = true)
-    List<JurisdictionRoleCategoryNameAndCount> getUserCount2() throws SQLException;
+    List<JurisdictionRoleCategoryNameAndCount> getOrgUserCountByJurisdictionAndRoleName() throws SQLException;
 
     @JsonPropertyOrder({ "jurisdiction", "count"})
     public interface JurisdictionRoleCategoryAndCount {
