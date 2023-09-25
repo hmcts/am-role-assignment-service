@@ -27,7 +27,6 @@ public class FeatureFlagController {
     public ResponseEntity<Object> getFeatureFlag(@RequestParam(value = "flagName") String flagName,
                                                  @RequestParam(value = "env", required = false) String env) {
         return ResponseEntity.ok(persistenceService.getStatusByParam(flagName, env));
-
     }
 
     @PostMapping(
@@ -39,6 +38,5 @@ public class FeatureFlagController {
 
         var flagConfig = persistenceUtil.convertFlagRequestToFlagConfig(flagRequest);
         return ResponseEntity.ok(persistenceService.persistFlagConfig(flagConfig));
-
     }
 }

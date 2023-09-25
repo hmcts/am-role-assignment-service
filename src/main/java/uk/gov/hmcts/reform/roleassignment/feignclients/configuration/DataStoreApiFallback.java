@@ -22,6 +22,8 @@ public class DataStoreApiFallback implements DataStoreApi {
     public static final String PUBLIC_LAW_CASE_ID = "1234567890123456";
     public static final String EMPLOYMENT_CASE_ID = "1234567890123460";
     public static final String EMPLOYMENT_SCTL_CASE_ID = "1234567890123461";
+    public static final String ST_CIC_CASE_ID = "1234567890123462";
+    public static final String PRIVATE_LAW_EXC_RECORD_CASE_ID = "1234567890123463";
 
     @Override
     public String getServiceStatus() {
@@ -73,6 +75,15 @@ public class DataStoreApiFallback implements DataStoreApi {
                         Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
                                Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
                     .build();
+            case PRIVATE_LAW_EXC_RECORD_CASE_ID:
+                return Case.builder().id(caseId)
+                    .caseTypeId("PRIVATELAW_ExceptionRecord")
+                    .jurisdiction("PRIVATELAW")
+                    .securityClassification(Classification.PUBLIC)
+                    .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
+                    .build();
             case PUBLIC_LAW_CASE_ID:
                 return Case.builder().id(caseId)
                     .caseTypeId("CARE_SUPERVISION_EPO")
@@ -95,6 +106,15 @@ public class DataStoreApiFallback implements DataStoreApi {
                 return Case.builder().id(caseId)
                     .caseTypeId("ET_Scotland")
                     .jurisdiction("EMPLOYMENT")
+                    .securityClassification(Classification.PUBLIC)
+                    .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
+                    .build();
+            case ST_CIC_CASE_ID:
+                return Case.builder().id(caseId)
+                    .caseTypeId("CriminalInjuriesCompensation")
+                    .jurisdiction("ST_CIC")
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
                         Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
