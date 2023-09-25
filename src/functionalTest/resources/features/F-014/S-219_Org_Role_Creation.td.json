@@ -24,7 +24,7 @@
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "ctsc",
           "roleCategory": "CTSC",
-          "beginTime" : "2022-01-01T00:00:00Z",
+          "beginTime" : "${[scenarioContext][customValues][yesterday]}T00:00:00Z",
           "attributes":
           {
             "primaryLocation": "445777",
