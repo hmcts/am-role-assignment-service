@@ -25,52 +25,45 @@ public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEn
     @Query(
         value = "SELECT"
             + "   jsonb_extract_path_text(ATTRIBUTES,'jurisdiction') AS jurisdiction,"
-            + "   role_category as role_category,"
+            + "   role_category AS roleCategory,"
             + "   count(DISTINCT actor_id) AS count"
             + "  FROM role_assignment"
             + " WHERE role_type='ORGANISATION'"
-            + " GROUP BY jsonb_extract_path_text(attributes ,'jurisdiction'), role_category"
-            + " ORDER BY jsonb_extract_path_text(attributes ,'jurisdiction') asc, role_category asc;",
+            + " GROUP BY jsonb_extract_path_text(attributes ,'jurisdiction'), roleCategory"
+            + " ORDER BY jsonb_extract_path_text(attributes ,'jurisdiction') asc, roleCategory asc;",
         nativeQuery = true)
     List<JurisdictionRoleCategoryAndCount> getOrgUserCountByJurisdiction() throws SQLException;
 
     @Query(
         value = "SELECT"
             + "   jsonb_extract_path_text(ATTRIBUTES,'jurisdiction') AS jurisdiction,"
-            + "   role_category as role_category,"
-            + "   role_name as role_name,"
+            + "   role_category AS roleCategory,"
+            + "   role_name AS roleName,"
             + "   count(DISTINCT actor_id) AS count"
             + "  FROM role_assignment"
             + " WHERE role_type='ORGANISATION'"
-            + " GROUP BY jsonb_extract_path_text(attributes ,'jurisdiction'), role_category, role_name"
-            + " ORDER BY jsonb_extract_path_text(attributes ,'jurisdiction') asc, role_category ASC, role_name ASC;",
+            + " GROUP BY jsonb_extract_path_text(attributes ,'jurisdiction'), roleCategory, roleName"
+            + " ORDER BY jsonb_extract_path_text(attributes ,'jurisdiction') asc, roleCategory ASC, roleName ASC;",
         nativeQuery = true)
     List<JurisdictionRoleCategoryNameAndCount> getOrgUserCountByJurisdictionAndRoleName() throws SQLException;
 
-    @JsonPropertyOrder({ "jurisdiction", "role_category", "count"})
+    @JsonPropertyOrder({ "jurisdiction", "roleCategory", "count"})
     public interface JurisdictionRoleCategoryAndCount {
-        @JsonProperty("jurisdiction")
         String getJurisdiction();
 
-        @JsonProperty("role_category")
         String getRoleCategory();
 
-        @JsonProperty("count")
         BigInteger getCount();
     }
 
-    @JsonPropertyOrder({ "jurisdiction", "role_category", "role_name", "count"})
+    @JsonPropertyOrder({ "jurisdiction", "roleCategory", "roleName", "count"})
     public interface JurisdictionRoleCategoryNameAndCount {
-        @JsonProperty("jurisdiction")
         String getJurisdiction();
 
-        @JsonProperty("role_category")
         String getRoleCategory();
 
-        @JsonProperty("role_name")
         String getRoleName();
 
-        @JsonProperty("count")
         BigInteger getCount();
     }
 
