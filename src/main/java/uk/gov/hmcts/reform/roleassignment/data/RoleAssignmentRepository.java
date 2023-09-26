@@ -25,7 +25,7 @@ public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEn
     @Query(
         value = "SELECT"
             + "   jsonb_extract_path_text(ATTRIBUTES,'jurisdiction') AS jurisdiction,"
-            + "   role_category,"
+            + "   role_category as role_category,"
             + "   count(DISTINCT actor_id) AS count"
             + "  FROM role_assignment"
             + " WHERE role_type='ORGANISATION'"
@@ -37,8 +37,8 @@ public interface RoleAssignmentRepository extends JpaRepository<RoleAssignmentEn
     @Query(
         value = "SELECT"
             + "   jsonb_extract_path_text(ATTRIBUTES,'jurisdiction') AS jurisdiction,"
-            + "   role_category,"
-            + "   role_name,"
+            + "   role_category as role_category,"
+            + "   role_name as role_name,"
             + "   count(DISTINCT actor_id) AS count"
             + "  FROM role_assignment"
             + " WHERE role_type='ORGANISATION'"
