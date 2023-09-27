@@ -47,7 +47,7 @@ public class UserCountController {
             @SecurityRequirement(name = AUTHORIZATION),
             @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
         })
-    public ResponseEntity<Map<String, Object>> getOrgUserCount() throws SQLException, JsonProcessingException {
+    public ResponseEntity<Map<String, Object>> getOrgUserCount() throws JsonProcessingException {
         List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount> orgUserCountByJurisdiction =
             roleAssignmentRepository.getOrgUserCountByJurisdiction();
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
