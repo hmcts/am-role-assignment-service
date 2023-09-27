@@ -29,8 +29,6 @@ import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZ
 @RestController
 public class UserCountController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserCountController.class);
-
     @Autowired
     private TelemetryClient telemetryClient;
 
@@ -56,7 +54,7 @@ public class UserCountController {
         List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> orgUserCountByJurisdictionAndRoleName =
             roleAssignmentRepository.getOrgUserCountByJurisdictionAndRoleName();
         counts.put("OrgUserCountByJurisdictionAndRoleName", orgUserCountByJurisdictionAndRoleName);
-        logger.debug(ow.writeValueAsString(counts));
+        log.debug(ow.writeValueAsString(counts));
 
         Map<String, String> properties = ImmutableMap.of(
             "orgUserCountByJurisdiction", ow.writeValueAsString(orgUserCountByJurisdiction),
