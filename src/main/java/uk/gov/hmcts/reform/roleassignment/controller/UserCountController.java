@@ -54,7 +54,7 @@ public class UserCountController {
         counts.put("OrgUserCountByJurisdictionAndRoleName", orgUserCountByJurisdictionAndRoleName);
         log.debug(ow.writeValueAsString(counts));
 
-        Map<String, String> properties = ImmutableMap.of(
+        Map<String, String> properties = Map.of(
             "orgUserCountByJurisdiction", ow.writeValueAsString(orgUserCountByJurisdiction),
             "orgUserCountByJurisdictionAndRoleName", ow.writeValueAsString(orgUserCountByJurisdictionAndRoleName)
         );
