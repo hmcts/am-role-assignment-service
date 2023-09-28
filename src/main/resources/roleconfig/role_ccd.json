@@ -1846,8 +1846,7 @@
             "values": ["DIVORCE","PRIVATELAW"]
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["NFD","PRLAPPS"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -1883,8 +1882,7 @@
             "values": ["DIVORCE"]
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["NFD"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
@@ -1920,8 +1918,7 @@
             "values": ["DIVORCE"]
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["NFD"]
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true

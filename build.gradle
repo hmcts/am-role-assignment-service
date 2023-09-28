@@ -55,7 +55,7 @@ def versions = [
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
   feign_jackson  : '12.1',
-  drools         : '7.69.0.Final',
+  drools         : '7.73.0.Final',
   launchDarklySdk: '5.10.9',
   log4JVersion   : '2.19.0',
   logbackVersion : '1.2.10'
@@ -432,14 +432,14 @@ dependencies {
   implementation group: 'javax.inject', name: 'javax.inject', version: '1'
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.80'
-  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.79'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.80'
   implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.15.Final'
   implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.8'
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '9.25'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   implementation group: 'commons-io', name:'commons-io', version: '2.11.0'
-  implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.22'
+  implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.24.0'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   implementation group: 'org.json', name: 'json', version: '20230227'
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
