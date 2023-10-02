@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZATION2;
@@ -45,20 +46,46 @@ public class UserCountController {
         List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount> orgUserCountByJurisdiction =
             roleAssignmentRepository.getOrgUserCountByJurisdiction();
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        Map<String, Object> counts = new HashMap<>();
-        counts.put("OrgUserCountByJurisdiction", orgUserCountByJurisdiction);
+
+        Map<String, String> properties = Map.of(
+            "orgUserCountByJurisdiction", ow.writeValueAsString(orgUserCountByJurisdiction)
+        );
+        telemetryClient.trackEvent("orgUserCountByJurisdiction", properties,null);
+
+        Map<String, Object> counts1 = new HashMap<>();
+        counts1.put("OrgUserCountByJurisdiction", orgUserCountByJurisdiction);
+        log.debug(ow.writeValueAsString(counts1));
+
+
 
         List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> orgUserCountByJurisdictionAndRoleName =
             roleAssignmentRepository.getOrgUserCountByJurisdictionAndRoleName();
-        counts.put("OrgUserCountByJurisdictionAndRoleName", orgUserCountByJurisdictionAndRoleName);
-        log.debug(ow.writeValueAsString(counts));
+        //"IA","SSCS", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC"
+        List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> orgUserCountByJurisdictionIA =
+            orgUserCountByJurisdictionAndRoleName.stream()
+                .filter(row -> row.getJurisdiction() != null && row.getJurisdiction().equals("IA"))
+                .collect(
+                Collectors.toList());
 
-        Map<String, String> properties = Map.of(
-            "orgUserCountByJurisdiction", ow.writeValueAsString(orgUserCountByJurisdiction),
-            "orgUserCountByJurisdictionAndRoleName", ow.writeValueAsString(orgUserCountByJurisdictionAndRoleName)
+        List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> orgUserCountByJurisdictionNull =
+            orgUserCountByJurisdictionAndRoleName.stream()
+                .filter(row -> row.getJurisdiction() == null)
+                .collect(
+                    Collectors.toList());
+
+        properties = Map.of(
+            "orgUserCountByJurisdictionIA", ow.writeValueAsString(orgUserCountByJurisdictionIA),
+            "orgUserCountByJurisdictionNull", ow.writeValueAsString(orgUserCountByJurisdictionNull)
         );
 
-        telemetryClient.trackEvent("orgUserCount", properties,null);
-        return ResponseEntity.status(HttpStatus.OK).body(counts);
+        telemetryClient.trackEvent("orgUserCountByJurisdiction", properties,null);
+
+        Map<String, Object> counts2 = new HashMap<>();
+        counts2.put("OrgUserCountByJurisdictionAndRoleName", orgUserCountByJurisdictionAndRoleName);
+        log.debug(ow.writeValueAsString(counts2));
+
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+            "OrgUserCountByJurisdiction", orgUserCountByJurisdiction,
+        "OrgUserCountByJurisdictionAndRoleName", orgUserCountByJurisdictionAndRoleName));
     }
 }

@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.microsoft.applicationinsights.TelemetryClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
@@ -19,7 +16,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.*;
 
 class UserCountControllerTest {
 
@@ -33,21 +30,21 @@ class UserCountControllerTest {
     @Spy
     private final UserCountController sut = new UserCountController();
 
+    RoleAssignmentRepository.JurisdictionRoleCategoryAndCount userCountCategoryIA;
+    RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount userCountCategoryNameIA;
+    RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount userCountCategoryNameCIVIL;
+    RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount userCountCategoryNameNull;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-    }
 
-    @Test
-    @SuppressWarnings("unchecked")
-    void shouldGetUserCountResponse() throws SQLException, JsonProcessingException {
-
-        RoleAssignmentRepository.JurisdictionRoleCategoryAndCount userCount1 =
+        userCountCategoryIA =
             new RoleAssignmentRepository.JurisdictionRoleCategoryAndCount() {
 
                 @Override
                 public String getJurisdiction() {
-                    return "some jurisdiction";
+                    return "IA";
                 }
 
                 @Override
@@ -61,12 +58,12 @@ class UserCountControllerTest {
                 }
             };
 
-        RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount userCount2 =
+        userCountCategoryNameIA =
             new RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount() {
 
                 @Override
                 public String getJurisdiction() {
-                    return "some jurisdiction";
+                    return "IA";
                 }
 
                 @Override
@@ -85,8 +82,62 @@ class UserCountControllerTest {
                 }
             };
 
-        doReturn(List.of(userCount1)).when(roleAssignmentRepositoryMock).getOrgUserCountByJurisdiction();
-        doReturn(List.of(userCount2)).when(roleAssignmentRepositoryMock).getOrgUserCountByJurisdictionAndRoleName();
+        userCountCategoryNameCIVIL =
+            new RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount() {
+
+                @Override
+                public String getJurisdiction() {
+                    return "CIVIL";
+                }
+
+                @Override
+                public String getRoleCategory() {
+                    return "some role category";
+                }
+
+                @Override
+                public String getRoleName() {
+                    return "some role name";
+                }
+
+                @Override
+                public BigInteger getCount() {
+                    return BigInteger.ONE;
+                }
+            };
+
+        userCountCategoryNameNull =
+            new RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount() {
+
+                @Override
+                public String getJurisdiction() {
+                    return null;
+                }
+
+                @Override
+                public String getRoleCategory() {
+                    return "some role category";
+                }
+
+                @Override
+                public String getRoleName() {
+                    return "some role name";
+                }
+
+                @Override
+                public BigInteger getCount() {
+                    return BigInteger.valueOf(3);
+                }
+            };
+
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldGetUserCountResponse() throws SQLException, JsonProcessingException {
+
+        doReturn(List.of(userCountCategoryIA)).when(roleAssignmentRepositoryMock).getOrgUserCountByJurisdiction();
+        doReturn(List.of(userCountCategoryNameIA)).when(roleAssignmentRepositoryMock).getOrgUserCountByJurisdictionAndRoleName();
 
         ResponseEntity<Map<String, Object>> response = sut.getOrgUserCount();
         final List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount> responseOrgUserCountByJurisdiction =
@@ -102,6 +153,86 @@ class UserCountControllerTest {
         assertEquals(BigInteger.TEN, responseOrgUserCountByJurisdiction.get(0).getCount());
         assertEquals("some role category", responseOrgUserCountByJurisdiction.get(0).getRoleCategory());
         assertEquals(BigInteger.TWO, responseOrgUserCountByJurisdictionAndRoleName.get(0).getCount());
+        assertEquals("IA", responseOrgUserCountByJurisdictionAndRoleName.get(0).getJurisdiction());
     }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldGetUserCountResponseJurisdictionCIVIL() throws SQLException, JsonProcessingException {
+
+        doReturn(List.of(userCountCategoryIA)).when(roleAssignmentRepositoryMock).getOrgUserCountByJurisdiction();
+        doReturn(List.of(userCountCategoryNameCIVIL)).when(roleAssignmentRepositoryMock).getOrgUserCountByJurisdictionAndRoleName();
+
+        ResponseEntity<Map<String, Object>> response = sut.getOrgUserCount();
+        final List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount> responseOrgUserCountByJurisdiction =
+            (List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount>)
+                response.getBody().get("OrgUserCountByJurisdiction");
+        final List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount>
+            responseOrgUserCountByJurisdictionAndRoleName =
+            (List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount>)
+                response.getBody().get("OrgUserCountByJurisdictionAndRoleName");
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(BigInteger.TEN, responseOrgUserCountByJurisdiction.get(0).getCount());
+        assertEquals("some role category", responseOrgUserCountByJurisdiction.get(0).getRoleCategory());
+        assertEquals(BigInteger.ONE, responseOrgUserCountByJurisdictionAndRoleName.get(0).getCount());
+        assertEquals("CIVIL", responseOrgUserCountByJurisdictionAndRoleName.get(0).getJurisdiction());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldGetUserCountResponseJurisdictionNull() throws SQLException, JsonProcessingException {
+
+        doReturn(List.of(userCountCategoryIA)).when(roleAssignmentRepositoryMock).getOrgUserCountByJurisdiction();
+        doReturn(List.of(userCountCategoryNameNull)).when(roleAssignmentRepositoryMock).getOrgUserCountByJurisdictionAndRoleName();
+
+        ResponseEntity<Map<String, Object>> response = sut.getOrgUserCount();
+        final List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount> responseOrgUserCountByJurisdiction =
+            (List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount>)
+                response.getBody().get("OrgUserCountByJurisdiction");
+        final List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount>
+            responseOrgUserCountByJurisdictionAndRoleName =
+            (List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount>)
+                response.getBody().get("OrgUserCountByJurisdictionAndRoleName");
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(BigInteger.TEN, responseOrgUserCountByJurisdiction.get(0).getCount());
+        assertEquals("some role category", responseOrgUserCountByJurisdiction.get(0).getRoleCategory());
+        assertEquals(BigInteger.valueOf(3), responseOrgUserCountByJurisdictionAndRoleName.get(0).getCount());
+        assertEquals(null, responseOrgUserCountByJurisdictionAndRoleName.get(0).getJurisdiction());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldGetUserCountResponseList() throws SQLException, JsonProcessingException {
+
+        doReturn(List.of(userCountCategoryIA)).when(roleAssignmentRepositoryMock).getOrgUserCountByJurisdiction();
+        doReturn(List.of(userCountCategoryNameIA, userCountCategoryNameCIVIL, userCountCategoryNameNull)).when(roleAssignmentRepositoryMock).getOrgUserCountByJurisdictionAndRoleName();
+
+        ResponseEntity<Map<String, Object>> response = sut.getOrgUserCount();
+        final List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount> responseOrgUserCountByJurisdiction =
+            (List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount>)
+                response.getBody().get("OrgUserCountByJurisdiction");
+        final List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount>
+            responseOrgUserCountByJurisdictionAndRoleName =
+            (List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount>)
+                response.getBody().get("OrgUserCountByJurisdictionAndRoleName");
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(BigInteger.TEN, responseOrgUserCountByJurisdiction.get(0).getCount());
+        assertEquals("some role category", responseOrgUserCountByJurisdiction.get(0).getRoleCategory());
+        assertEquals(BigInteger.TWO, responseOrgUserCountByJurisdictionAndRoleName.get(0).getCount());
+        assertEquals("IA", responseOrgUserCountByJurisdictionAndRoleName.get(0).getJurisdiction());
+        assertEquals(BigInteger.ONE, responseOrgUserCountByJurisdictionAndRoleName.get(1).getCount());
+        assertEquals("CIVIL", responseOrgUserCountByJurisdictionAndRoleName.get(1).getJurisdiction());
+        assertEquals(BigInteger.valueOf(3), responseOrgUserCountByJurisdictionAndRoleName.get(2).getCount());
+        assertEquals(null, responseOrgUserCountByJurisdictionAndRoleName.get(2).getJurisdiction());
+
+    }
+
+
 
 }
