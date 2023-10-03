@@ -113,7 +113,7 @@ public class UserCountService {
     public List<String> getDistinctJurisdictions(
         List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> rows) {
         Set<String> jurisdictions = new HashSet<>(rows.size());
-        rows.stream().filter(p -> jurisdictions.add(p.getJurisdiction())).collect(Collectors.toList());
+        rows.stream().forEach(r -> jurisdictions.add(r.getJurisdiction()));
         return new ArrayList<>(jurisdictions);
     }
 }
