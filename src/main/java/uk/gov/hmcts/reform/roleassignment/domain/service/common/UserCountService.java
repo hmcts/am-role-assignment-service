@@ -19,11 +19,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class UserCountService {
+
+    static final String JURISDICTION_FILTER_KEY = "jurisdictionFilter";
+    static final String RESULTS_KEY = "results";
+    static final String TIMESTAMP_KEY = "timestamp";
 
     @Autowired
     private TelemetryClient telemetryClient;
@@ -40,8 +43,8 @@ public class UserCountService {
             roleAssignmentRepository.getOrgUserCountByJurisdiction();
 
         Map<String, String> properties = Map.of(
-            "result", ow.writeValueAsString(orgUserCountByJurisdiction),
-            "timestamp", timestamp
+            RESULTS_KEY, ow.writeValueAsString(orgUserCountByJurisdiction),
+            TIMESTAMP_KEY, timestamp
         );
 
         telemetryClient.trackEvent("orgUserCountByJurisdiction", properties,null);
@@ -91,26 +94,26 @@ public class UserCountService {
         Map<String, String> eventMap;
         if (jurisdiction != null) {
             eventMap = Map.of(
-                "jurisdictionFilter", jurisdiction,
-                "results", results,
-                "timestamp", timestamp);
+                JURISDICTION_FILTER_KEY, jurisdiction,
+                RESULTS_KEY, results,
+                TIMESTAMP_KEY, timestamp);
         } else {
             eventMap = Map.of(
-                "jurisdictionFilter", "NULL",
-                "results", results,
-                "timestamp", timestamp);
+                JURISDICTION_FILTER_KEY, "NULL",
+                RESULTS_KEY, results,
+                TIMESTAMP_KEY, timestamp);
         }
         return eventMap;
     }
 
-    public List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> filterRowsByJurisdiction(
+    private List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> filterRowsByJurisdiction(
         List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> rows, String jurisdiction) {
         return jurisdiction != null ? rows.stream().filter(r -> r.getJurisdiction() != null
-            && r.getJurisdiction().equals(jurisdiction)).collect(Collectors.toList()) :
-            rows.stream().filter(r -> r.getJurisdiction() == null).collect(Collectors.toList());
+            && r.getJurisdiction().equals(jurisdiction)).toList() :
+            rows.stream().filter(r -> r.getJurisdiction() == null).toList();
     }
 
-    public List<String> getDistinctJurisdictions(
+    private List<String> getDistinctJurisdictions(
         List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> rows) {
         Set<String> jurisdictions = new HashSet<>(rows.size());
         rows.stream().forEach(r -> jurisdictions.add(r.getJurisdiction()));
