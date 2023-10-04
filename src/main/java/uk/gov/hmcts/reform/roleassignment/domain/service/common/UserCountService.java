@@ -13,7 +13,6 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.ZoneOffset;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -39,32 +38,27 @@ public class UserCountService {
         String timestamp = LocalDateTime.now().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
+        // user count by jurisdiction
         List<RoleAssignmentRepository.JurisdictionRoleCategoryAndCount> orgUserCountByJurisdiction =
             roleAssignmentRepository.getOrgUserCountByJurisdiction();
-
         Map<String, String> properties = Map.of(
             RESULTS_KEY, ow.writeValueAsString(orgUserCountByJurisdiction),
             TIMESTAMP_KEY, timestamp
         );
-
         telemetryClient.trackEvent("orgUserCountByJurisdiction", properties,null);
-
-        Map<String, Object> counts1 = new HashMap<>();
-        counts1.put("OrgUserCountByJurisdiction", orgUserCountByJurisdiction);
-        log.debug(ow.writeValueAsString(counts1));
+        Map<String, Object> countsByJurisdiction = Map.of("OrgUserCountByJurisdiction", orgUserCountByJurisdiction);
+        log.debug(ow.writeValueAsString(countsByJurisdiction));
 
 
-
+        // user count by jurisdiction and role name
         List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> orgUserCountByJurisdictionAndRoleName =
             roleAssignmentRepository.getOrgUserCountByJurisdictionAndRoleName();
-
         List<Map<String, String>> eventList = getEventMapList(orgUserCountByJurisdictionAndRoleName, timestamp);
         eventList.stream().forEach(
             event -> telemetryClient.trackEvent("orgUserCountByJurisdictionAndRoleName", event,null));
-
-        Map<String, Object> counts2 = new HashMap<>();
-        counts2.put("OrgUserCountByJurisdictionAndRoleName", orgUserCountByJurisdictionAndRoleName);
-        log.debug(ow.writeValueAsString(counts2));
+        Map<String, Object> countsByJurisdictionAndRoleName = Map.of(
+            "OrgUserCountByJurisdictionAndRoleName", orgUserCountByJurisdictionAndRoleName);
+        log.debug(ow.writeValueAsString(countsByJurisdictionAndRoleName));
 
         return Map.of(
             "OrgUserCountByJurisdiction", orgUserCountByJurisdiction,
@@ -83,7 +77,6 @@ public class UserCountService {
             List<RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount> jurisdictionRows =
                 filterRowsByJurisdiction(rows, jurisdiction);
             String results = ow.writeValueAsString(jurisdictionRows);
-
             eventList.add(getEventMap(jurisdiction,results,timestamp));
         }
 
