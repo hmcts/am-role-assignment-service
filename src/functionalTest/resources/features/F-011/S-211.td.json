@@ -18,7 +18,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1607103938250138/specific-access-judiciary/${[scenarioContext][testData][users][befta4][id]}",
+        "reference": "1547572255509701/specific-access-judiciary/${[scenarioContext][testData][users][befta4][id]}",
         "process" : "specific-access",
         "replaceExisting" : true
       },
@@ -29,7 +29,7 @@
           "grantType" : "BASIC",
           "classification" : "PRIVATE",
           "attributes": {
-            "caseId": "1607103938250138",
+            "caseId": "1547572255509701",
             "requestedRole":"specific-access-judiciary"
           },
           "roleName": "specific-access-granted",
@@ -40,7 +40,7 @@
           "notes" : [{
               "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
               "time": "2022-01-01T00:00Z",
-              "comment": "Need Access to case number 1607103938250138 for a month"
+              "comment": "Need Access to case number 1547572255509701 for a month"
           }]
         },
         {
@@ -49,7 +49,7 @@
           "grantType" : "SPECIFIC",
           "classification" : "RESTRICTED",
           "attributes": {
-            "caseId": "1607103938250138",
+            "caseId": "1547572255509701",
             "requestedRole":"specific-access-judiciary"
           },
           "roleName" : "specific-access-judiciary",
@@ -61,7 +61,7 @@
             {
               "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
               "time": "2022-01-01T00:00Z",
-              "comment": "Need Access to case number 1607103938250138 for a month"
+              "comment": "Need Access to case number 1547572255509701 for a month"
             }
           ]
         }
@@ -95,7 +95,7 @@
             "readOnly": true,
             "attributes": {
               "requestedRole":"specific-access-judiciary",
-              "caseId": "1607103938250138",
+              "caseId": "1547572255509701",
               "jurisdiction" : "IA",
               "caseType" : "Asylum",
               "substantive" : "N"
@@ -103,7 +103,7 @@
             "notes" : [{
               "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
               "time": "2022-01-01T00:00Z",
-              "comment": "Need Access to case number 1607103938250138 for a month"
+              "comment": "Need Access to case number 1547572255509701 for a month"
             }
             ]
           },
@@ -119,7 +119,7 @@
             "readOnly": true,
             "attributes": {
               "requestedRole":"specific-access-judiciary",
-              "caseId": "1607103938250138",
+              "caseId": "1547572255509701",
               "jurisdiction" : "IA",
               "caseType" : "Asylum",
               "substantive" : "N"
@@ -127,7 +127,7 @@
             "notes" : [{
               "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
               "time": "2022-01-01T00:00Z",
-              "comment": "Need Access to case number 1607103938250138 for a month"
+              "comment": "Need Access to case number 1547572255509701 for a month"
             }
             ]
           }
