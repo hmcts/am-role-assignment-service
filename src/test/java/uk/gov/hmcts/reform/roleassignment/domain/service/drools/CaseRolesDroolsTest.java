@@ -139,7 +139,8 @@ class CaseRolesDroolsTest extends DroolBase {
         "ST_CIC,CriminalInjuriesCompensation,appraiser-2,JUDICIAL,PUBLIC,fee-paid-medical,",
         "ST_CIC,CriminalInjuriesCompensation,appraiser-2,JUDICIAL,PUBLIC,fee-paid-tribunal-member,",
         "ST_CIC,CriminalInjuriesCompensation,appraiser-2,JUDICIAL,PUBLIC,fee-paid-disability,",
-        "ST_CIC,CriminalInjuriesCompensation,appraiser-2,JUDICIAL,PUBLIC,fee-paid-financial,"
+        "ST_CIC,CriminalInjuriesCompensation,appraiser-2,JUDICIAL,PUBLIC,fee-paid-financial,",
+        "ST_CIC,CriminalInjuriesCompensation,allocated-legal-officer,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName,
                                        String roleCategory, String classification,
