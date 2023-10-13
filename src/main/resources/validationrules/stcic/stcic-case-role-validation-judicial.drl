@@ -180,6 +180,29 @@ then
 end;
 
 /*
+ * 8: ST_CIC "allocated-judge" case validation rule.
+ */
+
+rule "st_cic_allocated_judge_create_case_roles"
+when
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "ST_CIC",
+                 roleAssignment.attributes["caseType"].asText() == "CriminalInjuriesCompensation",
+                 roleAssignment.roleName == "allocated-judge")
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("judge","fee-paid-judge"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "ST_CIC")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : st_cic_allocated_judge_create_case_roles");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : st_cic_allocated_judge_create_case_roles");
+end;
+
+/*
  * The case roles can be deleted if CaseAllocatorApproval entity is available for requested role assignment.
  */
 
