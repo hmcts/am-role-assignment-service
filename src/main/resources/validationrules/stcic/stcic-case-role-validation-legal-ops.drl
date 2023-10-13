@@ -40,3 +40,25 @@ then
     update($ca.getRoleAssignment());
     logMsg("Rule : st_cic_allocated_legal_officer_create_case_roles");
 end;
+
+/*
+ * 2: ST_CIC "allocated-administrator" case validation rule.
+ */
+
+rule "st_cic_allocated_administrator_create_case_roles"
+when
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "ST_CIC",
+                 roleAssignment.attributes["caseType"].asText() == "CriminalInjuriesCompensation",
+                 roleAssignment.roleName == "allocated-administrator")
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("hmcts-admin")) // hmcts-admin role doesn't have jurisdiction attribute
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : st_cic_allocated_administrator_create_case_roles");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : st_cic_allocated_administrator_create_case_roles");
+end;
