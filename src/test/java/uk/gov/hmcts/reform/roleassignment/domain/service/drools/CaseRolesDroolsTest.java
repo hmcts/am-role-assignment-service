@@ -141,7 +141,10 @@ class CaseRolesDroolsTest extends DroolBase {
         "ST_CIC,CriminalInjuriesCompensation,appraiser-2,JUDICIAL,PUBLIC,fee-paid-disability,",
         "ST_CIC,CriminalInjuriesCompensation,appraiser-2,JUDICIAL,PUBLIC,fee-paid-financial,",
         "ST_CIC,CriminalInjuriesCompensation,allocated-legal-officer,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
-        "ST_CIC,CriminalInjuriesCompensation,allocated-administrator,ADMIN,RESTRICTED,hmcts-admin,Y",
+        "ST_CIC,CriminalInjuriesCompensation,allocated-legal-officer,LEGAL_OPERATIONS,RESTRICTED,"
+            + "senior-tribunal-caseworker,Y",
+        "ST_CIC,CriminalInjuriesCompensation,allocated-administrator,ADMIN,RESTRICTED,hearing-centre-admin,Y",
+        "ST_CIC,CriminalInjuriesCompensation,allocated-administrator,ADMIN,RESTRICTED,hearing-centre-team-leader,Y",
         "ST_CIC,CriminalInjuriesCompensation,allocated-judge,JUDICIAL,RESTRICTED,judge,Y",
         "ST_CIC,CriminalInjuriesCompensation,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y"
     })

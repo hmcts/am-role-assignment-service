@@ -32,7 +32,7 @@ when
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("tribunal-caseworker"),
+                 roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "ST_CIC")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -55,7 +55,8 @@ when
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("hmcts-admin")) // hmcts-admin role doesn't have jurisdiction attribute
+                 roleName in ("hearing-centre-admin", "hearing-centre-team-leader"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "ST_CIC")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : st_cic_allocated_administrator_create_case_roles");
