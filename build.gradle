@@ -394,7 +394,7 @@ dependencies {
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.7'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.10.RELEASE'
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.4'
-  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
+  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.4'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.3'
   implementation group: 'org.springframework', name: 'spring-core', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-beans', version: versions.spring
@@ -456,7 +456,7 @@ dependencies {
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
-  testImplementation('com.opentable.components:otj-pg-embedded:1.0.1')
+  testImplementation('com.opentable.components:otj-pg-embedded:1.0.2')
   testImplementation('com.github.tomakehurst:wiremock-jre8:2.35.1')
   testImplementation('org.springframework.cloud:spring-cloud-contract-wiremock:3.1.8')
   testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.4.0'
