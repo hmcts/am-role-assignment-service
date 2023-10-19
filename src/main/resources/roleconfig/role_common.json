@@ -3156,5 +3156,35 @@
         }
       }
     ]
+  },
+  {
+    "name": "cbus-system-user",
+    "label": "CBUS System User",
+    "description": "CBUS system user",
+    "category": "SYSTEM",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL"]
+          }
+        }
+      }
+    ]
   }
 ]
