@@ -908,4 +908,67 @@ class AllServicesOrgRoleTest extends DroolBase {
             assertEquals(Status.REJECTED, roleAssignment.getStatus());
         });
     }
+
+    @ParameterizedTest
+    @CsvSource({
+        "cbus-system-user,SYSTEM,CIVIL,UK"
+    })
+    void shouldApproveCivilOrgRequestedRoleForCbusSystemUser(String roleName,
+                                                                String roleCategory,
+                                                                String jurisdiction,
+                                                                String primaryLocation) {
+        assignmentRequest.getRequest().setClientId("civil_service");
+        assignmentRequest.getRequest().setProcess("civil-system-user");
+        assignmentRequest.getRequest().setReference("civil-cbus-system-user");
+        assignmentRequest.getRequest().setReplaceExisting(true);
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(CREATE_REQUESTED);
+            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode(primaryLocation));
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(APPROVED, roleAssignment.getStatus());
+            assertEquals(roleName, roleAssignment.getRoleName());
+            assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "cbus-system-user,SYSTEM,CIVIL"
+    })
+    void shouldDeleteCivilOrgRequestedRoleForCbusSystemUser(String roleName,
+                                                               String roleCategory,
+                                                               String jurisdiction) {
+        assignmentRequest.getRequest().setClientId("civil_service");
+        assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
+            roleAssignment.setRoleType(RoleType.ORGANISATION);
+            roleAssignment.setRoleName(roleName);
+            roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setStatus(Status.DELETE_REQUESTED);
+            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+        });
+
+        buildExecuteKieSession();
+
+        //assertion
+        assertFalse(assignmentRequest.getRequest().isByPassOrgDroolRule());
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            assertEquals(DELETE_APPROVED, roleAssignment.getStatus());
+            assertEquals(roleName, roleAssignment.getRoleName());
+            assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+        });
+    }
 }
