@@ -2,11 +2,6 @@ variable "product" {
   type = string
 }
 
-variable "product-V15" {
-  type = string
-  default="am-role-assignment-service"
-}
-
 variable "raw_product" {
   type    = string
   default = "am" // jenkins-library overrides product for PRs and adds e.g. pr-123-ia
@@ -14,11 +9,6 @@ variable "raw_product" {
 
 variable "component" {
   type = string
-}
-
-variable "component-V15" {
-  type = string
-  default="postgres-db-v15"
 }
 
 variable "location" {
@@ -70,7 +60,7 @@ variable "aks_subscription_id" {
 variable "team_contact" {
   type        = string
   description = "The name of your Slack channel people can use to contact your team about your infrastructure"
-  default     = "#refdata-pet"
+  default     = "#am-master-builds"
 }
 variable "destroy_me" {
   type        = string
@@ -93,21 +83,3 @@ variable "jenkins_AAD_objectId" {
   description = "(Required) The Azure AD object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies."
 }
 
-variable "pgsql_server_configuration" {
-  description = "Postgres server configuration"
-  type        = list(object({ name : string, value : string }))
-  default = [
-    {
-      name  = "azure.extensions"
-      value = "plpgsql"
-    },
-    {
-      name  = "azure.extensions"
-      value = "pg_stat_statements"
-    },
-    {
-      name  = "azure.extensions"
-      value = "pg_buffercache"
-    }
-  ]
-}

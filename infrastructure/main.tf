@@ -93,8 +93,20 @@ module "role-assignment-database-v11" {
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES-PASS-V15" {
-  name          = join("-", [var.component, "POSTGRES-PASS-V15"])
+  name          = "${var.component}-POSTGRES-PASS-V15"
   value         = module.role-assignment-database-v15.password
+  key_vault_id  = data.azurerm_key_vault.am_key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "POSTGRES-USER-V15" {
+  name         = "${var.component}-POSTGRES-USER-V15"
+  value        = module.role-assignment-database-v15.username
+  key_vault_id  = data.azurerm_key_vault.am_key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "POSTGRES-HOST-V15" {
+  name         = "${var.component}-POSTGRES-HOST-V15"
+  value        = module.role-assignment-database-v15.fqdn
   key_vault_id  = data.azurerm_key_vault.am_key_vault.id
 }
 
@@ -107,10 +119,10 @@ module "role-assignment-database-v15" {
 
   admin_user_object_id = var.jenkins_AAD_objectId
   business_area        = "cft"
-  name               = join("-", [var.product-V15,var.component-V15])
-  product            = var.product-V15
+  name               = join("-", [local.app_full_name, "postgres-db", "v15"])
+  product            = var.product
   env                = var.env
-  component          = var.component-V15
+  component          = var.component
   common_tags        = var.common_tags
   pgsql_version      = "15"
 
@@ -119,6 +131,13 @@ module "role-assignment-database-v15" {
         name = var.database_name
       }
     ]
+
+  pgsql_server_configuration = [
+        {
+          name  = "azure.extensions"
+          value = "plpgsql,pg_stat_statements,pg_buffercache"
+        }
+      ]
 }
 
 
