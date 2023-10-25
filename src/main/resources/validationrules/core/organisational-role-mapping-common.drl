@@ -165,3 +165,41 @@ then
     $ra.log("Delete approved : public_law_system_user_case_allocator_role_delete");
     update($ra);
 end;
+
+rule "civil_cbus_system_user_role_create"
+when
+    $rq: Request(
+             clientId == "civil_service",
+             process == "civil-system-user",
+             reference == "civil-cbus-system-user",
+             replaceExisting == true)
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.ORGANISATION,
+             classification == Classification.PUBLIC,
+             roleName in ("cbus-system-user"),
+             roleCategory == RoleCategory.SYSTEM,
+             grantType == GrantType.STANDARD,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "CIVIL")
+then
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Create approved : civil_cbus_system_user_role_create");
+    update($ra);
+    logMsg("Rule : civil_cbus_system_user_role_create");
+end;
+
+rule "civil_cbus_system_user_role_delete"
+when
+    $rq: Request(clientId == "civil_service")
+    $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.ORGANISATION,
+             roleCategory in (RoleCategory.SYSTEM),
+             roleName in ("cbus-system-user"),
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "CIVIL")
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : civil_cbus_system_user_role_delete");
+    update($ra);
+    logMsg("Rule :: civil_cbus_system_user_role_delete");
+end;
