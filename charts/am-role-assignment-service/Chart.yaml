@@ -8,5 +8,5 @@ maintainers:
   - name: Access Management Team
 dependencies:
   - name: java
-    version: 5.0.0
+    version: 5.0.1
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
