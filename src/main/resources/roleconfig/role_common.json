@@ -1840,11 +1840,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW"]
+            "values": ["SSCS", "PRIVATELAW","IAC"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord"]
+            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord","Asylum","Bail"]
           }
         }
       }
@@ -1874,11 +1874,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW"]
+            "values": ["SSCS", "PRIVATELAW","IAC"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord"]
+            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord","Asylum","Bail"]
           }
         }
       }
@@ -2464,8 +2464,7 @@
           "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
@@ -2500,8 +2499,7 @@
           "values": ["SPECIFIC"]
         },
         "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
+          "mandatory": true
         },
         "attributes": {
           "jurisdiction": {
