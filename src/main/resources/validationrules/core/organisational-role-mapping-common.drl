@@ -234,7 +234,7 @@ when
              roleType == RoleType.ORGANISATION,
              roleCategory in (RoleCategory.SYSTEM),
              roleName in ("hearing-manager","hearing-viewer"),
-             //  this allow delete of both invalid IAC and valid IA jurisdictions see AM-3005/AM-3033
+             //  this allows delete of both invalid IAC and valid IA jurisdictions see AM-3005/AM-3033
              attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("IAC", "IA"))
 then
     $ra.setStatus(Status.DELETE_APPROVED);
