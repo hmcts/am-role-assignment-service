@@ -1840,7 +1840,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW","IAC"]
+            "values": ["SSCS", "PRIVATELAW", "IA"]
           },
           "caseType": {
             "mandatory": true,
@@ -1874,7 +1874,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW","IAC"]
+            "values": ["SSCS", "PRIVATELAW", "IA"]
           },
           "caseType": {
             "mandatory": true,
