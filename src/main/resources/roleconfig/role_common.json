@@ -1840,11 +1840,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW"]
+            "values": ["SSCS", "PRIVATELAW", "IA"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord"]
+            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord","Asylum","Bail"]
           }
         }
       }
@@ -1874,11 +1874,11 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW"]
+            "values": ["SSCS", "PRIVATELAW", "IA"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord"]
+            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord","Asylum","Bail"]
           }
         }
       }
