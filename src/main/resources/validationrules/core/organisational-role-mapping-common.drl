@@ -218,7 +218,7 @@ when
              roleName in ("hearing-manager","hearing-viewer"),
              roleCategory == RoleCategory.SYSTEM,
              grantType == GrantType.STANDARD,
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IAC")
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IA")
 then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Create approved : iac_system_user_hearings_roles_create");
@@ -234,7 +234,8 @@ when
              roleType == RoleType.ORGANISATION,
              roleCategory in (RoleCategory.SYSTEM),
              roleName in ("hearing-manager","hearing-viewer"),
-             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "IAC")
+             //  this allows delete of both invalid IAC and valid IA jurisdictions see AM-3005/AM-3033
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() in ("IAC", "IA"))
 then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : iac_system_user_hearings_roles_delete");
