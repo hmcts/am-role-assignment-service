@@ -11,7 +11,6 @@ properties(
 
 @Library("Infrastructure")
 import uk.gov.hmcts.contino.AppPipelineDsl
-import uk.gov.hmcts.contino.GithubAPI
 
 def type = "java"
 def product = "am"
@@ -54,7 +53,7 @@ def secrets = [
 ]
 
 // Configure branches to sync with master branch
-def branchesToSync = ['demo', 'perftest', 'ithc']
+def branchesToSync = ['demo']
 
 // Vars needed for functional and smoke tests to run against AKS
 env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
@@ -97,11 +96,6 @@ withPipeline(type, product, component) {
 
   onPR {
     enableSlackNotifications('#am-master-builds')
-
-    def githubApi = new GithubAPI(this)
-    if (!githubApi.getLabelsbyPattern(env.BRANCH_NAME, "keep-helm")) {
-      enableCleanupOfHelmReleaseAlways()
-    }
   }
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)

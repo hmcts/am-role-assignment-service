@@ -18,7 +18,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1677150343037308/challenged-access-judiciary/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1697015890107802/challenged-access-judiciary/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "challenged-access",
         "replaceExisting" : true
       },
@@ -30,7 +30,7 @@
           "classification" : "PUBLIC",
           "attributes": {
             "jurisdiction": "CIVIL",
-            "caseId": "1677150343037308",
+            "caseId": "1697015890107802",
             "region": "7"
           },
           "roleName": "challenged-access-judiciary",
@@ -42,7 +42,7 @@
           "notes" : [{
             "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "time": "2022-01-01T00:00Z",
-            "comment": "Need Access to case number 1677150343037308 for a month"
+            "comment": "Need Access to case number 1697015890107802 for a month"
           }]
         }
       ]
@@ -74,7 +74,7 @@
             "classification" : "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
             "readOnly": "${[scenarioContext][testData][request][body][requestedRoles][0][readOnly]}",
             "attributes": {
-              "caseId": "1677150343037308",
+              "caseId": "1697015890107802",
               "contractType" : "Salaried",
               "jurisdiction" : "CIVIL",
               "caseType" : "CIVIL",
@@ -84,7 +84,7 @@
             "notes" : [{
               "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
               "time": "2022-01-01T00:00Z",
-              "comment": "Need Access to case number 1677150343037308 for a month"
+              "comment": "Need Access to case number 1697015890107802 for a month"
             }
             ]
           }
