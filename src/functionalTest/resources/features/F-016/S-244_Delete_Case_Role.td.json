@@ -1,6 +1,6 @@
 {
-  "title": "must successfully delete hearing-judge case role",
-  "_guid_": "S-241_Delete_Case_Role",
+  "title": "must successfully hearing-legal-adviser case role",
+  "_guid_": "S-244_Delete_Case_Role",
   "_extends_": "F-016_Test_Data_Base",
   "specs": [
     "to delete case role assignment for the same actor"
@@ -14,7 +14,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1691442422960274/hearing-judge"
+        "reference": "1691442422960274/hearing-legal-adviser"
       },
       "requestedRoles": [
       ]
@@ -34,6 +34,7 @@
           "replaceExisting": true
         },
         "requestedRoles": [
+
         ]
       }
     }
