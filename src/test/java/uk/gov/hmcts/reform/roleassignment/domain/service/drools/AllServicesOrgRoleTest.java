@@ -974,10 +974,10 @@ class AllServicesOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "hearing-manager,SYSTEM,IAC,Asylum",
-        "hearing-viewer,SYSTEM,IAC,Asylum",
-        "hearing-manager,SYSTEM,IAC,Bail",
-        "hearing-viewer,SYSTEM,IAC,Bail"
+        "hearing-manager,SYSTEM,IA,Asylum",
+        "hearing-viewer,SYSTEM,IA,Asylum",
+        "hearing-manager,SYSTEM,IA,Bail",
+        "hearing-viewer,SYSTEM,IA,Bail"
     })
     void shouldApproveOrgRequestedRoleForIacHearing(String roleName, String roleCategory, String jurisdiction,
                                                  String caseType) {
@@ -1009,8 +1009,8 @@ class AllServicesOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "hearing-manager,SYSTEM,IAC",
-        "hearing-viewer,SYSTEM,IAC"
+        "hearing-manager,SYSTEM,IA",
+        "hearing-viewer,SYSTEM,IA"
     })
     void shouldDeleteOrgRequestedRoleForIAcHearing(String roleName, String roleCategory, String jurisdiction) {
         assignmentRequest.getRequest().setClientId("iac");
