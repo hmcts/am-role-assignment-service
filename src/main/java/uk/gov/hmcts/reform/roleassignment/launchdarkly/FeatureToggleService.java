@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.interfaces.LDClientInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ public class FeatureToggleService {
     public static final String POST = "POST";
     public static final String DELETE = "DELETE";
 
-    @Autowired
     private LDClientInterface ldClient;
 
     @Value("${launchdarkly.sdk.environment}")
@@ -34,6 +32,10 @@ public class FeatureToggleService {
         getRequestMap.put("/am/role-assignments/fetchFlagStatus","get-db-drools-flag");
         postRequestMap.put("/am/role-assignments/createFeatureFlag","get-db-drools-flag");
         postRequestMap.put("/am/role-assignments/query/delete","advance_delete_api_flag");
+    }
+
+    public FeatureToggleService(LDClientInterface ldClient) {
+        this.ldClient = ldClient;
     }
 
     public boolean isFlagEnabled(String serviceName, String flagName) {

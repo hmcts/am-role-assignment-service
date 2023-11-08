@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.security;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
@@ -17,7 +16,6 @@ import java.util.List;
 public class IdamRoleService {
 
     private IdamRepository idamRepository;
-    @Autowired
     private OIdcAdminConfiguration oidcAdminConfiguration;
 
     public IdamRoleService(IdamRepository idamRepository, OIdcAdminConfiguration oidcAdminConfiguration) {

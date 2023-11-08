@@ -23,7 +23,7 @@ class UserCountControllerTest {
 
     @InjectMocks
     @Spy
-    private final UserCountController sut = new UserCountController();
+    private final UserCountController sut = new UserCountController(userCountServiceMock);
 
     @BeforeEach
     public void setUp() {

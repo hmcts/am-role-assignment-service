@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -71,7 +72,8 @@ class DeleteRoleAssignmentOrchestratorTest {
     private ValidationModelService validationModelService = mock(ValidationModelService.class);
     @Mock
     private PersistenceUtil persistenceUtil;
-
+    @Mock
+    private ApplicationContext applicationContext;
     private static final String ACTOR_ID = "21334a2b-79ce-44eb-9168-2d49a744be9c";
     private static final String PROCESS = "process";
     private static final String REFERENCE = "reference";

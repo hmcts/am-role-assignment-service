@@ -102,7 +102,7 @@ class PersistenceServiceTest {
     private final PersistenceService sut = new PersistenceService(
         historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil,
         databseChangelogLockRepository,
-        flagConfigRepository
+        flagConfigRepository,entityManager
     );
 
 

@@ -39,14 +39,14 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREAT
 @RunWith(MockitoJUnitRunner.class)
 class ParseRequestServiceTest {
 
-    @InjectMocks
-    private ParseRequestService sut = new ParseRequestService();
-
     @Mock
     private SecurityUtils securityUtilsMock = mock(SecurityUtils.class);
 
     @Mock
     private CorrelationInterceptorUtil correlationInterceptorUtilMock = mock(CorrelationInterceptorUtil.class);
+
+    @InjectMocks
+    private ParseRequestService sut = new ParseRequestService(securityUtilsMock,correlationInterceptorUtilMock);
 
     private static final String ROLE_TYPE = "CASE";
 

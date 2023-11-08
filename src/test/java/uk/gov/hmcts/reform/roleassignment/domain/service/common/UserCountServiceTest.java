@@ -33,7 +33,7 @@ class UserCountServiceTest {
     private RoleAssignmentRepository roleAssignmentRepositoryMock;
 
     @InjectMocks
-    private UserCountService sut = new UserCountService();
+    private UserCountService sut = new UserCountService(telemetryClientMock, roleAssignmentRepositoryMock);
 
     RoleAssignmentRepository.JurisdictionRoleCategoryAndCount userCountCategoryIa;
     RoleAssignmentRepository.JurisdictionRoleCategoryNameAndCount userCountCategoryNameIa;

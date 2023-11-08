@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.feignclients.configuration;
 
 import feign.RequestInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -13,12 +12,16 @@ import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 @Service
 public class DataStoreApiInterceptor {
 
-    @Autowired
     SecurityUtils securityUtils;
-    @Autowired
     IdamRepository idamRepository;
-    @Autowired
     OIdcAdminConfiguration oidcAdminConfiguration;
+
+    public DataStoreApiInterceptor(SecurityUtils securityUtils,IdamRepository idamRepository,
+                                   OIdcAdminConfiguration oidcAdminConfiguration) {
+        this.securityUtils = securityUtils;
+        this.idamRepository = idamRepository;
+        this.oidcAdminConfiguration = oidcAdminConfiguration;
+    }
 
     @Bean
     public RequestInterceptor requestInterceptor() {
