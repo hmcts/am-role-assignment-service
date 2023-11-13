@@ -2434,7 +2434,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "values": ["PUBLICLAW", "ST_CIC"]
           },
           "caseType": {
             "mandatory": true
