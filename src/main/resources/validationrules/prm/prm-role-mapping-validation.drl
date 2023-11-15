@@ -10,9 +10,9 @@ import function uk.gov.hmcts.reform.roleassignment.domain.service.common.Validat
 rule "prm_create_org_role"
 when
     $rq: Request(
-      clientId == "prm",
-      process == "prm-system-user",
-      reference == "prm-system-user-create")
+             clientId == "prm",
+             process == "prm-system-user",
+             reference == "prm-system-user-create")
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.ORGANISATION,
