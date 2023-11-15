@@ -23,7 +23,8 @@ when
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.ORGANISATION,
              roleCategory in (RoleCategory.LEGAL_OPERATIONS, RoleCategory.JUDICIAL,
-                              RoleCategory.ADMIN, RoleCategory.OTHER_GOV_DEPT, RoleCategory.CTSC) )
+                              RoleCategory.ADMIN, RoleCategory.OTHER_GOV_DEPT, RoleCategory.CTSC,
+                              RoleCategory.PROFESSIONAL) )
 then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Create approved : staff_organisational_role_mapping_service_create");
@@ -43,7 +44,8 @@ when
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.ORGANISATION,
              roleCategory in (RoleCategory.LEGAL_OPERATIONS, RoleCategory.JUDICIAL,
-                              RoleCategory.ADMIN, RoleCategory.OTHER_GOV_DEPT, RoleCategory.CTSC) )
+                              RoleCategory.ADMIN, RoleCategory.OTHER_GOV_DEPT, RoleCategory.CTSC,
+                              RoleCategory.PROFESSIONAL) )
 then
     $ra.setStatus(Status.DELETE_APPROVED);
     $ra.log("Delete approved : staff_organisational_role_mapping_service_delete");

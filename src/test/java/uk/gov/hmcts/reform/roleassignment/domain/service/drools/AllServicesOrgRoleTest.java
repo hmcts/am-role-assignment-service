@@ -1075,9 +1075,7 @@ class AllServicesOrgRoleTest extends DroolBase {
     })
     void shouldApproveOrgRequestedRoleByPrm(String roleName, String roleCategory, String jurisdiction,
                                                     String caseType, String caseAccessGroupId) {
-        assignmentRequest.getRequest().setClientId("prm");
-        assignmentRequest.getRequest().setProcess("prm-system-user");
-        assignmentRequest.getRequest().setReference("prm-system-user-create");
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.getRequest().setReplaceExisting(true);
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -1107,7 +1105,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         "Role1,PROFESSIONAL,SSCS"
     })
     void shouldDeleteOrgRequestedRoleByPrm(String roleName, String roleCategory, String jurisdiction) {
-        assignmentRequest.getRequest().setClientId("prm");
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setRoleCategory(RoleCategory.valueOf(roleCategory));
@@ -1135,9 +1133,7 @@ class AllServicesOrgRoleTest extends DroolBase {
     })
     void shouldRejectOrgRequestedRoleWithMissingCaseAccessGroupIdByPrm(String roleName, String roleCategory,
                                                                      String jurisdiction, String caseType) {
-        assignmentRequest.getRequest().setClientId("prm");
-        assignmentRequest.getRequest().setProcess("prm-system-user");
-        assignmentRequest.getRequest().setReference("prm-system-user-create");
+        assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.getRequest().setReplaceExisting(true);
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
