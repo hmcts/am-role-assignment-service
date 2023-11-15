@@ -12,13 +12,11 @@ when
     $rq: Request(
       clientId == "prm",
       process == "prm-system-user",
-      reference == "prm-system-user-create"
-    )
+      reference == "prm-system-user-create")
     $ra: RoleAssignment(
              status == Status.CREATE_REQUESTED,
              roleType == RoleType.ORGANISATION,
-             roleCategory == RoleCategory.PROFESSIONAL
-   )
+             roleCategory == RoleCategory.PROFESSIONAL)
 then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Create approved : prm_create_org_role");
