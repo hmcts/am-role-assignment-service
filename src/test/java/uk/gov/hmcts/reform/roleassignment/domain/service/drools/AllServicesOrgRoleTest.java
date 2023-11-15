@@ -1076,6 +1076,7 @@ class AllServicesOrgRoleTest extends DroolBase {
     void shouldApproveOrgRequestedRoleByPrm(String roleName, String roleCategory, String jurisdiction,
                                                     String caseType, String caseAccessGroupId) {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setProcess("professional-organisational-role-mapping");
         assignmentRequest.getRequest().setReplaceExisting(true);
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
@@ -1134,6 +1135,7 @@ class AllServicesOrgRoleTest extends DroolBase {
     void shouldRejectOrgRequestedRoleWithMissingCaseAccessGroupIdByPrm(String roleName, String roleCategory,
                                                                      String jurisdiction, String caseType) {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
+        assignmentRequest.getRequest().setProcess("professional-organisational-role-mapping");
         assignmentRequest.getRequest().setReplaceExisting(true);
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
