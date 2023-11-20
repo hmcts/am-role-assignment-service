@@ -35,6 +35,7 @@ java:
     RUN_DB_MIGRATION_ON_STARTUP: true
     RUN_LD_ON_STARTUP: true
     APPLICATION_LOGGING_LEVEL: DEBUG
+    # NO CHANGE: this PR is to allow a test of ORM FTAs against JRD V2 without using AAT RAS
   postgresql:
     enabled: true
     postgresqlPort: 5432
