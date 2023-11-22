@@ -2,7 +2,7 @@
   {
     "name":  "Role1",
     "label": "Role1",
-    "description": "Role 1",
+    "description": "For testing - to be deleted",
     "category": "PROFESSIONAL",
     "type": "ORGANISATION",
     "substantive": true,
