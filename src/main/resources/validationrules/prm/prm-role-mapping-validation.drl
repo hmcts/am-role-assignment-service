@@ -12,7 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 /*
   * Rule to validate the creation of professional organisational roles.
   * Note: this is the initial validation stage, after this rule the
-  * load_role_config_patterns & validate_role_assignment_against_patterns
+  * `load_role_config_patterns` & `validate_role_assignment_against_patterns`
   * rules are run to validate the role assignment against the json files.
   */
 rule "prm_create_org_role"
@@ -36,8 +36,8 @@ end;
 
 /*
   * Delete rule to remove professional organisational roles.
-  * This rule is required when replacing "replaceExisting": true
-  * is passed as part of role request.
+  * This rule is required when `"replaceExisting": true`
+  * is passed as part of the role request.
   */
 rule "prm_delete_org_role"
 when
