@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification.RESTRICTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.STANDARD;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
@@ -37,6 +38,7 @@ public class PrmOrgRoleTest extends DroolBase {
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName(roleName);
             roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setClassification(RESTRICTED);
             roleAssignment.setStatus(CREATE_REQUESTED);
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
             roleAssignment.getAttributes().put("caseType", convertValueJsonNode(caseType));
@@ -72,6 +74,7 @@ public class PrmOrgRoleTest extends DroolBase {
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName(roleName);
             roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setClassification(RESTRICTED);
             roleAssignment.setStatus(Status.DELETE_REQUESTED);
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
         });
@@ -102,6 +105,7 @@ public class PrmOrgRoleTest extends DroolBase {
             roleAssignment.setRoleType(RoleType.ORGANISATION);
             roleAssignment.setRoleName(roleName);
             roleAssignment.setGrantType(STANDARD);
+            roleAssignment.setClassification(RESTRICTED);
             roleAssignment.setStatus(CREATE_REQUESTED);
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
             roleAssignment.getAttributes().put("caseType", convertValueJsonNode(caseType));

@@ -13,10 +13,12 @@
           "values": ["ORGANISATION"]
         },
         "grantType": {
-          "mandatory": true
+          "mandatory": true,
+          "values": ["STANDARD"]
         },
         "classification": {
-          "mandatory": true
+          "mandatory": true,
+          "values": ["RESTRICTED"]
         },
         "attributes": {
           "jurisdiction": {
