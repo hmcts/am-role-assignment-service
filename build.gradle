@@ -14,7 +14,7 @@ buildscript {
 plugins {
   id 'eclipse'
   id 'application'
-  id 'uk.gov.hmcts.java' version '0.12.47'
+  id 'uk.gov.hmcts.java' version '0.12.48'
   id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.1.4'
@@ -51,7 +51,7 @@ def versions = [
   springSecurity : '5.7.10',
   springHystrix  : '2.1.1.RELEASE',
   swagger2Version: '2.10.5',
-  tomcat         : '9.0.82',
+  tomcat         : '9.0.83',
   pact_version   : '4.1.7',
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
@@ -394,9 +394,9 @@ dependencies {
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.7'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.10.RELEASE'
-  implementation group: 'org.apache.poi', name: 'poi', version: '5.2.4'
+  implementation group: 'org.apache.poi', name: 'poi', version: '5.2.5'
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.4'
-  implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.4'
+  implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.5'
   implementation group: 'org.springframework', name: 'spring-core', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-beans', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-aop', version: versions.spring
