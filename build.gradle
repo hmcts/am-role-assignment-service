@@ -534,16 +534,11 @@ dependencyManagement {
     dependencySet(group: 'org.apache.logging.log4j', version: versions.log4JVersion) {
       entry 'log4j-api'
       entry 'log4j-to-slf4j'
-//      entry 'log4j-slf4j-impl'
     }
     dependencySet(group: 'ch.qos.logback', version: versions.logbackVersion) {
       entry 'logback-classic'
       entry 'logback-core'
     }
-//    dependencySet(group: 'org.slf4j', version: '2.0.9') {
-//      entry 'slf4j-api'
-//      entry 'slf4j-log4j12'
-//    }
     dependencySet(group: 'net.minidev', version: '2.4.11') {
       entry 'json-smart'
     }
