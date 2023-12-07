@@ -27,11 +27,15 @@ public class UserCountService {
     static final String RESULTS_KEY = "results";
     static final String TIMESTAMP_KEY = "timestamp";
 
-    @Autowired
     private TelemetryClient telemetryClient;
 
-    @Autowired
     private RoleAssignmentRepository roleAssignmentRepository;
+
+    @Autowired
+    public UserCountService(TelemetryClient telemetryClient,RoleAssignmentRepository roleAssignmentRepository) {
+        this.telemetryClient = telemetryClient;
+        this.roleAssignmentRepository = roleAssignmentRepository;
+    }
 
     public Map<String, Object> getOrgUserCount() throws JsonProcessingException {
 

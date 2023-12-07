@@ -28,7 +28,7 @@ class FeatureToggleServiceTest {
     HttpServletRequest request;
 
     @InjectMocks
-    FeatureToggleService featureToggleService = new FeatureToggleService();
+    FeatureToggleService featureToggleService = new FeatureToggleService(ldClient);
 
     @BeforeEach
     public void setUp() {

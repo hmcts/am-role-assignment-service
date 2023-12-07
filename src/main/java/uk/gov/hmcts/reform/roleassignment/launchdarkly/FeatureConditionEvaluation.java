@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ForbiddenException;
@@ -16,10 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 public class FeatureConditionEvaluation implements HandlerInterceptor {
 
-    @Autowired
     private final FeatureToggleService featureToggleService;
 
-    @Autowired
     private final SecurityUtils securityUtils;
 
     @Override

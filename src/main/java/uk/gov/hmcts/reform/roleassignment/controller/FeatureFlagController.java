@@ -17,11 +17,15 @@ import io.swagger.v3.oas.annotations.Hidden;
 @Hidden
 public class FeatureFlagController {
 
-    @Autowired
     PersistenceService persistenceService;
 
-    @Autowired
     PersistenceUtil persistenceUtil;
+
+    @Autowired
+    public FeatureFlagController(PersistenceService persistenceService,PersistenceUtil persistenceUtil) {
+        this.persistenceService = persistenceService;
+        this.persistenceUtil = persistenceUtil;
+    }
 
     @GetMapping(value = "/am/role-assignments/fetchFlagStatus")
     public ResponseEntity<Object> getFeatureFlag(@RequestParam(value = "flagName") String flagName,

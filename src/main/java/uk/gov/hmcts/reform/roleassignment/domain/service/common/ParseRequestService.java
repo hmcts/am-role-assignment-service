@@ -32,11 +32,16 @@ import java.util.UUID;
 @Service
 public class ParseRequestService {
 
-    @Autowired
+
     private SecurityUtils securityUtils;
 
-    @Autowired
     private CorrelationInterceptorUtil correlationInterceptorUtil;
+
+    @Autowired
+    public ParseRequestService(SecurityUtils securityUtils,CorrelationInterceptorUtil correlationInterceptorUtil) {
+        this.securityUtils = securityUtils;
+        this.correlationInterceptorUtil = correlationInterceptorUtil;
+    }
 
     @Value("#{new Boolean('${org.request.byPassOrgDroolRule}')}")
     private boolean byPassOrgDroolRule;

@@ -27,7 +27,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
@@ -69,8 +68,6 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
     private FlagConfigRepository flagConfigRepository;
-    @Autowired
-    private FeatureToggleService featureToggleService;
 
     @Value("${roleassignment.query.sortcolumn}")
     private String sortColumn;
@@ -78,19 +75,20 @@ public class PersistenceService {
     @Value("${roleassignment.query.size}")
     private Integer defaultSize;
 
-    @Autowired
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
+    @Autowired
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
                               RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
                               DatabseChangelogLockRepository databseChangelogLockRepository,
-                              FlagConfigRepository flagConfigRepository) {
+                              FlagConfigRepository flagConfigRepository, EntityManager entityManager) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
         this.persistenceUtil = persistenceUtil;
         this.databseChangelogLockRepository = databseChangelogLockRepository;
         this.flagConfigRepository = flagConfigRepository;
+        this.entityManager = entityManager;
     }
 
     @Transactional

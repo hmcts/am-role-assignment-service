@@ -37,10 +37,13 @@ public class RoleAssignmentProviderTestConfiguration {
     @MockBean
     private CorrelationInterceptorUtil correlationInterceptorUtil;
 
+    @MockBean
+    private SecurityUtils securityUtils;
+
     @Bean
     @Primary
     public ParseRequestService getParseRequestService() {
-        return new ParseRequestService();
+        return new ParseRequestService(securityUtils,correlationInterceptorUtil);
     }
 
     private KieServices kieServices = KieServices.Factory.get();
@@ -49,10 +52,6 @@ public class RoleAssignmentProviderTestConfiguration {
     public KieContainer kieContainer() {
         return kieServices.getKieClasspathContainer();
     }
-
-    @MockBean
-    SecurityUtils securityUtils;
-
 
     @Bean
     public StatelessKieSession getStatelessKieSession() {

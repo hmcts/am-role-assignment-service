@@ -20,8 +20,13 @@ import static uk.gov.hmcts.reform.roleassignment.util.Constants.SERVICE_AUTHORIZ
 @Slf4j
 @RestController
 public class UserCountController {
-    @Autowired
+
     private UserCountService userCountService;
+
+    @Autowired
+    public UserCountController(UserCountService userCountService) {
+
+    }
 
     @GetMapping(
         path = "/am/role-assignments/user-count"

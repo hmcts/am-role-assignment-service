@@ -45,7 +45,7 @@ class FilterRequestUtilTest {
 
     @InjectMocks
     @Spy
-    private FilterRequestUtil sut = new FilterRequestUtil();
+    private FilterRequestUtil sut = new FilterRequestUtil(correlationInterceptorUtil);
 
     MockHttpServletRequest request = new MockHttpServletRequest();
 
