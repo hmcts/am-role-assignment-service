@@ -1810,7 +1810,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW","PRIVATELAW","EMPLOYMENT","IA"]
+            "values": ["PUBLICLAW","PRIVATELAW","EMPLOYMENT","IA","SSCS"]
           }
         }
       }
@@ -1998,7 +1998,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","PUBLICLAW","CIVIL","EMPLOYMENT","IA"]
+            "values": ["PRIVATELAW","PUBLICLAW","CIVIL","EMPLOYMENT","IA","SSCS"]
           }
         }
       }
