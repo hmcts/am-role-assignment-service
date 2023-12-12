@@ -14,7 +14,7 @@ buildscript {
 plugins {
   id 'eclipse'
   id 'application'
-  id 'uk.gov.hmcts.java' version '0.12.48'
+  id 'uk.gov.hmcts.java' version '0.12.51'
   id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.1.4'
@@ -395,7 +395,7 @@ dependencies {
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.7'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.10.RELEASE'
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.5'
-  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.4'
+  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.5'
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.5'
   implementation group: 'org.springframework', name: 'spring-core', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-beans', version: versions.spring
