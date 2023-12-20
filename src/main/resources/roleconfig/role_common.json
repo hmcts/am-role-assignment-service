@@ -1843,8 +1843,7 @@
             "values": ["SSCS", "PRIVATELAW", "IA"]
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord","Asylum","Bail"]
+            "mandatory": true
           }
         }
       }
@@ -1877,8 +1876,7 @@
             "values": ["SSCS", "PRIVATELAW", "IA"]
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord","Asylum","Bail"]
+            "mandatory": true
           }
         }
       }
