@@ -1,8 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.Before;
-import org.junit.Test;
+//import org.junit.Before;
+//import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
@@ -22,7 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
-import uk.gov.hmcts.reform.roleassignment.BaseTest;
+import uk.gov.hmcts.reform.roleassignment.BaseTestOriginal;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
@@ -50,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 
 @TestPropertySource(properties = {"dbFeature.flags.enable=iac_jrd_1_0"})
-public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
+public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTestIntegration {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentCreateAndDeleteIntegrationTest.class);
 
@@ -99,7 +101,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @MockBean
     private FeatureConditionEvaluation featureConditionEvaluation;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         template = new JdbcTemplate(ds);
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
@@ -460,7 +462,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     }
 
     @NotNull
-    private HttpHeaders getHttpHeaders() {
+    public HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.add(AUTHORIZATION, "Bearer user1");
         var s2SToken = MockUtils.generateDummyS2SToken(AUTHORISED_SERVICE);

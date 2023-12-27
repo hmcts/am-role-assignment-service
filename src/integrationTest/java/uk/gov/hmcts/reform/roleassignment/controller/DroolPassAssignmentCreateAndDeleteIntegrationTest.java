@@ -2,7 +2,9 @@ package uk.gov.hmcts.reform.roleassignment.controller;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
-import org.junit.Test;
+//import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
@@ -19,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
-import uk.gov.hmcts.reform.roleassignment.BaseTest;
+import uk.gov.hmcts.reform.roleassignment.BaseTestOriginal;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
@@ -53,7 +55,7 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getReque
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @TestPropertySource(properties = {"org.request.byPassOrgDroolRule=false", "dbFeature.flags.enable=iac_jrd_1_0"})
-public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
+public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTestIntegration {
 
     private static final Logger logger =
         LoggerFactory.getLogger(DroolPassAssignmentCreateAndDeleteIntegrationTest.class);
@@ -86,7 +88,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     @MockBean
     private FeatureConditionEvaluation featureConditionEvaluation;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
@@ -191,7 +193,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     }
 
     @NotNull
-    private HttpHeaders getHttpHeaders() {
+    public HttpHeaders getHttpHeaders() {
         return getHttpHeaders(AUTHORISED_SERVICE);
     }
 

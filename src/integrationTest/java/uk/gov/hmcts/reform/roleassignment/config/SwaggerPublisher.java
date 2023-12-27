@@ -6,7 +6,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.reform.roleassignment.BaseTest;
+import uk.gov.hmcts.reform.roleassignment.BaseTestOriginal;
 import javax.inject.Inject;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Each run of workflow .github/workflows/swagger.yml on master should automatically save and upload (if updated)
  * documentation.
  */
-public class SwaggerPublisher extends BaseTest {
+public class SwaggerPublisher extends BaseTestOriginal {
 
     private MockMvc mockMvc;
 

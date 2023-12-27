@@ -1,15 +1,22 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Before;
+//import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.Test;
+//import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,13 +25,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.reform.roleassignment.BaseTest;
+import uk.gov.hmcts.reform.roleassignment.BaseTestOriginal;
+import uk.gov.hmcts.reform.roleassignment.controller.utils.WiremockFixtures;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
+import uk.gov.hmcts.reform.roleassignment.health.CcdDataStoreHealthIndicator;
+import uk.gov.hmcts.reform.roleassignment.health.IdamServiceHealthIndicator;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,9 +47,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.createQueryRequest;
 
-public class RoleAssignmentIntegrationTest extends BaseTest {
+public class RoleAssignmentIntegrationTest extends BaseTestIntegration {
+
+    protected static final MediaType JSON_CONTENT_TYPE = new MediaType(
+        MediaType.APPLICATION_JSON.getType(),
+        MediaType.APPLICATION_JSON.getSubtype(),
+        StandardCharsets.UTF_8
+    );
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentIntegrationTest.class);
+
+//    private final WiremockFixtures wiremockFixtures = new WiremockFixtures();
     private static final String COUNT_HISTORY_RECORDS_QUERY = "SELECT count(1) as n FROM role_assignment_history";
 
     private static final String GET_ASSIGNMENT_STATUS_QUERY = "SELECT actor_id FROM role_assignment where id = ?";
@@ -56,12 +75,19 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     @Autowired
     private DataSource ds;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         template = new JdbcTemplate(ds);
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         MockitoAnnotations.openMocks(this);
+//        wiremockFixtures.resetRequests();
     }
+
+//    @BeforeAll
+//    public static void init() {
+//        mapper.registerModule(new JavaTimeModule());
+//        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+//    }
 
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {
@@ -285,7 +311,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     }
 
     @NotNull
-    private HttpHeaders getHttpHeaders() {
+    public HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("ServiceAuthorization", "Bearer " + "1234");
         headers.add("Authorization", "Bearer " + "2345");

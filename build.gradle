@@ -152,6 +152,20 @@ sourceSets {
   }
 }
 
+idea {
+  module {
+    // config to allow Intelij to mark test source and resource files correctly to help linting tools
+    testSources.from(java.sourceSets.functionalTest.java.srcDirs)
+    testSources.from(java.sourceSets.integrationTest.java.srcDirs)
+    testSources.from(java.sourceSets.smokeTest.java.srcDirs)
+    testSources.from(java.sourceSets.contractTest.java.srcDirs)
+    testResources.from(java.sourceSets.functionalTest.resources.srcDirs)
+    testResources.from(java.sourceSets.integrationTest.resources.srcDirs)
+    testResources.from(java.sourceSets.smokeTest.resources.srcDirs)
+    testResources.from(java.sourceSets.contractTest.resources.srcDirs)
+  }
+}
+
 tasks.withType(JavaCompile) {
   options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 }
@@ -367,6 +381,13 @@ repositories {
   }
 }
 
+tasks.named('integration') {
+  useJUnitPlatform()
+
+  testLogging {
+    exceptionFormat = 'full'
+  }
+}
 
 dependencies {
   implementation(group: 'org.springframework.boot', name:'spring-boot-starter-web', version: versions.springBoot) {
@@ -456,6 +477,7 @@ dependencies {
   implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.20'
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
+  implementation group: 'io.projectreactor', name: 'reactor-core', version: '3.5.11'
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.0.2')
   testImplementation('com.github.tomakehurst:wiremock-jre8:2.35.1')
@@ -580,5 +602,9 @@ rootProject.tasks.named("processFunctionalTestResources") {
 }
 
 rootProject.tasks.named("processIntegrationTestResources") {
+  duplicatesStrategy = 'include'
+}
+
+rootProject.tasks.named("processContractTestResources") {
   duplicatesStrategy = 'include'
 }

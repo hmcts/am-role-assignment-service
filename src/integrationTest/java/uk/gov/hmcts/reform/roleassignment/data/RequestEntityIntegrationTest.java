@@ -7,13 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
-import uk.gov.hmcts.reform.roleassignment.BaseTest;
+import uk.gov.hmcts.reform.roleassignment.BaseTestOriginal;
 
 import javax.sql.DataSource;
 
 import static org.junit.Assert.assertEquals;
 
-public class RequestEntityIntegrationTest extends BaseTest {
+public class RequestEntityIntegrationTest extends BaseTestOriginal {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestEntityIntegrationTest.class);
 

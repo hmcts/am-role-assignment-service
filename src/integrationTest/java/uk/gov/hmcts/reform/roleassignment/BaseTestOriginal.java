@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
+//import org.junit.BeforeClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ import java.util.Properties;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public abstract class BaseTest {
+public abstract class BaseTestOriginal extends uk.gov.hmcts.reform.roleassignment.controller.BaseTest {
 
     protected static final ObjectMapper mapper = new ObjectMapper();
 
