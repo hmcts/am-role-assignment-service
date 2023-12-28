@@ -1,19 +1,19 @@
 package uk.gov.hmcts.reform.roleassignment.data;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
-import uk.gov.hmcts.reform.roleassignment.BaseTestOriginal;
+import uk.gov.hmcts.reform.roleassignment.controller.BaseTestIntegration;
 
 import javax.sql.DataSource;
 
 import static org.junit.Assert.assertEquals;
 
-public class RequestEntityIntegrationTest extends BaseTestOriginal {
+public class RequestEntityIntegrationTest extends BaseTestIntegration {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestEntityIntegrationTest.class);
 
@@ -26,7 +26,7 @@ public class RequestEntityIntegrationTest extends BaseTestOriginal {
 
     private JdbcTemplate template;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         template = new JdbcTemplate(ds);
     }
