@@ -38,5 +38,5 @@ then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
     $ca.getRoleAssignment().log("Stage 1 approved : privatelaw_allocated_legal_adviser_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : pprivatelaw_allocated_legal_adviser_create_case_roles");
+    logMsg("Rule : privatelaw_allocated_legal_adviser_create_case_roles");
 end;
