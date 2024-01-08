@@ -1,6 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
@@ -22,6 +26,7 @@ import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJ
 
 @RunWith(MockitoJUnitRunner.class)
 class CCDCaseRolesTest extends DroolBase {
+
     @Test
     void shouldRejectCaseRequestedRolesForUnauthoriseRequest() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
@@ -314,4 +319,83 @@ class CCDCaseRolesTest extends DroolBase {
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
     }
+
+    @Nested
+    @DisplayName("IDAM Disposer CCD Case Roles Tests")
+    class IdamDisposerCaseRolesTest {
+
+        static final String IDAM_DISPOSER_CLIENT_ID = "disposer-idam-user";
+
+        @Test
+        void shouldApproveCreateCaseRoleForCitizenFromIdamDisposer() {
+
+            // GIVEN
+            assignmentRequest.setRequestedRoles(List.of(createRequestedRole(RoleCategory.CITIZEN)));
+            assignmentRequest.getRequest().setClientId(IDAM_DISPOSER_CLIENT_ID);
+            setDisposerFeatureFlag(true);
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+        }
+
+        @ParameterizedTest
+        @EnumSource(
+            value = RoleCategory.class,
+            names = { "CITIZEN" },
+            mode = EnumSource.Mode.EXCLUDE
+        )
+        void shouldRejectCreateCaseRoleForNonCitizenFromIdamDisposer(RoleCategory roleCategory) {
+
+            // GIVEN
+            assignmentRequest.setRequestedRoles(List.of(createRequestedRole(roleCategory)));
+            assignmentRequest.getRequest().setClientId(IDAM_DISPOSER_CLIENT_ID);
+            setDisposerFeatureFlag(true);
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+        }
+
+        @Test
+        void shouldRejectCreateCaseRoleForCitizenFromIdamDisposer_flagDisabled() {
+
+            // GIVEN
+            assignmentRequest.setRequestedRoles(List.of(createRequestedRole(RoleCategory.CITIZEN)));
+            assignmentRequest.getRequest().setClientId(IDAM_DISPOSER_CLIENT_ID);
+            setDisposerFeatureFlag(false); // i.e. disable flag
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+        }
+
+        private RoleAssignment createRequestedRole(RoleCategory roleCategory) {
+            RoleAssignment requestedRole1 = getRequestedCaseRole_ra(roleCategory,
+                                                                    "[CREATOR]", SPECIFIC, "caseId",
+                                                                    "1234567890123456", CREATE_REQUESTED);
+            requestedRole1.setClassification(Classification.RESTRICTED);
+            requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+                                                         "caseType", convertValueJsonNode("Asylum"),
+                                                         "caseId", convertValueJsonNode("1234567890123456")));
+
+            return requestedRole1;
+        }
+
+        private void setDisposerFeatureFlag(boolean status) {
+            FeatureFlag featureFlag  =  FeatureFlag.builder()
+                .flagName(FeatureFlagEnum.DISPOSER_1_0.getValue())
+                .status(status)
+                .build();
+
+            featureFlags.add(featureFlag);
+        }
+    }
+
 }
