@@ -69,15 +69,4 @@ public class WiremockFixtures {
 
     }
 
-    static {
-        if (!WIRE_MOCK_SERVER.isRunning()) {
-            WIRE_MOCK_SERVER.start();
-        }
-
-        OBJECT_MAPPER.registerModule(new JavaTimeModule());
-        OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        OBJECT_MAPPER.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-        // Force re-initialisation of base types for each test suite
-    }
-
 }
