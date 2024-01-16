@@ -12,7 +12,7 @@
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
         "process": "professional-organisational-role-mapping",
-        "reference": "${[scenarioContext][customValues][generateUUID]}",
+        "reference": "${[scenarioContext][customValues][generateS2STokenForOrm]}",
         "replaceExisting": true
       },
       "requestedRoles": [
