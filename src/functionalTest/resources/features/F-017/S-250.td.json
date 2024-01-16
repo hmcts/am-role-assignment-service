@@ -65,7 +65,7 @@
             "beginTime" : "[[ANYTHING_PRESENT]]",
             "endTime" : "[[ANYTHING_PRESENT]]",
             "process" : "professional-organisational-role-mapping",
-            "reference" : "${[scenarioContext][customValues][generateUUID]}",
+            "reference" : "[[ANYTHING_PRESENT]]",
             "status" : "LIVE",
             "created" : "[[ANYTHING_PRESENT]]",
             "log" : "[[ANYTHING_PRESENT]]",
