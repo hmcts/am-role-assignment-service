@@ -2432,7 +2432,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW", "ST_CIC"]
+            "values": ["PUBLICLAW", "ST_CIC", "PRIVATELAW"]
           },
           "caseType": {
             "mandatory": true
@@ -2467,7 +2467,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "values": ["PUBLICLAW", "PRIVATELAW"]
           },
         "caseType": {
           "mandatory": true
