@@ -12,7 +12,7 @@
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
         "process": "professional-organisational-role-mapping",
-        "reference": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "${[scenarioContext][customValues][generateUUID]}",
         "replaceExisting": true
       },
       "requestedRoles": [
@@ -65,7 +65,7 @@
             "beginTime" : "[[ANYTHING_PRESENT]]",
             "endTime" : "[[ANYTHING_PRESENT]]",
             "process" : "professional-organisational-role-mapping",
-            "reference" : "133a98d2-50d1-34b3-833e-f5712af8c15e",
+            "reference" : "${[scenarioContext][customValues][generateUUID]}",
             "status" : "LIVE",
             "created" : "[[ANYTHING_PRESENT]]",
             "log" : "[[ANYTHING_PRESENT]]",

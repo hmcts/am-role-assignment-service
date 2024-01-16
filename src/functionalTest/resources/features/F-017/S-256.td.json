@@ -42,23 +42,7 @@
               "caseType" : "12345"
             },
             "authorisations" : [ "Test123" ]
-          }, {
-            "id" : "[[ANYTHING_PRESENT]]",
-            "actorIdType" : "[[ANYTHING_PRESENT]]",
-            "actorId" : "[[ANYTHING_PRESENT]]",
-            "roleType" : "ORGANISATION",
-            "roleName" : "Role1",
-            "classification" : "PUBLIC",
-            "grantType" : "STANDARD",
-            "roleCategory" : "PROFESSIONAL",
-            "readOnly" : false,
-            "beginTime" : "[[ANYTHING_PRESENT]]",
-            "endTime" : "[[ANYTHING_PRESENT]]",
-            "created" : "[[ANYTHING_PRESENT]]",
-            "attributes" : {
-              "caseAccessGroupId" : "12345"
-            }
-          } ]
+          }]
       }
     }
   }
