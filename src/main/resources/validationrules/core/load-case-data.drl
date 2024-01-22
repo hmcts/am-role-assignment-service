@@ -23,7 +23,7 @@ when
     $ra: RoleAssignment(
              attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
      not Case(id == $caseId)
-     not Request(clientId in ("ccd_data", "aac_manage_case_assignment", "ccd_case_disposer"))
+     not Request(clientId in ("ccd_data", "aac_manage_case_assignment", "ccd_case_disposer", "disposer-idam-user"))
 then
   try {
   	insert(DATA_SERVICE.getCaseById($caseId));
