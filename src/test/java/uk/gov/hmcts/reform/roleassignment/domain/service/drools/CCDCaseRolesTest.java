@@ -83,19 +83,6 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Test
-    void shouldApproveCreaterCaseRoleDisposerIdamUser() {
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.DISPOSER_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
-        verifyCreateCaseRequestedRole_CCD_1_0("[CREATOR]", "disposer-idam-user", RoleCategory.CITIZEN);
-
-        //verify retrieveDataService is not used as ClientId = disposer-idam-user
-        RetrieveDataService retrieveDataService = getRetrieveDataService();
-        verifyNoInteractions(retrieveDataService);
-    }
-
-    @Test
     void shouldApprovePetSolicitorCaseRole() {
         verifyCreateCaseRequestedRole_CCD_1_0("[PETSOLICITOR]", "ccd_data", RoleCategory.PROFESSIONAL);
     }
@@ -400,6 +387,10 @@ class CCDCaseRolesTest extends DroolBase {
 
             // THEN
             assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+
+            //verify retrieveDataService is not used as ClientId = disposer-idam-user
+            RetrieveDataService retrieveDataService = getRetrieveDataService();
+            verifyNoInteractions(retrieveDataService);
         }
 
         @ParameterizedTest
@@ -420,6 +411,10 @@ class CCDCaseRolesTest extends DroolBase {
 
             // THEN
             assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+
+            //verify retrieveDataService is not used as ClientId = disposer-idam-user
+            RetrieveDataService retrieveDataService = getRetrieveDataService();
+            verifyNoInteractions(retrieveDataService);
         }
 
         @Test
@@ -435,6 +430,10 @@ class CCDCaseRolesTest extends DroolBase {
 
             // THEN
             assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+
+            //verify retrieveDataService is not used as ClientId = disposer-idam-user
+            RetrieveDataService retrieveDataService = getRetrieveDataService();
+            verifyNoInteractions(retrieveDataService);
         }
 
         private RoleAssignment createRequestedRole(RoleCategory roleCategory) {
