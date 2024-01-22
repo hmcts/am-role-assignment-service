@@ -13,11 +13,14 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
@@ -40,6 +43,30 @@ class CCDCaseRolesTest extends DroolBase {
         buildExecuteKieSession();
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+
+        //verify retrieveDataService is used as ClientId = null
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verify(retrieveDataService).getCaseById("1234567890123456");
+    }
+
+    @Test
+    void shouldRejectCaseRequestedRolesForUnauthoriseRequestNoLoadCaseData() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
+                                                                "[PETSOLICITOR]", SPECIFIC, "caseId",
+                                                                "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        assignmentRequest.getRequest().setClientId("ccd_data");
+        FeatureFlag featureFlag  =  FeatureFlag.builder()
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        buildExecuteKieSession();
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+
+        //verify retrieveDataService is not used as ClientId = ccd_data
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verifyNoInteractions(retrieveDataService);
     }
 
     @Test
@@ -49,6 +76,23 @@ class CCDCaseRolesTest extends DroolBase {
                                               RoleCategory.LEGAL_OPERATIONS);
         verifyCreateCaseRequestedRole_CCD_1_0("[CREATOR]", "aac_manage_case_assignment",
                                               RoleCategory.CITIZEN);
+
+        //verify retrieveDataService is not used as ClientId = ccd_data or aac_manage_case_assignment
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verifyNoInteractions(retrieveDataService);
+    }
+
+    @Test
+    void shouldApproveCreaterCaseRoleDisposerIdamUser() {
+        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.DISPOSER_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        verifyCreateCaseRequestedRole_CCD_1_0("[CREATOR]", "disposer-idam-user", RoleCategory.CITIZEN);
+
+        //verify retrieveDataService is not used as ClientId = disposer-idam-user
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verifyNoInteractions(retrieveDataService);
     }
 
     @Test
@@ -92,6 +136,10 @@ class CCDCaseRolesTest extends DroolBase {
         buildExecuteKieSession();
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+
+        //verify retrieveDataService is not used as ClientId = ccd_data
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verifyNoInteractions(retrieveDataService);
     }
 
     @Test
@@ -114,6 +162,10 @@ class CCDCaseRolesTest extends DroolBase {
         buildExecuteKieSession();
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+
+        //verify retrieveDataService is not used as ClientId = ccd_data
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verifyNoInteractions(retrieveDataService);
     }
 
     @Test
@@ -140,6 +192,7 @@ class CCDCaseRolesTest extends DroolBase {
     @Test
     void shouldApproveDeletePetsolicitorCaserole() {
         verifyDeleteCaseRequestRole_CCD_1_0("[PETSOLICITOR]", "ccd_data", RoleCategory.PROFESSIONAL);
+        verifyDeleteCaseRequestRole_CCD_1_0("[PETSOLICITOR]", "ccd_case_disposer", RoleCategory.PROFESSIONAL);
     }
 
     @Test
@@ -190,6 +243,10 @@ class CCDCaseRolesTest extends DroolBase {
         buildExecuteKieSession();
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
+
+        //verify retrieveDataService is not used as ClientId = ccd_data
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verifyNoInteractions(retrieveDataService);
     }
 
     @Test
@@ -273,6 +330,10 @@ class CCDCaseRolesTest extends DroolBase {
         buildExecuteKieSession();
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+
+        //verify retrieveDataService is not used as ClientId = ccd_data
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verifyNoInteractions(retrieveDataService);
     }
 
     @Test
