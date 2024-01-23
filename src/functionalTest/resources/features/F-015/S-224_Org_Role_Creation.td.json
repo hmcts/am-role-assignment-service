@@ -14,7 +14,8 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S_201_Org_Role_For_Multiple_Actors"
+        "reference": "S_201_Org_Role_For_Multiple_Actors",
+        "process": "businessProcess1"
       },
       "requestedRoles": [
         {
@@ -61,7 +62,7 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-            "process": "specific-access",
+            "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
@@ -77,7 +78,7 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-            "process": "specific-access",
+            "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
