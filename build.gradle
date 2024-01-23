@@ -410,7 +410,6 @@ dependencies {
   implementation group: 'org.springframework', name: 'spring-tx', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-web', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-webmvc', version: versions.spring
-  implementation group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
 
   implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.8'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.8'
