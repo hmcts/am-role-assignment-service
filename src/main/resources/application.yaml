@@ -11,6 +11,8 @@ management:
       enabled: true
     diskspace:
       enabled: true
+    probes:
+      enabled: true
   endpoint:
     health:
       show-details: "always"
