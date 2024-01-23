@@ -207,5 +207,7 @@ public abstract class DroolBase {
         featureFlags.clear();
     }
 
-
+    public RetrieveDataService getRetrieveDataService() {
+        return retrieveDataService;
+    }
 }
