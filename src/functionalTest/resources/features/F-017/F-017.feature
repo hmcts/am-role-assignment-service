@@ -1,5 +1,5 @@
 @F-017
-Feature: F-017 : Create Role Assignments
+Feature: F-017 : Create Role Assignments for Group Access
 
   Background:
     Given an appropriate test context as detailed in the test data source
