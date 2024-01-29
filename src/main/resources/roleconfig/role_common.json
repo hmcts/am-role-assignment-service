@@ -187,7 +187,7 @@
             "values": ["PUBLICLAW","PRIVATELAW"]
           },
           "primaryLocation": {
-            "mandatory": true
+            "mandatory": false
           }
         }
       }
