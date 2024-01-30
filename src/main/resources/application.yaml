@@ -11,12 +11,17 @@ management:
       enabled: true
     diskspace:
       enabled: true
+    probes:
+      enabled: true
   endpoint:
     health:
       show-details: "always"
       enabled: true
       cache:
         time-to-live: 1s
+      group:
+        readiness:
+          include: "db"
     # METRICS ENDPOINT CONFIG
     # Enable the metrics endpoint
     metrics:
