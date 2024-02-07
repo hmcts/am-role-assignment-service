@@ -42,30 +42,7 @@
               "caseType" : "12345"
             },
             "authorisations" : [ "Test123" ]
-          },
-         {
-          "id" : "[[ANYTHING_PRESENT]]",
-          "actorIdType" : "IDAM",
-          "actorId" : "[[ANYTHING_PRESENT]]",
-          "roleType" : "ORGANISATION",
-          "roleName" : "Role1",
-          "classification" : "RESTRICTED",
-          "grantType" : "STANDARD",
-          "roleCategory" : "PROFESSIONAL",
-          "readOnly" : false,
-          "beginTime" : "[[ANYTHING_PRESENT]]",
-          "endTime" : "[[ANYTHING_PRESENT]]",
-          "created" : "[[ANYTHING_PRESENT]]",
-          "attributes" : {
-            "caseAccessGroupId" : "12345",
-            "substantive" : "Y",
-            "contractType" : "Salaried",
-            "primaryLocation" : "UK",
-            "jurisdiction" : "PRIVATELAW",
-            "caseType" : "12345"
-          },
-          "authorisations" : [ "Test123" ]
-        } ]
+          } ]
       }
     }
   }

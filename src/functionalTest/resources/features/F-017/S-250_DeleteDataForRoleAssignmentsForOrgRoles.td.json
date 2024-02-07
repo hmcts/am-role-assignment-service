@@ -21,7 +21,7 @@
     },
     "pathVariables": {
       "process": "professional-organisational-role-mapping",
-      "reference": "06376f69-e6a1-473c-99ca-ed968543b80d"
+      "reference": "${[scenarioContext][parentContext][testData][request][body][roleRequest][reference]}"
     }
   },
   "expectedResponse": {
