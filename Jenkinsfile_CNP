@@ -34,7 +34,8 @@ def vaultOverrides = [
 def secrets = [
   's2s-${env}': [
     secret('microservicekey-am-role-assignment-service', 'AM_ROLE_ASSIGNMENT_SERVICE_SECRET'),
-    secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET')
+    secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
+    secret('microservicekey-am-org-role-mapping-service', 'AM_ORG_S2S_SECRET')
   ],
   'am-${env}': [
       secret('role-assignment-service-IDAM-CLIENT-SECRET', 'ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET'),
