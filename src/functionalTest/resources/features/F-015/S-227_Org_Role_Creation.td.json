@@ -60,13 +60,17 @@
         },
         "requestedRoles": [
           {
+            "__ordering__": "UNORDERED",
+            "__elementId__": "roleName"
+          },
+          {
             "_extends_": "ResponseRequestedRole",
             "process": "[[ANYTHING_PRESENT]]",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
             "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
-            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
+            "roleName": "case-allocator",
             "attributes":
             {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
@@ -81,7 +85,7 @@
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][1][roleType]}",
             "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][1][roleCategory]}",
-            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][1][roleName]}",
+            "roleName": "tribunal-caseworker",
             "attributes":
             {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][jurisdiction]}",

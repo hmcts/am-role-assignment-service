@@ -59,6 +59,10 @@
         },
         "requestedRoles": [
           {
+            "__ordering__": "UNORDERED",
+            "__elementId__": "roleName"
+          },
+          {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "process": "businessProcess1",
