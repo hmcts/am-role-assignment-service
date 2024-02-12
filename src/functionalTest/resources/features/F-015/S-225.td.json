@@ -1,11 +1,11 @@
 {
-  "title": "must successfully create hearing-judge case role",
-  "_guid_": "S-224",
+  "title": "must successfully create allocated-judge case role",
+  "_guid_": "S-225",
   "_extends_": "F-015_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
     "Befta3 - who is the actor for requested role",
-    "contains hearing-judge case role assignment"
+    "contains allocated-judge case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -16,13 +16,13 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1697012039998506/hearing-judge"
+        "reference": "1697012039998506/allocated-judge"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "hearing-judge",
+          "roleName": "allocated-judge",
           "roleCategory": "JUDICIAL",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
@@ -54,15 +54,16 @@
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "process" : "specific-access",
-            "roleName": "hearing-judge",
-            "roleCategory": "JUDICIAL",
-            "roleType": "CASE",
-            "grantType": "SPECIFIC",
+            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
+            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
             "attributes":
             {
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
-              "jurisdiction" : "PRIVATELAW",
-              "caseType" : "PRLAPPS"
+              "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
+              "caseType" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}",
+              "substantive": "Y"
             }
           }
         ]
