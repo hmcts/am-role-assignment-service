@@ -85,8 +85,8 @@ class CivilSystemRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "hearing-manager,SYSTEM,CIVIL,PRLAPPS",
-        "hearing-viewer,SYSTEM,CIVIL,PRLAPPS",
+        "hearing-manager,SYSTEM,CIVIL,CIVIL",
+        "hearing-viewer,SYSTEM,CIVIL,CIVIL",
         "hearing-manager,SYSTEM,CIVIL,CIVIL_ExceptionRecord",
         "hearing-viewer,SYSTEM,CIVIL,CIVIL_ExceptionRecord"
     })
