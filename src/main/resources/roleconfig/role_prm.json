@@ -133,7 +133,7 @@
             "mandatory": true
           },
           "caseAccessGroupId": {
-            "mandatory": true
+            "mandatory": false
           }
         }
       }
@@ -168,7 +168,7 @@
             "mandatory": true
           },
           "caseAccessGroupId": {
-            "mandatory": true
+            "mandatory": false
           }
         }
       }
