@@ -33,5 +33,145 @@
         }
       }
     ]
+  },
+  {
+    "name":  "groupname1",
+    "label": "groupname1",
+    "description": "Sample role for testing - to be deleted",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseAccessGroupId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "groupname2",
+    "label": "groupname2",
+    "description": "Sample role for testing - to be deleted",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseAccessGroupId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "organisationRoleName1",
+    "label": "organisationRoleName1",
+    "description": "Sample role for testing - to be deleted",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseAccessGroupId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name":  "organisationRoleName2",
+    "label": "organisationRoleName2",
+    "description": "Sample role for testing - to be deleted",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseAccessGroupId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
