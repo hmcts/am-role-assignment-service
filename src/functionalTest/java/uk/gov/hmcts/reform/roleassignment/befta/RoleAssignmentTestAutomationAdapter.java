@@ -27,6 +27,8 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
                 return new TokenUtils().generateServiceToken(buildCcdSpecificConfig());
             case ("generateS2STokenForXui"):
                 return new TokenUtils().generateServiceToken(buildXuiSpecificConfig());
+            case ("generateS2STokenForOrm"):
+                return new TokenUtils().generateServiceToken(buildOrmSpecificConfig());
             case ("tomorrow"):
                 return LocalDate.now().plusDays(1);
             case ("today"):
@@ -54,6 +56,14 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
         UserTokenProviderConfig config = new UserTokenProviderConfig();
         config.setMicroService("xui_webapp");
         config.setSecret(System.getenv("XUI_WEBAPP_S2S_SECRET"));
+        config.setS2sUrl(EnvironmentVariableUtils.getRequiredVariable("IDAM_S2S_URL"));
+        return config;
+    }
+
+    private UserTokenProviderConfig buildOrmSpecificConfig() {
+        UserTokenProviderConfig config = new UserTokenProviderConfig();
+        config.setMicroService("am_org_role_mapping_service");
+        config.setSecret(System.getenv("AM_ORG_S2S_SECRET"));
         config.setS2sUrl(EnvironmentVariableUtils.getRequiredVariable("IDAM_S2S_URL"));
         return config;
     }

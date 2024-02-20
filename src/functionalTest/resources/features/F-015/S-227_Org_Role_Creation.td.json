@@ -1,9 +1,9 @@
 {
-  "_guid_": "S-224_Org_Role_Creation",
+  "_guid_": "S-227_Org_Role_Creation",
   "_extends_": "F-015_Test_Data_Base",
   "specs": [
-    "to create org role assignments for actors & requester",
-    "Befta3 - who is the actor for requested role"
+    "Befta3 - who is the actor for requested role",
+    "to create org role assignments for actors & requester"
   ],
   "users": {
     "invokingUser": {
@@ -14,7 +14,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S_201_Org_Role_For_Multiple_Actors",
+        "reference": "S-227_Org_Role_Creation",
         "process": "businessProcess1"
       },
       "requestedRoles": [
@@ -22,25 +22,25 @@
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "case-allocator",
-          "roleCategory": "JUDICIAL",
+          "roleCategory": "LEGAL_OPERATIONS",
           "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "PRIVATELAW",
-            "primaryLocation": "abc"
+            "primaryLocation": "123456"
           }
         },
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "judge",
-          "roleCategory": "JUDICIAL",
+          "roleName": "tribunal-caseworker",
+          "roleCategory": "LEGAL_OPERATIONS",
           "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "PRIVATELAW",
-            "primaryLocation": "abc",
-            "region": "2"
+            "primaryLocation": "123456",
+            "region": "7"
           }
         }
       ]
@@ -65,16 +65,16 @@
           },
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "process": "[[ANYTHING_PRESENT]]",
-            "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
-            "roleCategory": "JUDICIAL",
+            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
             "roleName": "case-allocator",
             "attributes":
             {
-              "jurisdiction": "PRIVATELAW",
-              "primaryLocation": "abc",
+              "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
+              "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][primaryLocation]}",
               "substantive": "N"
             }
           },
@@ -82,16 +82,16 @@
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "process": "[[ANYTHING_PRESENT]]",
-            "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
-            "roleCategory": "JUDICIAL",
-            "roleName": "judge",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][1][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
+            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][1][roleCategory]}",
+            "roleName": "tribunal-caseworker",
             "attributes":
             {
-              "jurisdiction": "PRIVATELAW",
-              "primaryLocation": "abc",
-              "substantive": "Y",
-              "region": "2"
+              "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][jurisdiction]}",
+              "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][primaryLocation]}",
+              "region": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][region]}",
+              "substantive": "Y"
             }
           }
         ]

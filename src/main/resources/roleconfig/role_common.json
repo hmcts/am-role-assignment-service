@@ -184,10 +184,10 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "values": ["PUBLICLAW","PRIVATELAW"]
           },
           "primaryLocation": {
-            "mandatory": true
+            "mandatory": false
           }
         }
       }
@@ -1840,7 +1840,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW", "IA"]
+            "values": ["SSCS", "PRIVATELAW", "IA", "CIVIL"]
           },
           "caseType": {
             "mandatory": true
@@ -1873,7 +1873,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW", "IA"]
+            "values": ["SSCS", "PRIVATELAW", "IA", "CIVIL"]
           },
           "caseType": {
             "mandatory": true
