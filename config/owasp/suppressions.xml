@@ -8,12 +8,4 @@
     <notes>https://tools.hmcts.net/jira/browse/AM-2952 plexus</notes>
     <cve>CVE-2022-4245</cve>
   </suppress>
-  <suppress>
-    <notes>https://tools.hmcts.net/jira/browse/DTSAM-154 commons-compress</notes>
-    <cve>CVE-2024-25710</cve>
-  </suppress>
-  <suppress>
-    <notes>https://tools.hmcts.net/jira/browse/DTSAM-155 commons-compress</notes>
-    <cve>CVE-2024-26308</cve>
-  </suppress>
 </suppressions>
