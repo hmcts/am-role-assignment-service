@@ -171,9 +171,9 @@
     ]
   },
   {
-    "name": "post-hearing-judge",
-    "label": "Post Hearing Judge",
-    "description": "Post Hearing Judge role for judicial users",
+    "name": "post-hearing-salaried-judge",
+    "label": "Post Hearing Salaried Judge",
+    "description": "Post Hearing Salaried Judge role for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "type": "ORGANISATION",
