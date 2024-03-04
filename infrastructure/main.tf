@@ -41,6 +41,12 @@ resource "azurerm_key_vault_secret" "am_role_assignment_service_s2s_secret" {
 
 resource "azurerm_key_vault_secret" "POSTGRES-USER" {
   name          = join("-", [var.component, "POSTGRES-USER"])
+  value         = var.postgresql_user
+  key_vault_id  = data.azurerm_key_vault.am_key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "POSTGRES-USER" {
+  name          = join("-", [var.component, "POSTGRES-USER"])
   value         = module.role-assignment-database-v11.user_name
   key_vault_id  = data.azurerm_key_vault.am_key_vault.id
 }
@@ -128,6 +134,14 @@ module "role-assignment-database-v15" {
 
   # Setup Access Reader db user
   force_user_permissions_trigger = "1"
+
+  # Sets correct DB owner after migration to fix permissions
+  enable_schema_ownership = var.enable_schema_ownership
+  force_schema_ownership_trigger = "1"
+  kv_subscription = var.kv_subscription
+  kv_name = data.azurerm_key_vault.am_key_vault.name
+  user_secret_name = azurerm_key_vault_secret.POSTGRES-USER.name
+  pass_secret_name = azurerm_key_vault_secret.POSTGRES-PASS.name
 
   # The original subnet is full, this is required to use the new subnet for new databases
   subnet_suffix = "expanded"
