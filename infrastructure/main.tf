@@ -41,12 +41,6 @@ resource "azurerm_key_vault_secret" "am_role_assignment_service_s2s_secret" {
 
 resource "azurerm_key_vault_secret" "POSTGRES-USER" {
   name          = join("-", [var.component, "POSTGRES-USER"])
-  value         = var.postgresql_user
-  key_vault_id  = data.azurerm_key_vault.am_key_vault.id
-}
-
-resource "azurerm_key_vault_secret" "POSTGRES-USER" {
-  name          = join("-", [var.component, "POSTGRES-USER"])
   value         = module.role-assignment-database-v11.user_name
   key_vault_id  = data.azurerm_key_vault.am_key_vault.id
 }
