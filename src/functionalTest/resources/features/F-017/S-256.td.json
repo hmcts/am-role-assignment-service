@@ -5,11 +5,11 @@
   "specs": [
     "has a actor id passed that does exists",
     "contains a single Role Assignment with only mandatory fields",
-    "Befta1 - who invokes the API"
+    "Befta6 - who invokes the API"
   ],
   "request": {
     "pathVariables": {
-      "actorId": "${[scenarioContext][testData][users][invokingUser][id]}"
+      "actorId": "${[scenarioContext][childContexts][S-256_Org_Role_Creation][testData][request][body][requestedRoles][0][actorId]}"
     }
   },
   "expectedResponse": {

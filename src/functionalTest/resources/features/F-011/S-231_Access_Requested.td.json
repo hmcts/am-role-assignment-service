@@ -34,7 +34,7 @@
           "roleName": "specific-access-requested",
           "roleCategory": "JUDICIAL",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "endTime" : "2024-03-02T00:00Z",
+          "endTime" : "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
           "readOnly": true,
           "notes" : [{
             "userId": "${[scenarioContext][testData][users][invokingUser][id]}",

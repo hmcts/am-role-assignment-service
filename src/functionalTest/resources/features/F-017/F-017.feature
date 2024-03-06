@@ -68,7 +68,7 @@ Feature: F-017 : Create Role Assignments for Group Access
   @S-256
   Scenario: Invoking GET role assignment with valid actorId and returns 200 OK
     Given an appropriate test context as detailed in the test data source,
-    And a user [Befta1 - who invokes the API],
+    And a user [Befta6 - who invokes the API],
     And a successful call [to create org role assignments for actors & requester] as in [S-256_Org_Role_Creation],
     When a request is prepared with appropriate values,
     And the request [has a actor id passed that does exists],

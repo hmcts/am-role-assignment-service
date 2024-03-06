@@ -7,7 +7,7 @@
   ],
   "users": {
     "invokingUser": {
-      "_extends_": "AmBeftaUser1"
+      "_extends_": "AmBeftaUser6"
     }
   },
   "request": {
@@ -33,7 +33,7 @@
           "roleName": "Role1",
           "roleCategory": "PROFESSIONAL",
           "actorIdType": "IDAM",
-          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "authorisations": [
             "Test123"
           ]
