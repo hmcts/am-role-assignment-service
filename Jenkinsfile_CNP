@@ -82,7 +82,8 @@ env.PACT_BROKER_PORT = "443"
 env.PACT_BROKER_SCHEME = "https"
 
 // Var to turn FTAs that rely on the RAS-CCD case validation on/off, i.e. when CCD is not available.
-env.AZURE_CASE_VALIDATION_FTA_ENABLED = "true"
+// DTSAM-163 temp misconfigure: env.AZURE_CASE_VALIDATION_FTA_ENABLED = "true"
+env.AZURE_CASE_VALIDATION_FTA_ENABLED = "false"
 
 withPipeline(type, product, component) {
   onMaster {
