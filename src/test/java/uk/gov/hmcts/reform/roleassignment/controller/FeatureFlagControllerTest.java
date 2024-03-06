@@ -41,14 +41,13 @@ class FeatureFlagControllerTest {
     @Test
     void getFlagStatus() {
 
-        String flagName = "iac_1_1";
+        String flagName = "ccd_bypass_1_0";
         String env = "pr";
 
         Mockito.when(persistenceService.getStatusByParam(flagName, env)).thenReturn(Boolean.TRUE);
         ResponseEntity<Object> responseEntity = sut.getFeatureFlag(flagName, env);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertTrue((Boolean) Objects.requireNonNull(responseEntity.getBody()));
-
     }
 
     @Test
@@ -56,8 +55,8 @@ class FeatureFlagControllerTest {
 
         FlagRequest flagRequest = FlagRequest.builder()
             .env("pr")
-            .flagName("iac_1_1")
-            .serviceName("iac")
+            .flagName("ccd_bypass_1_0")
+            .serviceName("ccd")
             .status(Boolean.TRUE)
             .build();
 
@@ -75,6 +74,5 @@ class FeatureFlagControllerTest {
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertNotNull(responseEntity.getBody());
-
     }
 }

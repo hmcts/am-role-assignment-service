@@ -31,7 +31,6 @@ import java.time.temporal.ChronoUnit;
  */
 rule "ia_case_allocator_approved_create_case_manager_role_v11"
 when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "IA",
@@ -55,7 +54,6 @@ end;
  */
 rule "ia_case_allocator_approved_create_tribunal_caseworker_role_v11"
 when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "IA",
@@ -81,7 +79,6 @@ end;
 
 rule "ia_case_allocator_approved_create_case_allocator_role_v11"
 when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_1_1.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "IA",

@@ -7,10 +7,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -52,9 +50,6 @@ class IacJudicialCaseRoleTest extends DroolBase {
                                                                 IA_CASE_ID, CREATE_REQUESTED);
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(
             TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
@@ -89,12 +84,6 @@ class IacJudicialCaseRoleTest extends DroolBase {
                                                                 "1234567890123456", DELETE_REQUESTED);
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        FeatureFlag featureFlag1  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-        featureFlags.add(featureFlag1);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
@@ -122,9 +111,6 @@ class IacJudicialCaseRoleTest extends DroolBase {
                                                                 SPECIFIC, "caseId",
                                                                 IA_CASE_ID, CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(
             TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
@@ -154,9 +140,6 @@ class IacJudicialCaseRoleTest extends DroolBase {
                                                                 IA_CASE_ID, CREATE_REQUESTED);
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1, requestedRole2));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(
             TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
@@ -189,9 +172,6 @@ class IacJudicialCaseRoleTest extends DroolBase {
                                                                 IA_CASE_ID, CREATE_REQUESTED);
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(
             TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
@@ -216,9 +196,6 @@ class IacJudicialCaseRoleTest extends DroolBase {
                                                                 "1234567890123456", CREATE_REQUESTED);
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
 
         Map<String, JsonNode> attributes = new HashMap<>();
         attributes.put("jurisdiction", convertValueJsonNode("IA"));
@@ -248,10 +225,6 @@ class IacJudicialCaseRoleTest extends DroolBase {
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
         executeDroolRules(List.of(
             TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
                                               "case-allocator",
@@ -277,10 +250,6 @@ class IacJudicialCaseRoleTest extends DroolBase {
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
         executeDroolRules(List.of(
             TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
                                               "case-allocator",
@@ -301,10 +270,6 @@ class IacJudicialCaseRoleTest extends DroolBase {
         RoleAssignment requestedRole1 = getRequestedCaseRole(RoleCategory.JUDICIAL, "case-allocator",
                                                              SPECIFIC);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(
             TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),
@@ -328,11 +293,6 @@ class IacJudicialCaseRoleTest extends DroolBase {
                                                                 "1234567890123456", CREATE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
-
         executeDroolRules(List.of(TestDataBuilder.buildExistingRole(assignmentRequest.getRequest().getAssignerId(),
                                                                     "case-allocator",
                                                                     RoleCategory.JUDICIAL,
@@ -355,10 +315,6 @@ class IacJudicialCaseRoleTest extends DroolBase {
         List<RoleAssignment> requestedRoles = new ArrayList<>();
         requestedRoles.add(requestedRole1);
         assignmentRequest.setRequestedRoles(requestedRoles);
-
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
 
         ExistingRoleAssignment existingActorAssignment1 = TestDataBuilder.buildExistingRole(
             requestedRole1.getActorId(),
@@ -397,10 +353,6 @@ class IacJudicialCaseRoleTest extends DroolBase {
         requestedRoles.add(requestedRole1);
         assignmentRequest.setRequestedRoles(requestedRoles);
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
-
         ExistingRoleAssignment existingActorAssignment1 = TestDataBuilder.buildExistingRole(
             requestedRole1.getActorId(),
             "leadership-judge",
@@ -435,9 +387,6 @@ class IacJudicialCaseRoleTest extends DroolBase {
                                                                 "1234567890123456", CREATE_REQUESTED);
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
-            .status(false).build();
-        featureFlags.add(featureFlag);
 
         executeDroolRules(List.of(
             TestDataBuilder.buildExistingRole(requestedRole1.getActorId(),

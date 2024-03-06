@@ -5,7 +5,6 @@ Feature: F-011 : Create Specific Role Assignments
     Given an appropriate test context as detailed in the test data source
 
   @S-210
-  @FeatureToggle(RAS:iac_specific_1_0=on)
   Scenario: must successfully create specific access requested role for judiciary
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -20,7 +19,6 @@ Feature: F-011 : Create Specific Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-210_DeleteDataForRoleAssignmentsForRequestedRole].
 
   @S-212
-  @FeatureToggle(RAS:iac_specific_1_0=on)
   Scenario: must successfully create specific access denied by requester
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -35,7 +33,6 @@ Feature: F-011 : Create Specific Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-212_DeleteDataForRoleAssignmentsForOrgRoles],
 
   @S-231
-  @FeatureToggle(RAS:iac_specific_1_0=on)
   Scenario: must successfully create specific access granted role for CIVIL judiciary
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -50,7 +47,6 @@ Feature: F-011 : Create Specific Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-231_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-232
-  @FeatureToggle(RAS:iac_specific_1_0=on)
   Scenario: must successfully create specific access denied role for PRIVATELAW admin
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],

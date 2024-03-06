@@ -24,7 +24,6 @@ import java.time.temporal.ChronoUnit;
 
 rule "civil_create_specific_access_case_role"
 when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.IAC_SPECIFIC_1_0.getValue())
     $rq: Request(
              // The assigner must be the current user.
              assignerId == authenticatedUserId,

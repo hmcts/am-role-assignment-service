@@ -5,7 +5,6 @@ Feature: F-014 : Create Challenged Access Role for Privatelaw
     Given an appropriate test context as detailed in the test data source
 
   @S-219
-  @FeatureToggle(RAS:iac_challenged_1_0=on)
   Scenario: must successfully create challenged-access-ctsc role
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -19,7 +18,6 @@ Feature: F-014 : Create Challenged Access Role for Privatelaw
     And a successful call [to delete role assignments just created above] as in [S-219_DeleteDataForRoleAssignmentsForChallengedAccess].
 
   @S-220
-  @FeatureToggle(RAS:iac_challenged_1_0=on)
   Scenario: must successfully create challenged-access-legal-ops role
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],

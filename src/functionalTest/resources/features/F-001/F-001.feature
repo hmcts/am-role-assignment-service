@@ -401,7 +401,6 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
   @S-202
-  @FeatureToggle(RAS:iac_jrd_1_0=on)
   Scenario: must successfully create lead-judge Case Role Assignment
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -418,7 +417,6 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-202_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-203
-  @FeatureToggle(RAS:iac_jrd_1_0=on)
   Scenario: must successfully create hearing-judge Case Role Assignment
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -435,7 +433,6 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-203_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-204
-  @FeatureToggle(RAS:iac_jrd_1_0=on)
   Scenario: must successfully create ftpa-judge Case Role Assignment
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -452,7 +449,6 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-204_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-205
-  @FeatureToggle(RAS:iac_jrd_1_0=on)
   Scenario: must successfully create hearing-panel-judge Case Role Assignment
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
@@ -469,7 +465,6 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-205_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-206
-  @FeatureToggle(RAS:iac_jrd_1_0=on)
   Scenario: must successfully create case-allocator Case Role Assignment
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
