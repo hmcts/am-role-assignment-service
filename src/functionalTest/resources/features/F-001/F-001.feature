@@ -453,7 +453,7 @@ Feature: F-001 : Create Role Assignments
     And a successful call [to delete role assignments just created above] as in [S-204_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-205
-  @FeatureToggle(RAS:iac_jrd_1_0=on)
+  @FeatureToggle(RAS:iac_jrd_1_0=on) @FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
   Scenario: must successfully create hearing-panel-judge Case Role Assignment
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta1 - who is the actor for requested role],
