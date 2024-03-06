@@ -1,4 +1,5 @@
 @F-016
+@FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
 Feature: F-016 : Create Case Role Assignments for PublicLaw
 
   Background:
