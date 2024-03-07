@@ -1,4 +1,5 @@
 @F-015
+@FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
 Feature: F-015 : Create Case Role Assignments for Privatelaw
 
   Background:

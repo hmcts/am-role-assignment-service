@@ -1,4 +1,5 @@
 @F-013
+@FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
 Feature: F-013 : Create CIVIL Challenged Access Role Assignments
 
   Background:
