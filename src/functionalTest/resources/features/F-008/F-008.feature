@@ -1,4 +1,5 @@
 @F-008
+@FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
 Feature: F-008 : Create And Replace Staff Role Assignments for IAC
 
   Background:

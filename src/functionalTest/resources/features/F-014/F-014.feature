@@ -1,4 +1,5 @@
 @F-014
+@FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
 Feature: F-014 : Create Challenged Access Role for Privatelaw
 
   Background:
