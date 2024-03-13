@@ -1,4 +1,5 @@
 @F-012
+@FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
 Feature: F-012 : Create Challenged Access Role for IA
 
   Background:

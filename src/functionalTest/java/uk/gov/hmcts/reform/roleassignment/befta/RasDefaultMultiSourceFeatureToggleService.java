@@ -5,6 +5,8 @@ import uk.gov.hmcts.befta.featuretoggle.DefaultMultiSourceFeatureToggleService;
 import uk.gov.hmcts.befta.featuretoggle.FeatureToggleService;
 import uk.gov.hmcts.befta.featuretoggle.ScenarioFeatureToggleInfo;
 
+import java.util.stream.Stream;
+
 public class RasDefaultMultiSourceFeatureToggleService extends DefaultMultiSourceFeatureToggleService {
 
     private static final String LAUNCH_DARKLY_FLAG = "FeatureToggle";
@@ -44,8 +46,10 @@ public class RasDefaultMultiSourceFeatureToggleService extends DefaultMultiSourc
 
     @Override
     protected FeatureToggleService getToggleService(String toggleDomain) {
-        if (toggleDomain.equalsIgnoreCase("IAC") || toggleDomain.equalsIgnoreCase("RAS")) {
+        if (Stream.of("IAC", "RAS", "DB").anyMatch(toggleDomain::equalsIgnoreCase)) {
             return new RasFeatureToggleService();
+        } else if (Stream.of("EV").anyMatch(toggleDomain::equalsIgnoreCase)) {
+            return new RasEnvironmentVariableToggleService();
         } else {
             return super.getToggleService(toggleDomain);
         }

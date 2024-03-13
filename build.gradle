@@ -55,7 +55,7 @@ def versions = [
   pact_version   : '4.1.7',
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
-  feign_jackson  : '12.1',
+  feign_jackson  : '12.5',
   jacksondata    : '2.16.1',
   drools         : '7.73.0.Final',
   launchDarklySdk: '5.10.9',
@@ -458,7 +458,7 @@ dependencies {
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.0.2')
-  testImplementation('com.github.tomakehurst:wiremock-jre8:2.35.1')
+  testImplementation('com.github.tomakehurst:wiremock-jre8:2.35.2')
   testImplementation('org.springframework.cloud:spring-cloud-contract-wiremock:3.1.10')
   testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.4.0'
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit
