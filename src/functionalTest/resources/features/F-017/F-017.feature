@@ -22,7 +22,7 @@ Feature: F-017 : Create Role Assignments for Group Access
     When a request is prepared with appropriate values,
     And the request [has roleType Organisation, roleCategory Professional, roleName Role1 and attributes doesn't have caseAccessGroupId],
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
-    Then a negative response is received,
+    Then a positive response is received,
     And the response has all other details as expected
     And a successful call [to delete role assignments just created above] as in [S-251_DeleteDataForRoleAssignmentsForOrgRoles].
 
