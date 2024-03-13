@@ -21,7 +21,7 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getReque
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PrmOrgRoleTest extends DroolBase {
+class PrmOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
@@ -92,9 +92,9 @@ public class PrmOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "Role1,PROFESSIONAL,SSCS,Benefit"
+        "Role1,PROFESSIONAL"
     })
-    void shouldRejectProfessionalOrgRoleRequestWithMissingCaseAccessGroupId(String roleName, String roleCategory,
+    void shouldRejectProfessionalOrgRoleRequestWithMissingJurisdiction(String roleName, String roleCategory,
                                                                        String jurisdiction, String caseType) {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.getRequest().setProcess("professional-organisational-role-mapping");
