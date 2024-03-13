@@ -60,7 +60,7 @@
             "grantType": "SPECIFIC",
             "attributes":
             {
-              "caseId" : "1697012039998506",
+              "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
               "jurisdiction" : "PRIVATELAW",
               "caseType" : "PRLAPPS"
             }

@@ -10,6 +10,7 @@
                   validationrules.sscs,
                   validationrules.sscs.common,
                   validationrules.civil.common,
+                  validationrules.civil,
                   validationrules.privatelaw,
                   validationrules.publiclaw,
                   validationrules.employment,

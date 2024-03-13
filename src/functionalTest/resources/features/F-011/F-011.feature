@@ -1,4 +1,5 @@
 @F-011
+@FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
 Feature: F-011 : Create Specific Role Assignments
 
   Background:
