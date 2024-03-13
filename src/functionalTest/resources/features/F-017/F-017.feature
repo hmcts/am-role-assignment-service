@@ -24,6 +24,7 @@ Feature: F-017 : Create Role Assignments for Group Access
     And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
     Then a negative response is received,
     And the response has all other details as expected
+    And a successful call [to delete role assignments just created above] as in [S-251_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-252
   Scenario: Invoking POST role-assignments api with request to add a new role assignment - this is without additional attribute caseType
