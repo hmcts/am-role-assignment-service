@@ -21,7 +21,7 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getReque
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PrmOrgRoleTest extends DroolBase {
+class PrmOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
@@ -92,10 +92,10 @@ public class PrmOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "Role1,PROFESSIONAL,SSCS,Benefit"
+        "Role1,PROFESSIONAL,Benefit"
     })
-    void shouldRejectProfessionalOrgRoleRequestWithMissingCaseAccessGroupId(String roleName, String roleCategory,
-                                                                       String jurisdiction, String caseType) {
+    void shouldRejectProfessionalOrgRoleRequestWithMissingJurisdiction(String roleName, String roleCategory,
+                                                                       String caseType) {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.getRequest().setProcess("professional-organisational-role-mapping");
         assignmentRequest.getRequest().setReplaceExisting(true);
@@ -107,7 +107,7 @@ public class PrmOrgRoleTest extends DroolBase {
             roleAssignment.setGrantType(STANDARD);
             roleAssignment.setClassification(RESTRICTED);
             roleAssignment.setStatus(CREATE_REQUESTED);
-            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+            //roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
             roleAssignment.getAttributes().put("caseType", convertValueJsonNode(caseType));
         });
 
