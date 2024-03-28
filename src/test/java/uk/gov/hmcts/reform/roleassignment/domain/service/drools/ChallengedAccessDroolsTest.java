@@ -587,7 +587,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
         existingAttributes.put("caseType", convertValueJsonNode(caseDetails.getCaseTypeId()));
-        existingAttributes.put("substantive", convertValueJsonNode("Y"));
+        existingAttributes.put("substantive", convertValueJsonNode("N"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
                                           ACTORID,
@@ -653,7 +653,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
         existingAttributes.put("caseType", convertValueJsonNode(caseDetails.getCaseTypeId()));
-        existingAttributes.put("substantive", convertValueJsonNode("Y"));
+        existingAttributes.put("substantive", convertValueJsonNode("N"));
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
                                           ACTORID,
