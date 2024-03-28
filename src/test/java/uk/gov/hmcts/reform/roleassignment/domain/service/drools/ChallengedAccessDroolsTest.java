@@ -549,4 +549,123 @@ class ChallengedAccessDroolsTest extends DroolBase {
         assignmentRequest.getRequestedRoles()
             .forEach(roleAssignment -> Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus()));
     }
+
+    @ParameterizedTest
+    @CsvSource({
+        "SSCS,challenged-access-judiciary,JUDICIAL",
+    })
+    void shouldGrantAccessFor_ChallengedAccess_SSCS_FeePaid(String jurisdiction, String roleName, String roleCategory) {
+        Case caseDetails = caseMap.get(jurisdiction);
+        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
+
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
+                "challenged-access",
+                roleName,
+                RoleCategory.valueOf(roleCategory),
+                RoleType.CASE,
+                roleAssignmentAttributes,
+                Classification.PUBLIC,
+                GrantType.CHALLENGED,
+                Status.CREATE_REQUESTED,
+                "anyClient",
+                false,
+                "Access required for reasons",
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
+            )
+            .build();
+
+
+        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_CHALLENGED_1_0.getValue())
+            .status(true).build();
+
+        featureFlags.add(featureFlag);
+
+        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
+        existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
+        existingAttributes.put("caseType", convertValueJsonNode(caseDetails.getCaseTypeId()));
+        existingAttributes.put("substantive", convertValueJsonNode("N"));
+        executeDroolRules(List.of(TestDataBuilder
+                                      .buildExistingRoleForDrools(
+                                          ACTORID,
+                                          "fee-paid-judge",
+                                          RoleCategory.valueOf(roleCategory),
+                                          existingAttributes,
+                                          Classification.PRIVATE,
+                                          GrantType.STANDARD,
+                                          RoleType.ORGANISATION
+                                      )));
+
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            Assertions.assertEquals(caseDetails.getCaseTypeId(),
+                                    roleAssignment.getAttributes().get("caseType").asText());
+            Assertions.assertEquals(Classification.PUBLIC, roleAssignment.getClassification());
+            Assertions.assertEquals(
+                List.of("CCD", "ExUI", "SSIC", "RefData"),
+                roleAssignment.getAuthorisations()
+            );
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "IA,challenged-access-judiciary,JUDICIAL,fee-paid-judge",//wrong jurisdiction
+        "SSCS,challenged-access-admin,ADMIN,fee-paid-judge",//wrong role name and category
+        "SSCS,challenged-access-ctsc,CTSC,fee-paid-judge",//wrong role name and category
+        "SSCS,challenged-access-legal-ops,LEGAL_OPERATIONS,fee-paid-judge",//wrong role name and category
+        "SSCS,challenged-access-judiciary,JUDICIAL,judge",//wrong existing role name
+    })
+    void shouldRejectAccessFor_ChallengedAccess_SSCS_FeePaid(String jurisdiction, String roleName,
+                                                             String roleCategory,String existingRoleName) {
+        Case caseDetails = caseMap.get(jurisdiction);
+        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(roleName));
+
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
+                "challenged-access",
+                roleName,
+                RoleCategory.valueOf(roleCategory),
+                RoleType.CASE,
+                roleAssignmentAttributes,
+                Classification.PUBLIC,
+                GrantType.CHALLENGED,
+                Status.CREATE_REQUESTED,
+                "anyClient",
+                false,
+                "Access required for reasons",
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
+            )
+            .build();
+
+
+        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_CHALLENGED_1_0.getValue())
+            .status(true).build();
+
+        featureFlags.add(featureFlag);
+
+        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
+        existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
+        existingAttributes.put("caseType", convertValueJsonNode(caseDetails.getCaseTypeId()));
+        existingAttributes.put("substantive", convertValueJsonNode("N"));
+        executeDroolRules(List.of(TestDataBuilder
+                                      .buildExistingRoleForDrools(
+                                          ACTORID,
+                                          existingRoleName,
+                                          RoleCategory.valueOf(roleCategory),
+                                          existingAttributes,
+                                          Classification.PRIVATE,
+                                          GrantType.STANDARD,
+                                          RoleType.ORGANISATION
+                                      )));
+
+        assignmentRequest.getRequestedRoles().forEach(
+            roleAssignment -> Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+    }
 }
