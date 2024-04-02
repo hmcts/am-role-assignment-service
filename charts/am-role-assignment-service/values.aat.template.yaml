@@ -21,3 +21,4 @@ java:
     BYPASS_ORG_DROOL_RULE: true
     ROLE_ASSIGNMENT_DB_HOST: am-role-assignment-service-postgres-db-v15-{{ .Values.global.environment }}.postgres.database.azure.com
     ROLE_ASSIGNMENT_DB_USERNAME: pgadmin
+    RUN_DB_MIGRATION_ON_STARTUP: true
