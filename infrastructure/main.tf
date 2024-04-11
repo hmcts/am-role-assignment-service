@@ -152,7 +152,7 @@ module "role-assignment-database-v15" {
         value = "plpgsql,pg_stat_statements,pg_buffercache,dblink"
       },
       {
-        name  = "enable_temp_tablespaces_on_local_ssd"
+        name  = "azure.enable_temp_tablespaces_on_local_ssd"
         value = "off"
       }
     ]
