@@ -11,7 +11,7 @@ properties([
   ])
 ])
 
-@Library("Infrastructure")
+@Library("Infrastructure@test-new-zap-image")
 
 def type = "java"
 def product = "am"
