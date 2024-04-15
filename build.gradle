@@ -440,7 +440,7 @@ dependencies {
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.1'
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '9.37.3'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-  implementation group: 'commons-io', name:'commons-io', version: '2.15.1'
+  implementation group: 'commons-io', name:'commons-io', version: '2.16.1'
   implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.26.1'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   implementation group: 'org.json', name: 'json', version: '20231013'
@@ -492,7 +492,7 @@ dependencies {
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
-  smokeTestImplementation group: 'commons-io', name: 'commons-io', version: '2.15.1'
+  smokeTestImplementation group: 'commons-io', name: 'commons-io', version: '2.16.1'
   smokeTestCompileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   smokeTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
