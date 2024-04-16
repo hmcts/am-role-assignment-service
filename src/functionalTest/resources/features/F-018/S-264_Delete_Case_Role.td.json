@@ -1,6 +1,6 @@
 {
-  "title": "must successfully delete allocated-tribunal-caseworker case role",
-  "_guid_": "S-263_Delete_Case_Role",
+  "title": "must successfully delete allocated-admin-caseworker case role",
+  "_guid_": "S-264_Delete_Case_Role",
   "_extends_": "F-018_Test_Data_Base",
   "specs": [
     "to delete case role assignment for the same actor"
@@ -14,7 +14,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1713200593671300/allocated-tribunal-caseworker"
+        "reference": "1713200593671300/allocated-admin-caseworker"
       },
       "requestedRoles": [
       ]
