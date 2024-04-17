@@ -4,7 +4,7 @@
   "_extends_": "F-018_Test_Data_Base",
   "specs": [
     "Befta3 - who is the actor for requested role",
-    "contains allocated-ctsc-caseworker role assignment"
+    "contains allocated-ctsc-caseworker case role assignment"
   ],
   "users": {
     "invokingUser": {
