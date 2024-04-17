@@ -10,7 +10,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S_269_Org_Role_For_Multiple_Actors",
+        "reference": "S-269_Org_Role_Creation",
         "process": "specific-access"
       },
       "requestedRoles": [
