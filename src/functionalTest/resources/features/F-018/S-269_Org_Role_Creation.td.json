@@ -16,7 +16,7 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][users][befta4][id]}",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "specific-access-approver-judiciary",
           "roleCategory": "JUDICIAL",
           "beginTime" : "2022-01-01T00:00:00Z",

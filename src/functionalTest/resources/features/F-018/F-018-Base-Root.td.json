@@ -4,9 +4,6 @@
     "invokingUser": {
       "_extends_": "AmBeftaUser2"
     },
-    "befta4": {
-      "_extends_": "AmBeftaUser4"
-    },
     "befta3": {
       "_extends_": "AmBeftaUser3"
     }
