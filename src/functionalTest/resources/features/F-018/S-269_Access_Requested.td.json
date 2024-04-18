@@ -7,7 +7,7 @@
   ],
   "users": {
     "invokingUser": {
-      "_extends_": "AmBeftaUser4"
+      "_extends_": "AmBeftaUser3"
     }
   },
   "request": {
@@ -28,6 +28,7 @@
           "grantType" : "BASIC",
           "classification" : "RESTRICTED",
           "attributes": {
+            "jurisdiction": "EMPLOYMENT",
             "caseId": "1713257409906486",
             "requestedRole":"specific-access-judiciary"
           },

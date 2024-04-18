@@ -8,9 +8,13 @@
   ],
   "users": {
     "invokingUser": {
+      "_extends_": "AmBeftaUser2"
+    },
+    "befta3": {
       "_extends_": "AmBeftaUser3"
     }
   },
+
   "request": {
     "headers": {
       "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForXui]}"
@@ -18,7 +22,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1713257409906486/specific-access-judiciary/${[scenarioContext][testData][users][befta4][id]}",
+        "reference": "1713257409906486/specific-access-judiciary/${[scenarioContext][testData][users][befta3][id]}",
         "process" : "specific-access",
         "replaceExisting" : true
       },
@@ -35,11 +39,11 @@
           },
           "roleName": "specific-access-granted",
           "roleCategory": "JUDICIAL",
-          "actorId": "${[scenarioContext][testData][users][befta4][id]}",
+          "actorId": "${[scenarioContext][testData][users][befta3][id]}",
           "endTime" : "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
           "readOnly": true,
           "notes" : [{
-              "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
+              "userId": "${[scenarioContext][testData][users][befta3][id]}",
               "time": "2022-01-01T00:00Z",
               "comment": "Need Access to case number 1547572255509701 for a month"
           }]
@@ -56,12 +60,12 @@
           },
           "roleName" : "specific-access-judiciary",
           "roleCategory" : "JUDICIAL",
-          "actorId" : "${[scenarioContext][testData][users][befta4][id]}",
+          "actorId" : "${[scenarioContext][testData][users][befta3][id]}",
           "endTime" : "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
           "readOnly": true,
           "notes" : [
             {
-              "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
+              "userId": "${[scenarioContext][testData][users][befta3][id]}",
               "time": "2022-01-01T00:00Z",
               "comment": "Need Access to case number 1547572255509701 for a month"
             }
@@ -103,9 +107,9 @@
               "substantive" : "N"
             },
             "notes" : [{
-              "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
-              "time": "2022-01-01T00:00Z",
-              "comment": "Need Access to case number 1547572255509701 for a month"
+              "userId": "[[ANYTHING_PRESENT]]",
+              "time": "[[ANYTHING_PRESENT]]",
+              "comment": "[[ANYTHING_PRESENT]]"
             }
             ]
           },
@@ -127,9 +131,9 @@
               "substantive" : "N"
             },
             "notes" : [{
-              "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
-              "time": "2022-01-01T00:00Z",
-              "comment": "Need Access to case number 1547572255509701 for a month"
+              "userId": "[[ANYTHING_PRESENT]]",
+              "time": "[[ANYTHING_PRESENT]]",
+              "comment": "[[ANYTHING_PRESENT]]"
             }
             ]
           }
