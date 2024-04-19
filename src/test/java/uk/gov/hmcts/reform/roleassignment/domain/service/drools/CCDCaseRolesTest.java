@@ -1,6 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
@@ -9,11 +13,14 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
@@ -22,6 +29,7 @@ import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJ
 
 @RunWith(MockitoJUnitRunner.class)
 class CCDCaseRolesTest extends DroolBase {
+
     @Test
     void shouldRejectCaseRequestedRolesForUnauthoriseRequest() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
@@ -35,6 +43,30 @@ class CCDCaseRolesTest extends DroolBase {
         buildExecuteKieSession();
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+
+        //verify retrieveDataService is used as ClientId = null
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verify(retrieveDataService).getCaseById("1234567890123456");
+    }
+
+    @Test
+    void shouldRejectCaseRequestedRolesForUnauthoriseRequestNoLoadCaseData() {
+        RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.PROFESSIONAL,
+                                                                "[PETSOLICITOR]", SPECIFIC, "caseId",
+                                                                "1234567890123456", CREATE_REQUESTED);
+        assignmentRequest.setRequestedRoles(List.of(requestedRole1));
+        assignmentRequest.getRequest().setClientId("ccd_data");
+        FeatureFlag featureFlag  =  FeatureFlag.builder()
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        buildExecuteKieSession();
+        //assertion
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+
+        //verify retrieveDataService is not used as ClientId = ccd_data
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verifyNoInteractions(retrieveDataService);
     }
 
     @Test
@@ -44,6 +76,10 @@ class CCDCaseRolesTest extends DroolBase {
                                               RoleCategory.LEGAL_OPERATIONS);
         verifyCreateCaseRequestedRole_CCD_1_0("[CREATOR]", "aac_manage_case_assignment",
                                               RoleCategory.CITIZEN);
+
+        //verify retrieveDataService is not used as ClientId = ccd_data or aac_manage_case_assignment
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verifyNoInteractions(retrieveDataService);
     }
 
     @Test
@@ -87,6 +123,10 @@ class CCDCaseRolesTest extends DroolBase {
         buildExecuteKieSession();
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+
+        //verify retrieveDataService is not used as ClientId = ccd_data
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verifyNoInteractions(retrieveDataService);
     }
 
     @Test
@@ -109,6 +149,10 @@ class CCDCaseRolesTest extends DroolBase {
         buildExecuteKieSession();
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+
+        //verify retrieveDataService is not used as ClientId = ccd_data
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verifyNoInteractions(retrieveDataService);
     }
 
     @Test
@@ -135,6 +179,7 @@ class CCDCaseRolesTest extends DroolBase {
     @Test
     void shouldApproveDeletePetsolicitorCaserole() {
         verifyDeleteCaseRequestRole_CCD_1_0("[PETSOLICITOR]", "ccd_data", RoleCategory.PROFESSIONAL);
+        verifyDeleteCaseRequestRole_CCD_1_0("[PETSOLICITOR]", "ccd_case_disposer", RoleCategory.PROFESSIONAL);
     }
 
     @Test
@@ -185,6 +230,10 @@ class CCDCaseRolesTest extends DroolBase {
         buildExecuteKieSession();
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
+
+        //verify retrieveDataService is not used as ClientId = ccd_data
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verifyNoInteractions(retrieveDataService);
     }
 
     @Test
@@ -268,6 +317,10 @@ class CCDCaseRolesTest extends DroolBase {
         buildExecuteKieSession();
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+
+        //verify retrieveDataService is not used as ClientId = ccd_data
+        RetrieveDataService retrieveDataService = getRetrieveDataService();
+        verifyNoInteractions(retrieveDataService);
     }
 
     @Test
@@ -314,4 +367,95 @@ class CCDCaseRolesTest extends DroolBase {
         //assertion
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
     }
+
+    @Nested
+    @DisplayName("IDAM Disposer CCD Case Roles Tests")
+    class IdamDisposerCaseRolesTest {
+
+        static final String IDAM_DISPOSER_CLIENT_ID = "disposer-idam-user";
+
+        @Test
+        void shouldApproveCreateCaseRoleForCitizenFromIdamDisposer() {
+
+            // GIVEN
+            assignmentRequest.setRequestedRoles(List.of(createRequestedRole(RoleCategory.CITIZEN)));
+            assignmentRequest.getRequest().setClientId(IDAM_DISPOSER_CLIENT_ID);
+            setDisposerFeatureFlag(true);
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+
+            //verify retrieveDataService is not used as ClientId = disposer-idam-user
+            RetrieveDataService retrieveDataService = getRetrieveDataService();
+            verifyNoInteractions(retrieveDataService);
+        }
+
+        @ParameterizedTest
+        @EnumSource(
+            value = RoleCategory.class,
+            names = { "CITIZEN" },
+            mode = EnumSource.Mode.EXCLUDE
+        )
+        void shouldRejectCreateCaseRoleForNonCitizenFromIdamDisposer(RoleCategory roleCategory) {
+
+            // GIVEN
+            assignmentRequest.setRequestedRoles(List.of(createRequestedRole(roleCategory)));
+            assignmentRequest.getRequest().setClientId(IDAM_DISPOSER_CLIENT_ID);
+            setDisposerFeatureFlag(true);
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+
+            //verify retrieveDataService is not used as ClientId = disposer-idam-user
+            RetrieveDataService retrieveDataService = getRetrieveDataService();
+            verifyNoInteractions(retrieveDataService);
+        }
+
+        @Test
+        void shouldRejectCreateCaseRoleForCitizenFromIdamDisposer_flagDisabled() {
+
+            // GIVEN
+            assignmentRequest.setRequestedRoles(List.of(createRequestedRole(RoleCategory.CITIZEN)));
+            assignmentRequest.getRequest().setClientId(IDAM_DISPOSER_CLIENT_ID);
+            setDisposerFeatureFlag(false); // i.e. disable flag
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.REJECTED, ra.getStatus()));
+
+            //verify retrieveDataService is not used as ClientId = disposer-idam-user
+            RetrieveDataService retrieveDataService = getRetrieveDataService();
+            verifyNoInteractions(retrieveDataService);
+        }
+
+        private RoleAssignment createRequestedRole(RoleCategory roleCategory) {
+            RoleAssignment requestedRole1 = getRequestedCaseRole_ra(roleCategory,
+                                                                    "[CREATOR]", SPECIFIC, "caseId",
+                                                                    "1234567890123456", CREATE_REQUESTED);
+            requestedRole1.setClassification(Classification.RESTRICTED);
+            requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
+                                                         "caseType", convertValueJsonNode("Asylum"),
+                                                         "caseId", convertValueJsonNode("1234567890123456")));
+
+            return requestedRole1;
+        }
+
+        private void setDisposerFeatureFlag(boolean status) {
+            FeatureFlag featureFlag  =  FeatureFlag.builder()
+                .flagName(FeatureFlagEnum.DISPOSER_1_0.getValue())
+                .status(status)
+                .build();
+
+            featureFlags.add(featureFlag);
+        }
+    }
+
 }

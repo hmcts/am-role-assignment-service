@@ -38,6 +38,29 @@ end;
 
 
 /*
+ * CCD case roles can be created by client request originated from idam disposer service.
+ */
+
+rule "ccd_disposer_create_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.DISPOSER_1_0.getValue())
+    $rq: Request(clientId in ("disposer-idam-user"))
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.CASE,
+             roleCategory in (RoleCategory.CITIZEN),
+             attributes["jurisdiction"] != null,
+             attributes["caseType"] != null,
+             attributes["caseId"] != null)
+then
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Stage 1 approved : ccd_disposer_create_case_roles");
+    update($ra);
+    logMsg("Rule : ccd_disposer_create_case_roles");
+end;
+
+
+/*
  * CCD case roles can be deleted by client request originated from ccd service.
  */
 
@@ -57,6 +80,7 @@ then
     update($ra);
     logMsg("Rule : ccd_delete_case_roles");
 end;
+
 
 /*
  * CCD case roles can be created by client request originated from ccd service.

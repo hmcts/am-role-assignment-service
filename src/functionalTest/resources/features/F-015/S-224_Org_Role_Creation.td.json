@@ -14,7 +14,8 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S_201_Org_Role_For_Multiple_Actors"
+        "reference": "S_201_Org_Role_For_Multiple_Actors",
+        "process": "businessProcess1"
       },
       "requestedRoles": [
         {
@@ -59,9 +60,28 @@
         },
         "requestedRoles": [
           {
+            "__ordering__": "UNORDERED",
+            "__elementId__": "roleName"
+          },
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "process": "[[ANYTHING_PRESENT]]",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD",
+            "roleCategory": "JUDICIAL",
+            "roleName": "case-allocator",
+            "attributes":
+            {
+              "jurisdiction": "PRIVATELAW",
+              "primaryLocation": "abc",
+              "substantive": "N"
+            }
+          },
+          {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-            "process": "specific-access",
+            "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
@@ -72,21 +92,6 @@
               "primaryLocation": "abc",
               "substantive": "Y",
               "region": "2"
-            }
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-            "process": "specific-access",
-            "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
-            "roleCategory": "JUDICIAL",
-            "roleName": "case-allocator",
-            "attributes":
-            {
-              "jurisdiction": "PRIVATELAW",
-              "primaryLocation": "abc",
-              "substantive": "N"
             }
           }
         ]

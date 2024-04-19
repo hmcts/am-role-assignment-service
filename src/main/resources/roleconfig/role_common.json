@@ -184,10 +184,10 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "values": ["PUBLICLAW","PRIVATELAW"]
           },
           "primaryLocation": {
-            "mandatory": true
+            "mandatory": false
           }
         }
       }
@@ -1810,7 +1810,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW","PRIVATELAW","EMPLOYMENT","IA"]
+            "values": ["PUBLICLAW","PRIVATELAW","EMPLOYMENT","IA","SSCS"]
           }
         }
       }
@@ -1840,11 +1840,10 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW", "IA"]
+            "values": ["SSCS", "PRIVATELAW", "IA", "CIVIL"]
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord","Asylum","Bail"]
+            "mandatory": true
           }
         }
       }
@@ -1874,11 +1873,10 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "PRIVATELAW", "IA"]
+            "values": ["SSCS", "PRIVATELAW", "IA", "CIVIL"]
           },
           "caseType": {
-            "mandatory": true,
-            "values": ["Benefit", "PRLAPPS","PRIVATELAW_ExceptionRecord","Asylum","Bail"]
+            "mandatory": true
           }
         }
       }
@@ -1998,7 +1996,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","PUBLICLAW","CIVIL","EMPLOYMENT","IA"]
+            "values": ["PRIVATELAW","PUBLICLAW","CIVIL","EMPLOYMENT","IA","SSCS"]
           }
         }
       }
@@ -2434,7 +2432,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW", "ST_CIC"]
+            "values": ["PUBLICLAW", "ST_CIC", "PRIVATELAW"]
           },
           "caseType": {
             "mandatory": true
@@ -2469,7 +2467,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW"]
+            "values": ["PUBLICLAW", "PRIVATELAW"]
           },
         "caseType": {
           "mandatory": true
