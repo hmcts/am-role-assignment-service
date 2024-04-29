@@ -5,6 +5,8 @@ java:
   aadIdentityName: am
   startupDelay: 30
   startupFailureThreshold: 5
+  autoscaling:
+    enabled: false
   keyVaults:
     am:
       secrets:
