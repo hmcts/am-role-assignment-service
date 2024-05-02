@@ -17,7 +17,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1547572255509701/conflict-of-interest",
+        "reference": "1714647999147997/conflict-of-interest",
         "replaceExisting": false
       },
       "requestedRoles": [
@@ -31,7 +31,7 @@
           "classification": "RESTRICTED",
           "attributes":
           {
-            "caseId" : "1547572255509701",
+            "caseId" : "1714647999147997",
             "jurisdiction": "IA",
             "caseType": "Asylum"
           }
@@ -63,8 +63,8 @@
             "classification": "RESTRICTED",
             "attributes":
             {
-              "caseId" : "1547572255509701",
-              "jurisdiction" : "IA",
+              "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
+              "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "caseType" : "Asylum",
               "substantive" : "N"
             }
