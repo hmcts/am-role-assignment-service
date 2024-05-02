@@ -86,7 +86,7 @@ withNightlyPipeline(type, product, component) {
   env.Rules = params.SecurityRules
 
   // Var to turn FTAs that rely on the RAS-CCD case validation on/off, i.e. when CCD is not available.
-  env.AZURE_CASE_VALIDATION_FTA_ENABLED = "false" // DTSAM-288: temporary disable 
+  env.AZURE_CASE_VALIDATION_FTA_ENABLED = "true" // DTSAM-288: temporary disable
 
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
