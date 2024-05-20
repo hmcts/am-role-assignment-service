@@ -14,7 +14,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1697012039998506/allocated-judge"
+        "reference": "${[scenarioContext][parentContext][testData][request][body][roleRequest][reference]}"
       },
       "requestedRoles": [
       ]
