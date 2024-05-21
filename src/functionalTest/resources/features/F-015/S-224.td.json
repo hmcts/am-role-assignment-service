@@ -16,7 +16,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1697012039998506/hearing-judge"
+        "reference": "1714647879160292/hearing-judge"
       },
       "requestedRoles": [
         {
@@ -28,7 +28,7 @@
           "grantType": "SPECIFIC",
           "attributes":
           {
-            "caseId" : "1697012039998506",
+            "caseId" : "1714647879160292",
             "jurisdiction": "PRIVATELAW",
             "caseType": "PRLAPPS"
           }
@@ -61,7 +61,7 @@
             "attributes":
             {
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
-              "jurisdiction" : "PRIVATELAW",
+              "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "caseType" : "PRLAPPS"
             }
           }

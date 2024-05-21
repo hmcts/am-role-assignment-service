@@ -16,7 +16,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1697012039998506/allocated-judge"
+        "reference": "1714647879160292/allocated-judge"
       },
       "requestedRoles": [
         {
@@ -28,7 +28,7 @@
           "grantType": "SPECIFIC",
           "attributes":
           {
-            "caseId" : "1697012039998506",
+            "caseId" : "1714647879160292",
             "jurisdiction": "PRIVATELAW",
             "caseType": "PRLAPPS"
           }
