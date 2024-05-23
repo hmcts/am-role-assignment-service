@@ -125,13 +125,14 @@ module "role-assignment-database-v15" {
   component          = var.component
   common_tags        = var.common_tags
   pgsql_version      = "15"
+  pgsql_sku          = var.pgsql_sku
 
   # Setup Access Reader db user
-  force_user_permissions_trigger = "4"
+  force_user_permissions_trigger = "5"
 
   # Sets correct DB owner after migration to fix permissions
   enable_schema_ownership = var.enable_schema_ownership
-  force_schema_ownership_trigger = "4"
+  force_schema_ownership_trigger = "5"
   kv_subscription = var.kv_subscription
   kv_name = data.azurerm_key_vault.am_key_vault.name
   user_secret_name = azurerm_key_vault_secret.POSTGRES-USER.name
