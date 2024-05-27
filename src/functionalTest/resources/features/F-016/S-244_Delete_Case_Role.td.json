@@ -14,7 +14,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1691442422960274/hearing-legal-adviser"
+        "reference": "${[scenarioContext][parentContext][testData][request][body][roleRequest][reference]}"
       },
       "requestedRoles": [
       ]
