@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
@@ -327,18 +328,66 @@ class CaseRolesDroolsTest extends DroolBase {
         "ST_CIC,CriminalInjuriesCompensation,appraiser-2"
     })
     void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
+        verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, null, Status.DELETE_APPROVED);
+    }
 
-        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
-        existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
-        existingAttributes.put("caseType", convertValueJsonNode(caseType));
-        existingAttributes.put("caseId", convertValueJsonNode(getCaseFromMap(jurisdiction, caseType).getId()));
+    @ParameterizedTest
+    @CsvSource({
+        "SSCS,Benefit,hearing-judge",
+        "SSCS,Benefit,tribunal-member-1",
+        "SSCS,Benefit,tribunal-member-2",
+        "SSCS,Benefit,tribunal-member-3",
+        "SSCS,Benefit,appraiser-1",
+        "SSCS,Benefit,appraiser-2",
+        "SSCS,Benefit,interloc-judge",
+        "SSCS,Benefit,post-hearing-judge",
+        "SSCS,Benefit,case-allocator",
+        "SSCS,Benefit,registrar",
+        "SSCS,Benefit,allocated-tribunal-caseworker",
+        "SSCS,Benefit,allocated-admin-caseworker",
+        "SSCS,Benefit,allocated-ctsc-caseworker"
+    })
+    void shouldDelete_CaseRole_withMatchingCaseAllocatorRegion(String jurisdiction, String caseType, String roleName) {
+        verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, CASE_REGION, Status.DELETE_APPROVED);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "SSCS,Benefit,hearing-judge",
+        "SSCS,Benefit,tribunal-member-1",
+        "SSCS,Benefit,tribunal-member-2",
+        "SSCS,Benefit,tribunal-member-3",
+        "SSCS,Benefit,appraiser-1",
+        "SSCS,Benefit,appraiser-2",
+        "SSCS,Benefit,interloc-judge",
+        "SSCS,Benefit,post-hearing-judge",
+        "SSCS,Benefit,case-allocator",
+        "SSCS,Benefit,registrar",
+        "SSCS,Benefit,allocated-tribunal-caseworker",
+        "SSCS,Benefit,allocated-admin-caseworker",
+        "SSCS,Benefit,allocated-ctsc-caseworker"
+    })
+    void shouldRejectDelete_CaseRole_withBadCaseAllocatorRegion(String jurisdiction, String caseType, String roleName) {
+        verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, "bad-region", Status.DELETE_REJECTED);
+    }
+
+    private void verifyGrantOrRejectDeleteFor_CaseRole(String jurisdiction,
+                                                       String caseType,
+                                                       String roleName,
+                                                       String caRegion,
+                                                       Status expectedRoleAssignmentStatus) {
+
+        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
+        roleAssignmentAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
+        roleAssignmentAttributes.put("caseType", convertValueJsonNode(caseType));
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode(getCaseFromMap(jurisdiction, caseType).getId()));
 
         assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccessGrant(
             "delete-access",
             roleName,
             RoleCategory.valueOf(RoleCategory.JUDICIAL.name()),
             RoleType.CASE,
-            existingAttributes,
+            roleAssignmentAttributes,
             PUBLIC,
             SPECIFIC,
             DELETE_REQUESTED,
@@ -350,10 +399,19 @@ class CaseRolesDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_WA_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
+        featureFlags.add(
+            FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_WA_1_0.getValue()).status(true).build()
+        );
+        featureFlags.add(
+            FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_CASE_ALLOCATOR_1_0.getValue()).status(true).build()
+        );
 
+        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
+        existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
+        existingAttributes.put("caseType", convertValueJsonNode(caseType));
+        if (StringUtils.isNotBlank(caRegion)) {
+            existingAttributes.put("region", convertValueJsonNode(caRegion));
+        }
         existingAttributes.put("allocatedRole", convertValueJsonNode(roleName));
 
         executeDroolRules(List.of(buildExistingRole(CASE_ALLOCATOR_ID,
@@ -366,7 +424,7 @@ class CaseRolesDroolsTest extends DroolBase {
                                                     Status.LIVE
         )));
 
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_APPROVED, ra.getStatus()));
+        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(expectedRoleAssignmentStatus, ra.getStatus()));
     }
 
     @ParameterizedTest
