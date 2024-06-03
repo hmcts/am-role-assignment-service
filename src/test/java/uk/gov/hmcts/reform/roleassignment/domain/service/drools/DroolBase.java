@@ -227,4 +227,5 @@ public abstract class DroolBase {
     public RetrieveDataService getRetrieveDataService() {
         return retrieveDataService;
     }
+
 }
