@@ -41,72 +41,31 @@ resource "azurerm_key_vault_secret" "am_role_assignment_service_s2s_secret" {
 
 resource "azurerm_key_vault_secret" "POSTGRES-USER" {
   name          = join("-", [var.component, "POSTGRES-USER"])
-  value         = module.role-assignment-database-v11.user_name
+  value         = module.role-assignment-database-v15.username
   key_vault_id  = data.azurerm_key_vault.am_key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES-PASS" {
   name          = join("-", [var.component, "POSTGRES-PASS"])
-  value         = module.role-assignment-database-v11.postgresql_password
+  value         = module.role-assignment-database-v15.password
   key_vault_id  = data.azurerm_key_vault.am_key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_HOST" {
   name          = join("-", [var.component, "POSTGRES-HOST"])
-  value         = module.role-assignment-database-v11.host_name
+  value         = module.role-assignment-database-v15.fqdn
   key_vault_id  = data.azurerm_key_vault.am_key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_PORT" {
   name          = join("-", [var.component, "POSTGRES-PORT"])
-  value         = module.role-assignment-database-v11.postgresql_listen_port
+  value         = "5432"
   key_vault_id  = data.azurerm_key_vault.am_key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
   name          = join("-", [var.component, "POSTGRES-DATABASE"])
-  value         = module.role-assignment-database-v11.postgresql_database
-  key_vault_id  = data.azurerm_key_vault.am_key_vault.id
-}
-
-resource "azurerm_key_vault_secret" "POSTGRES-PASS-V11" {
-  name          = join("-", [var.component, "POSTGRES-PASS-V11"])
-  value         = module.role-assignment-database-v11.postgresql_password
-  key_vault_id  = data.azurerm_key_vault.am_key_vault.id
-}
-
-module "role-assignment-database-v11" {
-  source             = "git@github.com:hmcts/cnp-module-postgres?ref=master"
-  name               = join("-", [local.app_full_name, "postgres-db", "v11"])
-  product            = var.product
-  component          = var.component
-  location           = var.location
-  env                = var.env
-  subscription       = var.subscription
-  postgresql_user    = var.postgresql_user
-  database_name      = var.database_name
-  storage_mb         = var.database_storage_mb
-  sku_name           = var.database_sku_name
-  sku_capacity       = var.database_sku_capacity
-  common_tags        = var.common_tags
-  postgresql_version = "11"
-}
-
-resource "azurerm_key_vault_secret" "POSTGRES-PASS-V15" {
-  name          = "${var.component}-POSTGRES-PASS-V15"
-  value         = module.role-assignment-database-v15.password
-  key_vault_id  = data.azurerm_key_vault.am_key_vault.id
-}
-
-resource "azurerm_key_vault_secret" "POSTGRES-USER-V15" {
-  name         = "${var.component}-POSTGRES-USER-V15"
-  value        = module.role-assignment-database-v15.username
-  key_vault_id  = data.azurerm_key_vault.am_key_vault.id
-}
-
-resource "azurerm_key_vault_secret" "POSTGRES-HOST-V15" {
-  name         = "${var.component}-POSTGRES-HOST-V15"
-  value        = module.role-assignment-database-v15.fqdn
+  value         = var.database_name
   key_vault_id  = data.azurerm_key_vault.am_key_vault.id
 }
 
