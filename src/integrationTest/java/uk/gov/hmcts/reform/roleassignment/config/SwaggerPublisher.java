@@ -8,11 +8,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import javax.inject.Inject;
+//import jakarta.inject.Inject;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL;
+//import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,6 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * documentation.
  */
 public class SwaggerPublisher extends BaseTest {
+
+    static final String DEFAULT_API_DOCS_URL = "/v3/api-docs";
 
     private MockMvc mockMvc;
 

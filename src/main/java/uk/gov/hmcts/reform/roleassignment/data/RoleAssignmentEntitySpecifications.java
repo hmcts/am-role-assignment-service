@@ -4,7 +4,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.json.JSONObject;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Predicate;
+//import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Predicate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;

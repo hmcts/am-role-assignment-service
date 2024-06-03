@@ -29,8 +29,8 @@ class HistoryEntityTest {
             TestDataBuilder.buildRoleAssignment(Status.LIVE),
             TestDataBuilder.buildRequestEntity(TestDataBuilder.buildRequest(Status.APPROVED, false)));
 
-        assertNotNull(historyEntity.getRequestId());
-        assertEquals("ab4e8c21-27a0-4abd-aed8-810fdce22adb", historyEntity.getRequestId().toString());
+        assertNotNull(historyEntity.getRequestEntity().getId());
+        assertEquals("ab4e8c21-27a0-4abd-aed8-810fdce22adb", historyEntity.getRequestEntity().getId().toString());
     }
 
     @Test

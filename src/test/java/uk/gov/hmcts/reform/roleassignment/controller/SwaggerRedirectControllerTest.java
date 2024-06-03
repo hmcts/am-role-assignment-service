@@ -7,10 +7,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springdoc.core.Constants.SWAGGER_UI_URL;
+//import static org.springdoc.core.Constants.SWAGGER_UI_URL;
 
 @RunWith(MockitoJUnitRunner.class)
 class SwaggerRedirectControllerTest {
+
+    static final String SWAGGER_UI_URL = "/swagger-ui/index.html?url=";
 
     private final SwaggerRedirectController controller = new SwaggerRedirectController();
 

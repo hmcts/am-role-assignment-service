@@ -19,8 +19,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;

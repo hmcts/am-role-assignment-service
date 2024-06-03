@@ -31,7 +31,7 @@ import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
