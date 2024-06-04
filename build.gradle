@@ -526,6 +526,9 @@ dependencies {
   smokeTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
   functionalTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
+  functionalTestImplementation group: 'io.rest-assured', name: 'rest-assured-common', version: versions.rest_assured
+  functionalTestImplementation group: 'io.rest-assured', name: 'json-path', version: versions.rest_assured
+  functionalTestImplementation group: 'io.rest-assured', name: 'xml-path', version: versions.rest_assured
 
   // AM-467-Serenity report for Integration test
   integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
