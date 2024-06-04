@@ -615,6 +615,7 @@ configurations.all {
   exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
   exclude group: 'org.codehaus.groovy', module: 'groovy-json'
   exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
+  exclude group: 'commons-jxpath', module: 'commons-jxpath'
 //  exclude group: 'com.google.inject', module: 'guice'
 
   // guice 5.x stopped shipping no_aop jar
