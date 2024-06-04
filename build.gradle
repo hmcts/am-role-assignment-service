@@ -574,6 +574,9 @@ dependencyManagement {
 //    dependencySet(group: 'org.hibernate.orm', version: '6.2.13.Final') {
 //      entry 'hibernate-core'
 //    }
+//    dependencySet(group: 'com.google.inject', version: '5.1.0') {
+//      entry 'guice'
+//    }
   }
 
   imports {
@@ -597,7 +600,12 @@ configurations.all {
   exclude group: 'org.codehaus.groovy', module: 'groovy-xml'
   exclude group: 'org.codehaus.groovy', module: 'groovy-json'
   exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
-  exclude group: 'com.google.inject', module: 'guice'
+//  exclude group: 'com.google.inject', module: 'guice'
+
+  // guice 5.x stopped shipping no_aop jar
+  resolutionStrategy.dependencySubstitution {
+    substitute module('com.google.inject:guice') using module('com.google.inject:guice:5.0.1') withoutClassifier()
+  }
 }
 
 cucumberReports {
