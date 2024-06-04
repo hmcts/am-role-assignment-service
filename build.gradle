@@ -54,8 +54,8 @@ def versions = [
   tomcat         : '10.0.27',
   pact_version   : '4.1.7',
   rest_assured   : '5.0.1',
-//  cucumber       : '5.7.0',
-  cucumber       : '7.0.0',
+  cucumber       : '5.7.0',
+//  cucumber       : '7.0.0',
   feign_jackson  : '12.5',
   jacksondata    : '2.17.0',
   drools         : '7.73.0.Final',
@@ -514,6 +514,14 @@ dependencies {
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
   smokeTestImplementation group: 'commons-io', name: 'commons-io', version: '2.16.1'
+
+  smokeTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot
+  smokeTestImplementation('com.opentable.components:otj-pg-embedded:1.0.3')
+  smokeTestImplementation group : 'com.github.hmcts', name: 'befta-fw', version: versions.befta
+  smokeTestImplementation 'com.github.hmcts:fortify-client:1.4.1:all'
+  smokeTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksondata
+  smokeTestImplementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: versions.jacksondata, ext: 'pom'
+
   smokeTestCompileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   smokeTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
@@ -536,7 +544,7 @@ dependencies {
   contractTestImplementation group: 'au.com.dius.pact.provider', name: 'junit5spring', version: versions.pact_version
 
   smokeTestImplementation sourceSets.main.runtimeClasspath
-  smokeTestImplementation sourceSets.test.runtimeClasspath
+  //smokeTestImplementation sourceSets.test.runtimeClasspath
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
