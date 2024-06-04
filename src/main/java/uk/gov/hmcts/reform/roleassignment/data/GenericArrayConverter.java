@@ -21,7 +21,7 @@ public class GenericArrayConverter implements AttributeConverter<String[], Strin
             String output = "{";
 
             for (String element : attribute) {
-                output = output + attribute + ",";
+                output = output + element + ",";
             }
 
             if (attribute.length > 0) {
