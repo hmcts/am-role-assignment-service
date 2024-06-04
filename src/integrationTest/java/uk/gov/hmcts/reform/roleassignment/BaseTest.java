@@ -31,7 +31,6 @@ import uk.gov.hmcts.reform.roleassignment.controller.utils.WiremockFixtures;
 import uk.gov.hmcts.reform.roleassignment.health.CcdDataStoreHealthIndicator;
 import uk.gov.hmcts.reform.roleassignment.health.IdamServiceHealthIndicator;
 
-//import javax.annotation.PreDestroy;
 import jakarta.annotation.PreDestroy;
 import javax.sql.DataSource;
 import java.io.IOException;

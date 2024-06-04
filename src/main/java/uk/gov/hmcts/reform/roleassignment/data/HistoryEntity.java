@@ -110,9 +110,9 @@ public class HistoryEntity implements Persistable<UUID> {
     private String[] authorisations;
 
     //getter method to retrieve the parent id in the child entity
-    //public UUID getRequestId() {
-    //    return requestEntity.getId();
-    //}
+    public UUID getRequestId() {
+        return requestEntity.getId();
+    }
 
     @Override
     public boolean isNew() {

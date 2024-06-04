@@ -8,4 +8,36 @@
     <notes>https://tools.hmcts.net/jira/browse/DTSAM-90 plexus</notes>
     <cve>CVE-2022-4245</cve>
   </suppress>
+  <suppress>
+    <notes>.</notes>
+    <cve>CVE-2022-40159</cve>
+  </suppress>
+  <suppress>
+    <notes>.</notes>
+    <cve>CVE-2022-40160</cve>
+  </suppress>
+  <suppress>
+    <notes>.</notes>
+    <cve>CVE-2023-1436</cve>
+  </suppress>
+  <suppress>
+    <notes>.</notes>
+    <cve>CVE-2022-40149</cve>
+  </suppress>
+  <suppress>
+    <notes>.</notes>
+    <cve>CVE-2022-40150</cve>
+  </suppress>
+  <suppress>
+    <notes>.</notes>
+    <cve>CVE-2022-45685</cve>
+  </suppress>
+  <suppress>
+    <notes>.</notes>
+    <cve>CVE-2022-45693</cve>
+  </suppress>
+  <suppress>
+    <notes>.</notes>
+    <cve>CVE-2022-40152</cve>
+  </suppress>
 </suppressions>

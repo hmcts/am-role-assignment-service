@@ -8,7 +8,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 
 import java.nio.charset.StandardCharsets;
-//import static org.springdoc.core.Constants.SWAGGER_UI_URL;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;

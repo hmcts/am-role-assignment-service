@@ -2,14 +2,6 @@ package uk.gov.hmcts.reform.roleassignment.data;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-//import org.hibernate.HibernateException;
-//import org.hibernate.engine.spi.SharedSessionContractImplementor;
-//import org.hibernate.usertype.UserType;
-//
-//import java.io.Serializable;
-//import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
 import java.sql.Types;
 
 @Converter(autoApply = false)
@@ -44,14 +36,11 @@ public class GenericArrayConverter implements AttributeConverter<String[], Strin
 
     @Override
     public String[] convertToEntityAttribute(String dbData) {
-        //return new String[0];
         if (dbData != null) {
             String dbDataNoBrackets = dbData.replaceAll("[{}]", "");
             return dbDataNoBrackets.split(",");
         } else {
             return null;
         }
-
-
     }
 }

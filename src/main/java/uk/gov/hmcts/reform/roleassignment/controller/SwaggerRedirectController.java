@@ -5,13 +5,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 import io.swagger.v3.oas.annotations.Hidden;
 
-//import static org.springdoc.core.Constants.SWAGGER_UI_URL;
-
 @RestController
 @Hidden
 public class SwaggerRedirectController {
 
-    //static final String SWAGGER_UI_URL = "/swagger-ui";
     static final String SWAGGER_UI_URL = "/swagger-ui/index.html?url=";
 
     @GetMapping(value = "/swagger")

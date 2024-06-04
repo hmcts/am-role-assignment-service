@@ -34,7 +34,6 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
-//import javax.inject.Inject;
 import jakarta.inject.Inject;
 import javax.sql.DataSource;
 import java.util.List;
