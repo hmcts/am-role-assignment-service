@@ -106,7 +106,7 @@ public class HistoryEntity implements Persistable<UUID> {
     @Column(name = "authorisations")
     //@Type(type = "uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType")
     //@Type(uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType.class)
-    @Convert(converter = uk.gov.hmcts.reform.roleassignment.data.GenericArrayConverter.class)
+    //@Convert(converter = uk.gov.hmcts.reform.roleassignment.data.GenericArrayConverter.class)
     private String[] authorisations;
 
     //getter method to retrieve the parent id in the child entity

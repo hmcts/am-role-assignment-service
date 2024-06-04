@@ -74,7 +74,7 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
     @Column(name = "authorisations")
     //@Type(type = "uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType")
     //@Convert(converter = uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType.class)
-    @Convert(converter = uk.gov.hmcts.reform.roleassignment.data.GenericArrayConverter.class)
+    //@Convert(converter = uk.gov.hmcts.reform.roleassignment.data.GenericArrayConverter.class)
     private String[] authorisations;
 
     @Builder.Default
