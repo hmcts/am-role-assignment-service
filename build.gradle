@@ -376,8 +376,6 @@ dependencies {
     exclude group: 'org.glassfish', module: 'jakarta.el'
   }
   implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBoot)
-//    exclude group: 'org.hibernate.orm', module: 'hibernate-core'
-//  }
   implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot)
   implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot)
   implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot)
@@ -398,9 +396,6 @@ dependencies {
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-jose', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-resource-server', version: versions.springSecurity
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.5'
-  //implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
-  //implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.8'
-  //implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.10.RELEASE'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-circuitbreaker-resilience4j'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client'
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.5'
@@ -419,9 +414,6 @@ dependencies {
   implementation group: 'org.springframework', name: 'spring-tx', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-web', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-webmvc', version: versions.spring
-
-  //implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.8'
-  //implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.8'
   implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.5.0'
 
   // drools engine dependency
@@ -444,7 +436,6 @@ dependencies {
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: versions.tomcat
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: versions.tomcat
-  //implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.15.Final'
   implementation group: 'org.hibernate', name: 'hibernate-core', version: '6.2.13.Final'
   implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.8'
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.1'
@@ -458,7 +449,6 @@ dependencies {
 
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
   implementation group: 'com.github.hmcts', name:'properties-volume-spring-boot-starter', version:'0.1.1'
-  //implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '2.1.1'
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.3'
   //Added for S2S and User Authentication
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.reformS2sClient
@@ -466,7 +456,6 @@ dependencies {
   implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: versions.jacksondata, ext: 'pom'
   implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.20'
 
-  //implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.4.11'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.2'
   implementation group: 'commons-lang', name: 'commons-lang', version: '2.6'
@@ -475,8 +464,6 @@ dependencies {
   implementation group: 'com.fasterxml.woodstox', name: 'woodstox-core', version: '6.4.0'
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.0.3')
-  //testImplementation('com.github.tomakehurst:wiremock-jre8:2.35.2')
-  //testImplementation('org.springframework.cloud:spring-cloud-contract-wiremock:3.1.10')
   testImplementation('org.springframework.cloud:spring-cloud-contract-wiremock')
   testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.4.0'
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit
@@ -487,7 +474,6 @@ dependencies {
   testImplementation group: 'info.solidsoft.gradle.pitest', name:'gradle-pitest-plugin', version: '1.15.0'
   testImplementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
   testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurity
-  //testImplementation group: 'org.springframework.boot', name:'spring-boot-starter-test', version: versions.springBoot
   testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
     exclude group: 'junit', module: 'junit'
   }
@@ -504,11 +490,8 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:fortify-client:1.4.1:all'
-  //testImplementation 'com.github.hmcts:befta-fw:8.7.11'
   testImplementation group: 'com.github.hmcts', name: 'befta-fw', version: versions.befta
   testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.6.5'
-  //testImplementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: versions.tomcat
-  //testImplementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: versions.tomcat
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
@@ -551,7 +534,6 @@ dependencies {
   contractTestImplementation group: 'au.com.dius.pact.provider', name: 'junit5spring', version: versions.pact_version
 
   smokeTestImplementation sourceSets.main.runtimeClasspath
-  //smokeTestImplementation sourceSets.test.runtimeClasspath
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
@@ -587,12 +569,6 @@ dependencyManagement {
     dependencySet(group: 'org.springframework', version: versions.spring) {
       entry 'spring-test'
     }
-//    dependencySet(group: 'org.hibernate.orm', version: '6.2.13.Final') {
-//      entry 'hibernate-core'
-//    }
-//    dependencySet(group: 'com.google.inject', version: '5.1.0') {
-//      entry 'guice'
-//    }
   }
 
   imports {
@@ -617,9 +593,8 @@ configurations.all {
   exclude group: 'org.codehaus.groovy', module: 'groovy-json'
   exclude group: 'org.bouncycastle', module: 'bcprov-jdk15on'
   exclude group: 'commons-jxpath', module: 'commons-jxpath'
-//  exclude group: 'com.google.inject', module: 'guice'
 
-  // guice 5.x stopped shipping no_aop jar
+  // stop guice trying to use no_aop jar which is not found
   resolutionStrategy.dependencySubstitution {
     substitute module('com.google.inject:guice') using module('com.google.inject:guice:5.0.1') withoutClassifier()
   }
