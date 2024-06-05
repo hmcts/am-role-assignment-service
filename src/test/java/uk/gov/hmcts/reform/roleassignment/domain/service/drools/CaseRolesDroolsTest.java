@@ -32,6 +32,7 @@ class CaseRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
+        // SSCS Benefit
         "SSCS,Benefit,hearing-judge,JUDICIAL,RESTRICTED,judge,Y",
         "SSCS,Benefit,hearing-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
         "SSCS,Benefit,tribunal-member-1,JUDICIAL,RESTRICTED,medical,Y",
@@ -72,12 +73,14 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,allocated-admin-caseworker,ADMIN,RESTRICTED,regional-centre-admin,Y",
         "SSCS,Benefit,allocated-admin-caseworker,ADMIN,RESTRICTED,clerk,Y",
         "SSCS,Benefit,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
+        // PRIVATELAW PRLAPPS
         "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,RESTRICTED,judge,",
         "PRIVATELAW,PRLAPPS,gatekeeping-judge,JUDICIAL,RESTRICTED,judge,",
         "PRIVATELAW,PRLAPPS,allocated-judge,JUDICIAL,RESTRICTED,judge,",
         "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,RESTRICTED,magistrate,",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,PUBLIC,tribunal-caseworker,Y",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
+        // PUBLICLAW CARE_SUPERVISION_EPO
         "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,RESTRICTED,judge,Y",
         "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
         "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-magistrate,JUDICIAL,RESTRICTED,magistrate,Y",
@@ -87,6 +90,7 @@ class CaseRolesDroolsTest extends DroolBase {
         "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-legal-adviser,LEGAL_OPERATIONS,PUBLIC,tribunal-caseworker,Y",
         "PUBLICLAW,CARE_SUPERVISION_EPO,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
         "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
+        // EMPLOYMENT ET_EnglandWales
         "EMPLOYMENT,ET_EnglandWales,lead-judge,JUDICIAL,PUBLIC,leadership-judge,Y",
         "EMPLOYMENT,ET_EnglandWales,lead-judge,JUDICIAL,PUBLIC,judge,Y",
         "EMPLOYMENT,ET_EnglandWales,hearing-judge,JUDICIAL,PUBLIC,leadership-judge,Y",
@@ -103,6 +107,26 @@ class CaseRolesDroolsTest extends DroolBase {
         "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker,ADMIN,PUBLIC,clerk,Y",
         "EMPLOYMENT,ET_EnglandWales,allocated-ctsc-caseworker,CTSC,PUBLIC,ctsc,Y",
         "EMPLOYMENT,ET_EnglandWales,allocated-ctsc-caseworker,CTSC,PUBLIC,ctsc-team-leader,Y",
+        // EMPLOYMENT ET_EnglandWales_Multiple
+        "EMPLOYMENT,ET_EnglandWales_Multiple,lead-judge,JUDICIAL,PUBLIC,leadership-judge,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,lead-judge,JUDICIAL,PUBLIC,judge,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,hearing-judge,JUDICIAL,PUBLIC,leadership-judge,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,hearing-judge,JUDICIAL,PUBLIC,judge,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,hearing-judge,JUDICIAL,PUBLIC,fee-paid-judge,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-1,JUDICIAL,PUBLIC,tribunal-member,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-2,JUDICIAL,PUBLIC,tribunal-member,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC,"
+            + "tribunal-caseworker,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC,"
+            + "senior-tribunal-caseworker,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-admin-caseworker,ADMIN,PUBLIC,hearing-centre-admin,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-admin-caseworker,ADMIN,PUBLIC,hearing-centre-team-leader,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-admin-caseworker,ADMIN,PUBLIC,regional-centre-admin,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-admin-caseworker,ADMIN,PUBLIC,regional-centre-team-leader,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-admin-caseworker,ADMIN,PUBLIC,clerk,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-ctsc-caseworker,CTSC,PUBLIC,ctsc,Y",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-ctsc-caseworker,CTSC,PUBLIC,ctsc-team-leader,Y",
+        // EMPLOYMENT ET_Scotland
         "EMPLOYMENT,ET_Scotland,lead-judge,JUDICIAL,PUBLIC,leadership-judge,Y",
         "EMPLOYMENT,ET_Scotland,lead-judge,JUDICIAL,PUBLIC,judge,Y",
         "EMPLOYMENT,ET_Scotland,hearing-judge,JUDICIAL,PUBLIC,leadership-judge,Y",
@@ -119,6 +143,25 @@ class CaseRolesDroolsTest extends DroolBase {
         "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker,ADMIN,PUBLIC,clerk,Y",
         "EMPLOYMENT,ET_Scotland,allocated-ctsc-caseworker,CTSC,PUBLIC,ctsc,Y",
         "EMPLOYMENT,ET_Scotland,allocated-ctsc-caseworker,CTSC,PUBLIC,ctsc-team-leader,Y",
+        // EMPLOYMENT ET_Scotland_Multiple
+        "EMPLOYMENT,ET_Scotland_Multiple,lead-judge,JUDICIAL,PUBLIC,leadership-judge,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,lead-judge,JUDICIAL,PUBLIC,judge,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,hearing-judge,JUDICIAL,PUBLIC,leadership-judge,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,hearing-judge,JUDICIAL,PUBLIC,judge,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,hearing-judge,JUDICIAL,PUBLIC,fee-paid-judge,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-1,JUDICIAL,PUBLIC,tribunal-member,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-2,JUDICIAL,PUBLIC,tribunal-member,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC,tribunal-caseworker,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC,"
+            + "senior-tribunal-caseworker,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-admin-caseworker,ADMIN,PUBLIC,hearing-centre-admin,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-admin-caseworker,ADMIN,PUBLIC,hearing-centre-team-leader,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-admin-caseworker,ADMIN,PUBLIC,regional-centre-admin,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-admin-caseworker,ADMIN,PUBLIC,regional-centre-team-leader,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-admin-caseworker,ADMIN,PUBLIC,clerk,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-ctsc-caseworker,CTSC,PUBLIC,ctsc,Y",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-ctsc-caseworker,CTSC,PUBLIC,ctsc-team-leader,Y",
+        // ST_CIC CriminalInjuriesCompensation
         "ST_CIC,CriminalInjuriesCompensation,hearing-judge,JUDICIAL,PUBLIC,judge,Y",
         "ST_CIC,CriminalInjuriesCompensation,hearing-judge,JUDICIAL,PUBLIC,fee-paid-judge,Y",
         "ST_CIC,CriminalInjuriesCompensation,interloc-judge,JUDICIAL,PUBLIC,judge,Y",
@@ -176,6 +219,7 @@ class CaseRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
+        // EMPLOYMENT ET_EnglandWales
         "EMPLOYMENT,ET_EnglandWales,lead-judge,JUDICIAL,PUBLIC",
         "EMPLOYMENT,ET_EnglandWales,hearing-judge,JUDICIAL,PUBLIC",
         "EMPLOYMENT,ET_EnglandWales,tribunal-member-1,JUDICIAL,PUBLIC",
@@ -183,13 +227,31 @@ class CaseRolesDroolsTest extends DroolBase {
         "EMPLOYMENT,ET_EnglandWales,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC",
         "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker,ADMIN,PUBLIC",
         "EMPLOYMENT,ET_EnglandWales,allocated-ctsc-caseworker,CTSC,PUBLIC",
+        // EMPLOYMENT ET_EnglandWales_Multiple
+        "EMPLOYMENT,ET_EnglandWales_Multiple,lead-judge,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,hearing-judge,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-1,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-2,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-admin-caseworker,ADMIN,PUBLIC",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-ctsc-caseworker,CTSC,PUBLIC",
+        // EMPLOYMENT ET_Scotland
         "EMPLOYMENT,ET_Scotland,lead-judge,JUDICIAL,PUBLIC",
         "EMPLOYMENT,ET_Scotland,hearing-judge,JUDICIAL,PUBLIC",
         "EMPLOYMENT,ET_Scotland,tribunal-member-1,JUDICIAL,PUBLIC",
-        "EMPLOYMENT,ET_EnglandWales,tribunal-member-2,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_Scotland,tribunal-member-2,JUDICIAL,PUBLIC",
         "EMPLOYMENT,ET_Scotland,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC",
         "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker,ADMIN,PUBLIC",
         "EMPLOYMENT,ET_Scotland,allocated-ctsc-caseworker,CTSC,PUBLIC",
+        // EMPLOYMENT ET_Scotland_Multiple
+        "EMPLOYMENT,ET_Scotland_Multiple,lead-judge,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_Scotland_Multiple,hearing-judge,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-1,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-2,JUDICIAL,PUBLIC",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-tribunal-caseworker,LEGAL_OPERATIONS,PUBLIC",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-admin-caseworker,ADMIN,PUBLIC",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-ctsc-caseworker,CTSC,PUBLIC",
+        // ST_CIC CriminalInjuriesCompensation
         "ST_CIC,CriminalInjuriesCompensation,hearing-judge,JUDICIAL,PUBLIC",
         "ST_CIC,CriminalInjuriesCompensation,interloc-judge,JUDICIAL,PUBLIC",
         "ST_CIC,CriminalInjuriesCompensation,tribunal-member-1,JUDICIAL,PUBLIC",
@@ -291,6 +353,7 @@ class CaseRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
+        // SSCS Benefit
         "SSCS,Benefit,hearing-judge",
         "SSCS,Benefit,tribunal-member-1",
         "SSCS,Benefit,tribunal-member-2",
@@ -304,8 +367,10 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,allocated-tribunal-caseworker",
         "SSCS,Benefit,allocated-admin-caseworker",
         "SSCS,Benefit,allocated-ctsc-caseworker",
+        // PRIVATELAW PRLAPPS
         "PRIVATELAW,PRLAPPS,hearing-judge",
         "PRIVATELAW,PRLAPPS,allocated-magistrate",
+        // EMPLOYMENT ET_EnglandWales
         "EMPLOYMENT,ET_EnglandWales,lead-judge",
         "EMPLOYMENT,ET_EnglandWales,hearing-judge",
         "EMPLOYMENT,ET_EnglandWales,tribunal-member-1",
@@ -313,6 +378,15 @@ class CaseRolesDroolsTest extends DroolBase {
         "EMPLOYMENT,ET_EnglandWales,allocated-tribunal-caseworker",
         "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker",
         "EMPLOYMENT,ET_EnglandWales,allocated-ctsc-caseworker",
+        // EMPLOYMENT ET_EnglandWales_Multiple
+        "EMPLOYMENT,ET_EnglandWales_Multiple,lead-judge",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,hearing-judge",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-1",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-2",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-tribunal-caseworker",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-admin-caseworker",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-ctsc-caseworker",
+        // EMPLOYMENT ET_Scotland
         "EMPLOYMENT,ET_Scotland,lead-judge",
         "EMPLOYMENT,ET_Scotland,hearing-judge",
         "EMPLOYMENT,ET_Scotland,tribunal-member-1",
@@ -320,6 +394,15 @@ class CaseRolesDroolsTest extends DroolBase {
         "EMPLOYMENT,ET_Scotland,allocated-tribunal-caseworker",
         "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker",
         "EMPLOYMENT,ET_Scotland,allocated-ctsc-caseworker",
+        // EMPLOYMENT ET_Scotland_Multiple
+        "EMPLOYMENT,ET_Scotland_Multiple,lead-judge",
+        "EMPLOYMENT,ET_Scotland_Multiple,hearing-judge",
+        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-1",
+        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-2",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-tribunal-caseworker",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-admin-caseworker",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-ctsc-caseworker",
+        // ST_CIC CriminalInjuriesCompensation
         "ST_CIC,CriminalInjuriesCompensation,hearing-judge",
         "ST_CIC,CriminalInjuriesCompensation,interloc-judge",
         "ST_CIC,CriminalInjuriesCompensation,tribunal-member-1",
