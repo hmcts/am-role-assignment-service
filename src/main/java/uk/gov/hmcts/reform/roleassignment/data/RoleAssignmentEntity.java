@@ -72,9 +72,6 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
     private JsonNode attributes;
 
     @Column(name = "authorisations")
-    //@Type(type = "uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType")
-    //@Convert(converter = uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType.class)
-    //@Convert(converter = uk.gov.hmcts.reform.roleassignment.data.GenericArrayConverter.class)
     private String[] authorisations;
 
     @Builder.Default

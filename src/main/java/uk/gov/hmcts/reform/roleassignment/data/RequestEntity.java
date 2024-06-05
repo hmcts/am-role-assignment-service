@@ -34,18 +34,7 @@ public class RequestEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")
-    //@GeneratedValue(strategy =  GenerationType.UUID, generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    //@Convert(converter = uk.gov.hmcts.reform.roleassignment.data.UUIDConverter.class)
-    //@JdbcType(UUIDJdbcType.class)
-    //@JdbcTypeCode(SqlTypes.UUID)
-    //@JdbcTypeCode(SqlTypes.CHAR)
-    //@Basic
-    //@GeneratedValue(generator="uuid-generator")
-    //@GenericGenerator(name="uuid-generator", strategy="UuidGenerator.class" )
-    //@GeneratedValue(strategy = GenerationType.UUID)
-    //@GeneratedValue
-    //@UuidGenerator
     private UUID id;
 
     @Column(name = "correlation_id", nullable = false)
@@ -76,9 +65,6 @@ public class RequestEntity {
     private Boolean replaceExisting;
 
     @Column(name = "role_assignment_id", nullable = true)
-    //@Null
-    //@JdbcTypeCode(SqlTypes.CHAR)
-    //@Convert(converter = uk.gov.hmcts.reform.roleassignment.data.UUIDConverter.class)
     @JdbcType(UUIDJdbcType.class)
     private UUID roleAssignmentId;
 

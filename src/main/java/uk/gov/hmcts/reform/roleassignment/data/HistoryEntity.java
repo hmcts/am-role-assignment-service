@@ -98,15 +98,9 @@ public class HistoryEntity implements Persistable<UUID> {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id", columnDefinition = "uuid")
     @JdbcType(UUIDJdbcType.class)
-    //@Convert(converter = uk.gov.hmcts.reform.roleassignment.data.UUIDConverter.class)
-    //@JdbcTypeCode(SqlTypes.CHAR)
-    //@Type(type="org.hibernate.type.PostgresUUIDType")
     private RequestEntity requestEntity;
 
     @Column(name = "authorisations")
-    //@Type(type = "uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType")
-    //@Type(uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType.class)
-    //@Convert(converter = uk.gov.hmcts.reform.roleassignment.data.GenericArrayConverter.class)
     private String[] authorisations;
 
     //getter method to retrieve the parent id in the child entity
