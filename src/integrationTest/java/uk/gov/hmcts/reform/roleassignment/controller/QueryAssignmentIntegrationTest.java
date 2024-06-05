@@ -34,7 +34,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.versions.V2;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import java.util.Collections;
 import java.util.HashMap;

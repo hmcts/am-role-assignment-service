@@ -8,7 +8,7 @@ import org.hibernate.type.StandardBasicTypes;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RasPostgreSQL9Dialect extends PostgreSQLDialect {
+public class RasPostgreSQLDialect extends PostgreSQLDialect {
 
     @Override
     public void initializeFunctionRegistry(QueryEngine queryEngine) {

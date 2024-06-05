@@ -21,7 +21,6 @@ import java.time.Clock;
 
 @SpringBootApplication
 @EnableTransactionManagement(proxyTargetClass = true)
-//@EnableCircuitBreaker
 @EnableCaching
 @EnableScheduling
 @EnableRetry

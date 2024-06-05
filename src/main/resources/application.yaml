@@ -83,7 +83,7 @@ spring:
           batch_versioned_data: true
           lob:
             non_contextual_creation: true
-        dialect: uk.gov.hmcts.reform.roleassignment.config.RasPostgreSQL9Dialect
+        dialect: uk.gov.hmcts.reform.roleassignment.config.RasPostgreSQLDialect
         type:
           preferred_uuid_jdbc_type: CHAR
   flyway.enabled: ${ENABLE_DB_MIGRATE:true}
