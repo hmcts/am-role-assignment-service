@@ -13,7 +13,9 @@ public class DataStoreApiFallback implements DataStoreApi {
 
     public static final String DATA_STORE_NOT_AVAILABLE = "The data store Service is not available";
     public static final String CIVIL = "CIVIL";
-    public static final String LOCATION = "20262";
+    public static final String EMPLOYMENT = "EMPLOYMENT";
+    public static final String CASE_REGION = "1";
+    public static final String CASE_LOCATION = "20262";
     public static final String IDIVORCE_CASE_ID = "1234567890123451";
     public static final String SSCS_CASE_ID = "1234567890123452";
     public static final String CIVIL_CASE_ID = "1234567890123453";
@@ -24,6 +26,8 @@ public class DataStoreApiFallback implements DataStoreApi {
     public static final String EMPLOYMENT_SCTL_CASE_ID = "1234567890123461";
     public static final String ST_CIC_CASE_ID = "1234567890123462";
     public static final String PRIVATE_LAW_EXC_RECORD_CASE_ID = "1234567890123463";
+    public static final String EMPLOYMENT_EW_MLT_CASE_ID = "1234567890123464";
+    public static final String EMPLOYMENT_SCTL_MLT_CASE_ID = "1234567890123465";
 
     @Override
     public String getServiceStatus() {
@@ -45,8 +49,8 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .jurisdiction("SSCS")
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
-                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
-                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
                     .build();
             case CIVIL_CASE_ID:
                 return Case.builder().id(caseId)
@@ -54,8 +58,8 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .jurisdiction(CIVIL)
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
-                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
-                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
                     .build();
             case CIVIL_GA_CASE_ID:
                 return Case.builder().id(caseId)
@@ -63,8 +67,8 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .jurisdiction(CIVIL)
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
-                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
-                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
                     .build();
             case PRIVATE_LAW_CASE_ID:
                 return Case.builder().id(caseId)
@@ -72,8 +76,8 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .jurisdiction("PRIVATELAW")
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
-                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
-                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
                     .build();
             case PRIVATE_LAW_EXC_RECORD_CASE_ID:
                 return Case.builder().id(caseId)
@@ -81,8 +85,8 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .jurisdiction("PRIVATELAW")
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
-                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
-                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
                     .build();
             case PUBLIC_LAW_CASE_ID:
                 return Case.builder().id(caseId)
@@ -90,26 +94,44 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .jurisdiction("PUBLICLAW")
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
-                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
-                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
                     .build();
             case EMPLOYMENT_CASE_ID:
                 return Case.builder().id(caseId)
                     .caseTypeId("ET_EnglandWales")
-                    .jurisdiction("EMPLOYMENT")
+                    .jurisdiction(EMPLOYMENT)
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
-                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
-                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
+                    .build();
+            case EMPLOYMENT_EW_MLT_CASE_ID:
+                return Case.builder().id(caseId)
+                    .caseTypeId("ET_EnglandWales_Multiple")
+                    .jurisdiction(EMPLOYMENT)
+                    .securityClassification(Classification.PUBLIC)
+                    .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
                     .build();
             case EMPLOYMENT_SCTL_CASE_ID:
                 return Case.builder().id(caseId)
                     .caseTypeId("ET_Scotland")
-                    .jurisdiction("EMPLOYMENT")
+                    .jurisdiction(EMPLOYMENT)
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
-                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
-                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
+                    .build();
+            case EMPLOYMENT_SCTL_MLT_CASE_ID:
+                return Case.builder().id(caseId)
+                    .caseTypeId("ET_Scotland_Multiple")
+                    .jurisdiction(EMPLOYMENT)
+                    .securityClassification(Classification.PUBLIC)
+                    .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
                     .build();
             case ST_CIC_CASE_ID:
                 return Case.builder().id(caseId)
@@ -117,8 +139,8 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .jurisdiction("ST_CIC")
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
-                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
-                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(LOCATION)))))
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
                     .build();
             default:
                 return Case.builder().id(caseId)
