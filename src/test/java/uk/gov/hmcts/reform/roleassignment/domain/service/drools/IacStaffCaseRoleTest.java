@@ -416,11 +416,14 @@ class IacStaffCaseRoleTest extends DroolBase {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS,
                                                              "tribunal-caseworker",
                                                              SPECIFIC, "caseId",
-                                                             "1234567890123456", DELETE_REQUESTED);
+                                                             IA_CASE_ID, DELETE_REQUESTED);
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
             .status(true).build();
+        FeatureFlag featureFlag2 = FeatureFlag.builder().flagName(
+            FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue()).status(true).build();
         featureFlags.add(featureFlag);
+        featureFlags.add(featureFlag2);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
@@ -715,14 +718,17 @@ class IacStaffCaseRoleTest extends DroolBase {
     private void verifyDeleteCaseRole_V1_1(String roleName, String testType) {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.LEGAL_OPERATIONS, roleName,
                                                              SPECIFIC, "caseId",
-                                                             "1234567890123456", DELETE_REQUESTED);
+                                                             IA_CASE_ID, DELETE_REQUESTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
                                                      "caseType", convertValueJsonNode("Asylum"),
-                                                     "caseId", convertValueJsonNode("1234567890123456")));
+                                                     "caseId", convertValueJsonNode(IA_CASE_ID)));
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
             .status(true).build();
+        FeatureFlag featureFlag2 = FeatureFlag.builder().flagName(
+            FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue()).status(true).build();
         featureFlags.add(featureFlag);
+        featureFlags.add(featureFlag2);
 
         List<ExistingRoleAssignment> existingRoleAssignments =
             List.of(buildExistingRole(assignmentRequest
@@ -759,14 +765,17 @@ class IacStaffCaseRoleTest extends DroolBase {
     void shouldApproveDeleteCaseAllocatorRoles_withDifferentCategory() {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.ADMIN, "case-allocator",
                                                              SPECIFIC, "caseId",
-                                                             "1234567890123456", DELETE_REQUESTED);
+                                                                IA_CASE_ID, DELETE_REQUESTED);
         requestedRole1.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("IA"),
                                                      "caseType", convertValueJsonNode("Asylum"),
-                                                     "caseId", convertValueJsonNode("1234567890123456")));
+                                                     "caseId", convertValueJsonNode(IA_CASE_ID)));
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
             .status(true).build();
+        FeatureFlag featureFlag2 = FeatureFlag.builder().flagName(
+            FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue()).status(true).build();
         featureFlags.add(featureFlag);
+        featureFlags.add(featureFlag2);
 
         executeDroolRules(List.of(buildExistingRole(assignmentRequest.getRequest().getAssignerId(),
                                                           "case-allocator",

@@ -5,8 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
@@ -200,6 +202,9 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void deleteConflictRole_Ia_Judicial_with_CaseAllocator_Ia_Admin() {
 
+        featureFlags.add(FeatureFlag.builder().flagName(
+                FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue()).status(true).build());
+
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
         assignmentRequest
@@ -209,7 +214,7 @@ class ConflictOfInterestTest extends DroolBase {
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setStatus(DELETE_REQUESTED);
             roleAssignment.getAttributes().clear();
-            roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(IA_CASE_ID));
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
         });
 
@@ -228,6 +233,9 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void deleteConflictRole_Ia_LegalOps_with_CaseAllocator_Ia_LegalOps() {
 
+        featureFlags.add(FeatureFlag.builder().flagName(
+            FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue()).status(true).build());
+
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
         assignmentRequest
@@ -238,7 +246,7 @@ class ConflictOfInterestTest extends DroolBase {
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setStatus(DELETE_REQUESTED);
             roleAssignment.getAttributes().clear();
-            roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(IA_CASE_ID));
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
         });
 

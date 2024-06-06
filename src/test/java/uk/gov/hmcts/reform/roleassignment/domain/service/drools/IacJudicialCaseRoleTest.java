@@ -86,15 +86,18 @@ class IacJudicialCaseRoleTest extends DroolBase {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(RoleCategory.JUDICIAL,
                                                                 roleName,
                                                                 SPECIFIC, "caseId",
-                                                                "1234567890123456", DELETE_REQUESTED);
+                                                                IA_CASE_ID, DELETE_REQUESTED);
 
         assignmentRequest.setRequestedRoles(List.of(requestedRole1));
         FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_JRD_1_0.getValue())
             .status(true).build();
         FeatureFlag featureFlag1  =  FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_1_1.getValue())
             .status(true).build();
+        FeatureFlag featureFlag2 = FeatureFlag.builder().flagName(
+            FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue()).status(true).build();
         featureFlags.add(featureFlag);
         featureFlags.add(featureFlag1);
+        featureFlags.add(featureFlag2);
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode("IA"));
