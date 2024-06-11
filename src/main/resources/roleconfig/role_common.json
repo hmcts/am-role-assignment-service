@@ -2541,7 +2541,13 @@
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Asylum", "ET_EnglandWales", "ET_Scotland"]
+            "values": [
+              "Asylum",
+              "ET_EnglandWales",
+              "ET_EnglandWales_Multiple",
+              "ET_Scotland",
+              "ET_Scotland_Multiple"
+            ]
           },
           "caseId": {
             "mandatory": true
@@ -2573,11 +2579,18 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "EMPLOYMENT","ST_CIC"]
+            "values": ["SSCS", "EMPLOYMENT", "ST_CIC"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland","CriminalInjuriesCompensation"]
+            "values": [
+              "Benefit",
+              "ET_EnglandWales",
+              "ET_EnglandWales_Multiple",
+              "ET_Scotland",
+              "ET_Scotland_Multiple",
+              "CriminalInjuriesCompensation"
+            ]
           },
           "caseId": {
             "mandatory": true
@@ -2609,11 +2622,18 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["SSCS", "EMPLOYMENT","ST_CIC"]
+            "values": ["SSCS", "EMPLOYMENT", "ST_CIC"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland","CriminalInjuriesCompensation"]
+            "values": [
+              "Benefit",
+              "ET_EnglandWales",
+              "ET_EnglandWales_Multiple",
+              "ET_Scotland",
+              "ET_Scotland_Multiple",
+              "CriminalInjuriesCompensation"
+            ]
           },
           "caseId": {
             "mandatory": true
@@ -2681,11 +2701,17 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT","SSCS"]
+            "values": ["EMPLOYMENT", "SSCS"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
+            "values": [
+              "Benefit",
+              "ET_EnglandWales",
+              "ET_EnglandWales_Multiple",
+              "ET_Scotland",
+              "ET_Scotland_Multiple"
+            ]
           },
           "caseId": {
             "mandatory": true
@@ -2717,11 +2743,17 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT","SSCS"]
+            "values": ["EMPLOYMENT", "SSCS"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
+            "values": [
+              "Benefit",
+              "ET_EnglandWales",
+              "ET_EnglandWales_Multiple",
+              "ET_Scotland",
+              "ET_Scotland_Multiple"
+            ]
           },
           "caseId": {
             "mandatory": true
@@ -2753,11 +2785,17 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT","SSCS"]
+            "values": ["EMPLOYMENT", "SSCS"]
           },
           "caseType": {
             "mandatory": true,
-            "values": ["Benefit", "ET_EnglandWales", "ET_Scotland"]
+            "values": [
+              "Benefit",
+              "ET_EnglandWales",
+              "ET_EnglandWales_Multiple",
+              "ET_Scotland",
+              "ET_Scotland_Multiple"
+            ]
           },
           "caseId": {
             "mandatory": true

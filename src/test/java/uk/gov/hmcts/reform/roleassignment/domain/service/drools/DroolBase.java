@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
@@ -13,24 +14,25 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_CASE_ID;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_SCTL_CASE_ID;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_CASE_ID;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_EXC_RECORD_CASE_ID;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_CASE_ID;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_CASE_ID;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PUBLIC_LAW_CASE_ID;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.ST_CIC_CASE_ID;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_EW_MLT_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_SCTL_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_SCTL_MLT_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_EXC_RECORD_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PUBLIC_LAW_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.ST_CIC_CASE_ID;
 
 
 public abstract class DroolBase {
@@ -42,60 +44,88 @@ public abstract class DroolBase {
 
     public static final String IA_CASE_ID = "1234567890123450";
 
+    public static final String CASE_REGION = DataStoreApiFallback.CASE_REGION;
+    public static final String CASE_LOCATION = DataStoreApiFallback.CASE_LOCATION;
+
     private final RetrieveDataService retrieveDataService = mock(RetrieveDataService.class);
-    Map<String, Case> caseMap = Map.of("IA", Case.builder()
+
+    Map<String, Case> caseMap = Map.ofEntries(
+                                 Map.entry("IA", Case.builder()
                                            .id(IA_CASE_ID)
                                            .jurisdiction("IA")
                                            .caseTypeId("Asylum")
-                                           .build(),
+                                           .data(buildDataWithRegion())
+                                           .build()),
 
-                                       "SSCS", Case.builder()
+                                 Map.entry("SSCS", Case.builder()
                                            .id(SSCS_CASE_ID)
                                            .jurisdiction("SSCS")
                                            .caseTypeId("Benefit")
-                                           .build(),
+                                           .data(buildDataWithRegion())
+                                           .build()),
 
-                                       "CIVIL", Case.builder()
+                                 Map.entry("CIVIL", Case.builder()
                                            .id(CIVIL_CASE_ID)
                                            .jurisdiction("CIVIL")
                                            .caseTypeId("CIVIL")
-                                           .build(),
+                                           .data(buildDataWithRegion())
+                                           .build()),
 
-                                       "PRIVATELAW", Case.builder()
+                                 Map.entry("PRIVATELAW", Case.builder()
                                            .id(PRIVATE_LAW_CASE_ID)
                                            .jurisdiction("PRIVATELAW")
                                            .caseTypeId("PRLAPPS")
-                                           .build(),
+                                           .data(buildDataWithRegion())
+                                           .build()),
 
-                                       "PRIVATELAW|PRIVATELAW_ExceptionRecord", Case.builder()
+                                 Map.entry("PRIVATELAW|PRIVATELAW_ExceptionRecord", Case.builder()
                                            .id(PRIVATE_LAW_EXC_RECORD_CASE_ID)
                                            .jurisdiction("PRIVATELAW")
                                            .caseTypeId("PRIVATELAW_ExceptionRecord")
-                                           .build(),
+                                           .data(buildDataWithRegion())
+                                           .build()),
 
-                                       "PUBLICLAW", Case.builder()
+                                 Map.entry("PUBLICLAW", Case.builder()
                                            .id(PUBLIC_LAW_CASE_ID)
                                            .jurisdiction("PUBLICLAW")
                                            .caseTypeId("CARE_SUPERVISION_EPO")
-                                           .build(),
+                                           .data(buildDataWithRegion())
+                                           .build()),
 
-                                       "EMPLOYMENT", Case.builder()
+                                 Map.entry("EMPLOYMENT", Case.builder()
                                            .id(EMPLOYMENT_CASE_ID)
                                            .jurisdiction("EMPLOYMENT")
                                            .caseTypeId("ET_EnglandWales")
-                                           .build(),
+                                           .data(buildDataWithRegion())
+                                           .build()),
 
-                                       "EMPLOYMENT|ET_Scotland", Case.builder()
+                                 Map.entry("EMPLOYMENT|ET_EnglandWales_Multiple", Case.builder()
+                                           .id(EMPLOYMENT_EW_MLT_CASE_ID)
+                                           .jurisdiction("EMPLOYMENT")
+                                           .caseTypeId("ET_EnglandWales_Multiple")
+                                           .data(buildDataWithRegion())
+                                           .build()),
+
+                                 Map.entry("EMPLOYMENT|ET_Scotland", Case.builder()
                                            .id(EMPLOYMENT_SCTL_CASE_ID)
                                            .jurisdiction("EMPLOYMENT")
                                            .caseTypeId("ET_Scotland")
-                                           .build(),
+                                           .data(buildDataWithRegion())
+                                           .build()),
 
-                                       "ST_CIC", Case.builder()
+                                 Map.entry("EMPLOYMENT|ET_Scotland_Multiple", Case.builder()
+                                           .id(EMPLOYMENT_SCTL_MLT_CASE_ID)
+                                           .jurisdiction("EMPLOYMENT")
+                                           .caseTypeId("ET_Scotland_Multiple")
+                                           .data(buildDataWithRegion())
+                                           .build()),
+
+                                 Map.entry("ST_CIC", Case.builder()
                                            .id(ST_CIC_CASE_ID)
                                            .jurisdiction("ST_CIC")
                                            .caseTypeId("CriminalInjuriesCompensation")
-                                           .build()
+                                           .data(buildDataWithRegion())
+                                           .build())
     );
 
     @BeforeEach
@@ -110,37 +140,12 @@ public abstract class DroolBase {
 
         //mock the retrieveDataService to fetch the Case Object
         DataStoreApiFallback dummyCases = new DataStoreApiFallback();
-        //IA
-        doReturn(dummyCases.getCaseDataV2(IA_CASE_ID))
-            .when(retrieveDataService).getCaseById(IA_CASE_ID);
 
-        //SSCS
-        doReturn(dummyCases.getCaseDataV2(SSCS_CASE_ID))
-            .when(retrieveDataService).getCaseById(SSCS_CASE_ID);
-
-        //CIVIL
-        doReturn(dummyCases.getCaseDataV2(CIVIL_CASE_ID))
-            .when(retrieveDataService).getCaseById(CIVIL_CASE_ID);
-
-        //PRIVATELAW
-        doReturn(dummyCases.getCaseDataV2(PRIVATE_LAW_CASE_ID))
-            .when(retrieveDataService).getCaseById(PRIVATE_LAW_CASE_ID);
-        doReturn(dummyCases.getCaseDataV2(PRIVATE_LAW_EXC_RECORD_CASE_ID))
-            .when(retrieveDataService).getCaseById(PRIVATE_LAW_EXC_RECORD_CASE_ID);
-
-        //PUBLICLAW
-        doReturn(dummyCases.getCaseDataV2(PUBLIC_LAW_CASE_ID))
-            .when(retrieveDataService).getCaseById(PUBLIC_LAW_CASE_ID);
-
-        //EMPLOYMENT
-        doReturn(dummyCases.getCaseDataV2(EMPLOYMENT_CASE_ID))
-            .when(retrieveDataService).getCaseById(EMPLOYMENT_CASE_ID);
-        doReturn(dummyCases.getCaseDataV2(EMPLOYMENT_SCTL_CASE_ID))
-            .when(retrieveDataService).getCaseById(EMPLOYMENT_SCTL_CASE_ID);
-
-        //ST_CIC
-        doReturn(dummyCases.getCaseDataV2(ST_CIC_CASE_ID))
-            .when(retrieveDataService).getCaseById(ST_CIC_CASE_ID);
+        // mock case data calls for all the test cases in the case map
+        for (Case testCase : caseMap.values()) {
+            doReturn(dummyCases.getCaseDataV2(testCase.getId()))
+                .when(retrieveDataService).getCaseById(testCase.getId());
+        }
 
         Case caseObj0 = Case.builder().id("9234567890123456")
             .caseTypeId("Asylum")
@@ -207,7 +212,20 @@ public abstract class DroolBase {
         featureFlags.clear();
     }
 
+    private Map<String, JsonNode> buildDataWithRegion() {
+        return Map.of(
+            Case.CASE_MANAGEMENT_LOCATION,
+            JacksonUtils.convertValueJsonNode(
+                Map.of(
+                    Case.REGION, JacksonUtils.convertValueJsonNode(CASE_REGION),
+                    Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)
+                )
+            )
+        );
+    }
+
     public RetrieveDataService getRetrieveDataService() {
         return retrieveDataService;
     }
+
 }
