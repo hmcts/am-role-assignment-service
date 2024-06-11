@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import static org.springdoc.core.utils.Constants.DEFAULT_API_DOCS_URL;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,8 +22,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * documentation.
  */
 public class SwaggerPublisher extends BaseTest {
-
-    static final String DEFAULT_API_DOCS_URL = "/v3/api-docs";
 
     private MockMvc mockMvc;
 
