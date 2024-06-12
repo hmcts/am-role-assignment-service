@@ -169,6 +169,8 @@ public abstract class DroolBase {
             .build();
         doReturn(caseObj3).when(retrieveDataService).getCaseById("1234567890123459");
 
+        doReturn(null).when(retrieveDataService).getCaseById("deleted-case");
+
         // Set up the rule engine for validation.
         KieServices ks = KieServices.Factory.get();
         KieContainer kieContainer = ks.getKieClasspathContainer();

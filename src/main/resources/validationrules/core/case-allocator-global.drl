@@ -230,8 +230,13 @@ end;
 
 /*
  * Common fix to delete case roles when case has been deleted - see DTSAM-330.
+ *
+ * Salience set to -1 to ensure rule runs AFTER rule "load_case_data_for_role_assignments_with_case_ids".
+ * If it runs BEFORE the rule mentioned, it can result in all case role deletion requests being
+ * approved - (evens cases which are in CCD and don’t match a users role assignment attributes).
  */
 rule "case_allocator_approve_delete_case_role_all_wa_services_without_case"
+salience -1
 when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue())
     // Only allow requests where the assigner is also the authenticated user
