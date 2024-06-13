@@ -66,7 +66,8 @@ then
 end;
 
 /*
- * Retired for common fix - see DTSAM-330.
+ * Made obsolete in DTSAM-330 - disabled by ALL_WA_SERVICES_CASE_ALLOCATOR_1_0 flag.
+ * To be removed in DTSAM-345.
  */
 rule "case_allocator_approve_delete_case_role"
 when
@@ -115,9 +116,8 @@ end;
 
 
 /*
- * SSCS targeted fix for deleting case roles by a case-allocator with a region filter.
- *
- * Retired for common fix - see DTSAM-330.
+ * Made obsolete in DTSAM-330 - disabled by ALL_WA_SERVICES_CASE_ALLOCATOR_1_0 flag.
+ * To be removed in DTSAM-345.
  */
 rule "case_allocator_approve_delete_case_role_sscs"
 when
@@ -176,7 +176,7 @@ end;
 /*
  * Common fix to delete case roles when a case is present - see DTSAM-330.
  */
-rule "case_allocator_approve_delete_case_role_all_wa_services_with_case"
+rule "case_allocator_approve_delete_case_role_all_wa_services"
 when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue())
     // Only allow requests where the assigner is also the authenticated user
@@ -223,56 +223,7 @@ when
          not CaseAllocatorApproval(roleAssignment.id == $ra.id)
 then
     insert(new CaseAllocatorApproval($ra));
-    $ra.log("Case Allocator approved : case_allocator_approve_delete_case_role_all_wa_services_with_case");
+    $ra.log("Case Allocator approved : case_allocator_approve_delete_case_role_all_wa_services");
     update($ra);
-    logMsg("Rule : case_allocator_approve_delete_case_role_all_wa_services_with_case");
-end;
-
-/*
- * Common fix to delete case roles when case has been deleted - see DTSAM-330.
- *
- * Salience set to -1 to ensure rule runs AFTER rule "load_case_data_for_role_assignments_with_case_ids".
- * If it runs BEFORE the rule mentioned, it can result in all case role deletion requests being
- * approved - (evens cases which are in CCD and don’t match a users role assignment attributes).
- */
-rule "case_allocator_approve_delete_case_role_all_wa_services_without_case"
-salience -1
-when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue())
-    // Only allow requests where the assigner is also the authenticated user
-    $rq: Request(assignerId == authenticatedUserId)
-    // When the request is to delete:
-    //   - a case role
-    //   - with SPECIFIC or EXCLUDED grant type
-    //   - with a case ID
-    $ra: RoleAssignment(
-             status == Status.DELETE_REQUESTED,
-             roleType == RoleType.CASE,
-             grantType in (GrantType.SPECIFIC, GrantType.EXCLUDED),
-             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-    // And there is not a case with that ID
-    not Case(id == $caseId)
-    // And the *assigner* has an existing role assignment
-    //   - with name case-allocator
-    //   - of any role type (not restricted to organisational roles)
-    //   - with no allocated role category or one which matches the role being assigned
-    //   - with no allocated role or one which matches the role being assigned
-         ExistingRoleAssignment(
-             actorId == $rq.assignerId,
-             roleName == "case-allocator",
-             // matches $ra: RoleAssignment attributes
-             attributes["jurisdiction"] == $ra.attributes["jurisdiction"],
-             attributes["caseType"] == null || attributes["caseType"] == $ra.attributes["caseType"],
-             attributes["caseId"] == null || attributes["caseId"] == $ra.attributes["caseId"],
-             attributes["allocatedRoleCategory"] == null ||
-             ValidationUtil.csvContains($ra.roleCategory.toString(), attributes["allocatedRoleCategory"].asText()),
-             attributes["allocatedRole"] == null ||
-             ValidationUtil.csvContains($ra.roleName, attributes["allocatedRole"].asText()))
-    //   - that CaseAllocatorApproval entity doesn't exist for the same assignment record, this is required to avoid infinite loop.
-         not CaseAllocatorApproval(roleAssignment.id == $ra.id)
-then
-    insert(new CaseAllocatorApproval($ra));
-    $ra.log("Case Allocator approved : case_allocator_approve_delete_case_role_all_wa_services_without_case");
-    update($ra);
-    logMsg("Rule : case_allocator_approve_delete_case_role_all_wa_services_without_case");
+    logMsg("Rule : case_allocator_approve_delete_case_role_all_wa_services");
 end;
