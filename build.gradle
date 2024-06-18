@@ -14,7 +14,7 @@ buildscript {
 plugins {
   id 'eclipse'
   id 'application'
-  id 'uk.gov.hmcts.java' version '0.12.61'
+  id 'uk.gov.hmcts.java' version '0.12.63'
   id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.1.5'
@@ -483,7 +483,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testImplementation 'com.github.hmcts:fortify-client:1.4.1:all'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.2:all'
   testImplementation 'com.github.hmcts:befta-fw:8.7.11'
   testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.6.6'
 
