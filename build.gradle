@@ -394,7 +394,7 @@ dependencies {
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-core', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-jose', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-resource-server', version: versions.springSecurity
-  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.5'
+  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.6'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-circuitbreaker-resilience4j'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client'
   implementation group: 'org.apache.poi', name: 'poi', version: '5.2.5'
