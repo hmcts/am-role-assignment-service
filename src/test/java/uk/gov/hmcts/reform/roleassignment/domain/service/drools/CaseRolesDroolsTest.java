@@ -7,7 +7,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -303,9 +302,7 @@ class CaseRolesDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_WA_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
+        setFeatureFlags();
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -568,16 +565,7 @@ class CaseRolesDroolsTest extends DroolBase {
         )
             .build();
 
-        featureFlags.add(
-            FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_WA_1_0.getValue()).status(true).build()
-        );
-        featureFlags.add(
-            FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_CASE_ALLOCATOR_1_0.getValue()).status(true).build()
-        );
-        featureFlags.add(
-            FeatureFlag.builder().flagName(FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue()).status(true)
-                .build()
-        );
+        setFeatureFlags();
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -632,9 +620,7 @@ class CaseRolesDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_WA_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
+        setFeatureFlags();
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -700,9 +686,7 @@ class CaseRolesDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_WA_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
+        setFeatureFlags();
 
         executeDroolRules(List.of(buildExistingRole(CASE_ALLOCATOR_ID,
                                                     roleName,
@@ -714,5 +698,15 @@ class CaseRolesDroolsTest extends DroolBase {
                                                     Status.LIVE)));
 
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
+    }
+
+    private void setFeatureFlags() {
+        List<String> flags = List.of("sscs_wa_1_0", "sscs_case_allocator_1_0", "all_wa_services_case_allocator_1_0");
+
+        for (String flag : flags) {
+            featureFlags.add(
+                FeatureFlag.builder().flagName(flag).status(true).build()
+            );
+        }
     }
 }

@@ -8,12 +8,12 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,6 +36,8 @@ class ConflictOfInterestTest extends DroolBase {
         "CIVIL"
     })
     void createConflictOfInterest_Role_for_allServices(String jurisdiction)  {
+
+        setFeatureFlags();
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
         RoleAssignment assignment = TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.JUDICIAL);
@@ -70,6 +72,8 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void createSelfSubmittedConflictRole_Ia_Judicial() {
 
+        setFeatureFlags();
+
         assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
         assignmentRequest.setRequestedRoles(
                 Collections.singletonList(TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.JUDICIAL)));
@@ -90,6 +94,8 @@ class ConflictOfInterestTest extends DroolBase {
 
     @Test
     void createSelfSubmittedConflictRole_Cmc_LegalOps() {
+
+        setFeatureFlags();
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
         assignmentRequest.setRequestedRoles(Collections.singletonList(
@@ -112,6 +118,8 @@ class ConflictOfInterestTest extends DroolBase {
 
     @Test
     void createConflictRole_Ia_Judicial_with_CaseAllocator_Ia_Admin() {
+
+        setFeatureFlags();
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
         RoleAssignment assignment = TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.JUDICIAL);
@@ -142,6 +150,8 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void createConflictRole_Ia_LegalOps_with_CaseAllocator_Ia_LegalOps() {
 
+        setFeatureFlags();
+
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
         assignmentRequest
@@ -168,6 +178,8 @@ class ConflictOfInterestTest extends DroolBase {
 
     @Test
     void createConflictRole_Ia_Judicial_with_CaseAllocator_Ia_LegalOps() {
+
+        setFeatureFlags();
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest().build();
         RoleAssignment assignment = TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.JUDICIAL);
@@ -202,8 +214,7 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void deleteConflictRole_Ia_Judicial_with_CaseAllocator_Ia_Admin() {
 
-        featureFlags.add(FeatureFlag.builder().flagName(
-                FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue()).status(true).build());
+        setFeatureFlags();
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -233,8 +244,7 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void deleteConflictRole_Ia_LegalOps_with_CaseAllocator_Ia_LegalOps() {
 
-        featureFlags.add(FeatureFlag.builder().flagName(
-            FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue()).status(true).build());
+        setFeatureFlags();
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -269,6 +279,8 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void doNot_createSelfSubmittedConflictRole_Ia_LegalOps_UndefinedCaseId() {
 
+        setFeatureFlags();
+
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
         assignmentRequest
@@ -289,6 +301,8 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void doNot_createSelfSubmittedConflictRole_Ia_LegalOps_AuthId_ActorId_Mismatch() {
 
+        setFeatureFlags();
+
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
         assignmentRequest
@@ -297,7 +311,7 @@ class ConflictOfInterestTest extends DroolBase {
                     TestDataBuilder.buildRoleAssignmentForConflict(RoleCategory.LEGAL_OPERATIONS)));
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.getAttributes().clear();
-            roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(IA_CASE_ID));
             roleAssignment.setActorId("4772dc44-268f-4d0c-8f83-f0fb662aac90");
         });
 
@@ -312,6 +326,8 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void doNot_createConflictRole_PublicClassification_with_CaseAllocator_Ia_LegalOps() {
 
+        setFeatureFlags();
+
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
         assignmentRequest
@@ -321,7 +337,7 @@ class ConflictOfInterestTest extends DroolBase {
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.getAttributes().clear();
-            roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(IA_CASE_ID));
             roleAssignment.setClassification(Classification.PUBLIC);
         });
 
@@ -335,6 +351,8 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void doNot_createConflictRole_SpecificGrant_with_CaseAllocator_Ia_LegalOps() {
 
+        setFeatureFlags();
+
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
         assignmentRequest
@@ -344,7 +362,7 @@ class ConflictOfInterestTest extends DroolBase {
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.getAttributes().clear();
-            roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(IA_CASE_ID));
             roleAssignment.setGrantType(GrantType.SPECIFIC);
         });
 
@@ -357,6 +375,8 @@ class ConflictOfInterestTest extends DroolBase {
 
     @Test
     void doNot_createConflictRole_CaseIdUndefined_with_CaseAllocator_Ia_LegalOps() {
+
+        setFeatureFlags();
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -380,6 +400,8 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void doNot_createConflictRole_with_CaseAllocator_Cmc_LegalOps() {
 
+        setFeatureFlags();
+
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
         assignmentRequest
@@ -389,7 +411,7 @@ class ConflictOfInterestTest extends DroolBase {
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.getAttributes().clear();
-            roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(IA_CASE_ID));
             roleAssignment.setActorId("4772dc44-268f-4d0c-8f83-f0fb662aac90");
         });
 
@@ -405,6 +427,8 @@ class ConflictOfInterestTest extends DroolBase {
     @Test
     void doNot_deleteConflictRole_Ia_Judicial_with_CaseAllocator_Cmc_Admin() {
 
+        setFeatureFlags();
+
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
         assignmentRequest
@@ -414,7 +438,7 @@ class ConflictOfInterestTest extends DroolBase {
         assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
             roleAssignment.setStatus(DELETE_REQUESTED);
             roleAssignment.getAttributes().clear();
-            roleAssignment.getAttributes().put("caseId", convertValueJsonNode("1234567890123456"));
+            roleAssignment.getAttributes().put("caseId", convertValueJsonNode(IA_CASE_ID));
             roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode("IA"));
         });
 
@@ -427,6 +451,8 @@ class ConflictOfInterestTest extends DroolBase {
 
     @Test
     void doNot_deleteConflictRole_CaseIdUndefined_with_CaseAllocator_Ia_Admin() {
+
+        setFeatureFlags();
 
         assignmentRequest = TestDataBuilder.getAssignmentRequest()
             .build();
@@ -446,6 +472,16 @@ class ConflictOfInterestTest extends DroolBase {
 
         assignmentRequest.getRequestedRoles().forEach(roleAssignment ->
                                                           assertEquals(DELETE_REJECTED, roleAssignment.getStatus()));
+    }
+
+    private void setFeatureFlags() {
+        List<String> flags = List.of("all_wa_services_case_allocator_1_0", "sscs_case_allocator_1_0");
+
+        for (String flag : flags) {
+            featureFlags.add(
+                FeatureFlag.builder().flagName(flag).status(true).build()
+            );
+        }
     }
 
 }
