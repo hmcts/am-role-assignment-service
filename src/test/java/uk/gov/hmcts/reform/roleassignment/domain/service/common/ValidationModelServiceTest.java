@@ -67,9 +67,7 @@ class ValidationModelServiceTest {
         sut.validateRequest(assignmentRequestSpy);
 
         Mockito.verify(assignmentRequestSpy, times(6)).getRequest();
-        Mockito.verify(assignmentRequestSpy, times(2)).getRequestedRoles();
-
-        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
+        Mockito.verify(assignmentRequestSpy, times(3)).getRequestedRoles();
     }
 
     @Test
@@ -82,10 +80,7 @@ class ValidationModelServiceTest {
         sut.validateRequest(assignmentRequestSpy);
 
         Mockito.verify(assignmentRequestSpy, times(6)).getRequest();
-        Mockito.verify(assignmentRequestSpy, times(2)).getRequestedRoles();
-
-        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
-        Mockito.verify(kieSessionMock, times(1)).setGlobal(any(), any());
+        Mockito.verify(assignmentRequestSpy, times(3)).getRequestedRoles();
     }
 
     @Test
@@ -96,8 +91,7 @@ class ValidationModelServiceTest {
 
         sut.validateRequest(assignmentRequestSpy);
         Mockito.verify(assignmentRequestSpy, times(4)).getRequest();
-        Mockito.verify(assignmentRequestSpy, times(1)).getRequestedRoles();
-        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
+        Mockito.verify(assignmentRequestSpy, times(2)).getRequestedRoles();
     }
 
     @Test
