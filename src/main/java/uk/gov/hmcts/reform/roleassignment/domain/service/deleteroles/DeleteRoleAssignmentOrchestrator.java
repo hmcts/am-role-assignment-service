@@ -148,7 +148,6 @@ public class DeleteRoleAssignmentOrchestrator {
     private ResponseEntity<Void> performOtherStepsForDelete(String actorId,
                                                             List<RoleAssignment> requestedRoles) {
 
-
         //4. call validation rule
         validationByDrool(requestedRoles);
 

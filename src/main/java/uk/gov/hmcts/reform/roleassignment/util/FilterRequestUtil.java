@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
 import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.regex.Pattern;
 
 @Component
+@AllArgsConstructor
 public class FilterRequestUtil extends OncePerRequestFilter {
 
-    @Autowired
     CorrelationInterceptorUtil correlationInterceptorUtil;
 
     @Override
