@@ -391,7 +391,7 @@ dependencies {
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-core', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-jose', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-resource-server', version: versions.springSecurity
-  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.5'
+  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.6'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.8'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.10.RELEASE'
@@ -447,7 +447,6 @@ dependencies {
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
 
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
-  implementation group: 'com.github.hmcts', name:'properties-volume-spring-boot-starter', version:'0.1.1'
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '2.1.1'
   //Added for S2S and User Authentication
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.reformS2sClient
