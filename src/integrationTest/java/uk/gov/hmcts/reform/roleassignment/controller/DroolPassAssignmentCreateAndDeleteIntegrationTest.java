@@ -34,7 +34,7 @@ import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluatio
 import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import javax.sql.DataSource;
 
 import java.util.List;
