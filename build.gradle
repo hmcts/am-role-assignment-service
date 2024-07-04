@@ -202,11 +202,8 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
 }
 
 project.ext {
-  pacticipantVersion = getCheckedOutGitCommitHash()
-}
-
-static def getCheckedOutGitCommitHash() {
-  'git rev-parse --verify --short HEAD'.execute().text.trim()
+  // DTSAM-379 canIDeploy Index 0 out of bounds for length 0 Issue
+  pacticipantVersion = System.env.GIT_COMMIT.substring(0,9)
 }
 
 task contract(type: Test) {
