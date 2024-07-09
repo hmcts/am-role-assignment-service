@@ -86,7 +86,11 @@ withNightlyPipeline(type, product, component) {
   env.Rules = params.SecurityRules
 
   // Var to turn FTAs that rely on the RAS-CCD case validation on/off, i.e. when CCD is not available.
-  env.AZURE_CASE_VALIDATION_FTA_ENABLED = "true"
+  env.AZURE_CASE_VALIDATION_FTA_ENABLED = "false"
+
+  // Vars for Azure Container Registries DTSAM-370
+  env.TESTCONTAINERS_HOST_OVERRIDE="localhost"
+  env.TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX="hmctspublic.azurecr.io/imported/"
 
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
