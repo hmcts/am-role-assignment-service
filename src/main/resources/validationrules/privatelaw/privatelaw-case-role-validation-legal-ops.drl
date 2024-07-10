@@ -40,3 +40,49 @@ then
     update($ca.getRoleAssignment());
     logMsg("Rule : privatelaw_allocated_legal_adviser_create_case_roles");
 end;
+
+/*
+ * PRIVATELAW "allocated-ctsc-caseworker" case validation rule.
+ */
+
+rule "privatelaw_allocated_ctsc_caseworker_create_case_roles"
+when
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "PRIVATELAW",
+                 roleAssignment.attributes["caseType"].asText() == "PRLAPPS",
+                 roleAssignment.roleName in ("allocated-ctsc-caseworker"))
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("ctsc", "ctsc-team-leader"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PRIVATELAW")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : privatelaw_allocated_ctsc_caseworker_create_case_roles");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : privatelaw_allocated_ctsc_caseworker_create_case_roles");
+end;
+
+/*
+ * PRIVATELAW "allocated-admin-caseworker" case validation rule.
+ */
+
+rule "privatelaw_allocated_admin_caseworker_create_case_roles"
+when
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "PRIVATELAW",
+                 roleAssignment.attributes["caseType"].asText() == "PRLAPPS",
+                 roleAssignment.roleName in ("allocated-admin-caseworker"))
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("hearing-centre-admin", "hearing-centre-team-leader"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PRIVATELAW")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : privatelaw_allocated_admin_caseworker_create_case_roles");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : privatelaw_allocated_admin_caseworker_create_case_roles");
+end;
