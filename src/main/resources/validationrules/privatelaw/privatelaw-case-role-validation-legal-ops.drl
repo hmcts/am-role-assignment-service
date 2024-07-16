@@ -51,6 +51,7 @@ when
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "PRIVATELAW",
                  roleAssignment.attributes["caseType"].asText() == "PRLAPPS",
+                 roleAssignment.classification == Classification.RESTRICTED,
                  roleAssignment.roleName in ("allocated-ctsc-caseworker"))
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
@@ -74,6 +75,7 @@ when
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "PRIVATELAW",
                  roleAssignment.attributes["caseType"].asText() == "PRLAPPS",
+                 roleAssignment.classification == Classification.RESTRICTED,
                  roleAssignment.roleName in ("allocated-admin-caseworker"))
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
