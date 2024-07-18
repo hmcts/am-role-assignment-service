@@ -79,6 +79,10 @@ class CaseRolesDroolsTest extends DroolBase {
         "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,RESTRICTED,magistrate,",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,PUBLIC,tribunal-caseworker,Y",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
+        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
+        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,Y",
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,Y",
         // PUBLICLAW CARE_SUPERVISION_EPO
         "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,RESTRICTED,judge,Y",
         "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
@@ -260,7 +264,15 @@ class CaseRolesDroolsTest extends DroolBase {
         "ST_CIC,CriminalInjuriesCompensation,appraiser-2,JUDICIAL,PUBLIC",
         "ST_CIC,CriminalInjuriesCompensation,allocated-legal-officer,LEGAL_OPERATIONS,RESTRICTED",
         "ST_CIC,CriminalInjuriesCompensation,allocated-administrator,ADMIN,RESTRICTED",
-        "ST_CIC,CriminalInjuriesCompensation,allocated-judge,JUDICIAL,RESTRICTED"
+        "ST_CIC,CriminalInjuriesCompensation,allocated-judge,JUDICIAL,RESTRICTED",
+        // PRIVATELAW PRLAPPS
+        "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,RESTRICTED",
+        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,RESTRICTED",
+        "PRIVATELAW,PRLAPPS,allocated-judge,JUDICIAL,RESTRICTED",
+        "PRIVATELAW,PRLAPPS,gatekeeping-judge,JUDICIAL,RESTRICTED",
+        "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED",
+        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker,CTSC,RESTRICTED",
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker,ADMIN,RESTRICTED"
     })
     void shouldRejectAccessFor_CaseRole_BadExistingRole(String jurisdiction, String caseType, String roleName,
                                                         String roleCategory, String classification) {
@@ -367,6 +379,11 @@ class CaseRolesDroolsTest extends DroolBase {
         // PRIVATELAW PRLAPPS
         "PRIVATELAW,PRLAPPS,hearing-judge",
         "PRIVATELAW,PRLAPPS,allocated-magistrate",
+        "PRIVATELAW,PRLAPPS,allocated-judge",
+        "PRIVATELAW,PRLAPPS,gatekeeping-judge",
+        "PRIVATELAW,PRLAPPS,allocated-legal-adviser",
+        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker",
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker",
         // EMPLOYMENT ET_EnglandWales
         "EMPLOYMENT,ET_EnglandWales,lead-judge",
         "EMPLOYMENT,ET_EnglandWales,hearing-judge",
@@ -430,6 +447,11 @@ class CaseRolesDroolsTest extends DroolBase {
         // PRIVATELAW PRLAPPS
         "PRIVATELAW,PRLAPPS,hearing-judge",
         "PRIVATELAW,PRLAPPS,allocated-magistrate",
+        "PRIVATELAW,PRLAPPS,allocated-judge",
+        "PRIVATELAW,PRLAPPS,gatekeeping-judge",
+        "PRIVATELAW,PRLAPPS,allocated-legal-adviser",
+        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker",
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker",
         // EMPLOYMENT ET_EnglandWales
         "EMPLOYMENT,ET_EnglandWales,lead-judge",
         "EMPLOYMENT,ET_EnglandWales,hearing-judge",
@@ -493,6 +515,11 @@ class CaseRolesDroolsTest extends DroolBase {
         // PRIVATELAW PRLAPPS
         "PRIVATELAW,PRLAPPS,hearing-judge",
         "PRIVATELAW,PRLAPPS,allocated-magistrate",
+        "PRIVATELAW,PRLAPPS,allocated-judge",
+        "PRIVATELAW,PRLAPPS,gatekeeping-judge",
+        "PRIVATELAW,PRLAPPS,allocated-legal-adviser",
+        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker",
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker",
         // EMPLOYMENT ET_EnglandWales
         "EMPLOYMENT,ET_EnglandWales,lead-judge",
         "EMPLOYMENT,ET_EnglandWales,hearing-judge",
