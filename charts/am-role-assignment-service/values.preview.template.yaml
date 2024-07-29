@@ -20,10 +20,7 @@ java:
   devcpuRequests: 250m
   devmemoryLimits: 2048Mi
   devcpuLimits: 1500m
-  memoryRequests: "2048Mi"
-  memoryLimits: "3072Mi"
-  cpuRequests: "250m"
-  cpuLimits: "2000m"
+
   environment:
     ROLE_ASSIGNMENT_DB_HOST: "{{ .Release.Name }}-postgresql"
     ROLE_ASSIGNMENT_DB_NAME: "{{ .Values.postgresql.auth.database}}"

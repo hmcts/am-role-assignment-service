@@ -1,4 +1,10 @@
 java:
+#  overriding memory and cpu config for staging to make it match with default
+#  https://github.com/hmcts/cnp-flux-config/blob/master/apps/am/am-role-assignment-service/am-role-assignment-service.yaml
+  memoryRequests: "2048Mi"
+  memoryLimits: "3072Mi"
+  cpuRequests: "250m"
+  cpuLimits: "2000m"
   # Don't modify below here
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
