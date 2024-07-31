@@ -466,7 +466,7 @@ dependencies {
   implementation group: 'org.codehaus.jettison', name: 'jettison', version: '1.5.4'
   implementation group: 'com.fasterxml.woodstox', name: 'woodstox-core', version: '6.4.0'
 
-  testImplementation('com.opentable.components:otj-pg-embedded:1.0.3')
+  testImplementation('com.opentable.components:otj-pg-embedded:1.1.0')
   testImplementation('org.springframework.cloud:spring-cloud-contract-wiremock')
   testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.4.0'
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit
