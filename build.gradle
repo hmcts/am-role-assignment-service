@@ -60,7 +60,8 @@ def versions = [
   drools         : '7.73.0.Final',
   launchDarklySdk: '5.10.9',
   log4JVersion   : '2.19.0',
-  logbackVersion : '1.2.13'
+  logbackVersion : '1.2.13',
+  poi  : '5.2.5'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
@@ -401,9 +402,9 @@ dependencies {
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.8'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.10.RELEASE'
-  implementation group: 'org.apache.poi', name: 'poi', version: '5.2.5'
-  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.5'
-  implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.5'
+  implementation group: 'org.apache.poi', name: 'poi', version: versions.poi
+  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: versions.poi
+  implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: versions.poi
   implementation group: 'org.springframework', name: 'spring-core', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-beans', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-aop', version: versions.spring
