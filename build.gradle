@@ -403,8 +403,8 @@ dependencies {
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.8'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.10.RELEASE'
   implementation group: 'org.apache.poi', name: 'poi', version: versions.poi
-  implementation group: 'org.apache.poi', name: 'poi-ooxml', versions.poi
-  implementation group: 'org.apache.poi', name: 'poi-scratchpad', versions.poi
+  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: versions.poi
+  implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: versions.poi
   implementation group: 'org.springframework', name: 'spring-core', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-beans', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-aop', version: versions.spring
