@@ -7,7 +7,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -80,6 +79,10 @@ class CaseRolesDroolsTest extends DroolBase {
         "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,RESTRICTED,magistrate,",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,PUBLIC,tribunal-caseworker,Y",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
+        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
+        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,Y",
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,Y",
         // PUBLICLAW CARE_SUPERVISION_EPO
         "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,RESTRICTED,judge,Y",
         "PUBLICLAW,CARE_SUPERVISION_EPO,hearing-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
@@ -261,7 +264,15 @@ class CaseRolesDroolsTest extends DroolBase {
         "ST_CIC,CriminalInjuriesCompensation,appraiser-2,JUDICIAL,PUBLIC",
         "ST_CIC,CriminalInjuriesCompensation,allocated-legal-officer,LEGAL_OPERATIONS,RESTRICTED",
         "ST_CIC,CriminalInjuriesCompensation,allocated-administrator,ADMIN,RESTRICTED",
-        "ST_CIC,CriminalInjuriesCompensation,allocated-judge,JUDICIAL,RESTRICTED"
+        "ST_CIC,CriminalInjuriesCompensation,allocated-judge,JUDICIAL,RESTRICTED",
+        // PRIVATELAW PRLAPPS
+        "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,RESTRICTED",
+        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,RESTRICTED",
+        "PRIVATELAW,PRLAPPS,allocated-judge,JUDICIAL,RESTRICTED",
+        "PRIVATELAW,PRLAPPS,gatekeeping-judge,JUDICIAL,RESTRICTED",
+        "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED",
+        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker,CTSC,RESTRICTED",
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker,ADMIN,RESTRICTED"
     })
     void shouldRejectAccessFor_CaseRole_BadExistingRole(String jurisdiction, String caseType, String roleName,
                                                         String roleCategory, String classification) {
@@ -303,9 +314,7 @@ class CaseRolesDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_WA_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
+        setFeatureFlags();
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -370,6 +379,11 @@ class CaseRolesDroolsTest extends DroolBase {
         // PRIVATELAW PRLAPPS
         "PRIVATELAW,PRLAPPS,hearing-judge",
         "PRIVATELAW,PRLAPPS,allocated-magistrate",
+        "PRIVATELAW,PRLAPPS,allocated-judge",
+        "PRIVATELAW,PRLAPPS,gatekeeping-judge",
+        "PRIVATELAW,PRLAPPS,allocated-legal-adviser",
+        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker",
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker",
         // EMPLOYMENT ET_EnglandWales
         "EMPLOYMENT,ET_EnglandWales,lead-judge",
         "EMPLOYMENT,ET_EnglandWales,hearing-judge",
@@ -416,6 +430,7 @@ class CaseRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
+        // SSCS Benefit
         "SSCS,Benefit,hearing-judge",
         "SSCS,Benefit,tribunal-member-1",
         "SSCS,Benefit,tribunal-member-2",
@@ -428,7 +443,54 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,registrar",
         "SSCS,Benefit,allocated-tribunal-caseworker",
         "SSCS,Benefit,allocated-admin-caseworker",
-        "SSCS,Benefit,allocated-ctsc-caseworker"
+        "SSCS,Benefit,allocated-ctsc-caseworker",
+        // PRIVATELAW PRLAPPS
+        "PRIVATELAW,PRLAPPS,hearing-judge",
+        "PRIVATELAW,PRLAPPS,allocated-magistrate",
+        "PRIVATELAW,PRLAPPS,allocated-judge",
+        "PRIVATELAW,PRLAPPS,gatekeeping-judge",
+        "PRIVATELAW,PRLAPPS,allocated-legal-adviser",
+        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker",
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker",
+        // EMPLOYMENT ET_EnglandWales
+        "EMPLOYMENT,ET_EnglandWales,lead-judge",
+        "EMPLOYMENT,ET_EnglandWales,hearing-judge",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-1",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-2",
+        "EMPLOYMENT,ET_EnglandWales,allocated-tribunal-caseworker",
+        "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker",
+        "EMPLOYMENT,ET_EnglandWales,allocated-ctsc-caseworker",
+        // EMPLOYMENT ET_EnglandWales_Multiple
+        "EMPLOYMENT,ET_EnglandWales_Multiple,lead-judge",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,hearing-judge",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-1",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-2",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-tribunal-caseworker",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-admin-caseworker",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-ctsc-caseworker",
+        // EMPLOYMENT ET_Scotland
+        "EMPLOYMENT,ET_Scotland,lead-judge",
+        "EMPLOYMENT,ET_Scotland,hearing-judge",
+        "EMPLOYMENT,ET_Scotland,tribunal-member-1",
+        "EMPLOYMENT,ET_Scotland,tribunal-member-2",
+        "EMPLOYMENT,ET_Scotland,allocated-tribunal-caseworker",
+        "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker",
+        "EMPLOYMENT,ET_Scotland,allocated-ctsc-caseworker",
+        // EMPLOYMENT ET_Scotland_Multiple
+        "EMPLOYMENT,ET_Scotland_Multiple,lead-judge",
+        "EMPLOYMENT,ET_Scotland_Multiple,hearing-judge",
+        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-1",
+        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-2",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-tribunal-caseworker",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-admin-caseworker",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-ctsc-caseworker",
+        // ST_CIC CriminalInjuriesCompensation
+        "ST_CIC,CriminalInjuriesCompensation,hearing-judge",
+        "ST_CIC,CriminalInjuriesCompensation,interloc-judge",
+        "ST_CIC,CriminalInjuriesCompensation,tribunal-member-1",
+        "ST_CIC,CriminalInjuriesCompensation,tribunal-member-2",
+        "ST_CIC,CriminalInjuriesCompensation,appraiser-1",
+        "ST_CIC,CriminalInjuriesCompensation,appraiser-2"
     })
     void shouldDelete_CaseRole_withMatchingCaseAllocatorRegion(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, CASE_REGION, Status.DELETE_APPROVED);
@@ -436,6 +498,7 @@ class CaseRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
+        // SSCS Benefit
         "SSCS,Benefit,hearing-judge",
         "SSCS,Benefit,tribunal-member-1",
         "SSCS,Benefit,tribunal-member-2",
@@ -448,7 +511,54 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,registrar",
         "SSCS,Benefit,allocated-tribunal-caseworker",
         "SSCS,Benefit,allocated-admin-caseworker",
-        "SSCS,Benefit,allocated-ctsc-caseworker"
+        "SSCS,Benefit,allocated-ctsc-caseworker",
+        // PRIVATELAW PRLAPPS
+        "PRIVATELAW,PRLAPPS,hearing-judge",
+        "PRIVATELAW,PRLAPPS,allocated-magistrate",
+        "PRIVATELAW,PRLAPPS,allocated-judge",
+        "PRIVATELAW,PRLAPPS,gatekeeping-judge",
+        "PRIVATELAW,PRLAPPS,allocated-legal-adviser",
+        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker",
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker",
+        // EMPLOYMENT ET_EnglandWales
+        "EMPLOYMENT,ET_EnglandWales,lead-judge",
+        "EMPLOYMENT,ET_EnglandWales,hearing-judge",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-1",
+        "EMPLOYMENT,ET_EnglandWales,tribunal-member-2",
+        "EMPLOYMENT,ET_EnglandWales,allocated-tribunal-caseworker",
+        "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker",
+        "EMPLOYMENT,ET_EnglandWales,allocated-ctsc-caseworker",
+        // EMPLOYMENT ET_EnglandWales_Multiple
+        "EMPLOYMENT,ET_EnglandWales_Multiple,lead-judge",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,hearing-judge",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-1",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-2",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-tribunal-caseworker",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-admin-caseworker",
+        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-ctsc-caseworker",
+        // EMPLOYMENT ET_Scotland
+        "EMPLOYMENT,ET_Scotland,lead-judge",
+        "EMPLOYMENT,ET_Scotland,hearing-judge",
+        "EMPLOYMENT,ET_Scotland,tribunal-member-1",
+        "EMPLOYMENT,ET_Scotland,tribunal-member-2",
+        "EMPLOYMENT,ET_Scotland,allocated-tribunal-caseworker",
+        "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker",
+        "EMPLOYMENT,ET_Scotland,allocated-ctsc-caseworker",
+        // EMPLOYMENT ET_Scotland_Multiple
+        "EMPLOYMENT,ET_Scotland_Multiple,lead-judge",
+        "EMPLOYMENT,ET_Scotland_Multiple,hearing-judge",
+        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-1",
+        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-2",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-tribunal-caseworker",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-admin-caseworker",
+        "EMPLOYMENT,ET_Scotland_Multiple,allocated-ctsc-caseworker",
+        // ST_CIC CriminalInjuriesCompensation
+        "ST_CIC,CriminalInjuriesCompensation,hearing-judge",
+        "ST_CIC,CriminalInjuriesCompensation,interloc-judge",
+        "ST_CIC,CriminalInjuriesCompensation,tribunal-member-1",
+        "ST_CIC,CriminalInjuriesCompensation,tribunal-member-2",
+        "ST_CIC,CriminalInjuriesCompensation,appraiser-1",
+        "ST_CIC,CriminalInjuriesCompensation,appraiser-2"
     })
     void shouldRejectDelete_CaseRole_withBadCaseAllocatorRegion(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, "bad-region", Status.DELETE_REJECTED);
@@ -482,12 +592,7 @@ class CaseRolesDroolsTest extends DroolBase {
         )
             .build();
 
-        featureFlags.add(
-            FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_WA_1_0.getValue()).status(true).build()
-        );
-        featureFlags.add(
-            FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_CASE_ALLOCATOR_1_0.getValue()).status(true).build()
-        );
+        setFeatureFlags();
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -542,9 +647,7 @@ class CaseRolesDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_WA_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
+        setFeatureFlags();
 
         HashMap<String, JsonNode> existingAttributes = new HashMap<>();
         existingAttributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -610,9 +713,7 @@ class CaseRolesDroolsTest extends DroolBase {
         )
             .build();
 
-        FeatureFlag featureFlag  =  FeatureFlag.builder().flagName(FeatureFlagEnum.SSCS_WA_1_0.getValue())
-            .status(true).build();
-        featureFlags.add(featureFlag);
+        setFeatureFlags();
 
         executeDroolRules(List.of(buildExistingRole(CASE_ALLOCATOR_ID,
                                                     roleName,
@@ -624,5 +725,15 @@ class CaseRolesDroolsTest extends DroolBase {
                                                     Status.LIVE)));
 
         assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
+    }
+
+    private void setFeatureFlags() {
+        List<String> flags = List.of("sscs_wa_1_0", "sscs_case_allocator_1_0", "all_wa_services_case_allocator_1_0");
+
+        for (String flag : flags) {
+            featureFlags.add(
+                FeatureFlag.builder().flagName(flag).status(true).build()
+            );
+        }
     }
 }

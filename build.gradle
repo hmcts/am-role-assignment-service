@@ -17,7 +17,7 @@ plugins {
   id 'uk.gov.hmcts.java' version '0.12.63'
   id 'pmd'
   id 'jacoco'
-  id 'io.spring.dependency-management' version '1.1.5'
+  id 'io.spring.dependency-management' version '1.1.6'
   id 'org.springframework.boot' version '2.7.18'
   id 'info.solidsoft.pitest' version '1.15.0'
   id 'com.github.ben-manes.versions' version '0.45.0' //do not update this version from 0.41.0
@@ -25,7 +25,7 @@ plugins {
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.25'
   id 'au.com.dius.pact' version '4.3.12' //do not change this version or serenity reports will fail to generate
   id 'org.flywaydb.flyway' version '8.5.13'
-  id 'org.owasp.dependencycheck' version '9.1.0'
+  id 'org.owasp.dependencycheck' version '10.0.3'
 }
 
 apply plugin: "info.solidsoft.pitest"
@@ -39,7 +39,7 @@ ext['snakeyaml.version'] = '2.0'
 
 def versions = [
   junit          : '5.9.0',
-  lombok         : '1.18.32',
+  lombok         : '1.18.34',
   gradlePitest   : '1.3.0',
   pitest         : '1.15.8',
   reformLogging  : '6.1.5',
@@ -47,20 +47,21 @@ def versions = [
   serenity       : '2.2.12',
   sonarPitest    : '0.5',
   springBoot     : '2.7.18',
-  spring         : '5.3.34',
+  spring         : '5.3.37',
   springSecurity : '5.7.11',
   springHystrix  : '2.1.1.RELEASE',
   swagger2Version: '2.10.5',
-  tomcat         : '9.0.88',
+  tomcat         : '9.0.91',
   pact_version   : '4.1.7',
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
   feign_jackson  : '12.5',
-  jacksondata    : '2.17.1',
+  jacksondata    : '2.17.2',
   drools         : '7.73.0.Final',
   launchDarklySdk: '5.10.9',
   log4JVersion   : '2.19.0',
-  logbackVersion : '1.2.13'
+  logbackVersion : '1.2.13',
+  poi  : '5.2.5'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
@@ -201,7 +202,13 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
 }
 
 project.ext {
-  pacticipantVersion = getCheckedOutGitCommitHash()
+  if (System.env.GIT_COMMIT) {
+    // DTSAM-379 canIDeploy Index 0 out of bounds for length 0 Issue
+    pacticipantVersion = System.env.GIT_COMMIT.substring(0,9)
+  } else {
+    // DTSAM-382 GIT_COMMIT null in local build fix
+    pacticipantVersion = getCheckedOutGitCommitHash()
+  }
 }
 
 static def getCheckedOutGitCommitHash() {
@@ -391,13 +398,13 @@ dependencies {
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-core', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-jose', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-resource-server', version: versions.springSecurity
-  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.6'
+  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.7'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.8'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.10.RELEASE'
-  implementation group: 'org.apache.poi', name: 'poi', version: '5.2.5'
-  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.5'
-  implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.5'
+  implementation group: 'org.apache.poi', name: 'poi', version: versions.poi
+  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: versions.poi
+  implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: versions.poi
   implementation group: 'org.springframework', name: 'spring-core', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-beans', version: versions.spring
   implementation group: 'org.springframework', name: 'spring-aop', version: versions.spring
@@ -438,7 +445,7 @@ dependencies {
   implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.15.Final'
   implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.8'
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.1'
-  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '9.37.3'
+  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '9.40'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   implementation group: 'commons-io', name:'commons-io', version: '2.16.1'
   implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.26.2'
@@ -456,7 +463,7 @@ dependencies {
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
-  testImplementation('com.opentable.components:otj-pg-embedded:1.0.3')
+  testImplementation('com.opentable.components:otj-pg-embedded:1.1.0')
   testImplementation('com.github.tomakehurst:wiremock-jre8:2.35.2')
   testImplementation('org.springframework.cloud:spring-cloud-contract-wiremock:3.1.10')
   testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.4.0'
@@ -484,7 +491,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:fortify-client:1.4.3:all'
   testImplementation 'com.github.hmcts:befta-fw:8.7.11'
-  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.6.7'
+  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.6.8'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
