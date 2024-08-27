@@ -66,55 +66,6 @@ then
 end;
 
 /*
- * Made obsolete in DTSAM-330 - disabled by ALL_WA_SERVICES_CASE_ALLOCATOR_1_0 flag.
- * To be removed in DTSAM-345.
- */
-rule "case_allocator_approve_delete_case_role"
-when
-    $f : FeatureFlag(status == false && flagName == FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue())
-    // Only allow requests where the assigner is also the authenticated user
-    $rq: Request(assignerId == authenticatedUserId)
-    // When the request is to delete:
-    //   - a case role
-    //   - with SPECIFIC or EXCLUDED grant type
-    //   - with a case ID
-    $ra: RoleAssignment(
-             status == Status.DELETE_REQUESTED,
-             roleType == RoleType.CASE,
-             grantType in (GrantType.SPECIFIC, GrantType.EXCLUDED),
-             attributes["caseId"] != null && $caseId : attributes["caseId"].asText())
-    // And the *assigner* has an existing role assignment
-    //   - with name case-allocator
-    //   - of any role type (not restricted to organisational roles)
-    //   - with a jurisdiction which matches the case jurisdiction
-    //   - with no case type or one which matches the case
-    //   - with no case ID or one which matches the case
-    //   - with no region or one which matches the case
-    //   - with no base location or one which matches the case
-    //   - with no allocated role category or one which matches the role being assigned
-    //   - with no allocated role or one which matches the role being assigned
-         ExistingRoleAssignment(
-             actorId == $rq.assignerId,
-             roleName == "case-allocator",
-             attributes["jurisdiction"] == $ra.attributes["jurisdiction"],
-             attributes["caseType"] == null || attributes["caseType"] == $ra.attributes["caseType"],
-             attributes["caseId"] == null || attributes["caseId"] == $ra.attributes["caseId"],
-             attributes["region"] == null || attributes["region"] == $ra.attributes["region"],
-             attributes["baseLocation"] == null || attributes["baseLocation"] == $ra.attributes["baseLocation"],
-             attributes["allocatedRoleCategory"] == null ||
-             ValidationUtil.csvContains($ra.roleCategory.toString(), attributes["allocatedRoleCategory"].asText()),
-             attributes["allocatedRole"] == null ||
-             ValidationUtil.csvContains($ra.roleName, attributes["allocatedRole"].asText()))
-    //   - that CaseAllocatorApproval entity doesn't exist for the same assignment record, this is required to avoid infinite loop.
-         not CaseAllocatorApproval(roleAssignment.id == $ra.id)
-then
-    insert(new CaseAllocatorApproval($ra));
-    $ra.log("Case Allocator approved : case_allocator_approve_delete_case_role");
-    update($ra);
-    logMsg("Rule : case_allocator_approve_delete_case_role");
-end;
-
-/*
  * Common fix to delete case roles when a case is present - see DTSAM-330.
  */
 rule "case_allocator_approve_delete_case_role_all_wa_services"
