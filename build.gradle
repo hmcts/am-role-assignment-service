@@ -41,7 +41,7 @@ def versions = [
   junit          : '5.9.0',
   lombok         : '1.18.34',
   gradlePitest   : '1.3.0',
-  pitest         : '1.16.1',
+  pitest         : '1.16.2',
   reformLogging  : '6.1.6',
   reformS2sClient: '5.1.2',
   serenity       : '3.3.10',
@@ -444,7 +444,7 @@ dependencies {
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: versions.tomcat
   implementation group: 'org.hibernate', name: 'hibernate-core', version: '6.2.13.Final'
   implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.8'
-  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.4'
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '9.40'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   implementation group: 'commons-io', name:'commons-io', version: '2.16.1'
