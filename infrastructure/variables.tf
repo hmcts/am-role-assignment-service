@@ -87,5 +87,7 @@ variable "pgsql_sku" {
 }
 
 variable "pgsql_storage_mb" {
-  default = 65536
+  description = "Max storage allowed for the PGSql Flexibile instance"
+  type        = number
+  default     = 65536
 }
