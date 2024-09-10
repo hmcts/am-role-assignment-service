@@ -85,6 +85,7 @@ module "role-assignment-database-v15" {
   common_tags          = var.common_tags
   pgsql_version        = "15"
   pgsql_sku            = var.pgsql_sku
+  pgsql_storage_mb     = var.pgsql_storage_mb
 
   # Setup Access Reader db user
   force_user_permissions_trigger = "5"
