@@ -12,8 +12,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,8 +34,8 @@ public class SmokeTest extends BaseTest {
     String accessToken;
     String serviceAuth;
 
-    @Value("${launchdarkly.sdk.environment}")
-    private String environment;
+    @Autowired
+    private EnvironmentConfiguration environmentConfiguration;
 
     @Value("${launchdarkly.sdk.user}")
     private String userName;
@@ -151,7 +153,7 @@ public class SmokeTest extends BaseTest {
     }
 
     public String getEnvironment() {
-        return environment;
+        return environmentConfiguration.getEnvironment();
     }
 
     public String getUserName() {

@@ -2,10 +2,12 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.kie.api.runtime.StatelessKieSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 import uk.gov.hmcts.reform.roleassignment.config.DBFlagConfigurtion;
+import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
@@ -34,8 +36,8 @@ public class ValidationModelService {
     private RetrieveDataService retrieveDataService;
     private PersistenceService persistenceService;
 
-    @Value("${launchdarkly.sdk.environment}")
-    private String environment;
+    @Autowired
+    private EnvironmentConfiguration environmentConfiguration;
 
     @Value("${roleassignment.query.size}")
     private int defaultSize;
@@ -145,7 +147,7 @@ public class ValidationModelService {
 
         Map<String, Boolean> droolFlagStates = new ConcurrentHashMap<>();
         // building the LDFeature Flag
-        if (environment.equals("prod")) {
+        if (environmentConfiguration.getEnvironment().equals("prod")) {
             droolFlagStates = DBFlagConfigurtion.getDroolFlagStates();
         } else {
             // fetch the latest value from db for lower env
@@ -184,7 +186,8 @@ public class ValidationModelService {
 
     private void getFlagValuesFromDB(Map<String, Boolean> droolFlagStates) {
         for (FeatureFlagEnum featureFlagEnum : FeatureFlagEnum.values()) {
-            Boolean status = persistenceService.getStatusByParam(featureFlagEnum.getValue(), environment);
+            Boolean status = persistenceService.getStatusByParam(featureFlagEnum.getValue(),
+                                                                 environmentConfiguration.getEnvironment());
             droolFlagStates.put(featureFlagEnum.getValue(), status);
         }
     }

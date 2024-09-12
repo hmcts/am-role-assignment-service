@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,12 +28,16 @@ class FeatureToggleServiceTest {
     @Mock
     HttpServletRequest request;
 
+    @Mock
+    EnvironmentConfiguration environmentConfiguration;
+
     @InjectMocks
     FeatureToggleService featureToggleService = new FeatureToggleService();
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        when(environmentConfiguration.getEnvironment()).thenReturn("pr");
     }
 
     @Test

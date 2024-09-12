@@ -49,7 +49,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 
-@TestPropertySource(properties = {"dbFeature.flags.enable=iac_jrd_1_0"})
+@TestPropertySource(properties = {"dbFeature.flags.enable=iac_jrd_1_0", "ras.environment=pr"})
 public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentCreateAndDeleteIntegrationTest.class);

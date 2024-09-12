@@ -52,7 +52,8 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREAT
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
-@TestPropertySource(properties = {"org.request.byPassOrgDroolRule=false", "dbFeature.flags.enable=iac_jrd_1_0"})
+@TestPropertySource(properties = {"org.request.byPassOrgDroolRule=false", "dbFeature.flags.enable=iac_jrd_1_0",
+    "ras.environment=pr"})
 public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     private static final Logger logger =

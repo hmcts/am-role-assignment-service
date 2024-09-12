@@ -5,6 +5,7 @@ import com.launchdarkly.sdk.server.interfaces.LDClientInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -21,8 +22,8 @@ public class FeatureToggleService {
     @Autowired
     private LDClientInterface ldClient;
 
-    @Value("${launchdarkly.sdk.environment}")
-    private String environment;
+    @Autowired
+    private EnvironmentConfiguration environmentConfiguration;
 
     @Value("${launchdarkly.sdk.user}")
     private String userName;
@@ -37,7 +38,7 @@ public class FeatureToggleService {
     }
 
     public boolean isFlagEnabled(String serviceName, String flagName) {
-        LDUser user = new LDUser.Builder(environment)
+        LDUser user = new LDUser.Builder(environmentConfiguration.getEnvironment())
             .firstName(userName)
             .lastName(USER)
             .custom(SERVICE_NAME, serviceName)
