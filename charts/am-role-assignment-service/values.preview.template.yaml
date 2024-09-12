@@ -36,6 +36,7 @@ java:
     RUN_DB_MIGRATION_ON_STARTUP: true
     RUN_LD_ON_STARTUP: true
     APPLICATION_LOGGING_LEVEL: DEBUG
+    TESTING_SUPPORT_ENABLED: true
   postgresql:
     enabled: true
     postgresqlPort: 5432

@@ -180,6 +180,10 @@ org :
 
 logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:INFO}
 
+testing:
+  support:
+    enabled: ${TESTING_SUPPORT_ENABLED:false}
+
 dbFeature:
   flags:
     enable: ${DB_FEATURE_FLAG_ENABLE:}
