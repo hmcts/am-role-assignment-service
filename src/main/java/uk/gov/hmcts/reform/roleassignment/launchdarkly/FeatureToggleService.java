@@ -32,8 +32,6 @@ public class FeatureToggleService {
 
     static {
         //Any new end point need to be placed in respective map.
-        getRequestMap.put("/am/role-assignments/fetchFlagStatus","get-db-drools-flag");
-        postRequestMap.put("/am/role-assignments/createFeatureFlag","get-db-drools-flag");
     }
 
     public boolean isFlagEnabled(String serviceName, String flagName) {
