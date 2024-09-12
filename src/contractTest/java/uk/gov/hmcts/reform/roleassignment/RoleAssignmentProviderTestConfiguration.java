@@ -3,11 +3,13 @@ package uk.gov.hmcts.reform.roleassignment;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
@@ -21,6 +23,8 @@ import uk.gov.hmcts.reform.roleassignment.feignclients.DataStoreApi;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
+
+import static org.mockito.Mockito.when;
 
 @TestConfiguration
 public class RoleAssignmentProviderTestConfiguration {
@@ -110,6 +114,14 @@ public class RoleAssignmentProviderTestConfiguration {
         return new DeleteRoleAssignmentOrchestrator(persistenceService, getParseRequestService(),
                                                     getValidationModelService(), getPersistenceUtil()
         );
+    }
+
+    @Bean
+    @Primary
+    public EnvironmentConfiguration getEnvironmentConfiguration() {
+        EnvironmentConfiguration environmentConfiguration = Mockito.mock(EnvironmentConfiguration.class);
+        when(environmentConfiguration.getEnvironment()).thenReturn("pr");
+        return environmentConfiguration;
     }
 
 }
