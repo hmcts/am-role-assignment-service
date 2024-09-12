@@ -30,7 +30,6 @@ public class LaunchDarklyConfiguration implements WebMvcConfigurer {
         //registry.addInterceptor(featureConditionEvaluation).addPathPatterns("/am/role-assignments")
         registry.addInterceptor(featureConditionEvaluation).addPathPatterns("/am/role-assignments/createFeatureFlag");
         registry.addInterceptor(featureConditionEvaluation).addPathPatterns("/am/role-assignments/fetchFlagStatus");
-        registry.addInterceptor(featureConditionEvaluation).addPathPatterns("/am/role-assignments/query/delete");
     }
 }
 
