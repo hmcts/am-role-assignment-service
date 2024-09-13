@@ -24,8 +24,6 @@ java:
           alias: ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET
         - name: role-assignment-service-IDAM-ADMIN-SECRET
           alias: ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD
-        - name: role-assignment-service-LD-SDK-KEY
-          alias: LD_SDK_KEY
   environment:
     IDAM_S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     IDAM_USER_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
@@ -37,7 +35,7 @@ java:
     S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     OIDC_ISSUER_URL: https://forgerock-am.service.core-compute-idam-{{ .Values.global.environment }}.internal:8443/openam/oauth2/hmcts
     OPEN_ID_API_BASE_URI: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o
-    LAUNCH_DARKLY_ENV: "{{ .Values.global.environment }}"
+    RAS_ENV: "{{ .Values.global.environment }}"
     ROLE_ASSIGNMENT_IDAM_CLIENT_ID: am_role_assignment
     MICROSERVICE_NAME: am_role_assignment_service
     PACT_BROKER_FULL_URL: https://pact-broker.platform.hmcts.net
@@ -49,5 +47,4 @@ java:
     APPLICATION_LOGGING_LEVEL: INFO
     BYPASS_ORG_DROOL_RULE: false
     RUN_DB_MIGRATION_ON_STARTUP: false
-    RUN_LD_ON_STARTUP: true
     TESTING_SUPPORT_ENABLED: false

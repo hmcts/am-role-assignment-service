@@ -318,7 +318,7 @@ public class PersistenceService {
 
     public boolean getStatusByParam(String flagName, String envName) {
         if (StringUtils.isEmpty(envName)) {
-            envName = System.getenv("LAUNCH_DARKLY_ENV");
+            envName = System.getenv("RAS_ENV");
         }
         return flagConfigRepository.findByFlagNameAndEnv(flagName, envName).getStatus();
     }
