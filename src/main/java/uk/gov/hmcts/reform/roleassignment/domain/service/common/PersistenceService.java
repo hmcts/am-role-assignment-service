@@ -27,7 +27,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
@@ -69,8 +68,8 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
     private FlagConfigRepository flagConfigRepository;
-    @Autowired
-    private FeatureToggleService featureToggleService;
+    //@Autowired
+    //private FeatureToggleService featureToggleService;
 
     @Value("${roleassignment.query.sortcolumn}")
     private String sortColumn;
