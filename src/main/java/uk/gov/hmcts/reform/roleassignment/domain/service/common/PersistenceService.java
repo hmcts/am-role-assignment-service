@@ -68,8 +68,6 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
     private FlagConfigRepository flagConfigRepository;
-    //@Autowired
-    //private FeatureToggleService featureToggleService;
 
     @Value("${roleassignment.query.sortcolumn}")
     private String sortColumn;

@@ -94,9 +94,6 @@ class PersistenceServiceTest {
     @Mock
     private FlagConfigRepository flagConfigRepository;
 
-    //@Mock
-    //FeatureToggleService featureToggleService;
-
     @InjectMocks
     private final PersistenceService sut = new PersistenceService(
         historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil,
