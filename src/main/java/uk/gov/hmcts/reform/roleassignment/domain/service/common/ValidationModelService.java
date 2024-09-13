@@ -146,7 +146,7 @@ public class ValidationModelService {
         List<FeatureFlag> featureFlags = new ArrayList<>();
 
         Map<String, Boolean> droolFlagStates = new ConcurrentHashMap<>();
-        // building the LDFeature Flag
+        // building the Feature Flag
         if (environmentConfiguration.getEnvironment().equals("prod")) {
             droolFlagStates = DBFlagConfigurtion.getDroolFlagStates();
         } else {
