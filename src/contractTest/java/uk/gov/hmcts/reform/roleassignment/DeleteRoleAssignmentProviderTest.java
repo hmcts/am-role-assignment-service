@@ -130,6 +130,8 @@ public class DeleteRoleAssignmentProviderTest {
                 TestDataBuilder.buildRequest(Status.LIVE, false)));
         when(securityUtils.getServiceName()).thenReturn("am_org_role_mapping_service");
         when(persistenceService.getStatusByParam(FeatureFlagEnum.IAC_1_1.getValue(), "pr")).thenReturn(true);
+        when(persistenceService.getStatusByParam(FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue(), "pr"))
+            .thenReturn(true);
         when(securityUtils.getUserId()).thenReturn(AUTH_USER_ID);
 
         JsonNode attributes = buildAttributesFromFile("attributesCase.json");
