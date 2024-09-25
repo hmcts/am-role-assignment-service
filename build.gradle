@@ -402,7 +402,7 @@ dependencies {
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-core', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-jose', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-resource-server', version: versions.springSecurity
-  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.8'
+  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.9'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-circuitbreaker-resilience4j'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client'
   implementation group: 'org.apache.poi', name: 'poi', version: versions.poi
@@ -496,7 +496,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:fortify-client:1.4.4:all'
   testImplementation group: 'com.github.hmcts', name: 'befta-fw', version: versions.befta
-  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.6.9'
+  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.6.10'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
