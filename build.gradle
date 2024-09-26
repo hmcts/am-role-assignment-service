@@ -277,7 +277,7 @@ jacoco {
 }
 
 pitest {
-  pitestVersion = '1.17.0'
+  pitestVersion = versions.pitest
   targetClasses = ['uk.gov.hmcts.reform.*']
   excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
                      'uk.gov.hmcts.reform.roleassignment.config.*',
