@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import org.jetbrains.annotations.NotNull;
+import jakarta.validation.constraints.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.jetbrains.annotations.NotNull;
+import jakarta.validation.constraints.NotNull;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
