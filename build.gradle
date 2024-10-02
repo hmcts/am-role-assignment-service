@@ -400,7 +400,7 @@ dependencies {
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-resource-server', version: versions.springSecurity
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.9'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
-  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.8'
+  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.9'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.10.RELEASE'
   implementation group: 'org.apache.poi', name: 'poi', version: versions.poi
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: versions.poi
@@ -420,7 +420,6 @@ dependencies {
   implementation group: 'org.springframework', name: 'spring-webmvc', version: versions.spring
 
   implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.8.0'
-  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.8'
 
   // drools engine dependency
   implementation group: 'org.drools', name: 'drools-core', version: versions.drools
