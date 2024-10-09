@@ -184,7 +184,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW","PRIVATELAW"]
+            "values": ["PUBLICLAW","PRIVATELAW","IA"]
           },
           "primaryLocation": {
             "mandatory": false
