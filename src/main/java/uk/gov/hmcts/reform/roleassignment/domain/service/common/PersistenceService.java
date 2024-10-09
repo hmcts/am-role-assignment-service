@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -77,6 +78,9 @@ public class PersistenceService {
 
     @Value("${roleassignment.query.size}")
     private Integer defaultSize;
+
+    @Value("${roleassignment.query.sortcolumnunique}")
+    private String sortColumnUnique;
 
     @Autowired
     EntityManager entityManager;
@@ -192,16 +196,7 @@ public class PersistenceService {
                     .and(searchByClassification(searchRequest.getClassification())))
                                        .and(searchByRoleCategories(searchRequest.getRoleCategory())))
                 .and(searchByAuthorisations(searchRequest.getAuthorisations())),
-            PageRequest.of(
-                (pageNumber != null
-                    && pageNumber > 0) ? pageNumber : 0,
-                (size != null
-                    && size > 0) ? size : defaultSize,
-                Sort.by(
-                    (direction != null) ? Sort.Direction.fromString(direction) : Sort.DEFAULT_DIRECTION,
-                    (sort != null) ? sort : sortColumn
-                )
-            )
+            createPageable(pageNumber, size, sort, direction)
         );
 
         PageHolder.holder.set(pageRoleAssignmentEntities);
@@ -268,16 +263,7 @@ public class PersistenceService {
 
         Page<RoleAssignmentEntity> pageRoleAssignmentEntities  = roleAssignmentRepository.findAll(
             finalQuery,
-            PageRequest.of(
-                (pageNumber != null
-                    && pageNumber > 0) ? pageNumber : 0,
-                (size != null
-                    && size > 0) ? size : defaultSize,
-                Sort.by(
-                    (direction != null) ? Sort.Direction.fromString(direction) : Sort.DEFAULT_DIRECTION,
-                    (sort != null) ? sort : sortColumn
-                )
-            )
+            createPageable(pageNumber, size, sort, direction)
         );
         PageHolder.holder.set(pageRoleAssignmentEntities);
 
@@ -338,6 +324,20 @@ public class PersistenceService {
             roleTypes.add(RoleType.CASE.name());
         }
         return roleTypes;
+    }
+
+    public Pageable createPageable(Integer pageNumber, Integer size, String sort, String direction) {
+        Sort.Direction dir = (direction != null) ? Sort.Direction.fromString(direction) : Sort.DEFAULT_DIRECTION;
+
+        Sort sortBy = sort != null && sort.equals(sortColumnUnique)
+            ? Sort.by(dir, sortColumnUnique) :
+            Sort.by(dir, (sort != null) ? sort : sortColumn).and(Sort.by(sortColumnUnique));
+
+        return PageRequest.of(
+            (pageNumber != null && pageNumber > 0) ? pageNumber : 0,
+            (size != null && size > 0) ? size : defaultSize,
+            sortBy
+        );
     }
 
 }

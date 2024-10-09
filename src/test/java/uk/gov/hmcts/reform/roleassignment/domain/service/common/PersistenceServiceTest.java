@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -12,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
@@ -326,7 +329,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequest_withCaseId() throws IOException {
-
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -380,7 +383,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequest_withoutCaseId() throws IOException {
-
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -430,7 +433,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequestWithAllParameters() throws IOException {
-
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -497,7 +500,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequest_ThrowsException() {
-
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
         ReflectionTestUtils.setField(sut, "defaultSize", 1);
         ReflectionTestUtils.setField(sut, "sortColumn", "id");
         List<String> actorId = List.of(
@@ -528,7 +531,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByAuthorisations_ThrowsException() {
-
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
         ReflectionTestUtils.setField(sut, "defaultSize", 1);
         ReflectionTestUtils.setField(sut, "sortColumn", "id");
         List<String> authorisations = List.of(
@@ -559,7 +562,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByAuthorisation() throws IOException {
-
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -680,7 +683,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequestWithTrueFlag() throws IOException {
-
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -747,7 +750,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequestWithTrueFlag_throwException() throws IOException {
-
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
         ReflectionTestUtils.setField(sut, "defaultSize", 1);
         ReflectionTestUtils.setField(sut, "sortColumn", "id");
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
@@ -815,7 +818,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequestWithTrueFlagAndPageSizeZero_throwException() throws IOException {
-
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
         ReflectionTestUtils.setField(sut, "defaultSize", 1);
         ReflectionTestUtils.setField(sut, "sortColumn", "id");
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
@@ -930,7 +933,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByOneQueryRequest() throws IOException {
-
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -987,7 +990,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByMultipleQueryRequest() throws IOException {
-
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -1174,4 +1177,49 @@ class PersistenceServiceTest {
 
         assertEquals(roleTypesExpectedResult, roleTypesResult);
     }
+
+    @Test
+    void createPageable_shouldSortById() {
+        ReflectionTestUtils.setField(sut, "sortColumn", "roleName");
+        ReflectionTestUtils.setField(sut, "defaultSize", 10);
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
+
+        Pageable pageable = sut.createPageable(0, 20, "id", "desc");
+
+        assertNotNull(pageable);
+        assertEquals(0, pageable.getPageNumber());
+        assertEquals(20, pageable.getPageSize());
+        assertEquals(Sort.by(Sort.Direction.DESC, "id"), pageable.getSort());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"roleName", "actorId", "roleCategory"})
+    void createPageable_shouldSortByNonUniqueFieldThenId(String sortBy) {
+        ReflectionTestUtils.setField(sut, "sortColumn", "roleName");
+        ReflectionTestUtils.setField(sut, "defaultSize", 10);
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
+
+        Pageable pageable = sut.createPageable(0, 20, sortBy, "desc");
+
+        assertNotNull(pageable);
+        assertEquals(0, pageable.getPageNumber());
+        assertEquals(20, pageable.getPageSize());
+        assertEquals(Sort.by(Sort.Direction.DESC, sortBy).and(Sort.by(Sort.Direction.ASC, "id")), pageable.getSort());
+    }
+
+    @Test
+    void createPageable_shouldUseDefaultSizeThenSortBySortColumnThenId() {
+        ReflectionTestUtils.setField(sut, "sortColumn", "roleName");
+        ReflectionTestUtils.setField(sut, "defaultSize", 10);
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
+
+        Pageable pageable = sut.createPageable(null, null, null, null);
+
+        assertNotNull(pageable);
+        assertEquals(0, pageable.getPageNumber());
+        assertEquals(10, pageable.getPageSize());
+        assertEquals(Sort.by(Sort.Direction.ASC, "roleName").and(Sort.by(Sort.Direction.ASC, "id")),
+                     pageable.getSort());
+    }
+
 }
