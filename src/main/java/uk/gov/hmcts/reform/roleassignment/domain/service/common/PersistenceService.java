@@ -330,7 +330,7 @@ public class PersistenceService {
         Sort.Direction dir = (direction != null) ? Sort.Direction.fromString(direction) : Sort.DEFAULT_DIRECTION;
         String sortOrDefault = (sort != null) ? sort : sortColumn;
 
-        Sort sortBy = sort != null && sort.equals(sortColumnUnique)
+        Sort sortBy = sortOrDefault.equals(sortColumnUnique)
             ? Sort.by(dir, sortColumnUnique) :
             Sort.by(dir, sortOrDefault).and(Sort.by(sortColumnUnique));
 

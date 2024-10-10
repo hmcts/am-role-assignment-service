@@ -1203,8 +1203,7 @@ class PersistenceServiceTest {
         assertNotNull(page);
         assertEquals(0, page.getPageNumber());
         assertEquals(10, page.getPageSize());
-        assertEquals(Sort.by(Sort.Direction.ASC, "roleName").and(Sort.by(Sort.Direction.ASC, "id")),
-                     page.getSort());
+        assertEquals(Sort.by(Sort.Direction.ASC, "roleName").and(Sort.by(Sort.Direction.ASC, "id")), page.getSort());
     }
 
     private void setPagedQueryFields() {
