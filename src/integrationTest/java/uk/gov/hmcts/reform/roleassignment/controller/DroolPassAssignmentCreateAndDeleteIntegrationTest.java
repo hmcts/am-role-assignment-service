@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import org.jetbrains.annotations.NotNull;
+import jakarta.validation.constraints.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -34,7 +34,7 @@ import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluatio
 import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import javax.sql.DataSource;
 
 import java.util.List;
