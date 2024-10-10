@@ -2275,7 +2275,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","PUBLICLAW"]
+            "values": ["PRIVATELAW","PUBLICLAW","ST_CIC"]
           }
         }
       }
