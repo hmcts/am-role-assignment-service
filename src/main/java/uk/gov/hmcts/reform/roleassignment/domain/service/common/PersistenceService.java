@@ -328,10 +328,11 @@ public class PersistenceService {
 
     public Pageable createPageable(Integer pageNumber, Integer size, String sort, String direction) {
         Sort.Direction dir = (direction != null) ? Sort.Direction.fromString(direction) : Sort.DEFAULT_DIRECTION;
+        String sortOrDefault = (sort != null) ? sort : sortColumn;
 
         Sort sortBy = sort != null && sort.equals(sortColumnUnique)
             ? Sort.by(dir, sortColumnUnique) :
-            Sort.by(dir, (sort != null) ? sort : sortColumn).and(Sort.by(sortColumnUnique));
+            Sort.by(dir, sortOrDefault).and(Sort.by(sortColumnUnique));
 
         return PageRequest.of(
             (pageNumber != null && pageNumber > 0) ? pageNumber : 0,

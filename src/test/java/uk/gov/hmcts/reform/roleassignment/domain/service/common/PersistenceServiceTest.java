@@ -1173,12 +1173,12 @@ class PersistenceServiceTest {
     void createPageable_shouldSortById() {
         setPagedQueryFields();
 
-        Pageable pageable = sut.createPageable(0, 20, "id", "desc");
+        Pageable page = sut.createPageable(0, 20, "id", "desc");
 
-        assertNotNull(pageable);
-        assertEquals(0, pageable.getPageNumber());
-        assertEquals(20, pageable.getPageSize());
-        assertEquals(Sort.by(Sort.Direction.DESC, "id"), pageable.getSort());
+        assertNotNull(page);
+        assertEquals(0, page.getPageNumber());
+        assertEquals(20, page.getPageSize());
+        assertEquals(Sort.by(Sort.Direction.DESC, "id"), page.getSort());
     }
 
     @ParameterizedTest
@@ -1186,25 +1186,25 @@ class PersistenceServiceTest {
     void createPageable_shouldSortByNonUniqueFieldThenId(String sortBy) {
         setPagedQueryFields();
 
-        Pageable pageable = sut.createPageable(0, 20, sortBy, "desc");
+        Pageable page = sut.createPageable(0, 20, sortBy, "desc");
 
-        assertNotNull(pageable);
-        assertEquals(0, pageable.getPageNumber());
-        assertEquals(20, pageable.getPageSize());
-        assertEquals(Sort.by(Sort.Direction.DESC, sortBy).and(Sort.by(Sort.Direction.ASC, "id")), pageable.getSort());
+        assertNotNull(page);
+        assertEquals(0, page.getPageNumber());
+        assertEquals(20, page.getPageSize());
+        assertEquals(Sort.by(Sort.Direction.DESC, sortBy).and(Sort.by(Sort.Direction.ASC, "id")), page.getSort());
     }
 
     @Test
     void createPageable_shouldUseDefaultSizeThenSortBySortColumnThenId() {
         setPagedQueryFields();
 
-        Pageable pageable = sut.createPageable(null, null, null, null);
+        Pageable page = sut.createPageable(null, null, null, null);
 
-        assertNotNull(pageable);
-        assertEquals(0, pageable.getPageNumber());
-        assertEquals(10, pageable.getPageSize());
+        assertNotNull(page);
+        assertEquals(0, page.getPageNumber());
+        assertEquals(10, page.getPageSize());
         assertEquals(Sort.by(Sort.Direction.ASC, "roleName").and(Sort.by(Sort.Direction.ASC, "id")),
-                     pageable.getSort());
+                     page.getSort());
     }
 
     private void setPagedQueryFields() {
