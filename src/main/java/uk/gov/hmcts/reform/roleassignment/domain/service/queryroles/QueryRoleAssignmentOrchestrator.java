@@ -83,7 +83,7 @@ public class QueryRoleAssignmentOrchestrator {
             Long.toString(persistenceService.getTotalRecords())
         );
 
-        if (includeLabels && !assignmentList.isEmpty()) {
+        if (Boolean.TRUE.equals(includeLabels) && !assignmentList.isEmpty()) {
             assignmentList.forEach(assignment -> {
                 String roleLabel = RoleConfig.getRoleConfig().get(
                     assignment.getRoleName(),

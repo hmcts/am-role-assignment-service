@@ -171,7 +171,7 @@ class QueryAssignmentControllerTest {
             20,
             "roleType",
             "desc",
-                multipleQueryRequest,
+            multipleQueryRequest,
             true
         );
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -198,7 +198,7 @@ class QueryAssignmentControllerTest {
             20,
             "id",
             "asc",
-                multipleQueryRequest,
+            multipleQueryRequest,
             true
         );
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
