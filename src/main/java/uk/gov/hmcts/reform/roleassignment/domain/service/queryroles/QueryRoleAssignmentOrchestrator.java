@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
@@ -84,15 +85,17 @@ public class QueryRoleAssignmentOrchestrator {
         );
 
         if (Boolean.TRUE.equals(includeLabels) && !assignmentList.isEmpty()) {
+            RoleConfig roleConfig = RoleConfig.getRoleConfig();
+
             assignmentList.forEach(assignment -> {
-                String roleLabel = RoleConfig.getRoleConfig().get(
+                RoleConfigRole roleConfigRole = roleConfig.get(
                     assignment.getRoleName(),
                     assignment.getRoleCategory(),
                     assignment.getRoleType()
-                ).getLabel();
+                );
 
-                if (roleLabel != null) {
-                    assignment.setRoleLabel(roleLabel);
+                if (roleConfigRole != null) {
+                    assignment.setRoleLabel(roleConfigRole.getLabel());
                 }
             });
         }

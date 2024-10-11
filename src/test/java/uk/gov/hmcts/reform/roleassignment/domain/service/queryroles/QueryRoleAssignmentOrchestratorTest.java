@@ -119,6 +119,44 @@ class QueryRoleAssignmentOrchestratorTest {
     }
 
     @Test
+    void shouldNotAddRoleLabelWhenRoleConfigRoleNull_PostRoleAssignmentsQueryByRequest() {
+
+        List<String> actorId = List.of("123e4567-e89b-42d3-a456-556642445678");
+        List<String> roleType = List.of("CASE", "ORGANISATION");
+
+        QueryRequest queryRequest = QueryRequest.builder()
+            .actorId(actorId)
+            .roleType(roleType)
+            .build();
+
+        // roleName == "judge" roleCategory == "JUDICIAL" roleType == "CASE"
+        // doesn't exist in `roleconfig`
+        RoleAssignment roleAssignment = TestDataBuilder.buildRoleAssignment(Status.LIVE);
+
+        when(persistenceServiceMock.retrieveRoleAssignmentsByQueryRequest(queryRequest,
+                                                                          1,
+                                                                          2,
+                                                                          "id",
+                                                                          "asc",
+                                                                          false))
+            .thenReturn(List.of(roleAssignment));
+        when(persistenceServiceMock.getTotalRecords()).thenReturn(Long.valueOf(10));
+        ResponseEntity<RoleAssignmentResource> result = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,
+                                                                                                  1,
+                                                                                                  2,
+                                                                                                  "id",
+                                                                                                  "asc",
+                                                                                                  true);
+
+        assertNotNull(result);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getBody());
+        assertTrue(result.getHeaders().containsKey("Total-Records"));
+        String resultRoleLabel = result.getBody().getRoleAssignmentResponse().get(0).getRoleLabel();
+        assertNull(resultRoleLabel);
+    }
+
+    @Test
     void shouldFail_PostRoleAssignmentsQueryByRequest() {
 
         QueryRequest queryRequest = QueryRequest.builder()
