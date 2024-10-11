@@ -130,6 +130,10 @@ public class JacksonUtils {
     }
 
     public static List<RoleConfigRole> getRoleConfigs() {
+        if (configuredRoles.get("roles") != null) {
+            return configuredRoles.get("roles");
+        }
+
         List<RoleConfigRole> allRoles = null;
         try {
             URI uri = Objects.requireNonNull(JacksonUtils.class.getClassLoader().getResource(Constants.ROLES_DIR))

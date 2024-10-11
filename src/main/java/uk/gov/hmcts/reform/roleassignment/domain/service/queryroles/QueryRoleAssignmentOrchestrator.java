@@ -11,6 +11,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
@@ -25,9 +26,11 @@ public class QueryRoleAssignmentOrchestrator {
     private final PersistenceService persistenceService;
 
 
-    public  ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByQueryRequest(QueryRequest queryRequest,
-                                                                                   Integer pageNumber,
-                                                                        Integer size, String sort, String direction) {
+    public ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByQueryRequest(QueryRequest queryRequest,
+                                                                                        Integer pageNumber,
+                                                                                        Integer size, String sort,
+                                                                                        String direction,
+                                                                                        Boolean includeLabels) {
 
         ValidationUtil.validateQueryRequests(Collections.singletonList(queryRequest));
 
@@ -40,16 +43,16 @@ public class QueryRoleAssignmentOrchestrator {
                 direction,
                 false
             );
-        return prepareQueryResponse(assignmentList);
+        return prepareQueryResponse(assignmentList, includeLabels);
 
     }
 
 
 
-    public  ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByMultipleQueryRequest(
+    public ResponseEntity<RoleAssignmentResource> retrieveRoleAssignmentsByMultipleQueryRequest(
         MultipleQueryRequest queryRequest,
         Integer pageNumber,
-        Integer size, String sort, String direction) {
+        Integer size, String sort, String direction, Boolean includeLabels) {
 
 
         ValidationUtil.validateQueryRequests(queryRequest.getQueryRequests());
@@ -63,7 +66,7 @@ public class QueryRoleAssignmentOrchestrator {
                 direction,
                 false
             );
-        return prepareQueryResponse(assignmentList);
+        return prepareQueryResponse(assignmentList, includeLabels);
 
     }
 
@@ -72,12 +75,27 @@ public class QueryRoleAssignmentOrchestrator {
          * @param assignmentList must not be {@literal null}.
          * @return ResponseEntity RoleAssignmentResource
      */
-    private ResponseEntity<RoleAssignmentResource> prepareQueryResponse(List<Assignment> assignmentList) {
+    private ResponseEntity<RoleAssignmentResource> prepareQueryResponse(List<Assignment> assignmentList,
+                                                                        Boolean includeLabels) {
         var responseHeaders = new HttpHeaders();
         responseHeaders.add(
             "Total-Records",
             Long.toString(persistenceService.getTotalRecords())
         );
+
+        if (includeLabels && !assignmentList.isEmpty()) {
+            assignmentList.forEach(assignment -> {
+                String roleLabel = RoleConfig.getRoleConfig().get(
+                    assignment.getRoleName(),
+                    assignment.getRoleCategory(),
+                    assignment.getRoleType()
+                ).getLabel();
+
+                if (roleLabel != null) {
+                    assignment.setRoleLabel(roleLabel);
+                }
+            });
+        }
 
         return ResponseEntity.status(HttpStatus.OK).headers(responseHeaders).body(
             new RoleAssignmentResource(assignmentList));
