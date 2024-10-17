@@ -50,8 +50,10 @@ public class DeleteRoleAssignmentOrchestrator {
     private RequestEntity requestEntity;
     AssignmentRequest assignmentRequest;
     private Request request;
-    @Value("${roleassignment.query.size}")
-    private int defaultSize;
+    @Value("${roleassignment.query.sizeinternal}")
+    private int sizeInternal;
+    @Value("${roleassignment.query.sortcolumnunique}")
+    private String sortColumnUnique;
 
     public Request getRequest() {
         return request;
@@ -324,25 +326,23 @@ public class DeleteRoleAssignmentOrchestrator {
         assignmentRecords.add(persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
             multipleQueryRequest,
             0,
-            0,
+            sizeInternal,
+            sortColumnUnique,
             null,
-            null,
-            false
-                              )
+            false));
 
-        );
         var totalRecords = persistenceService.getTotalRecords();
         double pageNumber = 0;
-        if (defaultSize > 0) {
-            pageNumber = (double) totalRecords / (double) defaultSize;
+        if (sizeInternal > 0) {
+            pageNumber = (double) totalRecords / (double) sizeInternal;
         }
 
         for (var page = 1; page < pageNumber; page++) {
             assignmentRecords.add(persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
                 multipleQueryRequest,
                 page,
-                0,
-                null,
+                sizeInternal,
+                sortColumnUnique,
                 null,
                 false
             ));

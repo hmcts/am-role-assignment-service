@@ -346,6 +346,30 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
             .get("roleType").asText());
     }
 
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void retrieveRoleAssignmentsByQueryRequestV2_withoutHeaders() throws Exception {
+
+        logger.info("Retrieve Role Assignments with Query Request V2 without headers");
+
+        QueryRequest queryRequest = QueryRequest.builder().actorId("123e4567-e89b-42d3-a456-556642445613").build();
+        MultipleQueryRequest queryRequests  =  MultipleQueryRequest.builder().queryRequests(List.of(queryRequest))
+            .build();
+
+        final MvcResult result = mockMvc.perform(post("/am/role-assignments/query")
+                                                     .contentType(V2.MediaType.POST_ASSIGNMENTS)
+                                                     .content(mapper.writeValueAsString(queryRequests))
+                                                     .accept(V2.MediaType.POST_ASSIGNMENTS))
+            .andExpect(status().isOk())
+            .andReturn();
+        JsonNode responseJsonNode = new ObjectMapper()
+            .readValue(result.getResponse().getContentAsString(),JsonNode.class);
+        assertFalse(responseJsonNode.get("roleAssignmentResponse").isEmpty());
+        assertEquals(3, responseJsonNode.get("roleAssignmentResponse").size());
+        assertEquals("ORGANISATION", responseJsonNode.get("roleAssignmentResponse").get(0)
+            .get("roleType").asText());
+    }
+
     public static QueryRequest createQueryRequest() {
         Map<String, List<String>> attributes = new HashMap<>();
         List<String> regions = List.of("London", "JAPAN", "north-east");

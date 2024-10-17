@@ -28,6 +28,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 
@@ -66,10 +67,10 @@ class ValidationModelServiceTest {
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
         sut.validateRequest(assignmentRequestSpy);
 
-        Mockito.verify(assignmentRequestSpy, times(6)).getRequest();
-        Mockito.verify(assignmentRequestSpy, times(2)).getRequestedRoles();
+        verify(assignmentRequestSpy, times(6)).getRequest();
+        verify(assignmentRequestSpy, times(2)).getRequestedRoles();
 
-        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
+        verify(kieSessionMock, times(1)).execute((Iterable) any());
     }
 
     @Test
@@ -81,11 +82,11 @@ class ValidationModelServiceTest {
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
         sut.validateRequest(assignmentRequestSpy);
 
-        Mockito.verify(assignmentRequestSpy, times(6)).getRequest();
-        Mockito.verify(assignmentRequestSpy, times(2)).getRequestedRoles();
+        verify(assignmentRequestSpy, times(6)).getRequest();
+        verify(assignmentRequestSpy, times(2)).getRequestedRoles();
 
-        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
-        Mockito.verify(kieSessionMock, times(1)).setGlobal(any(), any());
+        verify(kieSessionMock, times(1)).execute((Iterable) any());
+        verify(kieSessionMock, times(1)).setGlobal(any(), any());
     }
 
     @Test
@@ -95,9 +96,9 @@ class ValidationModelServiceTest {
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
 
         sut.validateRequest(assignmentRequestSpy);
-        Mockito.verify(assignmentRequestSpy, times(4)).getRequest();
-        Mockito.verify(assignmentRequestSpy, times(1)).getRequestedRoles();
-        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
+        verify(assignmentRequestSpy, times(4)).getRequest();
+        verify(assignmentRequestSpy, times(1)).getRequestedRoles();
+        verify(kieSessionMock, times(1)).execute((Iterable) any());
     }
 
     @Test
@@ -110,6 +111,8 @@ class ValidationModelServiceTest {
 
     @Test
     void shouldExecuteQueryParamForCaseRole() throws IOException {
+        ReflectionTestUtils.setField(sut, "sizeInternal", 20);
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
 
         Set<String> actorIds = Set.of(
             "123e4567-e89b-42d3-a456-556642445678",
@@ -129,12 +132,15 @@ class ValidationModelServiceTest {
         List<? extends Assignment> existingRecords = sut.getCurrentRoleAssignmentsForActors(actorIds);
         assertNotNull(existingRecords);
         assertEquals(2, existingRecords.size());
-
-
+        verify(persistenceService, times(1)).retrieveRoleAssignmentsByQueryRequest(
+            any(), anyInt(), anyInt(), any(), any(), anyBoolean()
+        );
     }
 
     @Test
     void shouldExecuteQueryParamForMultipleCaseRole() throws IOException {
+        ReflectionTestUtils.setField(sut, "sizeInternal", 20);
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
 
         final Set<String> actorIds = Set.of(
             "123e4567-e89b-42d3-a456-556642445678",
@@ -151,22 +157,20 @@ class ValidationModelServiceTest {
                 anyBoolean()
         );
         when(persistenceService.getTotalRecords()).thenReturn(21L);
-        ReflectionTestUtils.setField(
-            sut,
-            "defaultSize", 20
-
-        );
-
 
         List<? extends Assignment> existingRecords = sut.getCurrentRoleAssignmentsForActors(actorIds);
         assertNotNull(existingRecords);
         assertEquals(4, existingRecords.size());
-
+        verify(persistenceService, times(2)).retrieveRoleAssignmentsByQueryRequest(
+            any(), anyInt(), anyInt(), any(), any(), anyBoolean()
+        );
 
     }
 
     @Test
     void shouldLogWhenTotalRecordsExceed100() throws IOException {
+        ReflectionTestUtils.setField(sut, "sizeInternal", 20);
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
 
         final Set<String> actorIds = Set.of(
             "123e4567-e89b-42d3-a456-556642445678",
@@ -183,16 +187,13 @@ class ValidationModelServiceTest {
                 anyBoolean()
         );
         when(persistenceService.getTotalRecords()).thenReturn(2200L);
-        ReflectionTestUtils.setField(
-            sut,
-            "defaultSize", 20
-        );
-
 
         List<? extends Assignment> existingRecords = sut.getCurrentRoleAssignmentsForActors(actorIds);
         assertNotNull(existingRecords);
         assertEquals(220, existingRecords.size());
-
+        verify(persistenceService, times(110)).retrieveRoleAssignmentsByQueryRequest(
+            any(), anyInt(), anyInt(), any(), any(), anyBoolean()
+        );
 
     }
 
