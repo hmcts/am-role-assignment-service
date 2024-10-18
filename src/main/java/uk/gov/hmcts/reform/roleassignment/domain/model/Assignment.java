@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,8 @@ public abstract class Assignment implements Serializable {
     private String actorId;
     private RoleType roleType;
     private String roleName;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String roleLabel;
     private Classification classification;
     private GrantType grantType;
     private RoleCategory roleCategory;
