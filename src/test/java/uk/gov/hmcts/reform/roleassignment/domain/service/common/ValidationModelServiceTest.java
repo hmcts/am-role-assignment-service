@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.springframework.test.util.ReflectionTestUtils;
+import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
@@ -46,6 +47,9 @@ class ValidationModelServiceTest {
     @Mock
     Logger logger = mock(Logger.class);
 
+    @Mock
+    EnvironmentConfiguration environmentConfiguration;
+
     @InjectMocks
     ValidationModelService sut = new ValidationModelService(
         kieSessionMock,
@@ -60,7 +64,7 @@ class ValidationModelServiceTest {
 
     @Test
     void validateRequest() throws IOException {
-        ReflectionTestUtils.setField(sut,"environment", "prod");
+        when(environmentConfiguration.getEnvironment()).thenReturn("prod");
         assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
@@ -74,7 +78,7 @@ class ValidationModelServiceTest {
 
     @Test
     void validateRequest_withEmptyRoles() throws IOException {
-        ReflectionTestUtils.setField(sut,"environment", "prod");
+        when(environmentConfiguration.getEnvironment()).thenReturn("prod");
         assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
         assignmentRequest.setRequestedRoles(Collections.emptyList());
@@ -90,7 +94,7 @@ class ValidationModelServiceTest {
 
     @Test
     void validateRequest_Scenario_withPrEnv() throws IOException {
-        ReflectionTestUtils.setField(sut,"environment", "pr");
+        when(environmentConfiguration.getEnvironment()).thenReturn("pr");
         assignmentRequest = TestDataBuilder.buildEmptyAssignmentRequest(LIVE);
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
 
