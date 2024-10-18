@@ -197,24 +197,16 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             .andReturn();
         var response = result.getResponse().getContentAsString();
 
-        JsonNode jsonResonse = mapper.readValue(response, JsonNode.class);
-        assertEquals(200, result.getResponse().getStatus());
-        assertEquals(
-            2,
-            jsonResonse.size()
-        );
-        assertEquals(
-            "judge",
-            jsonResonse.get(0).get("name").asText()
-        );
-        assertEquals(
-            "Judicial office holder able to do judicial case work",
-            jsonResonse.get(0).get("description").asText()
-        );
-        assertEquals(
-            "JUDICIAL",
-            jsonResonse.get(0).get("category").asText()
-        );
+        List<RoleConfigRole> roleConfigRoles = mapper.readValue(response, new TypeReference<>() {
+        });
+
+        assertEquals(194, roleConfigRoles.size());
+        for (RoleConfigRole roleConfigRole : roleConfigRoles) {
+            assertNotNull(roleConfigRole.getName());
+            assertNotNull(roleConfigRole.getCategory());
+            assertNotNull(roleConfigRole.getType());
+            assertNotNull(roleConfigRole.getLabel());
+        }
     }
 
     @Test
