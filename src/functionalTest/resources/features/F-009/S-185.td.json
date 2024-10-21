@@ -35,12 +35,6 @@
         {
           "_extends_": "ResponseRoleAssignment",
           "actorId": "${}${[scenarioContext][testData][request][body][queryRequests][0][actorId][0]}",
-          "roleLabel": "CTSC",
-          "roleCategory": "CTSC"
-        },
-        {
-          "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][body][queryRequests][0][actorId][0]}",
           "roleLabel": "Judge"
         }
       ]

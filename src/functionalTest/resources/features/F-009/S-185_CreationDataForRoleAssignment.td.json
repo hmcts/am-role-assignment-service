@@ -6,18 +6,8 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}"
-        },
-        {
-          "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "roleName": "case-allocator"
-        },
-        {
-          "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "roleName": "ctsc",
-          "roleCategory": "CTSC"
         }
       ]
     }
@@ -36,13 +26,6 @@
             "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "roleName": "case-allocator"
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
-            "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "roleName": "ctsc",
-            "roleCategory": "CTSC"
           }
         ]
       }
