@@ -182,24 +182,8 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
                                                              .actorId(ACTOR_ID_2).build())))
             .andExpect(status().isOk())
             .andReturn();
-        JsonNode responseJsonNode = new ObjectMapper().readValue(result.getResponse().getContentAsString(),
-                                                                 JsonNode.class);
-        JsonNode roleAssignmentResponse = responseJsonNode.get("roleAssignmentResponse");
 
-        String[] expectedRoleTypes = {"CASE", "ORGANISATION", "CASE"};
-        String[] expectedRoleLabels = {"Case Allocator", "Judge", "Post Hearing Judge"};
-
-        assertFalse(roleAssignmentResponse.isEmpty());
-        assertEquals(3, roleAssignmentResponse.size());
-
-        for (int i = 0; i < roleAssignmentResponse.size(); i++) {
-            assertEquals(expectedRoleTypes[i], roleAssignmentResponse.get(i).get("roleType").asText());
-            if (includeLabels) {
-                assertEquals(expectedRoleLabels[i], roleAssignmentResponse.get(i).get("roleLabel").asText());
-            } else {
-                assertNull(roleAssignmentResponse.get(i).get("roleLabel"));
-            }
-        }
+        assertRoleAssignmentResponse(result, includeLabels);
     }
 
     @Test
@@ -314,24 +298,8 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
                                                      .accept(V2.MediaType.POST_ASSIGNMENTS))
             .andExpect(status().isOk())
             .andReturn();
-        JsonNode responseJsonNode = new ObjectMapper()
-            .readValue(result.getResponse().getContentAsString(),JsonNode.class);
-        JsonNode roleAssignmentResponse = responseJsonNode.get("roleAssignmentResponse");
 
-        String[] expectedRoleTypes = {"CASE", "ORGANISATION", "CASE"};
-        String[] expectedRoleLabels = {"Case Allocator", "Judge", "Post Hearing Judge"};
-
-        assertFalse(roleAssignmentResponse.isEmpty());
-        assertEquals(3, roleAssignmentResponse.size());
-
-        for (int i = 0; i < roleAssignmentResponse.size(); i++) {
-            assertEquals(expectedRoleTypes[i], roleAssignmentResponse.get(i).get("roleType").asText());
-            if (includeLabels) {
-                assertEquals(expectedRoleLabels[i], roleAssignmentResponse.get(i).get("roleLabel").asText());
-            } else {
-                assertNull(roleAssignmentResponse.get(i).get("roleLabel"));
-            }
-        }
+        assertRoleAssignmentResponse(result, includeLabels);
     }
 
     @Test
@@ -461,4 +429,26 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
 
         return headers;
     }
+
+    private void assertRoleAssignmentResponse(MvcResult result, Boolean includeLabels) throws Exception {
+        JsonNode responseJsonNode = new ObjectMapper().readValue(result.getResponse().getContentAsString(),
+                                                                 JsonNode.class);
+        JsonNode roleAssignmentResponse = responseJsonNode.get("roleAssignmentResponse");
+
+        String[] expectedRoleTypes = {"CASE", "ORGANISATION", "CASE"};
+        String[] expectedRoleLabels = {"Case Allocator", "Judge", "Post Hearing Judge"};
+
+        assertFalse(roleAssignmentResponse.isEmpty());
+        assertEquals(3, roleAssignmentResponse.size());
+
+        for (int i = 0; i < roleAssignmentResponse.size(); i++) {
+            assertEquals(expectedRoleTypes[i], roleAssignmentResponse.get(i).get("roleType").asText());
+            if (includeLabels) {
+                assertEquals(expectedRoleLabels[i], roleAssignmentResponse.get(i).get("roleLabel").asText());
+            } else {
+                assertNull(roleAssignmentResponse.get(i).get("roleLabel"));
+            }
+        }
+    }
+
 }
