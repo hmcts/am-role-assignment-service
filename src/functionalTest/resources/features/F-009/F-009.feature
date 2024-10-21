@@ -29,7 +29,7 @@ Feature: F-009 : Post Role Assignments Advance Query Request
   @S-185
   Scenario: must successfully receive Role Assignments with page size including role label
     Given a user with [an active IDAM profile with full permissions],
-    And a successful call [to create a role assignment for an actor] as in [S-183_CreationDataForRoleAssignment],
+    And a successful call [to create a role assignment for an actor] as in [S-185_CreationDataForRoleAssignment],
     When a request is prepared with appropriate values,
     And the request [contains multiple Role Assignments with a page size]
     And the request [has includeLabels request param set to true]

@@ -9,7 +9,8 @@
 
   "request": {
     "headers": {
-      "size": 5
+      "size": 3,
+      "sort": "roleName"
     },
     "queryParams": {
       "includeLabels": "true"
@@ -29,22 +30,13 @@
         {
           "_extends_": "ResponseRoleAssignment",
           "actorId": "${}${[scenarioContext][testData][request][body][queryRequests][0][actorId][0]}",
-          "roleLabel": "Judge"
+          "roleLabel": "Case Allocator"
         },
         {
           "_extends_": "ResponseRoleAssignment",
           "actorId": "${}${[scenarioContext][testData][request][body][queryRequests][0][actorId][0]}",
-          "roleLabel": "Judge"
-        },
-        {
-          "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][body][queryRequests][0][actorId][0]}",
-          "roleLabel": "Judge"
-        },
-        {
-          "_extends_": "ResponseRoleAssignment",
-          "actorId": "${}${[scenarioContext][testData][request][body][queryRequests][0][actorId][0]}",
-          "roleLabel": "Judge"
+          "roleLabel": "CTSC",
+          "roleCategory": "CTSC"
         },
         {
           "_extends_": "ResponseRoleAssignment",
