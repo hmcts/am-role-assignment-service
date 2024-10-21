@@ -36,7 +36,7 @@ Feature: F-009 : Post Role Assignments Advance Query Request
     And it is submitted to call the [Post Role Assignments Query Request] operation of [Role Assignment Service],
     Then a positive response is received,
     And the response has all other details as expected,
-    And a successful call [to delete role assignments just created above] as in [S-183_DeleteDataForMultipleRoleAssignments].
+    And a successful call [to delete role assignments just created above] as in [S-185_DeleteDataForMultipleRoleAssignments].
 
   @S-186
   Scenario: must successfully receive Role Assignments without optional headers
