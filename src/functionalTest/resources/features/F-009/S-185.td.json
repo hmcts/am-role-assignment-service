@@ -30,12 +30,12 @@
         {
           "_extends_": "ResponseRoleAssignment",
           "actorId": "${}${[scenarioContext][testData][request][body][queryRequests][0][actorId][0]}",
-          "roleLabel": "Case Allocator"
+          "roleLabel": "Judge"
         },
         {
           "_extends_": "ResponseRoleAssignment",
           "actorId": "${}${[scenarioContext][testData][request][body][queryRequests][0][actorId][0]}",
-          "roleLabel": "Judge"
+          "roleLabel": "Senior Judge"
         }
       ]
     }

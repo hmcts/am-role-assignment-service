@@ -7,7 +7,7 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "roleName": "case-allocator"
+          "roleName": "senior-judge"
         }
       ]
     }
@@ -19,13 +19,14 @@
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}"
+            "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "roleName": "judge"
           },
           {
             "_extends_": "ResponseRequestedRole",
             "actorId": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "roleName": "case-allocator"
+            "roleName": "senior-judge"
           }
         ]
       }
