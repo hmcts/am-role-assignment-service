@@ -1,4 +1,3 @@
-
 package uk.gov.hmcts.reform.roleassignment.controller.endpoints;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
@@ -80,10 +80,11 @@ public class QueryAssignmentController {
         @RequestHeader(value = "size", required = false) Integer size,
         @RequestHeader(value = "sort", required = false) String sort,
         @RequestHeader(value = "direction", required = false) String direction,
-        @Validated @RequestBody(required = true) QueryRequest queryRequest) {
+        @Validated @RequestBody(required = true) QueryRequest queryRequest,
+        @RequestParam(value = "includeLabels", defaultValue = "false") Boolean includeLabels) {
         logger.info("Inside Single query request method");
         return queryRoleAssignmentOrchestrator
-            .retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction);
+            .retrieveRoleAssignmentsByQueryRequest(queryRequest, pageNumber, size, sort, direction, includeLabels);
     }
 
     @PostMapping(
@@ -118,13 +119,15 @@ public class QueryAssignmentController {
         @RequestHeader(value = "size", required = false) Integer size,
         @RequestHeader(value = "sort", required = false) String sort,
         @RequestHeader(value = "direction", required = false) String direction,
-        @Validated @RequestBody(required = true) MultipleQueryRequest multipleQueryRequest) {
+        @Validated @RequestBody(required = true) MultipleQueryRequest multipleQueryRequest,
+        @RequestParam(value = "includeLabels", defaultValue = "false") Boolean includeLabels) {
 
         if (CollectionUtils.isEmpty(multipleQueryRequest.getQueryRequests())) {
             throw new BadRequestException("Request Payload is invalid");
         }
         logger.info("Inside Multiple query request method");
         return queryRoleAssignmentOrchestrator
-            .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest, pageNumber, size, sort, direction);
+            .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest, pageNumber, size, sort, direction,
+                                                           includeLabels);
     }
 }
