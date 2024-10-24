@@ -31,7 +31,7 @@ then
     update($ra);
     logMsg("Rule : staff_organisational_role_mapping_service_create");
     logInfoMsg("Rule : staff_organisational_role_mapping_service_create request id: " + $rq.getId() + " clientId: " +
-    $rq.getClientId() + " process: " + $rq.getProcess + " reference: " + $rq.getReference());
+      $rq.getClientId() + " process: " + $rq.getProcess() + " reference: " + $rq.getReference());
 end;
 
 /*
@@ -54,7 +54,7 @@ then
     update($ra);
     logMsg("Rule :: staff_organisational_role_mapping_service_delete");
     logInfoMsg("Rule : staff_organisational_role_mapping_service_create request id: " + $rq.getId() + " clientId: " +
-    $rq.getClientId() + " process: " + $rq.getProcess + " reference: " + $rq.getReference());
+      $rq.getClientId() + " process: " + $rq.getProcess() + " reference: " + $rq.getReference());
 end;
 
 rule "sscs_system_user_hearings_roles_create"
