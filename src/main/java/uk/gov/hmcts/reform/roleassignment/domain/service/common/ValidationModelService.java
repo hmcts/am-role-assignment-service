@@ -176,7 +176,7 @@ public class ValidationModelService {
     }
 
     /**
-     * This utility method is used to capture the log in drools and log at INFO level.
+     * This utility method is used to capture the log in drools and log at DEBUG level.
      */
     public static void logMsg(final String message) {
         log.debug(message);
