@@ -7,6 +7,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logInfoMsg;
 
 /*
  * Generic rule for validation of roles created by the staff organisational
@@ -29,6 +30,8 @@ then
     $ra.log("Create approved : staff_organisational_role_mapping_service_create");
     update($ra);
     logMsg("Rule : staff_organisational_role_mapping_service_create");
+    logInfoMsg("Rule : staff_organisational_role_mapping_service_create request id: " + $rq.getId() + " clientId: " +
+    $rq.getClientId() + " reference: " + $rq.getReference());
 end;
 
 /*
@@ -50,6 +53,8 @@ then
 
     update($ra);
     logMsg("Rule :: staff_organisational_role_mapping_service_delete");
+    logInfoMsg("Rule : staff_organisational_role_mapping_service_create request id: " + $rq.getId() + " clientId: " +
+    $rq.getClientId() + " reference: " + $rq.getReference());
 end;
 
 rule "sscs_system_user_hearings_roles_create"
