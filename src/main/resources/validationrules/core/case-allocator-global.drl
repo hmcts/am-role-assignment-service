@@ -63,6 +63,20 @@ then
     $ra.log("Case Allocator approved : case_allocator_approve_create_case_role");
     update($ra);
     logMsg("Rule : case_allocator_approve_create_case_role");
+    if (!$ra.getRoleCategory().equals(RoleCategory.LEGAL_OPERATIONS) &&
+        !$ra.getRoleCategory().equals(RoleCategory.JUDICIAL) &&
+        !$ra.getRoleCategory().equals(RoleCategory.ADMIN) &&
+        !$ra.getRoleCategory().equals(RoleCategory.OTHER_GOV_DEPT) &&
+        !$ra.getRoleCategory().equals(RoleCategory.CTSC)) {
+      logInfoMsg("Rule : case_allocator_approve_create_case_role" +
+       " request id: " + $rq.getId() +
+       " clientId: " + $rq.getClientId() +
+       " process: " + $rq.getProcess() +
+       " reference: " + $rq.getReference() +
+       " roleCategory:" +$ra.getRoleCategory() +
+       " roleName: " + $ra.getRoleName() +
+       " jurisdiction: " + $c.getJurisdiction());
+    }
 end;
 
 /*
@@ -118,4 +132,18 @@ then
     $ra.log("Case Allocator approved : case_allocator_approve_delete_case_role_all_wa_services");
     update($ra);
     logMsg("Rule : case_allocator_approve_delete_case_role_all_wa_services");
+    if (!$ra.getRoleCategory().equals(RoleCategory.LEGAL_OPERATIONS) &&
+        !$ra.getRoleCategory().equals(RoleCategory.JUDICIAL) &&
+        !$ra.getRoleCategory().equals(RoleCategory.ADMIN) &&
+        !$ra.getRoleCategory().equals(RoleCategory.OTHER_GOV_DEPT) &&
+        !$ra.getRoleCategory().equals(RoleCategory.CTSC)) {
+      logInfoMsg("Rule : case_allocator_approve_create_case_role_all_wa_services" +
+       " request id: " + $rq.getId() +
+       " clientId: " + $rq.getClientId() +
+       " process: " + $rq.getProcess() +
+       " reference: " + $rq.getReference() +
+       " roleCategory:" +$ra.getRoleCategory() +
+       " roleName: " + $ra.getRoleName() +
+       " jurisdiction: " + $c.getJurisdiction());
+    }
 end;
