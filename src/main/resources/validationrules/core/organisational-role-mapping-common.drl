@@ -31,7 +31,7 @@ then
     update($ra);
     logMsg("Rule : staff_organisational_role_mapping_service_create");
 
-    if ($rq.getClientId() != "am_org_role_mapping_service") {
+    if (!"am_org_role_mapping_service".equals($rq.getClientId())) {
       logInfoMsg("Rule : staff_organisational_role_mapping_service_create request id: " + $rq.getId() + " clientId: " +
         $rq.getClientId() + " process: " + $rq.getProcess() + " reference: " + $rq.getReference());
     }
@@ -57,7 +57,7 @@ then
     update($ra);
     logMsg("Rule :: staff_organisational_role_mapping_service_delete");
 
-    if ($rq.getClientId() != "am_org_role_mapping_service") {
+    if (!"am_org_role_mapping_service".equals($rq.getClientId())) {
       logInfoMsg("Rule : staff_organisational_role_mapping_service_delete request id: " + $rq.getId() + " clientId: " +
         $rq.getClientId() + " process: " + $rq.getProcess() + " reference: " + $rq.getReference());
     }
