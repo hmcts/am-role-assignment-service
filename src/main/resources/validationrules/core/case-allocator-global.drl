@@ -73,7 +73,7 @@ then
        " clientId: " + $rq.getClientId() +
        " process: " + $rq.getProcess() +
        " reference: " + $rq.getReference() +
-       " roleCategory:" +$ra.getRoleCategory() +
+       " roleCategory: " +$ra.getRoleCategory() +
        " roleName: " + $ra.getRoleName() +
        " jurisdiction: " + $c.getJurisdiction());
     //}
@@ -142,7 +142,7 @@ then
        " clientId: " + $rq.getClientId() +
        " process: " + $rq.getProcess() +
        " reference: " + $rq.getReference() +
-       " roleCategory:" +$ra.getRoleCategory() +
+       " roleCategory: " +$ra.getRoleCategory() +
        " roleName: " + $ra.getRoleName() +
        " jurisdiction: " + $c.getJurisdiction());
     //}
