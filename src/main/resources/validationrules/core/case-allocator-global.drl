@@ -69,13 +69,13 @@ then
         //!$ra.getRoleCategory().equals(RoleCategory.OTHER_GOV_DEPT) &&
         //!$ra.getRoleCategory().equals(RoleCategory.CTSC)) {
       logInfoMsg("Rule : case_allocator_approve_create_case_role" +
-       " request id: " + $rq.getId() +
-       " clientId: " + $rq.getClientId() +
-       " process: " + $rq.getProcess() +
-       " reference: " + $rq.getReference() +
-       " roleCategory: " +$ra.getRoleCategory() +
-       " roleName: " + $ra.getRoleName() +
-       " jurisdiction: " + $c.getJurisdiction());
+       " request id: " + ($rq.getId() != null ? $rq.getId() : "null") +
+       " clientId: " + ($rq.getClientId() != null ? $rq.getClientId() : "null") +
+       " process: " + ($rq.getProcess() != null ? $rq.getProcess() : "null") +
+       " reference: " + ($rq.getReference() != null ? $rq.getReference() : "null") +
+       " roleCategory: " + ($ra.getRoleCategory() != null ? $ra.getRoleCategory() : "null") +
+       " roleName: " + ($ra.getRoleName() != null ? $ra.getRoleName() : "null") +
+       " jurisdiction: " + ($c.getJurisdiction() != null ? $c.getJurisdiction() : "null"));
     //}
 end;
 
@@ -138,12 +138,12 @@ then
         //!$ra.getRoleCategory().equals(RoleCategory.OTHER_GOV_DEPT) &&
         //!$ra.getRoleCategory().equals(RoleCategory.CTSC)) {
       logInfoMsg("Rule : case_allocator_approve_create_case_role_all_wa_services" +
-       " request id: " + $rq.getId() +
-       " clientId: " + $rq.getClientId() +
-       " process: " + $rq.getProcess() +
-       " reference: " + $rq.getReference() +
-       " roleCategory: " +$ra.getRoleCategory() +
-       " roleName: " + $ra.getRoleName() +
-       " jurisdiction: " + $c.getJurisdiction());
+       " request id: " + ($rq.getId() != null ? $rq.getId() : "null") +
+       " clientId: " + ($rq.getClientId() != null ? $rq.getClientId() : "null") +
+       " process: " + ($rq.getProcess() != null ? $rq.getProcess() : "null") +
+       " reference: " + ($rq.getReference() != null ? $rq.getReference() : "null") +
+       " roleCategory: " + ($ra.getRoleCategory() != null ? $ra.getRoleCategory() : "null") +
+       " roleName: " + ($ra.getRoleName() != null ? $ra.getRoleName() : "null") +
+       " jurisdiction: " + ($c.getJurisdiction() != null ? $c.getJurisdiction() : "null"));
     //}
 end;
