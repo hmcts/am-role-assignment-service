@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -33,6 +34,9 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 
 class ValidationModelServiceTest {
+
+    private static final int PAGE_SIZE_INTERNAL = 20;
+    private static final String SORT_COLUMN_UNIQUE = "id";
 
     StatelessKieSession kieSessionMock = mock(StatelessKieSession.class);
 
@@ -111,8 +115,8 @@ class ValidationModelServiceTest {
 
     @Test
     void shouldExecuteQueryParamForCaseRole() throws IOException {
-        ReflectionTestUtils.setField(sut, "sizeInternal", 20);
-        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
+        ReflectionTestUtils.setField(sut, "sizeInternal", PAGE_SIZE_INTERNAL);
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", SORT_COLUMN_UNIQUE);
 
         Set<String> actorIds = Set.of(
             "123e4567-e89b-42d3-a456-556642445678",
@@ -133,14 +137,14 @@ class ValidationModelServiceTest {
         assertNotNull(existingRecords);
         assertEquals(2, existingRecords.size());
         verify(persistenceService, times(1)).retrieveRoleAssignmentsByQueryRequest(
-            any(), anyInt(), anyInt(), any(), any(), anyBoolean()
+            any(), anyInt(), eq(PAGE_SIZE_INTERNAL), eq(SORT_COLUMN_UNIQUE), any(), anyBoolean()
         );
     }
 
     @Test
     void shouldExecuteQueryParamForMultipleCaseRole() throws IOException {
-        ReflectionTestUtils.setField(sut, "sizeInternal", 20);
-        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
+        ReflectionTestUtils.setField(sut, "sizeInternal", PAGE_SIZE_INTERNAL);
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", SORT_COLUMN_UNIQUE);
 
         final Set<String> actorIds = Set.of(
             "123e4567-e89b-42d3-a456-556642445678",
@@ -162,15 +166,15 @@ class ValidationModelServiceTest {
         assertNotNull(existingRecords);
         assertEquals(4, existingRecords.size());
         verify(persistenceService, times(2)).retrieveRoleAssignmentsByQueryRequest(
-            any(), anyInt(), anyInt(), any(), any(), anyBoolean()
+            any(), anyInt(), eq(PAGE_SIZE_INTERNAL), eq(SORT_COLUMN_UNIQUE), any(), anyBoolean()
         );
 
     }
 
     @Test
     void shouldLogWhenTotalRecordsExceed100() throws IOException {
-        ReflectionTestUtils.setField(sut, "sizeInternal", 20);
-        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
+        ReflectionTestUtils.setField(sut, "sizeInternal", PAGE_SIZE_INTERNAL);
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", SORT_COLUMN_UNIQUE);
 
         final Set<String> actorIds = Set.of(
             "123e4567-e89b-42d3-a456-556642445678",
@@ -192,7 +196,7 @@ class ValidationModelServiceTest {
         assertNotNull(existingRecords);
         assertEquals(220, existingRecords.size());
         verify(persistenceService, times(110)).retrieveRoleAssignmentsByQueryRequest(
-            any(), anyInt(), anyInt(), any(), any(), anyBoolean()
+            any(), anyInt(), eq(PAGE_SIZE_INTERNAL), eq(SORT_COLUMN_UNIQUE), any(), anyBoolean()
         );
 
     }
