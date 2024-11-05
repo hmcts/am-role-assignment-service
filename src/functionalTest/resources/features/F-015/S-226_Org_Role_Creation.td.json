@@ -10,6 +10,9 @@
     }
   },
   "request": {
+    "headers": {
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForOrm]}"
+    },
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
