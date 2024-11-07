@@ -170,7 +170,9 @@ audit:
 roleassignment:
    query:
      size: 20
+     sizeinternal: 10000
      sortcolumn: roleName
+     sortcolumnunique: id
 org :
   request:
     byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:false}
