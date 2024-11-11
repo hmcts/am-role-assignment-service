@@ -15,7 +15,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1714647879160292/allocated-legal-adviser"
+        "reference": "1730976007388529/allocated-legal-adviser"
       },
       "requestedRoles": [
         {
@@ -28,7 +28,7 @@
           "classification" : "RESTRICTED",
           "attributes":
           {
-            "caseId" : "1714647879160292",
+            "caseId" : "1730976007388529",
             "jurisdiction": "PRIVATELAW"
           }
         }
