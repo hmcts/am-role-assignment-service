@@ -42,7 +42,7 @@ def versions = [
   lombok         : '1.18.34',
   gradlePitest   : '1.3.0',
   pitest         : '1.17.0',
-  reformLogging  : '6.1.6',
+  reformLogging  : '6.1.7',
   reformS2sClient: '4.0.2',
   serenity       : '2.2.12',
   sonarPitest    : '0.5',
@@ -51,12 +51,12 @@ def versions = [
   springSecurity : '5.7.11',
   springHystrix  : '2.1.1.RELEASE',
   swagger2Version: '2.10.5',
-  tomcat         : '9.0.95',
+  tomcat         : '9.0.96',
   pact_version   : '4.1.7',
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
   feign_jackson  : '12.5',
-  jacksondata    : '2.18.0',
+  jacksondata    : '2.18.1',
   drools         : '7.73.0.Final',
   launchDarklySdk: '5.10.9',
   log4JVersion   : '2.19.0',
@@ -412,7 +412,7 @@ dependencies {
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-core', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-jose', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-resource-server', version: versions.springSecurity
-  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.9'
+  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.10'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.9'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.10.RELEASE'
@@ -472,7 +472,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.reformS2sClient
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksondata
   implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: versions.jacksondata, ext: 'pom'
-  implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.20'
+  implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.21'
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
@@ -502,9 +502,9 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testImplementation 'com.github.hmcts:fortify-client:1.4.4:all'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.5:all'
   testImplementation 'com.github.hmcts:befta-fw:8.7.11'
-  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.6.10'
+  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.6.11'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
