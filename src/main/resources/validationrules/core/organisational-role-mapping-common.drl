@@ -32,8 +32,11 @@ then
     logMsg("Rule : staff_organisational_role_mapping_service_create");
 
     if (!"am_org_role_mapping_service".equals($rq.getClientId())) {
-      logInfoMsg("Rule : staff_organisational_role_mapping_service_create request id: " + $rq.getId() + " clientId: " +
-        $rq.getClientId() + " process: " + $rq.getProcess() + " reference: " + $rq.getReference());
+      logInfoMsg("Rule : staff_organisational_role_mapping_service_create " +
+        " request id: " + ($rq.getId() != null ? $rq.getId() : "null") +
+        " clientId: " + ($rq.getClientId() != null ? $rq.getClientId() : "null") +
+        " process: " + ($rq.getProcess() != null ? $rq.getProcess() : "null") +
+        " reference: " + ($rq.getReference() != null ? $rq.getReference() : "null"));
     }
 end;
 
@@ -58,8 +61,11 @@ then
     logMsg("Rule :: staff_organisational_role_mapping_service_delete");
 
     if (!"am_org_role_mapping_service".equals($rq.getClientId())) {
-      logInfoMsg("Rule : staff_organisational_role_mapping_service_delete request id: " + $rq.getId() + " clientId: " +
-        $rq.getClientId() + " process: " + $rq.getProcess() + " reference: " + $rq.getReference());
+      logInfoMsg("Rule : staff_organisational_role_mapping_service_delete " +
+        " request id: " + ($rq.getId() != null ? $rq.getId() : "null") +
+        " clientId: " + ($rq.getClientId() != null ? $rq.getClientId() : "null") +
+        " process: " + ($rq.getProcess() != null ? $rq.getProcess() : "null") +
+        " reference: " + ($rq.getReference() != null ? $rq.getReference() : "null"));
     }
 end;
 
