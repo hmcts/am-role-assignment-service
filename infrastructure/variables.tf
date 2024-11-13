@@ -119,7 +119,7 @@ variable "storage_threshold" {
 variable "email_address_key" {
   description = "Email address key in azure Key Vault."
   type        = string
-  default     = "slack_monitoring_address"
+  default     = "db-alert-monitoring-email-address"
 }
 
 variable "email_address_key_vault_id" {
