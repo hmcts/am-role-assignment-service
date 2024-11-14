@@ -102,6 +102,9 @@ module "role-assignment-database-v15" {
   # The original subnet is full, this is required to use the new subnet for new databases
   subnet_suffix = "expanded"
 
+  email_address_key = var.email_address_key
+  email_address_key_vault_id = data.azurerm_key_vault.am_key_vault.id
+
   pgsql_databases = [
     {
       name = var.database_name
