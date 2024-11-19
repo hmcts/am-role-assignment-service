@@ -35,7 +35,9 @@ def secrets = [
   's2s-${env}': [
     secret('microservicekey-am-role-assignment-service', 'AM_ROLE_ASSIGNMENT_SERVICE_SECRET'),
     secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
-    secret('microservicekey-am-org-role-mapping-service', 'AM_ORG_S2S_SECRET')
+    secret('microservicekey-am-org-role-mapping-service', 'BEFTA_S2S_CLIENT_SECRET_OF_AM_ORG_ROLE_MAPPING_SERVICE'),
+    secret('microservicekey-ccd-data', 'BEFTA_S2S_CLIENT_SECRET_OF_CCD_DATA'),
+    secret('microservicekey-xui-webapp', 'BEFTA_S2S_CLIENT_SECRET_OF_XUI_WEBAPP')
   ],
   'am-${env}': [
       secret('role-assignment-service-IDAM-CLIENT-SECRET', 'ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET'),
@@ -43,17 +45,11 @@ def secrets = [
       secret('test-am-user2-befta-pwd', 'TEST_AM_USER2_BEFTA_PWD'),
       secret('test-am-user3-befta-pwd', 'TEST_AM_USER3_BEFTA_PWD'),
       secret('role-assignment-service-IDAM-CLIENT-SECRET', 'OAUTH2_CLIENT_SECRET')
-  ],
-  'ccd-${env}': [
-      secret('ccd-data-s2s-secret', 'CCD_DATA_S2S_SECRET')
-  ],
-  'rpx-${env}': [
-    secret('xui-webapp', 'XUI_WEBAPP_S2S_SECRET')
   ]
 ]
 
 // Configure branches to sync with master branch
-def branchesToSync = ['demo', 'perftest', 'ithc']
+def branchesToSync = ['demo', 'perftest']
 
 // Vars needed for functional and smoke tests to run against AKS
 env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
@@ -63,6 +59,9 @@ env.DEFINITION_STORE_HOST = "http://ccd-definition-store-api-aat.service.core-co
 env.DEFINITION_STORE_URL_BASE = "http://ccd-definition-store-api-aat.service.core-compute-aat.internal"
 env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
 env.BEFTA_S2S_CLIENT_ID = "am_role_assignment_service"
+env.BEFTA_S2S_CLIENT_ID_OF_AM_ORG_ROLE_MAPPING_SERVICE = "am_org_role_mapping_service"
+env.BEFTA_S2S_CLIENT_ID_OF_CCD_DATA = "ccd_data"
+env.BEFTA_S2S_CLIENT_ID_OF_XUI_WEBAPP = "xui_webapp"
 env.OAUTH2_CLIENT_ID = "am_role_assignment"
 env.OAUTH2_REDIRECT_URI = "http://am-role-assignment-service-aat.service.core-compute-aat.internal/oauth2redirect"
 env.OAUTH2_ACCESS_TOKEN_TYPE = "OIDC"
