@@ -5,5 +5,10 @@
   "specs": [
     "an active IDAM profile with full permissions"
   ],
-  "method": "DELETE"
+  "method": "DELETE",
+  "request": {
+    "headers": {
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForOrm]}"
+    }
+  }
 }
