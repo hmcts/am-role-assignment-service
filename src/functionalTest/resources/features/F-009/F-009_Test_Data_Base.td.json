@@ -7,5 +7,10 @@
     "an active IDAM profile with full permissions"
   ],
   "method": "POST",
-  "uri": "/am/role-assignments/query"
+  "uri": "/am/role-assignments/query",
+  "request": {
+    "headers": {
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForOrm]}"
+    }
+  }
 }
