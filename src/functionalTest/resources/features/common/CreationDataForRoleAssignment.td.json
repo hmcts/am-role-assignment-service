@@ -2,6 +2,9 @@
   "_guid_": "CreationDataForRoleAssignment",
   "_extends_": "CreationDataBaseForRoleAssignment",
   "request": {
+    "headers": {
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForOrm]}"
+    },
     "body": {
       "roleRequest": {
         "reference": "${[scenarioContext][customValues][generateUUID]}",

@@ -37,9 +37,11 @@ public class ValidationModelService {
     @Value("${launchdarkly.sdk.environment}")
     private String environment;
 
-    @Value("${roleassignment.query.size}")
-    private int defaultSize;
+    @Value("${roleassignment.query.sizeinternal}")
+    private int sizeInternal;
 
+    @Value("${roleassignment.query.sortcolumnunique}")
+    private String sortColumnUnique;
 
     public ValidationModelService(StatelessKieSession kieSession,
                                   RetrieveDataService retrieveDataService,
@@ -100,27 +102,26 @@ public class ValidationModelService {
         assignmentRecords.add(persistenceService.retrieveRoleAssignmentsByQueryRequest(
             queryRequest,
             0,
-            0,
+            sizeInternal,
+            sortColumnUnique,
             null,
-            null,
-            true)
+            true));
 
-        );
         var totalRecords = persistenceService.getTotalRecords();
         if (totalRecords > 100) {
             log.warn("Fetched assignments for the actor have {} total records", totalRecords);
         }
         double pageNumber = 0;
-        if (defaultSize > 0) {
-            pageNumber = (double) totalRecords / (double) defaultSize;
+        if (sizeInternal > 0) {
+            pageNumber = (double) totalRecords / (double) sizeInternal;
         }
 
         for (var page = 1; page < pageNumber; page++) {
             assignmentRecords.add(persistenceService.retrieveRoleAssignmentsByQueryRequest(
                 queryRequest,
                 page,
-                0,
-                null,
+                sizeInternal,
+                sortColumnUnique,
                 null,
                 true));
 
@@ -176,10 +177,17 @@ public class ValidationModelService {
     }
 
     /**
-     * This utility method is used to capture the log in drools.
+     * This utility method is used to capture the log in drools and log at DEBUG level.
      */
     public static void logMsg(final String message) {
         log.debug(message);
+    }
+
+    /**
+     * This utility method is used to capture the log in drools and log at INFO level.
+     */
+    public static void logInfoMsg(final String message) {
+        log.info(message);
     }
 
     private void getFlagValuesFromDB(Map<String, Boolean> droolFlagStates) {
