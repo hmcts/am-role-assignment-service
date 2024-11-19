@@ -12,6 +12,7 @@ locals {
   previewResourceGroup    = join("-", [var.raw_product, "shared-infrastructure-aat"])
   nonPreviewResourceGroup = join("-", [var.raw_product, "shared-infrastructure", var.env])
   sharedResourceGroup     = (var.env == "preview" || var.env == "spreview") ? local.previewResourceGroup : local.nonPreviewResourceGroup
+  dbName = join("-", [local.app_full_name, "postgres-db", "v15"])
 }
 
 data "azurerm_key_vault" "am_key_vault" {
@@ -70,7 +71,7 @@ resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
 }
 
 module "role-assignment-database-v15" {
-  source = "git@github.com:hmcts/terraform-module-postgresql-flexible?ref=master"
+  source = "git@github.com:hmcts/terraform-module-postgresql-flexible?ref=CME-120"
 
   providers = {
     azurerm.postgres_network = azurerm.postgres_network
@@ -78,7 +79,7 @@ module "role-assignment-database-v15" {
 
   admin_user_object_id = var.jenkins_AAD_objectId
   business_area        = "cft"
-  name                 = join("-", [local.app_full_name, "postgres-db", "v15"])
+  name                 = local.dbName
   product              = var.product
   env                  = var.env
   component            = var.component
@@ -100,6 +101,9 @@ module "role-assignment-database-v15" {
 
   # The original subnet is full, this is required to use the new subnet for new databases
   subnet_suffix = "expanded"
+
+  email_address_key = var.email_address_key
+  email_address_key_vault_id = data.azurerm_key_vault.am_key_vault.id
 
   pgsql_databases = [
     {
