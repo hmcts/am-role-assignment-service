@@ -99,19 +99,19 @@ variable "action_group_name" {
 }
 
 variable "cpu_threshold" {
-  default     = 70
+  default     = 10
   type        = number
   description = "Average CPU utilisation threshold"
 }
 
 variable "memory_threshold" {
-  default     = 70
+  default     = 10
   type        = number
   description = "Average memory utilisation threshold"
 }
 
 variable "storage_threshold" {
-  default     = 70
+  default     = 10
   type        = number
   description = "Average storage utilisation threshold"
 }
