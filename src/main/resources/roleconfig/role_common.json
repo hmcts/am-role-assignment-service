@@ -2745,7 +2745,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW"]
+            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW, CIVIL"]
           },
           "caseType": {
             "mandatory": true,
@@ -2755,7 +2755,9 @@
               "ET_EnglandWales_Multiple",
               "ET_Scotland",
               "ET_Scotland_Multiple",
-              "PRLAPPS"
+              "PRLAPPS",
+              "CIVIL",
+              "GENERALAPPLICATION"
             ]
           },
           "caseId": {
@@ -2788,7 +2790,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW"]
+            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW, CIVIL"]
           },
           "caseType": {
             "mandatory": true,
@@ -2798,7 +2800,9 @@
               "ET_EnglandWales_Multiple",
               "ET_Scotland",
               "ET_Scotland_Multiple",
-              "PRLAPPS"
+              "PRLAPPS",
+              "CIVIL",
+              "GENERALAPPLICATION"
             ]
           },
           "caseId": {
