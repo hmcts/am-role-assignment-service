@@ -69,7 +69,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "CIVIL",
-                 roleAssignment.roleName == "allocated-admin")
+                 roleAssignment.roleName == "allocated-ctsc-admin")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
@@ -90,7 +90,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "CIVIL",
-                 roleAssignment.roleName == "allocated-admin")
+                 roleAssignment.roleName == "allocated-nbc-admin")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,

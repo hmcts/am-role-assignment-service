@@ -2432,7 +2432,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW", "ST_CIC", "PRIVATELAW"]
+            "values": ["PUBLICLAW", "ST_CIC", "PRIVATELAW", "CIVIL"]
           },
           "caseType": {
             "mandatory": true
@@ -2467,7 +2467,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW", "PRIVATELAW"]
+            "values": ["PUBLICLAW", "PRIVATELAW", "CIVIL"]
           },
         "caseType": {
           "mandatory": true
@@ -2537,7 +2537,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "EMPLOYMENT"]
+            "values": ["IA", "EMPLOYMENT", "CIVIL"]
           },
           "caseType": {
             "mandatory": true,
@@ -2546,7 +2546,9 @@
               "ET_EnglandWales",
               "ET_EnglandWales_Multiple",
               "ET_Scotland",
-              "ET_Scotland_Multiple"
+              "ET_Scotland_Multiple",
+              "CIVIL",
+              "GENERALAPPLICATION"
             ]
           },
           "caseId": {

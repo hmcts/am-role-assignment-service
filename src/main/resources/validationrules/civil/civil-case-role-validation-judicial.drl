@@ -53,7 +53,7 @@ when
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("leadership-judge", "judge", "fee-paid-judge"),
+                 roleName in ("judge", "fee-paid-judge", "circuit-judge", "district-judge", "deputy-district-judge", "recorder"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "CIVIL")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
