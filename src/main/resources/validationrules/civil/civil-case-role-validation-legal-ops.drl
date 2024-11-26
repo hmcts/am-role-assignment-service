@@ -20,14 +20,14 @@ import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit;
 
 /*
- * The "allocated-legal-advisor" case role
+ * The "allocated-legal-adviser" case role
  */
-rule "civil_allocated_legal_advisor_create_case_roles"
+rule "civil_allocated_legal_adviser_create_case_roles"
 when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "CIVIL",
-                 roleAssignment.roleName == "allocated-legal-advisor")
+                 roleAssignment.roleName == "allocated-legal-adviser")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
@@ -35,9 +35,9 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "CIVIL")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : civil_allocated_legal_advisor_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : civil_allocated_legal_adviser_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : civil_allocated_legal_advisor_create_case_roles");
+    logMsg("Rule : civil_allocated_legal_adviser_create_case_roles");
 end;
 
 /*
