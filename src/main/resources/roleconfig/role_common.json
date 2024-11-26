@@ -2745,7 +2745,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW, CIVIL"]
+            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW", "CIVIL"]
           },
           "caseType": {
             "mandatory": true,
@@ -2790,7 +2790,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW, CIVIL"]
+            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW", "CIVIL"]
           },
           "caseType": {
             "mandatory": true,
