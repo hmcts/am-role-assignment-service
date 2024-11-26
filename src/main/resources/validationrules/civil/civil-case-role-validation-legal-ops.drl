@@ -41,9 +41,9 @@ then
 end;
 
 /*
- * The "allocated-admin" case role
+ * The "allocated-admin-caseworker" case role
  */
-rule "civil_allocated_admin_create_case_roles"
+rule "civil_allocated_admin_caseworker_create_case_roles"
 when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
@@ -56,15 +56,15 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "CIVIL")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : civil_allocated_admin_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : civil_allocated_admin_caseworker_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : civil_allocated_admin_create_case_roles");
+    logMsg("Rule : civil_allocated_admin_caseworker_create_case_roles");
 end;
 
 /*
- * The "allocated-ctsc-admin" case role
+ * The "allocated-ctsc-caseworker" case role
  */
-rule "civil_allocated_ctsc_admin_create_case_roles"
+rule "civil_allocated_ctsc_caseworker_create_case_roles"
 when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
@@ -77,15 +77,15 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "CIVIL")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : civil_allocated_ctsc_admin_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : civil_allocated_ctsc_caseworker_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : civil_allocated_ctsc_admin_create_case_roles");
+    logMsg("Rule : civil_allocated_ctsc_caseworker_create_case_roles");
 end;
 
 /*
- * The "allocated-nbc-admin" case role
+ * The "allocated-nbc-caseworker" case role
  */
-rule "civil_allocated_nbc_admin_create_case_roles"
+rule "civil_allocated_nbc_caseworker_create_case_roles"
 when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
@@ -98,7 +98,7 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "CIVIL")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : civil_allocated_nbc_admin_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : civil_allocated_nbc_caseworker_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : civil_allocated_nbc_admin_create_case_roles");
+    logMsg("Rule : civil_allocated_nbc_caseworker_create_case_roles");
 end;

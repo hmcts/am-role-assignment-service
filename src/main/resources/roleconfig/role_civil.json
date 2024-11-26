@@ -31,5 +31,38 @@
         }
       }
     ]
+  },
+  {
+    "name": "allocated-nbc-caseworker",
+    "label": "Allocated NBC Caseworker",
+    "description": "Allocated NBC Caseworker role for admin users",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
