@@ -61,3 +61,18 @@ then
     update($ca.getRoleAssignment());
     logMsg("Rule : civil_allocated-judge_create_case_roles");
 end;
+
+/*
+ * The case roles can be deleted if CaseAllocatorApproval entity is available for requested role assignment.
+ */
+rule "civil_case_allocator_approved_delete_case_role"
+when
+    $ca: CaseAllocatorApproval(
+                roleAssignment.status == Status.DELETE_REQUESTED,
+                roleAssignment.attributes["jurisdiction"].asText() == "CIVIL")
+then
+    $ca.getRoleAssignment().setStatus(Status.DELETE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : civil_case_allocator_approved_delete_case_role");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : civil_case_allocator_approved_delete_case_role");
+end;
