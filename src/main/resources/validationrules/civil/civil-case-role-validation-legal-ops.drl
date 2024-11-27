@@ -1,4 +1,4 @@
-package validationrules.employment;
+package validationrules.civil;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
@@ -48,7 +48,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "CIVIL",
-                 roleAssignment.roleName == "allocated-admin")
+                 roleAssignment.roleName == "allocated-admin-caseworker")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
@@ -69,7 +69,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "CIVIL",
-                 roleAssignment.roleName == "allocated-ctsc-admin")
+                 roleAssignment.roleName == "allocated-ctsc-caseworker")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
@@ -90,7 +90,7 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "CIVIL",
-                 roleAssignment.roleName == "allocated-nbc-admin")
+                 roleAssignment.roleName == "allocated-nbc-caseworker")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,

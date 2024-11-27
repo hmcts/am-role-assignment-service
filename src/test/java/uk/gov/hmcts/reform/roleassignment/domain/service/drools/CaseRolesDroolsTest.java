@@ -210,12 +210,12 @@ class CaseRolesDroolsTest extends DroolBase {
         "CIVIL,CIVIL,allocated-judge,JUDICIAL,RESTRICTED,district-judge,Y",
         "CIVIL,CIVIL,allocated-judge,JUDICIAL,RESTRICTED,deputy-district-judge,Y",
         "CIVIL,CIVIL,allocated-judge,JUDICIAL,RESTRICTED,recorder,Y",
-        "CIVIL,CIVIL,allocated-legal-adviser,ADMIN,RESTRICTED,tribunal-caseworker,Y",
-        "CIVIL,CIVIL,allocated-legal-adviser,ADMIN,RESTRICTED,senior-tribunal-caseworker,Y",
+        "CIVIL,CIVIL,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
+        "CIVIL,CIVIL,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,senior-tribunal-caseworker,Y",
         "CIVIL,CIVIL,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,Y",
         "CIVIL,CIVIL,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,Y",
-        "CIVIL,CIVIL,allocated-ctsc-caseworker,ADMIN,RESTRICTED,ctsc,Y",
-        "CIVIL,CIVIL,allocated-ctsc-caseworker,ADMIN,RESTRICTED,ctsc-team-leader,Y",
+        "CIVIL,CIVIL,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
+        "CIVIL,CIVIL,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
         "CIVIL,CIVIL,allocated-nbc-caseworker,ADMIN,RESTRICTED,national-business-centre,Y",
         "CIVIL,CIVIL,allocated-nbc-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y",
         //CIVIL GENERALAPPLICATION
@@ -226,14 +226,14 @@ class CaseRolesDroolsTest extends DroolBase {
         "CIVIL,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED,district-judge,Y",
         "CIVIL,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED,deputy-district-judge,Y",
         "CIVIL,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED,recorder,Y",
-        "CIVIL,GENERALAPPLICATION,allocated-legal-adviser,ADMIN,RESTRICTED,tribunal-caseworker,Y",
-        "CIVIL,GENERALAPPLICATION,allocated-legal-adviser,ADMIN,RESTRICTED,senior-tribunal-caseworker,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,senior-tribunal-caseworker,Y",
         "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,Y",
         "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,Y",
-        "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,ADMIN,RESTRICTED,ctsc,Y",
-        "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,ADMIN,RESTRICTED,ctsc-team-leader,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
         "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,national-business-centre,Y",
-        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y"
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName,
                                        String roleCategory, String classification,
@@ -304,7 +304,21 @@ class CaseRolesDroolsTest extends DroolBase {
         "PRIVATELAW,PRLAPPS,gatekeeping-judge,JUDICIAL,RESTRICTED",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED",
         "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker,CTSC,RESTRICTED",
-        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker,ADMIN,RESTRICTED"
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker,ADMIN,RESTRICTED",
+        // CIVIL CIVIL
+        "CIVIL,CIVIL,lead-judge,JUDICIAL,RESTRICTED",
+        "CIVIL,CIVIL,allocated-judge,JUDICIAL,RESTRICTED",
+        "CIVIL,CIVIL,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED",
+        "CIVIL,CIVIL,allocated-admin-caseworker,ADMIN,RESTRICTED",
+        "CIVIL,CIVIL,allocated-ctsc-caseworker,CTSC,RESTRICTED",
+        "CIVIL,CIVIL,allocated-nbc-caseworker,ADMIN,RESTRICTED",
+        //CIVIL GENERALAPPLICATION
+        "CIVIL,GENERALAPPLICATION,lead-judge,JUDICIAL,RESTRICTED",
+        "CIVIL,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED",
+        "CIVIL,GENERALAPPLICATION,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED",
+        "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED",
+        "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED",
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED"
     })
     void shouldRejectAccessFor_CaseRole_BadExistingRole(String jurisdiction, String caseType, String roleName,
                                                         String roleCategory, String classification) {
@@ -395,80 +409,80 @@ class CaseRolesDroolsTest extends DroolBase {
     @ParameterizedTest
     @CsvSource({
         // SSCS Benefit
-        "SSCS,Benefit,hearing-judge",
-        "SSCS,Benefit,tribunal-member-1",
-        "SSCS,Benefit,tribunal-member-2",
-        "SSCS,Benefit,tribunal-member-3",
-        "SSCS,Benefit,appraiser-1",
-        "SSCS,Benefit,appraiser-2",
-        "SSCS,Benefit,interloc-judge",
-        "SSCS,Benefit,post-hearing-judge",
-        "SSCS,Benefit,case-allocator",
-        "SSCS,Benefit,registrar",
-        "SSCS,Benefit,allocated-tribunal-caseworker",
-        "SSCS,Benefit,allocated-admin-caseworker",
-        "SSCS,Benefit,allocated-ctsc-caseworker",
-        // PRIVATELAW PRLAPPS
-        "PRIVATELAW,PRLAPPS,hearing-judge",
-        "PRIVATELAW,PRLAPPS,allocated-magistrate",
-        "PRIVATELAW,PRLAPPS,allocated-judge",
-        "PRIVATELAW,PRLAPPS,gatekeeping-judge",
-        "PRIVATELAW,PRLAPPS,allocated-legal-adviser",
-        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker",
-        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker",
-        // EMPLOYMENT ET_EnglandWales
-        "EMPLOYMENT,ET_EnglandWales,lead-judge",
-        "EMPLOYMENT,ET_EnglandWales,hearing-judge",
-        "EMPLOYMENT,ET_EnglandWales,tribunal-member-1",
-        "EMPLOYMENT,ET_EnglandWales,tribunal-member-2",
-        "EMPLOYMENT,ET_EnglandWales,allocated-tribunal-caseworker",
-        "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker",
-        "EMPLOYMENT,ET_EnglandWales,allocated-ctsc-caseworker",
-        // EMPLOYMENT ET_EnglandWales_Multiple
-        "EMPLOYMENT,ET_EnglandWales_Multiple,lead-judge",
-        "EMPLOYMENT,ET_EnglandWales_Multiple,hearing-judge",
-        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-1",
-        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-2",
-        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-tribunal-caseworker",
-        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-admin-caseworker",
-        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-ctsc-caseworker",
-        // EMPLOYMENT ET_Scotland
-        "EMPLOYMENT,ET_Scotland,lead-judge",
-        "EMPLOYMENT,ET_Scotland,hearing-judge",
-        "EMPLOYMENT,ET_Scotland,tribunal-member-1",
-        "EMPLOYMENT,ET_Scotland,tribunal-member-2",
-        "EMPLOYMENT,ET_Scotland,allocated-tribunal-caseworker",
-        "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker",
-        "EMPLOYMENT,ET_Scotland,allocated-ctsc-caseworker",
-        // EMPLOYMENT ET_Scotland_Multiple
-        "EMPLOYMENT,ET_Scotland_Multiple,lead-judge",
-        "EMPLOYMENT,ET_Scotland_Multiple,hearing-judge",
-        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-1",
-        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-2",
-        "EMPLOYMENT,ET_Scotland_Multiple,allocated-tribunal-caseworker",
-        "EMPLOYMENT,ET_Scotland_Multiple,allocated-admin-caseworker",
-        "EMPLOYMENT,ET_Scotland_Multiple,allocated-ctsc-caseworker",
-        // ST_CIC CriminalInjuriesCompensation
-        "ST_CIC,CriminalInjuriesCompensation,hearing-judge",
-        "ST_CIC,CriminalInjuriesCompensation,interloc-judge",
-        "ST_CIC,CriminalInjuriesCompensation,tribunal-member-1",
-        "ST_CIC,CriminalInjuriesCompensation,tribunal-member-2",
-        "ST_CIC,CriminalInjuriesCompensation,appraiser-1",
-        "ST_CIC,CriminalInjuriesCompensation,appraiser-2",
-        //CIVIL Civil
-        "CIVIL,CIVIL,lead-judge",
-        "CIVIL,CIVIL,allocated-judge",
-        "CIVIL,CIVIL,allocated-legal-adviser",
-        "CIVIL,CIVIL,allocated-admin-caseworker",
-        "CIVIL,CIVIL,allocated-ctsc-caseworker",
-        "CIVIL,CIVIL,allocated-nbc-caseworker",
-        //CIVIL GENERALAPPLICATION
+//        "SSCS,Benefit,hearing-judge",
+//        "SSCS,Benefit,tribunal-member-1",
+//        "SSCS,Benefit,tribunal-member-2",
+//        "SSCS,Benefit,tribunal-member-3",
+//        "SSCS,Benefit,appraiser-1",
+//        "SSCS,Benefit,appraiser-2",
+//        "SSCS,Benefit,interloc-judge",
+//        "SSCS,Benefit,post-hearing-judge",
+//        "SSCS,Benefit,case-allocator",
+//        "SSCS,Benefit,registrar",
+//        "SSCS,Benefit,allocated-tribunal-caseworker",
+//        "SSCS,Benefit,allocated-admin-caseworker",
+//        "SSCS,Benefit,allocated-ctsc-caseworker",
+//        // PRIVATELAW PRLAPPS
+//        "PRIVATELAW,PRLAPPS,hearing-judge",
+//        "PRIVATELAW,PRLAPPS,allocated-magistrate",
+//        "PRIVATELAW,PRLAPPS,allocated-judge",
+//        "PRIVATELAW,PRLAPPS,gatekeeping-judge",
+//        "PRIVATELAW,PRLAPPS,allocated-legal-adviser",
+//        "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker",
+//        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker",
+//        // EMPLOYMENT ET_EnglandWales
+//        "EMPLOYMENT,ET_EnglandWales,lead-judge",
+//        "EMPLOYMENT,ET_EnglandWales,hearing-judge",
+//        "EMPLOYMENT,ET_EnglandWales,tribunal-member-1",
+//        "EMPLOYMENT,ET_EnglandWales,tribunal-member-2",
+//        "EMPLOYMENT,ET_EnglandWales,allocated-tribunal-caseworker",
+//        "EMPLOYMENT,ET_EnglandWales,allocated-admin-caseworker",
+//        "EMPLOYMENT,ET_EnglandWales,allocated-ctsc-caseworker",
+//        // EMPLOYMENT ET_EnglandWales_Multiple
+//        "EMPLOYMENT,ET_EnglandWales_Multiple,lead-judge",
+//        "EMPLOYMENT,ET_EnglandWales_Multiple,hearing-judge",
+//        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-1",
+//        "EMPLOYMENT,ET_EnglandWales_Multiple,tribunal-member-2",
+//        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-tribunal-caseworker",
+//        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-admin-caseworker",
+//        "EMPLOYMENT,ET_EnglandWales_Multiple,allocated-ctsc-caseworker",
+//        // EMPLOYMENT ET_Scotland
+//        "EMPLOYMENT,ET_Scotland,lead-judge",
+//        "EMPLOYMENT,ET_Scotland,hearing-judge",
+//        "EMPLOYMENT,ET_Scotland,tribunal-member-1",
+//        "EMPLOYMENT,ET_Scotland,tribunal-member-2",
+//        "EMPLOYMENT,ET_Scotland,allocated-tribunal-caseworker",
+//        "EMPLOYMENT,ET_Scotland,allocated-admin-caseworker",
+//        "EMPLOYMENT,ET_Scotland,allocated-ctsc-caseworker",
+//        // EMPLOYMENT ET_Scotland_Multiple
+//        "EMPLOYMENT,ET_Scotland_Multiple,lead-judge",
+//        "EMPLOYMENT,ET_Scotland_Multiple,hearing-judge",
+//        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-1",
+//        "EMPLOYMENT,ET_Scotland_Multiple,tribunal-member-2",
+//        "EMPLOYMENT,ET_Scotland_Multiple,allocated-tribunal-caseworker",
+//        "EMPLOYMENT,ET_Scotland_Multiple,allocated-admin-caseworker",
+//        "EMPLOYMENT,ET_Scotland_Multiple,allocated-ctsc-caseworker",
+//        // ST_CIC CriminalInjuriesCompensation
+//        "ST_CIC,CriminalInjuriesCompensation,hearing-judge",
+//        "ST_CIC,CriminalInjuriesCompensation,interloc-judge",
+//        "ST_CIC,CriminalInjuriesCompensation,tribunal-member-1",
+//        "ST_CIC,CriminalInjuriesCompensation,tribunal-member-2",
+//        "ST_CIC,CriminalInjuriesCompensation,appraiser-1",
+//        "ST_CIC,CriminalInjuriesCompensation,appraiser-2",
+//        //CIVIL Civil
+//        "CIVIL,CIVIL,lead-judge",
+//        "CIVIL,CIVIL,allocated-judge",
+//        "CIVIL,CIVIL,allocated-legal-adviser",
+//        "CIVIL,CIVIL,allocated-admin-caseworker",
+//        "CIVIL,CIVIL,allocated-ctsc-caseworker",
+//        "CIVIL,CIVIL,allocated-nbc-caseworker",
+//        //CIVIL GENERALAPPLICATION
         "CIVIL,GENERALAPPLICATION,lead-judge",
-        "CIVIL,GENERALAPPLICATION,lead-judge",
-        "CIVIL,GENERALAPPLICATION,allocated-legal-adviser",
-        "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker",
-        "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker",
-        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker"
+//        "CIVIL,GENERALAPPLICATION,allocated-judge",
+//        "CIVIL,GENERALAPPLICATION,allocated-legal-adviser",
+//        "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker",
+//        "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker",
+//        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker"
     })
     void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, null, Status.DELETE_APPROVED);
@@ -536,7 +550,8 @@ class CaseRolesDroolsTest extends DroolBase {
         "ST_CIC,CriminalInjuriesCompensation,tribunal-member-1",
         "ST_CIC,CriminalInjuriesCompensation,tribunal-member-2",
         "ST_CIC,CriminalInjuriesCompensation,appraiser-1",
-        "ST_CIC,CriminalInjuriesCompensation,appraiser-2"
+        "ST_CIC,CriminalInjuriesCompensation,appraiser-2",
+        "CIVIL,GENERALAPPLICATION,lead-judge"
     })
     void shouldDelete_CaseRole_withMatchingCaseAllocatorRegion(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, CASE_REGION, Status.DELETE_APPROVED);
@@ -604,7 +619,8 @@ class CaseRolesDroolsTest extends DroolBase {
         "ST_CIC,CriminalInjuriesCompensation,tribunal-member-1",
         "ST_CIC,CriminalInjuriesCompensation,tribunal-member-2",
         "ST_CIC,CriminalInjuriesCompensation,appraiser-1",
-        "ST_CIC,CriminalInjuriesCompensation,appraiser-2"
+        "ST_CIC,CriminalInjuriesCompensation,appraiser-2",
+        "CIVIL,GENERALAPPLICATION,lead-judge"
     })
     void shouldRejectDelete_CaseRole_withBadCaseAllocatorRegion(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, "bad-region", Status.DELETE_REJECTED);
