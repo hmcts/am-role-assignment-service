@@ -59,7 +59,11 @@
             "values": ["CIVIL"]
           },
           "caseType": {
-            "mandatory": true
+            "mandatory": true,
+            "values": [
+              "CIVIL",
+              "GENERALAPPLICATION"
+            ]
           },
           "caseId": {
             "mandatory": true
