@@ -63,6 +63,20 @@ then
     $ra.log("Case Allocator approved : case_allocator_approve_create_case_role");
     update($ra);
     logMsg("Rule : case_allocator_approve_create_case_role");
+    if (!RoleCategory.LEGAL_OPERATIONS.equals($ra.getRoleCategory()) &&
+        !RoleCategory.JUDICIAL.equals($ra.getRoleCategory()) &&
+        !RoleCategory.ADMIN.equals($ra.getRoleCategory()) &&
+        !RoleCategory.OTHER_GOV_DEPT.equals($ra.getRoleCategory()) &&
+        !RoleCategory.CTSC.equals($ra.getRoleCategory())) {
+      logInfoMsg("Rule : case_allocator_approve_create_case_role" +
+       " request id: " + ($rq.getId() != null ? $rq.getId() : "null") +
+       " clientId: " + ($rq.getClientId() != null ? $rq.getClientId() : "null") +
+       " process: " + ($rq.getProcess() != null ? $rq.getProcess() : "null") +
+       " reference: " + ($rq.getReference() != null ? $rq.getReference() : "null") +
+       " roleCategory: " + ($ra.getRoleCategory() != null ? $ra.getRoleCategory() : "null") +
+       " roleName: " + ($ra.getRoleName() != null ? $ra.getRoleName() : "null") +
+       " jurisdiction: " + ($c.getJurisdiction() != null ? $c.getJurisdiction() : "null"));
+    }
 end;
 
 /*
@@ -118,4 +132,18 @@ then
     $ra.log("Case Allocator approved : case_allocator_approve_delete_case_role_all_wa_services");
     update($ra);
     logMsg("Rule : case_allocator_approve_delete_case_role_all_wa_services");
+    if (!RoleCategory.LEGAL_OPERATIONS.equals($ra.getRoleCategory()) &&
+        !RoleCategory.JUDICIAL.equals($ra.getRoleCategory()) &&
+        !RoleCategory.ADMIN.equals($ra.getRoleCategory()) &&
+        !RoleCategory.OTHER_GOV_DEPT.equals($ra.getRoleCategory()) &&
+        !RoleCategory.CTSC.equals($ra.getRoleCategory())) {
+      logInfoMsg("Rule : case_allocator_approve_delete_case_role_all_wa_services" +
+       " request id: " + ($rq.getId() != null ? $rq.getId() : "null") +
+       " clientId: " + ($rq.getClientId() != null ? $rq.getClientId() : "null") +
+       " process: " + ($rq.getProcess() != null ? $rq.getProcess() : "null") +
+       " reference: " + ($rq.getReference() != null ? $rq.getReference() : "null") +
+       " roleCategory: " + ($ra.getRoleCategory() != null ? $ra.getRoleCategory() : "null") +
+       " roleName: " + ($ra.getRoleName() != null ? $ra.getRoleName() : "null") +
+       " jurisdiction: " + ($c.getJurisdiction() != null ? $c.getJurisdiction() : "null"));
+    }
 end;
