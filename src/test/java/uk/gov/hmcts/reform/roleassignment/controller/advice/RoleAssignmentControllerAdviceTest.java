@@ -17,7 +17,7 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNo
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnauthorizedException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
