@@ -71,7 +71,7 @@ resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
 }
 
 module "role-assignment-database-v15" {
-  source = "git@github.com:hmcts/terraform-module-postgresql-flexible?ref=master"
+  source = "git@github.com:hmcts/terraform-module-postgresql-flexible?ref=CME-120-frequency"
 
   providers = {
     azurerm.postgres_network = azurerm.postgres_network
