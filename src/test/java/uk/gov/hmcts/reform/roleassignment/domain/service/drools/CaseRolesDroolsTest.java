@@ -201,7 +201,39 @@ class CaseRolesDroolsTest extends DroolBase {
         "ST_CIC,CriminalInjuriesCompensation,allocated-administrator,ADMIN,RESTRICTED,hearing-centre-admin,Y",
         "ST_CIC,CriminalInjuriesCompensation,allocated-administrator,ADMIN,RESTRICTED,hearing-centre-team-leader,Y",
         "ST_CIC,CriminalInjuriesCompensation,allocated-judge,JUDICIAL,RESTRICTED,judge,Y",
-        "ST_CIC,CriminalInjuriesCompensation,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y"
+        "ST_CIC,CriminalInjuriesCompensation,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
+        // CIVIL CIVIL
+        "CIVIL,CIVIL,lead-judge,JUDICIAL,RESTRICTED,leadership-judge,Y",
+        "CIVIL,CIVIL,allocated-judge,JUDICIAL,RESTRICTED,judge,Y",
+        "CIVIL,CIVIL,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
+        "CIVIL,CIVIL,allocated-judge,JUDICIAL,RESTRICTED,circuit-judge,Y",
+        "CIVIL,CIVIL,allocated-judge,JUDICIAL,RESTRICTED,district-judge,Y",
+        "CIVIL,CIVIL,allocated-judge,JUDICIAL,RESTRICTED,deputy-district-judge,Y",
+        "CIVIL,CIVIL,allocated-judge,JUDICIAL,RESTRICTED,recorder,Y",
+        "CIVIL,CIVIL,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
+        "CIVIL,CIVIL,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,senior-tribunal-caseworker,Y",
+        "CIVIL,CIVIL,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,Y",
+        "CIVIL,CIVIL,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,Y",
+        "CIVIL,CIVIL,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
+        "CIVIL,CIVIL,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
+        "CIVIL,CIVIL,allocated-nbc-caseworker,ADMIN,RESTRICTED,national-business-centre,Y",
+        "CIVIL,CIVIL,allocated-nbc-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y",
+        //CIVIL GENERALAPPLICATION
+        "CIVIL,GENERALAPPLICATION,lead-judge,JUDICIAL,RESTRICTED,leadership-judge,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED,judge,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED,circuit-judge,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED,district-judge,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED,deputy-district-judge,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED,recorder,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,senior-tribunal-caseworker,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,national-business-centre,Y",
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y"
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName,
                                        String roleCategory, String classification,
@@ -272,7 +304,21 @@ class CaseRolesDroolsTest extends DroolBase {
         "PRIVATELAW,PRLAPPS,gatekeeping-judge,JUDICIAL,RESTRICTED",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED",
         "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker,CTSC,RESTRICTED",
-        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker,ADMIN,RESTRICTED"
+        "PRIVATELAW,PRLAPPS,allocated-admin-caseworker,ADMIN,RESTRICTED",
+        // CIVIL CIVIL
+        "CIVIL,CIVIL,lead-judge,JUDICIAL,RESTRICTED",
+        "CIVIL,CIVIL,allocated-judge,JUDICIAL,RESTRICTED",
+        "CIVIL,CIVIL,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED",
+        "CIVIL,CIVIL,allocated-admin-caseworker,ADMIN,RESTRICTED",
+        "CIVIL,CIVIL,allocated-ctsc-caseworker,CTSC,RESTRICTED",
+        "CIVIL,CIVIL,allocated-nbc-caseworker,ADMIN,RESTRICTED",
+        //CIVIL GENERALAPPLICATION
+        "CIVIL,GENERALAPPLICATION,lead-judge,JUDICIAL,RESTRICTED",
+        "CIVIL,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED",
+        "CIVIL,GENERALAPPLICATION,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED",
+        "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED",
+        "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED",
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED"
     })
     void shouldRejectAccessFor_CaseRole_BadExistingRole(String jurisdiction, String caseType, String roleName,
                                                         String roleCategory, String classification) {
@@ -422,7 +468,21 @@ class CaseRolesDroolsTest extends DroolBase {
         "ST_CIC,CriminalInjuriesCompensation,tribunal-member-1",
         "ST_CIC,CriminalInjuriesCompensation,tribunal-member-2",
         "ST_CIC,CriminalInjuriesCompensation,appraiser-1",
-        "ST_CIC,CriminalInjuriesCompensation,appraiser-2"
+        "ST_CIC,CriminalInjuriesCompensation,appraiser-2",
+        //CIVIL Civil
+        "CIVIL,CIVIL,lead-judge",
+        "CIVIL,CIVIL,allocated-judge",
+        "CIVIL,CIVIL,allocated-legal-adviser",
+        "CIVIL,CIVIL,allocated-admin-caseworker",
+        "CIVIL,CIVIL,allocated-ctsc-caseworker",
+        "CIVIL,CIVIL,allocated-nbc-caseworker",
+        //CIVIL GENERALAPPLICATION
+        "CIVIL,GENERALAPPLICATION,lead-judge",
+        "CIVIL,GENERALAPPLICATION,allocated-judge",
+        "CIVIL,GENERALAPPLICATION,allocated-legal-adviser",
+        "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker",
+        "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker",
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker"
     })
     void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, null, Status.DELETE_APPROVED);
@@ -490,7 +550,21 @@ class CaseRolesDroolsTest extends DroolBase {
         "ST_CIC,CriminalInjuriesCompensation,tribunal-member-1",
         "ST_CIC,CriminalInjuriesCompensation,tribunal-member-2",
         "ST_CIC,CriminalInjuriesCompensation,appraiser-1",
-        "ST_CIC,CriminalInjuriesCompensation,appraiser-2"
+        "ST_CIC,CriminalInjuriesCompensation,appraiser-2",
+        //CIVIL Civil
+        "CIVIL,CIVIL,lead-judge",
+        "CIVIL,CIVIL,allocated-judge",
+        "CIVIL,CIVIL,allocated-legal-adviser",
+        "CIVIL,CIVIL,allocated-admin-caseworker",
+        "CIVIL,CIVIL,allocated-ctsc-caseworker",
+        "CIVIL,CIVIL,allocated-nbc-caseworker",
+        //CIVIL GENERALAPPLICATION
+        "CIVIL,GENERALAPPLICATION,lead-judge",
+        "CIVIL,GENERALAPPLICATION,allocated-judge",
+        "CIVIL,GENERALAPPLICATION,allocated-legal-adviser",
+        "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker",
+        "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker",
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker"
     })
     void shouldDelete_CaseRole_withMatchingCaseAllocatorRegion(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, CASE_REGION, Status.DELETE_APPROVED);
@@ -558,7 +632,21 @@ class CaseRolesDroolsTest extends DroolBase {
         "ST_CIC,CriminalInjuriesCompensation,tribunal-member-1",
         "ST_CIC,CriminalInjuriesCompensation,tribunal-member-2",
         "ST_CIC,CriminalInjuriesCompensation,appraiser-1",
-        "ST_CIC,CriminalInjuriesCompensation,appraiser-2"
+        "ST_CIC,CriminalInjuriesCompensation,appraiser-2",
+        //CIVIL Civil
+        "CIVIL,CIVIL,lead-judge",
+        "CIVIL,CIVIL,allocated-judge",
+        "CIVIL,CIVIL,allocated-legal-adviser",
+        "CIVIL,CIVIL,allocated-admin-caseworker",
+        "CIVIL,CIVIL,allocated-ctsc-caseworker",
+        "CIVIL,CIVIL,allocated-nbc-caseworker",
+        //CIVIL GENERALAPPLICATION
+        "CIVIL,GENERALAPPLICATION,lead-judge",
+        "CIVIL,GENERALAPPLICATION,allocated-judge",
+        "CIVIL,GENERALAPPLICATION,allocated-legal-adviser",
+        "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker",
+        "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker",
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker"
     })
     void shouldRejectDelete_CaseRole_withBadCaseAllocatorRegion(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, "bad-region", Status.DELETE_REJECTED);
