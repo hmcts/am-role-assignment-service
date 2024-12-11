@@ -81,7 +81,7 @@ tasks.withType(JavaExec).configureEach {
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.of(21)
   }
 }
 
@@ -287,7 +287,7 @@ task migratePostgresDatabase(type: FlywayMigrateTask) {
 }
 
 jacoco {
-  toolVersion = "0.8.8"
+  toolVersion = "0.8.12"
 }
 
 pitest {
