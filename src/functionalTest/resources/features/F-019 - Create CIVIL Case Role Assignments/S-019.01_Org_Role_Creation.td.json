@@ -32,7 +32,7 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "judge",
+          "roleName": "leadership-judge",
           "roleCategory": "JUDICIAL",
           "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
