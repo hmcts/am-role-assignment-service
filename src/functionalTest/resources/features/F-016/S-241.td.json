@@ -15,7 +15,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1714646950424700/hearing-judge"
+        "reference": "1733844424998253/hearing-judge"
       },
       "requestedRoles": [
         {
@@ -27,7 +27,7 @@
           "grantType": "SPECIFIC",
           "attributes":
           {
-            "caseId" : "1714646950424700",
+            "caseId" : "1733844424998253",
             "jurisdiction": "PUBLICLAW"
           }
         }
