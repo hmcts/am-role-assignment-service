@@ -80,7 +80,7 @@
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
-            "roleName": "judge",
+            "roleName": "leadership-judge",
             "attributes":
             {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][jurisdiction]}",

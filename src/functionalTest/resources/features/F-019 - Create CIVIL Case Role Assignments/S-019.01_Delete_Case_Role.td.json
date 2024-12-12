@@ -14,7 +14,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "CIVIL_CASE_ID/lead-judge"
+        "reference": "1234567890123453/lead-judge"
       },
       "requestedRoles": [
       ]
