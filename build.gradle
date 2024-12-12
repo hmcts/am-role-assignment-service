@@ -61,7 +61,7 @@ def versions = [
   launchDarklySdk: '5.10.9',
   log4JVersion   : '2.19.0',
   logbackVersion : '1.2.13',
-  poi  : '5.2.5'
+  poi  : '5.3.0'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
