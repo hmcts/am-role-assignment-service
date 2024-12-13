@@ -6,7 +6,7 @@ Feature: F-019 : Create Case Role Assignments for CIVIL
     Given an appropriate test context as detailed in the test data source
 
   @S-019.01
-  Scenario: must successfully create lead-judge CIVIL case role
+  Scenario: must successfully create lead-judge CIVIL case role with existing org role leadership-judge
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta3 - who is the actor for requested role],
     And a successful call [to create org role assignments for actors & requester] as in [S-019.01_Org_Role_Creation],
