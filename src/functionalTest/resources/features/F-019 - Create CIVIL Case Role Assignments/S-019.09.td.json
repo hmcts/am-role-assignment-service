@@ -1,10 +1,10 @@
 {
-  "title": "must successfully create lead-judge GENERALAPPLICATION case role with existing org role leadership-judge",
+  "title": "must successfully create allocated-judge GENERALAPPLICATION case role with existing org role judge",
   "_guid_": "S-019.09",
   "_extends_": "F-019_Test_Data_Base",
   "specs": [
     "Befta3 - who is the actor for requested role",
-    "contains lead-judge case role assignment"
+    "contains allocated-judge case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -15,13 +15,13 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1734020246160914/lead-judge"
+        "reference": "1734020246160914/allocated-judge"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "lead-judge",
+          "roleName": "allocated-judge",
           "roleCategory": "JUDICIAL",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
@@ -62,7 +62,7 @@
             {
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
               "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
-              "caseType" : "CIVIL"
+              "caseType" : "GENERALAPPLICATION"
             }
           }
         ]

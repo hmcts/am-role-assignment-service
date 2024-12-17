@@ -62,7 +62,7 @@
             {
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
               "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
-              "caseType" : "CIVIL"
+              "caseType" : "GENERALAPPLICATION"
             }
           }
         ]

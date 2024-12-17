@@ -32,7 +32,7 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "leadership-judge",
+          "roleName": "judge",
           "roleCategory": "JUDICIAL",
           "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
@@ -80,7 +80,7 @@
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
-            "roleName": "leadership-judge",
+            "roleName": "judge",
             "attributes":
             {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][jurisdiction]}",

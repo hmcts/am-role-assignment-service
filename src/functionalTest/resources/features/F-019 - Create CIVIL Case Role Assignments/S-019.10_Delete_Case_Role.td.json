@@ -1,5 +1,5 @@
 {
-  "title": "must successfully delete lead-judge case role",
+  "title": "must successfully delete allocated-judge case role",
   "_guid_": "S-019.10_Delete_Case_Role",
   "_extends_": "F-019_Test_Data_Base",
   "specs": [
@@ -14,7 +14,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1734020246160914/lead-judge"
+        "reference": "1734020246160914/allocated-judge"
       },
       "requestedRoles": [
       ]
