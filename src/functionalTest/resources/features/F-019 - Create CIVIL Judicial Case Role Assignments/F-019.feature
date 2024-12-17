@@ -1,6 +1,6 @@
 @F-019
 # @FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
-Feature: F-019 : Create Case Role Assignments for CIVIL
+Feature: F-019 : Create Case Role Assignments for CIVIL Judicial
 
   Background:
     Given an appropriate test context as detailed in the test data source
