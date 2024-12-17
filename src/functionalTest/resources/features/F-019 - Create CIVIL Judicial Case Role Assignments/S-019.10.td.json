@@ -1,5 +1,5 @@
 {
-  "title": "must successfully create lead-judge GENERALAPPLICATION case role with existing org role fee-paid-judge",
+  "title": "must successfully create allocated-judge GENERALAPPLICATION case role with existing org role fee-paid-judge",
   "_guid_": "S-019.10",
   "_extends_": "F-019_Test_Data_Base",
   "specs": [
