@@ -23,7 +23,7 @@
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
           "roleName": "allocated-legal-adviser",
           "roleCategory": "LEGAL_OPERATIONS",
-          "roleType": "ORGANISATIONAL_ROLE",
+          "roleType": "CASE",
           "grantType": "SPECIFIC",
           "classification": "RESTRICTED",
           "attributes":
