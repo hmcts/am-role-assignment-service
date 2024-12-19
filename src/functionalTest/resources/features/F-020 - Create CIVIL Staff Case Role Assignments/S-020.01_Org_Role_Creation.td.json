@@ -20,7 +20,7 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-          "roleName": "tribunal-caseworker",
+          "roleName": "case-allocator",
           "roleCategory": "LEGAL_OPERATIONS",
           "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
@@ -32,7 +32,7 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "allocated-legal-adviser",
+          "roleName": "tribunal-caseworker",
           "roleCategory": "LEGAL_OPERATIONS",
           "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
@@ -65,7 +65,7 @@
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "LEGAL_OPERATIONS",
-            "roleName": "tribunal-caseworker",
+            "roleName": "case-allocator",
             "attributes":
             {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
@@ -80,7 +80,7 @@
             "roleType": "ORGANISATION",
             "grantType": "SPECIFIC",
             "roleCategory": "LEGAL_OPERATIONS",
-            "roleName": "allocated-legal-adviser",
+            "roleName": "tribunal-caseworker",
             "attributes":
             {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][jurisdiction]}",

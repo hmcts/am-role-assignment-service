@@ -6,7 +6,7 @@ Feature: F-020 : Create Case Role Assignments for CIVIL Staff
     Given an appropriate test context as detailed in the test data source
 
   @S-020.01
-  Scenario: must successfully create tribunal-caseworker CIVIL case role with existing org role allocated-legal-adviser
+  Scenario: must successfully create allocated-legal-adviser CIVIL case role with existing org role tribunal-caseworker
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta3 - who is the actor for requested role],
     And a successful call [to create org role assignments for actors & requester] as in [S-020.01_Org_Role_Creation],
@@ -18,3 +18,4 @@ Feature: F-020 : Create Case Role Assignments for CIVIL Staff
     And a successful call [to delete case role assignment for the same actor] as in [S-020.01_Delete_Case_Role],
     And a successful call [to delete role assignments just created above] as in [S-020.01_DeleteDataForRoleAssignmentsForOrgRoles].
 
+  

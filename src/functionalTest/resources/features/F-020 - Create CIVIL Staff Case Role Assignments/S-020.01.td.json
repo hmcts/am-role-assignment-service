@@ -1,5 +1,5 @@
 {
-  "title": "must successfully create tribunal-caseworker CIVIL case role with existing org role allocated-legal-adviser",
+  "title": "must successfully create allocated-legal-adviser CIVIL case role with existing org role tribunal-caseworker",
   "_guid_": "S-020.01",
   "_extends_": "F-020_Test_Data_Base",
   "specs": [
