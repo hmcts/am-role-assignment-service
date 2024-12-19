@@ -1,5 +1,5 @@
 @F-020
-# @FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
+@FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
 Feature: F-020 : Create Case Role Assignments for CIVIL Staff
 
   Background:
