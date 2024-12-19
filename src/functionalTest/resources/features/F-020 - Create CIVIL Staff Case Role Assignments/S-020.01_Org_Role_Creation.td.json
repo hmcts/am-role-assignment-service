@@ -70,7 +70,7 @@
             {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][primaryLocation]}",
-              "substantive": "Y"
+              "substantive": "N"
             }
           },
           {
@@ -78,7 +78,7 @@
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
-            "grantType": "SPECIFIC",
+            "grantType": "STANDARD",
             "roleCategory": "LEGAL_OPERATIONS",
             "roleName": "tribunal-caseworker",
             "attributes":
