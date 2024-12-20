@@ -51,7 +51,7 @@ def versions = [
   springSecurity : '5.7.11',
   springHystrix  : '2.1.1.RELEASE',
   swagger2Version: '2.10.5',
-  tomcat         : '9.0.97',
+  tomcat         : '9.0.98',
   pact_version   : '4.1.7',
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
@@ -61,7 +61,7 @@ def versions = [
   launchDarklySdk: '5.10.9',
   log4JVersion   : '2.19.0',
   logbackVersion : '1.2.13',
-  poi  : '5.2.5'
+  poi  : '5.3.0'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
