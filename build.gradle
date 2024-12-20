@@ -41,7 +41,7 @@ def versions = [
   junit          : '5.9.0',
   lombok         : '1.18.36',
   gradlePitest   : '1.3.0',
-  pitest         : '1.17.2',
+  pitest         : '1.17.0',
   reformLogging  : '6.1.7',
   reformS2sClient: '4.0.2',
   serenity       : '2.2.12',
