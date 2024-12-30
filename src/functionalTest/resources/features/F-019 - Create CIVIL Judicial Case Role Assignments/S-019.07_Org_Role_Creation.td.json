@@ -39,7 +39,8 @@
           {
             "jurisdiction": "CIVIL",
             "primaryLocation": "123456",
-            "region": "3"
+            "region": "3",
+            "contractType": "Fee-Paid"
           }
         }
       ]
@@ -86,7 +87,8 @@
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][jurisdiction]}",
               "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][primaryLocation]}",
               "substantive": "Y",
-              "region": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][region]}"
+              "region": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][region]}",
+              "contractType" : "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][contractType]}"
             }
           }
         ]
