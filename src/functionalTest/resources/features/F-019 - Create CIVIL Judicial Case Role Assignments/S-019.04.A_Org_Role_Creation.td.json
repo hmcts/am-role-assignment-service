@@ -26,8 +26,7 @@
           "attributes":
           {
             "jurisdiction": "CIVIL",
-            "primaryLocation": "123456",
-            "contractType": "Fee-Paid"
+            "primaryLocation": "123456"
           }
         },
         {
@@ -40,7 +39,8 @@
           {
             "jurisdiction": "CIVIL",
             "primaryLocation": "123456",
-            "region": "3"
+            "region": "3",
+            "contractType": "Fee-Paid"
           }
         }
       ]
