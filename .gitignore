@@ -18,6 +18,7 @@ bin/main/application.yaml
 *.iws
 *.iml
 *.ipr
+.vscode/
 
 .DS_Store
 target/
