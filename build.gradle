@@ -59,7 +59,7 @@ def versions = [
   jacksondata    : '2.18.2',
   drools         : '7.73.0.Final',
   launchDarklySdk: '5.10.9',
-  log4JVersion   : '2.19.0',
+  log4JVersion   : '2.24.3',
   logbackVersion : '1.2.13',
   poi  : '5.3.0'
 ]
