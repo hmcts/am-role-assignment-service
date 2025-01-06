@@ -29,7 +29,8 @@
           "attributes":
           {
             "caseId" : "1734020246160914",
-            "jurisdiction": "CIVIL"
+            "jurisdiction": "CIVIL",
+            "contractType": "Fee-Paid"
           }
         }
       ]
@@ -62,7 +63,8 @@
             {
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
               "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
-              "caseType" : "GENERALAPPLICATION"
+              "caseType" : "GENERALAPPLICATION",
+              "contractType" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][contractType]}"
             }
           }
         ]
