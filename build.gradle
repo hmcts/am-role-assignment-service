@@ -504,7 +504,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:fortify-client:1.4.6:all'
   testImplementation 'com.github.hmcts:befta-fw:8.7.11'
-  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.1'
+  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.2'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
