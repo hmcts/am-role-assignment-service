@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,7 +27,7 @@ public class SwaggerRedirectControllerIntegrationTest extends BaseTest {
     @Autowired
     private transient SwaggerRedirectController swaggerRedirectController;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.mockMvc = standaloneSetup(this.swaggerRedirectController).build();
     }

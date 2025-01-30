@@ -1,6 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,8 +35,8 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
@@ -43,11 +48,6 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -61,17 +61,16 @@ import java.util.Set;
 import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;

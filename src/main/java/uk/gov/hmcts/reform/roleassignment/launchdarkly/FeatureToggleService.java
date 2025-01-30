@@ -2,11 +2,11 @@ package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.interfaces.LDClientInterface;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 @Service

@@ -6,11 +6,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import feign.Feign;
 import feign.jackson.JacksonEncoder;
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
@@ -40,11 +39,10 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Properties;
 
+@Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class BaseTest {
-
-    private static final Logger log = LoggerFactory.getLogger(BaseTest.class);
 
     RestTemplate restTemplate = new RestTemplate();
     protected static final ObjectMapper mapper = new ObjectMapper();

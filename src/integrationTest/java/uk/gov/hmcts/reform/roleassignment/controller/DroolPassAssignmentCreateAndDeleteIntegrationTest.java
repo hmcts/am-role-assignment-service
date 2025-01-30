@@ -1,8 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
@@ -36,7 +36,6 @@ import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
-
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -86,7 +85,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     @MockBean
     private FeatureConditionEvaluation featureConditionEvaluation;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();

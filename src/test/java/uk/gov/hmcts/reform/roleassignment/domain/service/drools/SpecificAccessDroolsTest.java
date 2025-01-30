@@ -2,10 +2,10 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
@@ -25,7 +25,7 @@ import java.util.List;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.ACTORID;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 class SpecificAccessDroolsTest extends DroolBase {
 
     @ParameterizedTest

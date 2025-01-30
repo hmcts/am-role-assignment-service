@@ -3,9 +3,9 @@ package uk.gov.hmcts.reform.roleassignment.util;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 class JsonBConverterTest {
 
     @InjectMocks

@@ -1,12 +1,13 @@
 package uk.gov.hmcts.reform.roleassignment.config;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
+
 import javax.inject.Inject;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -28,7 +29,7 @@ public class SwaggerPublisher extends BaseTest {
     @Inject
     private WebApplicationContext wac;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         MockitoAnnotations.openMocks(this);
