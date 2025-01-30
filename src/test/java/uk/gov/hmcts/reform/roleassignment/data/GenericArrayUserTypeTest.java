@@ -153,7 +153,6 @@ public class GenericArrayUserTypeTest {
     @Test
     public void executeSqlTypes() {
         int response = sut.getSqlType();
-        assertNotNull(response);
         assertEquals(Types.ARRAY, response);
     }
 
