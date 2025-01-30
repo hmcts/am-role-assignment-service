@@ -34,7 +34,8 @@ public class AuditAspect {
         var startTime = System.currentTimeMillis();
         Object result = joinPoint.proceed();
 
-        if (result instanceof ResponseEntity && statusCodes.contains(((ResponseEntity) result).getStatusCodeValue())) {
+        if (result instanceof ResponseEntity
+            && statusCodes.contains(((ResponseEntity<?>) result).getStatusCode().value())) {
             return result;
         } else {
             var roleName = getValue(joinPoint, logAudit.roleName(), result, String.class);
