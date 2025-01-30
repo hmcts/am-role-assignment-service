@@ -459,7 +459,7 @@ dependencies {
   testImplementation group: 'io.github.openfeign', name: 'feign-jackson', version: versions.feign_jackson
   implementation group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.1.0'
   testImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-  testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+  testImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:fortify-client:1.4.6:all'
@@ -467,7 +467,7 @@ dependencies {
   testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.2'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-  smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+  smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
@@ -475,7 +475,7 @@ dependencies {
 
   // AM-467-Serenity report for Integration test
   integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-  integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+  integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
   integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   integrationTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured

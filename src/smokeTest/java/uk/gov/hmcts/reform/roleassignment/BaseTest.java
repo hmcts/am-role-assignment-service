@@ -7,9 +7,9 @@ import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import feign.Feign;
 import feign.jackson.JacksonEncoder;
 import lombok.extern.slf4j.Slf4j;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
@@ -40,14 +40,14 @@ import java.util.Objects;
 import java.util.Properties;
 
 @Slf4j
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class BaseTest {
 
     RestTemplate restTemplate = new RestTemplate();
     protected static final ObjectMapper mapper = new ObjectMapper();
 
-    @BeforeClass
+    @BeforeAll
     public static void init() {
         mapper.registerModule(new JavaTimeModule());
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

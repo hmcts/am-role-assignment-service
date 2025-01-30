@@ -5,13 +5,11 @@ import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
 import net.serenitybdd.annotations.WithTag;
 import net.serenitybdd.annotations.WithTags;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 
@@ -19,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
 @NoArgsConstructor
 @WithTags({@WithTag("testType:Smoke")})
 public class SmokeTest extends BaseTest {
