@@ -54,6 +54,10 @@ tasks.withType(JavaExec).configureEach {
   javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
 }
 
+tasks.withType(Test).configureEach {
+  useJUnitPlatform()
+}
+
 java {
   toolchain {
     languageVersion = JavaLanguageVersion.of(21)
