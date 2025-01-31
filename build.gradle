@@ -153,7 +153,6 @@ tasks.withType(JavaCompile) {
 task functional(type: JavaExec) {
   description = "Runs the functional tests"
   group = "Verification"
-  useJUnitPlatform()
   generateCucumberReports.enabled = false
   main("uk.gov.hmcts.reform.roleassignment.befta.RoleAssignmentBeftaMain")
   classpath += configurations.cucumberRuntime + sourceSets.functionalTest.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
