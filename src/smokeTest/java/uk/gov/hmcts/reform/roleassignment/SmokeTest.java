@@ -7,7 +7,6 @@ import net.serenitybdd.annotations.WithTag;
 import net.serenitybdd.annotations.WithTags;
 import net.serenitybdd.rest.SerenityRest;
 import org.apache.commons.io.IOUtils;
-import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,9 +47,6 @@ public class SmokeTest extends BaseTest {
             generateServiceAuthorisationApi(config.getS2sUrl())
         ).generate();
     }
-
-    @Rule
-    public FeatureFlagToggleEvaluator featureFlagToggleEvaluator = new FeatureFlagToggleEvaluator(this);
 
     @Test
     public void should_receive_response_for_get_static_roles() {
