@@ -396,7 +396,7 @@ dependencies {
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: versions.poi
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: versions.poi
 
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.8.0'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.6.0'
 
   // drools engine dependency
   implementation group: 'org.drools', name: 'drools-core', version: versions.drools
@@ -536,6 +536,7 @@ dependencies {
 
 dependencyManagement {
   imports {
+    mavenBom "org.springframework.boot:spring-boot-dependencies:3.3.7"
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
   }
   dependencies {

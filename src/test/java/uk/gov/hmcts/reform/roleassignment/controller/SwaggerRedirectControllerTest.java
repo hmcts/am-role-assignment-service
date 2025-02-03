@@ -7,7 +7,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springdoc.core.Constants.SWAGGER_UI_URL;
+import static org.springdoc.core.utils.Constants.SWAGGER_UI_URL;
 
 @ExtendWith(MockitoExtension.class)
 class SwaggerRedirectControllerTest {
