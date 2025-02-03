@@ -45,9 +45,6 @@ public class GenericArrayUserTypeTest {
     @Mock
     Connection connection;
 
-    @Mock
-    Serializable serializable;
-
     @Test
     public void getStringArrayForNullSafeGet() throws SQLException {
         String[] str = new String[1];
@@ -60,14 +57,14 @@ public class GenericArrayUserTypeTest {
         Array arr = getSqlArray();
         when(resultSet.getArray(0)).thenReturn(arr);
 
-        Object response = sut.nullSafeGet(resultSet, 0, sharedSessionContractImplementor, new Object());
+        String[] response = sut.nullSafeGet(resultSet, 0, sharedSessionContractImplementor, new Object());
         assertNotNull(response);
-        assertEquals("Success Response", response);
+        assertEquals("Success Response", response[0]);
     }
 
     @Test
     public void verifyPreparedStatementInNullSafeGet() throws HibernateException, SQLException {
-        Object obj = null;
+        String[] obj = null;
         sut.nullSafeSet(ps, obj, 0, sharedSessionContractImplementor);
         verify(ps).setNull(0, Types.ARRAY);
     }
@@ -87,37 +84,31 @@ public class GenericArrayUserTypeTest {
     @Test
     public void executeAssemble() throws HibernateException {
 
-        Object response = sut.assemble(serializable, new Object());
+        String[] response = sut.assemble(new String[0], new Object());
         assertNotNull(response);
     }
 
     @Test
     public void executeDeepCopy() throws HibernateException {
-
-        Object response = sut.deepCopy(new Object());
+        String[] response = sut.deepCopy(new String[0]);
         assertNotNull(response);
     }
 
     @Test
     public void executeEquals() throws HibernateException {
 
-        String str1 = "test";
-        String str2 = "test";
+        String[] str1 = {"test"};
+        String[] str2 = {"test"};
         assertTrue(sut.equals(str1, str2));
-        assertEquals(str1.equals(str2), sut.equals(str1, str2));
 
-        str2 = "tester";
-        assertFalse(sut.equals(str1, str2));
-        assertEquals(str1.equals(str2), sut.equals(str1, str2));
-        assertNotNull(str1);
-        assertNotNull(str2);
+        String[] str3 = {"tester"};
+        assertFalse(sut.equals(str1, str3));
     }
 
     @Test
     public void executeDissasenble() throws HibernateException {
 
-        String str1 = "test";
-        String str2 = "test";
+        String[] str1 = {"test"};
         Serializable result = sut.disassemble(str1);
         assertNotNull(result);
     }
@@ -131,7 +122,7 @@ public class GenericArrayUserTypeTest {
     @Test
     public void executeHashCodel() throws HibernateException {
 
-        String str1 = "test";
+        String[] str1 = {"test"};
         Integer response = sut.hashCode(str1);
         assertNotNull(response);
         assertNotEquals(0, response);
@@ -144,8 +135,8 @@ public class GenericArrayUserTypeTest {
 
     @Test
     public void executeReplace() throws HibernateException {
-        Object original = new Object();
-        Object response = sut.replace(original, new Object(), new Object());
+        String[] original = new String[0];
+        Object response = sut.replace(original, new String[0], new Object());
         assertNotNull(response);
         assertEquals(original, response);
     }
@@ -171,7 +162,8 @@ public class GenericArrayUserTypeTest {
 
             @Override
             public Object getArray() throws SQLException {
-                return "Success Response";
+                String[] response = {"Success Response"};
+                return response;
             }
 
             @Override

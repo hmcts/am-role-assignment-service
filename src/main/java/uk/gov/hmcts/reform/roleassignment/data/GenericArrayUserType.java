@@ -9,10 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Arrays;
 
-public class GenericArrayUserType implements UserType<Object> {
-
-    private Class<Object> typeParameterClass;
+public class GenericArrayUserType implements UserType<String[]> {
 
     @Override
     public int getSqlType() {
@@ -20,25 +19,22 @@ public class GenericArrayUserType implements UserType<Object> {
     }
 
     @Override
-    public Class<Object> returnedClass() {
-        return typeParameterClass;
+    public Class<String[]> returnedClass() {
+        return String[].class;
     }
 
     @Override
-    public boolean equals(Object x, Object y) {
-        if (x == null) {
-            return y == null;
-        }
-        return x.equals(y);
+    public boolean equals(String[] x, String[] y) {
+        return Arrays.equals(x, y);
     }
 
     @Override
-    public int hashCode(Object x) {
-        return x.hashCode();
+    public int hashCode(String[] x) {
+        return Arrays.hashCode(x);
     }
 
     @Override
-    public Object nullSafeGet(ResultSet resultSet,
+    public String[] nullSafeGet(ResultSet resultSet,
                               int position,
                               SharedSessionContractImplementor session,
                               Object owner) throws SQLException {
@@ -49,26 +45,26 @@ public class GenericArrayUserType implements UserType<Object> {
         if (array == null) {
             return new String[0];
         }
-        return  array.getArray();
+        return (String[]) array.getArray();
+    }
+
+    @Override
+    public String[] deepCopy(String[] value) {
+        return value;
     }
 
     @Override
     public void nullSafeSet(PreparedStatement statement,
-                            Object value,
+                            String[] value,
                             int index,
                             SharedSessionContractImplementor session) throws SQLException {
         var connection = statement.getConnection();
         if (value == null) {
             statement.setNull(index, Types.ARRAY);
         } else {
-            var array = connection.createArrayOf("text", (Object[]) value);
+            Array array = connection.createArrayOf("text", value);
             statement.setArray(index, array);
         }
-    }
-
-    @Override
-    public Object deepCopy(Object value) {
-        return value;
     }
 
     @Override
@@ -77,12 +73,12 @@ public class GenericArrayUserType implements UserType<Object> {
     }
 
     @Override
-    public Serializable disassemble(Object value) {
-        return (Serializable) value;
+    public Serializable disassemble(String[] value) {
+        return value;
     }
 
     @Override
-    public Object assemble(Serializable cached, Object owner) {
-        return cached;
+    public String[] assemble(Serializable cached, Object owner) {
+        return (String[]) cached;
     }
 }
