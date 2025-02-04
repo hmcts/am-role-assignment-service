@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
+import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.LDClient;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
@@ -36,13 +37,13 @@ class FeatureToggleServiceTest {
 
     @Test
     void evaluateLdFlag() {
-        when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(true);
+        when(ldClient.boolVariation(any(String.class), any(LDUser.class), anyBoolean())).thenReturn(true);
         Assertions.assertTrue(featureToggleService.isFlagEnabled("serviceName", "userName"));
     }
 
     @Test
     void evaluateLdFlagFalse() {
-        when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(false);
+        when(ldClient.boolVariation(any(String.class), any(LDUser.class), anyBoolean())).thenReturn(false);
         Assertions.assertFalse(featureToggleService.isFlagEnabled("serviceName", "userName"));
     }
 
