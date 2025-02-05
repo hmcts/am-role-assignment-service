@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.drool;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MvcResult;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;

@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.drool;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -97,7 +97,7 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
     @MockBean
     private RetrieveDataService retrieveDataService;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 
