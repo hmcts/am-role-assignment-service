@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.apache.commons.collections.CollectionUtils;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.junit.jupiter.MockitoExtension;
