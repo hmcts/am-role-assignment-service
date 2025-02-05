@@ -262,6 +262,8 @@ Feature: F-001 : Create Role Assignments
     And the response has all other details as expected,
     And a successful call [to delete role assignments just created above] as in [DeleteDataForRoleAssignments].
 
+
+
   @S-114
   Scenario: must successfully create single Role Assignment for CCD Case roles having role category as professional.
     Given an appropriate test context as detailed in the test data source,
