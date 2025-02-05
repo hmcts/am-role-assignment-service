@@ -13,7 +13,7 @@ public class CacheConfig {
     @Bean
     public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
-        cacheManager.setCacheNames(Arrays.asList("token", "userToken"));
+        cacheManager.setCacheNames(Arrays.asList("token", "userToken", "caseId"));
         return cacheManager;
     }
 }
