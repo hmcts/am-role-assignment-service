@@ -19,11 +19,15 @@ import io.swagger.v3.oas.annotations.Hidden;
 @ConditionalOnProperty(name = "testing.support.enabled", havingValue = "true")
 public class FeatureFlagController {
 
-    @Autowired
-    PersistenceService persistenceService;
+    private final PersistenceService persistenceService;
+    private final PersistenceUtil persistenceUtil;
 
     @Autowired
-    PersistenceUtil persistenceUtil;
+    public FeatureFlagController(PersistenceService persistenceService,
+                                 PersistenceUtil persistenceUtil) {
+        this.persistenceService = persistenceService;
+        this.persistenceUtil = persistenceUtil;
+    }
 
     @GetMapping(value = "/am/role-assignments/fetchFlagStatus")
     public ResponseEntity<Object> getFeatureFlag(@RequestParam(value = "flagName") String flagName,
@@ -41,4 +45,5 @@ public class FeatureFlagController {
         var flagConfig = persistenceUtil.convertFlagRequestToFlagConfig(flagRequest);
         return ResponseEntity.ok(persistenceService.persistFlagConfig(flagConfig));
     }
+
 }

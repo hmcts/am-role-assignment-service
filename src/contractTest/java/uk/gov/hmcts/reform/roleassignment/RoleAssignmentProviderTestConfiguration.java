@@ -78,7 +78,10 @@ public class RoleAssignmentProviderTestConfiguration {
     @Bean
     @Primary
     public ValidationModelService getValidationModelService() {
-        return new ValidationModelService(getStatelessKieSession(), getRetrieveDataService(), persistenceService);
+        return new ValidationModelService(getStatelessKieSession(),
+                                          getRetrieveDataService(),
+                                          persistenceService,
+                                          getEnvironmentConfiguration());
     }
 
     @Bean

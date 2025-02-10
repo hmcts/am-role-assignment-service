@@ -43,25 +43,23 @@ class ValidationModelServiceTest {
 
     StatelessKieSession kieSessionMock = mock(StatelessKieSession.class);
 
-
     RetrieveDataService retrieveDataServiceMock = mock(RetrieveDataService.class);
-
-
-    AssignmentRequest assignmentRequest;
 
     PersistenceService persistenceService = mock(PersistenceService.class);
 
-    @Mock
-    Logger logger = mock(Logger.class);
+    EnvironmentConfiguration environmentConfiguration = mock(EnvironmentConfiguration.class);
+
+    AssignmentRequest assignmentRequest;
 
     @Mock
-    EnvironmentConfiguration environmentConfiguration;
+    Logger logger = mock(Logger.class);
 
     @InjectMocks
     ValidationModelService sut = new ValidationModelService(
         kieSessionMock,
         retrieveDataServiceMock,
-        persistenceService
+        persistenceService,
+        environmentConfiguration
     );
 
     @BeforeEach
@@ -71,7 +69,10 @@ class ValidationModelServiceTest {
 
     @Test
     void validateRequest() throws IOException {
+
+        // pretend to be in PROD environment
         when(environmentConfiguration.getEnvironment()).thenReturn("prod");
+
         assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
@@ -81,11 +82,17 @@ class ValidationModelServiceTest {
         verify(assignmentRequestSpy, times(2)).getRequestedRoles();
 
         verify(kieSessionMock, times(1)).execute((Iterable) any());
+
+        // verify when in PROD environment: the flag cache is used: i.e. not data from DB/persistenceService
+        verify(persistenceService, never()).getStatusByParam(any(), any());
     }
 
     @Test
     void validateRequest_withEmptyRoles() throws IOException {
+
+        // pretend to be in PROD environment
         when(environmentConfiguration.getEnvironment()).thenReturn("prod");
+
         assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
         assignmentRequest.setRequestedRoles(Collections.emptyList());
@@ -104,7 +111,10 @@ class ValidationModelServiceTest {
 
     @Test
     void validateRequest_Scenario_withPrEnv() throws IOException {
+
+        // pretend to be in PREVIEW environment
         when(environmentConfiguration.getEnvironment()).thenReturn("pr");
+
         assignmentRequest = TestDataBuilder.buildEmptyAssignmentRequest(LIVE);
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
 

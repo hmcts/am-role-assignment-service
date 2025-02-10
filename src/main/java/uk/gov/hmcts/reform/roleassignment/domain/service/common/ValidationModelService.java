@@ -32,12 +32,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestScope
 public class ValidationModelService {
 
-    private StatelessKieSession kieSession;
-    private RetrieveDataService retrieveDataService;
-    private PersistenceService persistenceService;
-
-    @Autowired
-    private EnvironmentConfiguration environmentConfiguration;
+    private final StatelessKieSession kieSession;
+    private final RetrieveDataService retrieveDataService;
+    private final PersistenceService persistenceService;
+    private final EnvironmentConfiguration environmentConfiguration;
 
     @Value("${roleassignment.query.sizeinternal}")
     private int sizeInternal;
@@ -45,21 +43,20 @@ public class ValidationModelService {
     @Value("${roleassignment.query.sortcolumnunique}")
     private String sortColumnUnique;
 
+    @Autowired
     public ValidationModelService(StatelessKieSession kieSession,
                                   RetrieveDataService retrieveDataService,
-                                  PersistenceService persistenceService) {
+                                  PersistenceService persistenceService,
+                                  EnvironmentConfiguration environmentConfiguration) {
         this.kieSession = kieSession;
-
         this.retrieveDataService = retrieveDataService;
-
         this.persistenceService = persistenceService;
-
+        this.environmentConfiguration = environmentConfiguration;
     }
 
     public void validateRequest(AssignmentRequest assignmentRequest) {
 
         runRulesOnAllRequestedAssignments(assignmentRequest);
-
 
     }
 
