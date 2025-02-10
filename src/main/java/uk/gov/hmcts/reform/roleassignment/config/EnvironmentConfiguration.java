@@ -11,17 +11,21 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Getter
 public class EnvironmentConfiguration {
-    private String environment;
+
+    private final String environment;
 
     @Autowired
     public EnvironmentConfiguration(@Value("${launchdarkly.sdk.environment}") String launchDarklyEnvironment,
                                     @Value("${ras.environment}") String rasEnvironment) {
-        if (StringUtils.isNotEmpty(rasEnvironment)) {
+
+        // NB: use legacy LD value if still supplied: but raise a warning
+        if (StringUtils.isNotEmpty(launchDarklyEnvironment)) {
+            this.environment =  launchDarklyEnvironment;
+            log.warn("launchdarkly.sdk.environment used value: " + launchDarklyEnvironment
+                + ".  Please switch to `RAS_ENV` environment variable instead of `LAUNCH_DARKLY_ENV`.");
+        } else {
             this.environment = rasEnvironment;
             log.info("ras.environment used value: " + rasEnvironment);
-        } else {
-            this.environment =  launchDarklyEnvironment;
-            log.info("launchdarkly.sdk.environment used value: " + launchDarklyEnvironment);
         }
 
     }

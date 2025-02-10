@@ -154,12 +154,13 @@ feign:
 swaggerUrl: ${TEST_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
 
+# NB: LD is not used but legacy configuration is retained, see /config/EnvironmentConfiguration.java
 launchdarkly:
   sdk:
-    environment: ${LAUNCH_DARKLY_ENV:pr}
+    environment: ${LAUNCH_DARKLY_ENV:}
 
 ras:
-  environment: ${RAS_ENV:}
+  environment: ${RAS_ENV:pr}
 
 audit:
   log:

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
@@ -69,6 +70,7 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
     private FlagConfigRepository flagConfigRepository;
+    private EnvironmentConfiguration environmentConfiguration;
 
     @Value("${roleassignment.query.sortcolumn}")
     private String sortColumn;
@@ -85,13 +87,15 @@ public class PersistenceService {
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
                               RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
                               DatabseChangelogLockRepository databseChangelogLockRepository,
-                              FlagConfigRepository flagConfigRepository) {
+                              FlagConfigRepository flagConfigRepository,
+                              EnvironmentConfiguration environmentConfiguration) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
         this.persistenceUtil = persistenceUtil;
         this.databseChangelogLockRepository = databseChangelogLockRepository;
         this.flagConfigRepository = flagConfigRepository;
+        this.environmentConfiguration = environmentConfiguration;
     }
 
     @Transactional
@@ -302,7 +306,7 @@ public class PersistenceService {
 
     public boolean getStatusByParam(String flagName, String envName) {
         if (StringUtils.isEmpty(envName)) {
-            envName = System.getenv("RAS_ENV");
+            envName = environmentConfiguration.getEnvironment();
         }
         return flagConfigRepository.findByFlagNameAndEnv(flagName, envName).getStatus();
     }

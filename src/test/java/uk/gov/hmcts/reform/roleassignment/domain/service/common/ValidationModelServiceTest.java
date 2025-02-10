@@ -12,6 +12,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
@@ -29,6 +30,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -95,6 +97,9 @@ class ValidationModelServiceTest {
 
         verify(kieSessionMock, times(1)).execute((Iterable) any());
         verify(kieSessionMock, times(1)).setGlobal(any(), any());
+
+        // verify when in PROD environment: the flag cache is used: i.e. not data from DB/persistenceService
+        verify(persistenceService, never()).getStatusByParam(any(), any());
     }
 
     @Test
@@ -107,6 +112,10 @@ class ValidationModelServiceTest {
         verify(assignmentRequestSpy, times(4)).getRequest();
         verify(assignmentRequestSpy, times(1)).getRequestedRoles();
         verify(kieSessionMock, times(1)).execute((Iterable) any());
+
+        // verify when in none PROD environment: all flags are loaded from DB/persistenceService
+        Mockito.verify(persistenceService, Mockito.times(FeatureFlagEnum.values().length))
+            .getStatusByParam(any(), eq("pr"));
     }
 
     @Test
