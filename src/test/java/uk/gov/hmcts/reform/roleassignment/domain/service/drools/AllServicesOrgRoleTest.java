@@ -501,6 +501,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         "task-supervisor,CTSC,STANDARD,north-east,ST_CIC,UK,ORGANISATION,N,Null,PUBLIC",
         "case-allocator,CTSC,STANDARD,north-east,ST_CIC,UK,ORGANISATION,N,Null,PUBLIC",
         "specific-access-approver-ctsc,CTSC,STANDARD,north-east,ST_CIC,UK,ORGANISATION,N,Null,PUBLIC",
+        "specific-access-approver-ctsc,ADMIN,STANDARD,north-east,ST_CIC,UK,ORGANISATION,N,Null,PUBLIC",
         "magistrate,JUDICIAL,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC",
         "senior-judge,JUDICIAL,STANDARD,north-east,ST_CIC,UK,ORGANISATION,Y,Null,PUBLIC",
         "leadership-judge,JUDICIAL,STANDARD,north-east,ST_CIC,UK,ORGANISATION,Y,Null,PUBLIC",
