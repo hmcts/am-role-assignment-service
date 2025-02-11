@@ -91,3 +91,21 @@ variable "pgsql_storage_mb" {
   type        = number
   default     = 65536
 }
+
+variable "action_group_name" {
+  description = "The name of the Action Group to create."
+  type        = string
+  default     = "action_group"
+}
+
+variable "email_address_key" {
+  description = "Email address key in azure Key Vault."
+  type        = string
+  default     = "db-alert-monitoring-email-address"
+}
+
+variable "email_address_key_vault_id" {
+  description = "Email address Key Vault Id."
+  type        = string
+  default     = ""
+}
