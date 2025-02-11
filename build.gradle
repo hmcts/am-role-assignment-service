@@ -17,10 +17,10 @@ plugins {
   id 'uk.gov.hmcts.java' version '0.12.63'
   id 'pmd'
   id 'jacoco'
-  id 'io.spring.dependency-management' version '1.1.6'
+  id 'io.spring.dependency-management' version '1.1.7'
   id 'org.springframework.boot' version '2.7.18'
   id 'info.solidsoft.pitest' version '1.15.0'
-  id 'com.github.ben-manes.versions' version '0.45.0' //do not update this version from 0.41.0
+  id 'com.github.ben-manes.versions' version '0.51.0' //do not update this version from 0.41.0
   id 'org.sonarqube' version '4.0.0.2929'
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.25'
   id 'au.com.dius.pact' version '4.3.12' //do not change this version or serenity reports will fail to generate
@@ -51,17 +51,17 @@ def versions = [
   springSecurity : '5.7.11',
   springHystrix  : '2.1.1.RELEASE',
   swagger2Version: '2.10.5',
-  tomcat         : '9.0.97',
+  tomcat         : '9.0.98',
   pact_version   : '4.1.7',
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
   feign_jackson  : '12.5',
-  jacksondata    : '2.18.1',
+  jacksondata    : '2.18.2',
   drools         : '7.73.0.Final',
   launchDarklySdk: '5.10.9',
-  log4JVersion   : '2.19.0',
+  log4JVersion   : '2.24.3',
   logbackVersion : '1.2.13',
-  poi  : '5.2.5'
+  poi  : '5.3.0'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
@@ -412,7 +412,7 @@ dependencies {
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-core', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-jose', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-resource-server', version: versions.springSecurity
-  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.10'
+  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.11'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.9'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.10.RELEASE'
@@ -457,12 +457,12 @@ dependencies {
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: versions.tomcat
   implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.15.Final'
   implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.8'
-  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.4'
-  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '9.47'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.5'
+  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '9.48'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-  implementation group: 'commons-io', name:'commons-io', version: '2.16.1'
+  implementation group: 'commons-io', name:'commons-io', version: '2.18.0'
   implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.27.1'
-  implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+  implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.10.0'
   implementation group: 'org.json', name: 'json', version: '20231013'
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
 
@@ -502,16 +502,16 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testImplementation 'com.github.hmcts:fortify-client:1.4.5:all'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.6:all'
   testImplementation 'com.github.hmcts:befta-fw:8.7.11'
-  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.6.11'
+  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.2'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
-  smokeTestImplementation group: 'commons-io', name: 'commons-io', version: '2.16.1'
+  smokeTestImplementation group: 'commons-io', name: 'commons-io', version: '2.18.0'
   smokeTestCompileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   smokeTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
@@ -521,6 +521,9 @@ dependencies {
   integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   integrationTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
+
+  integrationTestCompileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+  integrationTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
   compileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
