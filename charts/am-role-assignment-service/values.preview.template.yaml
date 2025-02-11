@@ -28,7 +28,8 @@ java:
     ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
     CCD_DATA_STORE_URL: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-    RAS_ENV: pr
+    # TEST with legacy LAUNCH_DARKLY_ENV variable rather than new RAS_ENV variable
+    LAUNCH_DARKLY_ENV: pr
     ENABLE_DB_MIGRATE: true
     BYPASS_ORG_DROOL_RULE: true
     RUN_DB_MIGRATION_ON_STARTUP: true
