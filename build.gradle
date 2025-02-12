@@ -14,7 +14,7 @@ buildscript {
 plugins {
   id 'eclipse'
   id 'application'
-  id 'uk.gov.hmcts.java' version '0.12.63'
+  id 'uk.gov.hmcts.java' version '0.12.65'
   id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.1.7'
@@ -61,7 +61,7 @@ def versions = [
   launchDarklySdk: '5.10.9',
   log4JVersion   : '2.24.3',
   logbackVersion : '1.2.13',
-  poi  : '5.3.0'
+  poi  : '5.4.0'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
