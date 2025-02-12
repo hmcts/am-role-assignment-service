@@ -1,6 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
 import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,8 +11,6 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ForbiddenE
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Component
 @AllArgsConstructor
