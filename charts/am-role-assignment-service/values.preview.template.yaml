@@ -12,6 +12,8 @@ java:
           alias: ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET
         - name: role-assignment-service-IDAM-ADMIN-SECRET
           alias: ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD
+        - name: role-assignment-service-LD-SDK-KEY
+          alias: LD_SDK_KEY
 #  overidding dev memory and cpu limits to make it match with standard limits
 #  https://github.com/hmcts/chart-java/blob/master/java/values.yaml
   devmemoryRequests: 1024Mi
@@ -35,6 +37,8 @@ java:
     RUN_DB_MIGRATION_ON_STARTUP: true
     APPLICATION_LOGGING_LEVEL: DEBUG
     TESTING_SUPPORT_ENABLED: true
+    # TEST with legacy LAUNCH_DARKLY_ENV variable rather than new RAS_ENV variable
+    RUN_LD_ON_STARTUP: true
   postgresql:
     enabled: true
     postgresqlPort: 5432
