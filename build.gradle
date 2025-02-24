@@ -42,7 +42,7 @@ def versions = [
   lombok         : '1.18.36',
   gradlePitest   : '1.3.0',
   pitest         : '1.17.0',
-  reformLogging  : '6.1.7',
+  reformLogging  : '6.1.8',
   reformS2sClient: '4.0.2',
   serenity       : '2.2.12',
   sonarPitest    : '0.5',
@@ -502,7 +502,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testImplementation 'com.github.hmcts:fortify-client:1.4.6:all'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.7:all'
   testImplementation 'com.github.hmcts:befta-fw:8.7.11'
   testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.2'
 
