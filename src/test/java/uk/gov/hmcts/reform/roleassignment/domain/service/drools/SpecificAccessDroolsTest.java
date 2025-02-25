@@ -176,37 +176,40 @@ class SpecificAccessDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "IA,specific-access-judiciary,JUDICIAL,leadership-judge",
-        "IA,specific-access-admin,ADMIN,leadership-judge",
-        "IA,specific-access-ctsc,CTSC,leadership-judge",
-        "IA,specific-access-legal-ops,LEGAL_OPERATIONS,leadership-judge",
-        "CIVIL,specific-access-judiciary,JUDICIAL,leadership-judge",
-        "CIVIL,specific-access-admin,ADMIN,nbc-team-leader",
-        "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS,senior-tribunal-caseworker",
-        "CIVIL,specific-access-ctsc,CTSC,ctsc-team-leader",
-        "PRIVATELAW,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary",
-        "PRIVATELAW,specific-access-admin,ADMIN,specific-access-approver-admin",
-        "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
-        "PRIVATELAW,specific-access-ctsc,CTSC,specific-access-approver-ctsc",
-        "PUBLICLAW,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary",
-        "PUBLICLAW,specific-access-admin,ADMIN,specific-access-approver-admin",
-        "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
-        "PUBLICLAW,specific-access-ctsc,CTSC,specific-access-approver-ctsc",
-        "EMPLOYMENT,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary",
-        "EMPLOYMENT,specific-access-admin,ADMIN,specific-access-approver-admin",
-        "EMPLOYMENT,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
-        "EMPLOYMENT,specific-access-ctsc,CTSC,specific-access-approver-ctsc",
-        "SSCS,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary",
-        "SSCS,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
-        "SSCS,specific-access-admin,ADMIN,specific-access-approver-admin",
-        "SSCS,specific-access-ctsc,CTSC,specific-access-approver-ctsc",
-        "ST_CIC,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary",
-        "ST_CIC,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops",
-        "ST_CIC,specific-access-admin,ADMIN,specific-access-approver-admin",
-        "ST_CIC,specific-access-ctsc,CTSC,specific-access-approver-ctsc"
+        "IA,specific-access-judiciary,JUDICIAL,leadership-judge,JUDICIAL",
+        "IA,specific-access-admin,ADMIN,leadership-judge,JUDICIAL",
+        "IA,specific-access-ctsc,CTSC,leadership-judge,JUDICIAL",
+        "IA,specific-access-legal-ops,LEGAL_OPERATIONS,leadership-judge,JUDICIAL",
+        "CIVIL,specific-access-judiciary,JUDICIAL,leadership-judge,JUDICIAL",
+        "CIVIL,specific-access-admin,ADMIN,nbc-team-leader,ADMIN",
+        "CIVIL,specific-access-legal-ops,LEGAL_OPERATIONS,senior-tribunal-caseworker,LEGAL_OPERATIONS",
+        "CIVIL,specific-access-ctsc,CTSC,ctsc-team-leader,CTSC",
+        "PRIVATELAW,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary,JUDICIAL",
+        "PRIVATELAW,specific-access-admin,ADMIN,specific-access-approver-admin,ADMIN",
+        "PRIVATELAW,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops,LEGAL_OPERATIONS",
+        "PRIVATELAW,specific-access-ctsc,CTSC,specific-access-approver-ctsc,CTSC",
+        "PUBLICLAW,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary,JUDICIAL",
+        "PUBLICLAW,specific-access-admin,ADMIN,specific-access-approver-admin,ADMIN",
+        "PUBLICLAW,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops,LEGAL_OPERATIONS",
+        "PUBLICLAW,specific-access-ctsc,CTSC,specific-access-approver-ctsc,CTSC",
+        "EMPLOYMENT,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary,JUDICIAL",
+        "EMPLOYMENT,specific-access-admin,ADMIN,specific-access-approver-admin,ADMIN",
+        "EMPLOYMENT,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops,LEGAL_OPERATIONS",
+        "EMPLOYMENT,specific-access-ctsc,CTSC,specific-access-approver-ctsc,CTSC",
+        "SSCS,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary,JUDICIAL",
+        "SSCS,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops,LEGAL_OPERATIONS",
+        "SSCS,specific-access-admin,ADMIN,specific-access-approver-admin,ADMIN",
+        "SSCS,specific-access-ctsc,CTSC,specific-access-approver-ctsc,CTSC",
+        "ST_CIC,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary,JUDICIAL",
+        "ST_CIC,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops,LEGAL_OPERATIONS",
+        "ST_CIC,specific-access-admin,ADMIN,specific-access-approver-admin,ADMIN",
+        "ST_CIC,specific-access-ctsc,CTSC,specific-access-approver-ctsc,CTSC",
+        // NB: special case of ST_CIC Admin performing a CTSC approver role
+        "ST_CIC,specific-access-ctsc,CTSC,specific-access-approver-ctsc,ADMIN"
     })
-    void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction, String roleName,
-                                                           String roleCategory, String approver) {
+    void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction,
+                                                           String roleName, String roleCategory,
+                                                           String approverRoleName, String approverRoleCategory) {
 
         Case caseDetails = caseMap.get(caseJurisdiction);
         HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
@@ -248,8 +251,8 @@ class SpecificAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
                                           TestDataBuilder.CASE_ALLOCATOR_ID,
-                                          approver,
-                                          RoleCategory.valueOf(roleCategory),
+                                          approverRoleName,
+                                          RoleCategory.valueOf(approverRoleCategory),
                                           existingAttributes,
                                           Classification.PRIVATE,
                                           GrantType.STANDARD,
