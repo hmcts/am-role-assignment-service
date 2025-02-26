@@ -35,7 +35,8 @@ java:
     BYPASS_ORG_DROOL_RULE: true
     RUN_DB_MIGRATION_ON_STARTUP: true
     APPLICATION_LOGGING_LEVEL: DEBUG
-    TESTING_SUPPORT_ENABLED: true
+    # TEST with TESTING_SUPPORT_ENABLED set to false
+    TESTING_SUPPORT_ENABLED: false
     # TODO: remove legacy LD env vars in DTSAM-789
     RUN_LD_ON_STARTUP: ""
   postgresql:
