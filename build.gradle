@@ -428,7 +428,7 @@ dependencies {
   implementation group: 'com.auth0', name: 'java-jwt', version: '4.4.0'
   implementation group: 'commons-io', name:'commons-io', version: '2.18.0'
   implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.27.1'
-  implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.10.0'
+  implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.10.1'
   implementation group: 'org.json', name: 'json', version: '20250107'
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
 
@@ -471,7 +471,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:befta-fw:9.0.2'
   testImplementation 'com.github.hmcts:fortify-client:1.4.7:all'
-  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.2'
+  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.3'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
@@ -492,6 +492,8 @@ dependencies {
 
   compileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+  implementation group: 'org.pitest', name: 'pitest-junit5-plugin', version: '1.2.2'
+
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
   testImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
@@ -546,7 +548,7 @@ dependencyManagement {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
   }
   dependencies {
-    dependencySet(group: 'net.minidev', version: '2.5.1') {
+    dependencySet(group: 'net.minidev', version: '2.5.2') {
       entry 'json-smart'
     }
     dependencySet(group: 'com.fasterxml.jackson.core', version: versions.jacksondata) {
