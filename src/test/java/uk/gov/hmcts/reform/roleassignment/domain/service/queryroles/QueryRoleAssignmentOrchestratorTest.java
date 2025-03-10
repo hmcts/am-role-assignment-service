@@ -2,17 +2,17 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.queryroles;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -20,26 +20,22 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 class QueryRoleAssignmentOrchestratorTest {
 
     @Mock
-    private PersistenceService persistenceServiceMock = mock(PersistenceService.class);
+    private PersistenceService persistenceServiceMock;
 
     @InjectMocks
-    private QueryRoleAssignmentOrchestrator sut = new QueryRoleAssignmentOrchestrator(
-        persistenceServiceMock
-    );
+    private QueryRoleAssignmentOrchestrator sut;
 
 
     @Test
@@ -56,14 +52,6 @@ class QueryRoleAssignmentOrchestratorTest {
             .roleType(roleType)
             .build();
 
-        when(persistenceServiceMock.retrieveRoleAssignmentsByQueryRequest(queryRequest,
-                                                                          1,
-                                                                          2,
-                                                                          "id",
-                                                                          "asc",
-                                                                          false))
-            .thenReturn(Collections.emptyList());
-        when(persistenceServiceMock.getTotalRecords()).thenReturn(Long.valueOf(10));
         ResponseEntity<RoleAssignmentResource> result = sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,
                                                                                                   1,
                                                                                                   2,
@@ -162,14 +150,6 @@ class QueryRoleAssignmentOrchestratorTest {
         QueryRequest queryRequest = QueryRequest.builder()
             .build();
 
-        when(persistenceServiceMock.retrieveRoleAssignmentsByQueryRequest(queryRequest,
-                                                                          1,
-                                                                          2,
-                                                                          "id",
-                                                                          "asc",
-                                                                          false))
-            .thenReturn(Collections.emptyList());
-        when(persistenceServiceMock.getTotalRecords()).thenReturn(Long.valueOf(10));
         Assertions.assertThrows(BadRequestException.class, () -> sut.retrieveRoleAssignmentsByQueryRequest(queryRequest,
                                                                                                           1,
                                                                                                           2,
@@ -195,14 +175,6 @@ class QueryRoleAssignmentOrchestratorTest {
             .queryRequests(List.of(queryRequest))
             .build();
 
-        when(persistenceServiceMock.retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
-                                                                          1,
-                                                                                  2,
-                                                                                  "id",
-                                                                                  "asc",
-                                                                                  false))
-            .thenReturn(Collections.emptyList());
-        when(persistenceServiceMock.getTotalRecords()).thenReturn(Long.valueOf(10));
         ResponseEntity<RoleAssignmentResource> result = sut
             .retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
                                                             1,
@@ -271,14 +243,6 @@ class QueryRoleAssignmentOrchestratorTest {
             .queryRequests(List.of(queryRequest))
             .build();
 
-        when(persistenceServiceMock.retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
-                                                                                  1,
-                                                                                  2,
-                                                                                  "id",
-                                                                                  "asc",
-                                                                                  false))
-            .thenReturn(Collections.emptyList());
-        when(persistenceServiceMock.getTotalRecords()).thenReturn(Long.valueOf(10));
         Assertions.assertThrows(BadRequestException.class, () ->
             sut.retrieveRoleAssignmentsByMultipleQueryRequest(multipleQueryRequest,
                                                               1,

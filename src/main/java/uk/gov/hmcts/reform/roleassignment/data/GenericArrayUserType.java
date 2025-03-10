@@ -1,51 +1,71 @@
 package uk.gov.hmcts.reform.roleassignment.data;
 
-import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 
 import java.io.Serializable;
+import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Arrays;
 
-public class GenericArrayUserType<T extends Serializable> implements UserType {
-
-    protected static final int[] SQL_TYPES = {Types.ARRAY};
-    private Class<T> typeParameterClass;
+public class GenericArrayUserType implements UserType<String[]> {
 
     @Override
-    public Object assemble(Serializable cached, Object owner) throws HibernateException {
-        return this.deepCopy(cached);
+    public int getSqlType() {
+        return Types.ARRAY;
     }
 
     @Override
-    public Object deepCopy(Object value) throws HibernateException {
+    public Class<String[]> returnedClass() {
+        return String[].class;
+    }
+
+    @Override
+    public boolean equals(String[] x, String[] y) {
+        return Arrays.equals(x, y);
+    }
+
+    @Override
+    public int hashCode(String[] x) {
+        return Arrays.hashCode(x);
+    }
+
+    @Override
+    public String[] nullSafeGet(ResultSet resultSet,
+                              int position,
+                              SharedSessionContractImplementor session,
+                              Object owner) throws SQLException {
+        if (resultSet.wasNull()) {
+            return null;
+        }
+        Array array = resultSet.getArray(position);
+        if (array == null) {
+            return new String[0];
+        }
+        return (String[]) array.getArray();
+    }
+
+    @Override
+    public String[] deepCopy(String[] value) {
         return value;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public Serializable disassemble(Object value) throws HibernateException {
-        return (T) this.deepCopy(value);
-    }
-
-    @Override
-    public boolean equals(Object x, Object y) throws HibernateException {
-
-        if (x == null) {
-            return y == null;
+    public void nullSafeSet(PreparedStatement statement,
+                            String[] value,
+                            int index,
+                            SharedSessionContractImplementor session) throws SQLException {
+        var connection = statement.getConnection();
+        if (value == null) {
+            statement.setNull(index, Types.ARRAY);
+        } else {
+            Array array = connection.createArrayOf("text", value);
+            statement.setArray(index, array);
         }
-        return x.equals(y);
     }
-
-    @Override
-    public int hashCode(Object x) throws HibernateException {
-        return x.hashCode();
-    }
-
-
 
     @Override
     public boolean isMutable() {
@@ -53,51 +73,12 @@ public class GenericArrayUserType<T extends Serializable> implements UserType {
     }
 
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor session,
-                              Object owner)
-        throws HibernateException, SQLException {
-        if (resultSet.wasNull()) {
-            return null;
-        }
-        if (resultSet.getArray(names[0]) == null) {
-            return new String[0];
-        }
-
-        var array = resultSet.getArray(names[0]);
-        @SuppressWarnings("unchecked")
-        T javaArray = (T) array.getArray();
-        return javaArray;
+    public Serializable disassemble(String[] value) {
+        return value;
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement statement, Object value, int index,
-                            SharedSessionContractImplementor sharedSessionContractImplementor)
-        throws HibernateException, SQLException {
-        var connection = statement.getConnection();
-        if (value == null) {
-            statement.setNull(index, SQL_TYPES[0]);
-        } else {
-            @SuppressWarnings("unchecked")
-            var castObject = (T) value;
-            var array = connection.createArrayOf("text", (Object[]) castObject);
-            statement.setArray(index, array);
-        }
+    public String[] assemble(Serializable cached, Object owner) {
+        return (String[]) cached;
     }
-
-    @Override
-    public Object replace(Object original, Object target, Object owner) throws HibernateException {
-        return original;
-    }
-
-    @Override
-    public Class<T> returnedClass() {
-        return typeParameterClass;
-    }
-
-    @Override
-    public int[] sqlTypes() {
-        return new int[]{Types.ARRAY};
-    }
-
-
 }

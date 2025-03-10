@@ -1,8 +1,8 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
@@ -99,7 +99,7 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @MockBean
     private FeatureConditionEvaluation featureConditionEvaluation;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         template = new JdbcTemplate(ds);
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();

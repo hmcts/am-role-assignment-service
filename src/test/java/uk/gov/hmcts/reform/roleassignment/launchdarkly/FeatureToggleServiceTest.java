@@ -1,24 +1,24 @@
 package uk.gov.hmcts.reform.roleassignment.launchdarkly;
 
+import com.launchdarkly.sdk.LDUser;
 import com.launchdarkly.sdk.server.LDClient;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import javax.servlet.http.HttpServletRequest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 class FeatureToggleServiceTest {
 
     @Mock
@@ -37,13 +37,13 @@ class FeatureToggleServiceTest {
 
     @Test
     void evaluateLdFlag() {
-        when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(true);
+        when(ldClient.boolVariation(any(String.class), any(LDUser.class), anyBoolean())).thenReturn(true);
         Assertions.assertTrue(featureToggleService.isFlagEnabled("serviceName", "userName"));
     }
 
     @Test
     void evaluateLdFlagFalse() {
-        when(ldClient.boolVariation(any(), any(), anyBoolean())).thenReturn(false);
+        when(ldClient.boolVariation(any(String.class), any(LDUser.class), anyBoolean())).thenReturn(false);
         Assertions.assertFalse(featureToggleService.isFlagEnabled("serviceName", "userName"));
     }
 

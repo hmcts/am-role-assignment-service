@@ -3,15 +3,12 @@ package uk.gov.hmcts.reform.roleassignment;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lombok.NoArgsConstructor;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.serenitybdd.annotations.WithTag;
+import net.serenitybdd.annotations.WithTags;
 import net.serenitybdd.rest.SerenityRest;
-import net.thucydides.core.annotations.WithTag;
-import net.thucydides.core.annotations.WithTags;
 import org.apache.commons.io.IOUtils;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 
@@ -19,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
 @NoArgsConstructor
 @WithTags({@WithTag("testType:Smoke")})
 public class SmokeTest extends BaseTest {
@@ -41,7 +37,7 @@ public class SmokeTest extends BaseTest {
     @Value("${launchdarkly.sdk.key}")
     private String sdkKey;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         config = new UserTokenProviderConfig();
         accessToken = searchUserByUserId(config);
@@ -51,9 +47,6 @@ public class SmokeTest extends BaseTest {
             generateServiceAuthorisationApi(config.getS2sUrl())
         ).generate();
     }
-
-    @Rule
-    public FeatureFlagToggleEvaluator featureFlagToggleEvaluator = new FeatureFlagToggleEvaluator(this);
 
     @Test
     public void should_receive_response_for_get_static_roles() {

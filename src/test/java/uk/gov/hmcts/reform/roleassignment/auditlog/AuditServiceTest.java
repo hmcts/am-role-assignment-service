@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +20,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -136,6 +136,6 @@ class AuditServiceTest {
         verify(auditRepository).save(captor.capture());
 
         assertThat(captor.getValue().getHttpStatus(), is(equalTo(403)));
-        Assert.assertNull(captor.getValue().getOperationType());
+        assertNull(captor.getValue().getOperationType());
     }
 }
