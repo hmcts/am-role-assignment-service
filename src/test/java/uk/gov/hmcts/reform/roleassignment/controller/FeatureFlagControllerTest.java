@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.roleassignment.controller;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -30,12 +29,12 @@ class FeatureFlagControllerTest {
     @Mock
     private PersistenceUtil persistenceUtil;
 
-    @InjectMocks
-    private final FeatureFlagController sut = new FeatureFlagController();
+    private FeatureFlagController sut;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        sut = new FeatureFlagController(persistenceService, persistenceUtil);
     }
 
     @Test
@@ -77,4 +76,5 @@ class FeatureFlagControllerTest {
         assertNotNull(responseEntity.getBody());
 
     }
+
 }
