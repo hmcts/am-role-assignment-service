@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.util.ReflectionTestUtils;
+import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -30,8 +32,8 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
@@ -40,7 +42,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
 import javax.persistence.EntityManager;
@@ -61,17 +62,17 @@ import java.util.Set;
 import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
@@ -98,13 +99,14 @@ class PersistenceServiceTest {
     private FlagConfigRepository flagConfigRepository;
 
     @Mock
-    FeatureToggleService featureToggleService;
+    private EnvironmentConfiguration environmentConfiguration;
 
     @InjectMocks
     private final PersistenceService sut = new PersistenceService(
         historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil,
         databseChangelogLockRepository,
-        flagConfigRepository
+        flagConfigRepository,
+        environmentConfiguration
     );
 
 
@@ -877,6 +879,8 @@ class PersistenceServiceTest {
 
     @Test
     void getFlagStatus() {
+
+        // GIVEN
         String flagName = "iac_1_1";
         String env = "pr";
         FlagConfig flagConfig = FlagConfig.builder()
@@ -886,9 +890,66 @@ class PersistenceServiceTest {
             .status(Boolean.TRUE)
             .build();
         when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
+
+        // WHEN
         boolean response = sut.getStatusByParam(flagName, env);
+
+        // THEN
         assertTrue(response);
 
+        // check environment config lookup is *NOT* used when environment is specified in call
+        verify(environmentConfiguration, never()).getEnvironment();
+    }
+
+    @Test
+    void getFlagStatus_False() {
+
+        // GIVEN
+        String flagName = "iac_1_1";
+        String env = "pr";
+        FlagConfig flagConfig = FlagConfig.builder()
+            .env("pr")
+            .flagName("iac_1_1")
+            .serviceName("iac")
+            .status(Boolean.FALSE)
+            .build();
+        when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
+
+        // WHEN
+        boolean response = sut.getStatusByParam(flagName, env);
+
+        // THEN
+        assertFalse(response);
+
+        // check environment config lookup is *NOT* used when environment is specified in call
+        verify(environmentConfiguration, never()).getEnvironment();
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    void getFlagStatusWhenEnvIsEmpty(String env) {
+
+        // GIVEN
+        String flagName = "iac_1_1";
+        String envConfig = "pr";
+        FlagConfig flagConfig = FlagConfig.builder()
+            .env("pr")
+            .flagName("iac_1_1")
+            .serviceName("iac")
+            .status(Boolean.TRUE)
+            .build();
+        when(environmentConfiguration.getEnvironment()).thenReturn(envConfig);
+        // NB: environment configuration values is used not the env value passed into the call
+        when(flagConfigRepository.findByFlagNameAndEnv(flagName, envConfig)).thenReturn(flagConfig);
+
+        // WHEN
+        boolean response = sut.getStatusByParam(flagName, env);
+
+        // THEN
+        assertTrue(response);
+
+        // check environment config lookup is used when environment is *NOT* specified in call
+        verify(environmentConfiguration, times(1)).getEnvironment();
     }
 
     @Test
@@ -904,21 +965,6 @@ class PersistenceServiceTest {
         FlagConfig flagConfigEntity = sut.persistFlagConfig(flagConfig);
         assertNotNull(flagConfigEntity);
 
-    }
-
-    @Test
-    void getFlagStatus_False() {
-        String flagName = "iac_1_1";
-        String env = "pr";
-        FlagConfig flagConfig = FlagConfig.builder()
-            .env("pr")
-            .flagName("iac_1_1")
-            .serviceName("iac")
-            .status(Boolean.FALSE)
-            .build();
-        when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
-        boolean response = sut.getStatusByParam(flagName, env);
-        assertFalse(response);
     }
 
 
