@@ -163,7 +163,7 @@
     ]
   },
   {
-    "name": "wlu-administrator",
+    "name": "wlu-admin",
     "label": "WLU Administrator",
     "description": "WLU Administrator role for admin users",
     "category": "ADMIN",
