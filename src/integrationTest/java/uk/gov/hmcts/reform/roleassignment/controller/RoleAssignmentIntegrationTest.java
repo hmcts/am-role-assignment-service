@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,7 +33,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
@@ -45,7 +45,6 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,6 +52,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.createQueryRequest;
 
+@TestPropertySource(properties = {"ras.environment=pr"})
 public class RoleAssignmentIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentIntegrationTest.class);
@@ -90,9 +90,6 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     @MockBean
     private IdamRoleService idamRoleService;
 
-    @MockBean
-    private FeatureConditionEvaluation featureConditionEvaluation;
-
     @Before
     public void setUp() throws Exception {
         template = new JdbcTemplate(ds);
@@ -106,7 +103,6 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         doReturn(authentication).when(securityContext).getAuthentication();
         SecurityContextHolder.setContext(securityContext);
         MockUtils.setSecurityAuthorities(authentication, MockUtils.ROLE_CASEWORKER);
-        doReturn(true).when(featureConditionEvaluation).preHandle(any(),any(),any());
     }
 
     @Test
