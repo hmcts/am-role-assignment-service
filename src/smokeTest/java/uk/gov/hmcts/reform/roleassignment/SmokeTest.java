@@ -9,8 +9,9 @@ import net.serenitybdd.rest.SerenityRest;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,14 +29,8 @@ public class SmokeTest extends BaseTest {
     String accessToken;
     String serviceAuth;
 
-    @Value("${launchdarkly.sdk.environment}")
-    private String environment;
-
-    @Value("${launchdarkly.sdk.user}")
-    private String userName;
-
-    @Value("${launchdarkly.sdk.key}")
-    private String sdkKey;
+    @Autowired
+    private EnvironmentConfiguration environmentConfiguration;
 
     @BeforeEach
     public void setUp() {
@@ -144,14 +139,7 @@ public class SmokeTest extends BaseTest {
     }
 
     public String getEnvironment() {
-        return environment;
+        return environmentConfiguration.getEnvironment();
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getSdkKey() {
-        return sdkKey;
-    }
 }

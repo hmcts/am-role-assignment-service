@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
@@ -29,7 +30,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
@@ -70,8 +70,7 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
     private FlagConfigRepository flagConfigRepository;
-    @Autowired
-    private FeatureToggleService featureToggleService;
+    private EnvironmentConfiguration environmentConfiguration;
 
     @Value("${roleassignment.query.sortcolumn}")
     private String sortColumn;
@@ -88,13 +87,15 @@ public class PersistenceService {
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
                               RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
                               DatabseChangelogLockRepository databseChangelogLockRepository,
-                              FlagConfigRepository flagConfigRepository) {
+                              FlagConfigRepository flagConfigRepository,
+                              EnvironmentConfiguration environmentConfiguration) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
         this.persistenceUtil = persistenceUtil;
         this.databseChangelogLockRepository = databseChangelogLockRepository;
         this.flagConfigRepository = flagConfigRepository;
+        this.environmentConfiguration = environmentConfiguration;
     }
 
     @Transactional
@@ -305,7 +306,7 @@ public class PersistenceService {
 
     public boolean getStatusByParam(String flagName, String envName) {
         if (StringUtils.isEmpty(envName)) {
-            envName = System.getenv("LAUNCH_DARKLY_ENV");
+            envName = environmentConfiguration.getEnvironment();
         }
         return flagConfigRepository.findByFlagNameAndEnv(flagName, envName).getStatus();
     }

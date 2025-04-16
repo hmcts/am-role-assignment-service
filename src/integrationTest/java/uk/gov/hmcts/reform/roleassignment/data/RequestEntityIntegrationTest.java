@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 
@@ -13,6 +14,7 @@ import javax.sql.DataSource;
 
 import static org.junit.Assert.assertEquals;
 
+@TestPropertySource(properties = {"ras.environment=pr"})
 public class RequestEntityIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestEntityIntegrationTest.class);

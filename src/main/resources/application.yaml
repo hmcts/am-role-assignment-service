@@ -156,12 +156,13 @@ feign:
 swaggerUrl: ${TEST_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
 
+# NB: LD is not used but legacy configuration is retained, see /config/EnvironmentConfiguration.java
 launchdarkly:
   sdk:
-    key: ${LD_SDK_KEY:}
-    environment: ${LAUNCH_DARKLY_ENV:pr}
-    user: am-${LAUNCH_DARKLY_ENV:local}
-  runOnStartup: ${RUN_LD_ON_STARTUP:false}
+    environment: ${LAUNCH_DARKLY_ENV:}
+
+ras:
+  environment: ${RAS_ENV:pr}
 
 audit:
   log:
@@ -180,6 +181,10 @@ org :
     byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:false}
 
 logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:INFO}
+
+testing:
+  support:
+    enabled: ${TESTING_SUPPORT_ENABLED:false}
 
 dbFeature:
   flags:

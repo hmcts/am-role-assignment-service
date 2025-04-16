@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
+@TestPropertySource(properties = {"ras.environment=pr"})
 public class SwaggerRedirectControllerIntegrationTest extends BaseTest {
 
     private transient MockMvc mockMvc;

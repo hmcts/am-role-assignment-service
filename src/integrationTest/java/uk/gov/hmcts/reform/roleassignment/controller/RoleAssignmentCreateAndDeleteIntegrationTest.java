@@ -31,7 +31,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
 import javax.inject.Inject;
@@ -40,7 +39,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -49,7 +47,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
 
-@TestPropertySource(properties = {"dbFeature.flags.enable=iac_jrd_1_0"})
+@TestPropertySource(properties = {"dbFeature.flags.enable=iac_jrd_1_0", "ras.environment=pr"})
 public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentCreateAndDeleteIntegrationTest.class);
@@ -113,7 +111,6 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
         doReturn(roles).when(idamRoleService).getUserRoles(anyString());
         doReturn(authentication).when(securityContext).getAuthentication();
         SecurityContextHolder.setContext(securityContext);
-        doReturn(true).when(featureConditionEvaluation).preHandle(any(),any(),any());
         MockUtils.setSecurityAuthorities(authentication, MockUtils.ROLE_CASEWORKER);
         UserInfo userInfo = UserInfo.builder()
             .uid("6b36bfc6-bb21-11ea-b3de-0242ac130006")

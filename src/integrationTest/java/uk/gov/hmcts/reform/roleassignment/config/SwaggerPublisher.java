@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.config;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -22,6 +23,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Each run of workflow .github/workflows/swagger.yml on master should automatically save and upload (if updated)
  * documentation.
  */
+@TestPropertySource(properties = {
+    "ras.environment=pr",
+    // NB: hide testing-support endpoint from Swagger Publish
+    "testing.support.enabled=false"
+})
 public class SwaggerPublisher extends BaseTest {
 
     private MockMvc mockMvc;

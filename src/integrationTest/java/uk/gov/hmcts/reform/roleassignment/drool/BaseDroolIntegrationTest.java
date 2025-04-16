@@ -34,7 +34,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureConditionEvaluation;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
@@ -50,7 +49,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -59,7 +57,10 @@ import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJ
 
 @Slf4j
 @SuppressWarnings("SameParameterValue")
-@TestPropertySource(properties = {"spring.cache.type=none"})
+@TestPropertySource(properties = {
+    "spring.cache.type=none",
+    "ras.environment=pr"
+})
 public abstract class BaseDroolIntegrationTest extends BaseTest {
 
     public static final String AUTHORISED_SERVICE = "ccd_gw";
@@ -88,9 +89,6 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
     @Mock
     private SecurityContext securityContext;
 
-    @MockBean
-    private FeatureConditionEvaluation featureConditionEvaluation;
-
     @Inject
     protected PersistenceService persistenceService;
 
@@ -107,8 +105,6 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
 
         // default UserInfo
         setUpUserInfo("6b36bfc6-bb21-11ea-b3de-0242ac130006");
-
-        doReturn(true).when(featureConditionEvaluation).preHandle(any(),any(),any());
     }
 
     public void setUpUserInfo(String uid) {

@@ -470,8 +470,8 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:befta-fw:9.0.2'
-  testImplementation 'com.github.hmcts:fortify-client:1.4.7:all'
-  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.3'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.8:all'
+  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.4'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
