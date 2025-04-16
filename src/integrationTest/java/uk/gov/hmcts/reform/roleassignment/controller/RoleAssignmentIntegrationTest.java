@@ -15,10 +15,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -89,9 +89,6 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
 
     @MockBean
     private IdamRoleService idamRoleService;
-
-    @MockBean
-    private FeatureConditionEvaluation featureConditionEvaluation;
 
     @BeforeEach
     public void setUp() throws Exception {

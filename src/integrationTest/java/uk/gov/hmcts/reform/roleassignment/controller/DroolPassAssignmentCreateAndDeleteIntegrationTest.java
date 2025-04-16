@@ -81,9 +81,6 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     @MockBean
     private IdamRoleService idamRoleService;
 
-    @MockBean
-    private FeatureConditionEvaluation featureConditionEvaluation;
-
     @BeforeEach
     public void setUp() throws Exception {
 

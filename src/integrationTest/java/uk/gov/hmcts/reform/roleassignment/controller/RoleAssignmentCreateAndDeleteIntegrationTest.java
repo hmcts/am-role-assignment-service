@@ -94,9 +94,6 @@ public class RoleAssignmentCreateAndDeleteIntegrationTest extends BaseTest {
     @MockBean
     private IdamRoleService idamRoleService;
 
-    @MockBean
-    private FeatureConditionEvaluation featureConditionEvaluation;
-
     @BeforeEach
     public void setUp() throws Exception {
         template = new JdbcTemplate(ds);
