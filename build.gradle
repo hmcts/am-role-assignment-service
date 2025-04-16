@@ -35,7 +35,6 @@ def versions = [
   feign_jackson   : '13.5',
   jacksondata     : '2.18.2',
   drools          : '10.0.0',
-  launchDarklySdk : '6.2.1',
   poi             : '5.4.0'
 ]
 
@@ -419,7 +418,7 @@ dependencies {
   implementation group: 'com.google.guava', name: 'guava', version: '33.4.0-jre'
   implementation group: 'jakarta.inject', name: 'jakarta.inject-api', version: '2.0.1'
   implementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
-  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
+  implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.12.0'
   implementation group: 'org.hibernate.orm', name: 'hibernate-core', version: '6.6.5.Final'
   implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.0'
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.5'
