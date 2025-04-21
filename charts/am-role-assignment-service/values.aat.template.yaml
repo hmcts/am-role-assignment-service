@@ -11,3 +11,4 @@ java:
   environment:
     BYPASS_ORG_DROOL_RULE: true
     RUN_DB_MIGRATION_ON_STARTUP: true
+    TESTING_SUPPORT_ENABLED: true
