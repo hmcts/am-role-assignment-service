@@ -28,16 +28,12 @@ java:
     ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
     CCD_DATA_STORE_URL: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-    # TODO: remove legacy LD env vars in DTSAM-789
-    LAUNCH_DARKLY_ENV: ""
     RAS_ENV: pr
     ENABLE_DB_MIGRATE: true
     BYPASS_ORG_DROOL_RULE: true
     RUN_DB_MIGRATION_ON_STARTUP: true
     APPLICATION_LOGGING_LEVEL: DEBUG
     TESTING_SUPPORT_ENABLED: true
-    # TODO: remove legacy LD env vars in DTSAM-789
-    RUN_LD_ON_STARTUP: ""
   postgresql:
     enabled: true
     postgresqlPort: 5432
