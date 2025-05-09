@@ -1,17 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.config;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.ExternalDocumentation;
-import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
-import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -36,40 +30,6 @@ public class SwaggerConfiguration {
             .group("am-role-assignment-service")
             .pathsToMatch("/**")
             .build();
-    }
-
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI()
-            .components(new Components()
-                            .addSecuritySchemes(
-                                AUTHORIZATION,
-                                new io.swagger.v3.oas.models.security.SecurityScheme()
-                                    .name(AUTHORIZATION)
-                                    .type(io.swagger.v3.oas.models.security.SecurityScheme.Type.HTTP)
-                                    .scheme("bearer")
-                                    .bearerFormat("JWT")
-                                    .description("Valid IDAM user token, (Bearer keyword is "
-                                                     + "added automatically)")
-                            )
-                            .addSecuritySchemes(SERVICE_AUTHORIZATION2,
-                                                new io.swagger.v3.oas.models.security.SecurityScheme()
-                                                    .in(io.swagger.v3.oas.models.security.SecurityScheme.In.HEADER)
-                                                    .name(SERVICE_AUTHORIZATION2)
-                                                    .type(SecurityScheme.Type.APIKEY)
-                                                    .scheme("bearer")
-                                                    .bearerFormat("JWT")
-                                                    .description("Valid Service-to-Service JWT token for a "
-                                                                     + "whitelisted micro-service")
-                            )
-            )
-            .info(new Info().title("AM Role Assignment Service")
-                      .description(DESCRIPTION))
-            .externalDocs(new ExternalDocumentation()
-                              .description("README")
-                              .url("https://github.com/hmcts/am-role-assignment-service#readme"))
-            .addSecurityItem(new SecurityRequirement().addList(AUTHORIZATION))
-            .addSecurityItem(new SecurityRequirement().addList(SERVICE_AUTHORIZATION2));
     }
 
     @Bean
