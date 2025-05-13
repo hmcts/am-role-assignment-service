@@ -22,7 +22,7 @@
       "roleRequest": {
         "assignerId": "3168da13-00b3-41e3-81fa-cbc71ac28a0f",
         "process" : "challenged-access",
-        "reference": "1734449318185840/challenged-access-judicial/787f8cea-955e-4458-b8ac-e8680827b32b",
+        "reference": "OVERRIDE_CASE_ID/challenged-access-judicial/OVERRIDE_USER_ID",
         "replaceExisting": true
       }
     }
