@@ -16,7 +16,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1730976007388529/gatekeeping-judge"
+        "reference": "1747210406471376/gatekeeping-judge"
       },
       "requestedRoles": [
         {
@@ -28,7 +28,7 @@
           "grantType": "SPECIFIC",
           "attributes":
           {
-            "caseId" : "1730976007388529",
+            "caseId" : "1747210406471376",
             "jurisdiction": "PRIVATELAW",
             "caseType": "PRLAPPS"
           }

@@ -16,7 +16,7 @@
       "roleRequest": {
         "assignerId": "3168da13-00b3-41e3-81fa-cbc71ac28a0f",
         "process": "professional-organisational-role-mapping",
-        "reference": "bc630c2c-79b1-494a-b91e-74cde4fbd2ef",
+        "reference": "OVERRIDE_ME",
         "replaceExisting": false
       }
     }

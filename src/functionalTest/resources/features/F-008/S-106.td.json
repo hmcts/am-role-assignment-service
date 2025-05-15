@@ -17,7 +17,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1714647999147997/tribunal-caseworker",
+        "reference": "1747132978960059/tribunal-caseworker",
         "replaceExisting": false
       },
       "requestedRoles": [
@@ -30,7 +30,7 @@
           "grantType": "SPECIFIC",
           "attributes":
           {
-            "caseId" : "1714647999147997"
+            "caseId" : "1747132978960059"
           }
         },
         {
@@ -42,7 +42,7 @@
           "grantType": "SPECIFIC",
           "attributes":
           {
-            "caseId" : "1714647999147997"
+            "caseId" : "1747132978960059"
           }
         }
       ]
@@ -58,7 +58,7 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "reference": "1714647999147997/tribunal-caseworker",
+          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
           "replaceExisting": false
         },
         "requestedRoles": [
@@ -71,7 +71,7 @@
             "grantType": "SPECIFIC",
             "attributes":
             {
-              "caseId" : "1714647999147997",
+              "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
               "jurisdiction" : "IA",
               "caseType" : "Asylum",
               "substantive": "N"
