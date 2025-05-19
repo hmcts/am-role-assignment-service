@@ -14,7 +14,7 @@ buildscript {
 plugins {
   id 'eclipse'
   id 'application'
-  id 'uk.gov.hmcts.java' version '0.12.65'
+  id 'uk.gov.hmcts.java' version '0.12.66'
   id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.1.7'
@@ -384,6 +384,9 @@ dependencyUpdates.resolutionStrategy = {
 repositories {
   mavenLocal()
   mavenCentral()
+  maven {
+        url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
+  }
   maven {
     url 'https://jitpack.io'
   }
