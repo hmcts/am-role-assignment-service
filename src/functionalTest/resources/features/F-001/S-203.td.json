@@ -18,7 +18,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1714647999147997/hearing-judge"
+        "reference": "1747132978960059/hearing-judge"
       },
       "requestedRoles": [
         {
@@ -30,7 +30,7 @@
           "grantType": "SPECIFIC",
           "attributes":
           {
-            "caseId" : "1714647999147997",
+            "caseId" : "1747132978960059",
             "jurisdiction": "IA",
             "caseType": "Asylum"
           }

@@ -24,7 +24,7 @@
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
         "process": "businessProcess1",
-        "reference": "abc-3434242",
+        "reference": "OVERRIDE_ME",
         "replaceExisting": true
       }
     }
