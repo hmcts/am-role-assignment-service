@@ -1,6 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,11 +49,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;

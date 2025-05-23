@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.controller.advice;
 
 import feign.FeignException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,14 +18,13 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNo
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnauthorizedException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.ACTORIDTYPE;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.BAD_REQUEST;
@@ -49,7 +49,7 @@ class RoleAssignmentControllerAdviceTest {
         InvalidRequest invalidRequestException = mock(InvalidRequest.class);
         ResponseEntity<Object> responseEntity = csda.customValidationError(invalidRequestException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
     }
 
     @Test
@@ -57,7 +57,7 @@ class RoleAssignmentControllerAdviceTest {
         BadRequestException badRequestException = mock(BadRequestException.class);
         ResponseEntity<Object> responseEntity = csda.customValidationBadRequestError(badRequestException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
     }
 
     @Test
@@ -65,7 +65,7 @@ class RoleAssignmentControllerAdviceTest {
         FeignException.Unauthorized unauthorizedException = mock(FeignException.Unauthorized.class);
         ResponseEntity<Object> responseEntity = csda.customValidationFeignUnauthorizedError(unauthorizedException);
         assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.UNAUTHORIZED.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), responseEntity.getStatusCode().value());
     }
 
     @Test
@@ -73,7 +73,7 @@ class RoleAssignmentControllerAdviceTest {
         UnauthorizedException unauthorizedException = mock(UnauthorizedException.class);
         ResponseEntity<Object> responseEntity = csda.customValidationUnauthorizedError(unauthorizedException);
         assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.FORBIDDEN.value(), responseEntity.getStatusCode().value());
     }
 
     @Test
@@ -81,7 +81,7 @@ class RoleAssignmentControllerAdviceTest {
         ForbiddenException forbiddenException = mock(ForbiddenException.class);
         ResponseEntity<Object> responseEntity = csda.customForbiddenException(forbiddenException);
         assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.FORBIDDEN.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.FORBIDDEN.value(), responseEntity.getStatusCode().value());
     }
 
     @Test
@@ -90,7 +90,7 @@ class RoleAssignmentControllerAdviceTest {
             HttpMediaTypeNotAcceptableException.class);
         ResponseEntity<Object> responseEntity = csda.customRequestHeaderError(customContentTypeException);
         assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), responseEntity.getStatusCode().value());
     }
 
     @Test
@@ -102,7 +102,7 @@ class RoleAssignmentControllerAdviceTest {
         ResponseEntity<Object> responseEntity = csda.customRequestHeaderError(customContentException);
         assertEquals(wrappedMessage, ((ErrorResponse)responseEntity.getBody()).getErrorDescription());
         assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), responseEntity.getStatusCode().value());
     }
 
     @Test
@@ -112,7 +112,7 @@ class RoleAssignmentControllerAdviceTest {
         ResponseEntity<Object> responseEntity =
             csda.customConsequenceBadRequestError(new BadRequestException(BAD_REQUEST));
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
     }
 
     @Test
@@ -121,7 +121,7 @@ class RoleAssignmentControllerAdviceTest {
         ResponseEntity<Object> responseEntity =
             csda.handleMethodArgumentNotValidException(servletRequestMock, methodArgumentNotValidException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
     }
 
     @Test
@@ -131,7 +131,7 @@ class RoleAssignmentControllerAdviceTest {
         ResponseEntity<Object> responseEntity =
             csda.handleResourceNotFoundException(servletRequestMock,resourceNotFoundException);
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.NOT_FOUND.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.NOT_FOUND.value(), responseEntity.getStatusCode().value());
     }
 
     @Test
@@ -141,7 +141,7 @@ class RoleAssignmentControllerAdviceTest {
         ResponseEntity<Object> responseEntity =
             csda.handleUnProcessableEntityExcepton(servletRequestMock,unprocessableEntityException);
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY.value(), responseEntity.getStatusCode().value());
     }
 
 
@@ -152,7 +152,7 @@ class RoleAssignmentControllerAdviceTest {
         ResponseEntity<Object> responseEntity =
             csda.handleHttpMessageConversionException(servletRequestMock, httpMessageConversionException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
     }
 
     @Test
@@ -160,7 +160,7 @@ class RoleAssignmentControllerAdviceTest {
         Exception exception = mock(Exception.class);
         ResponseEntity<Object> responseEntity = csda.handleUnknownException(servletRequestMock, exception);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), responseEntity.getStatusCode().value());
 
     }
 
@@ -177,7 +177,7 @@ class RoleAssignmentControllerAdviceTest {
             new HttpMessageNotReadableException(ROLETYPE);
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(ROLETYPE));
     }
 
@@ -187,7 +187,7 @@ class RoleAssignmentControllerAdviceTest {
             new HttpMessageNotReadableException("");
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
         assertTrue(responseEntity.getBody().getErrorDescription().isEmpty());
     }
 
@@ -196,7 +196,7 @@ class RoleAssignmentControllerAdviceTest {
         HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException(UUID);
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(UUID));
     }
 
@@ -206,7 +206,7 @@ class RoleAssignmentControllerAdviceTest {
             new HttpMessageNotReadableException("I AM NOT DESERIALIZED");
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
         assertEquals("I AM NOT DESERIALIZED",
                      Objects.requireNonNull(responseEntity.getBody()).getErrorDescription());
     }
@@ -217,7 +217,7 @@ class RoleAssignmentControllerAdviceTest {
             new HttpMessageNotReadableException(CLASSIFICATION);
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(CLASSIFICATION));
     }
 
@@ -228,7 +228,7 @@ class RoleAssignmentControllerAdviceTest {
             new HttpMessageNotReadableException(ACTORIDTYPE);
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(ACTORIDTYPE));
     }
 
@@ -238,7 +238,7 @@ class RoleAssignmentControllerAdviceTest {
             new HttpMessageNotReadableException(GRANTTYPE);
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(GRANTTYPE));
     }
 
@@ -248,7 +248,7 @@ class RoleAssignmentControllerAdviceTest {
             new HttpMessageNotReadableException(ROLECATEGORY);
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(ROLECATEGORY));
     }
 
@@ -257,7 +257,7 @@ class RoleAssignmentControllerAdviceTest {
         HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException(BOOLEAN);
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(BOOLEAN));
     }
 
@@ -267,7 +267,7 @@ class RoleAssignmentControllerAdviceTest {
             new HttpMessageNotReadableException(LOCALDATETIME);
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(LOCALDATETIME));
     }
 
@@ -277,7 +277,7 @@ class RoleAssignmentControllerAdviceTest {
             new HttpMessageNotReadableException(INTEGER);
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(INTEGER));
     }
 
@@ -287,7 +287,7 @@ class RoleAssignmentControllerAdviceTest {
             new HttpMessageNotReadableException(STATUS);
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(STATUS));
     }
 
@@ -296,7 +296,7 @@ class RoleAssignmentControllerAdviceTest {
         HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException("");
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(""));
     }
 
@@ -312,6 +312,6 @@ class RoleAssignmentControllerAdviceTest {
         NullPointerException nullPointerException = mock(NullPointerException.class);
         ResponseEntity<ErrorResponse> responseEntity = csda.nullException(nullPointerException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
     }
 }
