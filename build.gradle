@@ -181,6 +181,8 @@ task functional(type: JavaExec) {
 }
 
 task integration(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
+  description = 'Runs Integration Tests'
+  useJUnitPlatform()
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
   mustRunAfter test
