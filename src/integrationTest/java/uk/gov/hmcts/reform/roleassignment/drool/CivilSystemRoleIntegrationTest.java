@@ -254,14 +254,11 @@ public class CivilSystemRoleIntegrationTest extends BaseDroolIntegrationTest {
     public void shouldApproveCaseAllocationForCivilSystemUserRole() throws Exception {
 
         // GIVEN
-        var uidSystemUser = UUID.randomUUID().toString();
+        var uidSystemUser = TEST_AUTH_USER_ID; // NB: authenticated user must be the system user
         registerAndVerifyCaseAllocatorSystemUserRoleAssignment(uidSystemUser);
 
         // NB: stub data in DataStore
         mockRetrieveDataServiceGetCaseById(CASE_ID, "CIVIL", "CIVIL");
-
-        // NB: OVERRIDE UserInfo for case role assignment request as it must come from System User
-        setUpUserInfo(uidSystemUser);
 
         // create case role assignment request
         AssignmentRequest assignmentRequestCaseRole = createCaseRoleAssignmentRequest(uidSystemUser,

@@ -75,6 +75,8 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
     public static final String URL_CREATE_ROLES = "/am/role-assignments";
     public static final String URL_DELETE_ROLES = "/am/role-assignments";
 
+    public static final String TEST_AUTH_USER_ID = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
+
     protected MockMvc mockMvc;
 
     @Inject
@@ -104,7 +106,7 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
         MockUtils.setSecurityAuthorities(authentication, MockUtils.ROLE_CASEWORKER);
 
         // default UserInfo
-        setUpUserInfo("6b36bfc6-bb21-11ea-b3de-0242ac130006");
+        setUpUserInfo(TEST_AUTH_USER_ID);
     }
 
     public void setUpUserInfo(String uid) {
@@ -113,7 +115,6 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
             .sub("emailId@a.com")
             .build();
 
-        Mockito.reset(idamApi);
         doReturn(userInfo).when(idamApi).retrieveUserInfo(anyString());
     }
 
