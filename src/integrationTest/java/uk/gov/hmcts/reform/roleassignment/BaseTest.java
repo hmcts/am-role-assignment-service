@@ -38,9 +38,11 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.DATE_PATTERN;
 
 
 @ExtendWith(SpringExtension.class)
@@ -71,6 +73,7 @@ public abstract class BaseTest {
         }
 
         mapper.registerModule(new JavaTimeModule());
+        mapper.setDateFormat(new SimpleDateFormat(DATE_PATTERN));
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         // Force re-initialisation of base types for each test suite
@@ -79,6 +82,7 @@ public abstract class BaseTest {
     @BeforeAll
     public static void init() {
         mapper.registerModule(new JavaTimeModule());
+        mapper.setDateFormat(new SimpleDateFormat(DATE_PATTERN));
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
