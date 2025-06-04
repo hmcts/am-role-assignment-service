@@ -39,7 +39,9 @@ def versions = [
 ]
 
 application {
-  mainClass = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'}
+  mainClass = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
+}
+
 def jarName = 'am-role-assignment-service.jar'
 
 pmd {
