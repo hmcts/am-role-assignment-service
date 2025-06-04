@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
@@ -12,8 +14,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.versions.V1;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

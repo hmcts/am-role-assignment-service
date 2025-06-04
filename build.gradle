@@ -12,7 +12,7 @@ plugins {
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.25'
   id 'au.com.dius.pact' version '4.6.16' //do not change this version or serenity reports will fail to generate
   id 'org.flywaydb.flyway' version '9.22.3'
-  id 'org.owasp.dependencycheck' version '12.0.0'
+  id 'org.owasp.dependencycheck' version '12.1.1'
   id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.16'
 }
 
@@ -38,7 +38,8 @@ def versions = [
   poi             : '5.4.0'
 ]
 
-mainClassName = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'
+application {
+  mainClass = 'uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication'}
 def jarName = 'am-role-assignment-service.jar'
 
 pmd {
@@ -151,7 +152,7 @@ task functional(type: JavaExec) {
   description = "Runs the functional tests"
   group = "Verification"
   generateCucumberReports.enabled = false
-  main("uk.gov.hmcts.reform.roleassignment.befta.RoleAssignmentBeftaMain")
+  mainClass = "uk.gov.hmcts.reform.roleassignment.befta.RoleAssignmentBeftaMain"
   classpath += configurations.cucumberRuntime + sourceSets.functionalTest.runtimeClasspath + sourceSets.main.output + sourceSets.test.output
   args = [
     '--threads', '1',
@@ -232,7 +233,7 @@ task runProviderPactVerification(type: Test) {
 }
 
 task fortifyScan(type: JavaExec)  {
-  main("uk.gov.hmcts.fortifyclient.FortifyClientMainApp")
+  mainClass = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
   classpath += sourceSets.test.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
   // The line below prevents the build from failing if the Fortify scan detects issues
@@ -350,7 +351,7 @@ dependencyCheck {
   suppressionFile = 'config/owasp/suppressions.xml'
 }
 
-dependencyUpdates.resolutionStrategy = {
+dependencyUpdates.resolutionStrategy {
   componentSelection { rules ->
     rules.all { ComponentSelection selection ->
       boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
@@ -386,14 +387,6 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-resource-server'
 
-  implementation group: 'org.springframework.security', name: 'spring-security-core'
-  implementation group: 'org.springframework.security', name:'spring-security-web'
-  implementation group: 'org.springframework.security', name:'spring-security-config'
-  implementation group: 'org.springframework.security', name:'spring-security-crypto'
-  implementation group: 'org.springframework.security', name:'spring-security-oauth2-client'
-  implementation group: 'org.springframework.security', name:'spring-security-oauth2-core'
-  implementation group: 'org.springframework.security', name:'spring-security-oauth2-jose'
-  implementation group: 'org.springframework.security', name:'spring-security-oauth2-resource-server'
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.11'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap'
@@ -420,11 +413,10 @@ dependencies {
   //Dependent on drools Jar. Can be removed CVE-2021-26291
   implementation group: 'org.apache.maven', name: 'maven-core', version: '3.8.7'
   implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.5.13'
-  implementation group: 'com.google.guava', name: 'guava', version: '33.4.0-jre'
+  implementation group: 'com.google.guava', name: 'guava', version: '33.4.8-jre'
   implementation group: 'jakarta.inject', name: 'jakarta.inject-api', version: '2.0.1'
   implementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
   implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.12.0'
-  implementation group: 'org.hibernate.orm', name: 'hibernate-core', version: '6.6.5.Final'
   implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.0'
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.5'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
@@ -474,7 +466,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:befta-fw:9.0.2'
-  testImplementation 'com.github.hmcts:fortify-client:1.4.8:all'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
   testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.4'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity

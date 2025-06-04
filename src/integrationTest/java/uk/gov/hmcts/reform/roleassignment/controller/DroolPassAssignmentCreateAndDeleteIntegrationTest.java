@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
+import jakarta.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,9 +34,8 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
-import javax.inject.Inject;
-import javax.sql.DataSource;
 import java.util.List;
+import javax.sql.DataSource;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
