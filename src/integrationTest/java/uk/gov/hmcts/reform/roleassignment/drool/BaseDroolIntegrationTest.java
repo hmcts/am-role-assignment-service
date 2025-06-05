@@ -2,10 +2,10 @@ package uk.gov.hmcts.reform.roleassignment.drool;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
@@ -37,7 +37,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataServ
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +74,8 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
     public static final String URL_CREATE_ROLES = "/am/role-assignments";
     public static final String URL_DELETE_ROLES = "/am/role-assignments";
 
+    public static final String TEST_AUTH_USER_ID = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
+
     protected MockMvc mockMvc;
 
     @Inject
@@ -104,7 +105,7 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
         MockUtils.setSecurityAuthorities(authentication, MockUtils.ROLE_CASEWORKER);
 
         // default UserInfo
-        setUpUserInfo("6b36bfc6-bb21-11ea-b3de-0242ac130006");
+        setUpUserInfo(TEST_AUTH_USER_ID);
     }
 
     public void setUpUserInfo(String uid) {
@@ -113,7 +114,6 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
             .sub("emailId@a.com")
             .build();
 
-        Mockito.reset(idamApi);
         doReturn(userInfo).when(idamApi).retrieveUserInfo(anyString());
     }
 

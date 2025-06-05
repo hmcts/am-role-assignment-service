@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.config;
 
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -9,7 +10,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 
-import javax.inject.Inject;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
