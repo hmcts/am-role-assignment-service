@@ -295,19 +295,38 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void shouldGetEmptyRoleAssignmentsRecordsBasedOnDynamicQuery() throws Exception {
+        QueryRequest queryRequest = createQueryRequest(List.of("123e4567-e89b-42d3-a456-556642445612"));
 
         final MvcResult result = mockMvc.perform(post(URL_QUERY_ROLE_ASSIGNMENTS)
                                                      .contentType(JSON_CONTENT_TYPE)
                                                      .headers(getHttpHeaders())
-                                                     .content(mapper.writeValueAsBytes(createQueryRequest()))
+                                                     .content(mapper.writeValueAsBytes(queryRequest))
         ).andExpect(status().is(200)).andReturn();
 
         List<ExistingRoleAssignment> existingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
 
         assertNotNull(existingRoleAssignments);
         assertEquals(0, existingRoleAssignments.size());
-
     }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void shouldGetRoleAssignmentsFilteredOnAuthorisations() throws Exception {
+        QueryRequest queryRequest = createQueryRequest(List.of("f7ec3783-5d5b-4797-bdcd-74908ef1e553"));
+
+        final MvcResult result = mockMvc.perform(post(URL_QUERY_ROLE_ASSIGNMENTS)
+                                                     .contentType(JSON_CONTENT_TYPE)
+                                                     .headers(getHttpHeaders())
+                                                     .content(mapper.writeValueAsBytes(queryRequest))
+        ).andExpect(status().is(200)).andReturn();
+
+        List<ExistingRoleAssignment> existingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
+
+        assertNotNull(existingRoleAssignments);
+        assertEquals(1, existingRoleAssignments.size());
+        assertEquals(List.of("dev", "auth2"), existingRoleAssignments.getFirst().getAuthorisations());
+    }
+
 
     private void assertRoleAssignmentRecordSize() {
         final Object[] assignmentId = new Object[]{
