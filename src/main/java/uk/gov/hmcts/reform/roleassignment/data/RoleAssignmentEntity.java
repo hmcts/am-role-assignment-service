@@ -2,23 +2,20 @@
 package uk.gov.hmcts.reform.roleassignment.data;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
 import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
-
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -28,7 +25,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "role_assignment")
-
 public class RoleAssignmentEntity implements Persistable<UUID> {
 
     @Id
@@ -72,8 +68,8 @@ public class RoleAssignmentEntity implements Persistable<UUID> {
     @Convert(converter = JsonBConverter.class)
     private JsonNode attributes;
 
-    @Column(name = "authorisations")
-    @Type(type = "uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType")
+    @SuppressWarnings("JpaAttributeTypeInspection")
+    @Column(name = "authorisations", columnDefinition = "text[]")
     private String[] authorisations;
 
     @Builder.Default

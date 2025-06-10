@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
-import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;

@@ -8,19 +8,17 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.SerializationUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentSubset;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -45,8 +43,6 @@ import java.util.UUID;
 @Named
 @Singleton
 public class JacksonUtils {
-
-    private static final Logger LOG = LoggerFactory.getLogger(JacksonUtils.class);
 
     private JacksonUtils() {
     }
@@ -134,7 +130,7 @@ public class JacksonUtils {
         try {
             URI uri = Objects.requireNonNull(JacksonUtils.class.getClassLoader().getResource(Constants.ROLES_DIR))
                 .toURI();
-            LOG.debug("Roles absolute dir is {}", uri);
+            log.debug("Roles absolute dir is {}", uri);
 
             final String[] array = uri.toString().split("!");
             if (array.length > 1) {
@@ -146,10 +142,10 @@ public class JacksonUtils {
                 allRoles = readFiles(Paths.get(uri));
             }
         } catch (IOException | URISyntaxException e) {
-            LOG.error(e.getMessage());
+            log.error(e.getMessage());
         }
 
-        LOG.info("Loaded {} roles from drool", Objects.requireNonNull(allRoles).size());
+        log.info("Loaded {} roles from drool", Objects.requireNonNull(allRoles).size());
         return allRoles;
     }
 
@@ -157,10 +153,10 @@ public class JacksonUtils {
         List<RoleConfigRole> allRoles = new ArrayList<>();
         Files.walk(dirPath).filter(Files::isRegularFile).sorted(Comparator.comparing(Path::toString)).forEach(f -> {
             try {
-                LOG.debug("Reading role {}", f);
+                log.debug("Reading role {}", f);
                 allRoles.addAll(MAPPER.readValue(Files.newInputStream(f), listType));
             } catch (IOException e) {
-                LOG.error(e.getMessage());
+                log.error(e.getMessage());
             }
         });
         return allRoles;
