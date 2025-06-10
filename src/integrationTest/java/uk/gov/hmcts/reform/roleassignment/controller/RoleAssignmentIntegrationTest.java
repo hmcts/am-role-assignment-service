@@ -370,8 +370,7 @@ class RoleAssignmentIntegrationTest extends BaseTest {
         };
         var actorId = template.queryForObject(GET_ASSIGNMENT_STATUS_QUERY, assignmentId, String.class);
         logger.info(" Role assignment actor id is...{}", actorId);
-        assertEquals(
-            "Role assignment actor Id", ACTOR_ID, actorId);
+        assertEquals(ACTOR_ID, actorId, "Role assignment actor Id");
     }
 
     private List<ExistingRoleAssignment> getExistingRoleAssignmentFromMvcResult(MvcResult result)
