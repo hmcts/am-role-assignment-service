@@ -190,7 +190,7 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
         List<ExistingRoleAssignment> sortedRoleAssignments = sortByRoleNameThenId(existingRoleAssignments);
 
         assertEquals(existingRoleAssignments, sortedRoleAssignments);
-        assertEquals(8, existingRoleAssignments.size());
+        assertEquals(10, existingRoleAssignments.size());
     }
 
     @Test
@@ -481,7 +481,7 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
         List<ExistingRoleAssignment> sortedRoleAssignments = sortByRoleNameThenId(existingRoleAssignments);
 
         assertEquals(existingRoleAssignments, sortedRoleAssignments);
-        assertEquals(8, existingRoleAssignments.size());
+        assertEquals(10, existingRoleAssignments.size());
     }
 
     public static QueryRequest createQueryRequest() {

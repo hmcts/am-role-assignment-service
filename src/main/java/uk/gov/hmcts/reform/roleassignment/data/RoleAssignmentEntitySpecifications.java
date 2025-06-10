@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.data;
 
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
 import org.apache.commons.collections.CollectionUtils;
 import org.json.JSONObject;
@@ -138,17 +139,20 @@ public final class RoleAssignmentEntitySpecifications {
 
         }
 
-        return (root, query, builder) ->
-            builder.or(authorisations.stream()
-                           .map(element ->
-                                builder.isNotNull(
-                                   builder.function("array_position", Integer.class,
-                                                    root.get("authorisations"),builder.literal(element))
-
-                               )
-
-                           ).toArray(Predicate[]::new));
-
+        return (root, query, builder) -> {
+            Predicate[] predicates = authorisations.stream()
+                .map(element -> {
+                    Expression<Integer> arrayPos = builder.function(
+                        "array_position",
+                        Integer.class,
+                        root.get("authorisations"),
+                        builder.literal(element)
+                    );
+                    return builder.greaterThan(arrayPos, builder.literal(0));
+                })
+                .toArray(Predicate[]::new);
+            return builder.or(predicates);
+        };
     }
 
     public static Specification<RoleAssignmentEntity> searchByHasAttributes(List<String> hasAttributes) {
