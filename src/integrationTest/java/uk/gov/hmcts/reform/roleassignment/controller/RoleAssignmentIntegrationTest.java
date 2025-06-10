@@ -24,6 +24,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
@@ -41,10 +43,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -292,6 +296,32 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         ));
     }
 
+    //TODO create parameterised test by creating new SQL script for insert
+
+    @ParameterizedTest
+    @CsvSource({"",""
+    //    "'{\"actorId\":[\"123e4567-e89b-42d3-a456-556642445613\"]}', '638e8e7a-7d7c-4027-9d53-ea4b1095eab1'"
+    })
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment_servicetest.sql"})
+    public void sampleTest(String queryJson, String expectedRoleAssignments) throws Exception {
+
+
+        List<String> expectedRoleIds = Arrays.asList(expectedRoleAssignments.split(","));
+
+        final MvcResult result = mockMvc.perform(post(URL_QUERY_ROLE_ASSIGNMENTS)
+                                                     .contentType(JSON_CONTENT_TYPE)
+                                                     .headers(getHttpHeaders())
+                                                     .content(mapper.writeValueAsBytes(queryJson))
+        ).andExpect(status().is(200)).andReturn();
+
+        List<ExistingRoleAssignment> existingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
+
+        assertNotNull(existingRoleAssignments);
+        assertEquals(expectedRoleIds.size() , existingRoleAssignments.size());
+        existingRoleAssignments.forEach(element -> assertTrue(expectedRoleIds.contains(element.getId().toString())
+        ));
+
+    }
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void shouldGetEmptyRoleAssignmentsRecordsBasedOnDynamicQuery() throws Exception {
