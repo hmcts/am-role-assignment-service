@@ -299,10 +299,12 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
     //TODO create parameterised test by creating new SQL script for insert
 
     @ParameterizedTest
-    @CsvSource({"",""
-    //    "'{\"actorId\":[\"123e4567-e89b-42d3-a456-556642445613\"]}', '638e8e7a-7d7c-4027-9d53-ea4b1095eab1'"
+    @CsvSource({
+        //    "",""
+        "'{\"actorId\":[\"123e4567-e89b-42d3-a456-556642445613\"]}', '638e8e7a-7d7c-4027-9d53-ea4b1095eab1'"
     })
-    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment_servicetest.sql"})
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+        scripts = {"classpath:sql/insert_role_assignment_servicetest.sql"})
     public void sampleTest(String queryJson, String expectedRoleAssignments) throws Exception {
 
 
@@ -317,11 +319,11 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         List<ExistingRoleAssignment> existingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
 
         assertNotNull(existingRoleAssignments);
-        assertEquals(expectedRoleIds.size() , existingRoleAssignments.size());
+        assertEquals(expectedRoleIds.size(), existingRoleAssignments.size());
         existingRoleAssignments.forEach(element -> assertTrue(expectedRoleIds.contains(element.getId().toString())
         ));
-
     }
+
     @Test
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
     public void shouldGetEmptyRoleAssignmentsRecordsBasedOnDynamicQuery() throws Exception {
