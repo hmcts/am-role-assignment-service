@@ -300,7 +300,6 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
 
     @ParameterizedTest
     @CsvSource({
-        //    "",""
         "'{\"actorId\":[\"123e4567-e89b-42d3-a456-556642445613\"]}', '638e8e7a-7d7c-4027-9d53-ea4b1095eab1'"
     })
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
