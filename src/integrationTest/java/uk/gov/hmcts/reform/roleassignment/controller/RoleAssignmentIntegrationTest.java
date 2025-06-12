@@ -296,7 +296,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         ));
     }
 
-    //TODO create parameterised test by creating new SQL script for insert
+    //TODO create parameterised test by creating new SQL script for insert role assignment
 
     @ParameterizedTest
     @CsvSource({
