@@ -15,7 +15,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1733844424998253/allocated-magistrate"
+        "reference": "1747124747757460/allocated-magistrate"
       },
       "requestedRoles": [
         {
@@ -27,7 +27,7 @@
           "grantType": "SPECIFIC",
           "attributes":
           {
-            "caseId" : "1733844424998253",
+            "caseId" : "1747124747757460",
             "jurisdiction": "PUBLICLAW"
           }
         }
