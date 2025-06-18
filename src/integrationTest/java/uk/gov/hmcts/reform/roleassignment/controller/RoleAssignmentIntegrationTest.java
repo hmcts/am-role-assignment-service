@@ -347,7 +347,16 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
             "638e8e7a-7d7c-4027-9d53-100000000002,638e8e7a-7d7c-4027-9d53-100000000003'",
         "'single roleType', '{\"actorId\":[\"2001\"],\"roleType\":[\"ORGANISATION\"]}', '638e8e7a-7d7c-4027-9d53-200000000001'" ,
         "'multiple roleType', '{\"actorId\":[\"2001\"],\"roleType\":[\"ORGANISATION\",\"CASE\"]}', '638e8e7a-7d7c-4027-9d53-200000000001," +
-            "638e8e7a-7d7c-4027-9d53-200000000002,638e8e7a-7d7c-4027-9d53-200000000003'"
+            "638e8e7a-7d7c-4027-9d53-200000000002,638e8e7a-7d7c-4027-9d53-200000000003'",
+        "'single roleName', '{\"actorId\":[\"3001\"],\"roleName\":[\"judge\"]}', '638e8e7a-7d7c-4027-9d53-300000000001'" ,
+        "'multiple roleName', '{\"actorId\":[\"3001\"],\"roleName\":[\"judge\",\"case-allocator\"]}', '638e8e7a-7d7c-4027-9d53-300000000001," +
+            "638e8e7a-7d7c-4027-9d53-300000000002,638e8e7a-7d7c-4027-9d53-300000000003'",
+        "'single classification', '{\"actorId\":[\"4001\"],\"classification\":[\"PUBLIC\"]}', '638e8e7a-7d7c-4027-9d53-400000000001'" ,
+        "'multiple classification', '{\"actorId\":[\"4001\"],\"classification\":[\"PUBLIC\",\"PRIVATE\"]}', '638e8e7a-7d7c-4027-9d53-400000000001," +
+            "638e8e7a-7d7c-4027-9d53-400000000002,638e8e7a-7d7c-4027-9d53-400000000003'",
+        "'single grantType', '{\"actorId\":[\"5001\"],\"grantType\":[\"STANDARD\"]}', '638e8e7a-7d7c-4027-9d53-500000000001'" ,
+        "'multiple grantType', '{\"actorId\":[\"5001\"],\"grantType\":[\"STANDARD\",\"SPECIFIC\"]}', '638e8e7a-7d7c-4027-9d53-500000000001," +
+            "638e8e7a-7d7c-4027-9d53-500000000002,638e8e7a-7d7c-4027-9d53-500000000003'"
 
 
     })
