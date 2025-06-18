@@ -7,6 +7,8 @@ import jakarta.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
@@ -35,16 +37,14 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.sql.DataSource;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -336,6 +336,40 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         headers.add("ServiceAuthorization", "Bearer " + "1234");
         headers.add("Authorization", "Bearer " + "2345");
         return headers;
+    }
+
+    //TODO create parameterised test by creating new SQL script for insert role assignment
+
+    @ParameterizedTest(name = "QueryRequest Test - #{index} - {0}")
+    @CsvSource({
+        "'single actorId', '{\"actorId\":[\"1001\"]}', '638e8e7a-7d7c-4027-9d53-100000000001'",
+        "'multiple actorId', '{\"actorId\":[\"1001\",\"1002\"]}', '638e8e7a-7d7c-4027-9d53-100000000001," +
+            "638e8e7a-7d7c-4027-9d53-100000000002,638e8e7a-7d7c-4027-9d53-100000000003'",
+        "'single roleType', '{\"actorId\":[\"2001\"],\"roleType\":[\"ORGANISATION\"]}', '638e8e7a-7d7c-4027-9d53-200000000001'" ,
+        "'multiple roleType', '{\"actorId\":[\"2001\"],\"roleType\":[\"ORGANISATION\",\"CASE\"]}', '638e8e7a-7d7c-4027-9d53-200000000001," +
+            "638e8e7a-7d7c-4027-9d53-200000000002,638e8e7a-7d7c-4027-9d53-200000000003'"
+
+
+    })
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+        scripts = {"classpath:sql/insert_role_assignment_servicetest.sql"})
+    void sampleTest(String testName, String queryJson, String expectedRoleAssignments) throws Exception {
+
+
+        List<String> expectedRoleIds = Arrays.asList(expectedRoleAssignments.split(","));
+
+        final MvcResult result = mockMvc.perform(post(URL_QUERY_ROLE_ASSIGNMENTS)
+                                                     .contentType(JSON_CONTENT_TYPE)
+                                                     .headers(getHttpHeaders())
+                                                     .content(queryJson.getBytes())
+        ).andExpect(status().is(200)).andReturn();
+
+        List<ExistingRoleAssignment> existingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
+
+        assertNotNull(existingRoleAssignments);
+        assertEquals(expectedRoleIds.size(), existingRoleAssignments.size());
+        existingRoleAssignments.forEach(element -> assertTrue(expectedRoleIds.contains(element.getId().toString())
+        ));
     }
 
 
