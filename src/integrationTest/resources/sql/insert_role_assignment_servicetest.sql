@@ -24,11 +24,11 @@ VALUES('638e8e7a-7d7c-4027-9d53-200000000001', 'IDAM', '2001', 'ORGANISATION', '
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-VALUES('638e8e7a-7d7c-4027-9d53-200000000002', 'IDAM', '2001', 'CASE', 'judge', 'PUBLIC', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
+VALUES('638e8e7a-7d7c-4027-9d53-200000000002', 'IDAM', '2002', 'CASE', 'judge', 'PUBLIC', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-VALUES('638e8e7a-7d7c-4027-9d53-200000000003', 'IDAM', '2001', 'CASE', 'judge', 'PUBLIC', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
+VALUES('638e8e7a-7d7c-4027-9d53-200000000003', 'IDAM', '2002', 'CASE', 'judge', 'PUBLIC', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
 
 --RoleName Tests judge , case-allocator,hearing-manager,hearing-viewer
 INSERT INTO public.role_assignment
@@ -37,11 +37,11 @@ VALUES('638e8e7a-7d7c-4027-9d53-300000000001', 'IDAM', '3001', 'ORGANISATION', '
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-VALUES('638e8e7a-7d7c-4027-9d53-300000000002', 'IDAM', '3001', 'CASE', 'case-allocator', 'PUBLIC', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
+VALUES('638e8e7a-7d7c-4027-9d53-300000000002', 'IDAM', '3002', 'CASE', 'case-allocator', 'PUBLIC', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-VALUES('638e8e7a-7d7c-4027-9d53-300000000003', 'IDAM', '3001', 'CASE', 'case-allocator', 'PUBLIC', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
+VALUES('638e8e7a-7d7c-4027-9d53-300000000003', 'IDAM', '3002', 'CASE', 'case-allocator', 'PUBLIC', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
 
 --Classification Test PUBLIC, PRIVATE, RESTRICTED
 INSERT INTO public.role_assignment
@@ -50,11 +50,11 @@ VALUES('638e8e7a-7d7c-4027-9d53-400000000001', 'IDAM', '4001', 'ORGANISATION', '
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-VALUES('638e8e7a-7d7c-4027-9d53-400000000002', 'IDAM', '4001', 'CASE', 'case-allocator', 'PRIVATE', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
+VALUES('638e8e7a-7d7c-4027-9d53-400000000002', 'IDAM', '4002', 'CASE', 'case-allocator', 'PRIVATE', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-VALUES('638e8e7a-7d7c-4027-9d53-400000000003', 'IDAM', '4001', 'CASE', 'case-allocator', 'PRIVATE', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
+VALUES('638e8e7a-7d7c-4027-9d53-400000000003', 'IDAM', '4002', 'CASE', 'case-allocator', 'PRIVATE', 'STANDARD', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
 
 --grantType Tests BASIC,SPECIFIC, STANDARD, CHALLENGED, EXCLUDED
 INSERT INTO public.role_assignment
@@ -63,11 +63,11 @@ VALUES('638e8e7a-7d7c-4027-9d53-500000000001', 'IDAM', '5001', 'ORGANISATION', '
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-VALUES('638e8e7a-7d7c-4027-9d53-500000000002', 'IDAM', '5001', 'CASE', 'case-allocator', 'PRIVATE', 'SPECIFIC', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
+VALUES('638e8e7a-7d7c-4027-9d53-500000000002', 'IDAM', '5002', 'CASE', 'case-allocator', 'PRIVATE', 'SPECIFIC', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-VALUES('638e8e7a-7d7c-4027-9d53-500000000003', 'IDAM', '5001', 'CASE', 'case-allocator', 'PRIVATE', 'SPECIFIC', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
+VALUES('638e8e7a-7d7c-4027-9d53-500000000003', 'IDAM', '5002', 'CASE', 'case-allocator', 'PRIVATE', 'SPECIFIC', NULL, false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-24 17:35:08.546');
 
 --RoleCategory Test JUDICIAL, LEGAL_OPERATIONS, ADMINISTRATION
 --ValidAt Tests
