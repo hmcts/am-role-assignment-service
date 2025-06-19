@@ -8,7 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
@@ -39,7 +40,12 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleServic
 
 import javax.sql.DataSource;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -340,31 +346,11 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
 
     //TODO create parameterised test by creating new SQL script for insert role assignment
 
-    @ParameterizedTest(name = "QueryRequest Test - #{index} - {0}")
-    @CsvSource({
-        "'single actorId', '{\"actorId\":[\"1001\"]}', '638e8e7a-7d7c-4027-9d53-100000000001'",
-        "'multiple actorId', '{\"actorId\":[\"1001\",\"1002\"]}', '638e8e7a-7d7c-4027-9d53-100000000001," +
-            "638e8e7a-7d7c-4027-9d53-100000000002,638e8e7a-7d7c-4027-9d53-100000000003'",
-        "'single roleType', '{\"actorId\":[\"2001\"],\"roleType\":[\"ORGANISATION\"]}', '638e8e7a-7d7c-4027-9d53-200000000001'" ,
-        "'multiple roleType', '{\"actorId\":[\"2001\",\"2002\"],\"roleType\":[\"ORGANISATION\",\"CASE\"]}', '638e8e7a-7d7c-4027-9d53-200000000001," +
-            "638e8e7a-7d7c-4027-9d53-200000000002,638e8e7a-7d7c-4027-9d53-200000000003'",
-        "'single roleName', '{\"actorId\":[\"3001\"],\"roleName\":[\"judge\"]}', '638e8e7a-7d7c-4027-9d53-300000000001'" ,
-        "'multiple roleName', '{\"actorId\":[\"3001\",\"3002\"],\"roleName\":[\"judge\",\"case-allocator\"]}', '638e8e7a-7d7c-4027-9d53-300000000001," +
-            "638e8e7a-7d7c-4027-9d53-300000000002,638e8e7a-7d7c-4027-9d53-300000000003'",
-        "'single classification', '{\"actorId\":[\"4001\"],\"classification\":[\"PUBLIC\"]}', '638e8e7a-7d7c-4027-9d53-400000000001'" ,
-        "'multiple classification', '{\"actorId\":[\"4001\",\"4002\"],\"classification\":[\"PUBLIC\",\"PRIVATE\"]}', '638e8e7a-7d7c-4027-9d53-400000000001," +
-            "638e8e7a-7d7c-4027-9d53-400000000002,638e8e7a-7d7c-4027-9d53-400000000003'",
-        "'single grantType', '{\"actorId\":[\"5001\"],\"grantType\":[\"STANDARD\"]}', '638e8e7a-7d7c-4027-9d53-500000000001'" ,
-        "'multiple grantType', '{\"actorId\":[\"5001\",\"5002\"],\"grantType\":[\"STANDARD\",\"SPECIFIC\"]}', '638e8e7a-7d7c-4027-9d53-500000000001," +
-            "638e8e7a-7d7c-4027-9d53-500000000002,638e8e7a-7d7c-4027-9d53-500000000003'"
-
-
-    })
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("queryProvider")
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
         scripts = {"classpath:sql/insert_role_assignment_servicetest.sql"})
     void sampleTest(String testName, String queryJson, String expectedRoleAssignments) throws Exception {
-
-
         List<String> expectedRoleIds = Arrays.asList(expectedRoleAssignments.split(","));
 
         final MvcResult result = mockMvc.perform(post(URL_QUERY_ROLE_ASSIGNMENTS)
@@ -377,8 +363,100 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
 
         assertNotNull(existingRoleAssignments);
         assertEquals(expectedRoleIds.size(), existingRoleAssignments.size());
-        existingRoleAssignments.forEach(element -> assertTrue(expectedRoleIds.contains(element.getId().toString())
-        ));
+        existingRoleAssignments.forEach(element ->
+                                            assertTrue(expectedRoleIds.contains(element.getId().toString()))
+        );
+    }
+    private static Stream<Arguments> queryProvider() {
+        return Stream.of(
+            Arguments.of("single actorId", "{\"actorId\":[\"1001\"]}",
+                         "638e8e7a-7d7c-4027-9d53-100000000001"),
+
+            Arguments.of("multiple actorId", "{\"actorId\":[\"1001\",\"1002\"]}",
+                         "638e8e7a-7d7c-4027-9d53-100000000001,638e8e7a-7d7c-4027-9d53-100000000002," +
+                             "638e8e7a-7d7c-4027-9d53-100000000003"),
+
+            Arguments.of("single roleType", "{\"actorId\":[\"2001\"],\"roleType\":[\"ORGANISATION\"]}",
+                         "638e8e7a-7d7c-4027-9d53-200000000001"),
+
+            Arguments.of("multiple roleType", "{\"actorId\":[\"2001\",\"2002\"]," +
+                             "\"roleType\":[\"ORGANISATION\",\"CASE\"]}",
+                         "638e8e7a-7d7c-4027-9d53-200000000001,638e8e7a-7d7c-4027-9d53-200000000002," +
+                             "638e8e7a-7d7c-4027-9d53-200000000003"),
+
+            Arguments.of("single roleName", "{\"actorId\":[\"3001\"],\"roleName\":[\"judge\"]}",
+                         "638e8e7a-7d7c-4027-9d53-300000000001"),
+
+            Arguments.of("multiple roleName", "{\"actorId\":[\"3001\",\"3002\"],\"roleName\":[\"judge\"," +
+                             "\"case-allocator\"]}",
+                         "638e8e7a-7d7c-4027-9d53-300000000001,638e8e7a-7d7c-4027-9d53-300000000002," +
+                             "638e8e7a-7d7c-4027-9d53-300000000003"),
+
+            Arguments.of("single classification", "{\"actorId\":[\"4001\"],\"classification\":[\"PUBLIC\"]}",
+                         "638e8e7a-7d7c-4027-9d53-400000000001"),
+
+            Arguments.of("multiple classification", "{\"actorId\":[\"4001\",\"4002\"]," +
+                             "\"classification\":[\"PUBLIC\",\"PRIVATE\"]}",
+                         "638e8e7a-7d7c-4027-9d53-400000000001,638e8e7a-7d7c-4027-9d53-400000000002," +
+                             "638e8e7a-7d7c-4027-9d53-400000000003"),
+
+            Arguments.of("single grantType", "{\"actorId\":[\"5001\"],\"grantType\":[\"STANDARD\"]}",
+                         "638e8e7a-7d7c-4027-9d53-500000000001"),
+
+            Arguments.of("multiple grantType", "{\"actorId\":[\"5001\",\"5002\"]," +
+                             "\"grantType\":[\"STANDARD\",\"SPECIFIC\"]}",
+                         "638e8e7a-7d7c-4027-9d53-500000000001,638e8e7a-7d7c-4027-9d53-500000000002," +
+                             "638e8e7a-7d7c-4027-9d53-500000000003"),
+
+            Arguments.of("single roleCategory", "{\"actorId\":[\"6001\"],\"roleCategory\":[\"JUDICIAL\"]}",
+                         "638e8e7a-7d7c-4027-9d53-600000000001"),
+
+            Arguments.of("multiple roleCategory", "{\"actorId\":[\"6001\",\"6002\"]," +
+                             "\"roleCategory\":[\"JUDICIAL\",\"LEGAL_OPERATIONS\"]}",
+                         "638e8e7a-7d7c-4027-9d53-600000000001,638e8e7a-7d7c-4027-9d53-600000000002," +
+                             "638e8e7a-7d7c-4027-9d53-600000000003"),
+
+            Arguments.of("ValidAt before begin date",
+                         json("{\"actorId\":[\"7001\"],\"validAt\":\"<today -20>T00:00\"}"),
+                         "638e8e7a-7d7c-4027-9d53-700000000001,638e8e7a-7d7c-4027-9d53-700000000003"),
+
+            Arguments.of("ValidAt between begin & end dates",
+                         json("{\"actorId\":[\"7001\"],\"validAt\":\"<today +2>T00:00\"}"),
+                         "638e8e7a-7d7c-4027-9d53-700000000001,638e8e7a-7d7c-4027-9d53-700000000002," +
+                             "638e8e7a-7d7c-4027-9d53-700000000003,638e8e7a-7d7c-4027-9d53-700000000004"),
+
+            Arguments.of("ValidAt after end date",
+                         json("{\"actorId\":[\"7001\"],\"validAt\":\"<today +20>T00:00\"}"),
+                         "638e8e7a-7d7c-4027-9d53-700000000001,638e8e7a-7d7c-4027-9d53-700000000002"),
+
+            Arguments.of("single attributes", "{\"actorId\":[\"8001\"]," +
+                             "\"attributes\":[\"{\\\"region\\\": \\\"north-east\\\", " +
+                             "\\\"contractType\\\": \\\"SALARIED\\\", \\\"jurisdiction\\\": \\\"divorce\\\"}\"]}",
+                         "638e8e7a-7d7c-4027-9d53-800000000001"),
+
+            Arguments.of("multiple attributes", "{\"actorId\":[\"8001\",\"8002\"]," +
+                             "\"attributes\":[\"{\\\"region\\\": \\\"north-east\\\"," +
+                             " \\\"contractType\\\": \\\"SALARIED\\\"}\"]}",
+                         "638e8e7a-7d7c-4027-9d53-800000000001,638e8e7a-7d7c-4027-9d53-800000000002," +
+                             "638e8e7a-7d7c-4027-9d53-800000000003")
+        );
+    }
+
+    private static String json(String template) {
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+
+        Pattern pattern = Pattern.compile("<today ([+-]\\d+)>T00:00");
+        Matcher matcher = pattern.matcher(template);
+        StringBuffer result = new StringBuffer();
+
+        while (matcher.find()) {
+            int offset = Integer.parseInt(matcher.group(1));
+            String date = today.plusDays(offset).format(formatter) + "T00:00:00Z";
+            matcher.appendReplacement(result, "\"" + date + "\"");
+        }
+        matcher.appendTail(result);
+        return result.toString();
     }
 
 
