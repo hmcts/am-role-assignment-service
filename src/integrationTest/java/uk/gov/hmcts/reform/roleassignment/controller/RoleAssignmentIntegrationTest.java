@@ -344,8 +344,6 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         return headers;
     }
 
-    //TODO create parameterised test by creating new SQL script for insert role assignment
-
     @ParameterizedTest(name = "{0}")
     @MethodSource("queryProvider")
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
@@ -367,6 +365,7 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
                                             assertTrue(expectedRoleIds.contains(element.getId().toString()))
         );
     }
+
     private static Stream<Arguments> queryProvider() {
         return Stream.of(
             Arguments.of("single actorId", "{\"actorId\":[\"1001\"]}",
@@ -453,11 +452,10 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         while (matcher.find()) {
             int offset = Integer.parseInt(matcher.group(1));
             String date = today.plusDays(offset).format(formatter) + "T00:00:00Z";
-            matcher.appendReplacement(result, "\"" + date + "\"");
+            matcher.appendReplacement(result, date);
         }
         matcher.appendTail(result);
         return result.toString();
     }
-
 
 }
