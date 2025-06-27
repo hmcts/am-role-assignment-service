@@ -31,3 +31,11 @@ VALUES('0ca88393-5d00-46a7-a7da-0a6a74c5ca44', 'IDAM', '8bc0a13d-3bb7-3b7c-ab5b-
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
 VALUES('0ca88393-5d00-46a7-a7da-0a6a74c5ca45', 'IDAM', '8bc0a13d-3bb7-3b7c-ab5b-1a9b0a141bab', 'CASE', 'case-allocator', 'PUBLIC', 'SPECIFIC', 'LEGAL_OPERATIONS', true, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-25 12:30:41.166');
+
+INSERT INTO public.role_assignment
+(id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created, authorisations)
+VALUES('170f3f40-c073-400c-a7de-07c9e69378e0', 'IDAM', 'f7ec3783-5d5b-4797-bdcd-74908ef1e553', 'CASE', 'judge', 'PUBLIC', 'SPECIFIC', 'JUDICIAL', true, '2021-01-01 12:00:00.000', current_date+5, '{"region": "London", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-25 12:30:41.166', ARRAY['dev', 'auth2']);
+
+INSERT INTO public.role_assignment
+(id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created, authorisations)
+VALUES('7a3fd83a-a024-4072-8537-2fbf44a961d5', 'IDAM', 'f7ec3783-5d5b-4797-bdcd-74908ef1e553', 'CASE', 'judge', 'PUBLIC', 'SPECIFIC', 'JUDICIAL', true, '2021-01-01 12:00:00.000', current_date+5, '{"region": "London", "contractType": "SALARIED", "jurisdiction": "divorce"}', '2020-06-25 12:30:41.166', ARRAY['auth3', 'auth4']);
