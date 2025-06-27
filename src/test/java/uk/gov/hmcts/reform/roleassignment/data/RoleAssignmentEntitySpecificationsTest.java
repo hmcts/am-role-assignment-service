@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-public class RoleAssignmentEntitySpecificationsTest {
+class RoleAssignmentEntitySpecificationsTest {
 
     @Mock
     Specification<RoleAssignmentEntity> mockSpec;
@@ -45,7 +45,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     Predicate predicate;
 
     @Test
-    public void shouldReturnPredicate_WhileSearchByActorIds() {
+    void shouldReturnPredicate_WhileSearchByActorIds() {
         mockPredicate();
         List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
@@ -59,7 +59,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldNotReturnPredicate_WhileSearchByActorIdsWithoutMock() {
+    void shouldNotReturnPredicate_WhileSearchByActorIdsWithoutMock() {
         List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
@@ -71,7 +71,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNullValue_WhileSearchByActorIdsWithoutMock() {
+    void shouldReturnNullValue_WhileSearchByActorIdsWithoutMock() {
         List<String> actorId = null;
 
         Specification<RoleAssignmentEntity> spec = RoleAssignmentEntitySpecifications.searchByActorIds(actorId);
@@ -79,7 +79,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNull_WhileSearchByActorIdsWithoutMock() {
+    void shouldReturnNull_WhileSearchByActorIdsWithoutMock() {
         List<String> actorId = Collections.emptyList();
 
         Specification<RoleAssignmentEntity> spec = RoleAssignmentEntitySpecifications.searchByActorIds(actorId);
@@ -87,21 +87,21 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldNotReturnPredicate_WhileSearchByValidDateWithoutMock() {
+    void shouldNotReturnPredicate_WhileSearchByValidDateWithoutMock() {
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByValidDate(
             now());
         assertThat(specification).isNotNull();
     }
 
     @Test
-    public void shouldReturnNull_WhileSearchByValidDateWithoutMock() {
+    void shouldReturnNull_WhileSearchByValidDateWithoutMock() {
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByValidDate(
             null);
         assertThat(specification).isNull();
     }
 
     @Test
-    public void shouldReturnPredicate_WhileSearchByRoleName() {
+    void shouldReturnPredicate_WhileSearchByRoleName() {
         mockPredicate();
         List<String> roleNames = List.of("judge", "senior judge");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleName(
@@ -112,7 +112,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldNotReturnPredicate_WhileSearchByRoleNameWithoutMock() {
+    void shouldNotReturnPredicate_WhileSearchByRoleNameWithoutMock() {
         List<String> roleNames = List.of("judge", "senior judge");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleName(
             roleNames);
@@ -121,7 +121,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNull_WhileSearchByRoleNameWithoutMock() {
+    void shouldReturnNull_WhileSearchByRoleNameWithoutMock() {
         List<String> roleNames = Collections.emptyList();
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleName(
             roleNames);
@@ -129,7 +129,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNullValue_WhileSearchByRoleNameWithoutMock() {
+    void shouldReturnNullValue_WhileSearchByRoleNameWithoutMock() {
         List<String> roleNames = null;
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleName(
             roleNames);
@@ -137,7 +137,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnPredicate_WhileSearchByRoleType() {
+    void shouldReturnPredicate_WhileSearchByRoleType() {
         mockPredicate();
         List<String> roleTypes = List.of("CASE", "ORGANISATION");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleType(
@@ -148,7 +148,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldNotReturnPredicate_WhileSearchByRoleTypeWithoutMock() {
+    void shouldNotReturnPredicate_WhileSearchByRoleTypeWithoutMock() {
         List<String> roleTypes = List.of("CASE", "ORGANISATION");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleType(
             roleTypes);
@@ -157,7 +157,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNull_WhileSearchByRoleTypeWithoutMock() {
+    void shouldReturnNull_WhileSearchByRoleTypeWithoutMock() {
         List<String> roleTypes = Collections.emptyList();
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleType(
             roleTypes);
@@ -165,7 +165,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnPredicate_WhileSearchByClassification() {
+    void shouldReturnPredicate_WhileSearchByClassification() {
         mockPredicate();
         List<String> classifications = List.of("PUBLIC", "PRIVATE");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByClassification(
@@ -176,7 +176,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldNotReturnPredicate_WhileSearchByClassificationWithoutMock() {
+    void shouldNotReturnPredicate_WhileSearchByClassificationWithoutMock() {
         List<String> classifications = List.of("PUBLIC", "PRIVATE");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByClassification(
             classifications);
@@ -185,7 +185,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNull_WhileSearchByClassificationWithoutMock() {
+    void shouldReturnNull_WhileSearchByClassificationWithoutMock() {
         List<String> classifications = Collections.emptyList();
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByClassification(
             classifications);
@@ -193,7 +193,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNullValue_WhileSearchByClassificationWithoutMock() {
+    void shouldReturnNullValue_WhileSearchByClassificationWithoutMock() {
         List<String> classifications = null;
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByClassification(
             classifications);
@@ -201,7 +201,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnPredicate_WhileSearchByGrantType() {
+    void shouldReturnPredicate_WhileSearchByGrantType() {
         mockPredicate();
         List<String> grantTypes = List.of("SPECIFIC", "STANDARD");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByGrantType(
@@ -212,7 +212,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldNotReturnPredicate_WhileSearchByGrantTypeWithoutMock() {
+    void shouldNotReturnPredicate_WhileSearchByGrantTypeWithoutMock() {
         List<String> grantTypes = List.of("SPECIFIC", "STANDARD");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByGrantType(
             grantTypes);
@@ -221,7 +221,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNull_WhileSearchByGrantTypeWithoutMock() {
+    void shouldReturnNull_WhileSearchByGrantTypeWithoutMock() {
         List<String> grantTypes = Collections.emptyList();
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByGrantType(
             grantTypes);
@@ -229,7 +229,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNullValue_WhileSearchByGrantTypeWithoutMock() {
+    void shouldReturnNullValue_WhileSearchByGrantTypeWithoutMock() {
         List<String> grantTypes = null;
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByGrantType(
             grantTypes);
@@ -237,7 +237,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnPredicate_WhileSearchByRoleCategories() {
+    void shouldReturnPredicate_WhileSearchByRoleCategories() {
         mockPredicate();
         List<String> roleCategories = List.of("JUDICIAL");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleCategories(
@@ -248,7 +248,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldNotReturnPredicate_WhileSearchByRoleCategoriesWithoutMock() {
+    void shouldNotReturnPredicate_WhileSearchByRoleCategoriesWithoutMock() {
         List<String> roleCategories = List.of("JUDICIAL");
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleCategories(
             roleCategories);
@@ -257,7 +257,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNull_WhileSearchByRoleCategoriesWithoutMock() {
+    void shouldReturnNull_WhileSearchByRoleCategoriesWithoutMock() {
         List<String> roleCategories = Collections.emptyList();
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleCategories(
             roleCategories);
@@ -265,7 +265,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNullValue_WhileSearchByRoleCategoriesWithoutMock() {
+    void shouldReturnNullValue_WhileSearchByRoleCategoriesWithoutMock() {
         List<String> roleCategories = null;
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByRoleCategories(
             roleCategories);
@@ -273,7 +273,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnPredicate_WhileSearchByAttributes() {
+    void shouldReturnPredicate_WhileSearchByAttributes() {
         mockPredicate();
         Map<String, List<String>> attributes = new HashMap<>();
         List<String> regions = List.of("London", "JAPAN");
@@ -289,7 +289,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldNotReturnPredicate_WhileSearchByAttributesWithoutMock() {
+    void shouldNotReturnPredicate_WhileSearchByAttributesWithoutMock() {
         Map<String, List<String>> attributes = new HashMap<>();
         List<String> regions = List.of("London", "JAPAN");
         List<String> contractTypes = List.of("SALARIED", "Non SALARIED");
@@ -303,7 +303,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNull_WhileSearchByAttributesWithoutMock() {
+    void shouldReturnNull_WhileSearchByAttributesWithoutMock() {
         Map<String, List<String>> attributes = new HashMap<>();
 
 
@@ -313,7 +313,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNullValue_WhileSearchByAttributesWithoutMock() {
+    void shouldReturnNullValue_WhileSearchByAttributesWithoutMock() {
         Map<String, List<String>> attributes = null;
 
 
@@ -323,7 +323,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnPredicate_WhileSearchByAuthorisations() {
+    void shouldReturnPredicate_WhileSearchByAuthorisations() {
         mockPredicate();
         List<String> authorisations = List.of(
             "dev",
@@ -338,7 +338,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldNotReturnPredicate_WhileSearchByAuthorisationsWithoutMock() {
+    void shouldNotReturnPredicate_WhileSearchByAuthorisationsWithoutMock() {
         List<String> authorisations = List.of(
             "dev",
             "tester"
@@ -351,7 +351,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNull_WhileSearchByAuthorisationsWithoutMock() {
+    void shouldReturnNull_WhileSearchByAuthorisationsWithoutMock() {
         List<String> authorisations = Collections.emptyList();
 
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByAuthorisations(
@@ -360,7 +360,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnNullValue_WhileSearchByAuthorisationsWithoutMock() {
+    void shouldReturnNullValue_WhileSearchByAuthorisationsWithoutMock() {
         List<String> authorisations = null;
 
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByAuthorisations(
@@ -369,7 +369,7 @@ public class RoleAssignmentEntitySpecificationsTest {
     }
 
     @Test
-    public void shouldReturnPredicate_WhileSearchByValidDateWithMock() {
+    void shouldReturnPredicate_WhileSearchByValidDateWithMock() {
         mockPredicate();
         Specification<RoleAssignmentEntity> specification = RoleAssignmentEntitySpecifications.searchByValidDate(now());
         specification = specification.and(mockSpec);
@@ -381,4 +381,5 @@ public class RoleAssignmentEntitySpecificationsTest {
         when(mockSpec.toPredicate(root, query, builder)).thenReturn(predicate);
         Mockito.doReturn(path).when(root).get(anyString());
     }
+
 }
