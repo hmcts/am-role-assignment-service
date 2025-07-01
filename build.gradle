@@ -26,8 +26,8 @@ def versions = [
   junit           : '5.11.3',
   junitPlatform   : '1.11.3',
   lombok          : '1.18.36',
-  reformLogging   : '6.1.7',
-  reformS2sClient : '5.3.0',
+  reformLogging   : '6.1.9',
+  reformS2sClient : '5.3.2',
   serenity        : '4.2.15',
   pact_version    : '4.1.7',
   rest_assured    : '5.5.0',
@@ -372,9 +372,6 @@ repositories {
   maven {
         url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
   }
-  maven {
-    url 'https://jitpack.io'
-  }
 }
 
 dependencies {
@@ -431,7 +428,7 @@ dependencies {
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
 
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
-  implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '2.1.1'
+  implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '2.1.2'
   //Added for S2S and User Authentication
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.reformS2sClient
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksondata
@@ -439,6 +436,8 @@ dependencies {
   implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.21'
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
+
+  implementation 'net.bytebuddy:byte-buddy:1.14.19'
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.1.0')
   testImplementation group: 'org.wiremock', name: 'wiremock', version: '3.10.0'
@@ -467,7 +466,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testImplementation 'com.github.hmcts:befta-fw:9.0.2'
+  testImplementation 'com.github.hmcts:befta-fw:9.2.4'
   testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
   testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.4'
 
