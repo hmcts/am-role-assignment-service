@@ -506,16 +506,20 @@ class RoleAssignmentIntegrationTest extends BaseTest {
                          json("{\"actorId\":[\"7001\"],\"validAt\":\"<today +20>T00:00\"}"),
                          "638e8e7a-7d7c-4027-9d53-700000000001,638e8e7a-7d7c-4027-9d53-700000000002"),
 
-            Arguments.of("single attributes", "{\"actorId\":[\"8001\"]," +
-                             "\"attributes\":[\"{\\\"region\\\": \\\"north-east\\\", " +
-                             "\\\"contractType\\\": \\\"SALARIED\\\", \\\"jurisdiction\\\": \\\"divorce\\\"}\"]}",
-                         "638e8e7a-7d7c-4027-9d53-800000000001"),
+            Arguments.of("single attributes",
+                         "{ \"actorId\": [\"8001\"], " +
+                             "\"attributes\": { \"region\": [\"north-east\"], \"jurisdiction\": [\"divorce\"] } }",
+                         "638e8e7a-7d7c-4027-9d53-800000000001")
 
-            Arguments.of("multiple attributes", "{\"actorId\":[\"8001\",\"8002\"]," +
-                             "\"attributes\":[\"{\\\"region\\\": \\\"north-east\\\"," +
-                             " \\\"contractType\\\": \\\"SALARIED\\\"}\"]}",
+            ,
+
+            Arguments.of("multiple attributes",
+                         "{ \"actorId\": [\"8001\", \"8002\"], " +
+                             "\"attributes\": { \"region\": [\"north-east\"], \"contractType\": [\"SALARIED\"] } }",
                          "638e8e7a-7d7c-4027-9d53-800000000001,638e8e7a-7d7c-4027-9d53-800000000002," +
                              "638e8e7a-7d7c-4027-9d53-800000000003")
+
+
 
         );
     }
