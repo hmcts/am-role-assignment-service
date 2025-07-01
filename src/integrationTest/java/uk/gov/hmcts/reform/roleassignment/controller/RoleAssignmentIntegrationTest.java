@@ -37,6 +37,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
+import uk.gov.hmcts.reform.roleassignment.versions.V2;
 
 import javax.sql.DataSource;
 import java.io.UnsupportedEncodingException;
@@ -366,6 +367,28 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
         );
     }
 
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("queryProviderV2")
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+        scripts = {"classpath:sql/insert_role_assignment_servicetest.sql"})
+    void sampleTestV2(String testName, String queryJson, String expectedRoleAssignments) throws Exception {
+        List<String> expectedRoleIds = Arrays.asList(expectedRoleAssignments.split(","));
+
+        final MvcResult result = mockMvc.perform(post(URL_QUERY_ROLE_ASSIGNMENTS)
+                                                     .contentType(V2.MediaType.POST_ASSIGNMENTS)
+                                                     .headers(getHttpHeaders())
+                                                     .content(queryJson.getBytes())
+        ).andExpect(status().is(200)).andReturn();
+
+        List<ExistingRoleAssignment> existingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
+
+        assertNotNull(existingRoleAssignments);
+        assertEquals(expectedRoleIds.size(), existingRoleAssignments.size());
+        existingRoleAssignments.forEach(element ->
+                                            assertTrue(expectedRoleIds.contains(element.getId().toString()))
+        );
+    }
+
     private static Stream<Arguments> queryProvider() {
         return Stream.of(
             Arguments.of("single actorId", "{\"actorId\":[\"1001\"]}",
@@ -438,6 +461,38 @@ public class RoleAssignmentIntegrationTest extends BaseTest {
                              " \\\"contractType\\\": \\\"SALARIED\\\"}\"]}",
                          "638e8e7a-7d7c-4027-9d53-800000000001,638e8e7a-7d7c-4027-9d53-800000000002," +
                              "638e8e7a-7d7c-4027-9d53-800000000003")
+
+        );
+    }
+    private static Stream<Arguments> queryProviderV2() {
+        return Stream.of(
+            Arguments.of("single actorId V2", "{\"queryRequests\":[{\"actorId\":[\"1001\"]}]}",
+                         "638e8e7a-7d7c-4027-9d53-100000000001"),
+
+            Arguments.of("multiple actorId V2", "{\"queryRequests\":[{\"actorId\":[\"1001\",\"1002\"]}]}",
+                         "638e8e7a-7d7c-4027-9d53-100000000001,638e8e7a-7d7c-4027-9d53-100000000002," +
+                             "638e8e7a-7d7c-4027-9d53-100000000003"),
+
+            Arguments.of("single roleType V2", "{\"queryRequests\":[{\"actorId\":[\"2001\"],\"roleType\":[\"ORGANISATION\"]}]}",
+                         "638e8e7a-7d7c-4027-9d53-200000000001"),
+
+            Arguments.of("multiple roleType V2", "{\"queryRequests\":[{\"actorId\":[\"2001\",\"2002\"]," +
+                             "\"roleType\":[\"ORGANISATION\",\"CASE\"]}]}",
+                         "638e8e7a-7d7c-4027-9d53-200000000001,638e8e7a-7d7c-4027-9d53-200000000002," +
+                             "638e8e7a-7d7c-4027-9d53-200000000003"),
+
+            Arguments.of("ValidAt before begin date V2",
+                         json("{\"queryRequests\":[{\"actorId\":[\"7001\"],\"validAt\":\"<today -20>T00:00\"}]}"),
+                         "638e8e7a-7d7c-4027-9d53-700000000001,638e8e7a-7d7c-4027-9d53-700000000003"),
+
+            Arguments.of("ValidAt between begin & end dates V2",
+                         json("{\"queryRequests\":[{\"actorId\":[\"7001\"],\"validAt\":\"<today +2>T00:00\"}]}"),
+                         "638e8e7a-7d7c-4027-9d53-700000000001,638e8e7a-7d7c-4027-9d53-700000000002," +
+                             "638e8e7a-7d7c-4027-9d53-700000000003,638e8e7a-7d7c-4027-9d53-700000000004"),
+
+            Arguments.of("ValidAt after end date V2",
+                         json("{\"queryRequests\":[{\"actorId\":[\"7001\"],\"validAt\":\"<today +20>T00:00\"}]}"),
+                         "638e8e7a-7d7c-4027-9d53-700000000001,638e8e7a-7d7c-4027-9d53-700000000002")
         );
     }
 
