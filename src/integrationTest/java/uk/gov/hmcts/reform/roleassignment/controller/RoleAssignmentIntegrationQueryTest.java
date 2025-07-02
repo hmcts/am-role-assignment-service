@@ -358,8 +358,39 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
     }
 
     private static Stream<Arguments> queryProviderV2() {
-        Stream<Arguments> results = queryProvider();
-        return results;
+        return Stream.concat(queryProvider(), Stream.of(
+
+            // hasAttributes Tests
+            Arguments.of("single hasAttributes",
+                         """
+                         {
+                           "hasAttributes": [
+                             "unique1"
+                           ]
+                         }
+                         """,
+                         List.of("638e8e7a-7d7c-4027-9d53-900000000001")),
+            Arguments.of("multiple hasAttributes",
+                         """
+                         {
+                           "hasAttributes": [
+                             "unique1", "unique2"
+                           ]
+                         }
+                         """,
+                         List.of("638e8e7a-7d7c-4027-9d53-900000000001",
+                                 "638e8e7a-7d7c-4027-9d53-900000000002")),
+
+
+            // readOnly Tests
+            Arguments.of("single readOnly",
+                         """
+                         {
+                          "readOnly": true
+                         }
+                         """,
+                         List.of("638e8e7a-7d7c-4027-9d53-010000000001"))
+        ));
     }
 
     private static String json(String template) {
