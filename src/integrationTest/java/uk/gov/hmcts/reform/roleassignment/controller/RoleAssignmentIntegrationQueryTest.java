@@ -234,7 +234,8 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
     @MethodSource("queryProviderV2")
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
         scripts = {"classpath:sql/insert_role_assignment_querytest.sql"})
-    void multipleDeleteRequestsV2Test(String testName, String queryJson, List<String> expectedRoleIds) throws Exception {
+    void multipleDeleteRequestsV2Test(String testName, String queryJson, List<String> expectedRoleIds)
+        throws Exception {
         List<String> expectedMultipleRoleIds = new ArrayList<>();
         expectedMultipleRoleIds.addAll(expectedRoleIds);
         expectedMultipleRoleIds.add("638e8e7a-7d7c-4027-9d53-ea4b1095eab1");
@@ -274,7 +275,7 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
 
             Arguments.of("multiple actorId", """
                          {
-                           "actorId":["1001","1002"]
+                           "actorId":["1001","1002","1003"]
                          }
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-100000000001",
@@ -284,7 +285,6 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
             // RoleType Tests CASE, ORGANISATION
             Arguments.of("single roleType", """
                          {
-                           "actorId":["2001"],
                            "roleType":["ORGANISATION"]
                          }
                          """,
@@ -292,8 +292,8 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
 
             Arguments.of("multiple roleType", """
                          {
-                           "actorId":["2001","2002"],
-                           "roleType":["ORGANISATION","CASE"]
+                           "roleType":["ORGANISATION","CASE"],
+                           "attributes": { "roleType": ["Test"] }
                          }
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-200000000001",
