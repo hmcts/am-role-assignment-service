@@ -95,39 +95,39 @@ INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
 VALUES
 ('638e8e7a-7d7c-4027-9d53-700000000002', 'IDAM', '7002', 'CASE', 'case-allocator', 'PUBLIC', 'SPECIFIC', 'LEGAL_OPERATIONS', false,
- current_date - interval '10 days', NULL,
- '{"region": "north-east", "contractType": "SALARIED"}',
+ current_date -  10, NULL,
+ '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "WA"}',
  now());
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
 VALUES
 ('638e8e7a-7d7c-4027-9d53-700000000003', 'IDAM', '7003', 'CASE', 'case-allocator', 'PUBLIC', 'SPECIFIC', 'LEGAL_OPERATIONS', false,
- NULL, current_date + interval '10 days',
- '{"region": "north-east", "contractType": "SALARIED"}',
+ NULL, current_date + 10,
+ '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "WA"}',
  now());
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
 VALUES
 ('638e8e7a-7d7c-4027-9d53-700000000004', 'IDAM', '7004', 'CASE', 'case-allocator', 'PUBLIC', 'SPECIFIC', 'LEGAL_OPERATIONS', false,
- current_date - interval '10 days', current_date + interval '10 days',
- '{"region": "north-east", "contractType": "SALARIED"}',
+ current_date + 9, current_date + 10,
+ '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "WA"}',
  now());
 
 
 --Attributes Tests
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-VALUES('638e8e7a-7d7c-4027-9d53-800000000001', 'IDAM', '8001', 'CASE', 'judge', 'PUBLIC', 'STANDARD', 'LEGAL_OPERATIONS', false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "WA"}', '2020-06-24 17:35:08.546');
+VALUES('638e8e7a-7d7c-4027-9d53-800000000001', 'IDAM', '8001', 'CASE', 'judge', 'PUBLIC', 'STANDARD', 'LEGAL_OPERATIONS', false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "south-east", "contractType": "SALARIED", "caseType": "CT2", "jurisdiction": "WA"}', '2020-06-24 17:35:08.546');
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-VALUES('638e8e7a-7d7c-4027-9d53-800000000002', 'IDAM', '8002', 'CASE', 'case-allocator', 'PUBLIC', 'SPECIFIC', 'LEGAL_OPERATIONS', false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED"}', '2020-06-24 17:35:08.546');
+VALUES('638e8e7a-7d7c-4027-9d53-800000000002', 'IDAM', '8002', 'CASE', 'case-allocator', 'PUBLIC', 'SPECIFIC', 'LEGAL_OPERATIONS', false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "south-east", "contractType": "SALARIED", "jurisdiction": "WA"}', '2020-06-24 17:35:08.546');
 
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
-VALUES('638e8e7a-7d7c-4027-9d53-800000000003', 'IDAM', '8003', 'CASE', 'case-allocator', 'PUBLIC', 'SPECIFIC', 'LEGAL_OPERATIONS', false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED"}', '2020-06-24 17:35:08.546');
+VALUES('638e8e7a-7d7c-4027-9d53-800000000003', 'IDAM', '8003', 'CASE', 'case-allocator', 'PUBLIC', 'SPECIFIC', 'LEGAL_OPERATIONS', false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "south-east", "contractType": "SALARIED", "jurisdiction": "WA"}', '2020-06-24 17:35:08.546');
 
 --hasAttributes Tests
 INSERT INTO public.role_assignment
@@ -142,3 +142,13 @@ VALUES('638e8e7a-7d7c-4027-9d53-900000000002', 'IDAM', '9002', 'CASE', 'case-all
 INSERT INTO public.role_assignment
 (id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created)
 VALUES('638e8e7a-7d7c-4027-9d53-010000000001', 'IDAM', '0101', 'CASE', 'case-allocator', 'PUBLIC', 'SPECIFIC', 'LEGAL_OPERATIONS', true, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "WA"}', '2020-06-24 17:35:08.546');
+
+--Authorisations Tests
+INSERT INTO public.role_assignment
+(id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created, authorisations)
+VALUES('638e8e7a-7d7c-4027-9d53-110000000001', 'IDAM', '1101', 'CASE', 'case-allocator', 'PUBLIC', 'SPECIFIC', 'LEGAL_OPERATIONS', false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "WA"}', '2020-06-24 17:35:08.546', '{"auth1", "auth2"}');
+
+INSERT INTO public.role_assignment
+(id, actor_id_type, actor_id, role_type, role_name, classification, grant_type, role_category, read_only, begin_time, end_time, "attributes", created, authorisations)
+VALUES('638e8e7a-7d7c-4027-9d53-110000000002', 'IDAM', '1102', 'CASE', 'case-allocator', 'PUBLIC', 'SPECIFIC', 'LEGAL_OPERATIONS', false, '2021-01-01 12:00:00.000', current_date+5, '{"region": "north-east", "contractType": "SALARIED", "jurisdiction": "WA"}', '2020-06-24 17:35:08.546', '{"auth3", "auth4"}');
+

@@ -316,7 +316,7 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-300000000001",
                                  "638e8e7a-7d7c-4027-9d53-300000000002",
-                                 "638e8e7a-7d7c-4027-9d53-300000000003"),
+                                 "638e8e7a-7d7c-4027-9d53-300000000003")),
 
             // Classification Test PUBLIC, PRIVATE, RESTRICTED
             Arguments.of("single classification", """
@@ -374,7 +374,7 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
             Arguments.of("ValidAt before begin date",
                          json("""
                          {
-                           "validAt":"<today -20>T00:00"
+                           "validAt":"2020-01-01T00:00"
                          }
                          """),
                          List.of("638e8e7a-7d7c-4027-9d53-700000000001",
@@ -383,7 +383,7 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
             Arguments.of("ValidAt between begin & end dates",
                          json("""
                          {
-                           "validAt":"<today +2>T00:00"
+                           "validAt":"<today +9>T00:00"
                          }
                          """),
                          List.of("638e8e7a-7d7c-4027-9d53-700000000001",
@@ -403,20 +403,38 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
             // Attributes Tests
             Arguments.of("single attributes", """
                          {
-                           "attributes": { "region": ["north-east"], "jurisdiction": ["WA"] }
+                           "attributes": { "region": ["south-east"], "caseType": ["CT2"] }
                          }
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-800000000001")),
 
             Arguments.of("multiple attributes", """
                          {
-                           "attributes": { "region": ["north-east"], "contractType": ["SALARIED"] }
+                           "attributes": { "region": ["south-east"], "contractType": ["SALARIED"] }
                          }
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-800000000001",
                                  "638e8e7a-7d7c-4027-9d53-800000000002",
-                                 "638e8e7a-7d7c-4027-9d53-800000000003")))
-        );
+                                 "638e8e7a-7d7c-4027-9d53-800000000003")),
+
+            // Authorisations
+            Arguments.of("single authorizations", """
+                         {
+                           "authorisations":["auth1"]
+                         }
+                         """,
+                         List.of("638e8e7a-7d7c-4027-9d53-110000000001")),
+
+            Arguments.of("mutliple authorizations", """
+                         {
+                           "authorisations": [
+                             "auth1", "auth4"
+                           ]
+                         }
+                         """,
+                         List.of("638e8e7a-7d7c-4027-9d53-110000000001",
+                                 "638e8e7a-7d7c-4027-9d53-110000000002"))
+            );
     }
 
     private static Stream<Arguments> queryProviderV2() {
