@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,6 +32,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -45,6 +47,8 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
+import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
+import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.versions.V2;
 
@@ -53,9 +57,13 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
 
     private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445612";
     private static final String URL_QUERY_ROLE_ASSIGNMENTS = "/am/role-assignments/query";
+    private static final String URL_DELETE_ROLE_ASSIGNMENTS = "/am/role-assignments/query/delete";
 
     private MockMvc mockMvc;
     private JdbcTemplate template;
+
+    @Autowired
+    private RoleAssignmentRepository roleAssignmentRepository;
 
     @Inject
     private WebApplicationContext wac;
@@ -98,10 +106,15 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
         );
     }
 
+    private List<RoleAssignmentEntity> getExistingRoleAssignmentFromDb() {
+        return roleAssignmentRepository.findAll();
+    }
+
     @NotNull
-    private HttpHeaders getHttpHeaders() {
+    private HttpHeaders getHttpHeaders(String serviceName) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("ServiceAuthorization", "Bearer " + "1234");
+        var s2SToken = MockUtils.generateDummyS2SToken(serviceName);
+        headers.add("ServiceAuthorization", "Bearer " + s2SToken);
         headers.add("Authorization", "Bearer " + "2345");
         return headers;
     }
@@ -114,7 +127,7 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
 
         final MvcResult result = mockMvc.perform(post(URL_QUERY_ROLE_ASSIGNMENTS)
                                                      .contentType(JSON_CONTENT_TYPE)
-                                                     .headers(getHttpHeaders())
+                                                     .headers(getHttpHeaders("civil_service"))
                                                      .content(queryJson.getBytes())
         ).andExpect(status().is(200)).andReturn();
 
@@ -141,7 +154,7 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
 
         final MvcResult result = mockMvc.perform(post(URL_QUERY_ROLE_ASSIGNMENTS)
                                                      .contentType(V2.MediaType.POST_ASSIGNMENTS)
-                                                     .headers(getHttpHeaders())
+                                                     .headers(getHttpHeaders("civil_service"))
                                                      .content(queryJson.getBytes())
         ).andExpect(status().is(200)).andReturn();
 
@@ -174,7 +187,7 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
 
         final MvcResult result = mockMvc.perform(post(URL_QUERY_ROLE_ASSIGNMENTS)
                                                      .contentType(V2.MediaType.POST_ASSIGNMENTS)
-                                                     .headers(getHttpHeaders())
+                                                     .headers(getHttpHeaders("civil_service"))
                                                      .content(queryJson.getBytes())
         ).andExpect(status().is(200)).andReturn();
 
@@ -184,6 +197,68 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
         assertEquals(expectedMultipleRoleIds.size(), existingRoleAssignments.size());
         existingRoleAssignments.forEach(element ->
                                             assertTrue(expectedMultipleRoleIds.contains(element.getId().toString()))
+        );
+    }
+
+    @ParameterizedTest(name = "deleteRequestsV2 {0}")
+    @MethodSource("queryProviderV2")
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+        scripts = {"classpath:sql/insert_role_assignment_querytest.sql"})
+    void deleteRequestsV2Test(String testName, String queryJson, List<String> expectedRoleIds) throws Exception {
+        queryJson = """
+            {
+              "queryRequests":[
+                """ + queryJson + """
+              ]
+            } """; // Wrap in queryRequests for V2
+
+        // Each deleted record must have the attribute of "jurisdiction": "WA"
+        // and use the header client_id=wa_workflow_api.  This combined with the
+        // FeatureFlagEnum.WA_BYPASS_1_0, being set in test, bypasses the drool
+        // rules for authorisation and allows the deletion.
+        final MvcResult result = mockMvc.perform(post(URL_DELETE_ROLE_ASSIGNMENTS)
+                                                     .contentType(MediaType.APPLICATION_JSON)
+                                                     .headers(getHttpHeaders("wa_workflow_api"))
+                                                     .content(queryJson.getBytes())
+        ).andExpect(status().is(200)).andReturn();
+
+        List<RoleAssignmentEntity> existingRoleAssignments = getExistingRoleAssignmentFromDb();
+
+        assertNotNull(existingRoleAssignments);
+        existingRoleAssignments.forEach(element ->
+                                            assertFalse(expectedRoleIds.contains(element.getId().toString()))
+        );
+    }
+
+    @ParameterizedTest(name = "multipleDeleteRequestsV2 {0}")
+    @MethodSource("queryProviderV2")
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+        scripts = {"classpath:sql/insert_role_assignment_querytest.sql"})
+    void multipleDeleteRequestsV2Test(String testName, String queryJson, List<String> expectedRoleIds) throws Exception {
+        List<String> expectedMultipleRoleIds = new ArrayList<>();
+        expectedMultipleRoleIds.addAll(expectedRoleIds);
+        expectedMultipleRoleIds.add("638e8e7a-7d7c-4027-9d53-ea4b1095eab1");
+        queryJson = """
+            {
+              "queryRequests":[
+                {
+                  "actorId": ["123e4567-e89b-42d3-a456-556642445613"]
+                },
+                """ + queryJson + """
+              ]
+            } """; // Wrap in queryRequests for V2
+
+        final MvcResult result = mockMvc.perform(post(URL_DELETE_ROLE_ASSIGNMENTS)
+                                                     .contentType(MediaType.APPLICATION_JSON)
+                                                     .headers(getHttpHeaders("wa_workflow_api"))
+                                                     .content(queryJson.getBytes())
+        ).andExpect(status().is(200)).andReturn();
+
+        List<RoleAssignmentEntity> existingRoleAssignments = getExistingRoleAssignmentFromDb();
+
+        assertNotNull(existingRoleAssignments);
+        existingRoleAssignments.forEach(element ->
+                                            assertFalse(expectedRoleIds.contains(element.getId().toString()))
         );
     }
 
@@ -225,20 +300,18 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
                                  "638e8e7a-7d7c-4027-9d53-200000000002",
                                  "638e8e7a-7d7c-4027-9d53-200000000003")),
 
-            // RoleName Tests judge, case-allocator, hearing-manager, hearing-viewer
+            // RoleName Tests solicitor, case-allocator, hearing-manager, hearing-viewer
             Arguments.of("single roleName", """
                          {
-                           "actorId":["3001"],
-                           "roleName":["judge"]
+                           "roleName":["Solicitor"]
                          }
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-300000000001")),
 
             Arguments.of("multiple roleName", """
                          {
-                           "actorId":["3001","3002"],
-                           "roleName":["judge",
-                           "case-allocator"]
+                           "roleName":["Solicitor",
+                           "hearing-manager"]
                          }
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-300000000001",
@@ -248,16 +321,14 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
             // Classification Test PUBLIC, PRIVATE, RESTRICTED
             Arguments.of("single classification", """
                          {
-                           "actorId":["4001"],
-                           "classification":["PUBLIC"]
+                           "classification":["RESTRICTED"]
                          }
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-400000000001")),
 
             Arguments.of("multiple classification", """
                          {
-                           "actorId":["4001","4002"],
-                           "classification":["PUBLIC","PRIVATE"]
+                           "classification":["RESTRICTED","PRIVATE"]
                          }
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-400000000001",
@@ -267,16 +338,14 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
             // grantType Tests BASIC, SPECIFIC, STANDARD, CHALLENGED, EXCLUDED
             Arguments.of("single grantType", """
                          {
-                           "actorId":["5001"],
-                           "grantType":["STANDARD"]
+                           "grantType":["CHALLENGED"]
                          }
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-500000000001")),
 
             Arguments.of("multiple grantType", """
                          {
-                           "actorId":["5001","5002"],
-                            "grantType":["STANDARD","SPECIFIC"]
+                            "grantType":["CHALLENGED","EXCLUDED"]
                          }
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-500000000001",
@@ -287,7 +356,6 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
             //                    CITIZEN, SYSTEM, OTHER_GOV_DEPT, CTSC
             Arguments.of("single roleCategory", """
                          {
-                           "actorId":["6001"],
                            "roleCategory":["JUDICIAL"]
                          }
                          """,
@@ -295,8 +363,7 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
 
             Arguments.of("multiple roleCategory", """
                          {
-                           "actorId":["6001","6002"],
-                           "roleCategory":["JUDICIAL","LEGAL_OPERATIONS"]
+                           "roleCategory":["JUDICIAL","OTHER_GOV_DEPT"]
                          }
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-600000000001",
@@ -307,7 +374,6 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
             Arguments.of("ValidAt before begin date",
                          json("""
                          {
-                           "actorId":["7001"],
                            "validAt":"<today -20>T00:00"
                          }
                          """),
@@ -317,7 +383,6 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
             Arguments.of("ValidAt between begin & end dates",
                          json("""
                          {
-                           "actorId":["7001"],
                            "validAt":"<today +2>T00:00"
                          }
                          """),
@@ -329,7 +394,6 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
             Arguments.of("ValidAt after end date",
                          json("""
                          {
-                           "actorId":["7001"],
                            "validAt":"<today +20>T00:00"
                          }
                          """),
@@ -339,15 +403,13 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
             // Attributes Tests
             Arguments.of("single attributes", """
                          {
-                           "actorId": ["8001"],
-                           "attributes": { "region": ["north-east"], "jurisdiction": ["divorce"] }
+                           "attributes": { "region": ["north-east"], "jurisdiction": ["WA"] }
                          }
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-800000000001")),
 
             Arguments.of("multiple attributes", """
                          {
-                           "actorId": ["8001", "8002"],
                            "attributes": { "region": ["north-east"], "contractType": ["SALARIED"] }
                          }
                          """,
