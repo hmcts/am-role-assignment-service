@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog.aop;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.expression.AnnotatedElementKey;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.TypedValue;
@@ -17,17 +17,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ExpressionEvaluatorTest {
+class ExpressionEvaluatorTest {
 
     private ExpressionEvaluator evaluator;
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         evaluator = new ExpressionEvaluator();
     }
 
     @Test
-    public void shouldCreateEvaluationContext() {
+    void shouldCreateEvaluationContext() {
 
         Method method = ReflectionUtils.findMethod(EvaluateMethods.class, "evaluate", String.class, Boolean.class);
         EvaluationContext context = evaluator.createEvaluationContext(this, EvaluateMethods.class, method, new Object[]{
@@ -46,7 +46,7 @@ public class ExpressionEvaluatorTest {
     }
 
     @Test
-    public void shouldParseValidExpressions() {
+    void shouldParseValidExpressions() {
 
         Method method = ReflectionUtils.findMethod(EvaluateMethods.class, "evaluate", String.class, Boolean.class);
         EvaluationContext context = evaluator.createEvaluationContext(this, EvaluateMethods.class, method, new Object[]{
@@ -60,7 +60,7 @@ public class ExpressionEvaluatorTest {
     }
 
     @Test
-    public void shouldParseBeanExpressions() {
+    void shouldParseBeanExpressions() {
         Method method = ReflectionUtils.findMethod(
             EvaluateMethods.class,
             "evaluate",
@@ -82,7 +82,7 @@ public class ExpressionEvaluatorTest {
 
 
     @Test
-    public void shouldThrowErrorWhenPropertyNotFound() {
+    void shouldThrowErrorWhenPropertyNotFound() {
 
         Method method = ReflectionUtils.findMethod(
             EvaluateMethods.class,
@@ -106,13 +106,16 @@ public class ExpressionEvaluatorTest {
 
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "java:S1172"})
     private static class EvaluateMethods {
 
         private void evaluate(String foo, Boolean flag) {
+            // test class
         }
 
         private void evaluate(String foo, RoleAssignment roleAssignment) {
+            // test class
         }
     }
+
 }
