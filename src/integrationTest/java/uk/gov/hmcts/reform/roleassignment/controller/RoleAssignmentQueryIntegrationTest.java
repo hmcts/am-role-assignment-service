@@ -212,6 +212,8 @@ class RoleAssignmentQueryIntegrationTest extends BaseTest {
               ]
             } """; // Wrap in queryRequests for V2
 
+        List<RoleAssignmentEntity> previousRoleAssignmentsOnDb = getAllRoleAssignmentFromDb();
+
         // Each deleted record must have the attribute of "jurisdiction": "WA"
         // and use the header client_id=wa_workflow_api.  This combined with the
         // FeatureFlagEnum.WA_BYPASS_1_0, being set in test, bypasses the drool
@@ -225,6 +227,8 @@ class RoleAssignmentQueryIntegrationTest extends BaseTest {
         List<RoleAssignmentEntity> roleAssignmentsOnDb = getAllRoleAssignmentFromDb();
 
         assertNotNull(roleAssignmentsOnDb);
+        assertEquals(previousRoleAssignmentsOnDb.size() - expectedRoleIds.size(),
+                     roleAssignmentsOnDb.size());
         // confirm expectedRoleIds no longer present
         roleAssignmentsOnDb.forEach(element ->
                                             assertFalse(expectedRoleIds.contains(element.getId().toString()))
@@ -250,6 +254,8 @@ class RoleAssignmentQueryIntegrationTest extends BaseTest {
               ]
             } """; // Wrap in queryRequests for V2
 
+        List<RoleAssignmentEntity> previousRoleAssignmentsOnDb = getAllRoleAssignmentFromDb();
+
         final MvcResult result = mockMvc.perform(post(URL_DELETE_ROLE_ASSIGNMENTS)
                                                      .contentType(MediaType.APPLICATION_JSON)
                                                      .headers(getHttpHeaders("wa_workflow_api"))
@@ -259,6 +265,8 @@ class RoleAssignmentQueryIntegrationTest extends BaseTest {
         List<RoleAssignmentEntity> roleAssignmentsOnDb = getAllRoleAssignmentFromDb();
 
         assertNotNull(roleAssignmentsOnDb);
+        assertEquals(previousRoleAssignmentsOnDb.size() - expectedMultipleRoleIds.size(),
+                     roleAssignmentsOnDb.size());
         // confirm expectedRoleIds no longer present
         roleAssignmentsOnDb.forEach(element ->
                                             assertFalse(expectedRoleIds.contains(element.getId().toString()))
