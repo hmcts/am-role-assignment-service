@@ -483,7 +483,7 @@ class RoleAssignmentQueryIntegrationTest extends BaseTest {
             Arguments.of("single readOnly false",
                          """
                          {
-                          "actorId":["0102"],
+                          "actorId":["0101"],
                           "readOnly": false
                          }
                          """,
