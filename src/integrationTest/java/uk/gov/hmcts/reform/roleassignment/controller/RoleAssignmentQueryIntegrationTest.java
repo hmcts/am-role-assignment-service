@@ -53,7 +53,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.versions.V2;
 
 @TestPropertySource(properties = {"ras.environment=pr"})
-class RoleAssignmentIntegrationQueryTest extends BaseTest {
+class RoleAssignmentQueryIntegrationTest extends BaseTest {
 
     private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445612";
     private static final String URL_QUERY_ROLE_ASSIGNMENTS = "/am/role-assignments/query";
@@ -106,7 +106,7 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
         );
     }
 
-    private List<RoleAssignmentEntity> getExistingRoleAssignmentFromDb() {
+    private List<RoleAssignmentEntity> getAllRoleAssignmentFromDb() {
         return roleAssignmentRepository.findAll();
     }
 
@@ -131,11 +131,11 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
                                                      .content(queryJson.getBytes())
         ).andExpect(status().is(200)).andReturn();
 
-        List<ExistingRoleAssignment> existingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
+        List<ExistingRoleAssignment> remainingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
 
-        assertNotNull(existingRoleAssignments);
-        assertEquals(expectedRoleIds.size(), existingRoleAssignments.size());
-        existingRoleAssignments.forEach(element ->
+        assertNotNull(remainingRoleAssignments);
+        assertEquals(expectedRoleIds.size(), remainingRoleAssignments.size());
+        remainingRoleAssignments.forEach(element ->
                                             assertTrue(expectedRoleIds.contains(element.getId().toString()))
         );
     }
@@ -158,11 +158,11 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
                                                      .content(queryJson.getBytes())
         ).andExpect(status().is(200)).andReturn();
 
-        List<ExistingRoleAssignment> existingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
+        List<ExistingRoleAssignment> remainingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
 
-        assertNotNull(existingRoleAssignments);
-        assertEquals(expectedRoleIds.size(), existingRoleAssignments.size());
-        existingRoleAssignments.forEach(element ->
+        assertNotNull(remainingRoleAssignments);
+        assertEquals(expectedRoleIds.size(), remainingRoleAssignments.size());
+        remainingRoleAssignments.forEach(element ->
                                             assertTrue(expectedRoleIds.contains(element.getId().toString()))
         );
     }
@@ -191,11 +191,11 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
                                                      .content(queryJson.getBytes())
         ).andExpect(status().is(200)).andReturn();
 
-        List<ExistingRoleAssignment> existingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
+        List<ExistingRoleAssignment> remainingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
 
-        assertNotNull(existingRoleAssignments);
-        assertEquals(expectedMultipleRoleIds.size(), existingRoleAssignments.size());
-        existingRoleAssignments.forEach(element ->
+        assertNotNull(remainingRoleAssignments);
+        assertEquals(expectedMultipleRoleIds.size(), remainingRoleAssignments.size());
+        remainingRoleAssignments.forEach(element ->
                                             assertTrue(expectedMultipleRoleIds.contains(element.getId().toString()))
         );
     }
@@ -222,10 +222,11 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
                                                      .content(queryJson.getBytes())
         ).andExpect(status().is(200)).andReturn();
 
-        List<RoleAssignmentEntity> existingRoleAssignments = getExistingRoleAssignmentFromDb();
+        List<RoleAssignmentEntity> roleAssignmentsOnDb = getAllRoleAssignmentFromDb();
 
-        assertNotNull(existingRoleAssignments);
-        existingRoleAssignments.forEach(element ->
+        assertNotNull(roleAssignmentsOnDb);
+        // confirm expectedRoleIds no longer present
+        roleAssignmentsOnDb.forEach(element ->
                                             assertFalse(expectedRoleIds.contains(element.getId().toString()))
         );
     }
@@ -255,10 +256,11 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
                                                      .content(queryJson.getBytes())
         ).andExpect(status().is(200)).andReturn();
 
-        List<RoleAssignmentEntity> existingRoleAssignments = getExistingRoleAssignmentFromDb();
+        List<RoleAssignmentEntity> roleAssignmentsOnDb = getAllRoleAssignmentFromDb();
 
-        assertNotNull(existingRoleAssignments);
-        existingRoleAssignments.forEach(element ->
+        assertNotNull(roleAssignmentsOnDb);
+        // confirm expectedRoleIds no longer present
+        roleAssignmentsOnDb.forEach(element ->
                                             assertFalse(expectedRoleIds.contains(element.getId().toString()))
         );
     }
@@ -410,7 +412,7 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
 
             Arguments.of("multiple attributes", """
                          {
-                           "attributes": { "region": ["south-east"], "contractType": ["SALARIED"] }
+                           "attributes": { "region": ["south-east", "south-west"], "contractType": ["SALARIED"] }
                          }
                          """,
                          List.of("638e8e7a-7d7c-4027-9d53-800000000001",
@@ -463,13 +465,21 @@ class RoleAssignmentIntegrationQueryTest extends BaseTest {
 
 
             // readOnly Tests
-            Arguments.of("single readOnly",
+            Arguments.of("single readOnly true",
                          """
                          {
                           "readOnly": true
                          }
                          """,
-                         List.of("638e8e7a-7d7c-4027-9d53-010000000001"))
+                         List.of("638e8e7a-7d7c-4027-9d53-010000000001")),
+            Arguments.of("single readOnly false",
+                         """
+                         {
+                          "actorId":["0102"],
+                          "readOnly": false
+                         }
+                         """,
+                         List.of("638e8e7a-7d7c-4027-9d53-010000000002"))
         ));
     }
 

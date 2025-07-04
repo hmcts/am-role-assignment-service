@@ -496,7 +496,7 @@ dependencies {
   testImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  // Added For Lombok smokeTests
+  // Lombok for smokeTests
   smokeTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   smokeTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
