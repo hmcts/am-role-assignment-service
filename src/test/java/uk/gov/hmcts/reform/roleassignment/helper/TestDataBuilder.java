@@ -447,7 +447,7 @@ public class TestDataBuilder {
             .build();
     }
 
-    public static QueryRequest createQueryRequest() {
+    public static QueryRequest createQueryRequest(List<String> actorIds) {
         Map<String, List<String>> attributes = new HashMap<>();
         List<String> regions = List.of("London", "JAPAN");
         List<String> contractTypes = List.of("SALARIED", "Non SALARIED");
@@ -455,8 +455,7 @@ public class TestDataBuilder {
         attributes.put("contractType", contractTypes);
 
         return QueryRequest.builder()
-            .actorId(List.of("123e4567-e89b-42d3-a456-556642445612"))
-
+            .actorId(actorIds)
             .roleType(List.of(RoleType.CASE.toString()))
             .roleName(List.of("judge"))
             .classification(List.of(Classification.PUBLIC.toString()))
