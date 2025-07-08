@@ -25,7 +25,7 @@ plugins {
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.25'
   id 'au.com.dius.pact' version '4.3.12' //do not change this version or serenity reports will fail to generate
   id 'org.flywaydb.flyway' version '8.5.13'
-  id 'org.owasp.dependencycheck' version '10.0.3'
+  id 'org.owasp.dependencycheck' version '10.0.4'
 }
 
 apply plugin: "info.solidsoft.pitest"
@@ -479,7 +479,7 @@ dependencies {
 
   implementation 'net.bytebuddy:byte-buddy:1.14.19'
 
-  testImplementation('com.opentable.components:otj-pg-embedded:1.1.0')
+  testImplementation('com.opentable.components:otj-pg-embedded:1.1.1')
   testImplementation('com.github.tomakehurst:wiremock-jre8:2.35.2')
   testImplementation('org.springframework.cloud:spring-cloud-contract-wiremock:3.1.10')
   testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.4.0'
@@ -507,7 +507,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
   testImplementation 'com.github.hmcts:befta-fw:8.7.11'
-  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.5'
+  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.7'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
