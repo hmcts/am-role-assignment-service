@@ -522,7 +522,8 @@ class AllServicesOrgRoleTest extends DroolBase {
             + "N,Null,PUBLIC",
         "listed-hearing-viewer,OTHER_GOV_DEPT,STANDARD,north-east,PRIVATELAW,UK,ORGANISATION,N,Null,PUBLIC",
         "wlu-admin,ADMIN,STANDARD,south-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
-        "fl401-judge,JUDICIAL,STANDARD,south-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC"
+        "fl401-judge,JUDICIAL,STANDARD,south-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC",
+        "wlu-team-leader,ADMIN,STANDARD,south-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
     })
     void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
                                           String region, String jurisdiction, String primaryLocation,
