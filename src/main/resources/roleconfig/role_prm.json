@@ -18,15 +18,15 @@
         },
         "classification": {
           "mandatory": true,
-          "values": [
-            "BEFTA_JURISDICTION_1",
-            "BEFTA_MASTER"
-          ]
+            "values": ["RESTRICTED"]
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["RESTRICTED"]
+            "values": [
+              "BEFTA_JURISDICTION_1",
+              "BEFTA_MASTER"
+            ]
           },
           "caseType": {
             "mandatory": true
