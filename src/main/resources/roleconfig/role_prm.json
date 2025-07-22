@@ -1,8 +1,81 @@
 [
   {
-    "name":  "Role1",
+    "name": "PRM_Test_GA_Role",
+    "label": "PRM Test Group Access Role",
+    "description": "Sample role for testing - PRM Group Access Role",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "TEST_JURISDICTION"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseAccessGroupId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "PRM_Test_Org_Role",
+    "label": "PRM Test Org Role",
+    "description": "Sample role for testing - PRM Org Role",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "TEST_JURISDICTION"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "Role1",
     "label": "Role1",
-    "description": "Sample role for testing - to be deleted",
+    "description": "Sample role for testing - from BEFTA Case Definition",
     "category": "PROFESSIONAL",
     "type": "ORGANISATION",
     "substantive": true,
@@ -25,8 +98,7 @@
             "mandatory": true,
             "values": [
               "BEFTA_JURISDICTION_1",
-              "BEFTA_MASTER",
-              "SSCS"
+              "BEFTA_MASTER"
             ]
           },
           "caseType": {
