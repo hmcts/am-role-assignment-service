@@ -38,7 +38,7 @@
   },
 
   "expectedResponse": {
-    "_extends_": "Common_422_Response",
+    "_extends_": "RAS_422_Response",
     "body": {
       "roleAssignmentResponse": {
         "roleRequest": {
