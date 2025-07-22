@@ -28,7 +28,7 @@
           "classification": "RESTRICTED",
           "grantType": "STANDARD",
           "attributes": {
-            "jurisdiction": "PRIVATELAW",
+            "jurisdiction": "TEST_JURISDICTION",
             "caseType": "12345",
             "caseAccessGroupId": "12345"
           }
@@ -64,7 +64,7 @@
             "created" : "[[ANYTHING_PRESENT]]",
             "log" : "[[ANYTHING_PRESENT]]",
             "attributes" : {
-              "jurisdiction" : "PRIVATELAW",
+              "jurisdiction" : "TEST_JURISDICTION",
               "caseType" : "12345",
               "caseAccessGroupId" : "12345",
               "substantive" : "Y"
