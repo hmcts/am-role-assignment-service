@@ -4,5 +4,12 @@
   "productName": "Role Assignments Service",
   "operationName": "Create Role Assignments",
   "method": "POST",
-  "uri": "am/role-assignments"
+  "uri": "am/role-assignments",
+
+  "expectedResponse": {
+    "headers": {
+      "Content-Type" : "application/vnd.uk.gov.hmcts.role-assignment-service.create-assignments+json;version=1.0;charset=UTF-8"
+    }
+  }
+
 }

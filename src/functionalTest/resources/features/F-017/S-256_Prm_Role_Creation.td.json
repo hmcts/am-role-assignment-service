@@ -37,10 +37,13 @@
 
   "expectedResponse": {
     "_extends_": "Common_201_Response",
+
     "body": {
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
+
+          "status": "APPROVED",
           "replaceExisting" : true
         },
         "requestedRoles": [

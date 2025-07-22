@@ -38,10 +38,13 @@
 
   "expectedResponse": {
     "_extends_": "RAS_422_Response",
+
     "body": {
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
+
+          "status": "REJECTED",
           "replaceExisting" : true
         },
         "requestedRoles": [

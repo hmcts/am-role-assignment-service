@@ -1,9 +1,6 @@
 @F-017
 Feature: F-017 : Create Role Assignments for Group Access
 
-  Background:
-    Given an appropriate test context as detailed in the test data source
-
   @S-250
   Scenario: Invoking POST role-assignments api with request to add a new role assignment
     Given an appropriate test context as detailed in the test data source,
