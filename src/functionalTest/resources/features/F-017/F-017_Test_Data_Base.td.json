@@ -3,14 +3,6 @@
   "_extends_": "F-017-Base-Root",
   "productName": "Role Assignments Service",
   "operationName": "Create Role Assignments",
-  "specs": [
-    "an active IDAM profile with full permissions"
-  ],
   "method": "POST",
-  "uri": "am/role-assignments",
-  "request": {
-    "headers": {
-      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForOrm]}"
-    }
-  }
+  "uri": "am/role-assignments"
 }

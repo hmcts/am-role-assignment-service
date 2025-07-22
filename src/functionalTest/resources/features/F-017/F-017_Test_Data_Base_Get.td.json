@@ -3,14 +3,17 @@
   "_extends_": "F-017-Base-Root",
   "productName": "Role Assignments Service",
   "operationName": "Create Role Assignments",
-  "specs": [
-    "an active IDAM profile with full permissions"
-  ],
   "method": "GET",
   "uri": "/am/role-assignments/actors/{actorId}",
+
   "request": {
-    "headers": {
-      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForOrm]}"
+    "pathVariables": {
+      "actorId": "OVERRIDE_ME"
     }
+  },
+
+  "expectedResponse": {
+    "_extends_": "Common_200_Response"
   }
+
 }
