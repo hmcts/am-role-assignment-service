@@ -1,11 +1,9 @@
 {
-  "title": "Invoking POST role-assignments api with request to add a new role assignment with not valid classification",
-  "_guid_": "S-254",
+  "_guid_": "S-256_Prm_Role_Creation",
   "_extends_": "F-017_Test_Data_Base",
 
   "specs": [
-    "has roleType Organisation, roleCategory Professional, roleName PRM_Test_GA_Role and Classification is not set to Restricted",
-    "Befta6 - who invokes the API"
+    "to create org role assignments for actor"
   ],
 
   "request": {
@@ -25,7 +23,7 @@
           "roleType": "ORGANISATION",
           "roleName": "PRM_Test_GA_Role",
           "roleCategory": "PROFESSIONAL",
-          "classification": "PUBLIC",
+          "classification": "RESTRICTED",
           "grantType": "STANDARD",
           "attributes": {
             "jurisdiction": "TEST_JURISDICTION",
@@ -38,14 +36,14 @@
   },
 
   "expectedResponse": {
-    "_extends_": "RAS_422_Response",
+    "_extends_": "Common_201_Response",
 
     "body": {
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
 
-          "status": "REJECTED",
+          "status": "APPROVED",
           "replaceExisting" : true
         },
         "requestedRoles": [
@@ -56,20 +54,21 @@
             "roleType" : "ORGANISATION",
             "roleName" : "PRM_Test_GA_Role",
             "roleCategory" : "PROFESSIONAL",
-            "classification" : "PUBLIC",
+            "classification" : "RESTRICTED",
             "grantType" : "STANDARD",
             "readOnly" : false,
             "beginTime" : "[[ANYTHING_PRESENT]]",
             "endTime" : "[[ANYTHING_PRESENT]]",
             "process" : "professional-organisational-role-mapping",
             "reference" : "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-            "status" : "REJECTED",
+            "status" : "LIVE",
             "created" : "[[ANYTHING_PRESENT]]",
             "log" : "[[ANYTHING_PRESENT]]",
             "attributes" : {
               "jurisdiction" : "TEST_JURISDICTION",
               "caseType" : "12345",
-              "caseAccessGroupId" : "12345"
+              "caseAccessGroupId" : "12345",
+              "substantive" : "Y"
             }
           }
         ]

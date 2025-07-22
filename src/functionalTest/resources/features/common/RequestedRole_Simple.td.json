@@ -1,0 +1,14 @@
+{
+  "_guid_": "RequestedRole_simple",
+  "actorIdType": "IDAM",
+  "actorId": "OVERRIDE_ME",
+  "roleType": "ORGANISATION",
+  "roleName": "OVERRIDE_ME",
+  "roleCategory": "OVERRIDE_ME",
+  "classification": "PUBLIC",
+  "grantType": "STANDARD",
+  "readOnly": false,
+  "beginTime" : "2021-01-01T00:00:00Z",
+  "endTime" : "2028-01-01T00:00:00Z",
+  "attributes": {}
+}
