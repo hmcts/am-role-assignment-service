@@ -9,7 +9,7 @@
   ],
   "request": {
     "pathVariables": {
-      "actorId": "${[scenarioContext][childContexts][S-256_Org_Role_Creation][testData][request][body][requestedRoles][0][actorId]}"
+      "actorId": "${[scenarioContext][childContexts][S-256_Prm_Role_Creation][testData][request][body][requestedRoles][0][actorId]}"
     }
   },
   "expectedResponse": {
