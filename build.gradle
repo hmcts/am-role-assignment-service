@@ -416,7 +416,7 @@ dependencies {
   implementation group: 'jakarta.inject', name: 'jakarta.inject-api', version: '2.0.1'
   implementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
   implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.12.0'
-  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.1'
+  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.2'
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.5'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '10.0.1'
@@ -468,7 +468,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:befta-fw:9.2.4'
   testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
-  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.7'
+  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.8'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
@@ -489,7 +489,7 @@ dependencies {
 
   compileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-  implementation group: 'org.pitest', name: 'pitest-junit5-plugin', version: '1.2.2'
+  implementation group: 'org.pitest', name: 'pitest-junit5-plugin', version: '1.2.3'
 
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
