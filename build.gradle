@@ -275,6 +275,7 @@ jacoco {
   toolVersion = "0.8.11"
 }
 
+
 pitest {
   pitestVersion = versions.pitest
   targetClasses = ['uk.gov.hmcts.reform.*']
