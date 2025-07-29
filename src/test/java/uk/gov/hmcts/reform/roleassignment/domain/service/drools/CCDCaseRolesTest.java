@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
@@ -323,28 +324,39 @@ class CCDCaseRolesTest extends DroolBase {
         verifyNoInteractions(retrieveDataService);
     }
 
-    @Test
-    void shouldApprovePrivateLawSolicitorCaseRoles() {
-        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR1]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR2]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR3]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR4]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR5]");
-        verifyCreatePrivateLawCaseRequestedRole("[FL401APPLICANTSOLICITOR]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR1]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR2]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR3]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR4]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR5]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR1]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR2]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR3]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR4]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR5]");
-        verifyCreatePrivateLawCaseRequestedRole("[FL401RESPONDENTSOLICITOR]");
-    }
-
-    private void verifyCreatePrivateLawCaseRequestedRole(String roleName) {
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "[C100APPLICANTSOLICITOR1]",
+        "[C100APPLICANTSOLICITOR2]",
+        "[C100APPLICANTSOLICITOR3]",
+        "[C100APPLICANTSOLICITOR4]",
+        "[C100APPLICANTSOLICITOR5]",
+        "[FL401APPLICANTSOLICITOR]",
+        "[C100CHILDSOLICITOR1]",
+        "[C100CHILDSOLICITOR2]",
+        "[C100CHILDSOLICITOR3]",
+        "[C100CHILDSOLICITOR4]",
+        "[C100CHILDSOLICITOR5]",
+        "[C100RESPONDENTSOLICITOR1]",
+        "[C100RESPONDENTSOLICITOR2]",
+        "[C100RESPONDENTSOLICITOR3]",
+        "[C100RESPONDENTSOLICITOR4]",
+        "[C100RESPONDENTSOLICITOR5]",
+        "[FL401RESPONDENTSOLICITOR]",
+        "[C100APPLICANTBARRISTER1]",
+        "[C100APPLICANTBARRISTER2]",
+        "[C100APPLICANTBARRISTER3]",
+        "[C100APPLICANTBARRISTER4]",
+        "[C100APPLICANTBARRISTER5]",
+        "[FL401APPLICANTBARRISTER]",
+        "[C100RESPONDENTBARRISTER1]",
+        "[C100RESPONDENTBARRISTER2]",
+        "[C100RESPONDENTBARRISTER3]",
+        "[C100RESPONDENTBARRISTER4]",
+        "[C100RESPONDENTBARRISTER5]",
+        "[FL401RESPONDENTBARRISTER]"
+    })
+    void verifyCreatePrivateLawCaseRequestedRole(String roleName) {
         RoleAssignment requestedRole = getRequestedCaseRole_ra(
             RoleCategory.PROFESSIONAL,
             roleName,
