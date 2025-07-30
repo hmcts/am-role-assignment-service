@@ -7,7 +7,7 @@ buildscript {
     }
   dependencies {
     classpath("net.serenity-bdd:serenity-gradle-plugin:2.4.34")
-//    classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
+    classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   }
 }
 
@@ -19,7 +19,7 @@ plugins {
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.springframework.boot' version '2.7.18'
-//  id 'info.solidsoft.pitest' version '1.15.0'
+  id 'info.solidsoft.pitest' version '1.15.0'
   id 'com.github.ben-manes.versions' version '0.51.0' //do not update this version from 0.41.0
   id 'org.sonarqube' version '4.0.0.2929'
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.25'
@@ -28,7 +28,7 @@ plugins {
   id 'org.owasp.dependencycheck' version '10.0.4'
 }
 
-//apply plugin: "info.solidsoft.pitest"
+apply plugin: "info.solidsoft.pitest"
 apply plugin: 'java'
 apply plugin: 'net.serenity-bdd.aggregator'
 apply plugin: 'project-report'
@@ -290,27 +290,27 @@ jacoco {
   toolVersion = "0.8.8"
 }
 
-//pitest {
-//  pitestVersion = versions.pitest
-//  targetClasses = ['uk.gov.hmcts.reform.*']
-//  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
-//                     'uk.gov.hmcts.reform.roleassignment.config.*',
-//                     'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot',
-//                     'uk.gov.hmcts.reform.roleassignment.util.JacksonUtils',
-//                     'uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest',
-//                     'uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig',
-//                     'uk.gov.hmcts.reform.roleassignment.domain.model.enums.*',
-//                     'uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType',
-//                     'uk.gov.hmcts.reform.roleassignment.data.*',
-//                     'uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback',
-//
-//  ]
-//  excludedMethods = ['getListOfRoles', 'removeCorrelationLog', 'getExitCode', 'validateDateTime', 'requestInterceptor']
-//  threads = 15
-//  outputFormats = ['XML', 'HTML']
-//  timestampedReports = true
-//  mutationThreshold = 60
-//}
+pitest {
+  pitestVersion = versions.pitest
+  targetClasses = ['uk.gov.hmcts.reform.*']
+  excludedClasses = ['uk.gov.hmcts.reform.roleassignment.RoleAssignmentApplication',
+                     'uk.gov.hmcts.reform.roleassignment.config.*',
+                     'uk.gov.hmcts.reform.roleassignment.util.Swagger2SpringBoot',
+                     'uk.gov.hmcts.reform.roleassignment.util.JacksonUtils',
+                     'uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest',
+                     'uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig',
+                     'uk.gov.hmcts.reform.roleassignment.domain.model.enums.*',
+                     'uk.gov.hmcts.reform.roleassignment.auditlog.AuditOperationType',
+                     'uk.gov.hmcts.reform.roleassignment.data.*',
+                     'uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback',
+
+  ]
+  excludedMethods = ['getListOfRoles', 'removeCorrelationLog', 'getExitCode', 'validateDateTime', 'requestInterceptor']
+  threads = 15
+  outputFormats = ['XML', 'HTML']
+  timestampedReports = true
+  mutationThreshold = 60
+}
 
 
 test {
@@ -413,7 +413,6 @@ dependencies {
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-jose', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-resource-server', version: versions.springSecurity
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.11'
-//  implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-circuitbreaker-resilience4j', version: '3.3.0'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '4.3.0'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.9'
