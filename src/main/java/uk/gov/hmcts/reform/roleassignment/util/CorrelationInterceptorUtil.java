@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 

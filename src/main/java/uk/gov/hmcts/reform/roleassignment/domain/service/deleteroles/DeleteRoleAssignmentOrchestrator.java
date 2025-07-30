@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
 import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
