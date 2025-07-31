@@ -3,14 +3,21 @@
   "_extends_": "F-017-Base-Root",
   "productName": "Role Assignments Service",
   "operationName": "Create Role Assignments",
-  "specs": [
-    "an active IDAM profile with full permissions"
-  ],
   "method": "GET",
   "uri": "/am/role-assignments/actors/{actorId}",
+
   "request": {
+    "pathVariables": {
+      "actorId": "OVERRIDE_ME"
+    }
+  },
+
+  "expectedResponse": {
+    "_extends_": "Common_200_Response",
+
     "headers": {
-      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForOrm]}"
+      "Content-Type" : "application/vnd.uk.gov.hmcts.role-assignment-service.get-assignments+json;version=1.0;charset=UTF-8"
     }
   }
+
 }

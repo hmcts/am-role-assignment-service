@@ -1,0 +1,21 @@
+{
+  "_guid_": "F-017_Test_Data_Base_Delete",
+  "_extends_": "F-017-Base-Root",
+
+  "productName": "Role Assignment Service",
+  "operationName": "Delete Role Assignments by Process",
+  "method": "DELETE",
+  "uri": "/am/role-assignments?process={process}&reference={reference}",
+
+  "request": {
+    "pathVariables": {
+      "process": "OVERRIDE_ME",
+      "reference": "OVERRIDE_ME"
+    }
+  },
+
+  "expectedResponse": {
+    "_extends_": "Common_204_Response"
+  }
+
+}

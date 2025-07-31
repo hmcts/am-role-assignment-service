@@ -1,0 +1,23 @@
+{
+  "title": "Invoking GET role assignment with an invalid actorId and returns 200 OK",
+  "_guid_": "S-257",
+  "_extends_": "F-017_Test_Data_Base_Get",
+
+  "specs": [
+    "has a actor id passed that does not exists",
+    "Befta6 - who invokes the API"
+  ],
+
+  "request": {
+    "pathVariables": {
+      "actorId": "${[scenarioContext][testData][users][invokingUser][id]}1"
+    }
+  },
+
+  "expectedResponse": {
+    "body": {
+      "roleAssignmentResponse": [ ]
+    }
+  }
+
+}

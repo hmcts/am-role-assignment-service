@@ -1,0 +1,44 @@
+{
+  "title": "Invoking GET role assignment with valid actorId and returns 200 OK",
+  "_guid_": "S-256",
+  "_extends_": "F-017_Test_Data_Base_Get",
+
+  "specs": [
+    "has a actor id passed that does exists",
+    "Befta6 - who invokes the API"
+  ],
+
+  "request": {
+    "pathVariables": {
+      "actorId": "${[scenarioContext][childContexts][S-256_Prm_Role_Creation][testData][request][body][requestedRoles][0][actorId]}"
+    }
+  },
+
+  "expectedResponse": {
+    "body": {
+      "roleAssignmentResponse": [
+        {
+          "id" : "[[ANYTHING_PRESENT]]",
+          "actorIdType" : "IDAM",
+          "actorId" : "[[ANYTHING_PRESENT]]",
+          "roleType" : "ORGANISATION",
+          "roleName" : "PRM_Test_GA_Role",
+          "roleCategory" : "PROFESSIONAL",
+          "classification" : "RESTRICTED",
+          "grantType" : "STANDARD",
+          "readOnly" : false,
+          "beginTime" : "[[ANYTHING_PRESENT]]",
+          "endTime" : "[[ANYTHING_PRESENT]]",
+          "created" : "[[ANYTHING_PRESENT]]",
+          "attributes" : {
+            "jurisdiction" : "TEST_JURISDICTION",
+            "caseType" : "12345",
+            "caseAccessGroupId" : "12345",
+            "substantive" : "Y"
+          }
+        }
+      ]
+    }
+  }
+
+}

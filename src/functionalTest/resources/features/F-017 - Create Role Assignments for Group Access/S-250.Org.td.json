@@ -1,0 +1,79 @@
+{
+  "title": "Invoking POST role-assignments api with request to add a new role assignment (PRM Org Role)",
+  "_guid_": "S-250.Org",
+  "_extends_": "F-017_Test_Data_Base",
+
+  "specs": [
+    "has roleType Organisation, roleCategory Professional, roleName PRM_Test_Org_Role and attributes has caseType but not caseAccessGroupId",
+    "Befta6 - who invokes the API"
+  ],
+
+  "request": {
+    "body": {
+      "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "process": "professional-organisational-role-mapping",
+        "reference": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "replaceExisting": true
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole_simple",
+
+          "actorIdType": "IDAM",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "roleType": "ORGANISATION",
+          "roleName": "PRM_Test_Org_Role",
+          "roleCategory": "PROFESSIONAL",
+          "classification": "RESTRICTED",
+          "grantType": "STANDARD",
+          "attributes": {
+            "jurisdiction": "TEST_JURISDICTION",
+            "caseType": "12345"
+          }
+        }
+      ]
+    }
+  },
+
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+
+    "body": {
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest",
+
+          "status": "APPROVED",
+          "replaceExisting" : true
+        },
+        "requestedRoles": [
+          {
+            "id" : "[[ANYTHING_PRESENT]]",
+            "actorIdType" : "IDAM",
+            "actorId" : "[[ANYTHING_PRESENT]]",
+            "roleType" : "ORGANISATION",
+            "roleName" : "PRM_Test_Org_Role",
+            "roleCategory" : "PROFESSIONAL",
+            "classification" : "RESTRICTED",
+            "grantType" : "STANDARD",
+            "readOnly" : false,
+            "beginTime" : "[[ANYTHING_PRESENT]]",
+            "endTime" : "[[ANYTHING_PRESENT]]",
+            "process" : "professional-organisational-role-mapping",
+            "reference" : "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "status" : "LIVE",
+            "created" : "[[ANYTHING_PRESENT]]",
+            "log" : "[[ANYTHING_PRESENT]]",
+            "attributes" : {
+              "jurisdiction" : "TEST_JURISDICTION",
+              "caseType" : "12345",
+              "substantive" : "Y"
+            }
+          }
+        ]
+      }
+    }
+  }
+
+}
