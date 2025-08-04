@@ -1,0 +1,16 @@
+{
+  "_guid_": "S-256_DeleteDataForRoleAssignmentsForPrmRoles",
+  "_extends_": "F-017_Test_Data_Base_Delete",
+
+  "specs": [
+    "to delete role assignments just created above"
+  ],
+
+  "request": {
+    "pathVariables": {
+      "process": "professional-organisational-role-mapping",
+      "reference": "${[scenarioContext][siblingContexts][S-256_Prm_Role_Creation][testData][request][body][roleRequest][reference]}"
+    }
+  }
+
+}

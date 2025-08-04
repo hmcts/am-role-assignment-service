@@ -1,0 +1,80 @@
+{
+  "title": "Invoking POST role-assignments api with request to add a new role assignment with not valid classification",
+  "_guid_": "S-254",
+  "_extends_": "F-017_Test_Data_Base",
+
+  "specs": [
+    "has roleType Organisation, roleCategory Professional, roleName PRM_Test_GA_Role and Classification is not set to Restricted",
+    "Befta6 - who invokes the API"
+  ],
+
+  "request": {
+    "body": {
+      "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "process": "professional-organisational-role-mapping",
+        "reference": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "replaceExisting": true
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole_simple",
+
+          "actorIdType": "IDAM",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "roleType": "ORGANISATION",
+          "roleName": "PRM_Test_GA_Role",
+          "roleCategory": "PROFESSIONAL",
+          "classification": "PUBLIC",
+          "grantType": "STANDARD",
+          "attributes": {
+            "jurisdiction": "TEST_JURISDICTION",
+            "caseType": "12345",
+            "caseAccessGroupId": "12345"
+          }
+        }
+      ]
+    }
+  },
+
+  "expectedResponse": {
+    "_extends_": "RAS_422_Response",
+
+    "body": {
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest",
+
+          "status": "REJECTED",
+          "replaceExisting" : true
+        },
+        "requestedRoles": [
+          {
+            "id" : "[[ANYTHING_PRESENT]]",
+            "actorIdType" : "IDAM",
+            "actorId" : "[[ANYTHING_PRESENT]]",
+            "roleType" : "ORGANISATION",
+            "roleName" : "PRM_Test_GA_Role",
+            "roleCategory" : "PROFESSIONAL",
+            "classification" : "PUBLIC",
+            "grantType" : "STANDARD",
+            "readOnly" : false,
+            "beginTime" : "[[ANYTHING_PRESENT]]",
+            "endTime" : "[[ANYTHING_PRESENT]]",
+            "process" : "professional-organisational-role-mapping",
+            "reference" : "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "status" : "REJECTED",
+            "created" : "[[ANYTHING_PRESENT]]",
+            "log" : "[[ANYTHING_PRESENT]]",
+            "attributes" : {
+              "jurisdiction" : "TEST_JURISDICTION",
+              "caseType" : "12345",
+              "caseAccessGroupId" : "12345"
+            }
+          }
+        ]
+      }
+    }
+  }
+
+}
