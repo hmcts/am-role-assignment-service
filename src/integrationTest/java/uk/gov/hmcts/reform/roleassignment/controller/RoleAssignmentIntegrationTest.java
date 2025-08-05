@@ -249,7 +249,7 @@ class RoleAssignmentIntegrationTest extends BaseTest {
         List<RoleConfigRole> roleConfigRoles = mapper.readValue(response, new TypeReference<>() {
         });
 
-        assertEquals(214, roleConfigRoles.size());
+        assertEquals(216, roleConfigRoles.size());
         for (RoleConfigRole roleConfigRole : roleConfigRoles) {
             assertNotNull(roleConfigRole.getName());
             assertNotNull(roleConfigRole.getCategory());
