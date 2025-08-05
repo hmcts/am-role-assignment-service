@@ -1,13 +1,13 @@
 package uk.gov.hmcts.reform.roleassignment.util;
 
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentRequestResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

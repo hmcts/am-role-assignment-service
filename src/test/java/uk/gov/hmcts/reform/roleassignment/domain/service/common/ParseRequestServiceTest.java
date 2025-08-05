@@ -1,15 +1,16 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -22,7 +23,6 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.util.CorrelationInterceptorUtil;
 import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,7 +36,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 class ParseRequestServiceTest {
 
     @InjectMocks
@@ -265,12 +265,6 @@ class ParseRequestServiceTest {
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        String clientId = "copied client id";
-        UUID userId = UUID.fromString("21334a2b-79ce-44eb-9168-2d49a744be9c");
-        when(securityUtilsMock.getServiceName()).thenReturn(clientId);
-        when(securityUtilsMock.getUserId()).thenReturn(userId.toString());
-        when(correlationInterceptorUtilMock.preHandle(
-            any(HttpServletRequest.class))).thenReturn("21334a2b-79ce-44eb-9168-2d49a744be9d");
 
         AssignmentRequest assignmentRequest = TestDataBuilder.buildAssignmentRequest(CREATED, Status.LIVE, true);
         assignmentRequest.getRequest().setProcess("");

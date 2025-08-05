@@ -1,13 +1,12 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog.aop;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.expression.AnnotatedElementKey;
 import org.springframework.expression.spel.SpelEvaluationException;
@@ -18,12 +17,11 @@ import uk.gov.hmcts.reform.roleassignment.auditlog.LogAudit;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Aspect
 @Component
 @ConditionalOnProperty(prefix = "audit.log", name = "enabled", havingValue = "true")
 public class AuditAspect {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AuditAspect.class);
 
     private static final String RESULT_VARIABLE = "result";
     private ExpressionEvaluator evaluator = new ExpressionEvaluator();
@@ -36,7 +34,8 @@ public class AuditAspect {
         var startTime = System.currentTimeMillis();
         Object result = joinPoint.proceed();
 
-        if (result instanceof ResponseEntity && statusCodes.contains(((ResponseEntity) result).getStatusCodeValue())) {
+        if (result instanceof ResponseEntity
+            && statusCodes.contains(((ResponseEntity<?>) result).getStatusCode().value())) {
             return result;
         } else {
             var roleName = getValue(joinPoint, logAudit.roleName(), result, String.class);
@@ -79,7 +78,7 @@ public class AuditAspect {
                 var methodKey = new AnnotatedElementKey(method, joinPoint.getThis().getClass());
                 return evaluator.condition(condition, methodKey, evaluationContext, returnType);
             } catch (SpelEvaluationException ex) {
-                LOG.warn("Error evaluating LogAudit annotation expression:{} on method:{}",
+                log.warn("Error evaluating LogAudit annotation expression:{} on method:{}",
                          condition, method.getName(), ex
                 );
                 return null;
