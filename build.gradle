@@ -14,7 +14,7 @@ buildscript {
 plugins {
   id 'eclipse'
   id 'application'
-  id 'uk.gov.hmcts.java' version '0.12.66'
+  id 'uk.gov.hmcts.java' version '0.12.67'
   id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.1.7'
@@ -56,7 +56,7 @@ def versions = [
   rest_assured   : '3.3.0',
   cucumber       : '5.7.0',
   feign_jackson  : '12.5',
-  jacksondata    : '2.19.1',
+  jacksondata    : '2.19.2',
   drools         : '7.73.0.Final',
   launchDarklySdk: '5.10.9',
   log4JVersion   : '2.24.3',
@@ -412,7 +412,7 @@ dependencies {
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-core', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-jose', version: versions.springSecurity
   implementation group: 'org.springframework.security', name:'spring-security-oauth2-resource-server', version: versions.springSecurity
-  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.11'
+  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.12'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.10.RELEASE'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: '3.1.9'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.2.10.RELEASE'
@@ -460,7 +460,7 @@ dependencies {
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.7'
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '9.48'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-  implementation group: 'commons-io', name:'commons-io', version: '2.19.0'
+  implementation group: 'commons-io', name:'commons-io', version: '2.20.0'
   implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.27.1'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.json', name: 'json', version: '20231013'
@@ -514,7 +514,7 @@ dependencies {
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
-  smokeTestImplementation group: 'commons-io', name: 'commons-io', version: '2.19.0'
+  smokeTestImplementation group: 'commons-io', name: 'commons-io', version: '2.20.0'
   smokeTestCompileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   smokeTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
