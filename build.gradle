@@ -565,7 +565,7 @@ dependencyManagement {
       entry 'logback-classic'
       entry 'logback-core'
     }
-    dependencySet(group: 'net.minidev', version: '2.5.2') {
+    dependencySet(group: 'net.minidev', version: '2.6.0') {
       entry 'json-smart'
     }
     dependencySet(group: 'com.fasterxml.jackson.core', version: versions.jacksondata) {
