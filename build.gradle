@@ -461,7 +461,7 @@ dependencies {
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '9.48'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   implementation group: 'commons-io', name:'commons-io', version: '2.20.0'
-  implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.27.1'
+  implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.28.0'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.json', name: 'json', version: '20231013'
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.6.0'
