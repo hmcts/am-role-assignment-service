@@ -4,7 +4,7 @@
     "label": "HRS Team Leader",
     "description": "Team Leader has access to all hearings for all services",
     "category": "ADMIN",
-    "substantive": true,
+    "substantive": false,
     "type": "ORGANISATION",
     "patterns": [
       {
@@ -37,7 +37,7 @@
     "label": "HRS Listener",
     "description": "allows a user to listen to a hearing recording for the skills selected\t",
     "category": "ADMIN",
-    "substantive": true,
+    "substantive": false,
     "type": "ORGANISATION",
     "patterns": [
       {
@@ -70,7 +70,7 @@
     "label": "HRS Sharer",
     "description": "allows a user to share a hearing recording for the skills selected",
     "category": "ADMIN",
-    "substantive": true,
+    "substantive": false,
     "type": "ORGANISATION",
     "patterns": [
       {
