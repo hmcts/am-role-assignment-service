@@ -1,15 +1,15 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springdoc.core.Constants.SWAGGER_UI_URL;
+import static org.springdoc.core.utils.Constants.SWAGGER_UI_URL;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 class SwaggerRedirectControllerTest {
 
     private final SwaggerRedirectController controller = new SwaggerRedirectController();

@@ -3,25 +3,21 @@ package uk.gov.hmcts.reform.roleassignment;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import feign.Feign;
 import feign.jackson.JacksonEncoder;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
@@ -31,25 +27,18 @@ import uk.gov.hmcts.reform.idam.client.models.TokenResponse;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.BadRequestException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 
-import javax.annotation.PreDestroy;
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Objects;
-import java.util.Properties;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Slf4j
+@ExtendWith(SerenityJUnit5Extension.class)
+@SpringBootTest(classes = SmokeTestConfiguration.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public abstract class BaseTest {
-
-    private static final Logger log = LoggerFactory.getLogger(BaseTest.class);
 
     RestTemplate restTemplate = new RestTemplate();
     protected static final ObjectMapper mapper = new ObjectMapper();
 
-    @BeforeClass
+    @BeforeAll
     public static void init() {
         mapper.registerModule(new JavaTimeModule());
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -108,38 +97,6 @@ public abstract class BaseTest {
             log.error("HttpClientErrorException {}", exception.getMessage());
             throw new BadRequestException("Unable to fetch access token");
 
-        }
-    }
-
-    @TestConfiguration
-    static class Configuration {
-        Connection connection;
-
-        @Bean
-        public EmbeddedPostgres embeddedPostgres() throws IOException {
-            return EmbeddedPostgres
-                .builder()
-                .start();
-        }
-
-        @Bean
-        public DataSource dataSource() throws IOException, SQLException {
-            final EmbeddedPostgres pg = embeddedPostgres();
-
-            final Properties props = new Properties();
-            // Instruct JDBC to accept JSON string for JSONB
-            props.setProperty("stringtype", "unspecified");
-            props.setProperty("user", "postgres");
-            connection = DriverManager.getConnection(pg.getJdbcUrl("postgres"), props);
-            return new SingleConnectionDataSource(connection, true);
-        }
-
-        @PreDestroy
-        public void contextDestroyed() throws IOException, SQLException {
-            if (connection != null) {
-                connection.close();
-            }
-            embeddedPostgres().close();
         }
     }
 }
