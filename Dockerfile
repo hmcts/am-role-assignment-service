@@ -5,7 +5,7 @@ ARG APP_INSIGHTS_AGENT_VERSION=3.7.4
 
 # Application image
 
-FROM hmctspublic.azurecr.io/base/java:17-distroless
+FROM hmctspublic.azurecr.io/base/java:21-distroless
 USER hmcts
 LABEL maintainer="https://github.com/hmcts/role-assignment-service"
 
