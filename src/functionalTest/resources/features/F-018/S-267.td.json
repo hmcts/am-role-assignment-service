@@ -15,7 +15,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1747069134288886/tribunal-member-2"
+        "reference": "1758736124386336/tribunal-member-2"
       },
       "requestedRoles": [
         {
@@ -28,7 +28,7 @@
           "classification": "RESTRICTED",
           "attributes":
           {
-            "caseId" : "1747069134288886",
+            "caseId" : "1758736124386336",
             "jurisdiction": "EMPLOYMENT"
           }
         }
