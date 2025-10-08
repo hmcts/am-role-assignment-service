@@ -10,7 +10,7 @@ plugins {
   id 'com.github.ben-manes.versions' version '0.51.0' //do not update this version from 0.41.0
   id 'org.sonarqube' version '6.0.1.5171'
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.25'
-  id 'au.com.dius.pact' version '4.6.16' //do not change this version or serenity reports will fail to generate
+  id 'au.com.dius.pact' version '4.6.17' //do not change this version or serenity reports will fail to generate
   id 'org.flywaydb.flyway' version '9.22.3'
   id 'org.owasp.dependencycheck' version '12.1.1'
   id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.16'
@@ -25,13 +25,13 @@ ext {
 def versions = [
   junit           : '5.11.3',
   junitPlatform   : '1.11.3',
-  lombok          : '1.18.38',
+  lombok          : '1.18.42',
   pitest          : '1.20.2',
   reformLogging   : '6.1.9',
-  reformS2sClient : '5.3.2',
+  reformS2sClient : '5.3.3',
   serenity        : '4.2.15',
   pact_version    : '4.1.7',
-  rest_assured    : '5.5.0',
+  rest_assured    : '5.5.6',
   cucumber        : '7.20.1',
   feign_jackson   : '13.5',
   jacksondata     : '2.19.2',
@@ -273,7 +273,7 @@ task migratePostgresDatabase(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
 }
 
 jacoco {
-  toolVersion = "0.8.11"
+  toolVersion = "0.8.13"
 }
 
 
@@ -424,7 +424,7 @@ dependencies {
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '10.0.1'
   implementation group: 'com.auth0', name: 'java-jwt', version: '4.4.0'
   implementation group: 'commons-io', name:'commons-io', version: '2.20.0'
-  implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.27.1'
+  implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.28.0'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.json', name: 'json', version: '20250107'
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.6.0'
@@ -439,7 +439,7 @@ dependencies {
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
-  implementation 'net.bytebuddy:byte-buddy:1.14.19'
+  implementation 'net.bytebuddy:byte-buddy:1.17.6'
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.1.1')
   testImplementation group: 'org.wiremock', name: 'wiremock', version: '3.10.0'
@@ -469,8 +469,8 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:befta-fw:9.2.4'
-  testImplementation 'com.github.hmcts:fortify-client:1.4.9:all'
-  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.8'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.10:all'
+  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.7.9'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
@@ -547,7 +547,7 @@ dependencyManagement {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
   }
   dependencies {
-    dependencySet(group: 'net.minidev', version: '2.5.2') {
+    dependencySet(group: 'net.minidev', version: '2.6.0') {
       entry 'json-smart'
     }
     dependencySet(group: 'com.fasterxml.jackson.core', version: versions.jacksondata) {
