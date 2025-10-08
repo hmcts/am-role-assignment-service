@@ -18,7 +18,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1747132978960059/challenged-access-judiciary/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1759309649949753/challenged-access-judiciary/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "challenged-access",
         "replaceExisting" : true
       },
@@ -29,7 +29,7 @@
           "grantType" : "CHALLENGED",
           "classification" : "PUBLIC",
           "attributes": {
-            "caseId": "1747132978960059"
+            "caseId": "1759309649949753"
           },
           "roleName": "challenged-access-judiciary",
           "roleCategory": "JUDICIAL",
@@ -40,7 +40,7 @@
           "notes" : [{
             "userId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "time": "2022-01-01T00:00Z",
-            "comment": "Need Access to case number 1747132978960059 for a month"
+            "comment": "Need Access to case number 1759309649949753 for a month"
           }]
         }
       ]
