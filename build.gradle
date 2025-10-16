@@ -439,7 +439,7 @@ dependencies {
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
-  implementation 'net.bytebuddy:byte-buddy:1.17.6'
+  implementation 'net.bytebuddy:byte-buddy:1.17.8'
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.1.1')
   testImplementation group: 'org.wiremock', name: 'wiremock', version: '3.10.0'
