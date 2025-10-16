@@ -29,7 +29,7 @@ def versions = [
   pitest          : '1.20.2',
   reformLogging   : '6.1.9',
   reformS2sClient : '5.3.3',
-  serenity        : '4.2.15',
+  serenity        : '4.2.34',
   pact_version    : '4.1.7',
   rest_assured    : '5.5.6',
   cucumber        : '7.20.1',
