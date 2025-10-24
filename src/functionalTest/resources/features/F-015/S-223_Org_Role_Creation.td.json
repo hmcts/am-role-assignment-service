@@ -15,7 +15,7 @@
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
         "reference": "S_201_Org_Role_For_Multiple_Actors",
-        "process": "businessProcess1"
+        "process": "${[scenarioContext][customValues][generateProcessId]}"
       },
       "requestedRoles": [
         {

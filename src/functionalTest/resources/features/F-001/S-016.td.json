@@ -10,7 +10,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "21334a2b-79ce-44eb-9168-2d49a744be9c",
-        "process": "businessProcess1",
+        "process": "${[scenarioContext][customValues][generateProcessId]}",
         "reference": "${[scenarioContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}",
         "replaceExisting": true
       },

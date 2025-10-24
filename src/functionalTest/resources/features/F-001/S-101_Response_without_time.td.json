@@ -8,7 +8,7 @@
   "grantType": "STANDARD",
   "roleCategory":"JUDICIAL",
   "readOnly" : false,
-  "process": "businessProcess1",
+  "process": "${[scenarioContext][customValues][generateProcessId]}",
   "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
   "status":"LIVE",
   "created":"[[ANYTHING_PRESENT]]",

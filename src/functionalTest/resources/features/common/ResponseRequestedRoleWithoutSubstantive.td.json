@@ -11,7 +11,7 @@
   "readOnly" : false,
   "beginTime" : "[[ANYTHING_PRESENT]]",
   "endTime" : "[[ANYTHING_PRESENT]]",
-  "process": "businessProcess1",
+  "process": "${[scenarioContext][customValues][generateProcessId]}",
   "reference": "${}${[scenarioContext][testData][request][body][roleRequest][reference]}",
   "status":"LIVE",
   "created":"[[ANYTHING_PRESENT]]",

@@ -13,7 +13,7 @@
       "assignerId": "123e4567-e89b-42d3-a456-556642446029"
     },
     "pathVariables": {
-      "process": "businessProcess1",
+      "process": "${[scenarioContext][customValues][generateProcessId]}",
       "reference": "${[scenarioContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
     }
   },

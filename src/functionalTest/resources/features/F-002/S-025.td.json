@@ -9,7 +9,7 @@
   "uri": "/am/role-assignments?process={process}&reference={reference}",
   "request": {
     "pathVariables": {
-      "process": "businessProcess1",
+      "process": "${[scenarioContext][customValues][generateProcessId]}",
       "reference": "${[scenarioContext][childContexts][CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
     }
   },
