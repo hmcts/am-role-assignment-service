@@ -67,6 +67,7 @@ Feature: F-009 : Post Role Assignments Advance Query Request
   @S-172
   Scenario: must successfully receive Role Assignments with list of multiple queries
     Given a user with [an active IDAM profile with full permissions],
+    And a successful call [to delete role assignments just created above] as in [S-106_DeleteDataForRoleAssignmentsForOrgRoles]
     And a successful call [to create org role assignments for actors & requester] as in [S-106_Multiple_Org_Role_Creation],
     When a request is prepared with appropriate values,
     And the request [contains list of multiple search queries]
