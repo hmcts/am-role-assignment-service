@@ -17,7 +17,6 @@ to support both ccd access control and work allocation requirements.
 2) Role assignments are made available through a queryable API to two major consumers: the Case Access Control and Work Allocation.
 
 
-
 ### Prerequisites
 
 To run the project you will need to have the following installed:
