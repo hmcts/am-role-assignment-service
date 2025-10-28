@@ -14,7 +14,7 @@
   },
   "request": {
     "pathVariables": {
-      "process": "businessProcess1",
+      "process": "${[scenarioContext][customValues][generateProcessId]}",
       "reference": "${[scenarioContext][childContexts][S-026_CreationDataForRoleAssignment][testData][request][body][roleRequest][reference]}"
     }
   },
