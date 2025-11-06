@@ -1,0 +1,41 @@
+[
+  {
+    "name": "PCS-SOLICITOR",
+    "label": "PCS Solicitor",
+    "description": "Solicitor case role for PCS",
+    "category": "PROFESSIONAL",
+    "type": "CASE",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PCS"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          },
+          "id": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  }
+]

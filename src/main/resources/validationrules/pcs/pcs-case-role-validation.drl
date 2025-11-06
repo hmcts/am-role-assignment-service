@@ -1,0 +1,50 @@
+package validationrules.pcs;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
+import uk.gov.hmcts.reform.roleassignment.util.Constants;
+
+/*
+ * PCS solicitor case role approval.
+ */
+rule "pcs_solicitor_create_case_role"
+when
+    Request(clientId == "pcs_api")
+    $ra: RoleAssignment(
+                 status == Status.CREATE_REQUESTED,
+                 roleName == "PCS-SOLICITOR",
+                 attributes["jurisdiction"] != null
+                     && attributes["jurisdiction"].asText() == "PCS",
+                 attributes["caseType"] != null,
+                 attributes["caseId"] != null && attributes["caseId"].asText() != null
+                     && attributes["caseId"].asText().trim().length() > 0,
+                 attributes["id"] != null,
+                 attributes["id"].asText() != null,
+                 attributes["id"].asText().toLowerCase().matches(Constants.UUID_PATTERN))
+then
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Approved : pcs_solicitor_create_case_role");
+    update($ra);
+    logMsg("Rule : pcs_solicitor_create_case_role");
+end;
+
+/*
+ * PCS solicitor deletion support.
+ */
+rule "pcs_solicitor_delete_case_role"
+when
+    Request(clientId == "pcs_api")
+    $ra: RoleAssignment(
+                 status == Status.DELETE_REQUESTED,
+                 roleName == "PCS-SOLICITOR",
+                 attributes["jurisdiction"] != null
+                     && attributes["jurisdiction"].asText() == "PCS",
+                 attributes["caseId"] != null && attributes["caseId"].asText() != null
+                     && attributes["caseId"].asText().trim().length() > 0)
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : pcs_solicitor_delete_case_role");
+    update($ra);
+    logMsg("Rule : pcs_solicitor_delete_case_role");
+end;

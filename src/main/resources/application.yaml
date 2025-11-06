@@ -124,7 +124,7 @@ idam:
     microservice: am_role_assignment_service
     url: ${IDAM_S2S_URL:http://localhost:4502}
   s2s-authorised:
-    services: ${ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES:ccd_gw,am_role_assignment_service,am_org_role_mapping_service,am_role_assignment_refresh_batch,xui_webapp,aac_manage_case_assignment,ccd_data,wa_workflow_api,wa_task_management_api,wa_task_monitor,wa_case_event_handler,iac,hmc_cft_hearing_service,ccd_case_disposer,sscs,fis_hmc_api,fpl_case_service,disposer-idam-user,civil_service,prl_cos_api}
+    services: ${ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES:ccd_gw,am_role_assignment_service,am_org_role_mapping_service,am_role_assignment_refresh_batch,xui_webapp,aac_manage_case_assignment,ccd_data,wa_workflow_api,wa_task_management_api,wa_task_monitor,wa_case_event_handler,iac,hmc_cft_hearing_service,ccd_case_disposer,sscs,fis_hmc_api,fpl_case_service,disposer-idam-user,civil_service,prl_cos_api,pcs_api}
   api.url: ${IDAM_USER_URL:http://localhost:5000}
   client:
     id: ${ROLE_ASSIGNMENT_IDAM_CLIENT_ID:am_docker}

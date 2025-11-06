@@ -13,6 +13,7 @@
                   validationrules.civil,
                   validationrules.privatelaw,
                   validationrules.publiclaw,
+                  validationrules.pcs,
                   validationrules.employment,
                   validationrules.stcic">
       <ksession name="role-assignment-validation-session" type="stateless"/>
