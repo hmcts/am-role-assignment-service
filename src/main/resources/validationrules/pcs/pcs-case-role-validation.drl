@@ -19,9 +19,9 @@ when
                  attributes["caseType"] != null,
                  attributes["caseId"] != null && attributes["caseId"].asText() != null
                      && attributes["caseId"].asText().trim().length() > 0,
-                 attributes["id"] != null,
-                 attributes["id"].asText() != null,
-                 attributes["id"].asText().toLowerCase().matches(Constants.UUID_PATTERN))
+                 attributes["rbid"] != null,
+                 attributes["rbid"].asText() != null,
+                 attributes["rbid"].asText().toLowerCase().matches(Constants.UUID_PATTERN))
 then
     $ra.setStatus(Status.CREATE_APPROVED);
     $ra.log("Approved : pcs_solicitor_create_case_role");
