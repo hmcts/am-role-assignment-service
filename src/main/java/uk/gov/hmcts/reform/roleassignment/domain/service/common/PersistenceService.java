@@ -43,6 +43,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static org.springframework.data.jpa.domain.Specification.unrestricted;
 import static org.springframework.data.jpa.domain.Specification.where;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByActorIds;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByAttributes;
@@ -187,8 +188,7 @@ public class PersistenceService {
                             Objects.requireNonNull(
                                 Objects.requireNonNull(
                                     Objects.requireNonNull(
-                                        where(
-                                            searchByActorIds(searchRequest.getActorId())))
+                                            searchByActorIds(searchRequest.getActorId())).or(unrestricted())
                                         .and(searchByGrantType(searchRequest.getGrantType())))
                                     .and(searchByValidDate(searchRequest.getValidAt())))
                                 .and(searchByAttributes(searchRequest.getAttributes())))
