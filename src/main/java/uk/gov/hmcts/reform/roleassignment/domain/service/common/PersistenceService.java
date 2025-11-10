@@ -216,8 +216,8 @@ public class PersistenceService {
 
             List<String> roleTypes = addCaseTypeIfCaseIdExists(multipleQueryRequest.getQueryRequests().get(0));
 
-            Specification<RoleAssignmentEntity> initialQuery = Specification.where(
-                searchByActorIds(multipleQueryRequest.getQueryRequests().get(0).getActorId()))
+            Specification<RoleAssignmentEntity> initialQuery =
+                searchByActorIds(multipleQueryRequest.getQueryRequests().get(0).getActorId()).or(unrestricted())
                 .and(searchByGrantType(multipleQueryRequest.getQueryRequests().get(0).getGrantType()))
                 .and(searchByValidDate(multipleQueryRequest.getQueryRequests().get(0).getValidAt()))
                 .and(searchByAttributes(multipleQueryRequest.getQueryRequests().get(0).getAttributes()))
