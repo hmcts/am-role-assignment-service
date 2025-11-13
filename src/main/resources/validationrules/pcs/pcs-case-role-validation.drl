@@ -1,6 +1,8 @@
 package validationrules.pcs;
+import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
@@ -10,6 +12,7 @@ import uk.gov.hmcts.reform.roleassignment.util.Constants;
  */
 rule "pcs_solicitor_create_case_role"
 when
+    FeatureFlag(status && flagName == FeatureFlagEnum.PCS_CASE_ROLES_1_0.getValue())
     Request(clientId == "pcs_api")
     $ra: RoleAssignment(
                  status == Status.CREATE_REQUESTED,
@@ -34,6 +37,7 @@ end;
  */
 rule "pcs_solicitor_delete_case_role"
 when
+    FeatureFlag(status && flagName == FeatureFlagEnum.PCS_CASE_ROLES_1_0.getValue())
     Request(clientId == "pcs_api")
     $ra: RoleAssignment(
                  status == Status.DELETE_REQUESTED,
@@ -54,6 +58,7 @@ end;
  */
 rule "pcs_citizen_create_case_role"
 when
+    FeatureFlag(status && flagName == FeatureFlagEnum.PCS_CASE_ROLES_1_0.getValue())
     Request(clientId == "pcs_api")
     $ra: RoleAssignment(
                  status == Status.CREATE_REQUESTED,
@@ -75,6 +80,7 @@ end;
  */
 rule "pcs_ha_user_create_case_role"
 when
+    FeatureFlag(status && flagName == FeatureFlagEnum.PCS_CASE_ROLES_1_0.getValue())
     Request(clientId == "pcs_api")
     $ra: RoleAssignment(
                  status == Status.CREATE_REQUESTED,
@@ -99,6 +105,7 @@ end;
  */
 rule "pcs_ha_user_delete_case_role"
 when
+    FeatureFlag(status && flagName == FeatureFlagEnum.PCS_CASE_ROLES_1_0.getValue())
     Request(clientId == "pcs_api")
     $ra: RoleAssignment(
                  status == Status.DELETE_REQUESTED,
@@ -122,6 +129,7 @@ end;
  */
 rule "pcs_citizen_delete_case_role"
 when
+    FeatureFlag(status && flagName == FeatureFlagEnum.PCS_CASE_ROLES_1_0.getValue())
     Request(clientId == "pcs_api")
     $ra: RoleAssignment(
                  status == Status.DELETE_REQUESTED,

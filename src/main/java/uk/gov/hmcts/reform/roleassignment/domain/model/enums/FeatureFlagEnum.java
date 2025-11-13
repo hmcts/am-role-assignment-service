@@ -12,7 +12,8 @@ public enum FeatureFlagEnum {
     SSCS_CASE_ALLOCATOR_1_0("sscs_case_allocator_1_0"),
     GA_PRM_1_0("ga_prm_1_0"),
     DISPOSER_1_0("disposer_1_0"),
-    ALL_WA_SERVICES_CASE_ALLOCATOR_1_0("all_wa_services_case_allocator_1_0");
+    ALL_WA_SERVICES_CASE_ALLOCATOR_1_0("all_wa_services_case_allocator_1_0"),
+    PCS_CASE_ROLES_1_0("pcs_case_roles_1_0");
 
     private final String value;
 
