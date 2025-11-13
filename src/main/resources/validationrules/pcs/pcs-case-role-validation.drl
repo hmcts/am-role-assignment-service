@@ -71,6 +71,53 @@ then
 end;
 
 /*
+ * PCS hearing advocate case role approval.
+ */
+rule "pcs_ha_user_create_case_role"
+when
+    Request(clientId == "pcs_api")
+    $ra: RoleAssignment(
+                 status == Status.CREATE_REQUESTED,
+                 roleName == "PCS-HA-USER",
+                 attributes["jurisdiction"] != null
+                     && attributes["jurisdiction"].asText() == "PCS",
+                 attributes["caseType"] != null,
+                 attributes["caseId"] != null && attributes["caseId"].asText() != null
+                     && attributes["caseId"].asText().trim().length() > 0,
+                 attributes["rbid"] != null,
+                 attributes["rbid"].asText() != null,
+                 attributes["rbid"].asText().toLowerCase().matches(Constants.UUID_PATTERN))
+then
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Approved : pcs_ha_user_create_case_role");
+    update($ra);
+    logMsg("Rule : pcs_ha_user_create_case_role");
+end;
+
+/*
+ * PCS hearing advocate deletion support.
+ */
+rule "pcs_ha_user_delete_case_role"
+when
+    Request(clientId == "pcs_api")
+    $ra: RoleAssignment(
+                 status == Status.DELETE_REQUESTED,
+                 roleName == "PCS-HA-USER",
+                 attributes["jurisdiction"] != null
+                     && attributes["jurisdiction"].asText() == "PCS",
+                 attributes["caseId"] != null && attributes["caseId"].asText() != null
+                     && attributes["caseId"].asText().trim().length() > 0,
+                 attributes["rbid"] != null,
+                 attributes["rbid"].asText() != null,
+                 attributes["rbid"].asText().toLowerCase().matches(Constants.UUID_PATTERN))
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : pcs_ha_user_delete_case_role");
+    update($ra);
+    logMsg("Rule : pcs_ha_user_delete_case_role");
+end;
+
+/*
  * PCS citizen deletion support.
  */
 rule "pcs_citizen_delete_case_role"

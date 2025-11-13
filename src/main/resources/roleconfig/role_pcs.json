@@ -73,5 +73,44 @@
         }
       }
     ]
+  },
+  {
+    "name": "PCS-HA-USER",
+    "label": "PCS Hearing advocate",
+    "description": "Hearing advocate case role for PCS",
+    "category": "PROFESSIONAL",
+    "type": "CASE",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PCS"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          },
+          "rbid": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
