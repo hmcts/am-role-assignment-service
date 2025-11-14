@@ -37,7 +37,7 @@ class PcsCaseRoleTest extends DroolBase {
     @ParameterizedTest
     @CsvSource({
         "PCS-SOLICITOR,PROFESSIONAL,true",
-        "PCS-CITIZEN,CITIZEN,false",
+        "PCS-CITIZEN,CITIZEN,true",
         "PCS-HA-USER,PROFESSIONAL,true"
     })
     void shouldApproveCreateRequestsWhenFlagEnabled(String roleName, String category, boolean rbidRequired) {
@@ -58,7 +58,7 @@ class PcsCaseRoleTest extends DroolBase {
     @ParameterizedTest
     @CsvSource({
         "PCS-SOLICITOR,PROFESSIONAL,true",
-        "PCS-CITIZEN,CITIZEN,false",
+        "PCS-CITIZEN,CITIZEN,true",
         "PCS-HA-USER,PROFESSIONAL,true"
     })
     void shouldApproveDeleteRequestsWhenFlagEnabled(String roleName, String category, boolean rbidRequired) {

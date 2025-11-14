@@ -69,6 +69,9 @@
           },
           "caseId": {
             "mandatory": true
+          },
+          "rbid": {
+            "mandatory": true
           }
         }
       }
