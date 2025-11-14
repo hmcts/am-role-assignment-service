@@ -79,8 +79,8 @@
   },
   {
     "name": "PCS-HA-USER",
-    "label": "PCS Hearing advocate",
-    "description": "Hearing advocate case role for PCS",
+    "label": "PCS Housing association user",
+    "description": "Housing association case role for PCS",
     "category": "PROFESSIONAL",
     "type": "CASE",
     "substantive": true,
