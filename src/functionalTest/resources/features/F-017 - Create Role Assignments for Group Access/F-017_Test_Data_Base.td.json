@@ -1,0 +1,15 @@
+{
+  "_guid_": "F-017_Test_Data_Base",
+  "_extends_": "F-017-Base-Root",
+  "productName": "Role Assignments Service",
+  "operationName": "Create Role Assignments",
+  "method": "POST",
+  "uri": "am/role-assignments",
+
+  "expectedResponse": {
+    "headers": {
+      "Content-Type" : "application/vnd.uk.gov.hmcts.role-assignment-service.create-assignments+json;version=1.0;charset=UTF-8"
+    }
+  }
+
+}

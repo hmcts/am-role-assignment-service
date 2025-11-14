@@ -1,10 +1,13 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import uk.gov.hmcts.reform.roleassignment.config.ZonedDateTimeUTCDeserializer;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.ActorIdType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
@@ -29,11 +32,15 @@ public abstract class Assignment implements Serializable {
     private String actorId;
     private RoleType roleType;
     private String roleName;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String roleLabel;
     private Classification classification;
     private GrantType grantType;
     private RoleCategory roleCategory;
     private boolean readOnly;
+    @JsonDeserialize(using = ZonedDateTimeUTCDeserializer.class)
     private ZonedDateTime beginTime;
+    @JsonDeserialize(using = ZonedDateTimeUTCDeserializer.class)
     private ZonedDateTime endTime;
 
 
@@ -41,6 +48,7 @@ public abstract class Assignment implements Serializable {
     private String reference; //need to map from request
     private Integer statusSequence; //this will be populated from status entity. Need to extend status entity.
     private Status status; //this will be set by app default = created
+    @JsonDeserialize(using = ZonedDateTimeUTCDeserializer.class)
     private ZonedDateTime created; //this will be set by app
     private String log; //this will be set app based on drool validation rule name on individual assignments.
     private Map<String, JsonNode> attributes;

@@ -3,10 +3,11 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
@@ -27,7 +29,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELET
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole_ra;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 class CCDCaseRolesTest extends DroolBase {
 
     @Test
@@ -323,30 +325,91 @@ class CCDCaseRolesTest extends DroolBase {
         verifyNoInteractions(retrieveDataService);
     }
 
-    @Test
-    void shouldApprovePrivateLawSolicitorCaseRoles() {
-        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR1]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR2]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR3]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR4]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100APPLICANTSOLICITOR5]");
-        verifyCreatePrivateLawCaseRequestedRole("[FL401APPLICANTSOLICITOR]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR1]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR2]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR3]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR4]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100CHILDSOLICITOR5]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR1]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR2]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR3]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR4]");
-        verifyCreatePrivateLawCaseRequestedRole("[C100RESPONDENTSOLICITOR5]");
-        verifyCreatePrivateLawCaseRequestedRole("[FL401RESPONDENTSOLICITOR]");
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "[C100APPLICANTSOLICITOR1]",
+        "[C100APPLICANTSOLICITOR2]",
+        "[C100APPLICANTSOLICITOR3]",
+        "[C100APPLICANTSOLICITOR4]",
+        "[C100APPLICANTSOLICITOR5]",
+        "[FL401APPLICANTSOLICITOR]",
+        "[C100CHILDSOLICITOR1]",
+        "[C100CHILDSOLICITOR2]",
+        "[C100CHILDSOLICITOR3]",
+        "[C100CHILDSOLICITOR4]",
+        "[C100CHILDSOLICITOR5]",
+        "[C100RESPONDENTSOLICITOR1]",
+        "[C100RESPONDENTSOLICITOR2]",
+        "[C100RESPONDENTSOLICITOR3]",
+        "[C100RESPONDENTSOLICITOR4]",
+        "[C100RESPONDENTSOLICITOR5]",
+        "[FL401RESPONDENTSOLICITOR]",
+        "[C100APPLICANTBARRISTER1]",
+        "[C100APPLICANTBARRISTER2]",
+        "[C100APPLICANTBARRISTER3]",
+        "[C100APPLICANTBARRISTER4]",
+        "[C100APPLICANTBARRISTER5]",
+        "[FL401APPLICANTBARRISTER]",
+        "[C100RESPONDENTBARRISTER1]",
+        "[C100RESPONDENTBARRISTER2]",
+        "[C100RESPONDENTBARRISTER3]",
+        "[C100RESPONDENTBARRISTER4]",
+        "[C100RESPONDENTBARRISTER5]",
+        "[FL401RESPONDENTBARRISTER]"
+    })
+    void shouldApproveOrRejectPrivateLawProfessionalCaseRoles(String roleName) {
+        RoleCategory roleCategory = RoleCategory.PROFESSIONAL;
+        String jurisdiction = "PRIVATELAW";
+        String caseType = "PRLAPPS";
+
+        // wrong category
+        verifyCcdCaseRequestedRole(RoleCategory.CITIZEN, // WRONG (NB: this is another valid CCD Case Role Category)
+                                   roleName,
+                                   jurisdiction,
+                                   caseType,
+                                   true,
+                                   Status.REJECTED);
+        // wrong jurisdiction
+        verifyCcdCaseRequestedRole(roleCategory,
+                                   roleName,
+                                   "wrong-jurisdiction", // WRONG
+                                   caseType,
+                                   true,
+                                   Status.REJECTED);
+        // wrong case-type
+        verifyCcdCaseRequestedRole(roleCategory,
+                                   roleName,
+                                   jurisdiction,
+                                   "wrong-caseType", // WRONG
+                                   true,
+                                   Status.REJECTED);
+        // without caseId
+        verifyCcdCaseRequestedRole(roleCategory,
+                                   roleName,
+                                   jurisdiction,
+                                   caseType,
+                                   false, // WRONG
+                                   Status.REJECTED);
+
+        // correct values should be approved
+        verifyCcdCaseRequestedRole(roleCategory,
+                                   roleName,
+                                   jurisdiction,
+                                   caseType,
+                                   true,
+                                   Status.APPROVED);
     }
 
-    private void verifyCreatePrivateLawCaseRequestedRole(String roleName) {
+    void verifyCcdCaseRequestedRole(RoleCategory roleCategory,
+                                    String roleName,
+                                    String jurisdiction,
+                                    String caseType,
+                                    boolean withCaseId,
+                                    Status expectedStatus) {
+
+        // GIVEN
         RoleAssignment requestedRole = getRequestedCaseRole_ra(
-            RoleCategory.PROFESSIONAL,
+            roleCategory,
             roleName,
             SPECIFIC,
             "caseId",
@@ -354,18 +417,39 @@ class CCDCaseRolesTest extends DroolBase {
             CREATE_REQUESTED
         );
         requestedRole.setClassification(Classification.RESTRICTED);
-        requestedRole.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode("PRIVATELAW"),
-                                                     "caseType", convertValueJsonNode("PRLAPPS"),
-                                                     "caseId", convertValueJsonNode("1234567890123456")));
+        requestedRole.getAttributes().putAll(Map.of("jurisdiction", convertValueJsonNode(jurisdiction),
+                                                     "caseType", convertValueJsonNode(caseType)));
+        if (!withCaseId) {
+            requestedRole.getAttributes().remove("caseId");
+        }
         assignmentRequest.setRequestedRoles(List.of(requestedRole));
-        assignmentRequest.getRequest().setClientId("ccd_data");
+        assignmentRequest.getRequest().setClientId("ccd_data"); // NB: these are CCD Case Role tests
 
         FeatureFlag featureFlag  =  FeatureFlag.builder().build();
         featureFlags.add(featureFlag);
 
+        // WHEN
         buildExecuteKieSession();
-        //assertion
-        assignmentRequest.getRequestedRoles().forEach(ra -> assertEquals(Status.APPROVED, ra.getStatus()));
+
+        // THEN
+        assertTrue(assignmentRequest.getRequestedRoles().size() > 0, "No requested roles found");
+        assignmentRequest.getRequestedRoles().forEach(ra -> {
+            assertEquals(expectedStatus, ra.getStatus());
+
+            // If has Case-ID then these tests should always pass stage 1 processing
+            assertEquals(
+                withCaseId,
+                ra.getLog().contains("Stage 1 approved : ccd_create_case_roles"),
+                "Role has not passed stage 1 of CCD case role validation"
+            );
+
+            // however they should only pass validation of role_config pattern if expected status is APPROVED
+            assertEquals(
+                expectedStatus == Status.APPROVED,
+                ra.getLog().contains("Approved : validate_role_assignment_against_patterns"),
+                "Wrong outcome for role validation against role_config patterns"
+            );
+        });
     }
 
     @Nested

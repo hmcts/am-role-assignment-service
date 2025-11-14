@@ -1,10 +1,13 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.inject.Inject;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
@@ -25,8 +28,9 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
@@ -34,31 +38,35 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.versions.V2;
 
-import javax.inject.Inject;
-
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static java.time.LocalDateTime.now;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = {"launchdarkly.sdk.environment=pr"})
+@TestPropertySource(properties = {"ras.environment=pr"})
 public class QueryAssignmentIntegrationTest extends BaseTest {
 
     private static final Logger logger = LoggerFactory.getLogger(RoleAssignmentIntegrationTest.class);
 
     private static final String URL = "/am/role-assignments/query";
+    private static final String INCLUDE_LABELS_PARAM = "includeLabels";
 
     private static final String ACTOR_ID = "123e4567-e89b-42d3-a456-556642445613";
+    private static final String ACTOR_ID_2 = "8bc0a13d-3bb7-3b7c-ab5b-1a9b0a141bab";
 
     private MockMvc mockMvc;
 
@@ -74,7 +82,7 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
     @Mock
     private SecurityContext securityContext;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         MockitoAnnotations.openMocks(this);
@@ -157,6 +165,56 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
             .andExpect(jsonPath("$.roleAssignmentResponse[0].actorId")
                            .value(queryRequest.getActorId().get(0)))
             .andReturn();
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void retrieveRoleAssignmentsByQueryRequest_verifyOrder() throws Exception {
+
+        logger.info("Retrieve Role Assignments with Query Request and verify order");
+
+        Map<String, List<String>> attributes = new HashMap<>();
+        attributes.put("jurisdiction", List.of("divorce"));
+        QueryRequest queryRequest = QueryRequest.builder().attributes(attributes).build();
+
+        HttpHeaders headers = getHttpHeaders("10", "roleName");
+
+        final MvcResult result = mockMvc.perform(post(URL)
+                                                     .contentType(JSON_CONTENT_TYPE)
+                                                     .headers(headers)
+                                                     .content(mapper.writeValueAsString(queryRequest)))
+            .andExpect(status().isOk())
+            .andReturn();
+
+        List<ExistingRoleAssignment> existingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
+        List<ExistingRoleAssignment> sortedRoleAssignments = sortByRoleNameThenId(existingRoleAssignments);
+
+        assertEquals(existingRoleAssignments, sortedRoleAssignments);
+        assertEquals(10, existingRoleAssignments.size());
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void retrieveRoleAssignmentsByQueryRequest_verifyRoleLabel() throws Exception {
+        retrieveRoleAssignmentsByQueryRequest_conditionallyAddRoleLabel(true);
+        retrieveRoleAssignmentsByQueryRequest_conditionallyAddRoleLabel(false);
+    }
+
+    void retrieveRoleAssignmentsByQueryRequest_conditionallyAddRoleLabel(Boolean includeLabels) throws Exception {
+
+        logger.info("Retrieve Role Assignments when includeLabels {}", includeLabels);
+
+        final MvcResult result = mockMvc.perform(post(URL)
+                                                     .contentType(JSON_CONTENT_TYPE)
+                                                     .headers(getHttpHeaders("3", "roleName"))
+                                                     .param(INCLUDE_LABELS_PARAM, includeLabels.toString())
+                                                     .content(mapper.writeValueAsBytes(
+                                                         QueryRequest.builder()
+                                                             .actorId(ACTOR_ID_2).build())))
+            .andExpect(status().isOk())
+            .andReturn();
+
+        assertRoleAssignmentResponse(result, includeLabels);
     }
 
     @Test
@@ -246,6 +304,33 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
         assertEquals(2, responseJsonNode.get("roleAssignmentResponse").size());
         assertEquals("ORGANISATION", responseJsonNode.get("roleAssignmentResponse").get(0)
             .get("roleType").asText());
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void retrieveRoleAssignmentsByQueryRequestV2_verifyRoleLabel() throws Exception {
+        retrieveRoleAssignmentsByQueryRequestV2_conditionallyAddRoleLabel(true);
+        retrieveRoleAssignmentsByQueryRequestV2_conditionallyAddRoleLabel(false);
+    }
+
+    void retrieveRoleAssignmentsByQueryRequestV2_conditionallyAddRoleLabel(Boolean includeLabels) throws Exception {
+
+        logger.info("Retrieve Role Assignments V2 query request when includeLabels {}", includeLabels);
+
+        QueryRequest queryRequest = QueryRequest.builder().actorId(ACTOR_ID_2).build();
+        MultipleQueryRequest queryRequests  =  MultipleQueryRequest.builder().queryRequests(List.of(queryRequest))
+            .build();
+
+        final MvcResult result = mockMvc.perform(post("/am/role-assignments/query")
+                                                     .contentType(V2.MediaType.POST_ASSIGNMENTS)
+                                                     .headers(getHttpHeaders("3", "roleName"))
+                                                     .param(INCLUDE_LABELS_PARAM, includeLabels.toString())
+                                                     .content(mapper.writeValueAsString(queryRequests))
+                                                     .accept(V2.MediaType.POST_ASSIGNMENTS))
+            .andExpect(status().isOk())
+            .andReturn();
+
+        assertRoleAssignmentResponse(result, includeLabels);
     }
 
     @Test
@@ -346,6 +431,59 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
             .get("roleType").asText());
     }
 
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void retrieveRoleAssignmentsByQueryRequestV2_withoutHeaders() throws Exception {
+
+        logger.info("Retrieve Role Assignments with Query Request V2 without headers");
+
+        QueryRequest queryRequest = QueryRequest.builder().actorId("123e4567-e89b-42d3-a456-556642445613").build();
+        MultipleQueryRequest queryRequests  =  MultipleQueryRequest.builder().queryRequests(List.of(queryRequest))
+            .build();
+
+        final MvcResult result = mockMvc.perform(post("/am/role-assignments/query")
+                                                     .contentType(V2.MediaType.POST_ASSIGNMENTS)
+                                                     .content(mapper.writeValueAsString(queryRequests))
+                                                     .accept(V2.MediaType.POST_ASSIGNMENTS))
+            .andExpect(status().isOk())
+            .andReturn();
+        JsonNode responseJsonNode = new ObjectMapper()
+            .readValue(result.getResponse().getContentAsString(),JsonNode.class);
+        assertFalse(responseJsonNode.get("roleAssignmentResponse").isEmpty());
+        assertEquals(3, responseJsonNode.get("roleAssignmentResponse").size());
+        assertEquals("ORGANISATION", responseJsonNode.get("roleAssignmentResponse").get(0)
+            .get("roleType").asText());
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/insert_role_assignment.sql"})
+    public void retrieveRoleAssignmentsByQueryRequestV2_verifyOrder() throws Exception {
+
+        logger.info("Retrieve Role Assignments with Query Request V2 and verify order");
+
+        Map<String, List<String>> attributes = new HashMap<>();
+        attributes.put("jurisdiction", List.of("divorce"));
+        QueryRequest queryRequest = QueryRequest.builder().attributes(attributes).build();
+
+        MultipleQueryRequest queryRequests  =  MultipleQueryRequest.builder().queryRequests(List.of(queryRequest))
+            .build();
+        HttpHeaders headers = getHttpHeaders("10", "roleName");
+
+        final MvcResult result = mockMvc.perform(post(URL)
+                                                     .contentType(V2.MediaType.POST_ASSIGNMENTS)
+                                                     .headers(headers)
+                                                     .content(mapper.writeValueAsString(queryRequests))
+                                                     .accept(V2.MediaType.POST_ASSIGNMENTS))
+            .andExpect(status().isOk())
+            .andReturn();
+
+        List<ExistingRoleAssignment> existingRoleAssignments = getExistingRoleAssignmentFromMvcResult(result);
+        List<ExistingRoleAssignment> sortedRoleAssignments = sortByRoleNameThenId(existingRoleAssignments);
+
+        assertEquals(existingRoleAssignments, sortedRoleAssignments);
+        assertEquals(10, existingRoleAssignments.size());
+    }
+
     public static QueryRequest createQueryRequest() {
         Map<String, List<String>> attributes = new HashMap<>();
         List<String> regions = List.of("London", "JAPAN", "north-east");
@@ -375,4 +513,44 @@ public class QueryAssignmentIntegrationTest extends BaseTest {
 
         return headers;
     }
+
+    private void assertRoleAssignmentResponse(MvcResult result, Boolean includeLabels) throws Exception {
+        JsonNode responseJsonNode = new ObjectMapper().readValue(result.getResponse().getContentAsString(),
+                                                                 JsonNode.class);
+        JsonNode roleAssignmentResponse = responseJsonNode.get("roleAssignmentResponse");
+
+        String[] expectedRoleTypes = {"CASE", "ORGANISATION", "CASE"};
+        String[] expectedRoleLabels = {"Case Allocator", "Judge", "Post Hearing Judge"};
+
+        assertFalse(roleAssignmentResponse.isEmpty());
+        assertEquals(3, roleAssignmentResponse.size());
+
+        for (int i = 0; i < roleAssignmentResponse.size(); i++) {
+            assertEquals(expectedRoleTypes[i], roleAssignmentResponse.get(i).get("roleType").asText());
+            if (includeLabels) {
+                assertEquals(expectedRoleLabels[i], roleAssignmentResponse.get(i).get("roleLabel").asText());
+            } else {
+                assertNull(roleAssignmentResponse.get(i).get("roleLabel"));
+            }
+        }
+    }
+
+    private List<ExistingRoleAssignment> getExistingRoleAssignmentFromMvcResult(MvcResult result)
+        throws UnsupportedEncodingException, JsonProcessingException {
+        JsonNode jsonResponse = mapper.readValue(result.getResponse().getContentAsString(), JsonNode.class);
+        assertNotNull(jsonResponse.get("roleAssignmentResponse"));
+        return mapper.readValue(
+            jsonResponse.get("roleAssignmentResponse").toString(),
+            new TypeReference<>() {
+            }
+        );
+    }
+
+    private List<ExistingRoleAssignment> sortByRoleNameThenId(List<ExistingRoleAssignment> roleAssignments) {
+        return roleAssignments.stream()
+            .sorted(Comparator.comparing(ExistingRoleAssignment::getRoleName)
+                        .thenComparing(roleAssignment -> roleAssignment.getId().toString()))
+            .toList();
+    }
+
 }

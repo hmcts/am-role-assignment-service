@@ -184,7 +184,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW","PRIVATELAW"]
+            "values": ["PUBLICLAW","PRIVATELAW","IA","CIVIL"]
           },
           "primaryLocation": {
             "mandatory": false
@@ -2275,7 +2275,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","PUBLICLAW"]
+            "values": ["PRIVATELAW","PUBLICLAW","ST_CIC"]
           }
         }
       }
@@ -2306,6 +2306,39 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-approver-ctsc",
+    "label": "Specific Access Approver CTSC",
+    "description": "Specific Access Approver role for ctsc users",
+    "category": "ADMIN",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["ST_CIC"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2432,7 +2465,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW", "ST_CIC", "PRIVATELAW"]
+            "values": ["PUBLICLAW", "ST_CIC", "PRIVATELAW", "CIVIL"]
           },
           "caseType": {
             "mandatory": true
@@ -2467,7 +2500,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW", "PRIVATELAW"]
+            "values": ["PUBLICLAW", "PRIVATELAW", "CIVIL"]
           },
         "caseType": {
           "mandatory": true
@@ -2537,7 +2570,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "EMPLOYMENT"]
+            "values": ["IA", "EMPLOYMENT", "CIVIL"]
           },
           "caseType": {
             "mandatory": true,
@@ -2546,7 +2579,9 @@
               "ET_EnglandWales",
               "ET_EnglandWales_Multiple",
               "ET_Scotland",
-              "ET_Scotland_Multiple"
+              "ET_Scotland_Multiple",
+              "CIVIL",
+              "GENERALAPPLICATION"
             ]
           },
           "caseId": {
@@ -2743,7 +2778,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW"]
+            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW", "CIVIL"]
           },
           "caseType": {
             "mandatory": true,
@@ -2753,7 +2788,9 @@
               "ET_EnglandWales_Multiple",
               "ET_Scotland",
               "ET_Scotland_Multiple",
-              "PRLAPPS"
+              "PRLAPPS",
+              "CIVIL",
+              "GENERALAPPLICATION"
             ]
           },
           "caseId": {
@@ -2786,7 +2823,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW"]
+            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW", "CIVIL"]
           },
           "caseType": {
             "mandatory": true,
@@ -2796,7 +2833,9 @@
               "ET_EnglandWales_Multiple",
               "ET_Scotland",
               "ET_Scotland_Multiple",
-              "PRLAPPS"
+              "PRLAPPS",
+              "CIVIL",
+              "GENERALAPPLICATION"
             ]
           },
           "caseId": {

@@ -47,8 +47,10 @@ security:
     - "/am/role-assignments/fetchFlagStatus"
     - "/swagger"
     - "/swagger-ui.html"
+    - "/swagger-resources/**"
     - "/swagger-ui/**"
     - "/v3/api-docs/**"
+    - "/v3/**"
     - "/search/**"
     - "/csrf"
     - "/error"
@@ -109,7 +111,7 @@ spring:
             client-id: microservicekey-am-role-assignment-service
             client-secret: ${AM_ROLE_ASSIGNMENT_SERVICE_SECRET:}
   cache:
-    type: ${ENABLE_CACHE:}
+    type: ${ENABLE_CACHE:caffeine}
     cache-names: token, caseId, userToken
     caffeine:
       spec: maximumSize=500,expireAfterWrite=120s
@@ -154,12 +156,13 @@ feign:
 swaggerUrl: ${TEST_URL:localhost:4096}
 roleAssignmentUrl: ${TEST_URL:http://localhost:4096}
 
+# NB: LD is not used but legacy configuration is retained, see /config/EnvironmentConfiguration.java
 launchdarkly:
   sdk:
-    key: ${LD_SDK_KEY:}
-    environment: ${LAUNCH_DARKLY_ENV:pr}
-    user: am-${LAUNCH_DARKLY_ENV:local}
-  runOnStartup: ${RUN_LD_ON_STARTUP:false}
+    environment: ${LAUNCH_DARKLY_ENV:}
+
+ras:
+  environment: ${RAS_ENV:pr}
 
 audit:
   log:
@@ -170,12 +173,18 @@ audit:
 roleassignment:
    query:
      size: 20
+     sizeinternal: 10000
      sortcolumn: roleName
+     sortcolumnunique: id
 org :
   request:
     byPassOrgDroolRule: ${BYPASS_ORG_DROOL_RULE:false}
 
 logging.level.uk.gov.hmcts: ${APPLICATION_LOGGING_LEVEL:INFO}
+
+testing:
+  support:
+    enabled: ${TESTING_SUPPORT_ENABLED:false}
 
 dbFeature:
   flags:

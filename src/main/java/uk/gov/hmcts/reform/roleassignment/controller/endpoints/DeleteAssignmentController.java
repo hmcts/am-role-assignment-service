@@ -146,7 +146,12 @@ public class DeleteAssignmentController {
         {
             @SecurityRequirement(name = AUTHORIZATION),
             @SecurityRequirement(name = SERVICE_AUTHORIZATION2)
-        })
+        },
+        description
+            = "&#9888; **Note: Please consult the LLD documentation for information on the safe use of this API, see "
+            + "[POST /am/role-assignments/query/delete]"
+            + "(https://tools.hmcts.net/confluence/pages/viewpage.action?pageId=1504216881).**"
+    )
     @ResponseStatus(code = HttpStatus.OK)
     @ApiResponse(
         responseCode = "200",

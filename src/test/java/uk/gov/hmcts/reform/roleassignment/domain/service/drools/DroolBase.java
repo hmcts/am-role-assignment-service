@@ -24,6 +24,7 @@ import java.util.Map;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_GA_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_EW_MLT_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_SCTL_CASE_ID;
@@ -70,6 +71,13 @@ public abstract class DroolBase {
                                            .caseTypeId("CIVIL")
                                            .data(buildDataWithRegion())
                                            .build()),
+
+                                 Map.entry("CIVIL|GENERALAPPLICATION", Case.builder()
+                                     .id(CIVIL_GA_CASE_ID)
+                                     .jurisdiction("CIVIL")
+                                     .caseTypeId("GENERALAPPLICATION")
+                                     .data(buildDataWithRegion())
+                                     .build()),
 
                                  Map.entry("PRIVATELAW", Case.builder()
                                            .id(PRIVATE_LAW_CASE_ID)

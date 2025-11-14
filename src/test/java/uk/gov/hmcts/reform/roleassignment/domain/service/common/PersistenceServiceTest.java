@@ -1,10 +1,17 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -12,8 +19,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.util.ReflectionTestUtils;
+import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.ResourceNotFoundException;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
@@ -28,8 +37,8 @@ import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntity;
 import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
@@ -38,14 +47,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -59,17 +62,17 @@ import java.util.Set;
 import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
@@ -96,13 +99,14 @@ class PersistenceServiceTest {
     private FlagConfigRepository flagConfigRepository;
 
     @Mock
-    FeatureToggleService featureToggleService;
+    private EnvironmentConfiguration environmentConfiguration;
 
     @InjectMocks
     private final PersistenceService sut = new PersistenceService(
         historyRepository, requestRepository, roleAssignmentRepository, persistenceUtil,
         databseChangelogLockRepository,
-        flagConfigRepository
+        flagConfigRepository,
+        environmentConfiguration
     );
 
 
@@ -326,7 +330,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequest_withCaseId() throws IOException {
-
+        setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -380,7 +384,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequest_withoutCaseId() throws IOException {
-
+        setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -430,7 +434,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequestWithAllParameters() throws IOException {
-
+        setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -497,9 +501,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequest_ThrowsException() {
-
-        ReflectionTestUtils.setField(sut, "defaultSize", 1);
-        ReflectionTestUtils.setField(sut, "sortColumn", "id");
+        setPagedQueryFields();
         List<String> actorId = List.of(
             "123e4567-e89b-42d3-a456-556642445678",
             "4dc7dd3c-3fb5-4611-bbde-5101a97681e1"
@@ -528,9 +530,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByAuthorisations_ThrowsException() {
-
-        ReflectionTestUtils.setField(sut, "defaultSize", 1);
-        ReflectionTestUtils.setField(sut, "sortColumn", "id");
+        setPagedQueryFields();
         List<String> authorisations = List.of(
             "dev",
             "ops"
@@ -559,7 +559,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByAuthorisation() throws IOException {
-
+        setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -680,7 +680,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequestWithTrueFlag() throws IOException {
-
+        setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -747,9 +747,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequestWithTrueFlag_throwException() throws IOException {
-
-        ReflectionTestUtils.setField(sut, "defaultSize", 1);
-        ReflectionTestUtils.setField(sut, "sortColumn", "id");
+        setPagedQueryFields();
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
 
@@ -815,9 +813,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByQueryRequestWithTrueFlagAndPageSizeZero_throwException() throws IOException {
-
-        ReflectionTestUtils.setField(sut, "defaultSize", 1);
-        ReflectionTestUtils.setField(sut, "sortColumn", "id");
+        setPagedQueryFields();
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
 
@@ -883,6 +879,8 @@ class PersistenceServiceTest {
 
     @Test
     void getFlagStatus() {
+
+        // GIVEN
         String flagName = "iac_1_1";
         String env = "pr";
         FlagConfig flagConfig = FlagConfig.builder()
@@ -892,9 +890,66 @@ class PersistenceServiceTest {
             .status(Boolean.TRUE)
             .build();
         when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
+
+        // WHEN
         boolean response = sut.getStatusByParam(flagName, env);
+
+        // THEN
         assertTrue(response);
 
+        // check environment config lookup is *NOT* used when environment is specified in call
+        verify(environmentConfiguration, never()).getEnvironment();
+    }
+
+    @Test
+    void getFlagStatus_False() {
+
+        // GIVEN
+        String flagName = "iac_1_1";
+        String env = "pr";
+        FlagConfig flagConfig = FlagConfig.builder()
+            .env("pr")
+            .flagName("iac_1_1")
+            .serviceName("iac")
+            .status(Boolean.FALSE)
+            .build();
+        when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
+
+        // WHEN
+        boolean response = sut.getStatusByParam(flagName, env);
+
+        // THEN
+        assertFalse(response);
+
+        // check environment config lookup is *NOT* used when environment is specified in call
+        verify(environmentConfiguration, never()).getEnvironment();
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    void getFlagStatusWhenEnvIsEmpty(String env) {
+
+        // GIVEN
+        String flagName = "iac_1_1";
+        String envConfig = "pr";
+        FlagConfig flagConfig = FlagConfig.builder()
+            .env("pr")
+            .flagName("iac_1_1")
+            .serviceName("iac")
+            .status(Boolean.TRUE)
+            .build();
+        when(environmentConfiguration.getEnvironment()).thenReturn(envConfig);
+        // NB: environment configuration values is used not the env value passed into the call
+        when(flagConfigRepository.findByFlagNameAndEnv(flagName, envConfig)).thenReturn(flagConfig);
+
+        // WHEN
+        boolean response = sut.getStatusByParam(flagName, env);
+
+        // THEN
+        assertTrue(response);
+
+        // check environment config lookup is used when environment is *NOT* specified in call
+        verify(environmentConfiguration, times(1)).getEnvironment();
     }
 
     @Test
@@ -912,25 +967,10 @@ class PersistenceServiceTest {
 
     }
 
-    @Test
-    void getFlagStatus_False() {
-        String flagName = "iac_1_1";
-        String env = "pr";
-        FlagConfig flagConfig = FlagConfig.builder()
-            .env("pr")
-            .flagName("iac_1_1")
-            .serviceName("iac")
-            .status(Boolean.FALSE)
-            .build();
-        when(flagConfigRepository.findByFlagNameAndEnv(flagName, env)).thenReturn(flagConfig);
-        boolean response = sut.getStatusByParam(flagName, env);
-        assertFalse(response);
-    }
-
 
     @Test
     void postRoleAssignmentsByOneQueryRequest() throws IOException {
-
+        setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -987,7 +1027,7 @@ class PersistenceServiceTest {
 
     @Test
     void postRoleAssignmentsByMultipleQueryRequest() throws IOException {
-
+        setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -1174,4 +1214,48 @@ class PersistenceServiceTest {
 
         assertEquals(roleTypesExpectedResult, roleTypesResult);
     }
+
+    @Test
+    void createPageable_shouldSortById() {
+        setPagedQueryFields();
+
+        Pageable page = sut.createPageable(0, 20, "id", "desc");
+
+        assertNotNull(page);
+        assertEquals(0, page.getPageNumber());
+        assertEquals(20, page.getPageSize());
+        assertEquals(Sort.by(Sort.Direction.DESC, "id"), page.getSort());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"roleName", "actorId", "roleCategory"})
+    void createPageable_shouldSortByNonUniqueFieldThenId(String sortBy) {
+        setPagedQueryFields();
+
+        Pageable page = sut.createPageable(0, 20, sortBy, "desc");
+
+        assertNotNull(page);
+        assertEquals(0, page.getPageNumber());
+        assertEquals(20, page.getPageSize());
+        assertEquals(Sort.by(Sort.Direction.DESC, sortBy).and(Sort.by(Sort.Direction.ASC, "id")), page.getSort());
+    }
+
+    @Test
+    void createPageable_shouldUseDefaultSizeThenSortBySortColumnThenId() {
+        setPagedQueryFields();
+
+        Pageable page = sut.createPageable(null, null, null, null);
+
+        assertNotNull(page);
+        assertEquals(0, page.getPageNumber());
+        assertEquals(10, page.getPageSize());
+        assertEquals(Sort.by(Sort.Direction.ASC, "roleName").and(Sort.by(Sort.Direction.ASC, "id")), page.getSort());
+    }
+
+    private void setPagedQueryFields() {
+        ReflectionTestUtils.setField(sut, "sortColumn", "roleName");
+        ReflectionTestUtils.setField(sut, "defaultSize", 10);
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", "id");
+    }
+
 }

@@ -9,8 +9,10 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.springframework.test.util.ReflectionTestUtils;
+import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
@@ -25,23 +27,29 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 
 class ValidationModelServiceTest {
 
-    StatelessKieSession kieSessionMock = mock(StatelessKieSession.class);
+    private static final int PAGE_SIZE_INTERNAL = 20;
+    private static final String SORT_COLUMN_UNIQUE = "id";
 
+    StatelessKieSession kieSessionMock = mock(StatelessKieSession.class);
 
     RetrieveDataService retrieveDataServiceMock = mock(RetrieveDataService.class);
 
+    PersistenceService persistenceService = mock(PersistenceService.class);
+
+    EnvironmentConfiguration environmentConfiguration = mock(EnvironmentConfiguration.class);
 
     AssignmentRequest assignmentRequest;
-
-    PersistenceService persistenceService = mock(PersistenceService.class);
 
     @Mock
     Logger logger = mock(Logger.class);
@@ -50,7 +58,8 @@ class ValidationModelServiceTest {
     ValidationModelService sut = new ValidationModelService(
         kieSessionMock,
         retrieveDataServiceMock,
-        persistenceService
+        persistenceService,
+        environmentConfiguration
     );
 
     @BeforeEach
@@ -60,44 +69,63 @@ class ValidationModelServiceTest {
 
     @Test
     void validateRequest() throws IOException {
-        ReflectionTestUtils.setField(sut,"environment", "prod");
+
+        // pretend to be in PROD environment
+        when(environmentConfiguration.getEnvironment()).thenReturn("prod");
+
         assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
         sut.validateRequest(assignmentRequestSpy);
 
-        Mockito.verify(assignmentRequestSpy, times(6)).getRequest();
-        Mockito.verify(assignmentRequestSpy, times(2)).getRequestedRoles();
+        verify(assignmentRequestSpy, times(6)).getRequest();
+        verify(assignmentRequestSpy, times(2)).getRequestedRoles();
 
-        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
+        verify(kieSessionMock, times(1)).execute((Iterable) any());
+
+        // verify when in PROD environment: the flag cache is used: i.e. not data from DB/persistenceService
+        verify(persistenceService, never()).getStatusByParam(any(), any());
     }
 
     @Test
     void validateRequest_withEmptyRoles() throws IOException {
-        ReflectionTestUtils.setField(sut,"environment", "prod");
+
+        // pretend to be in PROD environment
+        when(environmentConfiguration.getEnvironment()).thenReturn("prod");
+
         assignmentRequest = TestDataBuilder
             .buildAssignmentRequest(Status.CREATED, LIVE, false);
         assignmentRequest.setRequestedRoles(Collections.emptyList());
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
         sut.validateRequest(assignmentRequestSpy);
 
-        Mockito.verify(assignmentRequestSpy, times(6)).getRequest();
-        Mockito.verify(assignmentRequestSpy, times(2)).getRequestedRoles();
+        verify(assignmentRequestSpy, times(6)).getRequest();
+        verify(assignmentRequestSpy, times(2)).getRequestedRoles();
 
-        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
-        Mockito.verify(kieSessionMock, times(1)).setGlobal(any(), any());
+        verify(kieSessionMock, times(1)).execute((Iterable) any());
+        verify(kieSessionMock, times(1)).setGlobal(any(), any());
+
+        // verify when in PROD environment: the flag cache is used: i.e. not data from DB/persistenceService
+        verify(persistenceService, never()).getStatusByParam(any(), any());
     }
 
     @Test
     void validateRequest_Scenario_withPrEnv() throws IOException {
-        ReflectionTestUtils.setField(sut,"environment", "pr");
+
+        // pretend to be in PREVIEW environment
+        when(environmentConfiguration.getEnvironment()).thenReturn("pr");
+
         assignmentRequest = TestDataBuilder.buildEmptyAssignmentRequest(LIVE);
         AssignmentRequest assignmentRequestSpy = Mockito.spy(assignmentRequest);
 
         sut.validateRequest(assignmentRequestSpy);
-        Mockito.verify(assignmentRequestSpy, times(4)).getRequest();
-        Mockito.verify(assignmentRequestSpy, times(1)).getRequestedRoles();
-        Mockito.verify(kieSessionMock, times(1)).execute((Iterable) any());
+        verify(assignmentRequestSpy, times(4)).getRequest();
+        verify(assignmentRequestSpy, times(1)).getRequestedRoles();
+        verify(kieSessionMock, times(1)).execute((Iterable) any());
+
+        // verify when in none PROD environment: all flags are loaded from DB/persistenceService
+        Mockito.verify(persistenceService, Mockito.times(FeatureFlagEnum.values().length))
+            .getStatusByParam(any(), eq("pr"));
     }
 
     @Test
@@ -110,6 +138,8 @@ class ValidationModelServiceTest {
 
     @Test
     void shouldExecuteQueryParamForCaseRole() throws IOException {
+        ReflectionTestUtils.setField(sut, "sizeInternal", PAGE_SIZE_INTERNAL);
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", SORT_COLUMN_UNIQUE);
 
         Set<String> actorIds = Set.of(
             "123e4567-e89b-42d3-a456-556642445678",
@@ -129,12 +159,15 @@ class ValidationModelServiceTest {
         List<? extends Assignment> existingRecords = sut.getCurrentRoleAssignmentsForActors(actorIds);
         assertNotNull(existingRecords);
         assertEquals(2, existingRecords.size());
-
-
+        verify(persistenceService, times(1)).retrieveRoleAssignmentsByQueryRequest(
+            any(), anyInt(), eq(PAGE_SIZE_INTERNAL), eq(SORT_COLUMN_UNIQUE), any(), anyBoolean()
+        );
     }
 
     @Test
     void shouldExecuteQueryParamForMultipleCaseRole() throws IOException {
+        ReflectionTestUtils.setField(sut, "sizeInternal", PAGE_SIZE_INTERNAL);
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", SORT_COLUMN_UNIQUE);
 
         final Set<String> actorIds = Set.of(
             "123e4567-e89b-42d3-a456-556642445678",
@@ -151,22 +184,20 @@ class ValidationModelServiceTest {
                 anyBoolean()
         );
         when(persistenceService.getTotalRecords()).thenReturn(21L);
-        ReflectionTestUtils.setField(
-            sut,
-            "defaultSize", 20
-
-        );
-
 
         List<? extends Assignment> existingRecords = sut.getCurrentRoleAssignmentsForActors(actorIds);
         assertNotNull(existingRecords);
         assertEquals(4, existingRecords.size());
-
+        verify(persistenceService, times(2)).retrieveRoleAssignmentsByQueryRequest(
+            any(), anyInt(), eq(PAGE_SIZE_INTERNAL), eq(SORT_COLUMN_UNIQUE), any(), anyBoolean()
+        );
 
     }
 
     @Test
     void shouldLogWhenTotalRecordsExceed100() throws IOException {
+        ReflectionTestUtils.setField(sut, "sizeInternal", PAGE_SIZE_INTERNAL);
+        ReflectionTestUtils.setField(sut, "sortColumnUnique", SORT_COLUMN_UNIQUE);
 
         final Set<String> actorIds = Set.of(
             "123e4567-e89b-42d3-a456-556642445678",
@@ -183,16 +214,13 @@ class ValidationModelServiceTest {
                 anyBoolean()
         );
         when(persistenceService.getTotalRecords()).thenReturn(2200L);
-        ReflectionTestUtils.setField(
-            sut,
-            "defaultSize", 20
-        );
-
 
         List<? extends Assignment> existingRecords = sut.getCurrentRoleAssignmentsForActors(actorIds);
         assertNotNull(existingRecords);
         assertEquals(220, existingRecords.size());
-
+        verify(persistenceService, times(110)).retrieveRoleAssignmentsByQueryRequest(
+            any(), anyInt(), eq(PAGE_SIZE_INTERNAL), eq(SORT_COLUMN_UNIQUE), any(), anyBoolean()
+        );
 
     }
 

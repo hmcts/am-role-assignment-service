@@ -29,9 +29,9 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.NUMBER_TEXT_PATTERN;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.TEXT_HYPHEN_PATTERN;
@@ -179,7 +179,7 @@ class ValidationUtilTest {
         final Matcher matcher = pattern.matcher(uuid);
         assertTrue(matcher.matches());
         assertNotNull(uuid);
-        assertTrue(!uuid.isEmpty());
+        assertFalse(uuid.isEmpty());
         final boolean result = ValidationUtil.sanitiseCorrelationId(uuid);
         assertTrue(result);
 
@@ -544,6 +544,6 @@ class ValidationUtilTest {
         Map<String, List<String>> attr = new HashMap<>();
         attr.put("caseId", Collections.singletonList("123456"));
 
-        Assertions.assertTrue(ValidationUtil.doesKeyAttributeExist(attr, "caseId"));
+        assertTrue(ValidationUtil.doesKeyAttributeExist(attr, "caseId"));
     }
 }

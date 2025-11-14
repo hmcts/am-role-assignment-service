@@ -1,19 +1,21 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.hmcts.reform.roleassignment.BaseTest;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.springdoc.core.Constants.SWAGGER_UI_URL;
+import static org.springdoc.core.utils.Constants.SWAGGER_UI_URL;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
+@TestPropertySource(properties = {"ras.environment=pr"})
 public class SwaggerRedirectControllerIntegrationTest extends BaseTest {
 
     private transient MockMvc mockMvc;
@@ -27,7 +29,7 @@ public class SwaggerRedirectControllerIntegrationTest extends BaseTest {
     @Autowired
     private transient SwaggerRedirectController swaggerRedirectController;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.mockMvc = standaloneSetup(this.swaggerRedirectController).build();
     }

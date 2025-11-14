@@ -2,25 +2,23 @@
 package uk.gov.hmcts.reform.roleassignment.data;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
 import org.springframework.data.domain.Persistable;
 import uk.gov.hmcts.reform.roleassignment.util.JsonBConverter;
 
-
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -97,8 +95,8 @@ public class HistoryEntity implements Persistable<UUID> {
     @JoinColumn(name = "request_id")
     private RequestEntity requestEntity;
 
-    @Column(name = "authorisations")
-    @Type(type = "uk.gov.hmcts.reform.roleassignment.data.GenericArrayUserType")
+    @SuppressWarnings("JpaAttributeTypeInspection")
+    @Column(name = "authorisations", columnDefinition = "text[]")
     private String[] authorisations;
 
     //getter method to retrieve the parent id in the child entity

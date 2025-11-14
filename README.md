@@ -21,7 +21,7 @@ to support both ccd access control and work allocation requirements.
 
 To run the project you will need to have the following installed:
 
-* Java 11
+* Java 21
 * Docker (optional)
 
 For information about the software versions used to build this API and a complete list of it's dependencies see build.gradle
@@ -42,7 +42,7 @@ The following environment variables are required:
       |ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD|Pa55word11|
       |ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE|search-user|
       |CCD_DATA_STORE_URL|http://localhost:4452|
-      |LAUNCH_DARKLY_ENV|local|
+      |RAS_ENV|local|
       |LD_SDK_KEY|"Please contact the AM team for getting this key"|
 
 ## Building the application

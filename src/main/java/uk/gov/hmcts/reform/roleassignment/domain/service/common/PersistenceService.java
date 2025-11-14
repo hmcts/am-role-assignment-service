@@ -1,15 +1,18 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.common;
 
+import jakarta.persistence.EntityManager;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.data.DatabaseChangelogLockEntity;
 import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
@@ -27,11 +30,9 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-import uk.gov.hmcts.reform.roleassignment.launchdarkly.FeatureToggleService;
 import uk.gov.hmcts.reform.roleassignment.util.PersistenceUtil;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -69,8 +70,7 @@ public class PersistenceService {
     private PersistenceUtil persistenceUtil;
     private DatabseChangelogLockRepository databseChangelogLockRepository;
     private FlagConfigRepository flagConfigRepository;
-    @Autowired
-    private FeatureToggleService featureToggleService;
+    private EnvironmentConfiguration environmentConfiguration;
 
     @Value("${roleassignment.query.sortcolumn}")
     private String sortColumn;
@@ -78,19 +78,24 @@ public class PersistenceService {
     @Value("${roleassignment.query.size}")
     private Integer defaultSize;
 
+    @Value("${roleassignment.query.sortcolumnunique}")
+    private String sortColumnUnique;
+
     @Autowired
     EntityManager entityManager;
 
     public PersistenceService(HistoryRepository historyRepository, RequestRepository requestRepository,
                               RoleAssignmentRepository roleAssignmentRepository, PersistenceUtil persistenceUtil,
                               DatabseChangelogLockRepository databseChangelogLockRepository,
-                              FlagConfigRepository flagConfigRepository) {
+                              FlagConfigRepository flagConfigRepository,
+                              EnvironmentConfiguration environmentConfiguration) {
         this.historyRepository = historyRepository;
         this.requestRepository = requestRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
         this.persistenceUtil = persistenceUtil;
         this.databseChangelogLockRepository = databseChangelogLockRepository;
         this.flagConfigRepository = flagConfigRepository;
+        this.environmentConfiguration = environmentConfiguration;
     }
 
     @Transactional
@@ -192,16 +197,7 @@ public class PersistenceService {
                     .and(searchByClassification(searchRequest.getClassification())))
                                        .and(searchByRoleCategories(searchRequest.getRoleCategory())))
                 .and(searchByAuthorisations(searchRequest.getAuthorisations())),
-            PageRequest.of(
-                (pageNumber != null
-                    && pageNumber > 0) ? pageNumber : 0,
-                (size != null
-                    && size > 0) ? size : defaultSize,
-                Sort.by(
-                    (direction != null) ? Sort.Direction.fromString(direction) : Sort.DEFAULT_DIRECTION,
-                    (sort != null) ? sort : sortColumn
-                )
-            )
+            createPageable(pageNumber, size, sort, direction)
         );
 
         PageHolder.holder.set(pageRoleAssignmentEntities);
@@ -268,16 +264,7 @@ public class PersistenceService {
 
         Page<RoleAssignmentEntity> pageRoleAssignmentEntities  = roleAssignmentRepository.findAll(
             finalQuery,
-            PageRequest.of(
-                (pageNumber != null
-                    && pageNumber > 0) ? pageNumber : 0,
-                (size != null
-                    && size > 0) ? size : defaultSize,
-                Sort.by(
-                    (direction != null) ? Sort.Direction.fromString(direction) : Sort.DEFAULT_DIRECTION,
-                    (sort != null) ? sort : sortColumn
-                )
-            )
+            createPageable(pageNumber, size, sort, direction)
         );
         PageHolder.holder.set(pageRoleAssignmentEntities);
 
@@ -319,7 +306,7 @@ public class PersistenceService {
 
     public boolean getStatusByParam(String flagName, String envName) {
         if (StringUtils.isEmpty(envName)) {
-            envName = System.getenv("LAUNCH_DARKLY_ENV");
+            envName = environmentConfiguration.getEnvironment();
         }
         return flagConfigRepository.findByFlagNameAndEnv(flagName, envName).getStatus();
     }
@@ -338,6 +325,21 @@ public class PersistenceService {
             roleTypes.add(RoleType.CASE.name());
         }
         return roleTypes;
+    }
+
+    public Pageable createPageable(Integer pageNumber, Integer size, String sort, String direction) {
+        Sort.Direction dir = (direction != null) ? Sort.Direction.fromString(direction) : Sort.DEFAULT_DIRECTION;
+        String sortOrDefault = (sort != null) ? sort : sortColumn;
+
+        Sort sortBy = sortOrDefault.equals(sortColumnUnique)
+            ? Sort.by(dir, sortColumnUnique) :
+            Sort.by(dir, sortOrDefault).and(Sort.by(sortColumnUnique));
+
+        return PageRequest.of(
+            (pageNumber != null && pageNumber > 0) ? pageNumber : 0,
+            (size != null && size > 0) ? size : defaultSize,
+            sortBy
+        );
     }
 
 }
