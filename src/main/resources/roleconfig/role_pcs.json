@@ -1,6 +1,6 @@
 [
   {
-    "name": "PCS-SOLICITOR",
+    "name": "pcs-solicitor",
     "label": "PCS Solicitor",
     "description": "Solicitor case role for PCS",
     "category": "PROFESSIONAL",
@@ -39,7 +39,7 @@
     ]
   },
   {
-    "name": "PCS-CITIZEN",
+    "name": "pcs-citizen",
     "label": "PCS Citizen",
     "description": "Citizen case role for PCS",
     "category": "CITIZEN",
@@ -78,7 +78,7 @@
     ]
   },
   {
-    "name": "PCS-HA-USER",
+    "name": "pcs-ha-user",
     "label": "PCS Housing association user",
     "description": "Housing association case role for PCS",
     "category": "PROFESSIONAL",

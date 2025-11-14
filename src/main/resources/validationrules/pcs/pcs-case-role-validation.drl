@@ -16,7 +16,7 @@ when
     Request(clientId == "pcs_api")
     $ra: RoleAssignment(
                  status == Status.CREATE_REQUESTED,
-                 roleName == "PCS-SOLICITOR",
+                roleName == "pcs-solicitor",
                  attributes["jurisdiction"] != null
                      && attributes["jurisdiction"].asText() == "PCS",
                  attributes["caseType"] != null,
@@ -41,7 +41,7 @@ when
     Request(clientId == "pcs_api")
     $ra: RoleAssignment(
                  status == Status.DELETE_REQUESTED,
-                 roleName == "PCS-SOLICITOR",
+                roleName == "pcs-solicitor",
                  attributes["jurisdiction"] != null
                      && attributes["jurisdiction"].asText() == "PCS",
                  attributes["caseId"] != null && attributes["caseId"].asText() != null
@@ -62,7 +62,7 @@ when
     Request(clientId == "pcs_api")
     $ra: RoleAssignment(
                  status == Status.CREATE_REQUESTED,
-                 roleName == "PCS-CITIZEN",
+                roleName == "pcs-citizen",
                  attributes["jurisdiction"] != null
                      && attributes["jurisdiction"].asText() == "PCS",
                  attributes["caseType"] != null,
@@ -87,7 +87,7 @@ when
     Request(clientId == "pcs_api")
     $ra: RoleAssignment(
                  status == Status.CREATE_REQUESTED,
-                 roleName == "PCS-HA-USER",
+                roleName == "pcs-ha-user",
                  attributes["jurisdiction"] != null
                      && attributes["jurisdiction"].asText() == "PCS",
                  attributes["caseType"] != null,
@@ -112,7 +112,7 @@ when
     Request(clientId == "pcs_api")
     $ra: RoleAssignment(
                  status == Status.DELETE_REQUESTED,
-                 roleName == "PCS-HA-USER",
+                roleName == "pcs-ha-user",
                  attributes["jurisdiction"] != null
                      && attributes["jurisdiction"].asText() == "PCS",
                  attributes["caseId"] != null && attributes["caseId"].asText() != null
@@ -136,7 +136,7 @@ when
     Request(clientId == "pcs_api")
     $ra: RoleAssignment(
                  status == Status.DELETE_REQUESTED,
-                 roleName == "PCS-CITIZEN",
+                roleName == "pcs-citizen",
                  attributes["jurisdiction"] != null
                      && attributes["jurisdiction"].asText() == "PCS",
                  attributes["caseId"] != null && attributes["caseId"].asText() != null

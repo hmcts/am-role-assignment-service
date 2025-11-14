@@ -36,9 +36,9 @@ class PcsCaseRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "PCS-SOLICITOR,PROFESSIONAL,true",
-        "PCS-CITIZEN,CITIZEN,true",
-        "PCS-HA-USER,PROFESSIONAL,true"
+        "pcs-solicitor,PROFESSIONAL,true",
+        "pcs-citizen,CITIZEN,true",
+        "pcs-ha-user,PROFESSIONAL,true"
     })
     void shouldApproveCreateRequestsWhenFlagEnabled(String roleName, String category, boolean rbidRequired) {
         assignmentRequest = buildAssignmentRequest(roleName,
@@ -57,9 +57,9 @@ class PcsCaseRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "PCS-SOLICITOR,PROFESSIONAL,true",
-        "PCS-CITIZEN,CITIZEN,true",
-        "PCS-HA-USER,PROFESSIONAL,true"
+        "pcs-solicitor,PROFESSIONAL,true",
+        "pcs-citizen,CITIZEN,true",
+        "pcs-ha-user,PROFESSIONAL,true"
     })
     void shouldApproveDeleteRequestsWhenFlagEnabled(String roleName, String category, boolean rbidRequired) {
         assignmentRequest = buildAssignmentRequest(roleName,
@@ -79,7 +79,7 @@ class PcsCaseRoleTest extends DroolBase {
     @Test
     void shouldLeaveStatusUnchangedWhenFlagDisabled() {
         featureFlags.clear();
-        assignmentRequest = buildAssignmentRequest("PCS-SOLICITOR",
+        assignmentRequest = buildAssignmentRequest("pcs-solicitor",
                                                    RoleCategory.PROFESSIONAL,
                                                    Status.CREATE_REQUESTED,
                                                    RequestType.CREATE,
