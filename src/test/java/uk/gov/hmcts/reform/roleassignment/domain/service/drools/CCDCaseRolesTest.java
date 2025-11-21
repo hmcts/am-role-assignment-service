@@ -453,8 +453,8 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Nested
-    @DisplayName("IDAM Disposer CCD Case Roles Tests")
-    class IdamDisposerCaseRolesTest {
+    @DisplayName("IDAM Disposer Create CCD Case Roles Tests")
+    class IdamDisposerCreateCaseRolesTest {
 
         static final String IDAM_DISPOSER_CLIENT_ID = "disposer-idam-user";
 
