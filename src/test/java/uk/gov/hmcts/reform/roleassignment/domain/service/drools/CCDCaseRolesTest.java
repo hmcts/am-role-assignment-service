@@ -1,10 +1,12 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -13,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 
@@ -25,8 +28,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole_ra;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @ExtendWith(MockitoExtension.class)
@@ -542,4 +547,97 @@ class CCDCaseRolesTest extends DroolBase {
         }
     }
 
+    @Nested
+    @DisplayName("IDAM CCD Data Delete CCD Case Roles Tests")
+    class IdamCcdDataDeleteCaseRolesTest {
+
+        static final String IDAM_CCD_DATA_CLIENT_ID = "ccd_data";
+
+        @ParameterizedTest
+        @CsvSource({
+            "1234567890123456"
+        })
+        void shouldDeleteCaseRoleFromIdamCcdData(String caseId) {
+
+            // GIVEN
+            assignmentRequest.getRequest().setClientId(IDAM_CCD_DATA_CLIENT_ID);
+            assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                roleAssignment.setStatus(Status.DELETE_REQUESTED);
+                roleAssignment.setRoleType(RoleType.CASE);
+                roleAssignment.getAttributes().put("caseId", convertValueJsonNode(caseId));
+            });
+            setDisposerFeatureFlag(true);
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assertTrue(CollectionUtils.isNotEmpty(assignmentRequest.getRequestedRoles()));
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                assertEquals(DELETE_APPROVED, roleAssignment.getStatus());
+            });
+        }
+
+        @Test
+        void shouldRejectDeleteCaseRoleForNonCaseFromIdamCcdData() {
+
+            // GIVEN
+            assignmentRequest.getRequest().setClientId(IDAM_CCD_DATA_CLIENT_ID);
+            assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                roleAssignment.setStatus(Status.DELETE_REQUESTED);
+                roleAssignment.setRoleType(RoleType.ORGANISATION);
+            });
+            setDisposerFeatureFlag(true);
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assignmentRequest.getRequestedRoles()
+                .forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
+
+            //verify retrieveDataService is not used
+            RetrieveDataService retrieveDataService = getRetrieveDataService();
+            verifyNoInteractions(retrieveDataService);
+        }
+
+        @ParameterizedTest
+        @CsvSource({
+            "1234567890123456"
+        })
+        void shouldRejectDeleteCaseRoleFromIdamCcdData_flagDisabled(String caseId) {
+
+            // GIVEN
+            assignmentRequest.getRequest().setClientId(IDAM_CCD_DATA_CLIENT_ID);
+            assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                roleAssignment.setStatus(Status.DELETE_REQUESTED);
+                roleAssignment.setRoleType(RoleType.CASE);
+                roleAssignment.getAttributes().put("caseId", convertValueJsonNode(caseId));
+            });
+            setDisposerFeatureFlag(false); // i.e. disable flag
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assignmentRequest.getRequestedRoles()
+                .forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
+
+            //verify retrieveDataService is not used
+            RetrieveDataService retrieveDataService = getRetrieveDataService();
+            verifyNoInteractions(retrieveDataService);
+        }
+
+        private void setDisposerFeatureFlag(boolean status) {
+            FeatureFlag featureFlag  =  FeatureFlag.builder()
+                                            .flagName(FeatureFlagEnum.DISPOSER_1_1.getValue())
+                                            .status(status)
+                                            .build();
+
+            featureFlags.add(featureFlag);
+        }
+    }
 }
