@@ -548,19 +548,19 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Nested
-    @DisplayName("IDAM CCD Data Delete CCD Case Roles Tests")
-    class IdamCcdDataDeleteCaseRolesTest {
+    @DisplayName("IDAM CCD Case Disposer Delete CCD Case Roles Tests")
+    class IdamCcdCaseDisposerDeleteCaseRolesTest {
 
-        static final String IDAM_CCD_DATA_CLIENT_ID = "ccd_data";
+        static final String IDAM_CASE_DISPOSER_CLIENT_ID = "ccd_case_disposer";
 
         @ParameterizedTest
         @CsvSource({
             "1234567890123456"
         })
-        void shouldDeleteCaseRoleFromIdamCcdData(String caseId) {
+        void shouldDeleteCaseRoleFromIdamCcdCaseDisposer(String caseId) {
 
             // GIVEN
-            assignmentRequest.getRequest().setClientId(IDAM_CCD_DATA_CLIENT_ID);
+            assignmentRequest.getRequest().setClientId(IDAM_CASE_DISPOSER_CLIENT_ID);
             assignmentRequest.setRequestedRoles(getRequestedOrgRole());
             assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
                 roleAssignment.setStatus(Status.DELETE_REQUESTED);
@@ -580,10 +580,10 @@ class CCDCaseRolesTest extends DroolBase {
         }
 
         @Test
-        void shouldRejectDeleteCaseRoleForNonCaseFromIdamCcdData() {
+        void shouldRejectDeleteCaseRoleForNonCaseFromIdamCcdCaseDisposer() {
 
             // GIVEN
-            assignmentRequest.getRequest().setClientId(IDAM_CCD_DATA_CLIENT_ID);
+            assignmentRequest.getRequest().setClientId(IDAM_CASE_DISPOSER_CLIENT_ID);
             assignmentRequest.setRequestedRoles(getRequestedOrgRole());
             assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
                 roleAssignment.setStatus(Status.DELETE_REQUESTED);
@@ -607,10 +607,10 @@ class CCDCaseRolesTest extends DroolBase {
         @CsvSource({
             "1234567890123456"
         })
-        void shouldRejectDeleteCaseRoleFromIdamCcdData_flagDisabled(String caseId) {
+        void shouldRejectDeleteCaseRoleFromIdamCcdCaseDisposer_flagDisabled(String caseId) {
 
             // GIVEN
-            assignmentRequest.getRequest().setClientId(IDAM_CCD_DATA_CLIENT_ID);
+            assignmentRequest.getRequest().setClientId(IDAM_CASE_DISPOSER_CLIENT_ID);
             assignmentRequest.setRequestedRoles(getRequestedOrgRole());
             assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
                 roleAssignment.setStatus(Status.DELETE_REQUESTED);

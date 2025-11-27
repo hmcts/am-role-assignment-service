@@ -89,7 +89,7 @@ end;
 rule "v1_1_ccd_delete_case_roles"
 when
     $f:  FeatureFlag(status && flagName == FeatureFlagEnum.DISPOSER_1_1.getValue())
-    $rq: Request(clientId in ("ccd_data", "aac_manage_case_assignment"))
+    $rq: Request(clientId in ("ccd_case_disposer"))
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.CASE,

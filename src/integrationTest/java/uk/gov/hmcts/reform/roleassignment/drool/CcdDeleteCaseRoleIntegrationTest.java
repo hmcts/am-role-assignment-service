@@ -13,7 +13,7 @@ public class CcdDeleteCaseRoleIntegrationTest extends BaseDroolIntegrationTest {
 
     static final String CCD_DATA_CLIENT_ID = "ccd_data";
     static final String AAC_MANAGE_CASE_CLIENT_ID = "aac_manage_case_assignment";
-    static final String INVALID_CLIENT_ID = "ccd_case_disposer";
+    static final String CCD_CASE_DISPOSER_CLIENT_ID = "ccd_case_disposer";
 
     // UID from `/src/integrationTest/resources/sql/insert_case_role_assignment.sql`
     static final String UID_SUCCESSFUL_ACTOR_ID = "42454e17-222b-4e91-8a6e-619654a0d361";
@@ -28,8 +28,8 @@ public class CcdDeleteCaseRoleIntegrationTest extends BaseDroolIntegrationTest {
         "classpath:sql/init_role_assignment.sql",
         "classpath:sql/insert_case_role_assignment.sql"
     })
-    public void shouldDeleteCaseForCcdDeleteCaseRole_ccdData() throws Exception {
-        assertSuccessfulDeletion(CCD_DATA_CLIENT_ID);
+    public void shouldDeleteCaseForCcdDeleteCaseRole_ccdCaseDisposer() throws Exception {
+        assertSuccessfulDeletion(CCD_CASE_DISPOSER_CLIENT_ID);
     }
 
     @Test
@@ -37,8 +37,10 @@ public class CcdDeleteCaseRoleIntegrationTest extends BaseDroolIntegrationTest {
         "classpath:sql/init_role_assignment.sql",
         "classpath:sql/insert_case_role_assignment.sql"
     })
-    public void shouldDeleteCaseForCcdDeleteCaseRole_aacManageCase() throws Exception {
-        assertSuccessfulDeletion(AAC_MANAGE_CASE_CLIENT_ID);
+    public void shouldRejectDeleteCaseForCcdDeleteCaseRole_aacManageCase() throws Exception {
+        assertRejectedDeletion(AAC_MANAGE_CASE_CLIENT_ID,
+                               UID_SUCCESSFUL_ASSIGNEMT_ID,
+                               UID_SUCCESSFUL_ACTOR_ID);
     }
 
     @Test
@@ -46,8 +48,8 @@ public class CcdDeleteCaseRoleIntegrationTest extends BaseDroolIntegrationTest {
         "classpath:sql/init_role_assignment.sql",
         "classpath:sql/insert_case_role_assignment.sql"
     })
-    public void shouldRejectDeleteCaseForCcdDeleteCaseRole_InvalidClientId() throws Exception {
-        assertRejectedDeletion(INVALID_CLIENT_ID,
+    public void shouldRejectDeleteCaseForCcdDeleteCaseRole_ccdData() throws Exception {
+        assertRejectedDeletion(CCD_DATA_CLIENT_ID,
                                UID_SUCCESSFUL_ASSIGNEMT_ID,
                                UID_SUCCESSFUL_ACTOR_ID);
     }
@@ -58,7 +60,7 @@ public class CcdDeleteCaseRoleIntegrationTest extends BaseDroolIntegrationTest {
         "classpath:sql/insert_case_role_assignment_deletions_to_reject.sql"
     })
     public void shouldRejectDeleteCaseForCcdDeleteCaseRole_MissingCaseId() throws Exception {
-        assertRejectedDeletion(CCD_DATA_CLIENT_ID,
+        assertRejectedDeletion(CCD_CASE_DISPOSER_CLIENT_ID,
                                UID_NO_CASE_ID_ASSIGNEMT_ID,
                                UID_NO_CASE_ID_ACTOR_ID);
     }
