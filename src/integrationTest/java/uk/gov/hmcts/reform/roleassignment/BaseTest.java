@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,14 +96,14 @@ public abstract class BaseTest {
         Connection connection;
 
         @Bean
-        public EmbeddedPostgres embeddedPostgres() throws IOException {
-            return EmbeddedPostgres
+        public PostgresTestContainer embeddedPostgres() throws IOException {
+            return PostgresTestContainer
                 .builder()
                 .start();
         }
 
         @Bean
-        public DataSource dataSource(@Autowired EmbeddedPostgres pg) throws Exception {
+        public DataSource dataSource(@Autowired PostgresTestContainer pg) throws Exception {
 
             final Properties props = new Properties();
             // Instruct JDBC to accept JSON string for JSONB
@@ -113,8 +112,6 @@ public abstract class BaseTest {
             connection = DriverManager.getConnection(pg.getJdbcUrl("postgres"), props);
             return new SingleConnectionDataSource(connection, true);
         }
-
-
 
         @PreDestroy
         public void contextDestroyed() throws SQLException {
