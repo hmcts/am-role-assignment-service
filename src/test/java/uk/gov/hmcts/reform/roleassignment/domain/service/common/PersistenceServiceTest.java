@@ -357,9 +357,7 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -406,9 +404,7 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -470,9 +466,7 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -512,9 +506,8 @@ class PersistenceServiceTest {
 
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
-        Pageable pageableCapture = pageableCaptor.capture();
 
-        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture))
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCaptor.capture()))
             .thenThrow(ResourceNotFoundException.class);
 
 
@@ -538,9 +531,8 @@ class PersistenceServiceTest {
 
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
-        Pageable pageableCapture = pageableCaptor.capture();
 
-        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCaptor.capture()
         )).thenThrow(ResourceNotFoundException.class);
 
 
@@ -572,9 +564,7 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -682,9 +672,7 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -774,9 +762,7 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -839,9 +825,7 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -985,9 +969,7 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCaptor.capture()
         ))
             .thenReturn(page);
 
@@ -1064,9 +1046,7 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCaptor.capture()
         ))
             .thenReturn(page);
 
