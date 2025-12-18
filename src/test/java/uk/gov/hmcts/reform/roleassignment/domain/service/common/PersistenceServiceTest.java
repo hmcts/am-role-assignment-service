@@ -15,6 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -356,10 +357,9 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
         Pageable pageableCapture = pageableCaptor.capture();
 
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
         ))
             .thenReturn(page);
 
@@ -406,10 +406,9 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
         Pageable pageableCapture = pageableCaptor.capture();
 
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
         ))
             .thenReturn(page);
 
@@ -471,10 +470,9 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
         Pageable pageableCapture = pageableCaptor.capture();
 
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
         ))
             .thenReturn(page);
 
@@ -512,13 +510,11 @@ class PersistenceServiceTest {
             .roleType(roleType)
             .build();
 
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
-
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
         Pageable pageableCapture = pageableCaptor.capture();
 
-        when(roleAssignmentRepository.findAll(spec, pageableCapture))
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture))
             .thenThrow(ResourceNotFoundException.class);
 
 
@@ -540,15 +536,12 @@ class PersistenceServiceTest {
             .authorisations(authorisations)
             .build();
 
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
-
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
         Pageable pageableCapture = pageableCaptor.capture();
 
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
-        ))
-            .thenThrow(ResourceNotFoundException.class);
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
+        )).thenThrow(ResourceNotFoundException.class);
 
 
         Assertions.assertThrows(ResourceNotFoundException.class, () ->
@@ -579,10 +572,9 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
         Pageable pageableCapture = pageableCaptor.capture();
 
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
         ))
             .thenReturn(page);
 
@@ -690,10 +682,9 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
         Pageable pageableCapture = pageableCaptor.capture();
 
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
         ))
             .thenReturn(page);
 
@@ -783,10 +774,9 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
         Pageable pageableCapture = pageableCaptor.capture();
 
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
         ))
             .thenReturn(page);
 
@@ -849,10 +839,9 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
         Pageable pageableCapture = pageableCaptor.capture();
 
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
         ))
             .thenReturn(page);
 
@@ -996,10 +985,9 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
         Pageable pageableCapture = pageableCaptor.capture();
 
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
         ))
             .thenReturn(page);
 
@@ -1076,10 +1064,9 @@ class PersistenceServiceTest {
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
             Pageable.class);
 
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
         Pageable pageableCapture = pageableCaptor.capture();
 
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(Mockito.<Specification<RoleAssignmentEntity>>any(), pageableCapture
         ))
             .thenReturn(page);
 
