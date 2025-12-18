@@ -543,7 +543,7 @@ dependencies {
 
 dependencyManagement {
   imports {
-    mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.7"
+    mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.9"
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
   }
   dependencies {
