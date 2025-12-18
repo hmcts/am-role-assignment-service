@@ -12,7 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -55,16 +55,16 @@ public abstract class BaseTest {
 
     protected static final ObjectMapper mapper = new ObjectMapper();
 
-    @MockBean
+    @MockitoBean
     IdamServiceHealthIndicator idamServiceHealthIndicator;
 
-    @MockBean
+    @MockitoBean
     CcdDataStoreHealthIndicator ccdDataStoreHealthIndicator;
 
-    @MockBean(name = "clientRegistrationRepository")
+    @MockitoBean(name = "clientRegistrationRepository")
     private ClientRegistrationRepository getClientRegistrationRepository;
 
-    @MockBean(name = "reactiveClientRegistrationRepository")
+    @MockitoBean(name = "reactiveClientRegistrationRepository")
     private ReactiveClientRegistrationRepository getReactiveClientRegistrationRepository;
 
     static {
