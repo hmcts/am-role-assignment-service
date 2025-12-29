@@ -444,7 +444,7 @@ dependencies {
   testImplementation('com.opentable.components:otj-pg-embedded:1.1.1')
   testImplementation group: 'org.wiremock', name: 'wiremock', version: '3.13.2'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-contract-wiremock'
-  testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.20.0'
+  testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.21.0'
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: versions.junit
   testImplementation group: 'org.junit.platform', name: 'junit-platform-commons', version: versions.junitPlatform
