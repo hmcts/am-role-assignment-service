@@ -13,7 +13,7 @@ plugins {
   id 'au.com.dius.pact' version '4.6.19' //do not change this version or serenity reports will fail to generate
   id 'org.flywaydb.flyway' version '9.22.3'
   id 'org.owasp.dependencycheck' version '12.1.1'
-  id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.34'
+  id 'net.serenity-bdd.serenity-gradle-plugin' version '4.3.2'
 }
 
 ext['snakeyaml.version'] = '2.0'
