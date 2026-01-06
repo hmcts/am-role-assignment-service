@@ -5,7 +5,6 @@ Feature: F-001 : Create Role Assignments
     Given an appropriate test context as detailed in the test data source
 
   @S-001
-  @Retryable(maxAttempts=3,delay=500,statusCodes={502,503,504})
   Scenario: must successfully create single Role Assignment with only mandatory fields
     Given an appropriate test context as detailed in the test data source,
     And a user [Befta2 - who invokes the API],
