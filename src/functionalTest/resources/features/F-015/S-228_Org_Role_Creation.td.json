@@ -15,7 +15,7 @@
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
         "reference": "S-228_Org_Role_Creation",
-        "process": "businessProcess1"
+        "process": "${[scenarioContext][customValues][generateProcessId]}"
       },
       "requestedRoles": [
         {

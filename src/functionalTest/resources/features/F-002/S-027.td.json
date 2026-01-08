@@ -9,7 +9,7 @@
   "uri": "/am/role-assignments?process={process}&reference={reference}",
   "request": {
     "pathVariables": {
-      "process": "businessProcess1NotExisting",
+      "process": "RAS_FTA_NotExisting",
       "reference": "123e4567-e89b-42d3-a456-556642446027"
     }
   },

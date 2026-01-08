@@ -18,7 +18,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1747069134288886/challenged-access-legal-ops/${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1758736124386336/challenged-access-legal-ops/${[scenarioContext][testData][users][invokingUser][id]}",
         "process" : "challenged-access",
         "replaceExisting" : true
       },
@@ -30,7 +30,7 @@
           "classification" : "PUBLIC",
           "attributes": {
             "jurisdiction" : "EMPLOYMENT",
-            "caseId": "1747069134288886"
+            "caseId": "1758736124386336"
           },
           "roleName": "challenged-access-legal-ops",
           "roleCategory": "LEGAL_OPERATIONS",

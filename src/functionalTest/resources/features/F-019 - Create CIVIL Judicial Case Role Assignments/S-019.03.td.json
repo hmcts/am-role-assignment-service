@@ -15,7 +15,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1734019726564702/allocated-judge"
+        "reference": "1759411021418967/allocated-judge"
       },
       "requestedRoles": [
         {
@@ -28,7 +28,7 @@
           "classification": "RESTRICTED",
           "attributes":
           {
-            "caseId" : "1734019726564702",
+            "caseId" : "1759411021418967",
             "jurisdiction": "CIVIL",
             "contractType": "Fee-Paid"
           }
