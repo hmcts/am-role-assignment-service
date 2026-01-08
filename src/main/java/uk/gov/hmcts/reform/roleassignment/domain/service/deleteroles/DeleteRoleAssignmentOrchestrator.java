@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.deleteroles;
 
-import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
+import jakarta.validation.constraints.NotNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;

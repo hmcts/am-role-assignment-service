@@ -1,8 +1,9 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog;
 
-import com.launchdarkly.shaded.org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -11,12 +12,9 @@ import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContext;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContextHolder;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+@Slf4j
 public class AuditInterceptor implements HandlerInterceptor {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AuditInterceptor.class);
 
     public static final String REQUEST_ID = "request-id";
 
@@ -39,7 +37,7 @@ public class AuditInterceptor implements HandlerInterceptor {
                 try {
                     auditService.audit(auditContext);
                 } catch (Exception e) {  // Ignoring audit failures
-                    LOG.error("Error while auditing the request data:{}", e.getMessage());
+                    log.error("Error while auditing the request data:{}", e.getMessage());
                 }
             }
             AuditContextHolder.remove();
@@ -58,7 +56,7 @@ public class AuditInterceptor implements HandlerInterceptor {
         context.setRequestPath(request.getRequestURI());
         if ((context.getResponseTime() != null && context.getResponseTime() > 500)
             || context.getHttpStatus() == 422
-            || LOG.isDebugEnabled()) {
+            || log.isDebugEnabled()) {
             context.setRequestPayload(new MutableHttpServletRequest(request).getBodyAsString());
         }
         return context;

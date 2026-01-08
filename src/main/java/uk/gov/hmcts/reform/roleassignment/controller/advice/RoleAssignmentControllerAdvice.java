@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.controller.advice;
 
 import feign.FeignException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.kie.api.runtime.rule.ConsequenceException;
 import org.slf4j.Logger;
@@ -22,7 +23,6 @@ import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.Unauthoriz
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnprocessableEntityException;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;

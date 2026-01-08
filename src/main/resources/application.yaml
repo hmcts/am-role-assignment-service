@@ -47,8 +47,10 @@ security:
     - "/am/role-assignments/fetchFlagStatus"
     - "/swagger"
     - "/swagger-ui.html"
+    - "/swagger-resources/**"
     - "/swagger-ui/**"
     - "/v3/api-docs/**"
+    - "/v3/**"
     - "/search/**"
     - "/csrf"
     - "/error"
@@ -109,7 +111,7 @@ spring:
             client-id: microservicekey-am-role-assignment-service
             client-secret: ${AM_ROLE_ASSIGNMENT_SERVICE_SECRET:}
   cache:
-    type: ${ENABLE_CACHE:}
+    type: ${ENABLE_CACHE:caffeine}
     cache-names: token, caseId, userToken
     caffeine:
       spec: maximumSize=500,expireAfterWrite=120s

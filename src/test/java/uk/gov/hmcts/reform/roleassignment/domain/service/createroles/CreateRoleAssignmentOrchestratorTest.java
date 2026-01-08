@@ -2,12 +2,12 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.createroles;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.reform.roleassignment.data.HistoryEntity;
@@ -48,7 +48,7 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREAT
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.LIVE;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 class CreateRoleAssignmentOrchestratorTest {
 
     @Mock
@@ -208,9 +208,6 @@ class CreateRoleAssignmentOrchestratorTest {
 
         historyEntity = TestDataBuilder.buildHistoryIntoEntity(
             assignmentRequest.getRequestedRoles().iterator().next(), requestEntity);
-
-        when(persistenceService.getAssignmentsByProcess(anyString(), anyString(), anyString()))
-            .thenReturn((List<RoleAssignment>) assignmentRequest.getRequestedRoles());
 
         when(parseRequestService.parseRequest(any(AssignmentRequest.class), any(RequestType.class)))
             .thenThrow(mock(ParseException.class));

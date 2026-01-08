@@ -1,10 +1,10 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
@@ -21,8 +21,8 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELET
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
-@RunWith(MockitoJUnitRunner.class)
-class PrmOrgRoleTest extends DroolBase {
+@ExtendWith(MockitoExtension.class)
+public class PrmOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({

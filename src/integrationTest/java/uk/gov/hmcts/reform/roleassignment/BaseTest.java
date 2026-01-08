@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -25,7 +25,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import uk.gov.hmcts.reform.roleassignment.controller.utils.WiremockFixtures;
 import uk.gov.hmcts.reform.roleassignment.health.CcdDataStoreHealthIndicator;
@@ -38,12 +38,14 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static uk.gov.hmcts.reform.roleassignment.util.Constants.DATE_PATTERN;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(initializers = {BaseTest.WireMockServerInitializer.class})
 @ActiveProfiles("itest")
@@ -71,14 +73,16 @@ public abstract class BaseTest {
         }
 
         mapper.registerModule(new JavaTimeModule());
+        mapper.setDateFormat(new SimpleDateFormat(DATE_PATTERN));
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         // Force re-initialisation of base types for each test suite
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void init() {
         mapper.registerModule(new JavaTimeModule());
+        mapper.setDateFormat(new SimpleDateFormat(DATE_PATTERN));
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 

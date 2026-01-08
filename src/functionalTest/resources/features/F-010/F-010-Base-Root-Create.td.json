@@ -18,7 +18,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "3168da13-00b3-41e3-81fa-cbc71ac28a0f",
-        "process": "businessProcess1",
+        "process": "${[scenarioContext][customValues][generateProcessId]}",
         "reference": "OVERRIDE_ME",
         "replaceExisting": true
       }

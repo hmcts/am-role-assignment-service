@@ -1,9 +1,11 @@
 package uk.gov.hmcts.reform.roleassignment.domain.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uk.gov.hmcts.reform.roleassignment.config.ZonedDateTimeUTCDeserializer;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
@@ -27,6 +29,7 @@ public class Request {
     private boolean replaceExisting;
     private UUID roleAssignmentId;
     private Status status; //this will be set by app default = created
+    @JsonDeserialize(using = ZonedDateTimeUTCDeserializer.class)
     private ZonedDateTime created; //this will be set by app
     private String log; //this will be set app based on drool validation rule name on individual assignments.
     private boolean byPassOrgDroolRule;

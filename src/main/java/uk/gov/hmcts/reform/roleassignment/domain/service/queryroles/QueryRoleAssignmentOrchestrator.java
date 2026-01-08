@@ -1,15 +1,13 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.queryroles;
 
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MultipleQueryRequest;
+import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignmentResource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfig;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
@@ -23,7 +21,6 @@ import java.util.List;
 @AllArgsConstructor
 public class QueryRoleAssignmentOrchestrator {
 
-    private static final Logger logger = LoggerFactory.getLogger(QueryRoleAssignmentOrchestrator.class);
     private final PersistenceService persistenceService;
 
 

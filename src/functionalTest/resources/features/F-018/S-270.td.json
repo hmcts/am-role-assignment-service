@@ -15,7 +15,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1747119895794182/allocated-admin-caseworker"
+        "reference": "1758878899461553/allocated-admin-caseworker"
       },
       "requestedRoles": [
         {
@@ -28,7 +28,7 @@
           "classification": "RESTRICTED",
           "attributes":
           {
-            "caseId" : "1747119895794182",
+            "caseId" : "1758878899461553",
             "jurisdiction": "EMPLOYMENT"
           }
         }

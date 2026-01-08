@@ -58,6 +58,9 @@ env.IDAM_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aa
 env.DEFINITION_STORE_HOST = "http://ccd-definition-store-api-aat.service.core-compute-aat.internal"
 env.DEFINITION_STORE_URL_BASE = "http://ccd-definition-store-api-aat.service.core-compute-aat.internal"
 env.CCD_DATA_STORE_URL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
+env.BEFTA_RETRY_MAX_ATTEMPTS = "3"
+env.BEFTA_RETRY_STATUS_CODES = "502,503,504"
+env.BEFTA_RETRY_MAX_DELAY = "1000"
 env.BEFTA_S2S_CLIENT_ID = "am_role_assignment_service"
 env.BEFTA_S2S_CLIENT_ID_OF_AM_ORG_ROLE_MAPPING_SERVICE = "am_org_role_mapping_service"
 env.BEFTA_S2S_CLIENT_ID_OF_CCD_DATA = "ccd_data"
@@ -112,6 +115,44 @@ withPipeline(type, product, component) {
 
   // Sync environment specific branches with master branch
   syncBranchesWithMaster(branchesToSync)
+
+  afterAlways('test') {
+    // jenkins may fail to copy artifacts after some failures
+
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/test-results/test/*.xml'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/test-results/integration/*.xml'
+
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/checkstyle",
+            reportFiles          : "main.html,contractTest.html,functionalTest.html,integrationTest.html,smokeTest.html,test.html",
+            reportTitles         : "Main,Contract Test,Functional Test,Integration Test,Smoke Test,Unit Test",
+            reportName           : "Checkstyle Reports"
+    ]
+
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/tests/test",
+            reportFiles          : "index.html",
+            reportTitles         : "Index",
+            reportName           : "Unit Test Report"
+    ]
+
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/tests/integration",
+            reportFiles          : "index.html",
+            reportTitles         : "Index",
+            reportName           : "Integration Test Report"
+    ]
+
+  }
 
   before('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
