@@ -396,7 +396,7 @@ dependencies {
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: versions.poi
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: versions.poi
 
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.6.0'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.14'
 
   // drools engine dependency
   implementation group: 'org.drools', name: 'drools-core', version: versions.drools
