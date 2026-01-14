@@ -42,7 +42,7 @@ public class SwaggerPublisher extends BaseTest {
     }
 
     @Test
-    @org.junit.Ignore
+    @org.junit.jupiter.api.Disabled
     public void generateDocs() throws Exception {
         byte[] specs = mockMvc.perform(get(DEFAULT_API_DOCS_URL))
             .andExpect(status().isOk())
