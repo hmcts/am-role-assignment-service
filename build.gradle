@@ -30,6 +30,7 @@ def versions = [
   reformLogging   : '6.1.9',
   reformS2sClient : '5.3.3',
   serenity        : '4.2.34',
+  spring          : '6.2.15',
   pact_version    : '4.1.7',
   rest_assured    : '5.5.6',
   cucumber        : '7.20.1',
@@ -376,6 +377,14 @@ repositories {
   }
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'org.springframework'){
+            details.useVersion versions.spring
+        }
+    }
+}
+
 dependencies {
   implementation(group: 'org.springframework.boot', name:'spring-boot-starter-web')
   implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa')
@@ -396,7 +405,7 @@ dependencies {
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: versions.poi
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: versions.poi
 
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.6.0'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.8.15'
 
   // drools engine dependency
   implementation group: 'org.drools', name: 'drools-core', version: versions.drools
