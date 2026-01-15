@@ -30,6 +30,7 @@ def versions = [
   reformLogging   : '6.1.9',
   reformS2sClient : '5.3.3',
   serenity        : '4.2.34',
+  spring          : '6.2.15',
   pact_version    : '4.1.7',
   rest_assured    : '5.5.6',
   cucumber        : '7.20.1',
@@ -374,6 +375,14 @@ repositories {
   maven {
         url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
   }
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'org.springframework'){
+            details.useVersion versions.spring
+        }
+    }
 }
 
 dependencies {
