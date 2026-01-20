@@ -44,7 +44,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.jpa.domain.Specification.unrestricted;
-import static org.springframework.data.jpa.domain.Specification.where;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByActorIds;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByAttributes;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByAuthorisations;
