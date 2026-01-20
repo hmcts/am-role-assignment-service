@@ -84,6 +84,8 @@ configurations {
   contractTestRuntime.extendsFrom testRuntime
   pactTestCompile.extendsFrom testCompile
   pactTestRuntime.extendsFrom testRuntime
+  integrationTestImplementation.extendsFrom testImplementation
+  integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
 sourceSets {
