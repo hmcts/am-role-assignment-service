@@ -19,7 +19,7 @@ plugins {
 ext['snakeyaml.version'] = '2.0'
 
 ext {
-  springCloudVersion = '2025.1.0'
+  springCloudVersion = '2023.0.6'
 }
 
 def versions = [
@@ -581,6 +581,8 @@ configurations.all {
   exclude group: "org.glassfish", module: "jakarta.el"
   exclude group: "io.github.x-stream", module: "mxparser"
   exclude group: 'io.netty', module: 'netty-tcnative-classes'
+  // spring-cloud 2025.x brings in spring-boot-restclient 4.x which is incompatible with our Boot 3.x stack
+  exclude group: 'org.springframework.boot', module: 'spring-boot-restclient'
 }
 
 cucumberReports {

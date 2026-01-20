@@ -63,15 +63,19 @@ spring:
     name: Role Assignment Service
   config:
     import: "optional:configtree:/mnt/secrets/am/"
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.restclient.autoconfigure.RestClientAutoConfiguration
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
   jackson:
     default-property-inclusion: NON_NULL
-  spring:
-    cloud:
-      discovery:
-        enabled: false
+  cloud:
+    compatibility-verifier:
+      enabled: false
+    discovery:
+      enabled: false
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
