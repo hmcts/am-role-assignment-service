@@ -94,7 +94,7 @@ class CCDCaseRolesTest extends DroolBase {
         "[LASHARED]"
     })
     void shouldApproveProfessionalCaseRole(String roleName) {
-        verifyCreateCaseRequestedRole_CCD_1_0(roleName , "ccd_data", RoleCategory.PROFESSIONAL);
+        verifyCreateCaseRequestedRole_CCD_1_0(roleName, "ccd_data", RoleCategory.PROFESSIONAL);
     }
 
     @ParameterizedTest
@@ -108,7 +108,7 @@ class CCDCaseRolesTest extends DroolBase {
     })
     void shouldRejectProfessionalCaseRole_WithWrongOrMissingValues(String roleName) {
         // without caseId
-        verifyCcdCaseRequestedRole( RoleCategory.PROFESSIONAL,
+        verifyCcdCaseRequestedRole(RoleCategory.PROFESSIONAL,
                                    roleName,
                                    "IA",
                                    "Asylum",
