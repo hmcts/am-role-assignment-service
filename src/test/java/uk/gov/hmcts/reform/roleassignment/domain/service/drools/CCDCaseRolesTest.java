@@ -83,12 +83,46 @@ class CCDCaseRolesTest extends DroolBase {
         RetrieveDataService retrieveDataService = getRetrieveDataService();
         verifyNoInteractions(retrieveDataService);
     }
-
-    @Test
-    void shouldApprovePetSolicitorCaseRole() {
-        verifyCreateCaseRequestedRole_CCD_1_0("[PETSOLICITOR]", "ccd_data", RoleCategory.PROFESSIONAL);
+    
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "[PETSOLICITOR]",
+        "[LASOCIALWORKER]",
+        "[LABARRISTER]",
+        "[LAMANAGING]",
+        "[LASOLICITOR]",
+        "[LASHARED]"
+    })
+    void shouldApproveProfessionalCaseRole(String roleName) {
+        verifyCreateCaseRequestedRole_CCD_1_0(roleName, "ccd_data", RoleCategory.PROFESSIONAL);
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "[PETSOLICITOR]",
+        "[LASOCIALWORKER]",
+        "[LABARRISTER]",
+        "[LAMANAGING]",
+        "[LASOLICITOR]",
+        "[LASHARED]"
+    })
+    void shouldRejectProfessionalCaseRole_WithWrongOrMissingValues(String roleName) {
+        // without caseId
+        verifyCcdCaseRequestedRole(RoleCategory.PROFESSIONAL,
+                                   roleName,
+                                   "IA",
+                                   "Asylum",
+                                   false, // WRONG
+                                   Status.REJECTED);
+        // wrong category
+        verifyCcdCaseRequestedRole(RoleCategory.CITIZEN, // WRONG (NB: this is another valid CCD Case Role Category)
+                                   roleName,
+                                   "IA",
+                                   "Asylum",
+                                   true,
+                                   Status.REJECTED);
+    }
+    
     private void verifyCreateCaseRequestedRole_CCD_1_0(String roleName, String clientId, RoleCategory category) {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(category, roleName,
                                                              SPECIFIC, "caseId",
