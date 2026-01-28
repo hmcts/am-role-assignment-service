@@ -1,10 +1,12 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -13,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 
@@ -25,8 +28,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole_ra;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @ExtendWith(MockitoExtension.class)
@@ -487,8 +492,8 @@ class CCDCaseRolesTest extends DroolBase {
     }
 
     @Nested
-    @DisplayName("IDAM Disposer CCD Case Roles Tests")
-    class IdamDisposerCaseRolesTest {
+    @DisplayName("IDAM Disposer Create CCD Case Roles Tests")
+    class IdamDisposerCreateCaseRolesTest {
 
         static final String IDAM_DISPOSER_CLIENT_ID = "disposer-idam-user";
 
@@ -576,4 +581,97 @@ class CCDCaseRolesTest extends DroolBase {
         }
     }
 
+    @Nested
+    @DisplayName("IDAM CCD Case Disposer Delete CCD Case Roles Tests")
+    class IdamCcdCaseDisposerDeleteCaseRolesTest {
+
+        static final String IDAM_CASE_DISPOSER_CLIENT_ID = "ccd_case_disposer";
+
+        @ParameterizedTest
+        @CsvSource({
+            "1234567890123456"
+        })
+        void shouldDeleteCaseRoleFromIdamCcdCaseDisposer(String caseId) {
+
+            // GIVEN
+            assignmentRequest.getRequest().setClientId(IDAM_CASE_DISPOSER_CLIENT_ID);
+            assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                roleAssignment.setStatus(Status.DELETE_REQUESTED);
+                roleAssignment.setRoleType(RoleType.CASE);
+                roleAssignment.getAttributes().put("caseId", convertValueJsonNode(caseId));
+            });
+            setDisposerFeatureFlag(true);
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assertTrue(CollectionUtils.isNotEmpty(assignmentRequest.getRequestedRoles()));
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                assertEquals(DELETE_APPROVED, roleAssignment.getStatus());
+            });
+        }
+
+        @Test
+        void shouldRejectDeleteCaseRoleForNonCaseFromIdamCcdCaseDisposer() {
+
+            // GIVEN
+            assignmentRequest.getRequest().setClientId(IDAM_CASE_DISPOSER_CLIENT_ID);
+            assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                roleAssignment.setStatus(Status.DELETE_REQUESTED);
+                roleAssignment.setRoleType(RoleType.ORGANISATION);
+            });
+            setDisposerFeatureFlag(true);
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assignmentRequest.getRequestedRoles()
+                .forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
+
+            //verify retrieveDataService is not used
+            RetrieveDataService retrieveDataService = getRetrieveDataService();
+            verifyNoInteractions(retrieveDataService);
+        }
+
+        @ParameterizedTest
+        @CsvSource({
+            "1234567890123456"
+        })
+        void shouldRejectDeleteCaseRoleFromIdamCcdCaseDisposer_flagDisabled(String caseId) {
+
+            // GIVEN
+            assignmentRequest.getRequest().setClientId(IDAM_CASE_DISPOSER_CLIENT_ID);
+            assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                roleAssignment.setStatus(Status.DELETE_REQUESTED);
+                roleAssignment.setRoleType(RoleType.CASE);
+                roleAssignment.getAttributes().put("caseId", convertValueJsonNode(caseId));
+            });
+            setDisposerFeatureFlag(false); // i.e. disable flag
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assignmentRequest.getRequestedRoles()
+                .forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
+
+            //verify retrieveDataService is not used
+            RetrieveDataService retrieveDataService = getRetrieveDataService();
+            verifyNoInteractions(retrieveDataService);
+        }
+
+        private void setDisposerFeatureFlag(boolean status) {
+            FeatureFlag featureFlag  =  FeatureFlag.builder()
+                                            .flagName(FeatureFlagEnum.DISPOSER_1_1.getValue())
+                                            .status(status)
+                                            .build();
+
+            featureFlags.add(featureFlag);
+        }
+    }
 }
