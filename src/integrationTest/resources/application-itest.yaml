@@ -1,4 +1,10 @@
 spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.restclient.autoconfigure.RestClientAutoConfiguration
+  cloud:
+    compatibility-verifier:
+      enabled: false
   security:
     oauth2:
       client:

@@ -5,10 +5,10 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 @TestConfiguration
 public class RoleAssignmentProviderTestConfiguration {
 
-    @MockBean
+    @MockitoBean
     private PersistenceService persistenceService;
 
     @Bean
@@ -38,7 +38,7 @@ public class RoleAssignmentProviderTestConfiguration {
         return new PrepareResponseService();
     }
 
-    @MockBean
+    @MockitoBean
     private CorrelationInterceptorUtil correlationInterceptorUtil;
 
     @Bean
@@ -54,7 +54,7 @@ public class RoleAssignmentProviderTestConfiguration {
         return kieServices.getKieClasspathContainer();
     }
 
-    @MockBean
+    @MockitoBean
     SecurityUtils securityUtils;
 
 
@@ -63,10 +63,10 @@ public class RoleAssignmentProviderTestConfiguration {
         return kieContainer().newStatelessKieSession("role-assignment-validation-session");
     }
 
-    @MockBean
+    @MockitoBean
     private DataStoreApi dataStoreApi;
 
-    @MockBean
+    @MockitoBean
     private CacheManager cacheManager;
 
     @Bean
