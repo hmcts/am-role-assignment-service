@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -52,8 +53,9 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildAtt
     host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
         @VersionSelector(tag = "master")})
 @TestPropertySource(properties = {"org.request.byPassOrgDroolRule=true", "roleassignment.query.size=20",
-    "spring.cache.type=none", "ras.environment=pr", "roleassignment.query.sizeinternal=100"})
-@Import(RoleAssignmentProviderTestConfiguration.class)
+    "spring.cache.type=none", "ras.environment=pr", "roleassignment.query.sizeinternal=100",
+    "spring.flyway.enabled=false", "spring.datasource.url=jdbc:h2:mem:testdb"})
+@SpringJUnitConfig(classes = RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
 public class CreateRoleAssignmentProviderTest {
 
