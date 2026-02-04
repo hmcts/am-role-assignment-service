@@ -36,7 +36,7 @@ def versions = [
   cucumber        : '7.33.0',
   feign_jackson   : '13.6',
   jacksondata     : '2.19.2',
-  drools          : '10.0.0',
+  drools          : '10.1.0',
   poi             : '5.5.1'
 ]
 
