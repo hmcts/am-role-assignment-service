@@ -73,6 +73,79 @@
     ]
   },
   {
+    "name": "CaseProfessionalGroupAccess_GA_Role",
+    "label": "CaseProfessionalGroupAccess Group Role",
+    "description": "GA Group Role for testing - from BEFTA Case Definition",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "BEFTA_MASTER"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseAccessGroupId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "CaseProfessionalGroupAccess_Org_Role",
+    "label": "CaseProfessionalGroupAccess Org Role",
+    "description": "GA Org Role for testing - from BEFTA Case Definition",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "BEFTA_MASTER"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "Role1",
     "label": "Role1",
     "description": "Sample role for testing - from BEFTA Case Definition",
