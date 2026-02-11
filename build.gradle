@@ -34,7 +34,7 @@ def versions = [
   pact_version    : '4.1.7',
   rest_assured    : '5.5.7',
   cucumber        : '7.33.0',
-  feign_jackson   : '13.6',
+  feign_jackson   : '13.8',
   jacksondata     : '2.19.2',
   drools          : '10.1.0',
   poi             : '5.5.1'
