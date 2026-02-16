@@ -28,7 +28,8 @@ public class PrmOrgRoleTest extends DroolBase {
     @CsvSource({
         // NB: GA only role combinations from: `./src/main/resources/roleconfig/role_prm.json`
         //     i.e. those with mandatory caseAccessGroupId
-        "PRM_Test_GA_Role,TEST_JURISDICTION,TestCaseType,TEST_JURISDICTION:all-cases:123:12345"
+        "PRM_Test_GA_Role,TEST_JURISDICTION,TestCaseType,TEST_JURISDICTION:all-cases:123:12345",
+        "CaseProfessionalGroupAccess_GA_Role,BEFTA_MASTER,TestCaseType,BEFTA_MASTER:all-cases:999:99999"
     })
     void shouldApproveOrRejectProfessionalOrgGroupAccessRoleRequest(String roleName,
                                                                     String jurisdiction,
@@ -80,6 +81,7 @@ public class PrmOrgRoleTest extends DroolBase {
         // NB: ORG role combinations from: `./src/main/resources/roleconfig/role_prm.json`
         //     i.e. those without mandatory caseAccessGroupId
         "PRM_Test_Org_Role,TEST_JURISDICTION,TestCaseType",
+        "CaseProfessionalGroupAccess_Org_Role,BEFTA_MASTER,TestCaseType",
         "Role1,BEFTA_JURISDICTION_1,TestCaseType",
         "Role1,BEFTA_MASTER,TestCaseType"
     })
@@ -198,6 +200,8 @@ public class PrmOrgRoleTest extends DroolBase {
         // NB: All role combinations from: `./src/main/resources/roleconfig/role_prm.json`
         "PRM_Test_Org_Role,TEST_JURISDICTION",
         "PRM_Test_GA_Role,TEST_JURISDICTION",
+        "CaseProfessionalGroupAccess_GA_Role,BEFTA_MASTER",
+        "CaseProfessionalGroupAccess_Org_Role,BEFTA_MASTER",
         "Role1,BEFTA_JURISDICTION_1,TestCaseType",
         "Role1,BEFTA_MASTER,TestCaseType"
     })
