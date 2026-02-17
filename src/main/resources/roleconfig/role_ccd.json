@@ -3446,7 +3446,7 @@
     "label": "Applicant",
     "description": "Financial Remedy Citizen Applicant Role",
     "category": "CITIZEN",
-    "substantive": false,
+    "substantive": true,
     "type": "CASE",
     "patterns": [
       {
@@ -3483,7 +3483,7 @@
     "label": "Respondent",
     "description": "Financial Remedy Citizen Respondent Role",
     "category": "CITIZEN",
-    "substantive": false,
+    "substantive": true,
     "type": "CASE",
     "patterns": [
       {

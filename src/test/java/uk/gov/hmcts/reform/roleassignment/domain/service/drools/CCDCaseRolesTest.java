@@ -412,7 +412,7 @@ class CCDCaseRolesTest extends DroolBase {
                                    caseType,
                                    true,
                                    Status.APPROVED,
-                                   "N");
+                                   "Y");
     }
 
     @ParameterizedTest
