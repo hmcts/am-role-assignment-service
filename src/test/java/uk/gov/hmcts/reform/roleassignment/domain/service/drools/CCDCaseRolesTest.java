@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -83,7 +84,7 @@ class CCDCaseRolesTest extends DroolBase {
         RetrieveDataService retrieveDataService = getRetrieveDataService();
         verifyNoInteractions(retrieveDataService);
     }
-    
+
     @ParameterizedTest
     @ValueSource(strings = {
         "[PETSOLICITOR]",
@@ -113,16 +114,18 @@ class CCDCaseRolesTest extends DroolBase {
                                    "IA",
                                    "Asylum",
                                    false, // WRONG
-                                   Status.REJECTED);
+                                   Status.REJECTED,
+                                   null);
         // wrong category
         verifyCcdCaseRequestedRole(RoleCategory.CITIZEN, // WRONG (NB: this is another valid CCD Case Role Category)
                                    roleName,
                                    "IA",
                                    "Asylum",
                                    true,
-                                   Status.REJECTED);
+                                   Status.REJECTED,
+                                   null);
     }
-    
+
     private void verifyCreateCaseRequestedRole_CCD_1_0(String roleName, String clientId, RoleCategory category) {
         RoleAssignment requestedRole1 = getRequestedCaseRole_ra(category, roleName,
                                                              SPECIFIC, "caseId",
@@ -361,6 +364,59 @@ class CCDCaseRolesTest extends DroolBase {
 
     @ParameterizedTest
     @ValueSource(strings = {
+        "[APPLICANT]",
+        "[RESPONDENT]"
+    })
+    void shouldApproveOrRejectDivorceCitizenCaseRoles(String roleName) {
+        RoleCategory roleCategory = RoleCategory.CITIZEN;
+        String jurisdiction = "DIVORCE";
+        String caseType = "FinancialRemedyContested";
+
+        // wrong category
+        verifyCcdCaseRequestedRole(RoleCategory.PROFESSIONAL, // WRONG (this is another valid CCD Case Role Category)
+                                   roleName,
+                                   jurisdiction,
+                                   caseType,
+                                   true,
+                                   Status.REJECTED,
+                                   null);
+        // wrong jurisdiction
+        verifyCcdCaseRequestedRole(roleCategory,
+                                   roleName,
+                                   "wrong-jurisdiction", // WRONG
+                                   caseType,
+                                   true,
+                                   Status.REJECTED,
+                                   null);
+        // wrong case-type
+        verifyCcdCaseRequestedRole(roleCategory,
+                                   roleName,
+                                   jurisdiction,
+                                   "wrong-caseType", // WRONG
+                                   true,
+                                   Status.REJECTED,
+                                   null);
+        // without caseId
+        verifyCcdCaseRequestedRole(roleCategory,
+                                   roleName,
+                                   jurisdiction,
+                                   caseType,
+                                   false, // WRONG
+                                   Status.REJECTED,
+                                   null);
+
+        // correct values should be approved
+        verifyCcdCaseRequestedRole(roleCategory,
+                                   roleName,
+                                   jurisdiction,
+                                   caseType,
+                                   true,
+                                   Status.APPROVED,
+                                   "Y");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
         "[C100APPLICANTSOLICITOR1]",
         "[C100APPLICANTSOLICITOR2]",
         "[C100APPLICANTSOLICITOR3]",
@@ -402,28 +458,32 @@ class CCDCaseRolesTest extends DroolBase {
                                    jurisdiction,
                                    caseType,
                                    true,
-                                   Status.REJECTED);
+                                   Status.REJECTED,
+                                   null);
         // wrong jurisdiction
         verifyCcdCaseRequestedRole(roleCategory,
                                    roleName,
                                    "wrong-jurisdiction", // WRONG
                                    caseType,
                                    true,
-                                   Status.REJECTED);
+                                   Status.REJECTED,
+                                   null);
         // wrong case-type
         verifyCcdCaseRequestedRole(roleCategory,
                                    roleName,
                                    jurisdiction,
                                    "wrong-caseType", // WRONG
                                    true,
-                                   Status.REJECTED);
+                                   Status.REJECTED,
+                                   null);
         // without caseId
         verifyCcdCaseRequestedRole(roleCategory,
                                    roleName,
                                    jurisdiction,
                                    caseType,
                                    false, // WRONG
-                                   Status.REJECTED);
+                                   Status.REJECTED,
+                                   null);
 
         // correct values should be approved
         verifyCcdCaseRequestedRole(roleCategory,
@@ -431,7 +491,8 @@ class CCDCaseRolesTest extends DroolBase {
                                    jurisdiction,
                                    caseType,
                                    true,
-                                   Status.APPROVED);
+                                   Status.APPROVED,
+                                   "Y");
     }
 
     void verifyCcdCaseRequestedRole(RoleCategory roleCategory,
@@ -439,7 +500,8 @@ class CCDCaseRolesTest extends DroolBase {
                                     String jurisdiction,
                                     String caseType,
                                     boolean withCaseId,
-                                    Status expectedStatus) {
+                                    Status expectedStatus,
+                                    String expectedSubstantiveFlag) {
 
         // GIVEN
         RoleAssignment requestedRole = getRequestedCaseRole_ra(
@@ -470,7 +532,7 @@ class CCDCaseRolesTest extends DroolBase {
         assignmentRequest.getRequestedRoles().forEach(ra -> {
             assertEquals(expectedStatus, ra.getStatus());
 
-            // If has Case-ID then these tests should always pass stage 1 processing
+            // If it has Case-ID then these tests should always pass stage 1 processing
             assertEquals(
                 withCaseId,
                 ra.getLog().contains("Stage 1 approved : ccd_create_case_roles"),
@@ -483,6 +545,15 @@ class CCDCaseRolesTest extends DroolBase {
                 ra.getLog().contains("Approved : validate_role_assignment_against_patterns"),
                 "Wrong outcome for role validation against role_config patterns"
             );
+
+            // NB: substantive flag is only set when request is APPROVED
+            if (expectedStatus == Status.APPROVED) {
+                assertEquals(expectedSubstantiveFlag, ra.getAttributes().get("substantive").asText(),
+                             "Substantive flag value is incorrect");
+            } else {
+                assertFalse(ra.getAttributes().containsKey("substantive"),
+                           "Substantive flag should not be set");
+            }
         });
     }
 
