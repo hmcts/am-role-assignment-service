@@ -313,6 +313,40 @@
         }
       }
     ]
+  },{
+    "name":  "[LASOCIALWORKER]",
+    "label": "LA Social Worker",
+    "description": "Local Authority Social Worker",
+    "category": "PROFESSIONAL",
+    "type": "CASE",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   },
   {
     "name":  "[SOLICITORA]",
@@ -3399,6 +3433,80 @@
           "caseType": {
             "mandatory": true,
             "values": ["PRLAPPS"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "[APPLICANT]",
+    "label": "Applicant",
+    "description": "Financial Remedy Citizen Applicant Role",
+    "category": "CITIZEN",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["DIVORCE"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["FinancialRemedyContested"]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "[RESPONDENT]",
+    "label": "Respondent",
+    "description": "Financial Remedy Citizen Respondent Role",
+    "category": "CITIZEN",
+    "substantive": true,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["DIVORCE"]
+          },
+          "caseType": {
+            "mandatory": true,
+            "values": ["FinancialRemedyContested"]
           },
           "caseId": {
             "mandatory": true
