@@ -526,9 +526,9 @@ class AllServicesOrgRoleTest extends DroolBase {
         "wlu-admin,ADMIN,STANDARD,south-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
         "fl401-judge,JUDICIAL,STANDARD,south-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC",
         "wlu-team-leader,ADMIN,STANDARD,south-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
-        "hrs-team-leader,ADMIN,STANDARD,London,HRS,London,ORGANISATION,N,Null,PUBLIC",
-        "hrs-listener,ADMIN,STANDARD,London,HRS,London,ORGANISATION,N,Null,PUBLIC",
-        "hrs-sharer,ADMIN,STANDARD,London,HRS,London,ORGANISATION,N,Null,PUBLIC",
+        "hrs-team-leader,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
+        "hrs-listener,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
+        "hrs-sharer,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
     },
         nullValues = "Null"
     )
