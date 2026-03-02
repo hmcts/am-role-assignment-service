@@ -34,6 +34,7 @@ java:
     RUN_DB_MIGRATION_ON_STARTUP: true
     APPLICATION_LOGGING_LEVEL: DEBUG
     TESTING_SUPPORT_ENABLED: true
+    OPEN_ID_API_BASE_URI: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o
   postgresql:
     enabled: true
     postgresqlPort: 5432
