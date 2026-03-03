@@ -12,6 +12,6 @@ idam:
   api.url: http://localhost:${wiremock.server.port:5000}
 
 oidc:
-  issuer: ${OIDC_ISSUER_URL:http://localhost:${wiremock.server.port:5000}/o}
   issuers:
     validation: ${JWT_ISSUER_VALIDATION_ENABLED:false}
+    list: ${OIDC_ISSUER_URL:http://localhost:${wiremock.server.port:5000}/o}
