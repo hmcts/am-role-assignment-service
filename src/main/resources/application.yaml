@@ -116,9 +116,8 @@ spring:
     caffeine:
       spec: maximumSize=500,expireAfterWrite=120s
 oidc:
-  issuers:
-    validation: ${JWT_ISSUER_VALIDATION_ENABLED:false}
-    list: ${OIDC_ISSUER_URL:https://idam-web-public.aat.platform.hmcts.net/o}
+  issuer: ${OIDC_ISSUER_URL:}
+  issuerValidation: ${JWT_ISSUER_VALIDATION_ENABLED:false}
 
 idam:
   s2s-auth:
