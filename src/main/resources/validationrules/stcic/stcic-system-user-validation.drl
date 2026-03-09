@@ -1,0 +1,55 @@
+package validationrules.stcic;
+import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import function uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService.logMsg;
+
+/*
+ * ST_CIC system user validation rules.
+ */
+
+
+/*
+ * ST_CIC "task-supervisor" create and delete system-user role-assignment rules.
+ */
+
+rule "st_cic_system_user_task_supervisor_role_create"
+when
+    $rq: Request(
+             clientId == "st_cic_service",
+             process == "st-cic-system-user",
+             reference == "st-cic-task-supervisor-system-user",
+             replaceExisting == true)
+    $ra: RoleAssignment(
+             status == Status.CREATE_REQUESTED,
+             roleType == RoleType.ORGANISATION,
+             roleName in ("task-supervisor"),
+             roleCategory == RoleCategory.SYSTEM,
+             grantType == GrantType.STANDARD,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "ST_CIC")
+then
+    $ra.setStatus(Status.CREATE_APPROVED);
+    $ra.log("Create approved : st_cic_system_user_task_supervisor_role_create");
+    update($ra);
+    logMsg("Rule : st_cic_system_user_task_supervisor_role_create");
+end;
+
+rule "st_cic_system_user_task_supervisor_role_delete"
+when
+    $rq: Request(clientId == "st_cic_service")
+    $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.ORGANISATION,
+             roleCategory in (RoleCategory.SYSTEM),
+             roleName in ("task-supervisor"),
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "ST_CIC")
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : st_cic_system_user_task_supervisor_role_delete");
+    update($ra);
+    logMsg("Rule :: st_cic_system_user_task_supervisor_role_delete");
+end;
