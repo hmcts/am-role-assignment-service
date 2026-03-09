@@ -36,6 +36,7 @@ def versions = [
   cucumber        : '7.34.2',
   feign_jackson   : '13.9.2',
   jacksondata     : '2.19.2',
+  testcontainers  : '1.21.4',
   drools          : '10.1.0',
   poi             : '5.5.1'
 ]
@@ -382,7 +383,11 @@ configurations.all {
         if (details.requested.group == 'org.springframework'){
             details.useVersion versions.spring
         }
+        if (details.requested.group == 'org.testcontainers') {
+            details.useVersion versions.testcontainers
+        }
     }
+
 }
 
 dependencies {
@@ -451,6 +456,8 @@ dependencies {
   implementation 'net.bytebuddy:byte-buddy:1.18.7'
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.1.1')
+  testImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
+  testImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
   testImplementation group: 'org.wiremock', name: 'wiremock', version: '3.13.2'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-contract-wiremock'
   testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.21.0'
