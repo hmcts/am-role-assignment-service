@@ -384,7 +384,6 @@ configurations.all {
             details.useVersion versions.spring
         }
     }
-
 }
 
 dependencies {
