@@ -20,7 +20,7 @@ import function uk.gov.hmcts.reform.roleassignment.domain.service.common.Validat
 rule "st_cic_system_user_task_supervisor_role_create"
 when
     $rq: Request(
-             clientId == "st_cic_service",
+             clientId == "sptribs_case_api",
              process == "st-cic-system-user",
              reference == "st-cic-task-supervisor-system-user",
              replaceExisting == true)
@@ -40,7 +40,7 @@ end;
 
 rule "st_cic_system_user_task_supervisor_role_delete"
 when
-    $rq: Request(clientId == "st_cic_service")
+    $rq: Request(clientId == "sptribs_case_api")
     $ra: RoleAssignment(
              status == Status.DELETE_REQUESTED,
              roleType == RoleType.ORGANISATION,

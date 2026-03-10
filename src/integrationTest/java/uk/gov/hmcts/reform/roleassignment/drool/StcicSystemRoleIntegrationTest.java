@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 public class StcicSystemRoleIntegrationTest extends BaseDroolIntegrationTest {
 
-    static final String STCIC_CLIENT_ID = "st_cic_service";
+    static final String STCIC_CLIENT_ID = "sptribs_case_api";
     static final String STCIC_PROCESS_ID = "st-cic-system-user";
     static final String STCIC_REFERENCE_TASK_SUPERVISOR = "st-cic-task-supervisor-system-user";
 
