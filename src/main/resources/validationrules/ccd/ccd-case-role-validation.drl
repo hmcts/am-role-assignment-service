@@ -83,6 +83,26 @@ end;
 
 
 /*
+ * CCD case roles can be deleted by ccd case disposer.
+ */
+
+rule "v1_1_ccd_delete_case_roles"
+when
+    $f:  FeatureFlag(status && flagName == FeatureFlagEnum.DISPOSER_1_1.getValue())
+    $rq: Request(clientId in ("ccd_case_disposer"))
+    $ra: RoleAssignment(
+             status == Status.DELETE_REQUESTED,
+             roleType == RoleType.CASE,
+             attributes["caseId"] != null)
+then
+    $ra.setStatus(Status.DELETE_APPROVED);
+    $ra.log("Delete approved : v1_1_ccd_delete_case_roles");
+    update($ra);
+    logMsg("Rule : v1_1_ccd_delete_case_roles");
+end;
+
+
+/*
  * CCD case roles can be created by client request originated from ccd service.
  */
 
