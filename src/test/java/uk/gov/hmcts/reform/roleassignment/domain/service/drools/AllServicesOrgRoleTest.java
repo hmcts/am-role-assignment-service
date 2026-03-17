@@ -11,6 +11,8 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -408,7 +410,7 @@ class AllServicesOrgRoleTest extends DroolBase {
     }
 
     @ParameterizedTest
-    @CsvSource({
+    @CsvSource(value = {
         "hearing-manager,LEGAL_OPERATIONS,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
         "hearing-manager,LEGAL_OPERATIONS,STANDARD,north-east,IA,UK,ORGANISATION,N,Null,PUBLIC",
         "hearing-manager,ADMIN,STANDARD,north-east,SSCS,UK,ORGANISATION,N,Null,PUBLIC",
@@ -524,11 +526,135 @@ class AllServicesOrgRoleTest extends DroolBase {
         "wlu-admin,ADMIN,STANDARD,south-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
         "fl401-judge,JUDICIAL,STANDARD,south-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC",
         "wlu-team-leader,ADMIN,STANDARD,south-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
-    })
-    void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
-                                          String region, String jurisdiction, String primaryLocation,
-                                          String roleType, String expectedSubstantive, String contractType,
-                                          String classification) {
+        "hrs-team-leader,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
+        "hrs-listener,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
+        "hrs-sharer,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
+    },
+        nullValues = "Null"
+    )
+    void shouldApproveOrRejectRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
+                                                  String region, String jurisdiction, String primaryLocation,
+                                                  String roleType, String expectedSubstantive, String contractType,
+                                                  String classification) {
+
+        // wrong roleCategory
+        verifyOrmOrgRequestedRole(roleName,
+                                  RoleCategory.CITIZEN.name(), // WRONG
+                                  grantType,
+                                  region,
+                                  jurisdiction,
+                                  primaryLocation,
+                                  roleType,
+                                  contractType,
+                                  classification,
+                                  expectedSubstantive,
+                                  Status.REJECTED);
+
+        // NB: skip wrong jurisdiction test for roles that don't have jurisdictions
+        if (!List.of("hmcts-admin",
+                     "hmcts-ctsc",
+                     "hmcts-judiciary",
+                     "hmcts-legal-operations",
+                     "specific-access-approver-admin",
+                     "specific-access-approver-ctsc",
+                     "specific-access-approver-judiciary",
+                     "specific-access-approver-legal-ops").contains(roleName)) {
+            if ("case-allocator".equals(roleName)) {
+                // without jurisdiction
+                verifyOrmOrgRequestedRole(
+                    roleName,
+                    roleCategory,
+                    grantType,
+                    region,
+                    null, // WRONG
+                    primaryLocation,
+                    roleType,
+                    contractType,
+                    classification,
+                    expectedSubstantive,
+                    Status.REJECTED
+                );
+            } else {
+                // wrong jurisdiction
+                verifyOrmOrgRequestedRole(
+                    roleName,
+                    roleCategory,
+                    grantType,
+                    region,
+                    "wrong-jurisdiction", // WRONG
+                    primaryLocation,
+                    roleType,
+                    contractType,
+                    classification,
+                    expectedSubstantive,
+                    Status.REJECTED
+                );
+            }
+        }
+
+        // wrong roleType
+        verifyOrmOrgRequestedRole(
+            roleName,
+            roleCategory,
+            grantType,
+            region,
+            jurisdiction,
+            primaryLocation,
+            RoleType.CASE.name(), // WRONG
+            contractType,
+            classification,
+            expectedSubstantive,
+            Status.REJECTED
+        );
+
+        // wrong grantType
+        verifyOrmOrgRequestedRole(
+            roleName,
+            roleCategory,
+            GrantType.EXCLUDED.name(), // WRONG
+            region,
+            jurisdiction,
+            primaryLocation,
+            roleType,
+            contractType,
+            classification,
+            expectedSubstantive,
+            Status.REJECTED
+        );
+
+        // wrong classification
+        verifyOrmOrgRequestedRole(
+            roleName,
+            roleCategory,
+            grantType,
+            region,
+            jurisdiction,
+            primaryLocation,
+            roleType,
+            contractType,
+            Classification.RESTRICTED.name(), // WRONG (not usually applicable to org roles)
+            expectedSubstantive,
+            Status.REJECTED
+        );
+
+        // correct values should be approved
+        verifyOrmOrgRequestedRole(roleName,
+                                  roleCategory,
+                                  grantType,
+                                  region,
+                                  jurisdiction,
+                                  primaryLocation,
+                                  roleType,
+                                  contractType,
+                                  classification,
+                                  expectedSubstantive,
+                                  Status.APPROVED);
+    }
+
+    void verifyOrmOrgRequestedRole(String roleName, String roleCategory, String grantType,
+                                   String region, String jurisdiction, String primaryLocation,
+                                   String roleType, String contractType, String classification,
+                                   String expectedSubstantive, Status expectedStatus) {
 
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
@@ -540,22 +666,57 @@ class AllServicesOrgRoleTest extends DroolBase {
             roleAssignment.setClassification(Classification.valueOf(classification));
             roleAssignment.setRoleName(roleName);
             roleAssignment.setGrantType(GrantType.valueOf(grantType));
-            roleAssignment.getAttributes().put("region", convertValueJsonNode(region));
-            roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode(primaryLocation));
-            roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
-            roleAssignment.getAttributes().put("contractType", convertValueJsonNode(contractType));
+            if (region != null) {
+                roleAssignment.getAttributes().put("region", convertValueJsonNode(region));
+            }
+            if (primaryLocation != null) {
+                roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode(primaryLocation));
+            }
+            if (jurisdiction != null) {
+                roleAssignment.getAttributes().put("jurisdiction", convertValueJsonNode(jurisdiction));
+            }
+            if (contractType != null) {
+                roleAssignment.getAttributes().put("contractType", convertValueJsonNode(contractType));
+            }
         });
 
-        //Execute Kie session
+        // Execute Kie session
         buildExecuteKieSession();
 
         assignmentRequest.getRequestedRoles()
             .forEach(roleAssignment -> {
-                assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+                assertEquals(expectedStatus, roleAssignment.getStatus());
+
+                if (jurisdiction != null) {
+                    assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
+                }
                 assertEquals(roleName, roleAssignment.getRoleName());
                 assertEquals(RoleCategory.valueOf(roleCategory), roleAssignment.getRoleCategory());
-                assertEquals(expectedSubstantive, roleAssignment.getAttributes().get("substantive").asText());
-                assertEquals(Status.APPROVED, roleAssignment.getStatus());
+
+                // If a valid role category & valid role type then should pass stage 1 processing
+                assertEquals(
+                    !(RoleCategory.CITIZEN.name().equals(roleCategory))
+                        && RoleType.ORGANISATION.name().equals(roleType),
+                    roleAssignment.getLog()
+                        .contains("Create approved : staff_organisational_role_mapping_service_create"),
+                    "Role has not passed stage 1 of ORM role validation"
+                );
+
+                // however they should only pass validation of role_config pattern if expected status is APPROVED
+                assertEquals(
+                    expectedStatus == Status.APPROVED,
+                    roleAssignment.getLog().contains("Approved : validate_role_assignment_against_patterns"),
+                    "Wrong outcome for role validation against role_config patterns"
+                );
+
+                // NB: substantive flag is only set when request is APPROVED
+                if (expectedStatus == Status.APPROVED) {
+                    assertEquals(expectedSubstantive, roleAssignment.getAttributes().get("substantive").asText(),
+                                 "Substantive flag value is incorrect");
+                } else {
+                    assertFalse(roleAssignment.getAttributes().containsKey("substantive"),
+                                "Substantive flag should not be set");
+                }
             });
     }
 
