@@ -63,6 +63,14 @@ spring:
     name: Role Assignment Service
   config:
     import: "optional:configtree:/mnt/secrets/am/"
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: ${SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE:true}
+          ssl:
+            trust: ${EMAIL_SMTP_SSL_TRUST:*}
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
