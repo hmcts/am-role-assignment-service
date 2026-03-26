@@ -530,6 +530,18 @@ class AllServicesOrgRoleTest extends DroolBase {
         "hrs-listener,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
         "hrs-sharer,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
         "hmcts-judiciary,JUDICIAL,BASIC,north-east,PCS,UK,ORGANISATION,N,Null,PRIVATE",
+        "fee-paid-judge,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,N,Fee-Paid,PUBLIC",
+        "judge,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Fee-Paid,PUBLIC",
+        "leadership-judge,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "judge,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "task-supervisor,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,N,Salaried,PUBLIC",
+        "hmcts-judiciary,JUDICIAL,BASIC,north-east,PCS,UK,ORGANISATION,N,Salaried,PRIVATE",
+        "case-allocator,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,N,Salaried,PUBLIC",
+        "specific-access-approver-judiciary,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,N,Salaried,PUBLIC",
+        "specific-access-approver-legal-ops,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,N,Salaried,PUBLIC",
+        "judge,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "circuit-judge,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "circuit-judge,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Fee-Paid,PUBLIC",
     },
         nullValues = "Null"
     )
