@@ -2253,9 +2253,6 @@
               "PCS"
             ]
           }
-        },
-        "primaryLocation": {
-          "mandatory": true
         }
       }
     ]
