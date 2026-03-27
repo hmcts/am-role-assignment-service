@@ -4,7 +4,7 @@
     "label": "Baliff Admin",
     "description": "Baliff admin role for admin users",
     "category": "ADMIN",
-    "substantive": false,
+    "substantive": true,
     "type": "ORGANISATION",
     "patterns": [
       {

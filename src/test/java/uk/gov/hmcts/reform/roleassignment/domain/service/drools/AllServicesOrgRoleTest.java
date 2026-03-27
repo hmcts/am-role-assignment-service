@@ -554,6 +554,8 @@ class AllServicesOrgRoleTest extends DroolBase {
         "specific-access-approver-admin,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,N,Null,PUBLIC",
         "wlu-admin,ADMIN,STANDARD,south-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
         "task-supervisor,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "ctsc-team-leader,CTSC,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "bailiff-admin,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
 
     },
         nullValues = "Null"
