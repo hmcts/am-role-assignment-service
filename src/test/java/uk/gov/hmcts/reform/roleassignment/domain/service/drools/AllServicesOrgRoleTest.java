@@ -542,6 +542,19 @@ class AllServicesOrgRoleTest extends DroolBase {
         "judge,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Salaried,PUBLIC",
         "circuit-judge,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Salaried,PUBLIC",
         "circuit-judge,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Fee-Paid,PUBLIC",
+        "ctsc,CTSC,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "task-supervisor,CTSC,STANDARD,north-east,PCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "case-allocator,CTSC,STANDARD,north-east,PCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "hmcts-ctsc,CTSC,BASIC,north-east,PCS,UK,ORGANISATION,N,Null,PRIVATE",
+        "specific-access-approver-ctsc,CTSC,STANDARD,north-east,PCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "hearing-centre-team-leader,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "hearing-centre-admin,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "hmcts-admin,ADMIN,BASIC,north-east,PCS,UK,ORGANISATION,N,Null,PRIVATE",
+        "case-allocator,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "specific-access-approver-admin,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,N,Null,PUBLIC",
+        "wlu-admin,ADMIN,STANDARD,south-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "task-supervisor,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,N,Null,PUBLIC",
+
     },
         nullValues = "Null"
     )
