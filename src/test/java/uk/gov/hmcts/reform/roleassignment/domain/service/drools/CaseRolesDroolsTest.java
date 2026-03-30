@@ -29,6 +29,7 @@ import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJ
 class CaseRolesDroolsTest extends DroolBase {
 
 
+
     @ParameterizedTest
     @CsvSource({
         // SSCS Benefit
@@ -233,7 +234,9 @@ class CaseRolesDroolsTest extends DroolBase {
         "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
         "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
         "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,national-business-centre,Y",
-        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y"
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y",
+        // POSSESSIONS
+        "PCS,GENERALAPPLICATION,hearing-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y"
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName,
                                        String roleCategory, String classification,
@@ -250,7 +253,6 @@ class CaseRolesDroolsTest extends DroolBase {
             APPROVED
         );
     }
-
 
     @ParameterizedTest
     @CsvSource({
