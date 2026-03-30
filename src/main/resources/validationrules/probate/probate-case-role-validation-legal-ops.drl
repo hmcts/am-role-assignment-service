@@ -2,11 +2,12 @@ package validationrules.probate;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Request;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.CaseAllocatorApproval;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
@@ -16,7 +17,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.util.ValidationUtil;
 
 import java.time.ZonedDateTime;
-import java.time.ZoneOffset
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
 /*
@@ -30,6 +31,7 @@ when
                  roleAssignment.attributes["jurisdiction"].asText() == "PROBATE",
                  roleAssignment.attributes["caseType"].asText() == "GrantOfRepresentation",
                  roleAssignment.classification == Classification.RESTRICTED,
+                 roleAssignment.grantType == GrantType.SPECIFIC,
                  roleAssignment.roleName == "allocated-ctsc-caseworker")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
@@ -54,11 +56,12 @@ when
                  roleAssignment.attributes["jurisdiction"].asText() == "PROBATE",
                  roleAssignment.attributes["caseType"].asText() == "GrantOfRepresentation",
                  roleAssignment.classification == Classification.RESTRICTED,
+                 roleAssignment.grantType == GrantType.SPECIFIC,
                  roleAssignment.roleName == "allocated-tribunal-caseworker")
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("senior-tribunal-caseworker"),
+                 roleName == "senior-tribunal-caseworker",
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PROBATE")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
