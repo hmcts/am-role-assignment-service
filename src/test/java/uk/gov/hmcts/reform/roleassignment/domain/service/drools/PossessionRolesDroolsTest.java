@@ -25,33 +25,17 @@ class PossessionRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "PCS,GENERALAPPLICATION,hearing-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y"
-    })
-    void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName,
-                                       String roleCategory, String classification,
-                                       String existingRoleName, String expectedSubstantive) {
-
-        verifyGrantOrRejectAccessFor_CaseRole(
-            jurisdiction,
-            caseType,
-            roleName,
-            roleCategory,
-            classification,
-            RoleType.CASE,
-            existingRoleName,
-            expectedSubstantive,
-            APPROVED
-        );
-    }
-
-    @ParameterizedTest
-    @CsvSource({
+        "PCS,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED,judge,Y",
+        "PCS,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
+        "PCS,GENERALAPPLICATION,hearing-judge,JUDICIAL,PUBLIC,judge,",
+        "PCS,GENERALAPPLICATION,hearing-judge,JUDICIAL,PUBLIC,fee-paid-judge,",
+        "PCS,GENERALAPPLICATION,hearing-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
         "PCS,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,",
         "PCS,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,",
         "PCS,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,",
         "PCS,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,",
-        "PCS,GENERALAPPLICATION,allocated-wlu-caseworker,ADMIN,RESTRICTED,wlu-admin,",
-        "PCS,GENERALAPPLICATION,allocated-wlu-caseworker,ADMIN,RESTRICTED,wlu-team-leader,"
+        "PCS,GENERALAPPLICATION,allocated-wlu-caseworker,ADMIN,RESTRICTED,wlu-admin,Y",
+        "PCS,GENERALAPPLICATION,allocated-wlu-caseworker,ADMIN,RESTRICTED,wlu-team-leader,Y"
     })
     void shouldGrantAccessFor_OrgRole(String jurisdiction, String caseType, String roleName,
                                        String roleCategory, String classification,
