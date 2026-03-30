@@ -46,7 +46,12 @@ class PossessionRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        "PCS,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,"
+        "PCS,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,",
+        "PCS,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,",
+        "PCS,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,",
+        "PCS,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,",
+        "PCS,GENERALAPPLICATION,allocated-wlu-caseworker,ADMIN,RESTRICTED,wlu-admin,",
+        "PCS,GENERALAPPLICATION,allocated-wlu-caseworker,ADMIN,RESTRICTED,wlu-team-leader,"
     })
     void shouldGrantAccessFor_OrgRole(String jurisdiction, String caseType, String roleName,
                                        String roleCategory, String classification,

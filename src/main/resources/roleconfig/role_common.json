@@ -2801,6 +2801,42 @@
     ]
   },
   {
+    "name": "allocated-admin-caseworker",
+    "label": "Allocated Admin Caseworker",
+    "description": "Allocated Admin Caseworker for Staff users",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PCS"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "allocated-ctsc-caseworker",
     "label": "Allocated CTSC Caseworker",
     "description": "Allocated CTSC Caseworker for Staff users",
@@ -3293,6 +3329,42 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["CIVIL"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "allocated-wlu-caseworker",
+    "label": "Allocated WLU Caseworker",
+    "description": "Allocated WLU Caseworker for Staff users",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PCS"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
           }
         }
       }
