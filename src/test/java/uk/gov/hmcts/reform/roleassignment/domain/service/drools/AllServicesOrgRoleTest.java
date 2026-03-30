@@ -524,6 +524,10 @@ class AllServicesOrgRoleTest extends DroolBase {
         "wlu-admin,ADMIN,STANDARD,south-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
         "fl401-judge,JUDICIAL,STANDARD,south-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC",
         "wlu-team-leader,ADMIN,STANDARD,south-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
+        "senior-tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "ctsc-team-leader,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "ctsc,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC"
     })
     void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
                                           String region, String jurisdiction, String primaryLocation,
@@ -606,7 +610,6 @@ class AllServicesOrgRoleTest extends DroolBase {
         "national-business-centre,ADMIN,STANDARD,north-east,IA,ORGANISATION",
         "ctsc-team-leader,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,ORGANISATION",
         "magistrate,LEGAL_OPERATIONS,STANDARD,north-east,PRIVATELAW,ORGANISATION"
-
     })
     void shouldRejectRequestedRoleForOrg(String roleName, String roleCategory,
                                          String grantType, String region, String jurisdiction,
@@ -694,7 +697,6 @@ class AllServicesOrgRoleTest extends DroolBase {
             assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
         });
     }
-
 
     @ParameterizedTest
     @CsvSource({

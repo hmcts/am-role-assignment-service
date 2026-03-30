@@ -55,7 +55,11 @@ class SpecificAccessDroolsTest extends DroolBase {
         "ST_CIC,specific-access-judiciary,JUDICIAL,STANDARD",
         "ST_CIC,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
         "ST_CIC,specific-access-admin,ADMIN,STANDARD",
-        "ST_CIC,specific-access-ctsc,CTSC,STANDARD"
+        "ST_CIC,specific-access-ctsc,CTSC,STANDARD",
+        "PROBATE,specific-access-approver-legal-ops,LEGAL_OPERATIONS,STANDARD",
+        "PROBATE,specific-access-approver-judiciary,CTSC,STANDARD",
+        "PROBATE,specific-access-approver-ctsc,CTSC,STANDARD",
+        "PROBATE,specific-access-approver-admin,CTSC,STANDARD"
     })
     void shouldCreate_SpecificAccessRequested(String jurisdiction, String roleName, String roleCategory,
                                                            String orgGrantType) {
@@ -205,7 +209,11 @@ class SpecificAccessDroolsTest extends DroolBase {
         "ST_CIC,specific-access-admin,ADMIN,specific-access-approver-admin,ADMIN",
         "ST_CIC,specific-access-ctsc,CTSC,specific-access-approver-ctsc,CTSC",
         // NB: special case of ST_CIC Admin performing a CTSC approver role
-        "ST_CIC,specific-access-ctsc,CTSC,specific-access-approver-ctsc,ADMIN"
+        "ST_CIC,specific-access-ctsc,CTSC,specific-access-approver-ctsc,ADMIN",
+        "PROBATE,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops,LEGAL_OPERATIONS",
+        "PROBATE,specific-access-judiciary,CTSC,specific-access-approver-judiciary,CTSC",
+        "PROBATE,specific-access-ctsc,CTSC,specific-access-approver-ctsc,CTSC",
+        "PROBATE,specific-access-admin,CTSC,specific-access-approver-admin,CTSC"
     })
     void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction,
                                                            String roleName, String roleCategory,
