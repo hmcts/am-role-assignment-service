@@ -13,7 +13,7 @@ public enum FeatureFlagEnum {
     GA_PRM_1_0("ga_prm_1_0"),
     DISPOSER_1_0("disposer_1_0"),
     ALL_WA_SERVICES_CASE_ALLOCATOR_1_0("all_wa_services_case_allocator_1_0"),
-    PROBATE_WA_1_0("probate_1_0");
+    PROBATE_WA_1_0("probate_wa_1_0");
 
     private final String value;
 
