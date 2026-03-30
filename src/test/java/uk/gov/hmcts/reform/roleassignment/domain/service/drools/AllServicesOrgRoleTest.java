@@ -526,8 +526,12 @@ class AllServicesOrgRoleTest extends DroolBase {
         "wlu-team-leader,ADMIN,STANDARD,south-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
         "senior-tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
         "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "case-allocator,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
+        "task-supervisor,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
         "ctsc-team-leader,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "ctsc,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC"
+        "ctsc,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "case-allocator,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
+        "task-supervisor,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
     })
     void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
                                           String region, String jurisdiction, String primaryLocation,

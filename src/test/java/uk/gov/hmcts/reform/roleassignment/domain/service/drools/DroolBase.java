@@ -136,7 +136,7 @@ public abstract class DroolBase {
                                            .data(buildDataWithRegion())
                                            .build()),
 
-                                 Map.entry("PROBATE", Case.builder()
+                                 Map.entry("PROBATE|GrantOfRepresentation", Case.builder()
                                            .id(PROBATE_CASE_ID)
                                            .jurisdiction("PROBATE")
                                            .caseTypeId("GrantOfRepresentation")
