@@ -234,9 +234,7 @@ class CaseRolesDroolsTest extends DroolBase {
         "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
         "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
         "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,national-business-centre,Y",
-        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y",
-        // POSSESSIONS
-        "PCS,GENERALAPPLICATION,hearing-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y"
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y"
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName,
                                        String roleCategory, String classification,

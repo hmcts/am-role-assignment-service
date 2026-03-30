@@ -2842,7 +2842,17 @@
             "mandatory": true
           }
         }
-      },
+      }
+    ]
+  },
+  {
+    "name": "allocated-ctsc-caseworker",
+    "label": "Allocated CTSC Caseworker",
+    "description": "Allocated CTSC Caseworker for Staff users",
+    "category": "CTSC",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
       {
         "roleType": {
           "mandatory": true,
