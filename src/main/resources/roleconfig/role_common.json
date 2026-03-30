@@ -1000,7 +1000,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC","PROBATE"]
           },
           "caseType": {
             "mandatory": true
@@ -2500,7 +2500,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW", "PRIVATELAW", "CIVIL"]
+            "values": ["PUBLICLAW", "PRIVATELAW", "CIVIL", "PROBATE"]
           },
         "caseType": {
           "mandatory": true
