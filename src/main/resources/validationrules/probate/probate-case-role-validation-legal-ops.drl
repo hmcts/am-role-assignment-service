@@ -48,6 +48,28 @@ end;
 /*
  * The "allocated-tribunal-caseworker" case role
  */
+rule "probate_allocated_tribunal_caseworker_create_case_roles_v1"
+when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.PROBATE_WA_1_0.getValue())
+    $ca: CaseAllocatorApproval(
+                 roleAssignment.status == Status.CREATE_REQUESTED,
+                 roleAssignment.attributes["jurisdiction"].asText() == "PROBATE",
+                 roleAssignment.roleName == "allocated-tribunal-caseworker")
+         ExistingRoleAssignment(
+                 actorId == $ca.getRoleAssignment().actorId,
+                 roleType == RoleType.ORGANISATION,
+                 roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PROBATE")
+then
+    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : probate_allocated_tribunal_caseworker_create_case_roles_v1");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : probate_allocated_tribunal_caseworker_create_case_roles_v1");
+end;
+
+/*
+ * The "allocated-tribunal-caseworker" case role
+ */
 rule "probate_allocated_legal_adviser_create_case_roles_v1"
 when
     $f : FeatureFlag(status && flagName == FeatureFlagEnum.PROBATE_WA_1_0.getValue())
@@ -68,4 +90,23 @@ then
     $ca.getRoleAssignment().log("Stage 1 approved : probate_allocated_legal_adviser_create_case_roles_v1");
     update($ca.getRoleAssignment());
     logMsg("Rule : probate_allocated_legal_adviser_create_case_roles_v1");
+end;
+
+/*
+ * Probate expects non-substantive (N) for these allocated case roles; role config remains Y for other jurisdictions.
+ */
+rule "probate_allocated_case_roles_substantive_n"
+salience -10
+when
+    $ra: RoleAssignment(
+             status == Status.APPROVED,
+             roleType == RoleType.CASE,
+             attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PROBATE",
+             roleName in ("allocated-ctsc-caseworker", "allocated-tribunal-caseworker"),
+             attributes["substantive"] == null || attributes["substantive"].asText() != "N")
+then
+    $ra.setAttribute("substantive", "N");
+    $ra.log("Probate allocated case roles substantive override : probate_allocated_case_roles_substantive_n");
+    update($ra);
+    logMsg("Rule : probate_allocated_case_roles_substantive_n");
 end;
