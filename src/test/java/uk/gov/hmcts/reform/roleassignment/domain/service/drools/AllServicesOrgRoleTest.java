@@ -526,9 +526,6 @@ class AllServicesOrgRoleTest extends DroolBase {
         "wlu-admin,ADMIN,STANDARD,south-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
         "fl401-judge,JUDICIAL,STANDARD,south-east,PRIVATELAW,UK,ORGANISATION,Y,Null,PUBLIC",
         "wlu-team-leader,ADMIN,STANDARD,south-east,CIVIL,UK,ORGANISATION,Y,Null,PUBLIC",
-        "hrs-team-leader,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
-        "hrs-listener,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
-        "hrs-sharer,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
         "senior-tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
         "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
         "case-allocator,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
@@ -536,143 +533,17 @@ class AllServicesOrgRoleTest extends DroolBase {
         "ctsc-team-leader,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
         "ctsc,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
         "case-allocator,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
-        "task-supervisor,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC"
-    },
-        nullValues = "Null"
-    )
-    void shouldApproveOrRejectRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
-                                                  String region, String jurisdiction, String primaryLocation,
-                                                  String roleType, String expectedSubstantive, String contractType,
-                                                  String classification) {
-
-        // wrong roleCategory
-        verifyOrmOrgRequestedRole(roleName,
-                                  RoleCategory.CITIZEN.name(), // WRONG
-                                  grantType,
-                                  region,
-                                  jurisdiction,
-                                  primaryLocation,
-                                  roleType,
-                                  contractType,
-                                  classification,
-                                  expectedSubstantive,
-                                  Status.REJECTED);
-
-        // NB: skip wrong jurisdiction test for roles that don't have jurisdictions
-        if (!List.of("hmcts-admin",
-                     "hmcts-ctsc",
-                     "hmcts-judiciary",
-                     "hmcts-legal-operations",
-                     "specific-access-approver-admin",
-                     "specific-access-approver-ctsc",
-                     "specific-access-approver-judiciary",
-                     "specific-access-approver-legal-ops").contains(roleName)) {
-            if ("case-allocator".equals(roleName)) {
-                // without jurisdiction
-                verifyOrmOrgRequestedRole(
-                    roleName,
-                    roleCategory,
-                    grantType,
-                    region,
-                    null, // WRONG
-                    primaryLocation,
-                    roleType,
-                    contractType,
-                    classification,
-                    expectedSubstantive,
-                    Status.REJECTED
-                );
-            } else {
-                // wrong jurisdiction
-                verifyOrmOrgRequestedRole(
-                    roleName,
-                    roleCategory,
-                    grantType,
-                    region,
-                    "wrong-jurisdiction", // WRONG
-                    primaryLocation,
-                    roleType,
-                    contractType,
-                    classification,
-                    expectedSubstantive,
-                    Status.REJECTED
-                );
-            }
-        }
-
-        // wrong roleType
-        verifyOrmOrgRequestedRole(
-            roleName,
-            roleCategory,
-            grantType,
-            region,
-            jurisdiction,
-            primaryLocation,
-            RoleType.CASE.name(), // WRONG
-            contractType,
-            classification,
-            expectedSubstantive,
-            Status.REJECTED
-        );
-
-        // wrong grantType
-        verifyOrmOrgRequestedRole(
-            roleName,
-            roleCategory,
-            GrantType.EXCLUDED.name(), // WRONG
-            region,
-            jurisdiction,
-            primaryLocation,
-            roleType,
-            contractType,
-            classification,
-            expectedSubstantive,
-            Status.REJECTED
-        );
-
-        // wrong classification
-        verifyOrmOrgRequestedRole(
-            roleName,
-            roleCategory,
-            grantType,
-            region,
-            jurisdiction,
-            primaryLocation,
-            roleType,
-            contractType,
-            Classification.RESTRICTED.name(), // WRONG (not usually applicable to org roles)
-            expectedSubstantive,
-            Status.REJECTED
-        );
-
-        // correct values should be approved
-        verifyOrmOrgRequestedRole(roleName,
-                                  roleCategory,
-                                  grantType,
-                                  region,
-                                  jurisdiction,
-                                  primaryLocation,
-                                  roleType,
-                                  contractType,
-                                  classification,
-                                  expectedSubstantive,
-                                  Status.APPROVED);
-    }
-
-    void verifyOrmOrgRequestedRole(String roleName, String roleCategory, String grantType,
-                                   String region, String jurisdiction, String primaryLocation,
-                                   String roleType, String contractType, String classification,
-                                   String expectedSubstantive, Status expectedStatus) {
+        "task-supervisor,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
         "hrs-team-leader,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
         "hrs-listener,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
         "hrs-sharer,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
     },
         nullValues = "Null"
     )
-    void shouldApproveOrRejectRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
-                                                  String region, String jurisdiction, String primaryLocation,
-                                                  String roleType, String expectedSubstantive, String contractType,
-                                                  String classification) {
+    void shouldApproveRequestedRoleForOrg(String roleName, String roleCategory, String grantType,
+                                          String region, String jurisdiction, String primaryLocation,
+                                          String roleType, String expectedSubstantive, String contractType,
+                                          String classification) {
 
         // wrong roleCategory
         verifyOrmOrgRequestedRole(roleName,
@@ -864,7 +735,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         "hmcts-admin,ADMIN,BASIC,ORGANISATION,N,PRIVATE"
     })
     void shouldApproveRequestedRoleForOrgHavingNoAttributes(String roleName, String roleCategory, String grantType,
-                                          String roleType, String expectedSubstantive, String classification) {
+                                                            String roleType, String expectedSubstantive, String classification) {
 
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
@@ -904,6 +775,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         "national-business-centre,ADMIN,STANDARD,north-east,IA,ORGANISATION",
         "ctsc-team-leader,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,ORGANISATION",
         "magistrate,LEGAL_OPERATIONS,STANDARD,north-east,PRIVATELAW,ORGANISATION"
+
     })
     void shouldRejectRequestedRoleForOrg(String roleName, String roleCategory,
                                          String grantType, String region, String jurisdiction,
@@ -991,6 +863,7 @@ class AllServicesOrgRoleTest extends DroolBase {
             assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
         });
     }
+
 
     @ParameterizedTest
     @CsvSource({
