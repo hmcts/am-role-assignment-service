@@ -36,6 +36,7 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PROBATE")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().setAttribute("substantive", "Y");
     $ca.getRoleAssignment().log("Stage 1 approved : probate_allocated_legal_adviser_create_case_roles_v1");
     update($ca.getRoleAssignment());
     logMsg("Rule : probate_allocated_legal_adviser_create_case_roles_v1");
@@ -58,6 +59,7 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PROBATE")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
+    $ca.getRoleAssignment().setAttribute("substantive", "Y");
     $ca.getRoleAssignment().log("Stage 1 approved : probate_allocated_ctsc_caseworker_create_case_roles_v1");
     update($ca.getRoleAssignment());
     logMsg("Rule : probate_allocated_ctsc_caseworker_create_case_roles_v1");
