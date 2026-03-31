@@ -35,7 +35,8 @@ class PossessionRolesDroolsTest extends DroolBase {
         "PCS,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,",
         "PCS,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,",
         "PCS,GENERALAPPLICATION,allocated-wlu-caseworker,ADMIN,RESTRICTED,wlu-admin,Y",
-        "PCS,GENERALAPPLICATION,allocated-wlu-caseworker,ADMIN,RESTRICTED,wlu-team-leader,Y"
+        "PCS,GENERALAPPLICATION,allocated-wlu-caseworker,ADMIN,RESTRICTED,wlu-team-leader,Y",
+        "PCS,GENERALAPPLICATION,case-allocator,JUDICIAL,RESTRICTED,case-allocator,N"
     })
     void shouldGrantAccessFor_OrgRole(String jurisdiction, String caseType, String roleName,
                                        String roleCategory, String classification,
