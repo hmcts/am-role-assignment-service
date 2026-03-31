@@ -25,10 +25,12 @@ class PossessionRolesDroolsTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
+        // Judicial
         "PCS,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED,judge,Y",
         "PCS,GENERALAPPLICATION,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
         "PCS,GENERALAPPLICATION,hearing-judge,JUDICIAL,PUBLIC,judge,",
         "PCS,GENERALAPPLICATION,hearing-judge,JUDICIAL,PUBLIC,fee-paid-judge,",
+        // Staff
         "PCS,GENERALAPPLICATION,hearing-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
         "PCS,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,",
         "PCS,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,",
@@ -36,6 +38,8 @@ class PossessionRolesDroolsTest extends DroolBase {
         "PCS,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,",
         "PCS,GENERALAPPLICATION,allocated-wlu-caseworker,ADMIN,RESTRICTED,wlu-admin,Y",
         "PCS,GENERALAPPLICATION,allocated-wlu-caseworker,ADMIN,RESTRICTED,wlu-team-leader,Y",
+        "PCS,GENERALAPPLICATION,allocated-bailiff,JUDICIAL,RESTRICTED,bailiff,",
+        "PCS,GENERALAPPLICATION,allocated-bailiff,JUDICIAL,RESTRICTED,bailiff-manager,",
         "PCS,GENERALAPPLICATION,case-allocator,JUDICIAL,RESTRICTED,case-allocator,N"
     })
     void shouldGrantAccessFor_OrgRole(String jurisdiction, String caseType, String roleName,

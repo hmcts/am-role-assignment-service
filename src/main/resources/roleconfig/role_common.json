@@ -3495,5 +3495,41 @@
         }
       }
     ]
+  },
+  {
+    "name": "allocated-bailiff",
+    "label": "Allocated Bailiff",
+    "description": "Allocated Bailiff role for Judicial users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PCS"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
