@@ -29,7 +29,6 @@ import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJ
 class CaseRolesDroolsTest extends DroolBase {
 
 
-
     @ParameterizedTest
     @CsvSource({
         // SSCS Benefit
@@ -251,6 +250,7 @@ class CaseRolesDroolsTest extends DroolBase {
             APPROVED
         );
     }
+
 
     @ParameterizedTest
     @CsvSource({
