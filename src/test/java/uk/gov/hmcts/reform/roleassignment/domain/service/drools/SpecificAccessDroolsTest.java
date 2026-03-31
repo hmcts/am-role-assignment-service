@@ -211,9 +211,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         // NB: special case of ST_CIC Admin performing a CTSC approver role
         "ST_CIC,specific-access-ctsc,CTSC,specific-access-approver-ctsc,ADMIN",
         "PROBATE,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops,LEGAL_OPERATIONS",
-        "PROBATE,specific-access-judiciary,CTSC,specific-access-approver-judiciary,CTSC",
-        "PROBATE,specific-access-ctsc,CTSC,specific-access-approver-ctsc,CTSC",
-        "PROBATE,specific-access-admin,CTSC,specific-access-approver-admin,CTSC"
+        "PROBATE,specific-access-ctsc,CTSC,specific-access-approver-ctsc,CTSC"
     })
     void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction,
                                                            String roleName, String roleCategory,

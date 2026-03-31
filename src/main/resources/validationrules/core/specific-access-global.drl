@@ -188,9 +188,7 @@ when
              roleType == RoleType.CASE,
              // TBC if the syntax below works.
              (roleName == "specific-access-admin" && roleCategory == RoleCategory.ADMIN) ||
-             (roleName == "specific-access-admin" && roleCategory == RoleCategory.CTSC && attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PROBATE") ||
              (roleName == "specific-access-judiciary" && roleCategory == RoleCategory.JUDICIAL) ||
-             (roleName == "specific-access-judiciary" && roleCategory == RoleCategory.CTSC && attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PROBATE") ||
              (roleName == "specific-access-legal-ops" && roleCategory == RoleCategory.LEGAL_OPERATIONS) ||
              (roleName == "specific-access-ctsc" && roleCategory == RoleCategory.CTSC),
              grantType == GrantType.SPECIFIC,
