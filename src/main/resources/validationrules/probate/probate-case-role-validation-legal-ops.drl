@@ -54,28 +54,6 @@ when
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "PROBATE",
-                 roleAssignment.roleName == "allocated-tribunal-caseworker")
-         ExistingRoleAssignment(
-                 actorId == $ca.getRoleAssignment().actorId,
-                 roleType == RoleType.ORGANISATION,
-                 roleName in ("tribunal-caseworker", "senior-tribunal-caseworker"),
-                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PROBATE")
-then
-    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : probate_allocated_tribunal_caseworker_create_case_roles_v1");
-    update($ca.getRoleAssignment());
-    logMsg("Rule : probate_allocated_tribunal_caseworker_create_case_roles_v1");
-end;
-
-/*
- * The "allocated-tribunal-caseworker" case role
- */
-rule "probate_allocated_legal_adviser_create_case_roles_v1"
-when
-    $f : FeatureFlag(status && flagName == FeatureFlagEnum.PROBATE_WA_1_0.getValue())
-    $ca: CaseAllocatorApproval(
-                 roleAssignment.status == Status.CREATE_REQUESTED,
-                 roleAssignment.attributes["jurisdiction"].asText() == "PROBATE",
                  roleAssignment.attributes["caseType"].asText() == "GrantOfRepresentation",
                  roleAssignment.classification == Classification.RESTRICTED,
                  roleAssignment.grantType == GrantType.SPECIFIC,
@@ -87,7 +65,7 @@ when
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PROBATE")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : probate_allocated_legal_adviser_create_case_roles_v1");
+    $ca.getRoleAssignment().log("Stage 1 approved : probate_allocated_tribunal_caseworker_create_case_roles_v1");
     update($ca.getRoleAssignment());
-    logMsg("Rule : probate_allocated_legal_adviser_create_case_roles_v1");
+    logMsg("Rule : probate_allocated_tribunal_caseworker_create_case_roles_v1");
 end;

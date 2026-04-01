@@ -536,7 +536,11 @@ class AllServicesOrgRoleTest extends DroolBase {
         "ctsc-team-leader,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
         "ctsc,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
         "case-allocator,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
-        "task-supervisor,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC"
+        "task-supervisor,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
+        "specific-access-approver-legal-ops,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
+        "specific-access-approver-judiciary,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
+        "specific-access-approver-ctsc,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
+        "specific-access-approver-admin,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC"
     },
         nullValues = "Null"
     )
