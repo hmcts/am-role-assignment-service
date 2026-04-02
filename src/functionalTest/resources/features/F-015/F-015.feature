@@ -45,7 +45,7 @@ Feature: F-015 : Create Case Role Assignments for Privatelaw
       Then a positive response is received,
       And the response has all other details as expected,
       And a successful call [to delete case role assignment for the same actor] as in [S-224_Delete_Case_Role],
-      And a successful call [to delete role assignments just created above] as in [S-224_DeleteDataForRoleAssignmentsForOrgRoles].
+      And a successful call [to delete role assignments just created above] as in [S-224a_DeleteDataForRoleAssignmentsForOrgRoles].
 
     @S-225
     Scenario: must successfully create allocated-judge case role
@@ -73,7 +73,7 @@ Feature: F-015 : Create Case Role Assignments for Privatelaw
       Then a positive response is received,
       And the response has all other details as expected,
       And a successful call [to delete case role assignment for the same actor] as in [S-225_Delete_Case_Role],
-      And a successful call [to delete role assignments just created above] as in [S-225_DeleteDataForRoleAssignmentsForOrgRoles].
+      And a successful call [to delete role assignments just created above] as in [S-225a_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-226
   Scenario: must successfully create gatekeeping-judge case role
@@ -101,7 +101,7 @@ Feature: F-015 : Create Case Role Assignments for Privatelaw
       Then a positive response is received,
       And the response has all other details as expected,
       And a successful call [to delete case role assignment for the same actor] as in [S-226_Delete_Case_Role],
-      And a successful call [to delete role assignments just created above] as in [S-226_DeleteDataForRoleAssignmentsForOrgRoles].
+      And a successful call [to delete role assignments just created above] as in [S-226a_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-227
   Scenario: must successfully create allocated-legal-adviser case role
