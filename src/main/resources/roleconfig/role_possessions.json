@@ -1,0 +1,38 @@
+[
+  {
+    "name": "specific-access-legal-operations",
+    "label": "Specific Access Legal Ops",
+    "description": "Specific Access Legal Operations for judicial users",
+    "category": "ADMIN",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PCS"]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  }
+]

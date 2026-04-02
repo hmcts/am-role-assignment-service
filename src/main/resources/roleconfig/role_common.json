@@ -1211,7 +1211,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PCS"]
           },
           "caseType": {
             "mandatory": true
