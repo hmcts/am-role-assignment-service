@@ -76,7 +76,7 @@
             {
               "jurisdiction": "PRIVATELAW",
               "primaryLocation": "abc",
-              "substantive": "Y",
+              "substantive": "N",
               "contractType": "Voluntary",
               "region": "2"
             }
