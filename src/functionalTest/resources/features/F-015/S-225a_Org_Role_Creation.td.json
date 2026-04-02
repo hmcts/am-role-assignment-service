@@ -89,7 +89,7 @@
             {
               "jurisdiction": "PRIVATELAW",
               "primaryLocation": "123456",
-              "substantive": "Y",
+              "substantive": "N",
               "region": "2"
             }
           }
