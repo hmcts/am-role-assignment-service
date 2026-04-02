@@ -34,7 +34,7 @@ Feature: F-015 : Create Case Role Assignments for Privatelaw
        And a successful call [to delete role assignments just created above] as in [S-224_DeleteDataForRoleAssignmentsForOrgRoles].
 
     @S-224a
-    Scenario: must successfully create hearing-judge case role
+    Scenario: must successfully create hearing-judge case role - fee-paid-judge
       Given a user with [an active IDAM profile with full permissions],
       And a user [Befta3 - who is the actor for requested role],
       And a successful call [to create org role assignments for actors & requester] as in [S-224a_Org_Role_Creation],
@@ -62,7 +62,7 @@ Feature: F-015 : Create Case Role Assignments for Privatelaw
       And a successful call [to delete role assignments just created above] as in [S-225_DeleteDataForRoleAssignmentsForOrgRoles].
 
     @S-225a
-    Scenario: must successfully create allocated-judge case role
+    Scenario: must successfully create allocated-judge case role - fee-paid-judge
       Given a user with [an active IDAM profile with full permissions],
       And a user [Befta3 - who is the actor for requested role],
       And a successful call [to create org role assignments for actor & requester] as in [S-225a_Org_Role_Creation],
@@ -90,7 +90,7 @@ Feature: F-015 : Create Case Role Assignments for Privatelaw
     And a successful call [to delete role assignments just created above] as in [S-226_DeleteDataForRoleAssignmentsForOrgRoles].
 
     @S-226a
-    Scenario: must successfully create gatekeeping-judge case role
+    Scenario: must successfully create gatekeeping-judge case role - fee-paid-judge
       Given a user with [an active IDAM profile with full permissions],
       And a user [Befta3 - who is the actor for requested role],
       And a successful call [to create org role assignments for actor & requester] as in [S-226a_Org_Role_Creation],
