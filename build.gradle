@@ -12,7 +12,7 @@ plugins {
   id 'com.github.spacialcircumstances.gradle-cucumber-reporting' version '0.1.25'
   id 'au.com.dius.pact' version '4.6.20' //do not change this version or serenity reports will fail to generate
   id 'org.flywaydb.flyway' version '9.22.3'
-  id 'org.owasp.dependencycheck' version '12.1.1'
+  id 'org.owasp.dependencycheck' version '12.2.0'
   id 'net.serenity-bdd.serenity-gradle-plugin' version '4.3.2'
 }
 
@@ -34,7 +34,7 @@ def versions = [
   pact_version    : '4.1.7',
   rest_assured    : '5.5.7',
   cucumber        : '7.34.2',
-  feign_jackson   : '13.9.2',
+  feign_jackson   : '13.11',
   jacksondata     : '2.19.2',
   testcontainers  : '1.21.4',
   drools          : '10.1.0',
@@ -482,7 +482,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:befta-fw:9.2.4'
   testImplementation 'com.github.hmcts:fortify-client:1.4.10:all'
-  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.8.3'
+  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.8.4'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
