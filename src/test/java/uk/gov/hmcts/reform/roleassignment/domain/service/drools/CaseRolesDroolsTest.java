@@ -74,9 +74,13 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
         // PRIVATELAW PRLAPPS
         "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,RESTRICTED,judge,",
+        "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,RESTRICTED,fee-paid-judge,",
         "PRIVATELAW,PRLAPPS,gatekeeping-judge,JUDICIAL,RESTRICTED,judge,",
+        "PRIVATELAW,PRLAPPS,gatekeeping-judge,JUDICIAL,RESTRICTED,fee-paid-judge,",
         "PRIVATELAW,PRLAPPS,allocated-judge,JUDICIAL,RESTRICTED,judge,",
+        "PRIVATELAW,PRLAPPS,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,",
         "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,RESTRICTED,magistrate,",
+        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,RESTRICTED,fee-paid-judge,",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,PUBLIC,tribunal-caseworker,Y",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
         "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
