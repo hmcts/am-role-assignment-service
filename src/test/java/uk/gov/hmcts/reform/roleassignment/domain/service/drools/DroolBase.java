@@ -32,6 +32,7 @@ import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.Data
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PCS_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_EXC_RECORD_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PROBATE_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PUBLIC_LAW_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.ST_CIC_CASE_ID;
@@ -136,12 +137,26 @@ public abstract class DroolBase {
                                            .data(buildDataWithRegion())
                                            .build()),
 
-                                 Map.entry("PCS", Case.builder()
-                                           .id(PCS_CASE_ID)
-                                           .jurisdiction("PCS")
-                                           .caseTypeId("GENERALAPPLICATION")
+                                 Map.entry("PROBATE|GrantOfRepresentation", Case.builder()
+                                           .id(PROBATE_CASE_ID)
+                                           .jurisdiction("PROBATE")
+                                           .caseTypeId("GrantOfRepresentation")
                                            .data(buildDataWithRegion())
-                                           .build())
+                                           .build()),
+
+                                 Map.entry("PROBATE", Case.builder()
+                                           .id(PROBATE_CASE_ID)
+                                           .jurisdiction("PROBATE")
+                                           .caseTypeId("GrantOfRepresentation")
+                                           .data(buildDataWithRegion())
+                                           .build()),
+
+                                 Map.entry("PCS", Case.builder()
+                                     .id(PCS_CASE_ID)
+                                     .jurisdiction("PCS")
+                                     .caseTypeId("GENERALAPPLICATION")
+                                     .data(buildDataWithRegion())
+                                     .build())
     );
 
     @BeforeEach
