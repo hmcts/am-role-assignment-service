@@ -25,26 +25,6 @@
             "mandatory": true
           }
         }
-      },
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PCS"]
-          }
-        }
       }
     ]
   },
@@ -174,6 +154,43 @@
             "mandatory": true
           },
           "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for admin users",
+    "category": "ADMIN",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "PCS"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
             "mandatory": true
           }
         }
@@ -370,6 +387,43 @@
     ]
   },
   {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for ctsc users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "PCS"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "hmcts-judiciary",
     "label": "HMCTS Judiciary",
     "description": "HMCTS Judiciary role for judicial users",
@@ -539,42 +593,15 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC"]
-          },
-          "caseType": {
-            "mandatory": true
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "hearing-judge",
-    "label": "Hearing Judge",
-    "description": "Hearing Judge role for judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PCS"]
+            "values": [
+              "IA",
+              "SSCS",
+              "PRIVATELAW",
+              "PUBLICLAW",
+              "EMPLOYMENT",
+              "ST_CIC",
+              "PCS"
+            ]
           },
           "caseType": {
             "mandatory": true
@@ -2624,43 +2651,13 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW", "ST_CIC", "PRIVATELAW", "CIVIL"]
-          },
-          "caseType": {
-            "mandatory": true
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "allocated-judge",
-    "label": "Allocated Judge",
-    "description": "Allocated Judge role for Judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PCS"]
+            "values": [
+              "PUBLICLAW",
+              "ST_CIC",
+              "PRIVATELAW",
+              "CIVIL",
+              "PCS"
+            ]
           },
           "caseType": {
             "mandatory": true
@@ -2731,41 +2728,6 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["PUBLICLAW"]
-          },
-          "caseType": {
-            "mandatory": true
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "hearing-legal-adviser",
-    "label": "Hearing Legal Adviser",
-    "description": "Hearing Legal Adviser case role for Staff users",
-    "category": "LEGAL_OPERATIONS",
-    "substantive": true,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PCS"]
           },
           "caseType": {
             "mandatory": true
@@ -3028,21 +2990,11 @@
             "mandatory": true
           }
         }
-      }
-    ]
-  },
-  {
-    "name": "allocated-admin-caseworker",
-    "label": "Allocated Admin Caseworker",
-    "description": "Allocated Admin Caseworker for Staff users",
-    "category": "ADMIN",
-    "substantive": true,
-    "type": "ORGANISATION",
-    "patterns": [
+      },
       {
         "roleType": {
           "mandatory": true,
-          "values": ["ORGANISATION"]
+          "values": ["CASE"]
         },
         "grantType": {
           "mandatory": true,
@@ -3055,7 +3007,9 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PCS"]
+            "values": [
+              "PCS"
+            ]
           },
           "caseType": {
             "mandatory": true
@@ -3110,21 +3064,11 @@
             "mandatory": true
           }
         }
-      }
-    ]
-  },
-  {
-    "name": "allocated-ctsc-caseworker",
-    "label": "Allocated CTSC Caseworker",
-    "description": "Allocated CTSC Caseworker for Staff users",
-    "category": "CTSC",
-    "substantive": true,
-    "type": "ORGANISATION",
-    "patterns": [
+      },
       {
         "roleType": {
           "mandatory": true,
-          "values": ["ORGANISATION"]
+          "values": ["CASE"]
         },
         "grantType": {
           "mandatory": true,
@@ -3137,7 +3081,9 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PCS"]
+            "values": [
+              "PCS"
+            ]
           },
           "caseType": {
             "mandatory": true
@@ -3637,78 +3583,6 @@
             "values": [
               "CIVIL", "PCS"
             ]
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "allocated-wlu-caseworker",
-    "label": "Allocated WLU Caseworker",
-    "description": "Allocated WLU Caseworker for Staff users",
-    "category": "ADMIN",
-    "substantive": true,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PCS"]
-          },
-          "caseType": {
-            "mandatory": true
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "allocated-bailiff",
-    "label": "Allocated Bailiff",
-    "description": "Allocated Bailiff role for Judicial users",
-    "category": "JUDICIAL",
-    "substantive": false,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["PCS"]
-          },
-          "caseType": {
-            "mandatory": true
-          },
-          "caseId": {
-            "mandatory": true
           }
         }
       }
