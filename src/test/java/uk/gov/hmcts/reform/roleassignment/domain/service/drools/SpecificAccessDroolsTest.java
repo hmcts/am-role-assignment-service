@@ -61,6 +61,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PROBATE,specific-access-ctsc,CTSC,STANDARD",
         "PROBATE,specific-access-admin,CTSC,STANDARD",
         "PCS,specific-access-judiciary,JUDICIAL,STANDARD",
+        "PCS,specific-access-legal-ops,LEGAL_OPERATIONS,STANDARD",
         "PCS,specific-access-admin,ADMIN,STANDARD",
         "PCS,specific-access-ctsc,CTSC,STANDARD"
     })
@@ -146,6 +147,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PROBATE,specific-access-ctsc,CTSC",
         "PROBATE,specific-access-admin,CTSC",
         "PCS,specific-access-judiciary,JUDICIAL",
+        "PCS,specific-access-legal-ops,LEGAL_OPERATIONS",
         "PCS,specific-access-admin,ADMIN",
         "PCS,specific-access-ctsc,CTSC"
     })
