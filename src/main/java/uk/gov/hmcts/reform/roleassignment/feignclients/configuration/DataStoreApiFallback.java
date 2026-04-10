@@ -155,7 +155,7 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .build();
             case PCS_CASE_ID:
                 return Case.builder().id(caseId)
-                    .caseTypeId("GENERALAPPLICATION")
+                    .caseTypeId("any-case-type")
                     .jurisdiction("PCS")
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(

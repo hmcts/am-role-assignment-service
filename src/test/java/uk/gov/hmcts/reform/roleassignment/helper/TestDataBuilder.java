@@ -52,6 +52,8 @@ public class TestDataBuilder {
     public static final String ACTORID = "4772dc44-268f-4d0c-8f83-f0fb662aac84";
     public static final String CASE_ALLOCATOR_ID = "4772dc44-268f-4d0c-8f83-f0fb662aac88";
 
+    public static final String CLIENT_ID_XUI = "xui_webapp";
+
     private TestDataBuilder() {
         //not meant to be instantiated.
     }
