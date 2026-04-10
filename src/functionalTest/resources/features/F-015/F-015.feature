@@ -19,7 +19,21 @@ Feature: F-015 : Create Case Role Assignments for Privatelaw
        And a successful call [to delete case role assignment for the same actor] as in [S-223_Delete_Case_Role],
        And a successful call [to delete role assignments just created above] as in [S-223_DeleteDataForRoleAssignmentsForOrgRoles].
 
-    @S-224
+    @S-223a
+    Scenario: must successfully create allocated-magistrate case role - fee-paid-judge
+      Given a user with [an active IDAM profile with full permissions],
+      And a user [Befta3 - who is the actor for requested role],
+      And a successful call [to create org role assignments for actors & requester] as in [S-223a_Org_Role_Creation],
+      When a request is prepared with appropriate values,
+      And the request [contains ReplaceExisting is false and reference set to caseId],
+      And the request [contains allocated-magistrate role assignment],
+      And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+      Then a positive response is received,
+      And the response has all other details as expected,
+      And a successful call [to delete case role assignment for the same actor] as in [S-223_Delete_Case_Role],
+      And a successful call [to delete role assignments just created above] as in [S-223a_DeleteDataForRoleAssignmentsForOrgRoles].
+
+  @S-224
      Scenario: must successfully create hearing-judge case role
        Given a user with [an active IDAM profile with full permissions],
        And a user [Befta3 - who is the actor for requested role],
@@ -32,6 +46,20 @@ Feature: F-015 : Create Case Role Assignments for Privatelaw
        And the response has all other details as expected,
        And a successful call [to delete case role assignment for the same actor] as in [S-224_Delete_Case_Role],
        And a successful call [to delete role assignments just created above] as in [S-224_DeleteDataForRoleAssignmentsForOrgRoles].
+
+    @S-224a
+    Scenario: must successfully create hearing-judge case role - fee-paid-judge
+      Given a user with [an active IDAM profile with full permissions],
+      And a user [Befta3 - who is the actor for requested role],
+      And a successful call [to create org role assignments for actors & requester] as in [S-224a_Org_Role_Creation],
+      When a request is prepared with appropriate values,
+      And the request [contains ReplaceExisting is false and reference set to caseId],
+      And the request [contains hearing-judge case role assignment],
+      And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+      Then a positive response is received,
+      And the response has all other details as expected,
+      And a successful call [to delete case role assignment for the same actor] as in [S-224_Delete_Case_Role],
+      And a successful call [to delete role assignments just created above] as in [S-224a_DeleteDataForRoleAssignmentsForOrgRoles].
 
     @S-225
     Scenario: must successfully create allocated-judge case role
@@ -47,6 +75,20 @@ Feature: F-015 : Create Case Role Assignments for Privatelaw
       And a successful call [to delete case role assignment for the same actor] as in [S-225_Delete_Case_Role],
       And a successful call [to delete role assignments just created above] as in [S-225_DeleteDataForRoleAssignmentsForOrgRoles].
 
+    @S-225a
+    Scenario: must successfully create allocated-judge case role - fee-paid-judge
+      Given a user with [an active IDAM profile with full permissions],
+      And a user [Befta3 - who is the actor for requested role],
+      And a successful call [to create org role assignments for actor & requester] as in [S-225a_Org_Role_Creation],
+      When a request is prepared with appropriate values,
+      And the request [contains ReplaceExisting is false and reference set to caseId],
+      And the request [contains allocated-judge case role assignment],
+      And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+      Then a positive response is received,
+      And the response has all other details as expected,
+      And a successful call [to delete case role assignment for the same actor] as in [S-225_Delete_Case_Role],
+      And a successful call [to delete role assignments just created above] as in [S-225a_DeleteDataForRoleAssignmentsForOrgRoles].
+
   @S-226
   Scenario: must successfully create gatekeeping-judge case role
     Given a user with [an active IDAM profile with full permissions],
@@ -60,6 +102,20 @@ Feature: F-015 : Create Case Role Assignments for Privatelaw
     And the response has all other details as expected,
     And a successful call [to delete case role assignment for the same actor] as in [S-226_Delete_Case_Role],
     And a successful call [to delete role assignments just created above] as in [S-226_DeleteDataForRoleAssignmentsForOrgRoles].
+
+    @S-226a
+    Scenario: must successfully create gatekeeping-judge case role - fee-paid-judge
+      Given a user with [an active IDAM profile with full permissions],
+      And a user [Befta3 - who is the actor for requested role],
+      And a successful call [to create org role assignments for actor & requester] as in [S-226a_Org_Role_Creation],
+      When a request is prepared with appropriate values,
+      And the request [contains ReplaceExisting is false and reference set to caseId],
+      And the request [contains gatekeeping-judge case role assignment],
+      And it is submitted to call the [Create Role Assignments] operation of [Role Assignments Service],
+      Then a positive response is received,
+      And the response has all other details as expected,
+      And a successful call [to delete case role assignment for the same actor] as in [S-226_Delete_Case_Role],
+      And a successful call [to delete role assignments just created above] as in [S-226a_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-227
   Scenario: must successfully create allocated-legal-adviser case role

@@ -267,7 +267,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC"]
+            "values": ["IA","SSCS", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC","PROBATE"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -300,7 +300,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC","PROBATE"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -333,7 +333,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE"]
           }
         }
       }
@@ -363,7 +363,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE"]
           }
         }
       }
@@ -675,7 +675,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW","PUBLICLAW", "EMPLOYMENT","ST_CIC"]
+            "values": ["IA","SSCS", "CIVIL", "PRIVATELAW","PUBLICLAW", "EMPLOYMENT","ST_CIC","PROBATE"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -899,7 +899,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PROBATE"]
           },
           "caseType": {
             "mandatory": true
@@ -1055,7 +1055,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC","PCS"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC","PROBATE","PCS"]
           },
           "caseType": {
             "mandatory": true
@@ -1211,7 +1211,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PCS"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS"]
           },
           "caseType": {
             "mandatory": true
@@ -2174,7 +2174,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL", "PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC"]
+            "values": ["IA", "CIVIL", "PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PROBATE"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2243,6 +2243,39 @@
     ]
   },
   {
+    "name": "specific-access-approver-judiciary",
+    "label": "Specific Access Approver Judiciary",
+    "description": "Specific Access Approver Judiciary role for CTSC users (Probate)",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PROBATE"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "specific-access-approver-legal-ops",
     "label": "Specific Access Approver Legal Ops",
     "description": "Specific Access Approver role for staff users",
@@ -2298,6 +2331,39 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-approver-admin",
+    "label": "Specific Access Approver Admin",
+    "description": "Specific Access Approver Admin role for CTSC users (Probate)",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PROBATE"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2426,7 +2492,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2488,7 +2554,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2862,7 +2928,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT", "SSCS"]
+            "values": ["EMPLOYMENT", "SSCS", "PROBATE"]
           },
           "caseType": {
             "mandatory": true,
@@ -2871,7 +2937,8 @@
               "ET_EnglandWales",
               "ET_EnglandWales_Multiple",
               "ET_Scotland",
-              "ET_Scotland_Multiple"
+              "ET_Scotland_Multiple",
+              "GrantOfRepresentation"
             ]
           },
           "caseId": {
@@ -2985,7 +3052,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW", "CIVIL"]
+            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW", "CIVIL", "PROBATE"]
           },
           "caseType": {
             "mandatory": true,
@@ -2997,7 +3064,8 @@
               "ET_Scotland_Multiple",
               "PRLAPPS",
               "CIVIL",
-              "GENERALAPPLICATION"
+              "GENERALAPPLICATION",
+              "GrantOfRepresentation"
             ]
           },
           "caseId": {
