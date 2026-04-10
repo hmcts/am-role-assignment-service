@@ -50,6 +50,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "SSCS,challenged-access-legal-ops,LEGAL_OPERATIONS",
         "SSCS,challenged-access-admin,ADMIN",
         "SSCS,challenged-access-ctsc,CTSC",
+        "PCS,challenged-access-judiciary,JUDICIAL",
         "PCS,challenged-access-admin,ADMIN",
         "PCS,challenged-access-ctsc,CTSC",
     })
@@ -134,6 +135,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "SSCS,challenged-access-legal-ops,LEGAL_OPERATIONS",
         "SSCS,challenged-access-admin,ADMIN",
         "SSCS,challenged-access-ctsc,CTSC",
+        "PCS,challenged-access-judiciary,JUDICIAL",
         "PCS,challenged-access-admin,ADMIN",
         "PCS,challenged-access-ctsc,CTSC",
     })
@@ -216,6 +218,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "SSCS,challenged-access-legal-ops,LEGAL_OPERATIONS",
         "SSCS,challenged-access-admin,ADMIN",
         "SSCS,challenged-access-ctsc,CTSC",
+        "PCS,challenged-access-judiciary,JUDICIAL",
         "PCS,challenged-access-admin,ADMIN",
         "PCS,challenged-access-ctsc,CTSC",
     })
