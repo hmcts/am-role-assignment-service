@@ -1,5 +1,40 @@
 [
   {
+    "name": "bailiff-admin",
+    "label": "Baliff Admin",
+    "description": "Baliff admin role for admin users",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "primaryLocation": {
+            "mandatory": true
+          },
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "PCS"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "allocated-bailiff",
     "label": "Allocated Bailiff",
     "description": "Allocated Bailiff for Staff users",
