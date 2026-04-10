@@ -926,7 +926,17 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PROBATE"]
+            "values": [
+              "IA",
+              "CIVIL",
+              "PRIVATELAW",
+              "PUBLICLAW",
+              "EMPLOYMENT",
+              "SSCS",
+              "ST_CIC",
+              "PROBATE",
+              "PCS"
+            ]
           },
           "caseType": {
             "mandatory": true
@@ -1082,7 +1092,17 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC","PROBATE","PCS"]
+            "values": [
+              "IA",
+              "SSCS",
+              "CIVIL",
+              "PRIVATELAW",
+              "PUBLICLAW",
+              "EMPLOYMENT",
+              "ST_CIC",
+              "PROBATE",
+              "PCS"
+            ]
           },
           "caseType": {
             "mandatory": true
@@ -1238,7 +1258,17 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS"]
+            "values": [
+              "IA",
+              "CIVIL",
+              "PRIVATELAW",
+              "PUBLICLAW",
+              "EMPLOYMENT",
+              "SSCS",
+              "ST_CIC",
+              "PROBATE",
+              "PCS"
+            ]
           },
           "caseType": {
             "mandatory": true
@@ -1551,7 +1581,15 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
+            "values": [
+              "IA",
+              "CIVIL",
+              "PRIVATELAW",
+              "PUBLICLAW",
+              "EMPLOYMENT",
+              "SSCS",
+              "PCS"
+            ]
           },
           "caseType": {
             "mandatory": true
@@ -1590,7 +1628,14 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS"]
+            "values": [
+              "IA",
+              "CIVIL",
+              "PRIVATELAW",
+              "PUBLICLAW",
+              "EMPLOYMENT",
+              "SSCS"
+            ]
           },
           "caseType": {
             "mandatory": true
@@ -1629,7 +1674,15 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS", "PCS"]
+            "values": [
+              "IA",
+              "CIVIL",
+              "PRIVATELAW",
+              "PUBLICLAW",
+              "EMPLOYMENT",
+              "SSCS",
+              "PCS"
+            ]
           },
           "caseType": {
             "mandatory": true
