@@ -154,7 +154,7 @@ public abstract class DroolBase {
                                  Map.entry("PCS", Case.builder()
                                            .id(PCS_CASE_ID)
                                            .jurisdiction("PCS")
-                                           .caseTypeId("GENERALAPPLICATION")
+                                           .caseTypeId("any-case-type")
                                            .data(buildDataWithRegion())
                                            .build())
     );
