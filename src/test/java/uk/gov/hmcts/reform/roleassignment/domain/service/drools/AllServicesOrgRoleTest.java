@@ -529,6 +529,18 @@ class AllServicesOrgRoleTest extends DroolBase {
         "hrs-team-leader,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
         "hrs-listener,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
         "hrs-sharer,ADMIN,STANDARD,London,HRS,London,ORGANISATION,Y,Null,PUBLIC",
+        "senior-tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "tribunal-caseworker,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "case-allocator,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
+        "task-supervisor,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
+        "ctsc-team-leader,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "ctsc,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "case-allocator,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
+        "task-supervisor,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
+        "specific-access-approver-legal-ops,LEGAL_OPERATIONS,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
+        "specific-access-approver-judiciary,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
+        "specific-access-approver-ctsc,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
+        "specific-access-approver-admin,CTSC,STANDARD,north-east,PROBATE,UK,ORGANISATION,N,Null,PUBLIC",
         "hmcts-judiciary,JUDICIAL,BASIC,north-east,PCS,UK,ORGANISATION,N,Null,PRIVATE",
         "fee-paid-judge,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,N,Fee-Paid,PUBLIC",
         "judge,JUDICIAL,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Fee-Paid,PUBLIC",
@@ -795,7 +807,6 @@ class AllServicesOrgRoleTest extends DroolBase {
         "national-business-centre,ADMIN,STANDARD,north-east,IA,ORGANISATION",
         "ctsc-team-leader,LEGAL_OPERATIONS,STANDARD,north-east,CIVIL,ORGANISATION",
         "magistrate,LEGAL_OPERATIONS,STANDARD,north-east,PRIVATELAW,ORGANISATION"
-
     })
     void shouldRejectRequestedRoleForOrg(String roleName, String roleCategory,
                                          String grantType, String region, String jurisdiction,
@@ -883,7 +894,6 @@ class AllServicesOrgRoleTest extends DroolBase {
             assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
         });
     }
-
 
     @ParameterizedTest
     @CsvSource({
