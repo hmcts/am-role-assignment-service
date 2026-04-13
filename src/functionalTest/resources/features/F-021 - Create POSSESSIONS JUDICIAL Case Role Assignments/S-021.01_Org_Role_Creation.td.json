@@ -1,8 +1,8 @@
 {
-  "_guid_": "S-021.01a_Org_Role_Creation",
+  "_guid_": "S-021.01_Org_Role_Creation]",
   "_extends_": "F-021_Test_Data_Base",
   "specs": [
-    "to create org role assignments for actors & requester"
+    "to create org role assignments for actor & requester"
   ],
   "users": {
     "invokingUser": {
@@ -13,8 +13,8 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S-021.01a_Org_Role_Creation",
-        "process": "[[ANYTHING_PRESENT]]"
+        "reference": "S-021.01_Org_Role_Creation",
+        "process": "${[scenarioContext][customValues][generateProcessId]}"
       },
       "requestedRoles": [
         {
@@ -32,7 +32,7 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "fee-paid-judge",
+          "roleName": "judge",
           "roleCategory": "JUDICIAL",
           "grantType": "SPECIFIC",
           "beginTime" : "2023-09-01T00:00:00Z",
@@ -40,7 +40,7 @@
           {
             "jurisdiction": "PCS",
             "primaryLocation": "123456",
-            "region": "3"
+            "region": "2"
           }
         }
       ]
@@ -68,7 +68,7 @@
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
+            "grantType": "SPECIFIC",
             "roleCategory": "JUDICIAL",
             "roleName": "case-allocator",
             "attributes":
@@ -85,13 +85,13 @@
             "roleType": "ORGANISATION",
             "grantType": "SPECIFIC",
             "roleCategory": "JUDICIAL",
-            "roleName": "fee-paid-judge",
+            "roleName": "judge",
             "attributes":
             {
               "jurisdiction": "PCS",
               "primaryLocation": "123456",
-              "substantive": "N",
-              "region": "2"
+              "substantive": "Y",
+              "region": "3"
             }
           }
         ]

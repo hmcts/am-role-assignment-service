@@ -1,6 +1,6 @@
 {
-  "title": "must successfully create allocated-judge POSSESSIONS case role with existing org role judge",
-  "_guid_": "S-021.01a",
+  "title": "must successfully create allocated-judge POSSESSIONS case role - judge",
+  "_guid_": "S-021.01",
   "_extends_": "F-021_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
@@ -26,7 +26,6 @@
           "roleCategory": "JUDICIAL",
           "roleType": "ORGANISATION",
           "grantType": "SPECIFIC",
-          "classification": "[[ANYTHING_PRESENT]]",
           "attributes":
           {
             "caseId" : "1234567890123467",
@@ -58,13 +57,12 @@
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
-            "grantType":  "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
-            "classification": "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
             "attributes":
             {
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
               "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
-              "caseType" : "[[ANYTHING_PRESENT]]",
+              "caseType" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}",
               "substantive": "Y"
             }
           }
