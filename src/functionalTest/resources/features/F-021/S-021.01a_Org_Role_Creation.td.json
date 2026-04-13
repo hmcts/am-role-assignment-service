@@ -34,6 +34,7 @@
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
           "roleName": "judge",
           "roleCategory": "JUDICIAL",
+          "grantType": "SPECIFIC",
           "beginTime" : "2020-09-01T00:00:00Z",
           "attributes":
           {
