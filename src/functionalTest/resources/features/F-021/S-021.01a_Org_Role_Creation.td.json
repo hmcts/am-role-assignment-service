@@ -67,6 +67,7 @@
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
             "roleName": "case-allocator",
+            "status":"REJECTED",
             "attributes":
             {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
@@ -82,6 +83,7 @@
             "grantType": "SPECIFIC",
             "roleCategory": "JUDICIAL",
             "roleName": "judge",
+            "status":"REJECTED",
             "attributes":
             {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][jurisdiction]}",
