@@ -3,6 +3,7 @@
   "_guid_": "S-021.01a",
   "_extends_": "F-021_Test_Data_Base",
   "specs": [
+    "contains ReplaceExisting is false and reference set to caseId",
     "Befta3 - who is the actor for requested role",
     "contains allocated-judge case role assignment"
   ],
@@ -29,7 +30,8 @@
           "attributes":
           {
             "caseId" : "1234567890123467",
-            "jurisdiction": "PCS"
+            "jurisdiction": "PCS",
+            "caseType": "[[ANYTHING_PRESENT]]"
           }
         }
       ]
@@ -53,10 +55,10 @@
             "_extends_": "ResponseRequestedRole",
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "process" : "[[ANYTHING_PRESENT]]",
-            "roleName": "allocated-judge",
+            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
-            "grantType": "SPECIFIC",
+            "grantType":  "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
             "classification": "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
             "status": "LIVE",
             "attributes":

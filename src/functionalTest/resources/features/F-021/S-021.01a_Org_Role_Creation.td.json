@@ -2,8 +2,7 @@
   "_guid_": "S-021.01a_Org_Role_Creation",
   "_extends_": "F-021_Test_Data_Base",
   "specs": [
-    "to create org role assignments for actors & requester",
-    "Befta3 - who is the actor for requested role"
+    "to create org role assignments for actors & requester"
   ],
   "users": {
     "invokingUser": {
@@ -22,7 +21,7 @@
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "case-allocator",
           "roleCategory": "JUDICIAL",
-          "beginTime" : "2020-09-01T00:00:00Z",
+          "beginTime" : "2023-09-01T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "PCS",
@@ -35,7 +34,7 @@
           "roleName": "judge",
           "roleCategory": "JUDICIAL",
           "grantType": "SPECIFIC",
-          "beginTime" : "2020-09-01T00:00:00Z",
+          "beginTime" : "2023-09-01T00:00:00Z",
           "attributes":
           {
             "jurisdiction": "PCS",
@@ -56,6 +55,7 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
+          "status": "APPROVED",
           "replaceExisting": true
         },
         "requestedRoles": [
@@ -67,7 +67,6 @@
             "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
             "roleName": "case-allocator",
-            "status":"REJECTED",
             "attributes":
             {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
@@ -83,12 +82,11 @@
             "grantType": "SPECIFIC",
             "roleCategory": "JUDICIAL",
             "roleName": "judge",
-            "status":"REJECTED",
             "attributes":
             {
               "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][jurisdiction]}",
               "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][primaryLocation]}",
-              "substantive": "Y",
+              "substantive": "N",
               "region": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][region]}"
             }
           }
