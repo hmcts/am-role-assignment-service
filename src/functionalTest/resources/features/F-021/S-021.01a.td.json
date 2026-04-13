@@ -56,7 +56,7 @@
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
-            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
             "classification": "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
             "attributes":
             {
