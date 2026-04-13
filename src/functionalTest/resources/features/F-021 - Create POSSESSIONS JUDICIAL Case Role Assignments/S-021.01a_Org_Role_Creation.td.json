@@ -55,7 +55,7 @@
       "roleAssignmentResponse": {
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
-          "status": "APPROVED",
+          "status": "REJECTED",
           "replaceExisting": true
         },
         "requestedRoles": [
