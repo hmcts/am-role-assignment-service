@@ -23,7 +23,7 @@ Feature: F-021 : Create Case Role Assignments for POSSESSIONS JUDICIAL case role
   Scenario: must successfully create allocated-judge case role - fee-paid-judge
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta3 - who is the actor for requested role],
-    And a successful call [to create org role assignments for actor & requester] as in [S-021.01a_Org_Role_Creation],
+    And a successful call [to create org role assignments for actors & requester] as in [S-021.01a_Org_Role_Creation],
     When a request is prepared with appropriate values,
     And the request [contains ReplaceExisting is false and reference set to caseId],
     And the request [contains allocated-judge case role assignment],
