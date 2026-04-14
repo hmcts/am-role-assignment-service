@@ -68,7 +68,7 @@
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
-            "grantType": "SPECIFIC",
+            "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
             "roleName": "case-allocator",
             "attributes":
@@ -91,7 +91,7 @@
               "jurisdiction": "PCS",
               "primaryLocation": "123456",
               "substantive": "Y",
-              "region": "3"
+              "region": "2"
             }
           }
         ]

@@ -47,6 +47,7 @@
         "roleRequest": {
           "_extends_": "ResponseRoleRequest",
           "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+          "status": "APPROVED",
           "replaceExisting": true
         },
         "requestedRoles": [
@@ -58,6 +59,7 @@
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
             "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "status": "LIVE",
             "attributes":
             {
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
