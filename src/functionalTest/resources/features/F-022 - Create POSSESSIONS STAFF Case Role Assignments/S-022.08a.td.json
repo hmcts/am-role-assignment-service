@@ -67,7 +67,7 @@
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
               "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "caseType" : "[[ANYTHING_PRESENT]]",
-              "substantive": "Y"
+              "substantive": "N"
             }
           }
         ]

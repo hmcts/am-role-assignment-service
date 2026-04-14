@@ -85,9 +85,10 @@
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
-            "grantType": "CTSC",
-            "roleCategory": "JUDICIAL",
+            "grantType": "SPECIFIC",
+            "roleCategory": "CTSC",
             "roleName": "ctsc-team-leader",
+            "classification": "RESTRICTED",
             "attributes":
             {
               "jurisdiction": "PCS",
