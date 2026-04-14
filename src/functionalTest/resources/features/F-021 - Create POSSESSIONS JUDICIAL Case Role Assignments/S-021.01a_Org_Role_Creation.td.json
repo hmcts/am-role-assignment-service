@@ -13,7 +13,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "S-021.01a_Org_Role_Creation",
+        "reference": "F-021.Org_Role_Creation",
         "process": "[[ANYTHING_PRESENT]]"
       },
       "requestedRoles": [
@@ -22,6 +22,7 @@
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "case-allocator",
           "roleCategory": "JUDICIAL",
+          "grantType": "STANDARD",
           "beginTime" : "2023-09-01T00:00:00Z",
           "attributes":
           {
@@ -34,7 +35,7 @@
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
           "roleName": "fee-paid-judge",
           "roleCategory": "JUDICIAL",
-          "grantType": "SPECIFIC",
+          "grantType": "STANDARD",
           "beginTime" : "2023-09-01T00:00:00Z",
           "attributes":
           {
