@@ -84,7 +84,7 @@
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
-            "grantType": "SPECIFIC",
+            "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
             "roleName": "judge",
             "attributes":

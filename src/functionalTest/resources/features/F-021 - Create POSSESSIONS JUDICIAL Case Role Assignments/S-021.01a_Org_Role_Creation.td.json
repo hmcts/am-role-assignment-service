@@ -41,7 +41,7 @@
           {
             "jurisdiction": "PCS",
             "primaryLocation": "123456",
-            "region": "3"
+            "region": "2"
           }
         }
       ]
@@ -76,7 +76,7 @@
             {
               "jurisdiction": "PCS",
               "primaryLocation": "123456",
-              "substantive": "N"
+              "substantive": "Y"
             }
           },
           {
@@ -84,14 +84,14 @@
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
-            "grantType": "SPECIFIC",
+            "grantType": "STANDARD",
             "roleCategory": "JUDICIAL",
             "roleName": "fee-paid-judge",
             "attributes":
             {
               "jurisdiction": "PCS",
               "primaryLocation": "123456",
-              "substantive": "Y",
+              "substantive": "N",
               "region": "2"
             }
           }
