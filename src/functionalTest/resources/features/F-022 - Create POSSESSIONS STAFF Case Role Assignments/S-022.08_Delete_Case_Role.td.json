@@ -1,7 +1,7 @@
 {
-  "title": "must successfully delete allocated-judge case role",
-  "_guid_": "S-021.03a_Delete_Case_Role",
-  "_extends_": "F-021_Test_Data_Base",
+  "title": "must successfully delete allocated-ctsc-caseworker case role",
+  "_guid_": "S-022.08_Delete_Case_Role",
+  "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "to delete case role assignment for the same actor"
   ],

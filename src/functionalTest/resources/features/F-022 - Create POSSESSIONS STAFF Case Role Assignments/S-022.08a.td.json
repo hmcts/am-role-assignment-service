@@ -1,11 +1,11 @@
 {
-  "title": "must successfully create hearing-judge POSSESSIONS case role with existing org role fee-paid-judge",
-  "_guid_": "S-021.03a",
-  "_extends_": "F-021_Test_Data_Base",
+  "title": "must successfully create allocated-ctsc-caseworker POSSESSIONS case role with existing org role ctsc-team-leader",
+  "_guid_": "S-022.08a",
+  "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
     "Befta3 - who is the actor for requested role",
-    "contains hearing-judge case role assignment"
+    "contains allocated-ctsc-caseworker case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -16,17 +16,17 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1234567890123467/hearing-judge"
+        "reference": "1234567890123467/allocated-ctsc-caseworker"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "hearing-judge",
-          "roleCategory": "JUDICIAL",
+          "roleName": "allocated-ctsc-caseworker",
+          "roleCategory": "CTSC",
           "roleType": "ORGANISATION",
           "grantType": "SPECIFIC",
-          "classification": "[[ANYTHING_PRESENT]]",
+          "classification": "RESTRICTED",
           "attributes":
           {
             "caseId" : "1234567890123467",
