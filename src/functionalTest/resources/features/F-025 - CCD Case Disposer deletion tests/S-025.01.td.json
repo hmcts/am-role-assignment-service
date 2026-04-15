@@ -26,8 +26,8 @@
       "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForCaseDisposer]}"
     },
     "pathVariables": {
-      "process": "${[scenarioContext][childContexts][S-025.01_CreateCaseRole_Citizen][testData][request][body][roleRequest][process]}",
-      "reference": "${[scenarioContext][childContexts][S-025.01_CreateCaseRole_Citizen][testData][request][body][roleRequest][reference]}"
+      "process": "${[scenarioContext][childContexts][S-025.01_CreateCaseRole_CITIZEN][testData][request][body][roleRequest][process]}",
+      "reference": "${[scenarioContext][childContexts][S-025.01_CreateCaseRole_CITIZEN][testData][request][body][roleRequest][reference]}"
     }
   }
 
