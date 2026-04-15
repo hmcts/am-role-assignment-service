@@ -36,7 +36,6 @@
           "roleName": "ctsc-team-leader",
           "roleCategory": "CTSC",
           "grantType": "STANDARD",
-          "classification": "RESTRICTED",
           "beginTime" : "2023-09-01T00:00:00Z",
           "attributes":
           {
@@ -88,7 +87,6 @@
             "grantType": "STANDARD",
             "roleCategory": "CTSC",
             "roleName": "ctsc-team-leader",
-            "classification": "RESTRICTED",
             "attributes":
             {
               "jurisdiction": "PCS",
