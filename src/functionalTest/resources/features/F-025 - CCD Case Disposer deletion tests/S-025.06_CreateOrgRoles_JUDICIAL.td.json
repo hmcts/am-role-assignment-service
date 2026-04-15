@@ -1,9 +1,9 @@
 {
-  "_guid_": "S-025.05_CreateOrgRoles_LEGAL_OPS",
+  "_guid_": "S-025.06_CreateOrgRoles_JUDICIAL",
   "_extends_": "F-025_CreateOrgRoles__Base",
 
   "specs": [
-    "to create org role assignments for actor (LEGAL_OPS) & requester (case-allocator)"
+    "to create org role assignments for actor (JUDICIAL) & requester (case-allocator)"
   ],
 
   "request": {
@@ -12,8 +12,8 @@
         {
           "actorIdType": "IDAM",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "senior-tribunal-caseworker",
-          "roleCategory": "LEGAL_OPERATIONS",
+          "roleName": "circuit-judge",
+          "roleCategory": "JUDICIAL",
           "roleType": "ORGANISATION",
           "grantType": "STANDARD",
           "classification": "PUBLIC",
@@ -38,8 +38,8 @@
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "actorIdType": "IDAM",
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-            "roleName": "senior-tribunal-caseworker",
-            "roleCategory": "LEGAL_OPERATIONS",
+            "roleName": "circuit-judge",
+            "roleCategory": "JUDICIAL",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "classification": "PUBLIC",
