@@ -22,6 +22,7 @@ public class RoleAssignmentTestAutomationAdapter extends DefaultTestAutomationAd
             case ("generateUUID") -> UUID.randomUUID();
             case ("generateCaseId") -> generateCaseId();
             case ("generateProcessId") -> generateProcessId("RAS_FTA");
+            case ("generateS2STokenForCaseDisposer") -> super.getNewS2SToken("ccd_case_disposer");
             case ("generateS2STokenForCcd") -> super.getNewS2SToken("ccd_data");
             case ("generateS2STokenForOrm") -> super.getNewS2SToken("am_org_role_mapping_service");
             case ("generateS2STokenForXui") -> super.getNewS2SToken("xui_webapp");

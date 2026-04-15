@@ -1,0 +1,15 @@
+{
+  "_guid_": "F-025_CheckCaseRole__NotFound",
+  "_extends_": "F-025_CheckCaseRole__Base",
+
+  "specs": [
+    "to check no case role assignments are found for the actor"
+  ],
+
+  "expectedResponse": {
+    "body": {
+      "roleAssignmentResponse" : []
+    }
+  }
+}
+

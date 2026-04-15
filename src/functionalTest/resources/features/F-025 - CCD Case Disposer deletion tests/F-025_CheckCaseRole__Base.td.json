@@ -1,0 +1,21 @@
+{
+  "_guid_": "F-F-025_CheckCaseRole__Base",
+  "_extends_": "RetrieveRoleAssignmentsByQueryRequest__PositiveResponse_Base",
+
+  "users": {
+    "invokingUser": {
+      "_extends_": "AmBeftaUser2"
+    }, 
+    "befta3": {
+      "_extends_": "AmBeftaUser3"
+    }
+  },
+
+  "request": {
+    "body": {
+      "actorId": [ "${[scenarioContext][testData][users][befta3][id]}" ],
+      "roleType": [ "CASE" ]
+    }
+  }
+
+}
