@@ -16,6 +16,11 @@
       "actorId": [ "${[scenarioContext][testData][users][befta3][id]}" ],
       "roleType": [ "CASE" ]
     }
-  }
+  },
 
+  "expectedResponse": {
+    "headers": {
+      "Total-Records" : "[[ANYTHING_PRESENT]]"
+    }
+  }
 }

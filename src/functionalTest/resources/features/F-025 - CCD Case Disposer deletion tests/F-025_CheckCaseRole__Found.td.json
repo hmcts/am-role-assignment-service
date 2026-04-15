@@ -10,8 +10,7 @@
     "body": {
       "roleAssignmentResponse" : [
         {
-          "process": "[[ANYTHING_PRESENT]]",
-          "reference": "[[ANYTHING_PRESENT]]",
+          "id": "[[ANYTHING_PRESENT]]",
           "actorIdType": "IDAM",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
           "roleName": "[[ANYTHING_PRESENT]]",
@@ -28,9 +27,7 @@
             "jurisdiction": "[[ANYTHING_PRESENT]]",
             "caseType": "[[ANYTHING_PRESENT]]"
           },
-          "status": "LIVE",
-          "created": "[[ANYTHING_PRESENT]]",
-          "log": "[[ANYTHING_PRESENT]]"
+          "created": "[[ANYTHING_PRESENT]]"
         }
       ]
     }
