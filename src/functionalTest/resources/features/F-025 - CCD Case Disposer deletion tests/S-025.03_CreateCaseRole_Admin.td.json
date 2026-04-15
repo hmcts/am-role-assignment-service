@@ -1,22 +1,22 @@
 {
-  "_guid_": "S-025.01_CreateCaseRole_Citizen",
+  "_guid_": "S-025.03_CreateCaseRole_Admin",
   "_extends_": "F-025_CreateCaseRole__Base",
 
   "specs": [
-    "to create a case-role assignment for a Citizen"
+    "to create a case-role assignment for an Admin"
   ],
 
   "request": {
     "headers": {
-      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForCcd]}"
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForXui]}"
     },
     "body": {
       "requestedRoles": [
         {
           "actorIdType": "IDAM",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "[CLAIMANT]",
-          "roleCategory": "CITIZEN",
+          "roleName": "allocated-admin-caseworker",
+          "roleCategory": "ADMIN",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
           "classification": "RESTRICTED",

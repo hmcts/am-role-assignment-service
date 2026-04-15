@@ -1,7 +1,7 @@
 {
-  "title": "must successfully allow case-disposer to delete professional case-roles",
+  "title": "must successfully allow case-disposer to delete PROFESSIONAL case-roles",
 
-  "_guid_": "S-025.01",
+  "_guid_": "S-025.02",
   "_extends_": "DeleteDataForRoleAssignments",
 
   "specs": [

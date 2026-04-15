@@ -1,7 +1,7 @@
 {
-  "title": "must successfully allow case-disposer to delete CITIZEN case-roles",
+  "title": "must successfully allow case-disposer to delete ADMIN case-roles",
 
-  "_guid_": "S-025.01",
+  "_guid_": "S-025.03",
   "_extends_": "DeleteDataForRoleAssignments",
 
   "specs": [
@@ -26,8 +26,8 @@
       "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForCaseDisposer]}"
     },
     "pathVariables": {
-      "process": "${[scenarioContext][childContexts][S-025.01_CreateCaseRole_Citizen][testData][request][body][roleRequest][process]}",
-      "reference": "${[scenarioContext][childContexts][S-025.01_CreateCaseRole_Citizen][testData][request][body][roleRequest][reference]}"
+      "process": "${[scenarioContext][childContexts][S-025.03_CreateCaseRole_Admin][testData][request][body][roleRequest][process]}",
+      "reference": "${[scenarioContext][childContexts][S-025.03_CreateCaseRole_Admin][testData][request][body][roleRequest][reference]}"
     }
   }
 

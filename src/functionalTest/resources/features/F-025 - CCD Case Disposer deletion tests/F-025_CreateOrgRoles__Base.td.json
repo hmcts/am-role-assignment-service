@@ -1,0 +1,88 @@
+{
+  "_guid_": "F-025_CreateOrgRoles__Base",
+  "_extends_": "CreationDataBaseForRoleAssignment",
+
+  "specs": [
+    "NB: This base TD file includes the case-allocator role-assignment for the invoking user."
+  ],
+
+  "users": {
+    "invokingUser": {
+      "_extends_": "AmBeftaUser4"
+    },
+    "befta3": {
+      "_extends_": "AmBeftaUser3"
+    }
+  },
+
+  "request": {
+    "headers": {
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForOrm]}"
+    },
+    "body": {
+      "roleRequest": {
+        "process": "${[scenarioContext][customValues][generateProcessId]}",
+        "reference": "F-025_CreateOrgRole",
+        "replaceExisting": true
+      },
+
+      "requestedRoles": [
+        {
+          "actorIdType": "IDAM",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "roleName": "case-allocator",
+          "roleCategory": "LEGAL_OPERATIONS",
+          "roleType": "ORGANISATION",
+          "grantType": "STANDARD",
+          "classification": "PUBLIC",
+          "readOnly": false,
+          "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
+          "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
+          "attributes": {
+            "jurisdiction": "CIVIL",
+            "primaryLocation" : "123456"
+          }
+        }
+      ]
+    }
+  },
+
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+    "headers": {
+      "Content-Type" : "application/vnd.uk.gov.hmcts.role-assignment-service.create-assignments+json;version=1.0;charset=UTF-8"
+    },
+    "body": {
+      "roleAssignmentResponse": {
+        "requestedRoles": [
+          {
+            "__ordering__": "UNORDERED",
+            "__elementId__": "roleName"
+          },
+          {
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "actorIdType": "IDAM",
+            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "roleName": "case-allocator",
+            "roleCategory": "LEGAL_OPERATIONS",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD",
+            "classification": "PUBLIC",
+            "readOnly": false,
+            "beginTime": "[[ANYTHING_PRESENT]]",
+            "endTime": "[[ANYTHING_PRESENT]]",
+            "attributes": {
+              "substantive": "[[ANYTHING_PRESENT]]",
+              "jurisdiction": "CIVIL",
+              "primaryLocation": "123456"
+            },
+            "status": "LIVE",
+            "created": "[[ANYTHING_PRESENT]]",
+            "log": "[[ANYTHING_PRESENT]]"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "_guid_": "S-025.02_CreateCaseRole_Professional",
-  "_extends_": "CreationDataBaseForRoleAssignment",
+  "_extends_": "F-025_CreateCaseRole__Base",
 
   "specs": [
     "to create a case-role assignment for a Professional"
