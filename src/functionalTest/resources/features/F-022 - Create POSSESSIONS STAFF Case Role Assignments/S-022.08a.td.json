@@ -16,7 +16,7 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1234567890123467/allocated-ctsc-caseworker"
+        "reference": "1776251462396879/allocated-ctsc-caseworker"
       },
       "requestedRoles": [
         {
@@ -29,7 +29,7 @@
           "classification": "RESTRICTED",
           "attributes":
           {
-            "caseId" : "1234567890123467",
+            "caseId" : "1776251462396879",
             "jurisdiction": "PCS",
             "caseType": "[[ANYTHING_PRESENT]]"
           }
