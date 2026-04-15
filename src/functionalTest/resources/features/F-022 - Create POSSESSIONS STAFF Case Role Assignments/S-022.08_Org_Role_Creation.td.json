@@ -35,7 +35,7 @@
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
           "roleName": "ctsc",
           "roleCategory": "CTSC",
-          "grantType": "SPECIFIC",
+          "grantType": "STANDARD",
           "beginTime" : "2023-09-01T00:00:00Z",
           "attributes":
           {
@@ -84,7 +84,7 @@
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
-            "grantType": "SPECIFIC",
+            "grantType": "STANDARD",
             "roleCategory": "CTSC",
             "roleName": "ctsc",
             "attributes":

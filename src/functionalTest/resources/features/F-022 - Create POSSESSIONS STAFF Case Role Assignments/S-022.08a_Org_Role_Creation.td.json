@@ -35,7 +35,7 @@
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
           "roleName": "ctsc-team-leader",
           "roleCategory": "CTSC",
-          "grantType": "SPECIFIC",
+          "grantType": "STANDARD",
           "classification": "RESTRICTED",
           "beginTime" : "2023-09-01T00:00:00Z",
           "attributes":
@@ -85,7 +85,7 @@
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
-            "grantType": "SPECIFIC",
+            "grantType": "STANDARD",
             "roleCategory": "CTSC",
             "roleName": "ctsc-team-leader",
             "classification": "RESTRICTED",
