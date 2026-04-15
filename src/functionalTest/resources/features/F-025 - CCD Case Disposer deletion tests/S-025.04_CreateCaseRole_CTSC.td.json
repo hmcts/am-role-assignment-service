@@ -1,0 +1,67 @@
+{
+  "_guid_": "S-025.04_CreateCaseRole_CTSC",
+  "_extends_": "F-025_CreateCaseRole__Base",
+
+  "specs": [
+    "to create a case-role assignment for a CTSC"
+  ],
+
+  "request": {
+    "headers": {
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForXui]}"
+    },
+    "body": {
+      "requestedRoles": [
+        {
+          "actorIdType": "IDAM",
+          "actorId": "${[scenarioContext][testData][users][befta3][id]}",
+          "roleName": "allocated-ctsc-caseworker",
+          "roleCategory": "CTSC",
+          "roleType": "CASE",
+          "grantType": "SPECIFIC",
+          "classification": "RESTRICTED",
+          "readOnly": false,
+          "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
+          "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
+          "attributes": {
+            "jurisdiction": "CIVIL",
+            "caseType": "GENERALAPPLICATION",
+            "caseId": "1759402230171349"
+          }
+        }
+      ]
+    }
+  },
+
+  "expectedResponse": {
+    "body": {
+      "roleAssignmentResponse": {
+        "requestedRoles": [
+          {
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "actorIdType": "IDAM",
+            "actorId": "${[scenarioContext][testData][users][befta3][id]}",
+            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
+            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "classification": "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
+            "readOnly": false,
+            "beginTime": "[[ANYTHING_PRESENT]]",
+            "endTime": "[[ANYTHING_PRESENT]]",
+            "attributes": {
+              "substantive": "[[ANYTHING_PRESENT]]",
+              "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
+              "caseType": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}",
+              "caseId": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}"
+            },
+            "status": "LIVE",
+            "created": "[[ANYTHING_PRESENT]]",
+            "log": "[[ANYTHING_PRESENT]]"
+          }
+        ]
+      }
+    }
+  }
+}

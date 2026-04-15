@@ -1,0 +1,62 @@
+{
+  "_guid_": "S-025.04_CreateOrgRoles_CTSC",
+  "_extends_": "F-025_CreateOrgRoles__Base",
+
+  "specs": [
+    "to create org role assignments for actor (CTSC) & requester (case-allocator)"
+  ],
+
+  "request": {
+    "body": {
+      "requestedRoles": [
+        {
+          "actorIdType": "IDAM",
+          "actorId": "${[scenarioContext][testData][users][befta3][id]}",
+          "roleName": "ctsc",
+          "roleCategory": "CTSC",
+          "roleType": "ORGANISATION",
+          "grantType": "STANDARD",
+          "classification": "PUBLIC",
+          "readOnly": false,
+          "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
+          "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
+          "attributes": {
+            "jurisdiction": "CIVIL",
+            "primaryLocation": "123456"
+          }
+        }
+      ]
+    }
+  },
+
+  "expectedResponse": {
+    "body": {
+      "roleAssignmentResponse": {
+        "requestedRoles": [
+          {
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "actorIdType": "IDAM",
+            "actorId": "${[scenarioContext][testData][users][befta3][id]}",
+            "roleName": "ctsc",
+            "roleCategory": "CTSC",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD",
+            "classification": "PUBLIC",
+            "readOnly": false,
+            "beginTime": "[[ANYTHING_PRESENT]]",
+            "endTime": "[[ANYTHING_PRESENT]]",
+            "attributes": {
+              "substantive": "[[ANYTHING_PRESENT]]",
+              "jurisdiction": "CIVIL",
+              "primaryLocation": "123456"
+            },
+            "status": "LIVE",
+            "created": "[[ANYTHING_PRESENT]]",
+            "log": "[[ANYTHING_PRESENT]]"
+          }
+        ]
+      }
+    }
+  }
+}
