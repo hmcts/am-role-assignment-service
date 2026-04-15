@@ -1,5 +1,5 @@
 {
-  "_guid_": "F-F-025_CheckCaseRole__Base",
+  "_guid_": "F-025_CheckCaseRole__Base",
   "_extends_": "RetrieveRoleAssignmentsByQueryRequest__PositiveResponse_Base",
 
   "users": {
