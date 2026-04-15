@@ -1,5 +1,5 @@
 {
-  "_guid_": "S-025.03_CreateOrgRoles_Admin",
+  "_guid_": "S-025.03_CreateOrgRoles_ADMIN",
   "_extends_": "F-025_CreateOrgRoles__Base",
 
   "specs": [
@@ -34,6 +34,7 @@
       "roleAssignmentResponse": {
         "requestedRoles": [
           {
+            "id": "[[ANYTHING_PRESENT]]",
             "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "actorIdType": "IDAM",

@@ -9,7 +9,7 @@ Feature: F-025 : CCD Case Disposer deletion tests
   Scenario: must successfully allow case-disposer to delete CITIZEN case-roles
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta3 - who is the actor for requested role],
-    And a successful call [to create a case-role assignment for a Citizen] as in [S-025.01_CreateCaseRole_Citizen],
+    And a successful call [to create a case-role assignment for a Citizen] as in [S-025.01_CreateCaseRole_CITIZEN],
     And a successful call [to check case role assignments are found for the actor] as in [F-025_CheckCaseRole__Found],
     When a request is prepared with appropriate values,
     And the request [with S2S token for case-disposer service],
@@ -23,7 +23,7 @@ Feature: F-025 : CCD Case Disposer deletion tests
   Scenario: must successfully allow case-disposer to delete PROFESSIONAL case-roles
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta3 - who is the actor for requested role],
-    And a successful call [to create a case-role assignment for a Professional] as in [S-025.02_CreateCaseRole_Professional],
+    And a successful call [to create a case-role assignment for a Professional] as in [S-025.02_CreateCaseRole_PROFESSIONAL],
     And a successful call [to check case role assignments are found for the actor] as in [F-025_CheckCaseRole__Found],
     When a request is prepared with appropriate values,
     And the request [with S2S token for case-disposer service],
@@ -38,8 +38,8 @@ Feature: F-025 : CCD Case Disposer deletion tests
   Scenario: must successfully allow case-disposer to delete ADMIN case-roles
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta3 - who is the actor for requested role],
-    And a successful call [to create org role assignments for actor (ADMIN) & requester (case-allocator)] as in [S-025.03_CreateOrgRoles_Admin],
-    And a successful call [to create a case-role assignment for an Admin] as in [S-025.03_CreateCaseRole_Admin],
+    And a successful call [to create org role assignments for actor (ADMIN) & requester (case-allocator)] as in [S-025.03_CreateOrgRoles_ADMIN],
+    And a successful call [to create a case-role assignment for an Admin] as in [S-025.03_CreateCaseRole_ADMIN],
     And a successful call [to check case role assignments are found for the actor] as in [F-025_CheckCaseRole__Found],
     When a request is prepared with appropriate values,
     And the request [with S2S token for case-disposer service],

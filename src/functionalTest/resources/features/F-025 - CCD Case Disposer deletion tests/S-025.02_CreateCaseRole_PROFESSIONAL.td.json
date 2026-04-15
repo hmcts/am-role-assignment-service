@@ -1,22 +1,22 @@
 {
-  "_guid_": "S-025.03_CreateCaseRole_Admin",
+  "_guid_": "S-025.02_CreateCaseRole_PROFESSIONAL",
   "_extends_": "F-025_CreateCaseRole__Base",
 
   "specs": [
-    "to create a case-role assignment for an Admin"
+    "to create a case-role assignment for a Professional"
   ],
 
   "request": {
     "headers": {
-      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForXui]}"
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForCcd]}"
     },
     "body": {
       "requestedRoles": [
         {
           "actorIdType": "IDAM",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "allocated-admin-caseworker",
-          "roleCategory": "ADMIN",
+          "roleName": "[SOLICITOR]",
+          "roleCategory": "PROFESSIONAL",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
           "classification": "RESTRICTED",
@@ -38,6 +38,7 @@
       "roleAssignmentResponse": {
         "requestedRoles": [
           {
+            "id": "[[ANYTHING_PRESENT]]",
             "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "actorIdType": "IDAM",

@@ -1,9 +1,9 @@
 {
-  "_guid_": "S-025.02_CreateCaseRole_Professional",
+  "_guid_": "S-025.01_CreateCaseRole_CITIZEN",
   "_extends_": "F-025_CreateCaseRole__Base",
 
   "specs": [
-    "to create a case-role assignment for a Professional"
+    "to create a case-role assignment for a Citizen"
   ],
 
   "request": {
@@ -15,8 +15,8 @@
         {
           "actorIdType": "IDAM",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "[SOLICITOR]",
-          "roleCategory": "PROFESSIONAL",
+          "roleName": "[CLAIMANT]",
+          "roleCategory": "CITIZEN",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
           "classification": "RESTRICTED",
@@ -38,6 +38,7 @@
       "roleAssignmentResponse": {
         "requestedRoles": [
           {
+            "id": "[[ANYTHING_PRESENT]]",
             "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "actorIdType": "IDAM",

@@ -38,6 +38,7 @@
       "roleAssignmentResponse": {
         "requestedRoles": [
           {
+            "id": "[[ANYTHING_PRESENT]]",
             "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "actorIdType": "IDAM",
