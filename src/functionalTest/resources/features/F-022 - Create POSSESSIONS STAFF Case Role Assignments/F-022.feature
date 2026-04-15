@@ -89,7 +89,8 @@ Feature: F-022 : Create Case Role Assignments for POSSESSIONS STAFF case roles
         And a successful call [to delete case role assignment for the same actor] as in [S-022.10_Delete_Case_Role],
         And a successful call [to delete role assignments just created above] as in [S-022.10a_DeleteDataForRoleAssignmentsForOrgRoles].
 
-  @S-022.11 @Ignore bailiff role is not yet added to the system, so ignoring the test for now.
+  @S-022.11 @Ignore
+  # Bailiff role is not yet added to the system, so ignoring the test for now.
       Scenario: must successfully create allocated-bailiff POSSESSIONS case bailiff
         Given a user with [an active IDAM profile with full permissions],
         And a user [Befta3 - who is the actor for requested role],
