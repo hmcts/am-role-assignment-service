@@ -1,11 +1,11 @@
 {
-  "title": "must successfully create allocated-wlu-caseworker POSSESSIONS case wlu-team-leader",
-  "_guid_": "S-022.10a",
+  "title": "must successfully create case-allocator POSSESSIONS case case-allocator",
+  "_guid_": "S-022.12",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
     "Befta3 - who is the actor for requested role",
-    "contains wlu-team-leader case role assignment"
+    "contains case-allocator case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -16,14 +16,14 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1776251462396879/wlu-team-leader"
+        "reference": "1776251462396879/bailiff"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "wlu-team-leader",
-          "roleCategory": "ADMIN",
+          "roleName": "case-allocator",
+          "roleCategory": "ENFORCEMENT",
           "roleType": "ORGANISATION",
           "grantType": "SPECIFIC",
           "classification": "RESTRICTED",
@@ -66,7 +66,7 @@
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
               "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "caseType" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}",
-              "substantive": "Y"
+              "substantive": "N"
             }
           }
         ]

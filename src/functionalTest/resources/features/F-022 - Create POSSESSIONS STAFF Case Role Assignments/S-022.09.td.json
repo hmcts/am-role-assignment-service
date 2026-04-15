@@ -25,8 +25,8 @@
           "roleName": "hearing-centre-admin",
           "roleCategory": "ADMIN",
           "roleType": "ORGANISATION",
-          "grantType": "STANDARD",
-          "classification": "PUBLIC",
+          "grantType": "SPECIFIC",
+          "classification": "RESTRICTED",
           "attributes":
           {
             "caseId" : "1776251462396879",
