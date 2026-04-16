@@ -23,6 +23,7 @@ def secrets = [
     secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
     secret('microservicekey-am-role-assignment-service', 'S2S_SECRET'),
     secret('microservicekey-am-org-role-mapping-service', 'BEFTA_S2S_CLIENT_SECRET_OF_AM_ORG_ROLE_MAPPING_SERVICE'),
+    secret('microservicekey-ccd-case-disposer', 'BEFTA_S2S_CLIENT_SECRET_OF_CCD_CASE_DISPOSER'),
     secret('microservicekey-ccd-data', 'BEFTA_S2S_CLIENT_SECRET_OF_CCD_DATA'),
     secret('microservicekey-xui-webapp', 'BEFTA_S2S_CLIENT_SECRET_OF_XUI_WEBAPP')
   ],
@@ -67,6 +68,7 @@ withNightlyPipeline(type, product, component) {
   env.S2S_URL_BASE = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   env.BEFTA_S2S_CLIENT_ID = "am_role_assignment_service"
   env.BEFTA_S2S_CLIENT_ID_OF_AM_ORG_ROLE_MAPPING_SERVICE = "am_org_role_mapping_service"
+  env.BEFTA_S2S_CLIENT_ID_OF_CCD_CASE_DISPOSER = "ccd_case_disposer"
   env.BEFTA_S2S_CLIENT_ID_OF_CCD_DATA = "ccd_data"
   env.BEFTA_S2S_CLIENT_ID_OF_XUI_WEBAPP = "xui_webapp"
   env.BEFTA_RETRY_MAX_ATTEMPTS = "3"
