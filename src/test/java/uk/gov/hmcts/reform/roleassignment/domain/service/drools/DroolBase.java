@@ -31,6 +31,7 @@ import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.Data
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_SCTL_MLT_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_EXC_RECORD_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PROBATE_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PUBLIC_LAW_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.ST_CIC_CASE_ID;
@@ -132,6 +133,20 @@ public abstract class DroolBase {
                                            .id(ST_CIC_CASE_ID)
                                            .jurisdiction("ST_CIC")
                                            .caseTypeId("CriminalInjuriesCompensation")
+                                           .data(buildDataWithRegion())
+                                           .build()),
+
+                                 Map.entry("PROBATE|GrantOfRepresentation", Case.builder()
+                                           .id(PROBATE_CASE_ID)
+                                           .jurisdiction("PROBATE")
+                                           .caseTypeId("GrantOfRepresentation")
+                                           .data(buildDataWithRegion())
+                                           .build()),
+
+                                 Map.entry("PROBATE", Case.builder()
+                                           .id(PROBATE_CASE_ID)
+                                           .jurisdiction("PROBATE")
+                                           .caseTypeId("GrantOfRepresentation")
                                            .data(buildDataWithRegion())
                                            .build())
     );

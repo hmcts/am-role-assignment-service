@@ -1,5 +1,5 @@
 java:
-  image: 'hmctspublic.azurecr.io/am/role-assignment-service:latest'
+  image: 'hmctsprod.azurecr.io/am/role-assignment-service:latest'
   ingressHost: am-role-assignment-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   applicationPort: 4096
   aadIdentityName: am
