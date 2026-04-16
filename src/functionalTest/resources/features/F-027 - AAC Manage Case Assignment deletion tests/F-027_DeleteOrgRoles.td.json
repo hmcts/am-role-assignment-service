@@ -1,0 +1,10 @@
+{
+  "_guid_": "F-027_DeleteOrgRoles",
+  "_extends_": "F-025_DeleteOrgRoles",
+
+  "request": {
+    "pathVariables": {
+      "reference": "F-027_CreateOrgRole"
+    }
+  }
+}
