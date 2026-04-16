@@ -29,6 +29,10 @@
       "process": "${[scenarioContext][childContexts][S-025.04_CreateCaseRole_CTSC][testData][request][body][roleRequest][process]}",
       "reference": "${[scenarioContext][childContexts][S-025.04_CreateCaseRole_CTSC][testData][request][body][roleRequest][reference]}"
     }
+  },
+
+  "expectedResponse": {
+    "_extends_": "RAS_422_Response"
   }
 
 }

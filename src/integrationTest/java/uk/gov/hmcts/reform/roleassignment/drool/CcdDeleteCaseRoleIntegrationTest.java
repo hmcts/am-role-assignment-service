@@ -9,6 +9,7 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.CLIENT_I
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.CLIENT_ID_XUI;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -111,6 +112,7 @@ class CcdDeleteCaseRoleIntegrationTest extends BaseDroolIntegrationTest {
     @DisplayName("Judicial case role deletions")
     class JudicialCaseRoleDeletionTests {
 
+        @Disabled("Temporarily disabled as running FTAs with flag off via flyway")
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {
             "classpath:sql/init_role_assignment.sql",
             "classpath:sql/insert_case_role_assignments.sql"
@@ -144,7 +146,7 @@ class CcdDeleteCaseRoleIntegrationTest extends BaseDroolIntegrationTest {
     @DisplayName("Staff case role deletions")
     class StaffCaseRoleDeletionTests {
 
-
+        @Disabled("Temporarily disabled as running FTAs with flag off via flyway")
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {
             "classpath:sql/init_role_assignment.sql",
             "classpath:sql/insert_case_role_assignments.sql"

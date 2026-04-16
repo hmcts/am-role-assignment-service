@@ -29,6 +29,10 @@
       "process": "${[scenarioContext][childContexts][S-025.06_CreateCaseRole_JUDICIAL][testData][request][body][roleRequest][process]}",
       "reference": "${[scenarioContext][childContexts][S-025.06_CreateCaseRole_JUDICIAL][testData][request][body][roleRequest][reference]}"
     }
+  },
+
+  "expectedResponse": {
+    "_extends_": "RAS_422_Response"
   }
 
 }
