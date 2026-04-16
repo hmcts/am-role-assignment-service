@@ -25,7 +25,7 @@ ext {
 def versions = [
   junit           : '5.11.3',
   junitPlatform   : '1.11.3',
-  lombok          : '1.18.42',
+  lombok          : '1.18.44',
   pitest          : '1.20.2',
   reformLogging   : '6.1.9',
   reformS2sClient : '5.3.3',
@@ -33,7 +33,7 @@ def versions = [
   spring          : '6.2.15',
   pact_version    : '4.1.7',
   rest_assured    : '5.5.7',
-  cucumber        : '7.34.2',
+  cucumber        : '7.34.3',
   feign_jackson   : '13.11',
   jacksondata     : '2.19.2',
   testcontainers  : '1.21.4',
@@ -449,7 +449,7 @@ dependencies {
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
-  implementation 'net.bytebuddy:byte-buddy:1.18.7'
+  implementation 'net.bytebuddy:byte-buddy:1.18.8'
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.1.1')
   testImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
