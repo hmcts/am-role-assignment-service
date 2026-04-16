@@ -83,7 +83,7 @@ end;
 
 
 /*
- * CCD case roles can be deleted by ccd case disposer.
+ * All case roles can be deleted by ccd case disposer.
  */
 
 rule "v1_1_ccd_delete_case_roles"
