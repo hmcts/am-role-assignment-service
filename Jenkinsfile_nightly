@@ -19,6 +19,7 @@ def component = "role-assignment-service"
 
 def secrets = [
   's2s-${env}': [
+    secret('microservicekey-aac-manage-case-assignment', 'BEFTA_S2S_CLIENT_SECRET_OF_AAC_MANAGE_CASE_ASSIGNMENT'),
     secret('microservicekey-am-role-assignment-service', 'AM_ROLE_ASSIGNMENT_SERVICE_SECRET'),
     secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
     secret('microservicekey-am-role-assignment-service', 'S2S_SECRET'),
@@ -67,6 +68,7 @@ withNightlyPipeline(type, product, component) {
   env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   env.S2S_URL_BASE = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   env.BEFTA_S2S_CLIENT_ID = "am_role_assignment_service"
+  env.BEFTA_S2S_CLIENT_ID_OF_AAC_MANAGE_CASE_ASSIGNMENT = "aac_manage_case_assignment"
   env.BEFTA_S2S_CLIENT_ID_OF_AM_ORG_ROLE_MAPPING_SERVICE = "am_org_role_mapping_service"
   env.BEFTA_S2S_CLIENT_ID_OF_CCD_CASE_DISPOSER = "ccd_case_disposer"
   env.BEFTA_S2S_CLIENT_ID_OF_CCD_DATA = "ccd_data"
