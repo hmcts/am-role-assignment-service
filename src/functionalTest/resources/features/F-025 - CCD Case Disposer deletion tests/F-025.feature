@@ -48,6 +48,7 @@ Feature: F-025 : CCD Case Disposer deletion tests
     Then a negative response is received,
     And the response has all other details as expected,
     And a successful call [to check case role assignments are found for the actor] as in [F-025_CheckCaseRole__Found],
+    And a successful call [to delete case role assignments just created above] as in [F-025_DeleteCaseRoles],
     And a successful call [to delete org role assignments just created above] as in [F-025_DeleteOrgRoles].
 
   @S-025.04
@@ -65,6 +66,7 @@ Feature: F-025 : CCD Case Disposer deletion tests
     Then a negative response is received,
     And the response has all other details as expected,
     And a successful call [to check case role assignments are found for the actor] as in [F-025_CheckCaseRole__Found],
+    And a successful call [to delete case role assignments just created above] as in [F-025_DeleteCaseRoles],
     And a successful call [to delete org role assignments just created above] as in [F-025_DeleteOrgRoles].
 
   @S-025.05
@@ -82,6 +84,7 @@ Feature: F-025 : CCD Case Disposer deletion tests
     Then a negative response is received,
     And the response has all other details as expected,
     And a successful call [to check case role assignments are found for the actor] as in [F-025_CheckCaseRole__Found],
+    And a successful call [to delete case role assignments just created above] as in [F-025_DeleteCaseRoles],
     And a successful call [to delete org role assignments just created above] as in [F-025_DeleteOrgRoles].
 
   @S-025.06
@@ -99,4 +102,5 @@ Feature: F-025 : CCD Case Disposer deletion tests
     Then a negative response is received,
     And the response has all other details as expected,
     And a successful call [to check case role assignments are found for the actor] as in [F-025_CheckCaseRole__Found],
+    And a successful call [to delete case role assignments just created above] as in [F-025_DeleteCaseRoles],
     And a successful call [to delete org role assignments just created above] as in [F-025_DeleteOrgRoles].
