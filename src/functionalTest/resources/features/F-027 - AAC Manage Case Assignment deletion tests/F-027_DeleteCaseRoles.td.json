@@ -14,7 +14,7 @@
 
   "request": {
     "headers": {
-      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForOrm]}"
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForXui]}"
     },
     "pathVariables": {
       "process": "${[scenarioContext][parentContext][testData][request][pathVariables][process]}",
