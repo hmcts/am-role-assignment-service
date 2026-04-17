@@ -1,6 +1,6 @@
 {
-  "title": "must successfully create hearing-judge POSSESSIONS case role with existing org role - fee-paid-judge",
-  "_guid_": "S-021.03a",
+  "title": "must successfully create case-allocator POSSESSIONS case role with existing org role - case-allocator ADMIN role",
+  "_guid_": "S-021.04",
   "_extends_": "F-021_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
@@ -16,17 +16,17 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1234567890123467/hearing-judge"
+        "reference": "1234567890123467/case-allocator"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "hearing-judge",
+          "roleName": "case-allocator",
           "roleCategory": "JUDICIAL",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
-          "classification": "RESTRICTED",
+          "classification": "PUBLIC",
           "attributes":
           {
             "caseId" : "1234567890123467",
@@ -59,15 +59,14 @@
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
-            "grantType":  "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
-            "classification": "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
             "status": "LIVE",
             "attributes":
             {
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
               "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
-              "caseType" : "[[ANYTHING_PRESENT]]",
-              "substantive": "Y"
+              "caseType" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}",
+              "substantive": "N"
             }
           }
         ]
