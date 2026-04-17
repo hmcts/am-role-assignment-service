@@ -1,13 +1,14 @@
 package uk.gov.hmcts.reform.roleassignment.config;
 
 import jakarta.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -25,14 +26,17 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import uk.gov.hmcts.reform.authorisation.filters.ServiceAuthFilter;
+import uk.gov.hmcts.reform.roleassignment.config.security.validator.MultiIssuerValidator;
 import uk.gov.hmcts.reform.roleassignment.oidc.JwtGrantedAuthoritiesConverter;
 
+import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Configuration
 @ConfigurationProperties(prefix = "security")
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
@@ -92,9 +96,23 @@ public class SecurityConfiguration {
     JwtDecoder jwtDecoder() {
 
         NimbusJwtDecoder jwtDecoder = JwtDecoders.fromOidcIssuerLocation(issuerUri);
-        OAuth2TokenValidator<Jwt> withTimestamp = new JwtTimestampValidator();
-        OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(withTimestamp);
-        jwtDecoder.setJwtValidator(validator);
+        jwtDecoder.setJwtValidator(getIssuerValidator());
         return jwtDecoder;
+    }
+
+    private OAuth2TokenValidator<Jwt> getIssuerValidator() {
+        OAuth2TokenValidator<Jwt> withTimestamp = new JwtTimestampValidator();
+        OAuth2TokenValidator<Jwt> validator;
+        if (Boolean.parseBoolean(System.getProperty("oidc.issuerValidation"))) {
+            log.debug("Validating issuers");
+            String issuerOverride = System.getProperty("oidc.issuer");
+            List<String> validIssuers = Arrays.asList(issuerUri, issuerOverride);
+            OAuth2TokenValidator<Jwt> withIssuer = new MultiIssuerValidator(validIssuers);
+            validator = new DelegatingOAuth2TokenValidator<>(withTimestamp, withIssuer);
+        } else {
+            log.debug("Validating timestamp");
+            validator = new DelegatingOAuth2TokenValidator<>(withTimestamp);
+        }
+        return validator;
     }
 }
