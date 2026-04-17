@@ -24,7 +24,7 @@
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
           "roleName": "allocated-ctsc-caseworker",
           "roleCategory": "CTSC",
-          "roleType": "ORGANISATION",
+          "roleType": "CASE",
           "grantType": "SPECIFIC",
           "classification": "RESTRICTED",
           "attributes":

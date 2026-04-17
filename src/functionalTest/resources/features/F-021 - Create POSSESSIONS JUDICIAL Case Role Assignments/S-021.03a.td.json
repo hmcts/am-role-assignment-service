@@ -24,9 +24,9 @@
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
           "roleName": "hearing-judge",
           "roleCategory": "JUDICIAL",
-          "roleType": "ORGANISATION",
+          "roleType": "CASE",
           "grantType": "SPECIFIC",
-          "classification": "[[ANYTHING_PRESENT]]",
+          "classification": "RESTRICTED",
           "attributes":
           {
             "caseId" : "1234567890123467",
