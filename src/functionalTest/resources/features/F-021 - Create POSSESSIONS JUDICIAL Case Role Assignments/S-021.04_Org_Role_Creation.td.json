@@ -21,7 +21,7 @@
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "case-allocator",
-          "roleCategory": "JUDICIAL",
+          "roleCategory": "CTSC",
           "grantType": "STANDARD",
           "beginTime" : "2023-09-01T00:00:00Z",
           "attributes":
@@ -40,8 +40,7 @@
           "attributes":
           {
             "jurisdiction": "PCS",
-            "primaryLocation": "123456",
-            "region": "2"
+            "primaryLocation": "123456"
           }
         }
       ]
@@ -62,7 +61,7 @@
         "requestedRoles": [
           {
             "__ordering__": "UNORDERED",
-            "__elementId__": "roleName"
+            "__elementId__": "roleName,roleCategory"
           },
           {
             "_extends_": "ResponseRequestedRole",
@@ -70,7 +69,7 @@
             "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
-            "roleCategory": "JUDICIAL",
+            "roleCategory": "CTSC",
             "roleName": "case-allocator",
             "attributes":
             {
@@ -91,8 +90,7 @@
             {
               "jurisdiction": "PCS",
               "primaryLocation": "123456",
-              "substantive": "N",
-              "region": "2"
+              "substantive": "N"
             }
           }
         ]

@@ -6,7 +6,7 @@ Feature: F-021 : Create Case Role Assignments for POSSESSIONS JUDICIAL case role
     Given an appropriate test context as detailed in the test data source
 
   @S-021.01
-  Scenario: must successfully create allocated-judge POSSESSIONS case role - judge
+  Scenario: must successfully create allocated-judge POSSESSIONS case role with existing org role - judge
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta3 - who is the actor for requested role],
     And a successful call [to create org role assignments for actors & requester] as in [S-021.01_Org_Role_Creation],

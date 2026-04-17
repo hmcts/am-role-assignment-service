@@ -62,7 +62,7 @@
         "requestedRoles": [
           {
             "__ordering__": "UNORDERED",
-            "__elementId__": "roleName"
+            "__elementId__": "roleName,roleCategory"
           },
           {
             "_extends_": "ResponseRequestedRole",

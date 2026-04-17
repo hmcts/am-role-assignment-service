@@ -1,5 +1,5 @@
 {
-  "title": "must successfully create allocated-ctsc-caseworker POSSESSIONS case role - ctsc",
+  "title": "must successfully create allocated-ctsc-caseworker POSSESSIONS case role with existing org role - ctsc",
   "_guid_": "S-022.08",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [

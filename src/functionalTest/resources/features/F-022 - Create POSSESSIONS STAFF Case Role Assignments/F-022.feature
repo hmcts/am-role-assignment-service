@@ -6,7 +6,7 @@ Feature: F-022 : Create Case Role Assignments for POSSESSIONS STAFF case roles
     Given an appropriate test context as detailed in the test data source
 
   @S-022.08
-  Scenario: must successfully create allocated-ctsc-caseworker POSSESSIONS case role - ctsc
+  Scenario: must successfully create allocated-ctsc-caseworker POSSESSIONS case role with existing org role - ctsc
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta3 - who is the actor for requested role],
     And a successful call [to create org role assignments for actors & requester] as in [S-022.08_Org_Role_Creation],
@@ -20,7 +20,7 @@ Feature: F-022 : Create Case Role Assignments for POSSESSIONS STAFF case roles
     And a successful call [to delete role assignments just created above] as in [S-022.08_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-022.08a
-    Scenario: must successfully create allocated-ctsc-caseworker POSSESSIONS case role - ctsc-team-leader
+    Scenario: must successfully create allocated-ctsc-caseworker POSSESSIONS case role with existing org role - ctsc-team-leader
       Given a user with [an active IDAM profile with full permissions],
       And a user [Befta3 - who is the actor for requested role],
       And a successful call [to create org role assignments for actors & requester] as in [S-022.08a_Org_Role_Creation],
@@ -34,7 +34,7 @@ Feature: F-022 : Create Case Role Assignments for POSSESSIONS STAFF case roles
       And a successful call [to delete role assignments just created above] as in [S-022.08a_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-022.09
-    Scenario: must successfully create allocated-admin-caseworker POSSESSIONS case role - hearing-centre-admin
+    Scenario: must successfully create allocated-admin-caseworker POSSESSIONS case role with existing org role  - hearing-centre-admin
       Given a user with [an active IDAM profile with full permissions],
       And a user [Befta3 - who is the actor for requested role],
       And a successful call [to create org role assignments for actors & requester] as in [S-022.09_Org_Role_Creation],
@@ -48,7 +48,7 @@ Feature: F-022 : Create Case Role Assignments for POSSESSIONS STAFF case roles
       And a successful call [to delete role assignments just created above] as in [S-022.09_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-022.09a
-      Scenario: must successfully create allocated-admin-caseworker POSSESSIONS case role - hearing-centre-team-leader
+      Scenario: must successfully create allocated-admin-caseworker POSSESSIONS case role with existing org role  - hearing-centre-team-leader
         Given a user with [an active IDAM profile with full permissions],
         And a user [Befta3 - who is the actor for requested role],
         And a successful call [to create org role assignments for actors & requester] as in [S-022.09a_Org_Role_Creation],
@@ -62,7 +62,7 @@ Feature: F-022 : Create Case Role Assignments for POSSESSIONS STAFF case roles
         And a successful call [to delete role assignments just created above] as in [S-022.09a_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-022.10
-      Scenario: must successfully create allocated-wlu-caseworker POSSESSIONS case wlu-admin
+      Scenario: must successfully create allocated-wlu-caseworker POSSESSIONS case role with existing org role - wlu-admin
         Given a user with [an active IDAM profile with full permissions],
         And a user [Befta3 - who is the actor for requested role],
         And a successful call [to create org role assignments for actors & requester] as in [S-022.10_Org_Role_Creation],
@@ -76,7 +76,7 @@ Feature: F-022 : Create Case Role Assignments for POSSESSIONS STAFF case roles
         And a successful call [to delete role assignments just created above] as in [S-022.10_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-022.10a
-      Scenario: must successfully create allocated-wlu-caseworker POSSESSIONS case wlu-team-leader
+      Scenario: must successfully create allocated-wlu-caseworker POSSESSIONS case role with existing org role - wlu-team-leader
         Given a user with [an active IDAM profile with full permissions],
         And a user [Befta3 - who is the actor for requested role],
         And a successful call [to create org role assignments for actors & requester] as in [S-022.10a_Org_Role_Creation],
@@ -91,7 +91,7 @@ Feature: F-022 : Create Case Role Assignments for POSSESSIONS STAFF case roles
 
   @S-022.11 @Ignore
   # Bailiff role is not yet added to the system, so ignoring the test for now.
-      Scenario: must successfully create allocated-bailiff POSSESSIONS case bailiff
+      Scenario: must successfully create allocated-bailiff POSSESSIONS case role with existing org role - bailiff
         Given a user with [an active IDAM profile with full permissions],
         And a user [Befta3 - who is the actor for requested role],
         And a successful call [to create org role assignments for actors & requester] as in [S-022.11_Org_Role_Creation],
@@ -105,7 +105,7 @@ Feature: F-022 : Create Case Role Assignments for POSSESSIONS STAFF case roles
         And a successful call [to delete role assignments just created above] as in [S-022.11_DeleteDataForRoleAssignmentsForOrgRoles].
 
   @S-022.11a @Ignore
-      Scenario: must successfully create allocated-bailiff POSSESSIONS case bailiff-manager
+      Scenario: must successfully create allocated-bailiff POSSESSIONS case role with existing org role - bailiff-manager
         Given a user with [an active IDAM profile with full permissions],
         And a user [Befta3 - who is the actor for requested role],
         And a successful call [to create org role assignments for actors & requester] as in [S-022.11a_Org_Role_Creation],

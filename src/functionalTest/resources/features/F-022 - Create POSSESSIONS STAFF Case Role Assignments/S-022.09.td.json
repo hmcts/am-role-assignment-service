@@ -1,5 +1,5 @@
 {
-  "title": "must successfully create allocated-admin-caseworker POSSESSIONS case role - hearing-centre-admin",
+  "title": "must successfully create allocated-admin-caseworker POSSESSIONS case role with existing org role  - hearing-centre-admin",
   "_guid_": "S-022.09",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
