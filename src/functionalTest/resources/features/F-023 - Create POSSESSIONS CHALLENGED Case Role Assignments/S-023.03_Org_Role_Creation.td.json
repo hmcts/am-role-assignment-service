@@ -1,0 +1,103 @@
+{
+  "_guid_": "S-023.03_Org_Role_Creation",
+  "_extends_": "F-023_Test_Data_Base",
+  "specs": [
+    "to create org role assignments for actors & requester",
+    "Befta3 - who is the actor for requested role"
+  ],
+  "users": {
+    "invokingUser": {
+      "_extends_": "AmBeftaUser4"
+    }
+  },
+  "request": {
+    "body": {
+      "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "F-023.Org_Role_Creation",
+        "process": "challenged-access"
+      },
+      "requestedRoles": [
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "roleName": "case-allocator",
+          "roleCategory": "JUDICIAL",
+          "grantType": "STANDARD",
+          "beginTime" : "2023-09-01T00:00:00Z",
+          "attributes":
+          {
+            "jurisdiction": "PCS",
+            "primaryLocation": "123456"
+          }
+        },
+        {
+          "_extends_": "RequestedRole",
+          "actorId": "${[scenarioContext][testData][users][befta3][id]}",
+          "roleName": "hmcts-legal-operations",
+          "roleCategory": "LEGAL_OPERATIONS",
+          "grantType": "BASIC",
+          "beginTime" : "2023-09-01T00:00:00Z",
+          "attributes":
+          {
+            "jurisdiction": "PCS",
+            "primaryLocation": "123456",
+            "region": "2"
+          }
+        }
+      ]
+    }
+  },
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+    "headers": {
+      "Content-Length": "[[ANYTHING_PRESENT]]",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "roleAssignmentResponse": {
+        "roleRequest": {
+          "_extends_": "ResponseRoleRequest",
+          "replaceExisting": true
+        },
+        "requestedRoles": [
+          {
+            "__ordering__": "UNORDERED",
+            "__elementId__": "roleName"
+          },
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "process": "[[ANYTHING_PRESENT]]",
+            "roleType": "ORGANISATION",
+            "grantType": "STANDARD",
+            "roleCategory": "JUDICIAL",
+            "roleName": "case-allocator",
+            "attributes":
+            {
+              "jurisdiction": "PCS",
+              "primaryLocation": "123456",
+              "substantive": "N"
+            }
+          },
+          {
+            "_extends_": "ResponseRequestedRole",
+            "actorId": "${[scenarioContext][testData][users][befta3][id]}",
+            "process": "challenged-access",
+            "roleType": "ORGANISATION",
+            "grantType": "BASIC",
+            "roleCategory": "LEGAL_OPERATIONS",
+            "roleName": "hmcts-legal-operations",
+            "attributes":
+            {
+              "jurisdiction": "PCS",
+              "primaryLocation": "123456",
+              "substantive": "N",
+              "region": "2"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
