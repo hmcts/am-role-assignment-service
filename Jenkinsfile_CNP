@@ -33,9 +33,11 @@ def vaultOverrides = [
 //These secrets will be available in the functional tests in the virtual machine where pipeline executes.
 def secrets = [
   's2s-${env}': [
+    secret('microservicekey-aac-manage-case-assignment', 'BEFTA_S2S_CLIENT_SECRET_OF_AAC_MANAGE_CASE_ASSIGNMENT'),
     secret('microservicekey-am-role-assignment-service', 'AM_ROLE_ASSIGNMENT_SERVICE_SECRET'),
     secret('microservicekey-am-role-assignment-service', 'BEFTA_S2S_CLIENT_SECRET'),
     secret('microservicekey-am-org-role-mapping-service', 'BEFTA_S2S_CLIENT_SECRET_OF_AM_ORG_ROLE_MAPPING_SERVICE'),
+    secret('microservicekey-ccd-case-disposer', 'BEFTA_S2S_CLIENT_SECRET_OF_CCD_CASE_DISPOSER'),
     secret('microservicekey-ccd-data', 'BEFTA_S2S_CLIENT_SECRET_OF_CCD_DATA'),
     secret('microservicekey-xui-webapp', 'BEFTA_S2S_CLIENT_SECRET_OF_XUI_WEBAPP')
   ],
@@ -62,7 +64,9 @@ env.BEFTA_RETRY_MAX_ATTEMPTS = "3"
 env.BEFTA_RETRY_STATUS_CODES = "502,503,504"
 env.BEFTA_RETRY_MAX_DELAY = "1000"
 env.BEFTA_S2S_CLIENT_ID = "am_role_assignment_service"
+env.BEFTA_S2S_CLIENT_ID_OF_AAC_MANAGE_CASE_ASSIGNMENT = "aac_manage_case_assignment"
 env.BEFTA_S2S_CLIENT_ID_OF_AM_ORG_ROLE_MAPPING_SERVICE = "am_org_role_mapping_service"
+env.BEFTA_S2S_CLIENT_ID_OF_CCD_CASE_DISPOSER = "ccd_case_disposer"
 env.BEFTA_S2S_CLIENT_ID_OF_CCD_DATA = "ccd_data"
 env.BEFTA_S2S_CLIENT_ID_OF_XUI_WEBAPP = "xui_webapp"
 env.OAUTH2_CLIENT_ID = "am_role_assignment"
