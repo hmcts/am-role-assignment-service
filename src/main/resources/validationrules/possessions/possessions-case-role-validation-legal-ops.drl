@@ -53,7 +53,7 @@ when
          ExistingRoleAssignment(
                  actorId == $ca.getRoleAssignment().actorId,
                  roleType == RoleType.ORGANISATION,
-                 roleName in ("hearing-centre-admin", "hearing-centre-team-leader"),
+                 roleName in ("hearing-centre-admin", "hearing-centre-team-leader", "bailiff-admin"),
                  attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PCS")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
@@ -81,27 +81,6 @@ then
     $ca.getRoleAssignment().log("Stage 1 approved : pcs_allocated_wlu_caseworker_create_case_roles");
     update($ca.getRoleAssignment());
     logMsg("Rule : pcs_allocated_wlu_caseworker_create_case_roles");
-end;
-
-/*
- * The "allocated-bailiff" case role
- */
-rule "pcs_allocated_bailiff_create_case_roles"
-when
-    $ca: CaseAllocatorApproval(
-                 roleAssignment.status == Status.CREATE_REQUESTED,
-                 roleAssignment.attributes["jurisdiction"].asText() == "PCS",
-                 roleAssignment.roleName == "allocated-bailiff")
-         ExistingRoleAssignment(
-                 actorId == $ca.getRoleAssignment().actorId,
-                 roleType == RoleType.ORGANISATION,
-                 roleName in ("bailiff-manager"),
-                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "PCS")
-then
-    $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : pcs_allocated_bailiff_create_case_roles");
-    update($ca.getRoleAssignment());
-    logMsg("Rule : pcs_allocated_bailiff_create_case_roles");
 end;
 
 /*
