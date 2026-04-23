@@ -1,0 +1,34 @@
+{
+  "title": "must reject call from CCD-Data-Store to delete PROFESSIONAL case-roles",
+
+  "_guid_": "S-026.02",
+  "_extends_": "DeleteDataForRoleAssignments",
+
+  "specs": [
+    "an active IDAM profile with full permissions",
+    "Befta3 - who is the actor for requested role",
+
+    "with S2S token for CCD-Data-Store service",
+    "with process and reference values used to create the case-role assignment"
+  ],
+
+  "users": {
+    "invokingUser": {
+      "_extends_": "AmBeftaUser2"
+    }, 
+    "befta3": {
+      "_extends_": "AmBeftaUser3"
+    }
+  },
+
+  "request": {
+    "headers": {
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForCcd]}"
+    },
+    "pathVariables": {
+      "process": "${[scenarioContext][childContexts][S-026.02_CreateCaseRole_PROFESSIONAL][testData][request][body][roleRequest][process]}",
+      "reference": "${[scenarioContext][childContexts][S-026.02_CreateCaseRole_PROFESSIONAL][testData][request][body][roleRequest][reference]}"
+    }
+  }
+
+}
