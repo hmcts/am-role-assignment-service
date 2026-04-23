@@ -1,11 +1,11 @@
 {
-  "title": "must successfully create allocated-bailiff POSSESSIONS case role with existing org role - bailiff-manager",
-  "_guid_": "S-022.11a",
+  "title": "must successfully create case-allocator POSSESSIONS case case-allocator CTSC role",
+  "_guid_": "S-022.12a",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
     "Befta3 - who is the actor for requested role",
-    "contains bailiff-manager case role assignment"
+    "contains case-allocator case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -16,16 +16,16 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1776251462396879/allocated-bailiff"
+        "reference": "1776251462396879/case-allocator"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "allocated-bailiff",
-          "roleCategory": "ENFORCEMENT",
+          "roleName": "case-allocator",
+          "roleCategory": "CTSC",
           "roleType": "CASE",
-          "grantType": "SPECIFIC",
+          "grantType": "STANDARD",
           "classification": "RESTRICTED",
           "attributes":
           {

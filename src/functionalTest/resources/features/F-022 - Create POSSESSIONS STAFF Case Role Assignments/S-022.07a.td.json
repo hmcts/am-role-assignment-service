@@ -1,11 +1,11 @@
 {
-  "title": "must successfully create case-allocator POSSESSIONS case case-allocator Enforcement role",
-  "_guid_": "S-022.12",
+  "title": "must successfully create allocated-ctsc-caseworker POSSESSIONS case role with existing org role ctsc-team-leader",
+  "_guid_": "S-022.08a",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
     "Befta3 - who is the actor for requested role",
-    "contains case-allocator case role assignment"
+    "contains allocated-ctsc-caseworker case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -16,14 +16,14 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1776251462396879/case-allocator"
+        "reference": "1776251462396879/allocated-ctsc-caseworker"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "case-allocator",
-          "roleCategory": "ENFORCEMENT",
+          "roleName": "allocated-ctsc-caseworker",
+          "roleCategory": "CTSC",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
           "classification": "RESTRICTED",
@@ -59,14 +59,15 @@
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
-            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "grantType":  "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "classification": "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
             "status": "LIVE",
             "attributes":
             {
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
               "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
-              "caseType" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}",
-              "substantive": "N"
+              "caseType" : "[[ANYTHING_PRESENT]]",
+              "substantive": "Y"
             }
           }
         ]

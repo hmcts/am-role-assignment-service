@@ -1,5 +1,5 @@
 {
-  "_guid_": "S-022.10a_Org_Role_Creation",
+  "_guid_": "S-022.11a_Org_Role_Creation",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester"
@@ -33,8 +33,8 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "wlu-team-leader",
-          "roleCategory": "ADMIN",
+          "roleName": "bailiff-manager",
+          "roleCategory": "ENFORCEMENT",
           "grantType": "STANDARD",
           "beginTime" : "2023-09-01T00:00:00Z",
           "attributes":
@@ -85,13 +85,13 @@
             "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
-            "roleCategory": "ADMIN",
-            "roleName": "wlu-team-leader",
+            "roleCategory": "ENFORCEMENT",
+            "roleName": "bailiff-manager",
             "attributes":
             {
               "jurisdiction": "PCS",
               "primaryLocation": "123456",
-              "substantive": "Y",
+              "substantive": "N",
               "region": "2"
             }
           }

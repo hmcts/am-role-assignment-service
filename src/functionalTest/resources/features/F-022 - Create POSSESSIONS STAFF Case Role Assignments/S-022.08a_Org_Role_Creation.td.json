@@ -1,5 +1,5 @@
 {
-  "_guid_": "S-022.08a_Org_Role_Creation",
+  "_guid_": "S-022.09a_Org_Role_Creation",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester"
@@ -33,8 +33,8 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "ctsc-team-leader",
-          "roleCategory": "CTSC",
+          "roleName": "hearing-centre-team-leader",
+          "roleCategory": "ADMIN",
           "grantType": "STANDARD",
           "beginTime" : "2023-09-01T00:00:00Z",
           "attributes":
@@ -85,8 +85,8 @@
             "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
-            "roleCategory": "CTSC",
-            "roleName": "ctsc-team-leader",
+            "roleCategory": "ADMIN",
+            "roleName": "hearing-centre-team-leader",
             "attributes":
             {
               "jurisdiction": "PCS",

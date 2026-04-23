@@ -1,11 +1,11 @@
 {
-  "title": "must successfully create allocated-admin-caseworker POSSESSIONS case role with existing org role  - hearing-centre-admin",
-  "_guid_": "S-022.09",
+  "title": "must successfully create allocated-wlu-caseworker POSSESSIONS case role with existing org role - wlu-admin",
+  "_guid_": "S-022.10",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
     "Befta3 - who is the actor for requested role",
-    "contains hearing-centre-admin case role assignment"
+    "contains wlu-admin case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -16,13 +16,13 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1776251462396879/allocated-admin-caseworker"
+        "reference": "1776251462396879/allocated-wlu-caseworker"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "allocated-admin-caseworker",
+          "roleName": "allocated-wlu-caseworker",
           "roleCategory": "ADMIN",
           "roleType": "CASE",
           "grantType": "SPECIFIC",

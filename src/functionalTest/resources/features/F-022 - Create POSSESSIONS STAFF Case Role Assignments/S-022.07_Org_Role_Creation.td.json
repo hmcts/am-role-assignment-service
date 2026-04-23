@@ -1,5 +1,5 @@
 {
-  "_guid_": "S-022.12a_Org_Role_Creation",
+  "_guid_": "S-022.08_Org_Role_Creation",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester"
@@ -33,7 +33,7 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "case-allocator",
+          "roleName": "ctsc",
           "roleCategory": "CTSC",
           "grantType": "STANDARD",
           "beginTime" : "2023-09-01T00:00:00Z",
@@ -62,7 +62,7 @@
         "requestedRoles": [
           {
             "__ordering__": "UNORDERED",
-            "__elementId__": "roleName,roleCategory"
+            "__elementId__": "roleName"
           },
           {
             "_extends_": "ResponseRequestedRole",
@@ -86,12 +86,12 @@
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
             "roleCategory": "CTSC",
-            "roleName": "case-allocator",
+            "roleName": "ctsc",
             "attributes":
             {
               "jurisdiction": "PCS",
               "primaryLocation": "123456",
-              "substantive": "N",
+              "substantive": "Y",
               "region": "2"
             }
           }

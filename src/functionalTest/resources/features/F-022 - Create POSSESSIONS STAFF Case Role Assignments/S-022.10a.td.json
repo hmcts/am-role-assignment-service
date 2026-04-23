@@ -1,11 +1,11 @@
 {
-  "title": "must successfully create allocated-wlu-caseworker POSSESSIONS case role with existing org role - wlu-team-leader",
-  "_guid_": "S-022.10a",
+  "title": "must successfully create allocated-bailiff POSSESSIONS case role with existing org role - bailiff-manager",
+  "_guid_": "S-022.11a",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
     "Befta3 - who is the actor for requested role",
-    "contains wlu-team-leader case role assignment"
+    "contains bailiff-manager case role assignment"
   ],
   "users": {
     "invokingUser": {
@@ -16,17 +16,17 @@
     "body": {
       "roleRequest": {
         "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "1776251462396879/allocated-wlu-caseworker"
+        "reference": "1776251462396879/allocated-bailiff"
       },
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "allocated-wlu-caseworker",
-          "roleCategory": "ADMIN",
+          "roleName": "allocated-bailiff",
+          "roleCategory": "ENFORCEMENT",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
-          "classification": "PUBLIC",
+          "classification": "RESTRICTED",
           "attributes":
           {
             "caseId" : "1776251462396879",
@@ -66,7 +66,7 @@
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
               "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "caseType" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}",
-              "substantive": "Y"
+              "substantive": "N"
             }
           }
         ]

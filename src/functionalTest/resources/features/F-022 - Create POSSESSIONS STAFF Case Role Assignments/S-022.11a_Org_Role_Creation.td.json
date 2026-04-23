@@ -1,5 +1,5 @@
 {
-  "_guid_": "S-022.11a_Org_Role_Creation",
+  "_guid_": "S-022.12a_Org_Role_Creation",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "to create org role assignments for actors & requester"
@@ -33,8 +33,8 @@
         {
           "_extends_": "RequestedRole",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-          "roleName": "bailiff-manager",
-          "roleCategory": "ENFORCEMENT",
+          "roleName": "case-allocator",
+          "roleCategory": "CTSC",
           "grantType": "STANDARD",
           "beginTime" : "2023-09-01T00:00:00Z",
           "attributes":
@@ -62,7 +62,7 @@
         "requestedRoles": [
           {
             "__ordering__": "UNORDERED",
-            "__elementId__": "roleName"
+            "__elementId__": "roleName,roleCategory"
           },
           {
             "_extends_": "ResponseRequestedRole",
@@ -85,8 +85,8 @@
             "process": "[[ANYTHING_PRESENT]]",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
-            "roleCategory": "ENFORCEMENT",
-            "roleName": "bailiff-manager",
+            "roleCategory": "CTSC",
+            "roleName": "case-allocator",
             "attributes":
             {
               "jurisdiction": "PCS",
