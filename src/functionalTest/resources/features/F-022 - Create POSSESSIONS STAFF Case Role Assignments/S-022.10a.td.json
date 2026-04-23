@@ -26,7 +26,7 @@
           "roleCategory": "ADMIN",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
-          "classification": "RESTRICTED",
+          "classification": "PUBLIC",
           "attributes":
           {
             "caseId" : "1776251462396879",
