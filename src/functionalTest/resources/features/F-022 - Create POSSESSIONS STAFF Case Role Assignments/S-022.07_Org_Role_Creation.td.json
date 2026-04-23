@@ -89,10 +89,10 @@
             "roleName": "ctsc",
             "attributes":
             {
-              "jurisdiction": "PCS",
-              "primaryLocation": "123456",
+              "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][jurisdiction]}",
+              "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][primaryLocation]}",
               "substantive": "Y",
-              "region": "2"
+              "region": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][region]}"
             }
           }
         ]
