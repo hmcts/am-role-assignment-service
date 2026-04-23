@@ -1,6 +1,6 @@
 {
   "title": "must successfully create case-allocator POSSESSIONS case case-allocator Enforcement role",
-  "_guid_": "S-022.12",
+  "_guid_": "S-022.11",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",

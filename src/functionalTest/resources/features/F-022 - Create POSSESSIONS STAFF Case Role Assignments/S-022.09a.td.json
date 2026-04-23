@@ -1,6 +1,6 @@
 {
   "title": "must successfully create allocated-wlu-caseworker POSSESSIONS case role with existing org role - wlu-team-leader",
-  "_guid_": "S-022.10a",
+  "_guid_": "S-022.09a",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",

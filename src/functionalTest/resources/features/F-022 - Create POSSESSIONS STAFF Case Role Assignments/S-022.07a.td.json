@@ -1,6 +1,6 @@
 {
   "title": "must successfully create allocated-ctsc-caseworker POSSESSIONS case role with existing org role ctsc-team-leader",
-  "_guid_": "S-022.08a",
+  "_guid_": "S-022.07a",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",

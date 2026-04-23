@@ -1,6 +1,6 @@
 {
   "title": "must successfully create case-allocator POSSESSIONS case case-allocator CTSC role",
-  "_guid_": "S-022.12a",
+  "_guid_": "S-022.11a",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",

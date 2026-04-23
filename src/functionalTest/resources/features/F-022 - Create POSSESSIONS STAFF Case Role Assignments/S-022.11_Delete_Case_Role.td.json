@@ -1,6 +1,6 @@
 {
   "title": "must successfully delete case-allocator case role",
-  "_guid_": "S-022.12_Delete_Case_Role",
+  "_guid_": "S-022.11_Delete_Case_Role",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "to delete case role assignment for the same actor"

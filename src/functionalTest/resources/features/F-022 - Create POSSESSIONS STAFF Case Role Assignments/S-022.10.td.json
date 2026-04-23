@@ -1,6 +1,6 @@
 {
   "title": "must successfully create allocated-bailiff POSSESSIONS case role with existing org role - bailiff",
-  "_guid_": "S-022.11",
+  "_guid_": "S-022.10",
   "_extends_": "F-022_Test_Data_Base",
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
