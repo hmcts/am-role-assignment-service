@@ -75,7 +75,7 @@ Feature: F-022 : Create Case Role Assignments for POSSESSIONS STAFF case roles
      And a successful call [to delete case role assignment for the same actor] as in [S-022.08_Delete_Case_Role],
      And a successful call [to delete role assignments just created above] as in [S-022.08b_DeleteDataForRoleAssignmentsForOrgRoles].
 
-  @S-022.9
+  @S-022.09
   Scenario: must successfully create allocated-wlu-caseworker POSSESSIONS case role with existing org role - wlu-admin
      Given a user with [an active IDAM profile with full permissions],
      And a user [Befta3 - who is the actor for requested role],
