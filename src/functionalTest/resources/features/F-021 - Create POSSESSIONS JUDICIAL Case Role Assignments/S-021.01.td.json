@@ -63,8 +63,7 @@
             "attributes":
             {
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
-              "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
-              "caseType" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseType]}",
+              "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}"
               "substantive": "Y"
             }
           }
