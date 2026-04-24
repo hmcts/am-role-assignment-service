@@ -1,5 +1,5 @@
 {
-  "_guid_": "S-023.03_Delete_Case_Role",
+  "_guid_": "S-023.02_Delete_Case_Role",
   "_extends_": "F-023_Test_Data_Base",
   "specs": [
     "to delete case role assignment for the same actor"
