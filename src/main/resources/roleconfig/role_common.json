@@ -163,6 +163,43 @@
   {
     "name": "case-allocator",
     "label": "Case Allocator",
+    "description": "Case Allocator role for admin users",
+    "category": "ADMIN",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "PCS"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "case-allocator",
+    "label": "Case Allocator",
     "description": "Case Allocator role for system users",
     "category": "SYSTEM",
     "substantive": false,
@@ -350,6 +387,43 @@
     ]
   },
   {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for ctsc users",
+    "category": "CTSC",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "PCS"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "hmcts-judiciary",
     "label": "HMCTS Judiciary",
     "description": "HMCTS Judiciary role for judicial users",
@@ -519,7 +593,15 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC"]
+            "values": [
+              "IA",
+              "SSCS",
+              "PRIVATELAW",
+              "PUBLICLAW",
+              "EMPLOYMENT",
+              "ST_CIC",
+              "PCS"
+            ]
           },
           "caseType": {
             "mandatory": true
@@ -2569,7 +2651,13 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PUBLICLAW", "ST_CIC", "PRIVATELAW", "CIVIL"]
+            "values": [
+              "PUBLICLAW",
+              "ST_CIC",
+              "PRIVATELAW",
+              "CIVIL",
+              "PCS"
+            ]
           },
           "caseType": {
             "mandatory": true
@@ -2902,6 +2990,34 @@
             "mandatory": true
           }
         }
+      },
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "PCS"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
       }
     ]
   },
@@ -2943,6 +3059,34 @@
               "GENERALAPPLICATION",
               "GrantOfRepresentation"
             ]
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      },
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "PCS"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
           },
           "caseId": {
             "mandatory": true
