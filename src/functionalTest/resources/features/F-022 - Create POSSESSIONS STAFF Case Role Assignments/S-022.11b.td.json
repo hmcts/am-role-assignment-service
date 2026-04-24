@@ -25,13 +25,12 @@
           "roleName": "case-allocator",
           "roleCategory": "ADMIN",
           "roleType": "CASE",
-          "grantType": "STANDARD",
+          "grantType": "SPECIFIC",
           "classification": "PUBLIC",
           "attributes":
           {
             "caseId" : "1776251462396879",
-            "jurisdiction": "PCS",
-            "caseType": "[[ANYTHING_PRESENT]]"
+            "jurisdiction": "PCS"
           }
         }
       ]

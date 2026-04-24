@@ -26,12 +26,11 @@
           "roleCategory": "CTSC",
           "roleType": "CASE",
           "grantType": "SPECIFIC",
-          "classification": "PUBLIC",
+          "classification": "RESTRICTED",
           "attributes":
           {
             "caseId" : "1776251462396879",
-            "jurisdiction": "PCS",
-            "caseType": "[[ANYTHING_PRESENT]]"
+            "jurisdiction": "PCS"
           }
         }
       ]
