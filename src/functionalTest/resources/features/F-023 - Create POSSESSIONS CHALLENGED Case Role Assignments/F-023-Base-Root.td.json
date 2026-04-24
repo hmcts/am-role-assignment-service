@@ -3,9 +3,6 @@
   "users": {
     "invokingUser": {
       "_extends_": "AmBeftaUser2"
-    },
-    "befta3": {
-      "_extends_": "AmBeftaUser3"
     }
   },
   "request": {
