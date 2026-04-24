@@ -23,7 +23,7 @@
       "requestedRoles": [
         {
           "_extends_": "RequestedRole",
-          "actorId": "${[scenarioContext][testData][users][befta3][id]}",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "challenged-access-judiciary",
           "roleCategory": "JUDICIAL",
           "roleType": "CASE",
@@ -35,8 +35,7 @@
           "attributes":
           {
             "caseId" : "1776251462396879",
-            "jurisdiction": "PCS",
-            "caseType": "[[ANYTHING_PRESENT]]"
+            "jurisdiction": "PCS"
           }
         }
       ]
@@ -59,7 +58,7 @@
         "requestedRoles": [
           {
             "_extends_": "ResponseRequestedRole",
-            "actorId": "${[scenarioContext][testData][users][befta3][id]}",
+            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
             "process" : "challenged-access",
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
