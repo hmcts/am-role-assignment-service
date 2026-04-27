@@ -1,16 +1,19 @@
 {
   "title": "must successfully create challenged-access-ctsc POSSESSIONS case role with existing ctsc org role",
   "_guid_": "S-023.03",
-  "_extends_": "F-023_Test_Data_Base",
+  "_extends_": "F-023_CreateCaseRoles__Base",
+
   "specs": [
     "contains ReplaceExisting is false and reference set to caseId",
     "contains challenged-access-ctsc case role assignment"
   ],
+
   "users": {
     "invokingUser": {
       "_extends_": "AmBeftaUser4"
     }
   },
+
   "request": {
     "body": {
       "roleRequest": {
@@ -21,16 +24,16 @@
       },
       "requestedRoles": [
         {
-          "_extends_": "RequestedRole",
+          "actorIdType": "IDAM",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "challenged-access-ctsc",
           "roleCategory": "CTSC",
           "roleType": "CASE",
           "grantType": "CHALLENGED",
           "classification": "PUBLIC",
+          "readOnly": false,
           "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
           "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
-          "readOnly": false,
           "attributes":
           {
             "caseId" : "1776251462396879",
@@ -40,39 +43,35 @@
       ]
     }
   },
+
   "expectedResponse": {
-    "_extends_": "Common_201_Response",
-    "headers": {
-      "Content-Length": "[[ANYTHING_PRESENT]]",
-      "Content-Type": "application/json"
-    },
     "body": {
       "roleAssignmentResponse": {
-        "roleRequest": {
-          "_extends_": "ResponseRoleRequest",
-          "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
-          "status": "APPROVED",
-          "replaceExisting": false
-        },
         "requestedRoles": [
           {
-            "_extends_": "ResponseRequestedRole",
+            "id": "[[ANYTHING_PRESENT]]",
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "actorIdType": "IDAM",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-            "process" : "challenged-access",
             "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
             "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
             "classification" : "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
             "readOnly": "${[scenarioContext][testData][request][body][requestedRoles][0][readOnly]}",
-            "status": "LIVE",
+            "beginTime": "[[ANYTHING_PRESENT]]",
+            "endTime": "[[ANYTHING_PRESENT]]",
             "attributes":
             {
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
               "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "caseType" : "PCS",
               "substantive": "N"
-            }
+            },
+            "status": "LIVE",
+            "created": "[[ANYTHING_PRESENT]]",
+            "log": "[[ANYTHING_PRESENT]]"
           }
         ]
       }
