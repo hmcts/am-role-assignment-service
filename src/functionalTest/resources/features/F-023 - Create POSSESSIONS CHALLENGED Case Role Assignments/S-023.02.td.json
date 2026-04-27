@@ -39,7 +39,12 @@
           {
             "caseId" : "1776251462396879",
             "jurisdiction": "PCS"
-          }
+          },
+          "notes" : [ {
+            "userId" : "${[scenarioContext][testData][users][invokingUser][id]}",
+            "time" : "2020-01-01T00:00Z",
+            "comment" : "Need Access to case number 1234567890123456 for a month"
+          } ]
         }
       ]
     }
@@ -70,6 +75,11 @@
               "caseType" : "PCS",
               "substantive": "N"
             },
+            "notes" : [ {
+              "userId" : "[[ANYTHING_PRESENT]]",
+              "time" : "[[ANYTHING_PRESENT]]",
+              "comment" : "[[ANYTHING_PRESENT]]"
+            } ],
             "status": "LIVE",
             "created": "[[ANYTHING_PRESENT]]",
             "log": "[[ANYTHING_PRESENT]]"
