@@ -7,7 +7,7 @@
     "an active IDAM profile with full permissions",
     "Befta3 - who is the actor for requested role",
     "contains ReplaceExisting is false and reference set to caseId",
-    "contains case-allocator case role assignment"
+    "contains case-allocator JUDICIAL case role assignment"
   ],
 
   "request": {
@@ -62,7 +62,7 @@
               "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
               "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
               "caseType" : "PCS",
-              "substantive": "Y"
+              "substantive": "N"
             },
             "status": "LIVE",
             "created": "[[ANYTHING_PRESENT]]",
