@@ -1,12 +1,12 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -74,9 +74,13 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
         // PRIVATELAW PRLAPPS
         "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,RESTRICTED,judge,",
+        "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,RESTRICTED,fee-paid-judge,",
         "PRIVATELAW,PRLAPPS,gatekeeping-judge,JUDICIAL,RESTRICTED,judge,",
+        "PRIVATELAW,PRLAPPS,gatekeeping-judge,JUDICIAL,RESTRICTED,fee-paid-judge,",
         "PRIVATELAW,PRLAPPS,allocated-judge,JUDICIAL,RESTRICTED,judge,",
+        "PRIVATELAW,PRLAPPS,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,",
         "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,RESTRICTED,magistrate,",
+        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,RESTRICTED,fee-paid-judge,",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,PUBLIC,tribunal-caseworker,Y",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
         "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
@@ -233,7 +237,12 @@ class CaseRolesDroolsTest extends DroolBase {
         "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
         "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
         "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,national-business-centre,Y",
-        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y"
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y",
+        // PROBATE
+        "PROBATE,GrantOfRepresentation,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
+        "PROBATE,GrantOfRepresentation,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
+        "PROBATE,GrantOfRepresentation,allocated-tribunal-caseworker,LEGAL_OPERATIONS,RESTRICTED,"
+            + "senior-tribunal-caseworker,Y"
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName,
                                        String roleCategory, String classification,
@@ -816,7 +825,12 @@ class CaseRolesDroolsTest extends DroolBase {
     }
 
     private void setFeatureFlags() {
-        List<String> flags = List.of("sscs_wa_1_0", "sscs_case_allocator_1_0", "all_wa_services_case_allocator_1_0");
+        List<String> flags = List.of(
+            "sscs_wa_1_0",
+            "sscs_case_allocator_1_0",
+            "all_wa_services_case_allocator_1_0",
+            FeatureFlagEnum.PROBATE_WA_1_0.getValue()
+        );
 
         for (String flag : flags) {
             featureFlags.add(
