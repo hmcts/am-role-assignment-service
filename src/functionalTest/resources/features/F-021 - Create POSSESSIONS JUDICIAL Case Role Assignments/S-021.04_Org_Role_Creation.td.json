@@ -3,7 +3,7 @@
   "_extends_": "F-021_CreateOrgRoles__Base",
 
   "specs": [
-    "to create org role assignments for actor (case-allocator) & requester (case-allocator)"
+    "to create org role assignments for actor (case-allocator JUDICIAL) & requester (case-allocator)"
   ],
 
   "request": {
@@ -82,7 +82,7 @@
             "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "actorIdType": "IDAM",
-            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "roleName": "case-allocator",
             "roleCategory": "JUDICIAL",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",

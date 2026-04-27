@@ -65,7 +65,7 @@ Feature: F-021 : Create Case Role Assignments for POSSESSIONS JUDICIAL case role
   Scenario: must successfully create case-allocator POSSESSIONS case role with existing org role - case-allocator JUDICIAL role
     Given a user with [an active IDAM profile with full permissions],
     And a user [Befta3 - who is the actor for requested role],
-    And a successful call [to create org role assignments for actor (case-allocator) & requester (case-allocator)] as in [S-021.04_Org_Role_Creation],
+    And a successful call [to create org role assignments for actor (case-allocator JUDICIAL) & requester (case-allocator)] as in [S-021.04_Org_Role_Creation],
     When a request is prepared with appropriate values,
     And the request [contains ReplaceExisting is false and reference set to caseId],
     And the request [contains case-allocator case role assignment],

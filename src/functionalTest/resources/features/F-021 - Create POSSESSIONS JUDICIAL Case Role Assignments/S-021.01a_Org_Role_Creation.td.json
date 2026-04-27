@@ -82,7 +82,7 @@
             "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
             "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
             "actorIdType": "IDAM",
-            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "actorId": "${[scenarioContext][testData][users][befta3][id]}",
             "roleName": "fee-paid-judge",
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
