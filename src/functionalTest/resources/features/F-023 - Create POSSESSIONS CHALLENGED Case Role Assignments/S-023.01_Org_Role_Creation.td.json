@@ -1,31 +1,26 @@
 {
   "_guid_": "S-023.01_Org_Role_Creation",
-  "_extends_": "F-023_Test_Data_Base",
+  "_extends_": "F-023_CreateOrgRoles__Base",
+
   "specs": [
-    "to create org role assignments for actor"
+    "to create JUDICIAL org role assignments for actor"
   ],
-  "users": {
-    "invokingUser": {
-      "_extends_": "AmBeftaUser4"
-    }
-  },
+
   "request": {
     "body": {
-      "roleRequest": {
-        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "F-023.Org_Role_Creation",
-        "process": "challenged-access"
-      },
       "requestedRoles": [
         {
-          "_extends_": "RequestedRole",
+          "actorIdType": "IDAM",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "judge",
           "roleCategory": "JUDICIAL",
+          "roleType": "ORGANISATION",
           "grantType": "STANDARD",
-          "beginTime" : "2023-09-01T00:00:00Z",
-          "attributes":
-          {
+          "classification": "PUBLIC",
+          "readOnly": false,
+          "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
+          "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
+          "attributes": {
             "jurisdiction": "PCS",
             "primaryLocation": "123456",
             "region": "2"
@@ -34,38 +29,34 @@
       ]
     }
   },
+
   "expectedResponse": {
-    "_extends_": "Common_201_Response",
-    "headers": {
-      "Content-Length": "[[ANYTHING_PRESENT]]",
-      "Content-Type": "application/json"
-    },
     "body": {
       "roleAssignmentResponse": {
-        "roleRequest": {
-          "_extends_": "ResponseRoleRequest",
-          "replaceExisting": true
-        },
         "requestedRoles": [
           {
-            "__ordering__": "UNORDERED",
-            "__elementId__": "roleName"
-          },
-          {
-            "_extends_": "ResponseRequestedRole",
+            "id": "[[ANYTHING_PRESENT]]",
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "actorIdType": "IDAM",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-            "process": "[[ANYTHING_PRESENT]]",
+            "roleName": "judge",
+            "roleCategory": "JUDICIAL",
             "roleType": "ORGANISATION",
             "grantType": "STANDARD",
-            "roleCategory": "JUDICIAL",
-            "roleName": "judge",
-            "attributes":
-            {
+            "classification": "PUBLIC",
+            "readOnly": false,
+            "beginTime": "[[ANYTHING_PRESENT]]",
+            "endTime": "[[ANYTHING_PRESENT]]",
+            "attributes": {
+              "substantive": "[[ANYTHING_PRESENT]]",
               "jurisdiction": "PCS",
               "primaryLocation": "123456",
-              "substantive": "Y",
               "region": "2"
-            }
+            },
+            "status": "LIVE",
+            "created": "[[ANYTHING_PRESENT]]",
+            "log": "[[ANYTHING_PRESENT]]"
           }
         ]
       }
