@@ -17,8 +17,8 @@
       "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForXui]}"
     },
     "pathVariables": {
-      "process": "${[scenarioContext][parentContext][testData][request][pathVariables][process]}",
-      "reference": "${[scenarioContext][parentContext][testData][request][pathVariables][reference]}"
+      "process": "${[scenarioContext][parentContext][testData][request][body][roleRequest][process]}",
+      "reference": "${[scenarioContext][parentContext][testData][request][body][roleRequest][reference]}"
     }
   }
 
