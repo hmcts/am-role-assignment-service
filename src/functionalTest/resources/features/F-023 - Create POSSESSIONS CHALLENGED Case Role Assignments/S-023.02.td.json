@@ -4,6 +4,7 @@
   "_extends_": "F-023_CreateCaseRoles__Base",
 
   "specs": [
+    "an active IDAM profile with full permissions",
     "contains ReplaceExisting is false and reference set to caseId",
     "contains challenged-access-admin case role assignment"
   ],
