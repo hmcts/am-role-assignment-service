@@ -65,7 +65,7 @@ Feature: F-022 : Create Case Role Assignments for POSSESSIONS STAFF case roles
   Scenario: must successfully create allocated-admin-caseworker POSSESSIONS case role with existing org role  - bailiff-admin
    Given a user with [an active IDAM profile with full permissions],
    And a user [Befta3 - who is the actor for requested role],
-   And a successful call [to create org role assignments for actor () & requester (case-allocator)] as in [S-022.08b_Org_Role_Creation],
+   And a successful call [to create org role assignments for actor (bailiff-admin) & requester (case-allocator)] as in [S-022.08b_Org_Role_Creation],
    When a request is prepared with appropriate values,
    And the request [contains ReplaceExisting is false and reference set to caseId],
    And the request [contains bailiff-admin case role assignment],

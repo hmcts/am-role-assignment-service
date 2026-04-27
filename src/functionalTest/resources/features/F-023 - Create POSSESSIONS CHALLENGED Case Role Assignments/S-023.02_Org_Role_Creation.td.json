@@ -44,7 +44,7 @@
             "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
             "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
             "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
-            "classification" : "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
+            "classification": "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
             "readOnly": "${[scenarioContext][testData][request][body][requestedRoles][0][readOnly]}",
             "beginTime": "[[ANYTHING_PRESENT]]",
             "endTime": "[[ANYTHING_PRESENT]]",
