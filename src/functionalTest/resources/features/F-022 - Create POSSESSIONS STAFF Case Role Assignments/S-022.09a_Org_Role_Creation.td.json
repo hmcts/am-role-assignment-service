@@ -1,44 +1,42 @@
 {
   "_guid_": "S-022.09a_Org_Role_Creation",
-  "_extends_": "F-022_Test_Data_Base",
+  "_extends_": "F-022_CreateOrgRoles__Base",
+
   "specs": [
-    "to create org role assignments for actors & requester"
+    "to create org role assignments for actor (wlu-team-leader) & requester (case-allocator)"
   ],
-  "users": {
-    "invokingUser": {
-      "_extends_": "AmBeftaUser4"
-    }
-  },
+
   "request": {
     "body": {
-      "roleRequest": {
-        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
-        "reference": "F-022.Org_Role_Creation",
-        "process": "${[scenarioContext][customValues][generateProcessId]}"
-      },
       "requestedRoles": [
         {
-          "_extends_": "RequestedRole",
+          "actorIdType": "IDAM",
           "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
           "roleName": "case-allocator",
           "roleCategory": "JUDICIAL",
+          "roleType": "ORGANISATION",
           "grantType": "STANDARD",
-          "beginTime" : "2023-09-01T00:00:00Z",
-          "attributes":
-          {
+          "classification": "PUBLIC",
+          "readOnly": false,
+          "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
+          "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
+          "attributes": {
             "jurisdiction": "PCS",
             "primaryLocation": "123456"
           }
         },
         {
-          "_extends_": "RequestedRole",
+          "actorIdType": "IDAM",
           "actorId": "${[scenarioContext][testData][users][befta3][id]}",
           "roleName": "wlu-team-leader",
           "roleCategory": "ADMIN",
+          "roleType": "ORGANISATION",
           "grantType": "STANDARD",
-          "beginTime" : "2023-09-01T00:00:00Z",
-          "attributes":
-          {
+          "classification": "PUBLIC",
+          "readOnly": false,
+          "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
+          "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
+          "attributes": {
             "jurisdiction": "PCS",
             "primaryLocation": "123456",
             "region": "2"
@@ -47,53 +45,61 @@
       ]
     }
   },
+
   "expectedResponse": {
-    "_extends_": "Common_201_Response",
-    "headers": {
-      "Content-Length": "[[ANYTHING_PRESENT]]",
-      "Content-Type": "application/json"
-    },
     "body": {
       "roleAssignmentResponse": {
-        "roleRequest": {
-          "_extends_": "ResponseRoleRequest",
-          "replaceExisting": true
-        },
         "requestedRoles": [
           {
             "__ordering__": "UNORDERED",
             "__elementId__": "roleName"
           },
           {
-            "_extends_": "ResponseRequestedRole",
+            "id": "[[ANYTHING_PRESENT]]",
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "actorIdType": "IDAM",
             "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
-            "process": "[[ANYTHING_PRESENT]]",
-            "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
-            "roleCategory": "JUDICIAL",
             "roleName": "case-allocator",
-            "attributes":
-            {
-              "jurisdiction": "PCS",
-              "primaryLocation": "123456",
-              "substantive": "N"
-            }
+            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "classification": "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
+            "readOnly": "${[scenarioContext][testData][request][body][requestedRoles][0][readOnly]}",
+            "beginTime": "[[ANYTHING_PRESENT]]",
+            "endTime": "[[ANYTHING_PRESENT]]",
+            "attributes": {
+              "substantive": "[[ANYTHING_PRESENT]]",
+              "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
+              "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][primaryLocation]}"
+            },
+            "status": "LIVE",
+            "created": "[[ANYTHING_PRESENT]]",
+            "log": "[[ANYTHING_PRESENT]]"
           },
           {
-            "_extends_": "ResponseRequestedRole",
+            "id": "[[ANYTHING_PRESENT]]",
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "actorIdType": "IDAM",
             "actorId": "${[scenarioContext][testData][users][befta3][id]}",
-            "process": "[[ANYTHING_PRESENT]]",
-            "roleType": "ORGANISATION",
-            "grantType": "STANDARD",
-            "roleCategory": "ADMIN",
             "roleName": "wlu-team-leader",
-            "attributes":
-            {
-              "jurisdiction": "PCS",
-              "primaryLocation": "123456",
-              "substantive": "Y",
-              "region": "2"
-            }
+            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][1][roleCategory]}",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][1][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][1][grantType]}",
+            "classification": "${[scenarioContext][testData][request][body][requestedRoles][1][classification]}",
+            "readOnly": "${[scenarioContext][testData][request][body][requestedRoles][1][readOnly]}",
+            "beginTime": "[[ANYTHING_PRESENT]]",
+            "endTime": "[[ANYTHING_PRESENT]]",
+            "attributes": {
+              "substantive": "[[ANYTHING_PRESENT]]",
+              "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][jurisdiction]}",
+              "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][primaryLocation]}",
+              "region": "${[scenarioContext][testData][request][body][requestedRoles][1][attributes][region]}"
+            },
+            "status": "LIVE",
+            "created": "[[ANYTHING_PRESENT]]",
+            "log": "[[ANYTHING_PRESENT]]"
           }
         ]
       }
