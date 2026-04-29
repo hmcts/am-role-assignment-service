@@ -1,0 +1,35 @@
+{
+  "_guid_": "F-025_CheckCaseRole__Found",
+  "_extends_": "F-025_CheckCaseRole__Base",
+
+  "specs": [
+    "to check case role assignments are found for the actor"
+  ],
+
+  "expectedResponse": {
+    "body": {
+      "roleAssignmentResponse" : [
+        {
+          "id": "[[ANYTHING_PRESENT]]",
+          "actorIdType": "IDAM",
+          "actorId": "${[scenarioContext][testData][users][befta3][id]}",
+          "roleName": "[[ANYTHING_PRESENT]]",
+          "roleCategory": "[[ANYTHING_PRESENT]]",
+          "roleType": "CASE",
+          "grantType": "SPECIFIC",
+          "classification": "[[ANYTHING_PRESENT]]",
+          "readOnly": false,
+          "beginTime": "[[ANYTHING_PRESENT]]",
+          "endTime": "[[ANYTHING_PRESENT]]",
+          "attributes": {
+            "substantive": "[[ANYTHING_PRESENT]]",
+            "caseId": "[[ANYTHING_PRESENT]]",
+            "jurisdiction": "[[ANYTHING_PRESENT]]",
+            "caseType": "[[ANYTHING_PRESENT]]"
+          },
+          "created": "[[ANYTHING_PRESENT]]"
+        }
+      ]
+    }
+  }
+}

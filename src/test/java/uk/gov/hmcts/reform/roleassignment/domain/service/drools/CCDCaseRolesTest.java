@@ -1,10 +1,12 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -13,6 +15,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
 
@@ -20,13 +23,16 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SPECIFIC;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.CREATE_REQUESTED;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedCaseRole_ra;
+import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getRequestedOrgRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @ExtendWith(MockitoExtension.class)
@@ -84,9 +90,45 @@ class CCDCaseRolesTest extends DroolBase {
         verifyNoInteractions(retrieveDataService);
     }
 
-    @Test
-    void shouldApprovePetSolicitorCaseRole() {
-        verifyCreateCaseRequestedRole_CCD_1_0("[PETSOLICITOR]", "ccd_data", RoleCategory.PROFESSIONAL);
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "[PETSOLICITOR]",
+        "[LASOCIALWORKER]",
+        "[LABARRISTER]",
+        "[LAMANAGING]",
+        "[LASOLICITOR]",
+        "[LASHARED]"
+    })
+    void shouldApproveProfessionalCaseRole(String roleName) {
+        verifyCreateCaseRequestedRole_CCD_1_0(roleName, "ccd_data", RoleCategory.PROFESSIONAL);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "[PETSOLICITOR]",
+        "[LASOCIALWORKER]",
+        "[LABARRISTER]",
+        "[LAMANAGING]",
+        "[LASOLICITOR]",
+        "[LASHARED]"
+    })
+    void shouldRejectProfessionalCaseRole_WithWrongOrMissingValues(String roleName) {
+        // without caseId
+        verifyCcdCaseRequestedRole(RoleCategory.PROFESSIONAL,
+                                   roleName,
+                                   "IA",
+                                   "Asylum",
+                                   false, // WRONG
+                                   Status.REJECTED,
+                                   null);
+        // wrong category
+        verifyCcdCaseRequestedRole(RoleCategory.CITIZEN, // WRONG (NB: this is another valid CCD Case Role Category)
+                                   roleName,
+                                   "IA",
+                                   "Asylum",
+                                   true,
+                                   Status.REJECTED,
+                                   null);
     }
 
     private void verifyCreateCaseRequestedRole_CCD_1_0(String roleName, String clientId, RoleCategory category) {
@@ -327,6 +369,59 @@ class CCDCaseRolesTest extends DroolBase {
 
     @ParameterizedTest
     @ValueSource(strings = {
+        "[APPLICANT]",
+        "[RESPONDENT]"
+    })
+    void shouldApproveOrRejectDivorceCitizenCaseRoles(String roleName) {
+        RoleCategory roleCategory = RoleCategory.CITIZEN;
+        String jurisdiction = "DIVORCE";
+        String caseType = "FinancialRemedyContested";
+
+        // wrong category
+        verifyCcdCaseRequestedRole(RoleCategory.PROFESSIONAL, // WRONG (this is another valid CCD Case Role Category)
+                                   roleName,
+                                   jurisdiction,
+                                   caseType,
+                                   true,
+                                   Status.REJECTED,
+                                   null);
+        // wrong jurisdiction
+        verifyCcdCaseRequestedRole(roleCategory,
+                                   roleName,
+                                   "wrong-jurisdiction", // WRONG
+                                   caseType,
+                                   true,
+                                   Status.REJECTED,
+                                   null);
+        // wrong case-type
+        verifyCcdCaseRequestedRole(roleCategory,
+                                   roleName,
+                                   jurisdiction,
+                                   "wrong-caseType", // WRONG
+                                   true,
+                                   Status.REJECTED,
+                                   null);
+        // without caseId
+        verifyCcdCaseRequestedRole(roleCategory,
+                                   roleName,
+                                   jurisdiction,
+                                   caseType,
+                                   false, // WRONG
+                                   Status.REJECTED,
+                                   null);
+
+        // correct values should be approved
+        verifyCcdCaseRequestedRole(roleCategory,
+                                   roleName,
+                                   jurisdiction,
+                                   caseType,
+                                   true,
+                                   Status.APPROVED,
+                                   "Y");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
         "[C100APPLICANTSOLICITOR1]",
         "[C100APPLICANTSOLICITOR2]",
         "[C100APPLICANTSOLICITOR3]",
@@ -368,28 +463,32 @@ class CCDCaseRolesTest extends DroolBase {
                                    jurisdiction,
                                    caseType,
                                    true,
-                                   Status.REJECTED);
+                                   Status.REJECTED,
+                                   null);
         // wrong jurisdiction
         verifyCcdCaseRequestedRole(roleCategory,
                                    roleName,
                                    "wrong-jurisdiction", // WRONG
                                    caseType,
                                    true,
-                                   Status.REJECTED);
+                                   Status.REJECTED,
+                                   null);
         // wrong case-type
         verifyCcdCaseRequestedRole(roleCategory,
                                    roleName,
                                    jurisdiction,
                                    "wrong-caseType", // WRONG
                                    true,
-                                   Status.REJECTED);
+                                   Status.REJECTED,
+                                   null);
         // without caseId
         verifyCcdCaseRequestedRole(roleCategory,
                                    roleName,
                                    jurisdiction,
                                    caseType,
                                    false, // WRONG
-                                   Status.REJECTED);
+                                   Status.REJECTED,
+                                   null);
 
         // correct values should be approved
         verifyCcdCaseRequestedRole(roleCategory,
@@ -397,7 +496,8 @@ class CCDCaseRolesTest extends DroolBase {
                                    jurisdiction,
                                    caseType,
                                    true,
-                                   Status.APPROVED);
+                                   Status.APPROVED,
+                                   "Y");
     }
 
     void verifyCcdCaseRequestedRole(RoleCategory roleCategory,
@@ -405,7 +505,8 @@ class CCDCaseRolesTest extends DroolBase {
                                     String jurisdiction,
                                     String caseType,
                                     boolean withCaseId,
-                                    Status expectedStatus) {
+                                    Status expectedStatus,
+                                    String expectedSubstantiveFlag) {
 
         // GIVEN
         RoleAssignment requestedRole = getRequestedCaseRole_ra(
@@ -436,7 +537,7 @@ class CCDCaseRolesTest extends DroolBase {
         assignmentRequest.getRequestedRoles().forEach(ra -> {
             assertEquals(expectedStatus, ra.getStatus());
 
-            // If has Case-ID then these tests should always pass stage 1 processing
+            // If it has Case-ID then these tests should always pass stage 1 processing
             assertEquals(
                 withCaseId,
                 ra.getLog().contains("Stage 1 approved : ccd_create_case_roles"),
@@ -449,12 +550,21 @@ class CCDCaseRolesTest extends DroolBase {
                 ra.getLog().contains("Approved : validate_role_assignment_against_patterns"),
                 "Wrong outcome for role validation against role_config patterns"
             );
+
+            // NB: substantive flag is only set when request is APPROVED
+            if (expectedStatus == Status.APPROVED) {
+                assertEquals(expectedSubstantiveFlag, ra.getAttributes().get("substantive").asText(),
+                             "Substantive flag value is incorrect");
+            } else {
+                assertFalse(ra.getAttributes().containsKey("substantive"),
+                           "Substantive flag should not be set");
+            }
         });
     }
 
     @Nested
-    @DisplayName("IDAM Disposer CCD Case Roles Tests")
-    class IdamDisposerCaseRolesTest {
+    @DisplayName("IDAM Disposer Create CCD Case Roles Tests")
+    class IdamDisposerCreateCaseRolesTest {
 
         static final String IDAM_DISPOSER_CLIENT_ID = "disposer-idam-user";
 
@@ -542,4 +652,97 @@ class CCDCaseRolesTest extends DroolBase {
         }
     }
 
+    @Nested
+    @DisplayName("IDAM CCD Case Disposer Delete CCD Case Roles Tests")
+    class IdamCcdCaseDisposerDeleteCaseRolesTest {
+
+        static final String IDAM_CASE_DISPOSER_CLIENT_ID = "ccd_case_disposer";
+
+        @ParameterizedTest
+        @CsvSource({
+            "1234567890123456"
+        })
+        void shouldDeleteCaseRoleFromIdamCcdCaseDisposer(String caseId) {
+
+            // GIVEN
+            assignmentRequest.getRequest().setClientId(IDAM_CASE_DISPOSER_CLIENT_ID);
+            assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                roleAssignment.setStatus(Status.DELETE_REQUESTED);
+                roleAssignment.setRoleType(RoleType.CASE);
+                roleAssignment.getAttributes().put("caseId", convertValueJsonNode(caseId));
+            });
+            setDisposerFeatureFlag(true);
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assertTrue(CollectionUtils.isNotEmpty(assignmentRequest.getRequestedRoles()));
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                assertEquals(DELETE_APPROVED, roleAssignment.getStatus());
+            });
+        }
+
+        @Test
+        void shouldRejectDeleteCaseRoleForNonCaseFromIdamCcdCaseDisposer() {
+
+            // GIVEN
+            assignmentRequest.getRequest().setClientId(IDAM_CASE_DISPOSER_CLIENT_ID);
+            assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                roleAssignment.setStatus(Status.DELETE_REQUESTED);
+                roleAssignment.setRoleType(RoleType.ORGANISATION);
+            });
+            setDisposerFeatureFlag(true);
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assignmentRequest.getRequestedRoles()
+                .forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
+
+            //verify retrieveDataService is not used
+            RetrieveDataService retrieveDataService = getRetrieveDataService();
+            verifyNoInteractions(retrieveDataService);
+        }
+
+        @ParameterizedTest
+        @CsvSource({
+            "1234567890123456"
+        })
+        void shouldRejectDeleteCaseRoleFromIdamCcdCaseDisposer_flagDisabled(String caseId) {
+
+            // GIVEN
+            assignmentRequest.getRequest().setClientId(IDAM_CASE_DISPOSER_CLIENT_ID);
+            assignmentRequest.setRequestedRoles(getRequestedOrgRole());
+            assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                roleAssignment.setStatus(Status.DELETE_REQUESTED);
+                roleAssignment.setRoleType(RoleType.CASE);
+                roleAssignment.getAttributes().put("caseId", convertValueJsonNode(caseId));
+            });
+            setDisposerFeatureFlag(false); // i.e. disable flag
+
+            // WHEN
+            buildExecuteKieSession();
+
+            // THEN
+            assignmentRequest.getRequestedRoles()
+                .forEach(ra -> assertEquals(Status.DELETE_REJECTED, ra.getStatus()));
+
+            //verify retrieveDataService is not used
+            RetrieveDataService retrieveDataService = getRetrieveDataService();
+            verifyNoInteractions(retrieveDataService);
+        }
+
+        private void setDisposerFeatureFlag(boolean status) {
+            FeatureFlag featureFlag  =  FeatureFlag.builder()
+                                            .flagName(FeatureFlagEnum.DISPOSER_1_1.getValue())
+                                            .status(status)
+                                            .build();
+
+            featureFlags.add(featureFlag);
+        }
+    }
 }

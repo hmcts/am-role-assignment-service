@@ -52,6 +52,12 @@ public class TestDataBuilder {
     public static final String ACTORID = "4772dc44-268f-4d0c-8f83-f0fb662aac84";
     public static final String CASE_ALLOCATOR_ID = "4772dc44-268f-4d0c-8f83-f0fb662aac88";
 
+    public static final String CLIENT_ID_AAC_MANAGE_CASE = "aac_manage_case_assignment";
+    public static final String CLIENT_ID_CCD_CASE_DISPOSER = "ccd_case_disposer";
+    public static final String CLIENT_ID_CCD_DATA = "ccd_data";
+    public static final String CLIENT_ID_ORM = "am_org_role_mapping_service";
+    public static final String CLIENT_ID_XUI = "xui_webapp";
+
     private TestDataBuilder() {
         //not meant to be instantiated.
     }
