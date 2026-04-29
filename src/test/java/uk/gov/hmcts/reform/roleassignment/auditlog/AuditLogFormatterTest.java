@@ -1,11 +1,22 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
+import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 
 class AuditLogFormatterTest {
 
@@ -52,6 +63,32 @@ class AuditLogFormatterTest {
     }
 
     @Test
+    void shouldNotLogBlankStringField() throws Exception {
+        AuditEntry auditEntry = new AuditEntry();
+        auditEntry.setOperationType("   ");
+
+        String result = logFormatter.format(auditEntry);
+        JsonNode json = JacksonUtils.MAPPER.readTree(result);
+
+        assertThat(json.get("tag").asText()).isEqualTo("LA-AM-RAS");
+        assertFalse(json.has("operationType"));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldNotAddEmptyCollection() throws Exception {
+        Method addMethod = AuditLogFormatter.class.getDeclaredMethod("add", Map.class, String.class, Object.class);
+        addMethod.setAccessible(true);
+
+        Map<String, Object> logEntry = new LinkedHashMap<>();
+        logEntry.put("tag", AuditLogFormatter.TAG);
+
+        addMethod.invoke(logFormatter, logEntry, "emptyCollection", List.of());
+
+        assertFalse(logEntry.containsKey("emptyCollection"));
+    }
+
+    @Test
     void shouldEscapePotentiallyMaliciousPayload() throws Exception {
         AuditEntry auditEntry = new AuditEntry();
         auditEntry.setRequestPayloadHash("881d91b5c9c7bc6edbce9f98e71fc18611d0c344e3bd1d2224c10a13580e1073");
@@ -73,5 +110,18 @@ class AuditLogFormatterTest {
 
         assertThat(json.get("tag").asText()).isEqualTo("LA-AM-RAS");
         assertThat(json.has("targetCaseRoles")).isFalse();
+    }
+
+    @Test
+    void shouldWrapJsonProcessingException() throws Exception {
+        ObjectMapper objectMapper = mock(ObjectMapper.class);
+        AuditLogFormatter formatter = new AuditLogFormatter(objectMapper);
+        AuditEntry auditEntry = new AuditEntry();
+        JsonProcessingException cause = new JsonProcessingException("boom") { };
+        doThrow(cause).when(objectMapper).writeValueAsString(org.mockito.ArgumentMatchers.any());
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> formatter.format(auditEntry));
+
+        assertThat(exception).hasMessage("Failed to format audit log entry").hasCause(cause);
     }
 }

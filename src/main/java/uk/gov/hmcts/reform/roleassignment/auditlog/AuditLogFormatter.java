@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
@@ -15,6 +16,15 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 public class AuditLogFormatter {
 
     public static final String TAG = "LA-AM-RAS";
+    private final ObjectMapper objectMapper;
+
+    public AuditLogFormatter() {
+        this(JacksonUtils.MAPPER);
+    }
+
+    AuditLogFormatter(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     public String format(AuditEntry entry) {
         Map<String, Object> logEntry = new LinkedHashMap<>();
@@ -36,7 +46,7 @@ public class AuditLogFormatter {
         add(logEntry, "requestPayloadHash", entry.getRequestPayloadHash());
         add(logEntry, "responseTime", entry.getResponseTime());
         try {
-            return JacksonUtils.MAPPER.writeValueAsString(logEntry);
+            return objectMapper.writeValueAsString(logEntry);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Failed to format audit log entry", e);
         }

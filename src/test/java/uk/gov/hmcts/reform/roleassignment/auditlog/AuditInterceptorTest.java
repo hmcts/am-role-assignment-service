@@ -141,6 +141,23 @@ class AuditInterceptorTest {
     }
 
     @Test
+    void shouldHashRequestPayloadWhenCaptured() {
+        AuditContext auditContext = new AuditContext();
+        auditContext.setResponseTime(1500L);
+        auditContextSpy = spy(auditContext);
+        request.setContent("{\"role\":\"caseworker\"}".getBytes());
+
+        given(handler.hasMethodAnnotation(LogAudit.class)).willReturn(true);
+        AuditContextHolder.setAuditContext(auditContextSpy);
+
+        interceptor.afterCompletion(request, response, handler, null);
+
+        assertThat(auditContextSpy.getRequestPayloadHash())
+            .isEqualTo("835d4ebc4bcc710d9c0f71a5db5a72ccd2ba70480786e11d30f93fd1261b294a");
+        verify(auditService).audit(auditContextSpy);
+    }
+
+    @Test
     void shouldCheckIfDebugEnabled() {
         AuditContext auditContext = new AuditContext();
         auditContextSpy = spy(auditContext);
