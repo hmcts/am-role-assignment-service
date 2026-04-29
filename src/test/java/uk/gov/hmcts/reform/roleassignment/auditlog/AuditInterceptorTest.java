@@ -93,8 +93,8 @@ class AuditInterceptorTest {
         assertThat(AuditContextHolder.getAuditContext()).isNull();
         assertNotNull(auditContextSpy.getResponseTime());
         assertThat(auditContextSpy.getResponseTime()).isGreaterThan(500L);
-        assertThat(auditContextSpy.getRequestPayload()).isEmpty();
-        verify(auditContextSpy, times(1)).setRequestPayload(any());
+        assertThat(auditContextSpy.getRequestPayloadHash()).isNull();
+        verify(auditContextSpy, times(1)).setRequestPayloadHash(any());
         verify(auditService).audit(auditContextSpy);
 
     }
@@ -112,12 +112,12 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getHttpMethod()).isEqualTo(METHOD);
         assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(STATUS);
-        assertThat(auditContextSpy.getRequestPayload()).isEmpty();
+        assertThat(auditContextSpy.getRequestPayloadHash()).isNull();
         assertThat(auditContextSpy.getResponseTime()).isNotNull();
         assertThat(AuditContextHolder.getAuditContext()).isNull();
         assertThat(auditContextSpy.getResponseTime()).isLessThan(500L);
         assertThat(auditContextSpy.getResponseTime()).isGreaterThan(1L);
-        verify(auditContextSpy, times(1)).setRequestPayload(any());
+        verify(auditContextSpy, times(1)).setRequestPayloadHash(any());
         verify(auditService).audit(auditContextSpy);
 
     }
@@ -135,9 +135,26 @@ class AuditInterceptorTest {
         assertThat(auditContextSpy.getHttpMethod()).isEqualTo(METHOD);
         assertThat(auditContextSpy.getRequestPath()).isEqualTo(REQUEST_URI);
         assertThat(auditContextSpy.getHttpStatus()).isEqualTo(422);
-        verify(auditContextSpy, times(1)).setRequestPayload(any());
+        verify(auditContextSpy, times(1)).setRequestPayloadHash(any());
         verify(auditService).audit(auditContextSpy);
 
+    }
+
+    @Test
+    void shouldHashRequestPayloadWhenCaptured() {
+        AuditContext auditContext = new AuditContext();
+        auditContext.setResponseTime(1500L);
+        auditContextSpy = spy(auditContext);
+        request.setContent("{\"role\":\"caseworker\"}".getBytes());
+
+        given(handler.hasMethodAnnotation(LogAudit.class)).willReturn(true);
+        AuditContextHolder.setAuditContext(auditContextSpy);
+
+        interceptor.afterCompletion(request, response, handler, null);
+
+        assertThat(auditContextSpy.getRequestPayloadHash())
+            .isEqualTo("835d4ebc4bcc710d9c0f71a5db5a72ccd2ba70480786e11d30f93fd1261b294a");
+        verify(auditService).audit(auditContextSpy);
     }
 
     @Test
