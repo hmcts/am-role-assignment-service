@@ -1,45 +1,56 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Component
 public class AuditLogFormatter {
 
     public static final String TAG = "LA-AM-RAS";
 
-    private static final String COMMA = ",";
-    private static final String COLON = ":";
-
     public String format(AuditEntry entry) {
-        return new StringBuilder(TAG)
-            .append(" ")
-            .append(getFirstPair("dateTime", entry.getDateTime()))
-            .append(getPair("operationType", entry.getOperationType()))
-            .append(getPair("assignerId", entry.getAssignerId()))
-            .append(getPair("assignmentId", entry.getAssignmentId()))
-            .append(getPair("assignmentSize", String.valueOf(entry.getAssignmentSize())))
-            .append(getPair("invokingService", entry.getInvokingService()))
-            .append(getPair("endpointCalled", entry.getPath()))
-            .append(getPair("operationalOutcome", String.valueOf(entry.getHttpStatus())))
-            .append(getPair("actorId", entry.getActorId()))
-            .append(getPair("process", entry.getProcess()))
-            .append(getPair("reference", entry.getReference()))
-            .append(getPair("roleName", entry.getRoleName()))
-            .append(getPair("authenticatedUserId", entry.getAuthenticatedUserId()))
-            .append(getPair("correlationId", entry.getCorrelationId()))
-            .append(getPair("requestPayload", entry.getRequestPayload()))
-            .append(getPair("responseTime",String.valueOf(entry.getResponseTime())))
-            .toString();
+        Map<String, Object> logEntry = new LinkedHashMap<>();
+        logEntry.put("tag", TAG);
+        add(logEntry, "dateTime", entry.getDateTime());
+        add(logEntry, "operationType", entry.getOperationType());
+        add(logEntry, "assignerId", entry.getAssignerId());
+        add(logEntry, "assignmentId", entry.getAssignmentId());
+        add(logEntry, "assignmentSize", entry.getAssignmentSize());
+        add(logEntry, "invokingService", entry.getInvokingService());
+        add(logEntry, "endpointCalled", entry.getPath());
+        add(logEntry, "operationalOutcome", entry.getHttpStatus());
+        add(logEntry, "actorId", entry.getActorId());
+        add(logEntry, "process", entry.getProcess());
+        add(logEntry, "reference", entry.getReference());
+        add(logEntry, "roleName", entry.getRoleName());
+        add(logEntry, "authenticatedUserId", entry.getAuthenticatedUserId());
+        add(logEntry, "correlationId", entry.getCorrelationId());
+        add(logEntry, "requestPayloadHash", entry.getRequestPayloadHash());
+        add(logEntry, "responseTime", entry.getResponseTime());
+        try {
+            return JacksonUtils.MAPPER.writeValueAsString(logEntry);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Failed to format audit log entry", e);
+        }
     }
 
-    private String getPair(String label, String value) {
-        return isNotBlank(value) ? COMMA + label + COLON + value : "";
+    private void add(Map<String, Object> logEntry, String label, @Nullable Object value) {
+        if (value instanceof String string && isBlank(string)) {
+            return;
+        }
+        if (value instanceof Collection<?> collection && collection.isEmpty()) {
+            return;
+        }
+        if (value != null) {
+            logEntry.put(label, value);
+        }
     }
-
-    private String getFirstPair(String label, String value) {
-        return isNotBlank(value) ? label + COLON + value : "";
-    }
-
 }

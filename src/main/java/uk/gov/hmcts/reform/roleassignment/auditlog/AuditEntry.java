@@ -21,7 +21,7 @@ public class AuditEntry {
     private String reference;
     private String path;
     private String correlationId;
-    private String requestPayload;
+    private String requestPayloadHash;
     private Integer assignmentSize;
     private Long responseTime;
 
