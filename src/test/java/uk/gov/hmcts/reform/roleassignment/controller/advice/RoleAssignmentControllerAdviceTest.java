@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
@@ -174,7 +175,7 @@ class RoleAssignmentControllerAdviceTest {
     @Test
     void notReadableException_RoleType() {
         HttpMessageNotReadableException httpMessageNotReadableException =
-            new HttpMessageNotReadableException(ROLETYPE);
+            new HttpMessageNotReadableException(ROLETYPE, mock(HttpInputMessage.class));
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
@@ -184,16 +185,18 @@ class RoleAssignmentControllerAdviceTest {
     @Test
     void notReadableException_Empty() {
         HttpMessageNotReadableException httpMessageNotReadableException =
-            new HttpMessageNotReadableException("");
+            new HttpMessageNotReadableException("", mock(HttpInputMessage.class));
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
+        Assertions.assertNotNull(responseEntity.getBody());
         assertTrue(responseEntity.getBody().getErrorDescription().isEmpty());
     }
 
     @Test
     void notReadableException_UUID() {
-        HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException(UUID);
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException(UUID, mock(HttpInputMessage.class));
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
@@ -203,7 +206,7 @@ class RoleAssignmentControllerAdviceTest {
     @Test
     void notReadableException_NotInDeserializedItems() {
         HttpMessageNotReadableException httpMessageNotReadableException =
-            new HttpMessageNotReadableException("I AM NOT DESERIALIZED");
+            new HttpMessageNotReadableException("I AM NOT DESERIALIZED", mock(HttpInputMessage.class));
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
@@ -214,7 +217,7 @@ class RoleAssignmentControllerAdviceTest {
     @Test
     void notReadableException_Classification() {
         HttpMessageNotReadableException httpMessageNotReadableException =
-            new HttpMessageNotReadableException(CLASSIFICATION);
+            new HttpMessageNotReadableException(CLASSIFICATION, mock(HttpInputMessage.class));
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
@@ -225,7 +228,7 @@ class RoleAssignmentControllerAdviceTest {
     @Test
     void notReadableException_ActorIdType() {
         HttpMessageNotReadableException httpMessageNotReadableException =
-            new HttpMessageNotReadableException(ACTORIDTYPE);
+            new HttpMessageNotReadableException(ACTORIDTYPE, mock(HttpInputMessage.class));
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
@@ -235,7 +238,7 @@ class RoleAssignmentControllerAdviceTest {
     @Test
     void notReadableException_GrantType() {
         HttpMessageNotReadableException httpMessageNotReadableException =
-            new HttpMessageNotReadableException(GRANTTYPE);
+            new HttpMessageNotReadableException(GRANTTYPE, mock(HttpInputMessage.class));
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
@@ -245,7 +248,7 @@ class RoleAssignmentControllerAdviceTest {
     @Test
     void notReadableException_RoleCategory() {
         HttpMessageNotReadableException httpMessageNotReadableException =
-            new HttpMessageNotReadableException(ROLECATEGORY);
+            new HttpMessageNotReadableException(ROLECATEGORY, mock(HttpInputMessage.class));
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
@@ -254,7 +257,8 @@ class RoleAssignmentControllerAdviceTest {
 
     @Test
     void notReadableException_Boolean() {
-        HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException(BOOLEAN);
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException(BOOLEAN, mock(HttpInputMessage.class));
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
@@ -264,7 +268,7 @@ class RoleAssignmentControllerAdviceTest {
     @Test
     void notReadableException_LocalDateTime() {
         HttpMessageNotReadableException httpMessageNotReadableException =
-            new HttpMessageNotReadableException(LOCALDATETIME);
+            new HttpMessageNotReadableException(LOCALDATETIME, mock(HttpInputMessage.class));
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
@@ -274,7 +278,7 @@ class RoleAssignmentControllerAdviceTest {
     @Test
     void notReadableException_Integer() {
         HttpMessageNotReadableException httpMessageNotReadableException =
-            new HttpMessageNotReadableException(INTEGER);
+            new HttpMessageNotReadableException(INTEGER, mock(HttpInputMessage.class));
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
@@ -284,7 +288,7 @@ class RoleAssignmentControllerAdviceTest {
     @Test
     void notReadableException_Status() {
         HttpMessageNotReadableException httpMessageNotReadableException =
-            new HttpMessageNotReadableException(STATUS);
+            new HttpMessageNotReadableException(STATUS, mock(HttpInputMessage.class));
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
@@ -293,16 +297,20 @@ class RoleAssignmentControllerAdviceTest {
 
     @Test
     void notReadableException_EmptyExceptionMessage() {
-        HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException("");
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException("", mock(HttpInputMessage.class));
         ResponseEntity<ErrorResponse> responseEntity = csda.notReadableException(httpMessageNotReadableException);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST.value(), responseEntity.getStatusCode().value());
-        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrorDescription().contains(""));
+        Assertions.assertNotNull(responseEntity.getBody());
+        assertTrue(responseEntity.getBody().getErrorDescription().contains(""));
     }
 
     @Test
     void notReadableException_nullExceptionMessage() {
-        HttpMessageNotReadableException httpMessageNotReadableException = new HttpMessageNotReadableException(null);
+        HttpMessageNotReadableException httpMessageNotReadableException =
+            new HttpMessageNotReadableException(null, mock(HttpInputMessage.class)
+        );
         Assertions.assertThrows(NullPointerException.class,
             () -> csda.notReadableException(httpMessageNotReadableException));
     }
