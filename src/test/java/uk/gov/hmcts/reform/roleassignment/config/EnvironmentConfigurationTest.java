@@ -23,6 +23,7 @@ class EnvironmentConfigurationTest {
 
     }
 
+    
     @ParameterizedTest
     @NullAndEmptySource
     void testGetEnvironment_shouldReturnRasValueWhenLaunchDarklyValueNotSupplied(String launchDarklyEnvironment) {
