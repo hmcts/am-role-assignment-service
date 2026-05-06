@@ -6,11 +6,11 @@ buildscript {
       url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
     }
   }
-  configurations.classpath {
-    resolutionStrategy.force 'io.cucumber:query:14.6.0'
-  }
   dependencies {
-    classpath 'net.serenity-bdd:serenity-gradle-plugin:4.3.2'
+    classpath('net.serenity-bdd:serenity-gradle-plugin:4.3.2') {
+      exclude group: 'io.cucumber', module: 'query'
+    }
+    classpath files('gradle/libs/query-14.6.0.jar')
   }
 }
 
