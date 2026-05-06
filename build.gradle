@@ -1,3 +1,19 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+      url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
+    }
+  }
+  configurations.classpath {
+    resolutionStrategy.force 'io.cucumber:query:14.6.0'
+  }
+  dependencies {
+    classpath 'net.serenity-bdd:serenity-gradle-plugin:4.3.2'
+  }
+}
+
 plugins {
   id 'idea'
   id 'application'
@@ -13,8 +29,9 @@ plugins {
   id 'au.com.dius.pact' version '4.6.20' //do not change this version or serenity reports will fail to generate
   id 'org.flywaydb.flyway' version '9.22.3'
   id 'org.owasp.dependencycheck' version '12.2.1'
-  id 'net.serenity-bdd.serenity-gradle-plugin' version '4.3.2'
 }
+
+apply plugin: 'net.serenity-bdd.serenity-gradle-plugin'
 
 ext['snakeyaml.version'] = '2.0'
 
