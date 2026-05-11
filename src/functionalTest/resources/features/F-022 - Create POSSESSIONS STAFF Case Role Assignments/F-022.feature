@@ -1,5 +1,6 @@
 @F-022
 @FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
+@FeatureToggle(EV:PCS_CASE_VALIDATION_FTA_ENABLED=on)
 Feature: F-022 : Create Case Role Assignments for POSSESSIONS STAFF case roles
 
   Background:

@@ -1,5 +1,6 @@
 @F-023
 @FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
+@FeatureToggle(EV:PCS_CASE_VALIDATION_FTA_ENABLED=on)
 Feature: F-023 : Create Case Role Assignments for POSSESSIONS Challenged Access case roles
 
   Background:
