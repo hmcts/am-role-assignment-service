@@ -217,7 +217,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT","ST_CIC"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT","ST_CIC","PCS"]
           }
         }
       }
@@ -280,7 +280,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC","PROBATE"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC","PROBATE","PCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -313,7 +313,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS"]
           }
         }
       }
@@ -343,7 +343,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS"]
           }
         }
       }
@@ -460,7 +460,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT", "ST_CIC"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT", "ST_CIC","PCS"]
           }
         }
       }
@@ -490,7 +490,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT", "ST_CIC"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT", "ST_CIC","PCS"]
           }
         }
       }
@@ -590,7 +590,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT","SSCS","ST_CIC"]
+            "values": ["IA","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT","SSCS","ST_CIC","PCS"]
           }
         }
       }
@@ -1621,7 +1621,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC"]
+            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2086,7 +2086,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2152,7 +2152,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL", "PRIVATELAW", "PUBLICLAW"]
+            "values": ["CIVIL", "PRIVATELAW", "PUBLICLAW","PCS"]
           }
         }
       }
@@ -2247,6 +2247,44 @@
           },
           "primaryLocation": {
             "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-approver-legal-ops",
+    "label": "Specific Access Approver Legal Ops",
+    "description": "Specific Access Approver role for staff users",
+    "category": "JUDICIAL",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": [
+            "ORGANISATION"
+          ]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": [
+            "STANDARD"
+          ]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": [
+            "PUBLIC"
+          ]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "PCS"
+            ]
           }
         }
       }
@@ -2437,7 +2475,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2499,7 +2537,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -3325,6 +3363,82 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["CIVIL"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "wlu-admin",
+    "label": "WLU Administrator",
+    "description": "WLU Administrator role for admin users",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": [
+            "ORGANISATION"
+          ]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": [
+            "STANDARD"
+          ]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": [
+            "PUBLIC"
+          ]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "CIVIL","PCS"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "wlu-team-leader",
+    "label": "WLU Team Leader",
+    "description": "WLU Team Leader role for admin users",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": [
+            "ORGANISATION"
+          ]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": [
+            "STANDARD"
+          ]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": [
+            "PUBLIC"
+          ]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "CIVIL", "PCS"
+            ]
           }
         }
       }
