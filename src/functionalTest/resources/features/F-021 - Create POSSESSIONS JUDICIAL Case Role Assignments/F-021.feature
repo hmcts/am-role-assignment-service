@@ -1,5 +1,6 @@
 @F-021
 @FeatureToggle(EV:AZURE_CASE_VALIDATION_FTA_ENABLED=on)
+@FeatureToggle(EV:PCS_CASE_VALIDATION_FTA_ENABLED=on)
 Feature: F-021 : Create Case Role Assignments for POSSESSIONS JUDICIAL case roles
 
   Background:
