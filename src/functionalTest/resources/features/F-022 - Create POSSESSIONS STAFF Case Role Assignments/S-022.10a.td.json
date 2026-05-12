@@ -1,0 +1,75 @@
+{
+  "title": "must successfully create allocated-bailiff POSSESSIONS case role with existing org role - bailiff-manager",
+  "_guid_": "S-022.10a",
+  "_extends_": "F-022_CreateOrgRoles__Base",
+
+  "specs": [
+    "an active IDAM profile with full permissions",
+    "Befta3 - who is the actor for requested role",
+    "contains ReplaceExisting is false and reference set to caseId",
+    "contains allocated-bailiff case role assignment"
+  ],
+
+  "request": {
+    "body": {
+      "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1776251462396879/allocated-bailiff",
+        "replaceExisting" : false
+      },
+      "requestedRoles": [
+        {
+          "actorIdType": "IDAM",
+          "actorId": "${[scenarioContext][testData][users][befta3][id]}",
+          "roleName": "allocated-bailiff",
+          "roleCategory": "ENFORCEMENT",
+          "roleType": "CASE",
+          "grantType": "SPECIFIC",
+          "classification": "RESTRICTED",
+          "readOnly": false,
+          "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
+          "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
+          "attributes":
+          {
+            "caseId" : "1776251462396879",
+            "jurisdiction": "PCS"
+          }
+        }
+      ]
+    }
+  },
+
+  "expectedResponse": {
+    "body": {
+      "roleAssignmentResponse": {
+        "requestedRoles": [
+          {
+            "id": "[[ANYTHING_PRESENT]]",
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "actorIdType": "IDAM",
+            "actorId": "${[scenarioContext][testData][users][befta3][id]}",
+            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
+            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "classification": "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
+            "readOnly": "${[scenarioContext][testData][request][body][requestedRoles][0][readOnly]}",
+            "beginTime": "[[ANYTHING_PRESENT]]",
+            "endTime": "[[ANYTHING_PRESENT]]",
+            "attributes":
+            {
+              "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
+              "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
+              "caseType" : "PCS",
+              "substantive": "Y"
+            },
+            "status": "LIVE",
+            "created": "[[ANYTHING_PRESENT]]",
+            "log": "[[ANYTHING_PRESENT]]"
+          }
+        ]
+      }
+    }
+  }
+}
