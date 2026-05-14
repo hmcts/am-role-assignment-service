@@ -1,0 +1,12 @@
+{
+  "_guid_": "S-026.01_CreateCaseRole_CITIZEN",
+  "_extends_": "S-025.01_CreateCaseRole_CITIZEN",
+
+  "request": {
+    "body": {
+      "roleRequest": {
+        "reference": "F-026_CreateCaseRole"
+      }
+    }
+  }
+}

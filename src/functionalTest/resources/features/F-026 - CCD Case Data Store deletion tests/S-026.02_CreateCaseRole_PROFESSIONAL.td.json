@@ -1,0 +1,12 @@
+{
+  "_guid_": "S-026.02_CreateCaseRole_PROFESSIONAL",
+  "_extends_": "S-025.02_CreateCaseRole_PROFESSIONAL",
+
+  "request": {
+    "body": {
+      "roleRequest": {
+        "reference": "F-026_CreateCaseRole"
+      }
+    }
+  }
+}

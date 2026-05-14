@@ -1,0 +1,12 @@
+{
+  "_guid_": "S-027.03_CreateOrgRoles_ADMIN",
+  "_extends_": "S-025.03_CreateOrgRoles_ADMIN",
+
+  "request": {
+    "body": {
+      "roleRequest": {
+        "reference": "F-027_CreateOrgRole"
+      }
+    }
+  }
+}

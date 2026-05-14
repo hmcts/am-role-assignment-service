@@ -1,0 +1,38 @@
+{
+  "title": "must reject call from AAC Manage Case Assignment to delete LEGAL_OPS case-roles",
+
+  "_guid_": "S-027.05",
+  "_extends_": "DeleteDataForRoleAssignments",
+
+  "specs": [
+    "an active IDAM profile with full permissions",
+    "Befta3 - who is the actor for requested role",
+
+    "with S2S token for AAC Manage Case Assignment service",
+    "with process and reference values used to create the case-role assignment"
+  ],
+
+  "users": {
+    "invokingUser": {
+      "_extends_": "AmBeftaUser2"
+    }, 
+    "befta3": {
+      "_extends_": "AmBeftaUser3"
+    }
+  },
+
+  "request": {
+    "headers": {
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForMca]}"
+    },
+    "pathVariables": {
+      "process": "${[scenarioContext][childContexts][S-027.05_CreateCaseRole_LEGAL_OPS][testData][request][body][roleRequest][process]}",
+      "reference": "${[scenarioContext][childContexts][S-027.05_CreateCaseRole_LEGAL_OPS][testData][request][body][roleRequest][reference]}"
+    }
+  },
+
+  "expectedResponse": {
+    "_extends_": "RAS_422_Response"
+  }
+
+}

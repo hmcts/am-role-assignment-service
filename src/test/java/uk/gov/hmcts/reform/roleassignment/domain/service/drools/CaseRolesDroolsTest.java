@@ -1,12 +1,12 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 import com.fasterxml.jackson.databind.JsonNode;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.FeatureFlag;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.FeatureFlagEnum;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -22,7 +22,6 @@ import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.GrantType.SP
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.APPROVED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.DELETE_REQUESTED;
 import static uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status.REJECTED;
-import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.CASE_ALLOCATOR_ID;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildExistingRole;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
@@ -74,9 +73,13 @@ class CaseRolesDroolsTest extends DroolBase {
         "SSCS,Benefit,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
         // PRIVATELAW PRLAPPS
         "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,RESTRICTED,judge,",
+        "PRIVATELAW,PRLAPPS,hearing-judge,JUDICIAL,RESTRICTED,fee-paid-judge,",
         "PRIVATELAW,PRLAPPS,gatekeeping-judge,JUDICIAL,RESTRICTED,judge,",
+        "PRIVATELAW,PRLAPPS,gatekeeping-judge,JUDICIAL,RESTRICTED,fee-paid-judge,",
         "PRIVATELAW,PRLAPPS,allocated-judge,JUDICIAL,RESTRICTED,judge,",
+        "PRIVATELAW,PRLAPPS,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,",
         "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,RESTRICTED,magistrate,",
+        "PRIVATELAW,PRLAPPS,allocated-magistrate,JUDICIAL,RESTRICTED,fee-paid-judge,",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,PUBLIC,tribunal-caseworker,Y",
         "PRIVATELAW,PRLAPPS,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED,tribunal-caseworker,Y",
         "PRIVATELAW,PRLAPPS,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
@@ -233,7 +236,27 @@ class CaseRolesDroolsTest extends DroolBase {
         "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
         "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
         "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,national-business-centre,Y",
-        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y"
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y",
+        // PROBATE
+        "PROBATE,GrantOfRepresentation,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
+        "PROBATE,GrantOfRepresentation,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
+        "PROBATE,GrantOfRepresentation,allocated-tribunal-caseworker,LEGAL_OPERATIONS,RESTRICTED,"
+            + "senior-tribunal-caseworker,Y",
+        // POSSESSIONS
+        "PCS,any-case-type,allocated-judge,JUDICIAL,RESTRICTED,judge,Y",
+        "PCS,any-case-type,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
+        "PCS,any-case-type,hearing-judge,JUDICIAL,PUBLIC,judge,Y",
+        "PCS,any-case-type,hearing-judge,JUDICIAL,PUBLIC,fee-paid-judge,Y",
+        "PCS,any-case-type,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
+        "PCS,any-case-type,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
+        "PCS,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,Y",
+        "PCS,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,Y",
+        "PCS,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED,bailiff-admin,Y",
+        "PCS,any-case-type,allocated-wlu-caseworker,ADMIN,RESTRICTED,wlu-admin,Y",
+        "PCS,any-case-type,allocated-wlu-caseworker,ADMIN,RESTRICTED,wlu-team-leader,Y",
+        "PCS,any-case-type,case-allocator,JUDICIAL,RESTRICTED,case-allocator,N",
+        "PCS,any-case-type,case-allocator,ADMIN,RESTRICTED,case-allocator,N",
+        "PCS,any-case-type,case-allocator,CTSC,RESTRICTED,case-allocator,N",
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName,
                                        String roleCategory, String classification,
@@ -318,7 +341,17 @@ class CaseRolesDroolsTest extends DroolBase {
         "CIVIL,GENERALAPPLICATION,allocated-legal-adviser,LEGAL_OPERATIONS,RESTRICTED",
         "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker,ADMIN,RESTRICTED",
         "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker,CTSC,RESTRICTED",
-        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED"
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker,ADMIN,RESTRICTED",
+        // POSSESSIONS
+        "PCS,any-case-type,allocated-judge,JUDICIAL,RESTRICTED",
+        "PCS,any-case-type,hearing-judge,JUDICIAL,RESTRICTED",
+        "PCS,any-case-type,allocated-ctsc-caseworker,CTSC,RESTRICTED",
+        "PCS,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED",
+        "PCS,any-case-type,allocated-wlu-caseworker,ADMIN,RESTRICTED",
+        "PCS,any-case-type,allocated-bailiff,ADMIN,RESTRICTED",
+        "PCS,any-case-type,case-allocator,JUDICIAL,RESTRICTED",
+        "PCS,any-case-type,case-allocator,ADMIN,RESTRICTED",
+        "PCS,any-case-type,case-allocator,CTSC,RESTRICTED",
     })
     void shouldRejectAccessFor_CaseRole_BadExistingRole(String jurisdiction, String caseType, String roleName,
                                                         String roleCategory, String classification) {
@@ -352,10 +385,10 @@ class CaseRolesDroolsTest extends DroolBase {
             Classification.valueOf(classification),
             SPECIFIC,
             Status.CREATE_REQUESTED,
-            "am_org_role_mapping_service",
+            TestDataBuilder.CLIENT_ID_XUI,
             false,
             "Access required for reasons",
-            CASE_ALLOCATOR_ID,
+            TestDataBuilder.ACTORID,
             "reference"
         )
             .build();
@@ -378,7 +411,7 @@ class CaseRolesDroolsTest extends DroolBase {
                                       ),
                                   TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          TestDataBuilder.CASE_ALLOCATOR_ID,
+                                          TestDataBuilder.ACTORID,
                                           existingRoleName,
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -391,6 +424,7 @@ class CaseRolesDroolsTest extends DroolBase {
 
         if (expectedRoleAssignmentStatus == APPROVED) {
             assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+                assertEquals(TestDataBuilder.ACTORID, roleAssignment.getActorId());
                 assertEquals(jurisdiction, roleAssignment.getAttributes().get("jurisdiction").asText());
                 assertEquals(caseType, roleAssignment.getAttributes().get("caseType").asText());
                 assertEquals(roleName, roleAssignment.getRoleName());
@@ -482,7 +516,15 @@ class CaseRolesDroolsTest extends DroolBase {
         "CIVIL,GENERALAPPLICATION,allocated-legal-adviser",
         "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker",
         "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker",
-        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker"
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker",
+        // POSSESSIONS
+        "PCS,any-case-type,allocated-judge",
+        "PCS,any-case-type,hearing-judge",
+        "PCS,any-case-type,allocated-ctsc-caseworker",
+        "PCS,any-case-type,allocated-admin-caseworker",
+        "PCS,any-case-type,allocated-wlu-caseworker",
+        "PCS,any-case-type,allocated-bailiff",
+        "PCS,any-case-type,case-allocator",
     })
     void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, null, Status.DELETE_APPROVED);
@@ -564,7 +606,15 @@ class CaseRolesDroolsTest extends DroolBase {
         "CIVIL,GENERALAPPLICATION,allocated-legal-adviser",
         "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker",
         "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker",
-        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker"
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker",
+        // POSSESSIONS
+        "PCS,any-case-type,allocated-judge",
+        "PCS,any-case-type,hearing-judge",
+        "PCS,any-case-type,allocated-ctsc-caseworker",
+        "PCS,any-case-type,allocated-admin-caseworker",
+        "PCS,any-case-type,allocated-wlu-caseworker",
+        "PCS,any-case-type,allocated-bailiff",
+        "PCS,any-case-type,case-allocator",
     })
     void shouldDelete_CaseRole_withMatchingCaseAllocatorRegion(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, CASE_REGION, Status.DELETE_APPROVED);
@@ -646,7 +696,15 @@ class CaseRolesDroolsTest extends DroolBase {
         "CIVIL,GENERALAPPLICATION,allocated-legal-adviser",
         "CIVIL,GENERALAPPLICATION,allocated-admin-caseworker",
         "CIVIL,GENERALAPPLICATION,allocated-ctsc-caseworker",
-        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker"
+        "CIVIL,GENERALAPPLICATION,allocated-nbc-caseworker",
+        // POSSESSIONS
+        "PCS,any-case-type,allocated-judge",
+        "PCS,any-case-type,hearing-judge",
+        "PCS,any-case-type,allocated-ctsc-caseworker",
+        "PCS,any-case-type,allocated-admin-caseworker",
+        "PCS,any-case-type,allocated-wlu-caseworker",
+        "PCS,any-case-type,allocated-bailiff",
+        "PCS,any-case-type,case-allocator",
     })
     void shouldRejectDelete_CaseRole_withBadCaseAllocatorRegion(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, "bad-region", Status.DELETE_REJECTED);
@@ -672,10 +730,10 @@ class CaseRolesDroolsTest extends DroolBase {
             PUBLIC,
             SPECIFIC,
             DELETE_REQUESTED,
-            "am_org_role_mapping_service",
+            TestDataBuilder.CLIENT_ID_XUI,
             false,
             "Delete required for reasons",
-            CASE_ALLOCATOR_ID,
+            TestDataBuilder.ACTORID,
             "reference"
         )
             .build();
@@ -690,7 +748,7 @@ class CaseRolesDroolsTest extends DroolBase {
         }
         existingAttributes.put("allocatedRole", convertValueJsonNode(roleName));
 
-        executeDroolRules(List.of(buildExistingRole(CASE_ALLOCATOR_ID,
+        executeDroolRules(List.of(buildExistingRole(TestDataBuilder.CASE_ALLOCATOR_ID,
                                                     "case-allocator",
                                                     RoleCategory.JUDICIAL,
                                                     existingAttributes,
@@ -727,10 +785,10 @@ class CaseRolesDroolsTest extends DroolBase {
             PUBLIC,
             SPECIFIC,
             Status.CREATE_REQUESTED,
-            "am_org_role_mapping_service",
+            TestDataBuilder.CLIENT_ID_XUI,
             false,
             "Access required for reasons",
-            CASE_ALLOCATOR_ID,
+            TestDataBuilder.ACTORID,
             "reference"
         )
             .build();
@@ -753,7 +811,7 @@ class CaseRolesDroolsTest extends DroolBase {
                                       ),
                                   TestDataBuilder
                                       .buildExistingRoleForDrools(
-                                          TestDataBuilder.CASE_ALLOCATOR_ID,
+                                          TestDataBuilder.ACTORID,
                                           existingRoleName,
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
@@ -796,14 +854,15 @@ class CaseRolesDroolsTest extends DroolBase {
             clientId,
             false,
             "Delete required for reasons",
-            CASE_ALLOCATOR_ID,
+            TestDataBuilder.ACTORID,
             "reference"
         )
             .build();
 
         setFeatureFlags();
 
-        executeDroolRules(List.of(buildExistingRole(CASE_ALLOCATOR_ID,
+        // NB: Existing roles are missing case-allocator role for CASE_ALLOCATOR_ID user: hence rejected
+        executeDroolRules(List.of(buildExistingRole(TestDataBuilder.ACTORID,
                                                     roleName,
                                                     RoleCategory.JUDICIAL,
                                                     existingAttributes,
@@ -816,7 +875,12 @@ class CaseRolesDroolsTest extends DroolBase {
     }
 
     private void setFeatureFlags() {
-        List<String> flags = List.of("sscs_wa_1_0", "sscs_case_allocator_1_0", "all_wa_services_case_allocator_1_0");
+        List<String> flags = List.of(
+            "sscs_wa_1_0",
+            "sscs_case_allocator_1_0",
+            "all_wa_services_case_allocator_1_0",
+            FeatureFlagEnum.PROBATE_WA_1_0.getValue()
+        );
 
         for (String flag : flags) {
             featureFlags.add(

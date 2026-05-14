@@ -1,0 +1,12 @@
+{
+  "_guid_": "S-027.05_CreateOrgRoles_LEGAL_OPS",
+  "_extends_": "S-025.05_CreateOrgRoles_LEGAL_OPS",
+
+  "request": {
+    "body": {
+      "roleRequest": {
+        "reference": "F-027_CreateOrgRole"
+      }
+    }
+  }
+}
