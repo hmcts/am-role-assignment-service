@@ -317,7 +317,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC","PROBATE","PCS"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC","PROBATE","PCS","DIVORCE"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -350,7 +350,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS","DIVORCE"]
           }
         }
       }
@@ -380,7 +380,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS"]
+            "values": ["PRIVATELAW","CIVIL","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS","DIVORCE"]
           }
         }
       }
@@ -1756,7 +1756,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PCS"]
+            "values": ["IA", "CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PCS","DIVORCE"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -1789,7 +1789,40 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL"]
+            "values": ["IA","CIVIL","DIVORCE"]
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "nbc-team-leader",
+    "label": "NBC Team Leader",
+    "description": "NBC Team Leader role for admin users",
+    "category": "ADMIN",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL", "DIVORCE"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2221,7 +2254,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PCS"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PCS","DIVORCE"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2360,6 +2393,38 @@
     "label": "Specific Access Approver Legal Ops",
     "description": "Specific Access Approver role for staff users",
     "category": "LEGAL_OPERATIONS",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "primaryLocation": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "specific-access-approver-legal-ops",
+    "label": "Specific Access Approver Legal Ops",
+    "description": "Specific Access Approver role for staff users",
+    "category": "ADMIN",
     "substantive": false,
     "type": "ORGANISATION",
     "patterns": [
@@ -2610,7 +2675,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS","DIVORCE"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -2672,7 +2737,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","IA","EMPLOYMENT","SSCS","ST_CIC","PROBATE","PCS","DIVORCE"]
           },
           "primaryLocation": {
             "mandatory": true
@@ -3024,7 +3089,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW", "CIVIL"]
+            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW", "CIVIL", "DIVORCE"]
           },
           "caseType": {
             "mandatory": true,
@@ -3036,6 +3101,7 @@
               "ET_Scotland_Multiple",
               "PRLAPPS",
               "CIVIL",
+              "DIVORCE",
               "GENERALAPPLICATION"
             ]
           },
@@ -3109,6 +3175,7 @@
               "ET_Scotland_Multiple",
               "PRLAPPS",
               "CIVIL",
+              "DIVORCE",
               "GENERALAPPLICATION",
               "GrantOfRepresentation"
             ]
