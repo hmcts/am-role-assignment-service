@@ -12,6 +12,9 @@ import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContext;
 import uk.gov.hmcts.reform.roleassignment.auditlog.aop.AuditContextHolder;
 import uk.gov.hmcts.reform.roleassignment.domain.model.MutableHttpServletRequest;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Slf4j
 public class AuditInterceptor implements HandlerInterceptor {
@@ -57,8 +60,24 @@ public class AuditInterceptor implements HandlerInterceptor {
         if ((context.getResponseTime() != null && context.getResponseTime() > 500)
             || context.getHttpStatus() == 422
             || log.isDebugEnabled()) {
-            context.setRequestPayload(new MutableHttpServletRequest(request).getBodyAsString());
+            context.setRequestPayloadHash(hash(new MutableHttpServletRequest(request).getBodyAsString()));
         }
         return context;
+    }
+
+    private String hash(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        try {
+            byte[] digest = MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hex = new StringBuilder(digest.length * 2);
+            for (byte b : digest) {
+                hex.append(String.format("%02x", b));
+            }
+            return hex.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("SHA-256 is not available", e);
+        }
     }
 }
