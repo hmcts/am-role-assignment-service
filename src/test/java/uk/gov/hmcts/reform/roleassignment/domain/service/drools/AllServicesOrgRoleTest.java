@@ -568,7 +568,21 @@ class AllServicesOrgRoleTest extends DroolBase {
         "task-supervisor,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,N,Null,PUBLIC",
         "ctsc-team-leader,CTSC,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
         "bailiff-admin,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
-
+        "ctsc,CTSC,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "hmcts-ctsc,CTSC,BASIC,north-east,DIVORCE,UK,ORGANISATION,N,Null,PRIVATE",
+        "task-supervisor,CTSC,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Null,PUBLIC",
+        "case-allocator,CTSC,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Null,PUBLIC",
+        "ctsc-team-leader,CTSC,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "specific-access-approver-ctsc,CTSC,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Null,PUBLIC",
+        "hearing-centre-admin,ADMIN,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "hmcts-admin,ADMIN,BASIC,north-east,DIVORCE,UK,ORGANISATION,N,Null,PRIVATE",
+        "task-supervisor,ADMIN,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Null,PUBLIC",
+        "case-allocator,ADMIN,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Null,PUBLIC",
+        "hearing-centre-team-leader,ADMIN,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "specific-access-approver-admin,ADMIN,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Null,PUBLIC",
+        "specific-access-approver-legal-ops,ADMIN,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Null,PUBLIC",
+        "national-business-centre,ADMIN,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "nbc-team-leader,ADMIN,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC"
     },
         nullValues = "Null"
     )

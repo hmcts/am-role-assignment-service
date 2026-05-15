@@ -14,7 +14,8 @@ public enum FeatureFlagEnum {
     DISPOSER_1_0("disposer_1_0"),
     DISPOSER_1_1("disposer_1_1"),
     ALL_WA_SERVICES_CASE_ALLOCATOR_1_0("all_wa_services_case_allocator_1_0"),
-    PROBATE_WA_1_0("probate_wa_1_0");
+    PROBATE_WA_1_0("probate_wa_1_0"),
+    DIVORCE_WA_1_0("divorce_wa_1_0");
 
     private final String value;
 
