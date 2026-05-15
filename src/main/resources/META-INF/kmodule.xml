@@ -16,7 +16,8 @@
                   validationrules.employment,
                   validationrules.stcic,
                   validationrules.probate,
-                  validationrules.possessions">
+                  validationrules.possessions,
+                  validationrules.divorce">
       <ksession name="role-assignment-validation-session" type="stateless"/>
   </kbase>
 </kmodule>
