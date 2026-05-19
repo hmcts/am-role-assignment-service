@@ -257,6 +257,16 @@ class CaseRolesDroolsTest extends DroolBase {
         "PCS,any-case-type,case-allocator,JUDICIAL,RESTRICTED,case-allocator,N",
         "PCS,any-case-type,case-allocator,ADMIN,RESTRICTED,case-allocator,N",
         "PCS,any-case-type,case-allocator,CTSC,RESTRICTED,case-allocator,N",
+        // DIVORCE
+        "DIVORCE,any-case-type,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
+        "DIVORCE,any-case-type,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
+        "DIVORCE,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,Y",
+        "DIVORCE,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,Y",
+        "DIVORCE,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED,national-business-centre,Y",
+        "DIVORCE,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y",
+        "DIVORCE,any-case-type,case-allocator,JUDICIAL,RESTRICTED,case-allocator,N",
+        "DIVORCE,any-case-type,case-allocator,ADMIN,RESTRICTED,case-allocator,N",
+        "DIVORCE,any-case-type,case-allocator,CTSC,RESTRICTED,case-allocator,N"
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName,
                                        String roleCategory, String classification,
@@ -352,6 +362,12 @@ class CaseRolesDroolsTest extends DroolBase {
         "PCS,any-case-type,case-allocator,JUDICIAL,RESTRICTED",
         "PCS,any-case-type,case-allocator,ADMIN,RESTRICTED",
         "PCS,any-case-type,case-allocator,CTSC,RESTRICTED",
+        // DIVORCE
+        "DIVORCE,any-case-type,allocated-ctsc-caseworker,CTSC,RESTRICTED",
+        "DIVORCE,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED",
+        "DIVORCE,any-case-type,case-allocator,JUDICIAL,RESTRICTED",
+        "DIVORCE,any-case-type,case-allocator,ADMIN,RESTRICTED",
+        "DIVORCE,any-case-type,case-allocator,CTSC,RESTRICTED"
     })
     void shouldRejectAccessFor_CaseRole_BadExistingRole(String jurisdiction, String caseType, String roleName,
                                                         String roleCategory, String classification) {
@@ -525,6 +541,12 @@ class CaseRolesDroolsTest extends DroolBase {
         "PCS,any-case-type,allocated-wlu-caseworker",
         "PCS,any-case-type,allocated-bailiff",
         "PCS,any-case-type,case-allocator",
+        // DIVORCE
+        "DIVORCE,any-case-type,allocated-ctsc-caseworker,CTSC,RESTRICTED",
+        "DIVORCE,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED",
+        "DIVORCE,any-case-type,case-allocator,JUDICIAL,RESTRICTED",
+        "DIVORCE,any-case-type,case-allocator,ADMIN,RESTRICTED",
+        "DIVORCE,any-case-type,case-allocator,CTSC,RESTRICTED"
     })
     void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, null, Status.DELETE_APPROVED);
@@ -705,6 +727,10 @@ class CaseRolesDroolsTest extends DroolBase {
         "PCS,any-case-type,allocated-wlu-caseworker",
         "PCS,any-case-type,allocated-bailiff",
         "PCS,any-case-type,case-allocator",
+        // DIVORCE
+        "DIVORCE,any-case-type,allocated-ctsc-caseworker",
+        "DIVORCE,any-case-type,allocated-admin-caseworker",
+        "DIVORCE,any-case-type,case-allocator"
     })
     void shouldRejectDelete_CaseRole_withBadCaseAllocatorRegion(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, "bad-region", Status.DELETE_REJECTED);
@@ -879,7 +905,8 @@ class CaseRolesDroolsTest extends DroolBase {
             "sscs_wa_1_0",
             "sscs_case_allocator_1_0",
             "all_wa_services_case_allocator_1_0",
-            FeatureFlagEnum.PROBATE_WA_1_0.getValue()
+            FeatureFlagEnum.PROBATE_WA_1_0.getValue(),
+            FeatureFlagEnum.DIVORCE_WA_1_0.getValue()
         );
 
         for (String flag : flags) {
