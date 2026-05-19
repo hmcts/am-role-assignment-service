@@ -184,7 +184,7 @@
           "jurisdiction": {
             "mandatory": true,
             "values": [
-              "PCS"
+              "PCS", "DIVORCE"
             ]
           },
           "caseType": {
@@ -410,7 +410,7 @@
           "jurisdiction": {
             "mandatory": true,
             "values": [
-              "PCS"
+              "PCS", "DIVORCE"
             ]
           },
           "caseType": {
@@ -3127,7 +3127,7 @@
           "jurisdiction": {
             "mandatory": true,
             "values": [
-              "PCS"
+              "PCS", "DIVORCE"
             ]
           },
           "caseType": {
@@ -3163,7 +3163,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW", "CIVIL", "PROBATE"]
+            "values": ["EMPLOYMENT", "SSCS", "PRIVATELAW", "CIVIL", "PROBATE", "DIVORCE"]
           },
           "caseType": {
             "mandatory": true,
@@ -3202,7 +3202,7 @@
           "jurisdiction": {
             "mandatory": true,
             "values": [
-              "PCS"
+              "PCS", "DIVORCE"
             ]
           },
           "caseType": {
