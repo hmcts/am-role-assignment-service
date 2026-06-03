@@ -254,7 +254,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT","ST_CIC","PCS"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","ST_CIC","PCS","DIVORCE"]
           }
         }
       }
@@ -534,7 +534,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT", "ST_CIC","PCS"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT", "ST_CIC","PCS", "DIVORCE"]
           }
         }
       }
@@ -564,7 +564,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT", "ST_CIC","PCS"]
+            "values": ["IA","SSCS","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT", "ST_CIC","PCS", "DIVORCE"]
           }
         }
       }
@@ -600,7 +600,8 @@
               "PUBLICLAW",
               "EMPLOYMENT",
               "ST_CIC",
-              "PCS"
+              "PCS",
+              "DIVORCE"
             ]
           },
           "caseType": {
@@ -672,7 +673,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA","CIVIL","PRIVATELAW", "PUBLICLAW", "EMPLOYMENT","SSCS","ST_CIC","PCS"]
+            "values": ["IA","CIVIL","PRIVATELAW","PUBLICLAW","EMPLOYMENT","SSCS","ST_CIC","PCS","DIVORCE"]
           }
         }
       }
@@ -935,7 +936,8 @@
               "SSCS",
               "ST_CIC",
               "PROBATE",
-              "PCS"
+              "PCS",
+              "DIVORCE"
             ]
           },
           "caseType": {
@@ -2320,7 +2322,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["CIVIL", "PRIVATELAW", "PUBLICLAW","PCS"]
+            "values": ["CIVIL","PRIVATELAW","PUBLICLAW","PCS","DIVORCE"]
           }
         }
       }
@@ -2774,7 +2776,8 @@
               "ST_CIC",
               "PRIVATELAW",
               "CIVIL",
-              "PCS"
+              "PCS",
+              "DIVORCE"
             ]
           },
           "caseType": {
@@ -2880,7 +2883,7 @@
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["IA", "EMPLOYMENT", "CIVIL"]
+            "values": ["IA","EMPLOYMENT","CIVIL","DIVORCE"]
           },
           "caseType": {
             "mandatory": true,
@@ -3703,6 +3706,66 @@
             "values": [
               "CIVIL", "PCS"
             ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "district-judge",
+    "label": "District Judge",
+    "description": "District Judge role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL","DIVORCE"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "recorder",
+    "label": "Recorder",
+    "description": "Recorder role for judicial users",
+    "category": "JUDICIAL",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["CIVIL","DIVORCE"]
           }
         }
       }
