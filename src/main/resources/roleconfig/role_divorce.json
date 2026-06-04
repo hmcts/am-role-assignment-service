@@ -330,9 +330,9 @@
     ]
   },
   {
-    "name": "tribunal-master-disability",
-    "label": "Tribunal Master Disability",
-    "description": "Tribunal Master Disability role for judicial users",
+    "name": "tribunal-member-disability",
+    "label": "Tribunal Member Disability",
+    "description": "Tribunal Member Disability role for judicial users",
     "category": "JUDICIAL",
     "substantive": true,
     "type": "ORGANISATION",
