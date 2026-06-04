@@ -9,6 +9,7 @@
 
 Role Assignment Service
 
+
 ## Purpose
 
 This SpringBoot application covers the implementation of the Role Assignment Service, which manages the assignment of roles with attributes to actors,
