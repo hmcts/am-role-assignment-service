@@ -596,21 +596,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         "circuit-judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Fee-Paid,PUBLIC",
         "task-supervisor,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Salaried,PUBLIC",   
         "case-allocator,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Salaried,PUBLIC",
-        "district-judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "recorder,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "circuit-judge-sitting-in-retirement,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "high-court-judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "high-court-judge-sitting-in-retirement,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "district-judge-sitting-in-retirement,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "deputy-district-judge-fee-paid,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "deputy-high-court-judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "deputy-district-judge-prfd,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "deputy-costs-judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "deputy-insolvency-and-companies-court-judge,JUDICIAL,STANDARD,north-east,DIVORCE,"
-            + "UK,ORGANISATION,Y,Null,PUBLIC",
-        "deputy-master,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "tribunal-judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "tribunal-member-disability,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
+        "high-court-judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Salaried,PUBLIC"
     },
         nullValues = "Null"
     )

@@ -2776,8 +2776,7 @@
               "ST_CIC",
               "PRIVATELAW",
               "CIVIL",
-              "PCS",
-              "DIVORCE"
+              "PCS"
             ]
           },
           "caseType": {
@@ -3706,66 +3705,6 @@
             "values": [
               "CIVIL", "PCS"
             ]
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "district-judge",
-    "label": "District Judge",
-    "description": "District Judge role for judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["CIVIL","DIVORCE"]
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "recorder",
-    "label": "Recorder",
-    "description": "Recorder role for judicial users",
-    "category": "JUDICIAL",
-    "substantive": true,
-    "type": "ORGANISATION",
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["CIVIL","DIVORCE"]
           }
         }
       }
