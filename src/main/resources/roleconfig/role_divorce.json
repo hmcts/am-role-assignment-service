@@ -10,20 +10,28 @@
       {
         "roleType": {
           "mandatory": true,
-          "values": ["ORGANISATION"]
+          "values": [
+            "ORGANISATION"
+          ]
         },
         "grantType": {
           "mandatory": true,
-          "values": ["STANDARD"]
+          "values": [
+            "STANDARD"
+          ]
         },
         "classification": {
           "mandatory": true,
-          "values": ["PUBLIC"]
+          "values": [
+            "PUBLIC"
+          ]
         },
         "attributes": {
           "jurisdiction": {
             "mandatory": true,
-            "values": ["DIVORCE"]
+            "values": [
+              "DIVORCE"
+            ]
           }
         }
       }
