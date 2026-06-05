@@ -1,0 +1,65 @@
+{
+  "_guid_": "S-023.01_Org_Role_Creation",
+  "_extends_": "F-023_CreateOrgRoles__Base",
+
+  "specs": [
+    "to create JUDICIAL org role assignments for actor"
+  ],
+
+  "request": {
+    "body": {
+      "requestedRoles": [
+        {
+          "actorIdType": "IDAM",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "roleName": "judge",
+          "roleCategory": "JUDICIAL",
+          "roleType": "ORGANISATION",
+          "grantType": "STANDARD",
+          "classification": "PUBLIC",
+          "readOnly": false,
+          "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
+          "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
+          "attributes": {
+            "jurisdiction": "PCS",
+            "primaryLocation": "123456",
+            "region": "2"
+          }
+        }
+      ]
+    }
+  },
+
+  "expectedResponse": {
+    "body": {
+      "roleAssignmentResponse": {
+        "requestedRoles": [
+          {
+            "id": "[[ANYTHING_PRESENT]]",
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "actorIdType": "IDAM",
+            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
+            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "classification": "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
+            "readOnly": "${[scenarioContext][testData][request][body][requestedRoles][0][readOnly]}",
+            "beginTime": "[[ANYTHING_PRESENT]]",
+            "endTime": "[[ANYTHING_PRESENT]]",
+            "attributes": {
+              "substantive": "[[ANYTHING_PRESENT]]",
+              "jurisdiction": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
+              "primaryLocation": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][primaryLocation]}",
+              "region": "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][region]}"
+            },
+            "status": "LIVE",
+            "created": "[[ANYTHING_PRESENT]]",
+            "log": "[[ANYTHING_PRESENT]]"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -25,16 +25,16 @@ ext {
 def versions = [
   junit           : '5.11.3',
   junitPlatform   : '1.11.3',
-  lombok          : '1.18.44',
+  lombok          : '1.18.46',
   pitest          : '1.20.2',
-  reformLogging   : '6.1.9',
-  reformS2sClient : '5.3.3',
+  reformLogging   : '8.0.0',
+  reformS2sClient : '5.3.4',
   serenity        : '4.3.4',
   spring          : '6.2.15',
   pact_version    : '4.1.7',
   rest_assured    : '5.5.7',
   cucumber        : '7.34.3',
-  feign_jackson   : '13.11',
+  feign_jackson   : '13.12',
   jacksondata     : '2.19.2',
   testcontainers  : '1.21.4',
   drools          : '10.1.0',
@@ -428,12 +428,12 @@ dependencies {
   implementation group: 'jakarta.inject', name: 'jakarta.inject-api', version: '2.0.1'
   implementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
   implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.12.0'
-  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.3'
+  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.4'
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.10'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '10.7'
-  implementation group: 'com.auth0', name: 'java-jwt', version: '4.5.1'
-  implementation group: 'commons-io', name:'commons-io', version: '2.21.0'
+  implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '10.9'
+  implementation group: 'com.auth0', name: 'java-jwt', version: '4.5.2'
+  implementation group: 'commons-io', name:'commons-io', version: '2.22.0'
   implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.28.0'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.json', name: 'json', version: '20250107'
@@ -480,7 +480,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testImplementation 'com.github.hmcts:befta-fw:9.2.4'
+  testImplementation 'com.github.hmcts:befta-fw:9.2.6'
   testImplementation 'com.github.hmcts:fortify-client:1.4.10:all'
   testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.8.5'
 
@@ -489,7 +489,7 @@ dependencies {
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
-  smokeTestImplementation group: 'commons-io', name: 'commons-io', version: '2.21.0'
+  smokeTestImplementation group: 'commons-io', name: 'commons-io', version: '2.22.0'
 
   // AM-467-Serenity report for Integration test
   integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
@@ -566,6 +566,11 @@ dependencyManagement {
       entry 'jackson-databind'
       entry 'jackson-core'
       entry 'jackson-annotations'
+    }
+    dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.55') {
+      entry 'tomcat-embed-core'
+      entry 'tomcat-embed-el'
+      entry 'tomcat-embed-websocket'
     }
   }
 }
