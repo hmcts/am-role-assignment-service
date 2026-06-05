@@ -582,7 +582,21 @@ class AllServicesOrgRoleTest extends DroolBase {
         "specific-access-approver-admin,ADMIN,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Null,PUBLIC",
         "specific-access-approver-legal-ops,ADMIN,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Null,PUBLIC",
         "national-business-centre,ADMIN,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
-        "nbc-team-leader,ADMIN,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC"
+        "nbc-team-leader,ADMIN,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Null,PUBLIC",
+
+        "hmcts-judiciary,JUDICIAL,BASIC,north-east,DIVORCE,UK,ORGANISATION,N,Null,PRIVATE",
+        "hmcts-judiciary,JUDICIAL,BASIC,north-east,DIVORCE,UK,ORGANISATION,N,Salaried,PRIVATE",
+        "judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Fee-Paid,PUBLIC",
+        "judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "fee-paid-judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Fee-Paid,PUBLIC",
+        "leadership-judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Salaried,PUBLIC",  
+        "specific-access-approver-judiciary,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Salaried,PUBLIC",  
+        "circuit-judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "circuit-judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Fee-Paid,PUBLIC",
+        "task-supervisor,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Salaried,PUBLIC",   
+        "case-allocator,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,N,Salaried,PUBLIC",
+        "high-court-judge,JUDICIAL,STANDARD,north-east,DIVORCE,UK,ORGANISATION,Y,Salaried,PUBLIC"
     },
         nullValues = "Null"
     )
