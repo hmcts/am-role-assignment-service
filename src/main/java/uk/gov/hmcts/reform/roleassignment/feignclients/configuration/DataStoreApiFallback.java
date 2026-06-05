@@ -165,7 +165,7 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .build();
             case DIVORCE_CASE_ID:
                 return Case.builder().id(caseId)
-                    .caseTypeId("DIVORCE")
+                    .caseTypeId("any-case-type")
                     .jurisdiction("DIVORCE")
                     .securityClassification(Classification.PUBLIC)
                     .build();
