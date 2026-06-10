@@ -13,4 +13,17 @@
     </notes>
     <cve>CVE-2025-21199</cve>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+        Reviewed 2026-06-10
+        False positive:
+        CVE-2026-33117 applies to Microsoft Azure Java SDK.
+        Affected libraries reported by dependency-check are:
+          - microsoft:azure_sdk_for_java:2.6.4
+        Versions of used libraries are their latest respectively.
+      ]]>
+    </notes>
+    <cve>CVE-2026-33117</cve>
+  </suppress>
 </suppressions>
