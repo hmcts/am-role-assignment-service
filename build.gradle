@@ -17,8 +17,9 @@ plugins {
 }
 
 ext['snakeyaml.version'] = '2.0'
-ext['kotlin.version'] = '1.9.25' // Fix CVE-2020-29582
+ext['kotlin.version'] = '2.1.0' // Fix CVE-2020-29582
 ext['commons-lang3.version'] = '3.20.0' // Fix CVE-2025-48924
+ext['plexus-utils.version'] = '4.0.3' // Fix CVE-2025-67030
 
 ext {
   springCloudVersion = '2025.0.2'
