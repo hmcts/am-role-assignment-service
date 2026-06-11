@@ -39,4 +39,18 @@
     </notes>
     <cve>CVE-2025-46392</cve>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+        Reviewed 2026-06-11
+        False positive:
+        CVE-2025-67030 applies to Plex Utils.
+        Affected libraries reported by dependency-check are:
+          - codehaus-plexus:plexus-utils:3.6.0
+          - utils_project:utils:3.6.0
+        Versions of used libraries are their latest respectively.
+      ]]>
+    </notes>
+    <cve>CVE-2025-67030</cve>
+  </suppress>
 </suppressions>
