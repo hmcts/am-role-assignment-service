@@ -26,4 +26,17 @@
     </notes>
     <cve>CVE-2026-33117</cve>
   </suppress>
+  <suppress>
+    <notes>
+      <![CDATA[
+        Reviewed 2026-06-11
+        False positive:
+        CVE-2025-46392 applies to Apache Commons Loading Untrusted Configurations.
+        Affected libraries reported by dependency-check are:
+          - spring-cloud-starter-netflix-hystrix:2.2.10.RELEASE
+        Versions of used libraries are their latest respectively.
+      ]]>
+    </notes>
+    <cve>CVE-2025-46392</cve>
+  </suppress>
 </suppressions>
