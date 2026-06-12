@@ -30,6 +30,7 @@ public class DataStoreApiFallback implements DataStoreApi {
     public static final String EMPLOYMENT_SCTL_MLT_CASE_ID = "1234567890123465";
     public static final String PROBATE_CASE_ID = "1234567890123466";
     public static final String PCS_CASE_ID = "1234567890123467";
+    public static final String DIVORCE_CASE_ID = "1234567890123468";
 
     @Override
     public String getServiceStatus() {
@@ -161,6 +162,12 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
                         Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
                                Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
+                    .build();
+            case DIVORCE_CASE_ID:
+                return Case.builder().id(caseId)
+                    .caseTypeId("any-case-type")
+                    .jurisdiction("DIVORCE")
+                    .securityClassification(Classification.PUBLIC)
                     .build();
             default:
                 return Case.builder().id(caseId)
