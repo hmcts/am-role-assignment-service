@@ -34,7 +34,7 @@ management:
     web:
       base-path: /
       exposure:
-        include: "*"
+        include: 'health'
   server:
     servlet:
       context-path: /
@@ -43,7 +43,6 @@ security:
   anonymousPaths:
     - "/"
     - "/health/**"
-    - "/loggers/**"
     - "/am/role-assignments/fetchFlagStatus"
     - "/swagger"
     - "/swagger-ui.html"
