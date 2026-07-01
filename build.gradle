@@ -536,6 +536,7 @@ dependencies {
   contractTestImplementation group: 'org.junit.platform', name: 'junit-platform-commons', version: versions.junitPlatform
   contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-engine', version: versions.junitPlatform
 
+  contractTestImplementation group: 'org.apache.groovy', name: 'groovy', version: '4.0.32'
   contractTestRuntimeOnly group: 'au.com.dius', name: 'pact-jvm-provider-spring', version: '4.0.10'
   contractTestImplementation group: 'au.com.dius.pact.provider', name: 'junit5', version: versions.pact_version
   contractTestImplementation group: 'au.com.dius.pact.provider', name: 'spring', version: versions.pact_version
