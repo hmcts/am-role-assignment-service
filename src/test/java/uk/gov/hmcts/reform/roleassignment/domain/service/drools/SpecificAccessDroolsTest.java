@@ -232,7 +232,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PCS,specific-access-admin,ADMIN,specific-access-approver-admin,ADMIN",
         "PCS,specific-access-ctsc,CTSC,specific-access-approver-ctsc,CTSC",
         // NB: special case of PCS Judge performing a LEGAL_OPERATIONS approver role
-        "PCS,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops,JUDICIAL",
+        "PCS,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops,JUDICIAL"
     })
     void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction,
                                                            String roleName, String roleCategory,
