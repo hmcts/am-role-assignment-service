@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.QueryAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
@@ -42,7 +43,7 @@ public class SearchQueryRoleAssignmentProviderTest {
     private static final String ACTOR_ID = "234873";
     private static final String ACTOR_ID_ADV = "14a21569-eb80-4681-b62c-6ae2ed069e5f";
 
-    @Autowired
+    @MockitoBean
     private PersistenceService persistenceService;
 
     @Autowired

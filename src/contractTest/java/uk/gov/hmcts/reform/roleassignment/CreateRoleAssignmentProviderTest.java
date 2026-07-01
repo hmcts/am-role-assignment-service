@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
@@ -57,19 +58,19 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildAtt
 @IgnoreNoPactsToVerify
 public class CreateRoleAssignmentProviderTest {
 
-    @Autowired
+    @MockitoBean
     private PersistenceService persistenceService;
 
-    @Autowired
+    @MockitoBean
     private SecurityUtils securityUtils;
 
-    @Autowired
+    @MockitoBean
     private CorrelationInterceptorUtil correlationInterceptorUtil;
 
     @Autowired
     private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
 
-    @Autowired
+    @MockitoBean
     private DataStoreApi dataStoreApi;
 
 

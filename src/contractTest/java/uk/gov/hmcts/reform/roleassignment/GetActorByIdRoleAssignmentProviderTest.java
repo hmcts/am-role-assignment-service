@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
@@ -38,7 +39,7 @@ import static org.mockito.Mockito.when;
 @IgnoreNoPactsToVerify
 public class GetActorByIdRoleAssignmentProviderTest {
 
-    @Autowired
+    @MockitoBean
     private PersistenceService persistenceService;
 
     @Autowired

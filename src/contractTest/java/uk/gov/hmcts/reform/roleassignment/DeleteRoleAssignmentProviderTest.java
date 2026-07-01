@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.DeleteAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
@@ -60,13 +61,13 @@ import java.util.UUID;
 @IgnoreNoPactsToVerify
 public class DeleteRoleAssignmentProviderTest {
 
-    @Autowired
+    @MockitoBean
     private PersistenceService persistenceService;
 
-    @Autowired
+    @MockitoBean
     private SecurityUtils securityUtils;
 
-    @Autowired
+    @MockitoBean
     private DataStoreApi dataStoreApi;
 
     @Autowired
