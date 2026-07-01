@@ -115,7 +115,9 @@ spring:
     cache-names: token, caseId, userToken
     caffeine:
       spec: maximumSize=500,expireAfterWrite=120s
-oidc.issuer: ${OIDC_ISSUER_URL:https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts}
+oidc:
+  issuer: ${OIDC_ISSUER_URL:}
+  issuerValidation: ${JWT_ISSUER_VALIDATION_ENABLED:false}
 
 idam:
   s2s-auth:
