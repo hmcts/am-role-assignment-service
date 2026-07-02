@@ -59,7 +59,7 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildAtt
 @IgnoreNoPactsToVerify
 public class CreateRoleAssignmentProviderTest {
 
-    @MockitoBean
+    @Autowired
     private PersistenceService persistenceService;
 
     @MockitoBean
