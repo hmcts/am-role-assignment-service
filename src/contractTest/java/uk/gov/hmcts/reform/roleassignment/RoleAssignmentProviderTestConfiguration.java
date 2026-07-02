@@ -53,7 +53,6 @@ public class RoleAssignmentProviderTestConfiguration {
         return kieServices.getKieClasspathContainer();
     }
 
-    @MockitoBean
     SecurityUtils securityUtils;
 
     @Bean
@@ -62,6 +61,14 @@ public class RoleAssignmentProviderTestConfiguration {
             persistenceService = Mockito.mock(PersistenceService.class);
         }
         return persistenceService;
+    }
+
+    @Bean
+    public SecurityUtils getSecurityUtils() {
+        if (securityUtils == null) {
+            securityUtils = Mockito.mock(SecurityUtils.class);
+        }
+        return securityUtils;
     }
 
     @Bean
