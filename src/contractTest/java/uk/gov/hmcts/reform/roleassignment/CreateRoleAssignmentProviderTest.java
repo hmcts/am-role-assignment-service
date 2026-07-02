@@ -12,9 +12,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
@@ -46,7 +48,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildAttributesFromFile;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith({SpringExtension.class, MockitoExtension.class})
 @Provider("am_roleAssignment_createAssignment")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
     host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
@@ -57,19 +59,19 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildAtt
 @IgnoreNoPactsToVerify
 public class CreateRoleAssignmentProviderTest {
 
-    @Autowired
+    @MockitoBean
     private PersistenceService persistenceService;
 
-    @Autowired
+    @MockitoBean
     private SecurityUtils securityUtils;
 
-    @Autowired
+    @MockitoBean
     private CorrelationInterceptorUtil correlationInterceptorUtil;
 
     @Autowired
     private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
 
-    @Autowired
+    @MockitoBean
     private DataStoreApi dataStoreApi;
 
 
