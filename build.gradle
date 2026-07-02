@@ -475,9 +475,7 @@ dependencies {
   testImplementation(group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber) {
     exclude group: 'javascript', module: 'jquery'
   }
-  testImplementation (group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured) {
-    exclude group: 'org.codehaus.groovy', module: 'groovy'
-  }
+  testImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
   testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
   testImplementation group: 'io.github.openfeign', name: 'feign-jackson', version: versions.feign_jackson
   implementation group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.1.0'
@@ -493,9 +491,7 @@ dependencies {
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  smokeTestImplementation (group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured) {
-    exclude group: 'org.codehaus.groovy', module: 'groovy'
-  }
+  smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
   smokeTestImplementation group: 'commons-io', name: 'commons-io', version: '2.22.0'
 
   // AM-467-Serenity report for Integration test
@@ -503,9 +499,7 @@ dependencies {
   integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
   integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  integrationTestImplementation (group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured) {
-    exclude group: 'org.codehaus.groovy', module: 'groovy'
-  }
+  integrationTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
 
   integrationTestCompileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   integrationTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
@@ -542,7 +536,6 @@ dependencies {
   contractTestImplementation group: 'org.junit.platform', name: 'junit-platform-commons', version: versions.junitPlatform
   contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-engine', version: versions.junitPlatform
 
-  contractTestRuntimeOnly group: 'au.com.dius', name: 'pact-jvm-provider-spring', version: '4.0.10'
   contractTestImplementation group: 'au.com.dius.pact.provider', name: 'junit5', version: versions.pact_version
   contractTestImplementation group: 'au.com.dius.pact.provider', name: 'spring', version: versions.pact_version
   contractTestImplementation group: 'au.com.dius.pact.provider', name: 'junit5spring', version: versions.pact_version
