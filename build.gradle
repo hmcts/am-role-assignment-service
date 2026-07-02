@@ -449,7 +449,6 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksondata
   implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: versions.jacksondata, ext: 'pom'
   implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.21'
-  implementation group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.32', ext: 'pom'
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
@@ -476,7 +475,9 @@ dependencies {
   testImplementation(group: 'io.cucumber', name: 'cucumber-java', version: versions.cucumber) {
     exclude group: 'javascript', module: 'jquery'
   }
-  testImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
+  testImplementation (group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured) {
+    exclude group: 'org.codehaus.groovy', module: 'groovy'
+  }
   testImplementation group: 'io.cucumber', name: 'cucumber-junit', version: versions.cucumber
   testImplementation group: 'io.github.openfeign', name: 'feign-jackson', version: versions.feign_jackson
   implementation group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.1.0'
@@ -492,7 +493,9 @@ dependencies {
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  smokeTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
+  smokeTestImplementation (group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured) {
+    exclude group: 'org.codehaus.groovy', module: 'groovy'
+  }
   smokeTestImplementation group: 'commons-io', name: 'commons-io', version: '2.22.0'
 
   // AM-467-Serenity report for Integration test
@@ -500,7 +503,9 @@ dependencies {
   integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
   integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  integrationTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
+  integrationTestImplementation (group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured) {
+    exclude group: 'org.codehaus.groovy', module: 'groovy'
+  }
 
   integrationTestCompileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   integrationTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
