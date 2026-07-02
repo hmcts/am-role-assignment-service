@@ -449,7 +449,7 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksondata
   implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: versions.jacksondata, ext: 'pom'
   implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.21'
-  implementation group: 'org.apache.groovy', name: 'groovy', version: '4.0.32'
+  implementation group: 'org.apache.groovy', name: 'groovy-all', version: '4.0.32', ext: 'pom'
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
