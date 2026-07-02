@@ -449,6 +449,7 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksondata
   implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: versions.jacksondata, ext: 'pom'
   implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.21'
+  implementation group: 'org.apache.groovy', name: 'groovy', version: '4.0.32'
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
@@ -536,7 +537,6 @@ dependencies {
   contractTestImplementation group: 'org.junit.platform', name: 'junit-platform-commons', version: versions.junitPlatform
   contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-engine', version: versions.junitPlatform
 
-  contractTestImplementation group: 'org.apache.groovy', name: 'groovy', version: '4.0.32'
   contractTestRuntimeOnly group: 'au.com.dius', name: 'pact-jvm-provider-spring', version: '4.0.10'
   contractTestImplementation group: 'au.com.dius.pact.provider', name: 'junit5', version: versions.pact_version
   contractTestImplementation group: 'au.com.dius.pact.provider', name: 'spring', version: versions.pact_version
