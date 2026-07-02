@@ -29,7 +29,6 @@ import static org.mockito.Mockito.when;
 @TestConfiguration
 public class RoleAssignmentProviderTestConfiguration {
 
-    @MockitoBean
     private PersistenceService persistenceService;
 
     @Bean
@@ -59,6 +58,9 @@ public class RoleAssignmentProviderTestConfiguration {
 
     @Bean
     public PersistenceService getPersistenceService() {
+        if (persistenceService == null) {
+            persistenceService = Mockito.mock(PersistenceService.class);
+        }
         return persistenceService;
     }
 
