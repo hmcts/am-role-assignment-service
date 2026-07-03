@@ -62,7 +62,7 @@ public class CreateRoleAssignmentProviderTest {
     @MockitoBean
     private PersistenceService persistenceService;
 
-    @Autowired
+    @MockitoBean
     private SecurityUtils securityUtils;
 
     @MockitoBean
