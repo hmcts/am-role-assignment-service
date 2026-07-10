@@ -11,11 +11,12 @@ import au.com.dius.pact.provider.spring.junit5.MockMvcTestTarget;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.QueryAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
@@ -46,7 +47,7 @@ public class SearchQueryRoleAssignmentProviderTest {
 
     @Bean
     public PersistenceService persistenceService() {
-        Mockito.mock(PersistenceService.class);
+        return Mockito.mock(PersistenceService.class);
     }
 
     @Autowired
@@ -109,7 +110,7 @@ public class SearchQueryRoleAssignmentProviderTest {
             : TestDataBuilder.buildAssignmentList(Status.LIVE, ACTOR_ID, "attributes_orm_orgrole.json",
                                                   RoleType.ORGANISATION, "senior-tribunal-caseworker");
 
-        when(persistenceService.retrieveRoleAssignmentsByQueryRequest(any(), any(), any(), any(), any(), anyBoolean()))
+        when(persistenceService().retrieveRoleAssignmentsByQueryRequest(any(), any(), any(), any(), any(), anyBoolean()))
             .thenReturn(roleAssignments);
     }
 
@@ -120,7 +121,7 @@ public class SearchQueryRoleAssignmentProviderTest {
 
         roleAssignments.get(1).setRoleName("tribunal-caseworker");
 
-        when(persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
+        when(persistenceService().retrieveRoleAssignmentsByMultipleQueryRequest(
             any(), any(), any(), any(), any(), anyBoolean()))
             .thenReturn(roleAssignments);
     }
