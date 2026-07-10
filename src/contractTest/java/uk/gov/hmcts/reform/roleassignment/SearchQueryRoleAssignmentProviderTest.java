@@ -44,8 +44,10 @@ public class SearchQueryRoleAssignmentProviderTest {
     private static final String ACTOR_ID = "234873";
     private static final String ACTOR_ID_ADV = "14a21569-eb80-4681-b62c-6ae2ed069e5f";
 
-    @MockitoBean
-    private PersistenceService persistenceService;
+    @Bean
+    public PersistenceService persistenceService() {
+        Mockito.mock(PersistenceService.class);
+    }
 
     @Autowired
     private QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator;

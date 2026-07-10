@@ -29,7 +29,10 @@ import static org.mockito.Mockito.when;
 @TestConfiguration
 public class RoleAssignmentProviderTestConfiguration {
 
-    private PersistenceService persistenceService;
+    @Bean
+    public PersistenceService getPersistenceService() {
+        return Mockito.mock(PersistenceService.class);
+    }
 
     @Bean
     @Primary
@@ -53,22 +56,9 @@ public class RoleAssignmentProviderTestConfiguration {
         return kieServices.getKieClasspathContainer();
     }
 
-    SecurityUtils securityUtils;
-
-    @Bean
-    public PersistenceService getPersistenceService() {
-        if (persistenceService == null) {
-            persistenceService = Mockito.mock(PersistenceService.class);
-        }
-        return persistenceService;
-    }
-
     @Bean
     public SecurityUtils getSecurityUtils() {
-        if (securityUtils == null) {
-            securityUtils = Mockito.mock(SecurityUtils.class);
-        }
-        return securityUtils;
+        return Mockito.mock(SecurityUtils.class);
     }
 
     @Bean
@@ -76,16 +66,20 @@ public class RoleAssignmentProviderTestConfiguration {
         return kieContainer().newStatelessKieSession("role-assignment-validation-session");
     }
 
-    @MockitoBean
-    private DataStoreApi dataStoreApi;
+    @Bean
+    public DataStoreApi dataStoreApi() {
+        return Mockito.mock(DataStoreApi.class);
+    }
 
-    @MockitoBean
-    private CacheManager cacheManager;
+    @Bean
+    public CacheManager cacheManager() {
+        return Mockito.mock(CacheManager.class);
+    }
 
     @Bean
     @Primary
     public RetrieveDataService getRetrieveDataService() {
-        return new RetrieveDataService(dataStoreApi, cacheManager);
+        return new RetrieveDataService(dataStoreApi(), cacheManager());
     }
 
     @Bean

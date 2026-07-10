@@ -13,11 +13,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.DeleteAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
@@ -62,14 +63,20 @@ import java.util.UUID;
 @IgnoreNoPactsToVerify
 public class DeleteRoleAssignmentProviderTest {
 
-    @MockitoBean
-    private PersistenceService persistenceService;
+    @Bean
+    private PersistenceService persistenceService() {
+        return Mockito.mock(persistenceService.class);
+    }
 
-    @MockitoBean
-    private SecurityUtils securityUtils;
+    @Bean
+    private SecurityUtils securityUtils() {
+        return Mockito.mock(SecurityUtils.class);
+    }
 
-    @MockitoBean
-    private DataStoreApi dataStoreApi;
+    @Bean
+    private DataStoreApi dataStoreApi() {
+        return Mockito.mock(DataStoreApi.class);
+    }
 
     @Autowired
     private DeleteRoleAssignmentOrchestrator deleteRoleAssignmentOrchestrator;
@@ -114,27 +121,27 @@ public class DeleteRoleAssignmentProviderTest {
 
     private void initMocksId() {
         initCommonMocks();
-        when(persistenceService.getAssignmentById(UUID.fromString(ASSIGNMENT_ID)))
+        when(persistenceService().getAssignmentById(UUID.fromString(ASSIGNMENT_ID)))
             .thenReturn(roleAssignmentList());
 
     }
 
     private void initMocksPr() {
         initCommonMocks();
-        when(persistenceService.getAssignmentsByProcess("p2", "r2", Status.LIVE.toString()))
+        when(persistenceService().getAssignmentsByProcess("p2", "r2", Status.LIVE.toString()))
             .thenReturn(roleAssignmentList());
 
     }
 
     private void initCommonMocks() {
-        when(persistenceService.persistRequest(any()))
+        when(persistenceService().persistRequest(any()))
             .thenReturn(TestDataBuilder.buildRequestEntity(
                 TestDataBuilder.buildRequest(Status.LIVE, false)));
-        when(securityUtils.getServiceName()).thenReturn("am_org_role_mapping_service");
-        when(persistenceService.getStatusByParam(FeatureFlagEnum.IAC_1_1.getValue(), "pr")).thenReturn(true);
-        when(persistenceService.getStatusByParam(FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue(), "pr"))
+        when(securityUtils().getServiceName()).thenReturn("am_org_role_mapping_service");
+        when(persistenceService().getStatusByParam(FeatureFlagEnum.IAC_1_1.getValue(), "pr")).thenReturn(true);
+        when(persistenceService().getStatusByParam(FeatureFlagEnum.ALL_WA_SERVICES_CASE_ALLOCATOR_1_0.getValue(), "pr"))
             .thenReturn(true);
-        when(securityUtils.getUserId()).thenReturn(AUTH_USER_ID);
+        when(securityUtils().getUserId()).thenReturn(AUTH_USER_ID);
 
         JsonNode attributes = buildAttributesFromFile("attributesCase.json");
         Map<String, JsonNode> attributeMap = JacksonUtils.convertValue(attributes);
@@ -143,12 +150,12 @@ public class DeleteRoleAssignmentProviderTest {
                 .roleType(RoleType.ORGANISATION).roleName("case-allocator").attributes(attributeMap)
                 .status(Status.APPROVED).build()
         );
-        when(persistenceService.persistRequest(any())).thenReturn(createEntity());
-        doReturn(assignmentList).when(persistenceService)
+        when(persistenceService().persistRequest(any())).thenReturn(createEntity());
+        doReturn(assignmentList).when(persistenceService())
             .retrieveRoleAssignmentsByQueryRequest(any(), anyInt(), anyInt(), any(), any(), anyBoolean());
-        when(persistenceService.getTotalRecords()).thenReturn(1L);
+        when(persistenceService().getTotalRecords()).thenReturn(1L);
 
-        when(dataStoreApi.getCaseDataV2(anyString())).thenReturn(Case.builder().id("1212121212121213").jurisdiction(
+        when(dataStoreApi().getCaseDataV2(anyString())).thenReturn(Case.builder().id("1212121212121213").jurisdiction(
             "IA").caseTypeId("Asylum").build());
     }
 
@@ -162,8 +169,8 @@ public class DeleteRoleAssignmentProviderTest {
     private void setInitMockAdvanceDelete() {
         Request deleteRequest = TestDataBuilder.buildRequest(Status.LIVE, false);
 
-        when(securityUtils.getServiceName()).thenReturn("am_org_role_mapping_service");
-        when(persistenceService.persistRequest(any())).thenReturn(TestDataBuilder.buildRequestEntity(deleteRequest));
+        when(securityUtils().getServiceName()).thenReturn("am_org_role_mapping_service");
+        when(persistenceService().persistRequest(any())).thenReturn(TestDataBuilder.buildRequestEntity(deleteRequest));
     }
 
     public RequestEntity createEntity() {
