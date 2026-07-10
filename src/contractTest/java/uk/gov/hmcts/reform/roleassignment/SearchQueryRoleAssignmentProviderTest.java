@@ -110,8 +110,8 @@ public class SearchQueryRoleAssignmentProviderTest {
             : TestDataBuilder.buildAssignmentList(Status.LIVE, ACTOR_ID, "attributes_orm_orgrole.json",
                                                   RoleType.ORGANISATION, "senior-tribunal-caseworker");
 
-        when(persistenceService().retrieveRoleAssignmentsByQueryRequest(any(), any(), any(), any(), any(), anyBoolean()))
-            .thenReturn(roleAssignments);
+        when(persistenceService().retrieveRoleAssignmentsByQueryRequest(any(), any(), any(), any(), any(),
+                                                                        anyBoolean())).thenReturn(roleAssignments);
     }
 
     private void initAdvancedMock() throws Exception {
