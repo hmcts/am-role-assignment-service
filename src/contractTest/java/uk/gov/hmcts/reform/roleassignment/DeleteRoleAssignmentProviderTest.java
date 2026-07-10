@@ -65,7 +65,7 @@ public class DeleteRoleAssignmentProviderTest {
 
     @Bean
     private PersistenceService persistenceService() {
-        return Mockito.mock(persistenceService.class);
+        return Mockito.mock(PersistenceService.class);
     }
 
     @Bean
