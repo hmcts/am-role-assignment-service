@@ -46,7 +46,7 @@ class ParseRequestServiceTest {
     private CorrelationInterceptorUtil correlationInterceptorUtilMock = mock(CorrelationInterceptorUtil.class);
 
     @InjectMocks
-    private ParseRequestService sut = new ParseRequestService(securityUtilsMock, correlationInterceptorUtilMock, true);
+    private ParseRequestService sut = new ParseRequestService(securityUtilsMock, correlationInterceptorUtilMock, false);
 
     private static final String ROLE_TYPE = "CASE";
 
