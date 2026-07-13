@@ -13,10 +13,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController;
@@ -49,14 +48,14 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildAttributesFromFile;
 
-@ExtendWith({SpringExtension.class, MockitoExtension.class})
+@ExtendWith(SpringExtension.class)
 @Provider("am_roleAssignment_createAssignment")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
     host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
         @VersionSelector(tag = "master")})
 @TestPropertySource(properties = {"org.request.byPassOrgDroolRule=true", "roleassignment.query.size=20",
     "spring.cache.type=none", "ras.environment=pr", "roleassignment.query.sizeinternal=100"})
-@ContextConfiguration(classes = RoleAssignmentProviderTestConfiguration.class)
+@Import(RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
 public class CreateRoleAssignmentProviderTest {
 
