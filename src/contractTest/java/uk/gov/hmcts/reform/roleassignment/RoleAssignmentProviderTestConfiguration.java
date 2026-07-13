@@ -40,6 +40,7 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @Bean
+    @Primary
     public CorrelationInterceptorUtil correlationInterceptorUtil() {
         return Mockito.mock(CorrelationInterceptorUtil.class);
     }
