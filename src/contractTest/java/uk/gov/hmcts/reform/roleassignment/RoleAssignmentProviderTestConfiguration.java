@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 public class RoleAssignmentProviderTestConfiguration {
 
     @Bean
-    public PersistenceService getPersistenceService() {
+    public PersistenceService persistenceService() {
         return Mockito.mock(PersistenceService.class);
     }
 
@@ -57,7 +57,7 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @Bean
-    public SecurityUtils getSecurityUtils() {
+    public SecurityUtils securityUtils() {
         return Mockito.mock(SecurityUtils.class);
     }
 
@@ -87,7 +87,7 @@ public class RoleAssignmentProviderTestConfiguration {
     public ValidationModelService getValidationModelService() {
         return new ValidationModelService(getStatelessKieSession(),
                                           getRetrieveDataService(),
-                                          getPersistenceService(),
+                                          persistenceService(),
                                           getEnvironmentConfiguration());
     }
 
@@ -100,14 +100,14 @@ public class RoleAssignmentProviderTestConfiguration {
     @Bean
     @Primary
     public RetrieveRoleAssignmentOrchestrator getListOfRoles() {
-        return new RetrieveRoleAssignmentOrchestrator(getPersistenceService(), getPrepareResponseService());
+        return new RetrieveRoleAssignmentOrchestrator(persistenceService(), getPrepareResponseService());
     }
 
     @Bean
     @Primary
     public CreateRoleAssignmentOrchestrator createRoleAssignment() {
         return new CreateRoleAssignmentOrchestrator(getParseRequestService(), getPrepareResponseService(),
-                                                    getPersistenceService(), getValidationModelService(),
+                                                    persistenceService(), getValidationModelService(),
                                                     getPersistenceUtil()
         );
     }
@@ -115,13 +115,13 @@ public class RoleAssignmentProviderTestConfiguration {
     @Bean
     @Primary
     public QueryRoleAssignmentOrchestrator retrieveRoleAssignmentsByQueryRequest() {
-        return new QueryRoleAssignmentOrchestrator(getPersistenceService());
+        return new QueryRoleAssignmentOrchestrator(persistenceService());
     }
 
     @Bean
     @Primary
     public DeleteRoleAssignmentOrchestrator deleteRoleAssignment() {
-        return new DeleteRoleAssignmentOrchestrator(getPersistenceService(), getParseRequestService(),
+        return new DeleteRoleAssignmentOrchestrator(persistenceService(), getParseRequestService(),
                                                     getValidationModelService(), getPersistenceUtil()
         );
     }
