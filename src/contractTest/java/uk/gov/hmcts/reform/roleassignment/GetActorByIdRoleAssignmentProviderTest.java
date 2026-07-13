@@ -11,9 +11,7 @@ import au.com.dius.pact.provider.spring.junit5.MockMvcTestTarget;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -40,10 +38,8 @@ import static org.mockito.Mockito.when;
 @IgnoreNoPactsToVerify
 public class GetActorByIdRoleAssignmentProviderTest {
 
-    @Bean
-    public PersistenceService persistenceService() {
-        return Mockito.mock(PersistenceService.class);
-    }
+    @Autowired
+    private PersistenceService persistenceService;
 
     @Autowired
     private RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentServiceMock;
@@ -80,6 +76,6 @@ public class GetActorByIdRoleAssignmentProviderTest {
             = TestDataBuilder.buildRoleAssignmentList_Custom(Status.LIVE, actorId, "attributes_orm_orgrole.json",
                                                              RoleType.ORGANISATION, "senior-tribunal-caseworker");
 
-        when(persistenceService().getAssignmentsByActor(anyString())).thenReturn(roleAssignments);
+        when(persistenceService.getAssignmentsByActor(anyString())).thenReturn(roleAssignments);
     }
 }

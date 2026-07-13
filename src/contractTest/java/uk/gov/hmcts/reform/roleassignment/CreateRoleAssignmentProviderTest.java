@@ -12,9 +12,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -59,28 +57,20 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildAtt
 @IgnoreNoPactsToVerify
 public class CreateRoleAssignmentProviderTest {
 
-    @Bean
-    private PersistenceService persistenceService() {
-        return Mockito.mock(PersistenceService.class);
-    }
+    @Autowired
+    private PersistenceService persistenceService;
 
-    @Bean
-    private SecurityUtils securityUtils() {
-        return Mockito.mock(SecurityUtils.class);
-    }
+    @Autowired
+    private SecurityUtils securityUtils;
 
-    @Bean
-    private CorrelationInterceptorUtil correlationInterceptorUtil() {
-        return Mockito.mock(CorrelationInterceptorUtil.class);
-    }
+    @Autowired
+    private CorrelationInterceptorUtil correlationInterceptorUtil;
 
     @Autowired
     private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
 
-    @Bean
-    public DataStoreApi dataStoreApi() {
-        return Mockito.mock(DataStoreApi.class);
-    }
+    @Autowired
+    public DataStoreApi dataStoreApi;
 
 
     @TestTemplate
@@ -132,14 +122,14 @@ public class CreateRoleAssignmentProviderTest {
                 .roleCategory(RoleCategory.LEGAL_OPERATIONS).classification(Classification.PUBLIC)
                 .status(Status.APPROVED).build()
         );
-        when(persistenceService().persistRequest(any())).thenReturn(createEntity());
-        doReturn(assignmentList).when(persistenceService())
+        when(persistenceService.persistRequest(any())).thenReturn(createEntity());
+        doReturn(assignmentList).when(persistenceService)
             .retrieveRoleAssignmentsByQueryRequest(any(), anyInt(), anyInt(), any(), any(), anyBoolean());
-        when(persistenceService().getStatusByParam(FeatureFlagEnum.IAC_1_1.getValue(), "pr")).thenReturn(true);
-        when(dataStoreApi().getCaseDataV2(anyString())).thenReturn(Case.builder().id("1212121212121213").jurisdiction(
+        when(persistenceService.getStatusByParam(FeatureFlagEnum.IAC_1_1.getValue(), "pr")).thenReturn(true);
+        when(dataStoreApi.getCaseDataV2(anyString())).thenReturn(Case.builder().id("1212121212121213").jurisdiction(
             "IA").caseTypeId("Asylum").securityClassification(Classification.PUBLIC).build());
-        when(securityUtils().getUserId()).thenReturn("3168da13-00b3-41e3-81fa-cbc71ac28a0f");
-        when(correlationInterceptorUtil().preHandle(any())).thenReturn("14a21569-eb80-4681-b62c-6ae2ed069e2d");
+        when(securityUtils.getUserId()).thenReturn("3168da13-00b3-41e3-81fa-cbc71ac28a0f");
+        when(correlationInterceptorUtil.preHandle(any())).thenReturn("14a21569-eb80-4681-b62c-6ae2ed069e2d");
     }
 
     public RequestEntity createEntity() {
