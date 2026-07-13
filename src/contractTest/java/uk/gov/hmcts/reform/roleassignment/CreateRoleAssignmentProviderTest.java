@@ -70,7 +70,7 @@ public class CreateRoleAssignmentProviderTest {
     private CreateRoleAssignmentOrchestrator createRoleAssignmentOrchestrator;
 
     @Autowired
-    public DataStoreApi dataStoreApi;
+    private DataStoreApi dataStoreApi;
 
 
     @TestTemplate

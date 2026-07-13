@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
@@ -40,8 +39,10 @@ public class RoleAssignmentProviderTestConfiguration {
         return new PrepareResponseService();
     }
 
-    @MockitoBean
-    private CorrelationInterceptorUtil correlationInterceptorUtil;
+    @Bean
+    public CorrelationInterceptorUtil correlationInterceptorUtil() {
+        return Mockito.mock(CorrelationInterceptorUtil.class);
+    }
 
     @Bean
     @Primary
