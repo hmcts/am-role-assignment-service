@@ -29,6 +29,7 @@ import static org.mockito.Mockito.when;
 public class RoleAssignmentProviderTestConfiguration {
 
     @Bean
+    @Primary
     public PersistenceService persistenceService() {
         return Mockito.mock(PersistenceService.class);
     }
