@@ -47,6 +47,12 @@ public class RoleAssignmentProviderTestConfiguration {
 
     @Bean
     @Primary
+    public SecurityUtils securityUtils() {
+        return Mockito.mock(SecurityUtils.class);
+    }
+
+    @Bean
+    @Primary
     public ParseRequestService getParseRequestService() {
         return new ParseRequestService(securityUtils(), correlationInterceptorUtil(), true);
     }
@@ -56,11 +62,6 @@ public class RoleAssignmentProviderTestConfiguration {
     @Bean
     public KieContainer kieContainer() {
         return kieServices.getKieClasspathContainer();
-    }
-
-    @Bean
-    public SecurityUtils securityUtils() {
-        return Mockito.mock(SecurityUtils.class);
     }
 
     @Bean
