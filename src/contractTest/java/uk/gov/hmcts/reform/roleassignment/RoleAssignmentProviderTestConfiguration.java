@@ -61,21 +61,25 @@ public class RoleAssignmentProviderTestConfiguration {
     private KieServices kieServices = KieServices.Factory.get();
 
     @Bean
+    @Primary
     public KieContainer kieContainer() {
         return kieServices.getKieClasspathContainer();
     }
 
     @Bean
+    @Primary
     public StatelessKieSession getStatelessKieSession() {
         return kieContainer().newStatelessKieSession("role-assignment-validation-session");
     }
 
     @Bean
+    @Primary
     public DataStoreApi dataStoreApi() {
         return Mockito.mock(DataStoreApi.class);
     }
 
     @Bean
+    @Primary
     public CacheManager cacheManager() {
         return Mockito.mock(CacheManager.class);
     }
