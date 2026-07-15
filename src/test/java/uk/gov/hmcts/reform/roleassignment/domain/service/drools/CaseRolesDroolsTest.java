@@ -906,7 +906,7 @@ class CaseRolesDroolsTest extends DroolBase {
             "sscs_case_allocator_1_0",
             "all_wa_services_case_allocator_1_0",
             FeatureFlagEnum.PROBATE_WA_1_0.getValue(),
-            FeatureFlagEnum.DIVORCE_WA_1_0.getValue()
+            FeatureFlagEnum.FR_WA_1_0.getValue()
         );
 
         for (String flag : flags) {
