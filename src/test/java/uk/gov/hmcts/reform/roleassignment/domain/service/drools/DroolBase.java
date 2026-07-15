@@ -25,7 +25,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_GA_CASE_ID;
-import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.DIVORCE_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.FR_CONSENTED_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_EW_MLT_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_SCTL_CASE_ID;
@@ -160,7 +160,7 @@ public abstract class DroolBase {
                                            .build()),
 
                                 Map.entry("DIVORCE", Case.builder()
-                                           .id(DIVORCE_CASE_ID)
+                                           .id(FR_CONSENTED_CASE_ID)
                                            .jurisdiction("DIVORCE")
                                            .caseTypeId("any-case-type")
                                            .data(buildDataWithRegion())
