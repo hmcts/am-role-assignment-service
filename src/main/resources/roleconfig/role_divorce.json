@@ -32,6 +32,9 @@
             "values": [
               "DIVORCE"
             ]
+          },
+          "caseType": {
+            "mandatory": true
           }
         }
       }
