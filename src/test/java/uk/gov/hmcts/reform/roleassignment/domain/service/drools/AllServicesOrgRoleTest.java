@@ -705,14 +705,18 @@ class AllServicesOrgRoleTest extends DroolBase {
         "task-supervisor,CTSC,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PUBLIC",
         "case-allocator,CTSC,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PUBLIC",
         "ctsc-team-leader,CTSC,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Null,PUBLIC",
-        "specific-access-approver-ctsc,CTSC,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PUBLIC",
+        "specific-access-approver-ctsc,CTSC,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,"
+            + "N,Null,PUBLIC",
         "hearing-centre-admin,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Null,PUBLIC",
         "hmcts-admin,ADMIN,BASIC,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PRIVATE",
         "task-supervisor,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PUBLIC",
         "case-allocator,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PUBLIC",
-        "hearing-centre-team-leader,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Null,PUBLIC",
-        "specific-access-approver-admin,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PUBLIC",
-        "specific-access-approver-legal-ops,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PUBLIC",
+        "hearing-centre-team-leader,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,"
+            + "Y,Null,PUBLIC",
+        "specific-access-approver-admin,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,"
+            + "N,Null,PUBLIC",
+        "specific-access-approver-legal-ops,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,"
+            + "N,Null,PUBLIC",
         "national-business-centre,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Null,PUBLIC",
         "nbc-team-leader,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Null,PUBLIC",
         // FR JUDICIAL ROLES
@@ -722,8 +726,9 @@ class AllServicesOrgRoleTest extends DroolBase {
         "judge,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Salaried,PUBLIC",
         "judge,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Salaried,PUBLIC",
         "fee-paid-judge,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Fee-Paid,PUBLIC",
-        "leadership-judge,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Salaried,PUBLIC",  
-        "specific-access-approver-judiciary,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Salaried,PUBLIC",  
+        "leadership-judge,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "specific-access-approver-judiciary,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,"
+            + "N,Salaried,PUBLIC",   
         "circuit-judge,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Salaried,PUBLIC",
         "circuit-judge,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Fee-Paid,PUBLIC",
         "task-supervisor,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Salaried,PUBLIC",   
@@ -732,10 +737,11 @@ class AllServicesOrgRoleTest extends DroolBase {
     },
         nullValues = "Null"
     )
-    void shouldApproveOrRejectRequestedRoleForOrgWithCaseType(String roleName, String roleCategory, String grantType,
-                                                  String region, String jurisdiction, String caseType, String primaryLocation,
-                                                  String roleType, String expectedSubstantive, String contractType,
-                                                  String classification) {
+    void shouldApproveOrRejectRequestedRoleForOrgWithCaseType(String roleName, String roleCategory, 
+                                                    String grantType, String region, String jurisdiction, 
+                                                    String caseType, String primaryLocation, String roleType, 
+                                                    String expectedSubstantive, String contractType,
+                                                    String classification) {
 
         // wrong roleCategory
         verifyOrmOrgRequestedRole(roleName,
@@ -844,20 +850,31 @@ class AllServicesOrgRoleTest extends DroolBase {
         );
 
         // without caseType
-        verifyOrmOrgRequestedRole(
-            roleName,
-            roleCategory,
-            grantType,
-            region,
-            jurisdiction,
-            null,
-            primaryLocation,
-            roleType,
-            contractType,
-            classification,
-            expectedSubstantive,
-            Status.REJECTED
-        );
+        // NB: skip without caseType test for roles that don't have jurisdictions
+        if (!List.of("hmcts-admin",
+                     "hmcts-ctsc",
+                     "hmcts-judiciary",
+                     "hmcts-legal-operations",
+                     "case-allocator",
+                     "specific-access-approver-admin",
+                     "specific-access-approver-ctsc",
+                     "specific-access-approver-judiciary",
+                     "specific-access-approver-legal-ops").contains(roleName)) {      
+            verifyOrmOrgRequestedRole(
+                roleName,
+                roleCategory,
+                grantType,
+                region,
+                jurisdiction,
+                null,
+                primaryLocation,
+                roleType,
+                contractType,
+                classification,
+                expectedSubstantive,
+                Status.REJECTED
+            );
+        }
 
         // correct values should be approved
         verifyOrmOrgRequestedRole(roleName,
