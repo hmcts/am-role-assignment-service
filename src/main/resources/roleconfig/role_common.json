@@ -2047,7 +2047,7 @@
           }
         }
       },
-
+      {
         "roleType": {
           "mandatory": true,
           "values": ["ORGANISATION"]
