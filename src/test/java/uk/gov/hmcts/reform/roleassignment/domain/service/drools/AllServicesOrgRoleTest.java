@@ -57,7 +57,7 @@ class AllServicesOrgRoleTest extends DroolBase {
         });
     }
 
-/*     @Test
+    @Test
     void shouldApproveOrgRequestedRoleForSTCW_S002() {
         assignmentRequest.getRequest().setClientId("am_org_role_mapping_service");
         assignmentRequest.setRequestedRoles(getRequestedOrgRole());
@@ -80,7 +80,7 @@ class AllServicesOrgRoleTest extends DroolBase {
             assertEquals("senior-tribunal-caseworker", roleAssignment.getRoleName());
             assertEquals("Y", roleAssignment.getAttributes().get("substantive").asText());
         });
-    } */
+    }
 
     //@Test
     void shouldRejectOrgRequestedRoleForTCW_WrongClientID_S003() {
