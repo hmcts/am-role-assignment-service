@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cache.CacheManager;
