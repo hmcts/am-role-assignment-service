@@ -257,16 +257,21 @@ class CaseRolesDroolsTest extends DroolBase {
         "PCS,any-case-type,case-allocator,JUDICIAL,RESTRICTED,case-allocator,N",
         "PCS,any-case-type,case-allocator,ADMIN,RESTRICTED,case-allocator,N",
         "PCS,any-case-type,case-allocator,CTSC,RESTRICTED,case-allocator,N",
-        // DIVORCE
-        "DIVORCE,any-case-type,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
-        "DIVORCE,any-case-type,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
-        "DIVORCE,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,Y",
-        "DIVORCE,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,Y",
-        "DIVORCE,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED,national-business-centre,Y",
-        "DIVORCE,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y",
-        "DIVORCE,any-case-type,case-allocator,JUDICIAL,RESTRICTED,case-allocator,N",
-        "DIVORCE,any-case-type,case-allocator,ADMIN,RESTRICTED,case-allocator,N",
-        "DIVORCE,any-case-type,case-allocator,CTSC,RESTRICTED,case-allocator,N"
+        // FR: Consented
+        "DIVORCE,FinancialRemedyMVP2,allocated-judge,JUDICIAL,RESTRICTED,judge,Y",
+        "DIVORCE,FinancialRemedyMVP2,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
+        "DIVORCE,FinancialRemedyMVP2,hearing-judge,JUDICIAL,RESTRICTED,judge,Y",
+        "DIVORCE,FinancialRemedyMVP2,hearing-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
+        "DIVORCE,FinancialRemedyMVP2,lead-judge,JUDICIAL,RESTRICTED,judge,Y",
+        "DIVORCE,FinancialRemedyMVP2,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc,Y",
+        "DIVORCE,FinancialRemedyMVP2,allocated-ctsc-caseworker,CTSC,RESTRICTED,ctsc-team-leader,Y",
+        "DIVORCE,FinancialRemedyMVP2,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-admin,Y",
+        "DIVORCE,FinancialRemedyMVP2,allocated-admin-caseworker,ADMIN,RESTRICTED,hearing-centre-team-leader,Y",
+        "DIVORCE,FinancialRemedyMVP2,allocated-admin-caseworker,ADMIN,RESTRICTED,national-business-centre,Y",
+        "DIVORCE,FinancialRemedyMVP2,allocated-admin-caseworker,ADMIN,RESTRICTED,nbc-team-leader,Y",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,JUDICIAL,RESTRICTED,case-allocator,N",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,ADMIN,RESTRICTED,case-allocator,N",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,CTSC,RESTRICTED,case-allocator,N",
     })
     void shouldGrantAccessFor_CaseRole(String jurisdiction, String caseType, String roleName,
                                        String roleCategory, String classification,
@@ -362,12 +367,15 @@ class CaseRolesDroolsTest extends DroolBase {
         "PCS,any-case-type,case-allocator,JUDICIAL,RESTRICTED",
         "PCS,any-case-type,case-allocator,ADMIN,RESTRICTED",
         "PCS,any-case-type,case-allocator,CTSC,RESTRICTED",
-        // DIVORCE
-        "DIVORCE,any-case-type,allocated-ctsc-caseworker,CTSC,RESTRICTED",
-        "DIVORCE,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED",
-        "DIVORCE,any-case-type,case-allocator,JUDICIAL,RESTRICTED",
-        "DIVORCE,any-case-type,case-allocator,ADMIN,RESTRICTED",
-        "DIVORCE,any-case-type,case-allocator,CTSC,RESTRICTED"
+        // FR: Consented
+        "DIVORCE,FinancialRemedyMVP2,allocated-judge,JUDICIAL,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,hearing-judge,JUDICIAL,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,lead-judge,JUDICIAL,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,allocated-ctsc-caseworker,CTSC,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,allocated-admin-caseworker,ADMIN,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,JUDICIAL,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,ADMIN,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,CTSC,RESTRICTED",
     })
     void shouldRejectAccessFor_CaseRole_BadExistingRole(String jurisdiction, String caseType, String roleName,
                                                         String roleCategory, String classification) {
@@ -541,12 +549,15 @@ class CaseRolesDroolsTest extends DroolBase {
         "PCS,any-case-type,allocated-wlu-caseworker",
         "PCS,any-case-type,allocated-bailiff",
         "PCS,any-case-type,case-allocator",
-        // DIVORCE
-        "DIVORCE,any-case-type,allocated-ctsc-caseworker,CTSC,RESTRICTED",
-        "DIVORCE,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED",
-        "DIVORCE,any-case-type,case-allocator,JUDICIAL,RESTRICTED",
-        "DIVORCE,any-case-type,case-allocator,ADMIN,RESTRICTED",
-        "DIVORCE,any-case-type,case-allocator,CTSC,RESTRICTED"
+        // FR: Consented
+        "DIVORCE,FinancialRemedyMVP2,allocated-judge,JUDICIAL,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,hearing-judge,JUDICIAL,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,lead-judge,JUDICIAL,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,allocated-ctsc-caseworker,CTSC,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,allocated-admin-caseworker,ADMIN,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,JUDICIAL,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,ADMIN,RESTRICTED",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,CTSC,RESTRICTED",
     })
     void shouldDelete_CaseRole(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, null, Status.DELETE_APPROVED);
@@ -637,6 +648,15 @@ class CaseRolesDroolsTest extends DroolBase {
         "PCS,any-case-type,allocated-wlu-caseworker",
         "PCS,any-case-type,allocated-bailiff",
         "PCS,any-case-type,case-allocator",
+        // FR: Consented
+        "DIVORCE,FinancialRemedyMVP2,allocated-judge",
+        "DIVORCE,FinancialRemedyMVP2,hearing-judge",
+        "DIVORCE,FinancialRemedyMVP2,lead-judge",
+        "DIVORCE,FinancialRemedyMVP2,allocated-ctsc-caseworker",
+        "DIVORCE,FinancialRemedyMVP2,allocated-admin-caseworker",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator",
     })
     void shouldDelete_CaseRole_withMatchingCaseAllocatorRegion(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, CASE_REGION, Status.DELETE_APPROVED);
@@ -727,10 +747,15 @@ class CaseRolesDroolsTest extends DroolBase {
         "PCS,any-case-type,allocated-wlu-caseworker",
         "PCS,any-case-type,allocated-bailiff",
         "PCS,any-case-type,case-allocator",
-        // DIVORCE
-        "DIVORCE,any-case-type,allocated-ctsc-caseworker",
-        "DIVORCE,any-case-type,allocated-admin-caseworker",
-        "DIVORCE,any-case-type,case-allocator"
+        // FR: Consented
+        "DIVORCE,FinancialRemedyMVP2,allocated-judge",
+        "DIVORCE,FinancialRemedyMVP2,hearing-judge",
+        "DIVORCE,FinancialRemedyMVP2,lead-judge",
+        "DIVORCE,FinancialRemedyMVP2,allocated-ctsc-caseworker",
+        "DIVORCE,FinancialRemedyMVP2,allocated-admin-caseworker",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator",
     })
     void shouldRejectDelete_CaseRole_withBadCaseAllocatorRegion(String jurisdiction, String caseType, String roleName) {
         verifyGrantOrRejectDeleteFor_CaseRole(jurisdiction, caseType, roleName, "bad-region", Status.DELETE_REJECTED);

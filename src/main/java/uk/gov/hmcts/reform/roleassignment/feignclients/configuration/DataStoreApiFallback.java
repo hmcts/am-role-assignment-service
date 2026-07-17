@@ -166,15 +166,21 @@ public class DataStoreApiFallback implements DataStoreApi {
                     .build();
             case FR_CONSENTED_CASE_ID:
                 return Case.builder().id(caseId)
-                    .caseTypeId("any-case-type")
+                    .caseTypeId("FinancialRemedyMVP2")
                     .jurisdiction("DIVORCE")
                     .securityClassification(Classification.PUBLIC)
+                    .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
                     .build();
             case FR_CONTESTED_CASE_ID:
                 return Case.builder().id(caseId)
-                    .caseTypeId("any-case-type")
+                    .caseTypeId("FinancialRemedyContested")
                     .jurisdiction("DIVORCE")
                     .securityClassification(Classification.PUBLIC)
+                    .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
                     .build();
             default:
                 return Case.builder().id(caseId)
