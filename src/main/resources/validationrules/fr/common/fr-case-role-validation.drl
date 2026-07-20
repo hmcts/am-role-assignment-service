@@ -20,41 +20,44 @@ import java.time.temporal.ChronoUnit;
 
 
 /*
- * DIVORCE "case-allocator" case validation rule.
+ * FR "case-allocator" case validation rule.
  */
 
-rule "divorce_case_allocator_create_case_roles"
+rule "fr_case_allocator_create_case_roles"
 when
     $f:  FeatureFlag(status && flagName == FeatureFlagEnum.FR_WA_1_0.getValue())
     $ca: CaseAllocatorApproval(
                  roleAssignment.status == Status.CREATE_REQUESTED,
                  roleAssignment.attributes["jurisdiction"].asText() == "DIVORCE",
+                 roleAssignment.attributes["caseType"].asText() == "FinancialRemedyMVP2",
                  roleAssignment.roleName == "case-allocator")
          ExistingRoleAssignment(
                  actorId == $ca.roleAssignment.actorId,
                  roleType == RoleType.ORGANISATION,
                  roleName == "case-allocator",
-                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "DIVORCE")
+                 attributes["jurisdiction"] != null && attributes["jurisdiction"].asText() == "DIVORCE",
+                 attributes["caseType"] != null && attributes["caseType"].asText() == "FinancialRemedyMVP2")
 then
     $ca.getRoleAssignment().setStatus(Status.CREATE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : divorce_case_allocator_create_case_roles");
+    $ca.getRoleAssignment().log("Stage 1 approved : fr_case_allocator_create_case_roles");
     update($ca.getRoleAssignment());
-    logMsg("Rule : divorce_case_allocator_create_case_roles");
+    logMsg("Rule : fr_case_allocator_create_case_roles");
 end;
 
 
 /*
  * The case roles can be deleted if CaseAllocatorApproval entity is available for requested role assignment.
  */
-rule "divorce_case_allocator_approved_delete_case_role"
+rule "fr_case_allocator_approved_delete_case_role"
 when
     $f:  FeatureFlag(status && flagName == FeatureFlagEnum.FR_WA_1_0.getValue())
     $ca: CaseAllocatorApproval(
                 roleAssignment.status == Status.DELETE_REQUESTED,
-                roleAssignment.attributes["jurisdiction"].asText() == "DIVORCE")
+                roleAssignment.attributes["jurisdiction"].asText() == "DIVORCE",
+                roleAssignment.attributes["caseType"].asText() == "FinancialRemedyMVP2")
 then
     $ca.getRoleAssignment().setStatus(Status.DELETE_APPROVED);
-    $ca.getRoleAssignment().log("Stage 1 approved : divorce_case_allocator_approved_delete_case_role");
+    $ca.getRoleAssignment().log("Stage 1 approved : fr_case_allocator_approved_delete_case_role");
     update($ca.getRoleAssignment());
-    logMsg("Rule : divorce_case_allocator_approved_delete_case_role");
+    logMsg("Rule : fr_case_allocator_approved_delete_case_role");
 end;
