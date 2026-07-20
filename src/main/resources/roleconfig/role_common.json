@@ -155,36 +155,6 @@
             "mandatory": true
           }
         }
-      },
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["CASE"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["SPECIFIC"]
-        },
-        "classification": {
-          "mandatory": true
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": [
-              "DIVORCE"
-            ]
-          },
-          "caseType": {
-            "mandatory": true,
-            "values": [
-              "FinancialRemedyMVP2"
-            ]
-          },
-          "caseId": {
-            "mandatory": true
-          }
-        }
       }
     ]
   },
@@ -2740,29 +2710,6 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["CIVIL","PRIVATELAW","PUBLICLAW","PCS"]
-          }
-        }
-      },
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["PUBLIC","PRIVATE"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": ["DIVORCE"]
-          },
-          "caseType": {
-            "mandatory": true
           }
         }
       }
