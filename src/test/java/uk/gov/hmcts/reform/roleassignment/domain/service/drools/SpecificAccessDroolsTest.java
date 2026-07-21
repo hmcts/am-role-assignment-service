@@ -105,7 +105,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
                                           ACTORID,
-                                          "judge",
+                                          "any-org-role",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
                                           Classification.PRIVATE,
@@ -234,7 +234,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         "PROBATE,specific-access-ctsc,CTSC,specific-access-approver-ctsc,CTSC",
         // NB: special case of PROBATE CTSC performing a JUDICIAL approver role
         "PROBATE,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary,CTSC",
-        // NB: special case of PROBATE CTSC performing a ADMIN approver role
+        // NB: special case of PROBATE CTSC performing an ADMIN approver role
         "PROBATE,specific-access-admin,ADMIN,specific-access-approver-admin,CTSC",
         "PCS,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary,JUDICIAL",
         "PCS,specific-access-admin,ADMIN,specific-access-approver-admin,ADMIN",
@@ -244,8 +244,8 @@ class SpecificAccessDroolsTest extends DroolBase {
         "DIVORCE,specific-access-judiciary,JUDICIAL,specific-access-approver-judiciary,JUDICIAL",
         "DIVORCE,specific-access-admin,ADMIN,specific-access-approver-admin,ADMIN",
         "DIVORCE,specific-access-ctsc,CTSC,specific-access-approver-ctsc,CTSC",
-        // NB: special case of PCS Judge performing a LEGAL_OPERATIONS approver role
-        "DIVORCE,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops,JUDICIAL"
+        // NB: special case of FR/DIVORCE Admin performing a LEGAL_OPERATIONS approver role
+        "DIVORCE,specific-access-legal-ops,LEGAL_OPERATIONS,specific-access-approver-legal-ops,ADMIN"
     })
     void shouldGrantAccessFor_SpecificAccess_CaseAllocator(String caseJurisdiction,
                                                            String roleName, String roleCategory,
@@ -652,7 +652,7 @@ class SpecificAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
                                           "4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                          "judge",
+                                          "any-org-role",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
                                           Classification.PRIVATE,
