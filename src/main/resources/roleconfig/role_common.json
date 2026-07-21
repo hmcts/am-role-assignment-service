@@ -1386,7 +1386,8 @@
               "EMPLOYMENT",
               "ST_CIC",
               "PROBATE",
-              "PCS"
+              "PCS",
+              "DIVORCE"
             ]
           },
           "caseType": {
@@ -1552,7 +1553,8 @@
               "SSCS",
               "ST_CIC",
               "PROBATE",
-              "PCS"
+              "PCS",
+              "DIVORCE"
             ]
           },
           "caseType": {
