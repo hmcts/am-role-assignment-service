@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.ACCESS_DENIED;
 import static uk.gov.hmcts.reform.roleassignment.controller.advice.ErrorConstants.BAD_REQUEST;
@@ -126,12 +127,16 @@ public class RoleAssignmentControllerAdvice {
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ErrorResponse> nullException(final NullPointerException e) {
-        return new ResponseEntity<>(
-            ErrorResponse
-                .builder()
-                .errorCode(400)
-                .errorDescription("One of the required parameters is null. Please check the payload")
-                .errorMessage(Constants.BAD_REQUEST).build(), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .contentType(APPLICATION_JSON)
+            .body(
+                ErrorResponse
+                    .builder()
+                    .errorCode(400)
+                    .errorDescription("One of the required parameters is null. Please check the payload")
+                    .errorMessage(Constants.BAD_REQUEST)
+                    .build()
+            );
     }
 
     private ResponseEntity<ErrorResponse> deserializeError(final Exception exception) {
@@ -145,19 +150,27 @@ public class RoleAssignmentControllerAdvice {
         if (!cause.isEmpty()) {
             for (String listItem : DESERIALIZEITEMTYPES) {
                 if (cause.toUpperCase().contains(listItem.toUpperCase())) {
-                    return new ResponseEntity<>(
-                        ErrorResponse.builder()
-                            .errorCode(400)
-                            .errorDescription(String.format("Input for %s parameter is not valid", listItem))
-                            .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
+                    return ResponseEntity.status(httpStatus)
+                        .contentType(APPLICATION_JSON)
+                        .body(
+                            ErrorResponse.builder()
+                                .errorCode(400)
+                                .errorDescription(String.format("Input for %s parameter is not valid", listItem))
+                                .errorMessage(Constants.BAD_REQUEST)
+                                .build()
+                        );
                 }
             }
         }
-        return new ResponseEntity<>(
-            ErrorResponse.builder()
-                .errorCode(400)
-                .errorDescription(cause)
-                .errorMessage(Constants.BAD_REQUEST).build(), httpStatus);
+        return ResponseEntity.status(httpStatus)
+            .contentType(APPLICATION_JSON)
+            .body(
+                ErrorResponse.builder()
+                    .errorCode(400)
+                    .errorDescription(cause)
+                    .errorMessage(Constants.BAD_REQUEST)
+                    .build()
+            );
     }
 
     @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
@@ -253,7 +266,8 @@ public class RoleAssignmentControllerAdvice {
             .errorDescription(getRootException(ex).getLocalizedMessage())
             .timeStamp(getTimeStamp())
             .build();
-        return new ResponseEntity<>(
-            errorDetails, httpStatus);
+        return ResponseEntity.status(httpStatus)
+            .contentType(APPLICATION_JSON)
+            .body(errorDetails);
     }
 }
