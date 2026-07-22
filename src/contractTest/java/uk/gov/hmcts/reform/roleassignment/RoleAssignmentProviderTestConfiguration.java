@@ -5,6 +5,8 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.StatelessKieSession;
 import org.mockito.Mockito;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +29,7 @@ import uk.gov.hmcts.reform.roleassignment.util.SecurityUtils;
 import static org.mockito.Mockito.when;
 
 @TestConfiguration
+@ImportAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 public class RoleAssignmentProviderTestConfiguration {
 
     @Bean
