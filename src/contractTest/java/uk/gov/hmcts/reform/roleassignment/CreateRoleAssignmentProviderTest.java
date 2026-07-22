@@ -13,9 +13,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.CreateAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
@@ -53,7 +53,7 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildAtt
         @VersionSelector(tag = "master")})
 @TestPropertySource(properties = {"org.request.byPassOrgDroolRule=true", "roleassignment.query.size=20",
     "spring.cache.type=none", "ras.environment=pr", "roleassignment.query.sizeinternal=100"})
-@Import(RoleAssignmentProviderTestConfiguration.class)
+@SpringJUnitConfig(classes = {RoleAssignmentProviderTestConfiguration.class})
 @IgnoreNoPactsToVerify
 public class CreateRoleAssignmentProviderTest {
 

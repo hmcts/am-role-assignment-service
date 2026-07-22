@@ -12,9 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.QueryAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
         @VersionSelector(tag = "master")})
 @TestPropertySource(properties = {"roleassignment.query.size=20", "roleassignment.query.sizeinternal=100",
     "spring.cache.type=none"})
-@Import(RoleAssignmentProviderTestConfiguration.class)
+@SpringJUnitConfig(classes = {RoleAssignmentProviderTestConfiguration.class})
 @IgnoreNoPactsToVerify
 public class SearchQueryRoleAssignmentProviderTest {
 

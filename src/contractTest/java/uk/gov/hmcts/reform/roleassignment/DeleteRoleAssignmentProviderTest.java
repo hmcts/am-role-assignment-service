@@ -14,9 +14,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.DeleteAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.data.RequestEntity;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
@@ -56,7 +56,7 @@ import java.util.UUID;
         @VersionSelector(tag = "master")})
 @TestPropertySource(properties = {"roleassignment.query.size=20", "ras.environment=pr",
     "spring.cache.type=none", "roleassignment.query.sizeinternal=100"})
-@Import(RoleAssignmentProviderTestConfiguration.class)
+@SpringJUnitConfig(classes = {RoleAssignmentProviderTestConfiguration.class})
 @IgnoreNoPactsToVerify
 public class DeleteRoleAssignmentProviderTest {
 
