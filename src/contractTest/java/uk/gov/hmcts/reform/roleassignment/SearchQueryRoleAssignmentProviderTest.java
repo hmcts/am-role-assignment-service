@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 public class SearchQueryRoleAssignmentProviderTest {
 
     private static final String ACTOR_ID = "234873";
-    // private static final String ACTOR_ID_ADV = "14a21569-eb80-4681-b62c-6ae2ed069e5f";
+    private static final String ACTOR_ID_ADV = "14a21569-eb80-4681-b62c-6ae2ed069e5f";
 
     @Autowired
     private PersistenceService persistenceService;
@@ -73,25 +73,25 @@ public class SearchQueryRoleAssignmentProviderTest {
         setInitiMock(false);
     }
 
-    // @State({"A list of role assignments for the advanced search query"})
-    // public void advancedSearchQueryWithSuccess() throws Exception {
-    //     initAdvancedMock();
-    // }
+    @State({"A list of role assignments for the advanced search query"})
+    public void advancedSearchQueryWithSuccess() throws Exception {
+        initAdvancedMock();
+    }
 
     @State({"A list of role assignments for the search query by role name"})
     public void searchQueryByRoleNameWithSuccess() throws Exception {
         setInitiMock(false);
     }
 
-    // @State({"A list of role assignments for the search query by attributes"})
-    // public void searchQueryByAttributesWithSuccess() throws Exception {
-    //    setInitiMock(false);
-    // }
+    @State({"A list of role assignments for the search query by attributes"})
+    public void searchQueryByAttributesWithSuccess() throws Exception {
+        setInitiMock(false);
+    }
 
-    // @State({"A list of multiple role assignments for the search query"})
-    // public void searchQueryMultipleRoleAssignmentsWithSuccess() throws Exception {
-    //    setInitiMock(true);
-    // }
+    @State({"A list of multiple role assignments for the search query"})
+    public void searchQueryMultipleRoleAssignmentsWithSuccess() throws Exception {
+        setInitiMock(true);
+    }
 
     @State({"An empty list of role assignments for the search query"})
     public void searchQueryReturnsEmptyListOfAssignmentsWithSuccess() throws Exception {
@@ -109,15 +109,15 @@ public class SearchQueryRoleAssignmentProviderTest {
             .thenReturn(roleAssignments);
     }
 
-    //    private void initAdvancedMock() throws Exception {
-    //        List<Assignment> roleAssignments =
-    //            TestDataBuilder.buildMultiAssignmentList(Status.LIVE, ACTOR_ID_ADV, "attributes_orm_orgrole.json",
-    //                                                     RoleType.ORGANISATION, "senior-tribunal-caseworker");
-    //
-    //        roleAssignments.get(1).setRoleName("tribunal-caseworker");
-    //
-    //        when(persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
-    //            any(), any(), any(), any(), any(), anyBoolean()))
-    //            .thenReturn(roleAssignments);
-    //    }
+    private void initAdvancedMock() throws Exception {
+        List<Assignment> roleAssignments =
+            TestDataBuilder.buildMultiAssignmentList(Status.LIVE, ACTOR_ID_ADV, "attributes_orm_orgrole.json",
+                                                     RoleType.ORGANISATION, "senior-tribunal-caseworker");
+
+        roleAssignments.get(1).setRoleName("tribunal-caseworker");
+
+        when(persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
+            any(), any(), any(), any(), any(), anyBoolean()))
+            .thenReturn(roleAssignments);
+    }
 }
