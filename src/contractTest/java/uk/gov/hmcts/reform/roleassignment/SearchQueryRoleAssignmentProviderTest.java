@@ -115,6 +115,10 @@ public class SearchQueryRoleAssignmentProviderTest {
                                                      RoleType.ORGANISATION, "senior-tribunal-caseworker");
 
         roleAssignments.get(1).setRoleName("tribunal-caseworker");
+        roleAssignments.add(TestDataBuilder.buildRoleAssignment_CustomActorId(Status.LIVE, ACTOR_ID_ADV,
+                                                                              "attributes_orm_orgrole.json",
+                                                                              RoleType.ORGANISATION,
+                                                                              "caseworker"));
 
         when(persistenceService.retrieveRoleAssignmentsByMultipleQueryRequest(
             any(), any(), any(), any(), any(), anyBoolean()))
