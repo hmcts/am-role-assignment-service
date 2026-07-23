@@ -68,12 +68,10 @@ public class RoleAssignmentProviderTestConfiguration {
         return new ParseRequestService(securityUtils(), correlationInterceptorUtil(), true);
     }
 
-    private KieServices kieServices = KieServices.Factory.get();
-
     @Bean
     @Primary
     public KieContainer kieContainer() {
-        return kieServices.getKieClasspathContainer();
+        return KieServices.Factory.get().getKieClasspathContainer();
     }
 
     @Bean
