@@ -91,6 +91,11 @@ public class SearchQueryRoleAssignmentProviderTest {
         setInitiMock(false);
     }
 
+    @State({"A list of role assignments for the search query by caseId"})
+    public void searchQueryByCaseIdWithSuccess() throws Exception {
+        setInitiMock(false);
+    }
+
     @State({"A list of multiple role assignments for the search query"})
     public void searchQueryMultipleRoleAssignmentsWithSuccess() throws Exception {
         setInitiMock(true);
