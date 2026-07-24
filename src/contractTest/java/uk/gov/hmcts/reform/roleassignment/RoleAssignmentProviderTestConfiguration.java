@@ -14,6 +14,12 @@ import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import uk.gov.hmcts.reform.roleassignment.config.EnvironmentConfiguration;
+import uk.gov.hmcts.reform.roleassignment.data.FlagConfig;
+import uk.gov.hmcts.reform.roleassignment.data.FlagConfigRepository;
+import uk.gov.hmcts.reform.roleassignment.data.DatabseChangelogLockRepository;
+import uk.gov.hmcts.reform.roleassignment.data.HistoryRepository;
+import uk.gov.hmcts.reform.roleassignment.data.RequestRepository;
+import uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentRepository;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.ParseRequestService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PrepareResponseService;
@@ -154,6 +160,46 @@ public class RoleAssignmentProviderTestConfiguration {
         EnvironmentConfiguration environmentConfiguration = Mockito.mock(EnvironmentConfiguration.class);
         when(environmentConfiguration.getEnvironment()).thenReturn("pr");
         return environmentConfiguration;
+    }
+
+    @Bean
+    @Primary
+    public RoleAssignmentRepository roleAssignmentRepository() {
+        return Mockito.mock(RoleAssignmentRepository.class);
+    }
+
+    @Bean
+    @Primary
+    public DatabseChangelogLockRepository databseChangelogLockRepository() {
+        return Mockito.mock(DatabseChangelogLockRepository.class);
+    }
+
+    @Bean
+    @Primary
+    public RequestRepository requestRepository() {
+        return Mockito.mock(RequestRepository.class);
+    }
+
+    @Bean
+    @Primary
+    public HistoryRepository historyRepository() {
+        return Mockito.mock(HistoryRepository.class);
+    }
+
+    @Bean
+    @Primary
+    public FlagConfigRepository flagConfigRepository() {
+        FlagConfigRepository mock = Mockito.mock(FlagConfigRepository.class);
+        Mockito.when(mock.findByFlagNameAndEnv(Mockito.anyString(), Mockito.anyString()))
+            .thenAnswer(invocation -> FlagConfig.builder()
+                .id(1L)
+                .flagName(invocation.getArgument(0))
+                .env(invocation.getArgument(1))
+                .serviceName("contract-test")
+                .status(Boolean.TRUE)
+                .build());
+        Mockito.when(mock.save(Mockito.any())).thenAnswer(invocation -> invocation.getArgument(0));
+        return mock;
     }
 
 }

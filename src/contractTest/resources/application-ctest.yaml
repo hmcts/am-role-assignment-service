@@ -5,3 +5,5 @@ spring:
   cloud:
     compatibility-verifier:
       enabled: false
+    discovery:
+      enabled: false
