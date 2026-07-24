@@ -745,6 +745,35 @@ class CaseRolesDroolsTest extends DroolBase {
                                               REJECTED);
     }
 
+    @ParameterizedTest
+    @CsvSource({
+        // FR case-allocator case role must be RESTRICTED (Confluence 4.2.3)
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,JUDICIAL,PUBLIC,case-allocator",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,JUDICIAL,PRIVATE,case-allocator",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,ADMIN,PUBLIC,case-allocator",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,ADMIN,PRIVATE,case-allocator",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,CTSC,PUBLIC,case-allocator",
+        "DIVORCE,FinancialRemedyMVP2,case-allocator,CTSC,PRIVATE,case-allocator",
+    })
+    void shouldRejectAccessFor_FrCaseAllocator_NonRestrictedClassification(String jurisdiction,
+                                                                           String caseType,
+                                                                           String roleName,
+                                                                           String roleCategory,
+                                                                           String classification,
+                                                                           String existingRoleName) {
+        verifyGrantOrRejectAccessFor_CaseRole(jurisdiction,
+                                              caseType,
+                                              roleName,
+                                              roleCategory,
+                                              classification,
+                                              existingRoleName,
+                                              caseType,
+                                              null,
+                                              null,
+                                              null,
+                                              REJECTED);
+    }
+
     private void verifyGrantOrRejectAccessFor_CaseRole(String jurisdiction, String caseType, String roleName,
                                                        String roleCategory, String classification,
                                                        String existingRoleName, String existingCaseType,
