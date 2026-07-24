@@ -11,6 +11,10 @@ import au.com.dius.pact.provider.junitsupport.loader.VersionSelector;
 import au.com.dius.pact.provider.spring.junit5.MockMvcTestTarget;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.ClassOrderer;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +54,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@TestClassOrder(ClassOrderer.OrderAnnotation.class)
+@Nested
+@Order(2)
 @ActiveProfiles("ctest")
 @ExtendWith(SpringExtension.class)
 @Provider("am_roleAssignment_deleteAssignment")
