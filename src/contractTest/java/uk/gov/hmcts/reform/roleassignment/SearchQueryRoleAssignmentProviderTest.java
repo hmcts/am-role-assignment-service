@@ -16,11 +16,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.QueryAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
@@ -51,6 +53,9 @@ public class SearchQueryRoleAssignmentProviderTest {
     @Autowired
     private QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator;
 
+    @Autowired
+    private RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentOrchestrator;
+
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider.class)
     void pactVerificationTestTemplate(PactVerificationContext context) {
@@ -65,7 +70,7 @@ public class SearchQueryRoleAssignmentProviderTest {
         //System.getProperties().setProperty("pact.verifier.publishResults", "true");
         testTarget.setControllers(new QueryAssignmentController(
             queryRoleAssignmentOrchestrator
-        ));
+        ), new GetAssignmentController(retrieveRoleAssignmentOrchestrator));
         if (context != null) {
             context.setTarget(testTarget);
         }
@@ -88,11 +93,6 @@ public class SearchQueryRoleAssignmentProviderTest {
 
     @State({"A list of role assignments for the search query by attributes"})
     public void searchQueryByAttributesWithSuccess() throws Exception {
-        setInitiMock(false);
-    }
-
-    @State({"A list of role assignments for the search query by caseId"})
-    public void searchQueryByCaseIdWithSuccess() throws Exception {
         setInitiMock(false);
     }
 
