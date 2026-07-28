@@ -185,9 +185,9 @@
     ]
   },
   {
-    "name": "PCS_Solicitor_Org",
-    "label": "PCS Solicitor Org Role",
-    "description": "Sample role for testing - PCS Solicitor Org Role",
+    "name": "PCS_Solicitor_Group",
+    "label": "PCS Solicitor Group Role",
+    "description": "PCS Solicitor Group Role for testing - from BEFTA Case Definition",
     "category": "PROFESSIONAL",
     "type": "ORGANISATION",
     "substantive": true,
@@ -209,10 +209,13 @@
           "jurisdiction": {
             "mandatory": true,
             "values": [
-              "TEST_JURISDICTION"
+              "PCS"
             ]
           },
           "caseType": {
+            "mandatory": true
+          },
+          "caseAccessGroupId": {
             "mandatory": true
           }
         }
@@ -220,9 +223,9 @@
     ]
   },
   {
-    "name": "PCS_Solicitor_Group",
-    "label": "PCS Solicitor Group Role",
-    "description": "Sample role for testing - PCS Solicitor Group Role",
+    "name": "PCS_Solicitor_Org",
+    "label": "PCS Solicitor Org Role",
+    "description": "PCS Solicitor Org Role for testing - from BEFTA Case Definition",
     "category": "PROFESSIONAL",
     "type": "ORGANISATION",
     "substantive": true,
@@ -244,7 +247,7 @@
           "jurisdiction": {
             "mandatory": true,
             "values": [
-              "TEST_JURISDICTION"
+              "PCS"
             ]
           },
           "caseType": {
