@@ -183,5 +183,75 @@
         }
       }
     ]
+  },
+  {
+    "name": "PCS_Solicitor_Org",
+    "label": "PCS Solicitor Org Role",
+    "description": "Sample role for testing - PCS Solicitor Org Role",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "TEST_JURISDICTION"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "PCS_Solicitor_Group",
+    "label": "PCS Solicitor Group Role",
+    "description": "Sample role for testing - PCS Solicitor Group Role",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "TEST_JURISDICTION"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
   }
 ]
