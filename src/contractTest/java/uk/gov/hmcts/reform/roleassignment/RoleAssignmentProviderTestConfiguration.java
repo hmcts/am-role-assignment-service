@@ -75,7 +75,6 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @Bean
-    @Primary
     public ParseRequestService getParseRequestService() {
         return new ParseRequestService(securityUtils(), correlationInterceptorUtil(), true);
     }
@@ -111,7 +110,6 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @Bean
-    @Primary
     public ValidationModelService getValidationModelService() {
         return new ValidationModelService(getStatelessKieSession(),
                                           getRetrieveDataService(),
@@ -126,13 +124,11 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @Bean
-    @Primary
     public RetrieveRoleAssignmentOrchestrator getListOfRoles() {
         return new RetrieveRoleAssignmentOrchestrator(persistenceService(), getPrepareResponseService());
     }
 
     @Bean
-    @Primary
     public CreateRoleAssignmentOrchestrator createRoleAssignment() {
         return new CreateRoleAssignmentOrchestrator(getParseRequestService(), getPrepareResponseService(),
                                                     persistenceService(), getValidationModelService(),
@@ -141,13 +137,11 @@ public class RoleAssignmentProviderTestConfiguration {
     }
 
     @Bean
-    @Primary
     public QueryRoleAssignmentOrchestrator retrieveRoleAssignmentsByQueryRequest() {
         return new QueryRoleAssignmentOrchestrator(persistenceService());
     }
 
     @Bean
-    @Primary
     public DeleteRoleAssignmentOrchestrator deleteRoleAssignment() {
         return new DeleteRoleAssignmentOrchestrator(persistenceService(), getParseRequestService(),
                                                     getValidationModelService(), getPersistenceUtil()
