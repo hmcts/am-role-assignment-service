@@ -57,8 +57,7 @@ import java.util.UUID;
     host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
         @VersionSelector(tag = "master")})
 @TestPropertySource(properties = {"roleassignment.query.size=20", "ras.environment=pr",
-    "spring.cache.type=none", "roleassignment.query.sizeinternal=100",
-    "spring.flyway.enabled=false", "spring.datasource.url=jdbc:h2:mem:testdb"})
+    "spring.cache.type=none", "roleassignment.query.sizeinternal=100"})
 @SpringJUnitConfig(classes = RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
 public class DeleteRoleAssignmentProviderTest {
