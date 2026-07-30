@@ -39,6 +39,7 @@ import static org.mockito.Mockito.when;
     host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
         @VersionSelector(tag = "master")})
 @TestPropertySource(properties = {"roleassignment.query.size=20", "roleassignment.query.sizeinternal=100",
+    "spring.cache.type=none", "ras.environment=pr",
     "spring.flyway.enabled=false", "spring.datasource.url=jdbc:h2:mem:testdb"})
 @SpringJUnitConfig(classes = RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
