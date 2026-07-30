@@ -8,10 +8,6 @@ import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
 import au.com.dius.pact.provider.junitsupport.loader.VersionSelector;
 import au.com.dius.pact.provider.spring.junit5.MockMvcTestTarget;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.ClassOrderer;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +18,6 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 
-@TestClassOrder(ClassOrderer.OrderAnnotation.class)
-@Nested
-@Order(4)
 @ActiveProfiles("ctest")
 @ExtendWith(SpringExtension.class)
 @Provider("am_roleAssignment_getRoles")
@@ -33,7 +26,7 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAs
         @VersionSelector(tag = "master")})
 @TestPropertySource(properties = {"roleassignment.query.size=20", "roleassignment.query.sizeinternal=100",
     "spring.flyway.enabled=false", "spring.datasource.url=jdbc:h2:mem:testdb"})
-@SpringJUnitConfig(classes = {RoleAssignmentProviderTestConfiguration.class})
+@SpringJUnitConfig(classes = RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
 public class GetRoleAssignmentProviderTest {
 
