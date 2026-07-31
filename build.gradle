@@ -33,7 +33,7 @@ def versions = [
   spring          : '6.2.15',
   pact_version    : '4.1.7',
   rest_assured    : '5.5.7',
-  cucumber        : '7.34.3',
+  cucumber        : '7.34.6',
   feign_jackson   : '13.12',
   jacksondata     : '2.19.2',
   testcontainers  : '1.21.4',
@@ -429,10 +429,10 @@ dependencies {
   implementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
   implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.12.0'
   implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.4'
-  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.12'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.13'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '10.9.1'
-  implementation group: 'com.auth0', name: 'java-jwt', version: '4.5.2'
+  implementation group: 'com.auth0', name: 'java-jwt', version: '4.6.0'
   implementation group: 'commons-io', name:'commons-io', version: '2.22.0'
   implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.28.0'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
@@ -449,7 +449,7 @@ dependencies {
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
-  implementation 'net.bytebuddy:byte-buddy:1.18.10'
+  implementation 'net.bytebuddy:byte-buddy:1.18.11'
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.1.1')
   testImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
@@ -567,7 +567,7 @@ dependencyManagement {
       entry 'jackson-core'
       entry 'jackson-annotations'
     }
-    dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.55') {
+    dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.57') {
       entry 'tomcat-embed-core'
       entry 'tomcat-embed-el'
       entry 'tomcat-embed-websocket'
