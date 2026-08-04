@@ -568,7 +568,6 @@ class AllServicesOrgRoleTest extends DroolBase {
         "task-supervisor,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,N,Null,PUBLIC",
         "ctsc-team-leader,CTSC,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
         "bailiff-admin,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
-
     },
         nullValues = "Null"
     )
@@ -583,6 +582,7 @@ class AllServicesOrgRoleTest extends DroolBase {
                                   grantType,
                                   region,
                                   jurisdiction,
+                                  null,
                                   primaryLocation,
                                   roleType,
                                   contractType,
@@ -590,7 +590,7 @@ class AllServicesOrgRoleTest extends DroolBase {
                                   expectedSubstantive,
                                   Status.REJECTED);
 
-        // NB: skip wrong jurisdiction test for roles that don't have jurisdictions
+        // NB: skip wrong jurisdiction test for roles that don't use jurisdiction value filter
         if (!List.of("hmcts-admin",
                      "hmcts-ctsc",
                      "hmcts-judiciary",
@@ -606,7 +606,8 @@ class AllServicesOrgRoleTest extends DroolBase {
                     roleCategory,
                     grantType,
                     region,
-                    null, // WRONG
+                    null, // WRONG (missing jurisdiction)
+                    null,
                     primaryLocation,
                     roleType,
                     contractType,
@@ -622,6 +623,7 @@ class AllServicesOrgRoleTest extends DroolBase {
                     grantType,
                     region,
                     "wrong-jurisdiction", // WRONG
+                    null,
                     primaryLocation,
                     roleType,
                     contractType,
@@ -639,6 +641,7 @@ class AllServicesOrgRoleTest extends DroolBase {
             grantType,
             region,
             jurisdiction,
+            null,
             primaryLocation,
             RoleType.CASE.name(), // WRONG
             contractType,
@@ -654,6 +657,7 @@ class AllServicesOrgRoleTest extends DroolBase {
             GrantType.EXCLUDED.name(), // WRONG
             region,
             jurisdiction,
+            null,
             primaryLocation,
             roleType,
             contractType,
@@ -669,6 +673,7 @@ class AllServicesOrgRoleTest extends DroolBase {
             grantType,
             region,
             jurisdiction,
+            null,
             primaryLocation,
             roleType,
             contractType,
@@ -683,6 +688,197 @@ class AllServicesOrgRoleTest extends DroolBase {
                                   grantType,
                                   region,
                                   jurisdiction,
+                                  null,
+                                  primaryLocation,
+                                  roleType,
+                                  contractType,
+                                  classification,
+                                  expectedSubstantive,
+                                  Status.APPROVED);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {
+        // FR STAFF ROLES
+        "ctsc,CTSC,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Null,PUBLIC",
+        "hmcts-ctsc,CTSC,BASIC,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PRIVATE",
+        "task-supervisor,CTSC,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PUBLIC",
+        "case-allocator,CTSC,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PUBLIC",
+        "ctsc-team-leader,CTSC,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Null,PUBLIC",
+        "specific-access-approver-ctsc,CTSC,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,"
+            + "N,Null,PUBLIC",
+        "hearing-centre-admin,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Null,PUBLIC",
+        "hmcts-admin,ADMIN,BASIC,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PRIVATE",
+        "task-supervisor,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PUBLIC",
+        "case-allocator,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Null,PUBLIC",
+        "hearing-centre-team-leader,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,"
+            + "Y,Null,PUBLIC",
+        "specific-access-approver-admin,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,"
+            + "N,Null,PUBLIC",
+        "specific-access-approver-legal-ops,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,"
+            + "N,Null,PUBLIC",
+        "national-business-centre,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Null,PUBLIC",
+        "nbc-team-leader,ADMIN,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Null,PUBLIC",
+        // FR JUDICIAL ROLES
+        "hmcts-judiciary,JUDICIAL,BASIC,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Fee-Paid,PRIVATE",
+        "hmcts-judiciary,JUDICIAL,BASIC,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Salaried,PRIVATE",
+        "judge,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Fee-Paid,PUBLIC",
+        "judge,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "fee-paid-judge,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Fee-Paid,PUBLIC",
+        "leadership-judge,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,Y,Salaried,PUBLIC",
+        "specific-access-approver-judiciary,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,"
+            + "N,Salaried,PUBLIC",
+        "task-supervisor,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Salaried,PUBLIC",
+        "case-allocator,JUDICIAL,STANDARD,north-east,DIVORCE,FinancialRemedyMVP2,UK,ORGANISATION,N,Salaried,PUBLIC",
+    },
+        nullValues = "Null"
+    )
+    void shouldApproveOrRejectRequestedRoleForOrgWithCaseType(String roleName, String roleCategory,
+                                                    String grantType, String region, String jurisdiction,
+                                                    String caseType, String primaryLocation, String roleType,
+                                                    String expectedSubstantive, String contractType,
+                                                    String classification) {
+
+        // wrong roleCategory
+        verifyOrmOrgRequestedRole(roleName,
+                                  RoleCategory.CITIZEN.name(), // WRONG
+                                  grantType,
+                                  region,
+                                  jurisdiction,
+                                  caseType,
+                                  primaryLocation,
+                                  roleType,
+                                  contractType,
+                                  classification,
+                                  expectedSubstantive,
+                                  Status.REJECTED);
+
+        // NB: skip wrong jurisdiction test for roles that don't use jurisdiction value filter
+        if (!List.of("hmcts-admin",
+                     "hmcts-ctsc",
+                     "hmcts-judiciary",
+                     "hmcts-legal-operations",
+                     "specific-access-approver-admin",
+                     "specific-access-approver-ctsc",
+                     "specific-access-approver-judiciary",
+                     "specific-access-approver-legal-ops").contains(roleName)) {
+            if ("case-allocator".equals(roleName)) {
+                // without jurisdiction
+                verifyOrmOrgRequestedRole(
+                    roleName,
+                    roleCategory,
+                    grantType,
+                    region,
+                    null, // WRONG (missing jurisdiction)
+                    caseType,
+                    primaryLocation,
+                    roleType,
+                    contractType,
+                    classification,
+                    expectedSubstantive,
+                    Status.REJECTED
+                );
+            } else {
+                // wrong jurisdiction
+                verifyOrmOrgRequestedRole(
+                    roleName,
+                    roleCategory,
+                    grantType,
+                    region,
+                    "wrong-jurisdiction", // WRONG
+                    caseType,
+                    primaryLocation,
+                    roleType,
+                    contractType,
+                    classification,
+                    expectedSubstantive,
+                    Status.REJECTED
+                );
+            }
+        }
+
+        // wrong roleType
+        verifyOrmOrgRequestedRole(
+            roleName,
+            roleCategory,
+            grantType,
+            region,
+            jurisdiction,
+            caseType,
+            primaryLocation,
+            RoleType.CASE.name(), // WRONG
+            contractType,
+            classification,
+            expectedSubstantive,
+            Status.REJECTED
+        );
+
+        // wrong grantType
+        verifyOrmOrgRequestedRole(
+            roleName,
+            roleCategory,
+            GrantType.EXCLUDED.name(), // WRONG
+            region,
+            jurisdiction,
+            caseType,
+            primaryLocation,
+            roleType,
+            contractType,
+            classification,
+            expectedSubstantive,
+            Status.REJECTED
+        );
+
+        // wrong classification
+        verifyOrmOrgRequestedRole(
+            roleName,
+            roleCategory,
+            grantType,
+            region,
+            jurisdiction,
+            caseType,
+            primaryLocation,
+            roleType,
+            contractType,
+            Classification.RESTRICTED.name(), // WRONG (not usually applicable to org roles)
+            expectedSubstantive,
+            Status.REJECTED
+        );
+
+        // without caseType
+        // NB: skip without caseType test for roles that don't use jurisdiction/caseType value filter
+        if (!List.of("hmcts-admin",
+                     "hmcts-ctsc",
+                     "hmcts-judiciary",
+                     "hmcts-legal-operations",
+                     "case-allocator",
+                     "specific-access-approver-admin",
+                     "specific-access-approver-ctsc",
+                     "specific-access-approver-judiciary",
+                     "specific-access-approver-legal-ops").contains(roleName)) {
+            verifyOrmOrgRequestedRole(
+                roleName,
+                roleCategory,
+                grantType,
+                region,
+                jurisdiction,
+                null, // WRONG (missing case type)
+                primaryLocation,
+                roleType,
+                contractType,
+                classification,
+                expectedSubstantive,
+                Status.REJECTED
+            );
+        }
+
+        // correct values should be approved
+        verifyOrmOrgRequestedRole(roleName,
+                                  roleCategory,
+                                  grantType,
+                                  region,
+                                  jurisdiction,
+                                  caseType,
                                   primaryLocation,
                                   roleType,
                                   contractType,
@@ -692,7 +888,7 @@ class AllServicesOrgRoleTest extends DroolBase {
     }
 
     void verifyOrmOrgRequestedRole(String roleName, String roleCategory, String grantType,
-                                   String region, String jurisdiction, String primaryLocation,
+                                   String region, String jurisdiction, String caseType, String primaryLocation,
                                    String roleType, String contractType, String classification,
                                    String expectedSubstantive, Status expectedStatus) {
 
@@ -708,6 +904,9 @@ class AllServicesOrgRoleTest extends DroolBase {
             roleAssignment.setGrantType(GrantType.valueOf(grantType));
             if (region != null) {
                 roleAssignment.getAttributes().put("region", convertValueJsonNode(region));
+            }
+            if (caseType != null) {
+                roleAssignment.getAttributes().put("caseType", convertValueJsonNode(caseType));
             }
             if (primaryLocation != null) {
                 roleAssignment.getAttributes().put("primaryLocation", convertValueJsonNode(primaryLocation));

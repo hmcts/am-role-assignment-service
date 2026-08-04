@@ -35,12 +35,12 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 
+import javax.sql.DataSource;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.sql.DataSource;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -249,7 +249,7 @@ class RoleAssignmentIntegrationTest extends BaseTest {
         List<RoleConfigRole> roleConfigRoles = mapper.readValue(response, new TypeReference<>() {
         });
 
-        assertEquals(247, roleConfigRoles.size());
+        assertEquals(248, roleConfigRoles.size());
         for (RoleConfigRole roleConfigRole : roleConfigRoles) {
             assertNotNull(roleConfigRole.getName());
             assertNotNull(roleConfigRole.getCategory());
