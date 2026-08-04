@@ -185,9 +185,47 @@
     ]
   },
   {
-    "name": "PCS_Solicitor_Group",
-    "label": "PCS Solicitor Group Role",
-    "description": "PCS Solicitor Group Role for testing - from BEFTA Case Definition",
+    "name": "claimant",
+    "label": "claimant Role",
+    "description": "claimant Role for testing - from BEFTA Case Definition",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "PCS"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseAccessGroupId": {
+            "mandatory": false
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "claimant",
+    "label": "claimant Group Role",
+    "description": "claimant Group Role for testing - from BEFTA Case Definition",
     "category": "PROFESSIONAL",
     "type": "ORGANISATION",
     "substantive": true,
@@ -223,9 +261,9 @@
     ]
   },
   {
-    "name": "PCS_Solicitor_Org",
-    "label": "PCS Solicitor Org Role",
-    "description": "PCS Solicitor Org Role for testing - from BEFTA Case Definition",
+    "name": "claimant_solicitor",
+    "label": "claimant solicitor Group Role",
+    "description": "claimant solicitor Group Role for testing - from BEFTA Case Definition",
     "category": "PROFESSIONAL",
     "type": "ORGANISATION",
     "substantive": true,
@@ -251,6 +289,47 @@
             ]
           },
           "caseType": {
+            "mandatory": true
+          },
+          "caseAccessGroupId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "defendant_solicitor",
+    "label": "defendant solicitor Group Role",
+    "description": "defendant solicitor Group Role for testing - from BEFTA Case Definition",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "PCS"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseAccessGroupId": {
             "mandatory": true
           }
         }
