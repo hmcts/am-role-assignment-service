@@ -88,7 +88,10 @@ public class FrCaseAllocatorIT {
         arguments.addAll(
             getTestArgumentsForCaseRole(
                 "case-allocator",
-                List.of("case-allocator"),
+                List.of(
+                    "case-allocator",
+                    "ctsc" // NB: force a failure by using a existingRoleName that is not permitted in test
+                ),
                 RoleCategory.CTSC,
                 caseType,
                 caRoleCategory,
