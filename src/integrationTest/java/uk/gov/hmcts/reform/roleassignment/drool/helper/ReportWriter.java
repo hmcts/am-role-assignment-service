@@ -22,22 +22,26 @@ public class ReportWriter {
         Map<String, List<TestScenario>> testRunByService = testRun.stream()
             .collect(Collectors.groupingBy(TestScenario::getService));
 
-        testRunByService.forEach((service, testScenarios) -> {
-            String serviceReportLocation = writeServiceReport(service,
-                                                              reportName,
-                                                              outputLocation,
-                                                              testScenarios);
+        testRunByService.keySet().stream()
+            .sorted()
+            .forEach(service -> {
+                List<TestScenario> scenarios = testRunByService.get(service);
 
-            // Build the index for all service files.
-            body.append(
-                HtmlBuilder.buildParagraph(
-                    buildTickOrCross(testScenarios)
-                        + " "
-                        + HtmlBuilder.buildRelativeHyperLink(outputLocation, serviceReportLocation, service),
-                    getErrorColour(testScenarios)
-                )
-            );
-        });
+                String serviceReportLocation = writeServiceReport(service,
+                                                                  reportName,
+                                                                  outputLocation,
+                                                                  scenarios);
+
+                // Build the index for all service files.
+                body.append(
+                    HtmlBuilder.buildParagraph(
+                        buildTickOrCross(scenarios)
+                            + " "
+                            + HtmlBuilder.buildRelativeHyperLink(outputLocation, serviceReportLocation, service),
+                        getErrorColour(scenarios)
+                    )
+                );
+            });
 
         BaseDroolIntegrationTest.createFile(outputLocation + "/index.html",
                                             HtmlBuilder.buildHtmlPage(reportName, body.toString()));
@@ -58,9 +62,13 @@ public class ReportWriter {
         Map<String, List<TestScenario>> testScenarioByGroup = testScenarios.stream()
             .collect(Collectors.groupingBy(testScenario -> testScenario.getTestArguments().getGroup()));
 
-        testScenarioByGroup.forEach((testGroup, scenarios) -> {
-            body.append(generateTestGroupSummary(testGroup, scenarios, outputFolder));
-        });
+        testScenarioByGroup.keySet().stream()
+            .sorted()
+            .forEach(testGroup -> {
+                List<TestScenario> scenarios = testScenarioByGroup.get(testGroup);
+
+                body.append(generateTestGroupSummary(testGroup, scenarios, outputFolder));
+            });
 
         String outputFile = outputFolder + "/index.html";
         BaseDroolIntegrationTest.createFile(outputFile,
@@ -83,13 +91,19 @@ public class ReportWriter {
 
         StringBuilder groupSummary = new StringBuilder();
 
-        testScenarioByArguments.forEach((testArgumentDescription, scenarios) -> {
-            groupSummary.append(HtmlBuilder.buildHeading3(testArgumentDescription, getErrorColour(scenarios)));
+        testScenarioByArguments.keySet().stream()
+            .sorted()
+            .forEach(testArgumentDescription -> {
+                List<TestScenario> scenarios = testScenarioByArguments.get(testArgumentDescription);
 
-            scenarios.forEach(testScenario ->
-                                  groupSummary.append(generateTestScenarioSummary(testScenario, outputLocation))
-            );
-        });
+                groupSummary.append(HtmlBuilder.buildHeading3(testArgumentDescription, getErrorColour(scenarios)));
+
+                scenarios.stream()
+                    .sorted((s1, s2) -> s1.getTestDescription().compareTo(s2.getTestDescription()))
+                    .forEach(testScenario ->
+                                      groupSummary.append(generateTestScenarioSummary(testScenario, outputLocation))
+                    );
+            });
 
         body.append(HtmlBuilder.buildCollapseDiv(
             String.format("%s %d scenarios", buildTickOrCross(testScenarios), testScenarioByArguments.size()),
