@@ -186,44 +186,6 @@
   },
   {
     "name": "claimant",
-    "label": "claimant Role",
-    "description": "claimant Role for testing - from BEFTA Case Definition",
-    "category": "PROFESSIONAL",
-    "type": "ORGANISATION",
-    "substantive": true,
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": [
-              "PCS"
-            ]
-          },
-          "caseType": {
-            "mandatory": true
-          },
-          "caseAccessGroupId": {
-            "mandatory": false
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "claimant",
     "label": "claimant Group Role",
     "description": "claimant Group Role for testing - from BEFTA Case Definition",
     "category": "PROFESSIONAL",
