@@ -1,7 +1,7 @@
 package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -22,15 +22,14 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getReque
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @ExtendWith(MockitoExtension.class)
-public class PrmOrgRoleTest extends DroolBase {
+public class TestRolesOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        // NB: GA only role combinations from: `./src/main/resources/roleconfig/role_prm.json`
+        // NB: GA only role combinations from: `./src/main/resources/roleconfig/role_test.json`
         //     i.e. those with mandatory caseAccessGroupId
-        "claimant,PCS,TestCaseType,PCS:all-cases:111:11111",
-        "claimant-solicitor,PCS,TestCaseType,PCS:all-cases:111:11111",
-        "defendant-solicitor,PCS,TestCaseType,PCS:all-cases:222:22222"
+        "PRM_Test_GA_Role,TEST_JURISDICTION,TestCaseType,TEST_JURISDICTION:all-cases:123:12345",
+        "CaseProfessionalGroupAccess_GA_Role,BEFTA_MASTER,TestCaseType,BEFTA_MASTER:all-cases:999:99999",
     })
     void shouldApproveOrRejectProfessionalOrgGroupAccessRoleRequest(String roleName,
                                                                     String jurisdiction,
@@ -79,9 +78,12 @@ public class PrmOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
-        // NB: ORG role combinations from: `./src/main/resources/roleconfig/role_prm.json`
+        // NB: ORG role combinations from: `./src/main/resources/roleconfig/role_test.json`
         //     i.e. those without mandatory caseAccessGroupId
-        "duty-advisor-request,PCS,TestCaseType"
+        "PRM_Test_Org_Role,TEST_JURISDICTION,TestCaseType",
+        "CaseProfessionalGroupAccess_Org_Role,BEFTA_MASTER,TestCaseType",
+        "Role1,BEFTA_JURISDICTION_1,TestCaseType",
+        "Role1,BEFTA_MASTER,TestCaseType"
     })
     void shouldApproveOrRejectProfessionalOrgRoleRequest(String roleName,
                                                          String jurisdiction,
@@ -196,10 +198,12 @@ public class PrmOrgRoleTest extends DroolBase {
     @ParameterizedTest
     @CsvSource({
         // NB: All role combinations from: `./src/main/resources/roleconfig/role_prm.json`
-        "claimant,PCS",
-        "claimant-solicitor,PCS",
-        "defendant-solicitor,PCS",
-        "duty-advisor-request,PCS"
+        "PRM_Test_Org_Role,TEST_JURISDICTION",
+        "PRM_Test_GA_Role,TEST_JURISDICTION",
+        "CaseProfessionalGroupAccess_GA_Role,BEFTA_MASTER",
+        "CaseProfessionalGroupAccess_Org_Role,BEFTA_MASTER",
+        "Role1,BEFTA_JURISDICTION_1,TestCaseType",
+        "Role1,BEFTA_MASTER,TestCaseType"
     })
     void shouldDeleteProfessionalOrgRole(String roleName, String jurisdiction) {
 
