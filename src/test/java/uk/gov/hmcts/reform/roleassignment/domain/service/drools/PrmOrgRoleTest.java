@@ -22,7 +22,7 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getReque
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @ExtendWith(MockitoExtension.class)
-public class PrmOrgRoleTest extends DroolBase {
+class PrmOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
