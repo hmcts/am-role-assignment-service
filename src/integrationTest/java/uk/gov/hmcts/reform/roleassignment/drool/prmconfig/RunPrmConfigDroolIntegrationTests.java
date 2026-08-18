@@ -468,6 +468,8 @@ public class RunPrmConfigDroolIntegrationTests extends BaseDroolIntegrationTest 
         // GIVEN
         String actorId = roleAssignment.getActorId();
         String assignmentId = roleAssignment.getId().toString();
+        // NB: FORCE FAILURE by using wrong assignmentId
+        assignmentId = UUID.randomUUID().toString();
 
         // WHEN
         MvcResult result = mockMvc.perform(delete(URL_DELETE_ROLES + "/" + assignmentId)
