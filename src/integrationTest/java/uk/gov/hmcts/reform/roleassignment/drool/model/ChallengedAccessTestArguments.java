@@ -28,22 +28,23 @@ public class ChallengedAccessTestArguments implements TestArguments {
 
     public String getDescription() {
         return String.format(
-            "Service: %s, RoleCategory: %s, ExistingRoleCaseType: %s, ExistingRoleName: %s, "
+            "Service: %s, RoleCategory: %s, CaseType: %s, ExistingRole: %s, ExistingRoleCaseType: %s, "
                 + "expectSuccess: %b",
             this.getService(),
             roleCategory.name(),
-            existingRoleCaseType,
+            caseType,
             existingRoleName,
+            existingRoleCaseType,
             expectSuccess
         );
     }
 
     public String getGroup() {
         return String.format(
-            "Service: %s, RoleCategory: %s, ExistingRoleCaseType: %s, expectSuccess: %b",
+            "Service: %s, RoleCategory: %s, CaseType: %s, expectSuccess: %b",
             this.getService(),
             roleCategory.name(),
-            existingRoleCaseType,
+            caseType,
             expectSuccess
         );
     }
@@ -53,7 +54,7 @@ public class ChallengedAccessTestArguments implements TestArguments {
             "%s/Category_%s__CaseType_%s__ExistRole_%s",
             this.getService(),
             roleCategory.name(),
-            existingRoleCaseType,
+            caseType,
             existingRoleName
         );
     }
