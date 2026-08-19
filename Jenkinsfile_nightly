@@ -137,6 +137,17 @@ withNightlyPipeline(type, product, component) {
       reportTitles         : "Features,Failures",
       reportName           : "Functional Test Report"
     ]
+
+    publishHTML target: [
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : "build/test-results/DroolTests",
+      reportFiles          : "PrmConfig/index.html",
+      reportTitles         : "PRM Config",
+      reportName           : "Drool Integration Test Report"
+    ]
+
   }
 
   afterAlways('fortify-scan') {
