@@ -4,11 +4,18 @@ import uk.gov.hmcts.reform.roleassignment.drool.BaseDroolIntegrationTest;
 import uk.gov.hmcts.reform.roleassignment.drool.model.TestScenario;
 
 import java.nio.file.Paths;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
 public class ReportWriter {
+
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL);
 
     public static void writeTestReport(String reportName,
                                        String reportDescription,
@@ -43,6 +50,8 @@ public class ReportWriter {
                 );
             });
 
+        appendFooter(body);
+
         BaseDroolIntegrationTest.createFile(outputLocation + "/index.html",
                                             HtmlBuilder.buildHtmlPage(reportName, body.toString()));
     }
@@ -70,8 +79,10 @@ public class ReportWriter {
                 body.append(generateTestGroupSummary(testGroup, scenarios, outputFolder));
             });
 
+        appendFooter(body);
+
         String outputFile = outputFolder + "/index.html";
-        BaseDroolIntegrationTest.createFile(outputFile,
+        BaseDroolIntegrationTest.createFile(outputFolder + "/index.html",
                                             HtmlBuilder.buildHtmlPageWithCollapse(reportName + " - " + service,
                                                                                   body.toString()));
         return outputFile;
@@ -150,6 +161,16 @@ public class ReportWriter {
             HtmlBuilder.buildTickOrCross(!testScenario.hasError()) + " " + testScenario.getTestDescription(),
             body.toString(),
             testScenario.hasError()
+        );
+    }
+
+    private static void appendFooter(StringBuilder body) {
+        body.append(
+            HtmlBuilder.buildDiv(
+                null,
+                "footer",
+                String.format("Generated %s", dtf.format(ZonedDateTime.now(ZoneOffset.UTC)))
+            )
         );
     }
 

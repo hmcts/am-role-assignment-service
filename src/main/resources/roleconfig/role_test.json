@@ -1,8 +1,8 @@
 [
   {
-    "name": "duty-advisor-request",
-    "label": "duty advisor request",
-    "description": "duty advisor request",
+    "name": "PRM_Test_GA_Role",
+    "label": "PRM Test Group Access Role",
+    "description": "Sample role for testing - PRM Group Access Role",
     "category": "PROFESSIONAL",
     "type": "ORGANISATION",
     "substantive": true,
@@ -24,7 +24,154 @@
           "jurisdiction": {
             "mandatory": true,
             "values": [
-              "PCS"
+              "TEST_JURISDICTION"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseAccessGroupId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "PRM_Test_Org_Role",
+    "label": "PRM Test Org Role",
+    "description": "Sample role for testing - PRM Org Role",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "TEST_JURISDICTION"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "CaseProfessionalGroupAccess_GA_Role",
+    "label": "CaseProfessionalGroupAccess Group Role",
+    "description": "GA Group Role for testing - from BEFTA Case Definition",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "BEFTA_MASTER"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseAccessGroupId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "CaseProfessionalGroupAccess_Org_Role",
+    "label": "CaseProfessionalGroupAccess Org Role",
+    "description": "GA Org Role for testing - from BEFTA Case Definition",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "BEFTA_MASTER"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "Role1",
+    "label": "Role1",
+    "description": "Sample role for testing - from BEFTA Case Definition",
+    "category": "PROFESSIONAL",
+    "type": "ORGANISATION",
+    "substantive": true,
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["RESTRICTED"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "BEFTA_JURISDICTION_1",
+              "BEFTA_MASTER"
             ]
           },
           "caseType": {
@@ -32,120 +179,6 @@
           },
           "caseAccessGroupId": {
             "mandatory": false
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "claimant",
-    "label": "claimant",
-    "description": "claimant",
-    "category": "PROFESSIONAL",
-    "type": "ORGANISATION",
-    "substantive": true,
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": [
-              "PCS"
-            ]
-          },
-          "caseType": {
-            "mandatory": true
-          },
-          "caseAccessGroupId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "claimant-solicitor",
-    "label": "claimant solicitor",
-    "description": "claimant solicitor",
-    "category": "PROFESSIONAL",
-    "type": "ORGANISATION",
-    "substantive": true,
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": [
-              "PCS"
-            ]
-          },
-          "caseType": {
-            "mandatory": true
-          },
-          "caseAccessGroupId": {
-            "mandatory": true
-          }
-        }
-      }
-    ]
-  },
-  {
-    "name": "defendant-solicitor",
-    "label": "defendant solicitor",
-    "description": "defendant solicitor",
-    "category": "PROFESSIONAL",
-    "type": "ORGANISATION",
-    "substantive": true,
-    "patterns": [
-      {
-        "roleType": {
-          "mandatory": true,
-          "values": ["ORGANISATION"]
-        },
-        "grantType": {
-          "mandatory": true,
-          "values": ["STANDARD"]
-        },
-        "classification": {
-          "mandatory": true,
-          "values": ["RESTRICTED"]
-        },
-        "attributes": {
-          "jurisdiction": {
-            "mandatory": true,
-            "values": [
-              "PCS"
-            ]
-          },
-          "caseType": {
-            "mandatory": true
-          },
-          "caseAccessGroupId": {
-            "mandatory": true
           }
         }
       }

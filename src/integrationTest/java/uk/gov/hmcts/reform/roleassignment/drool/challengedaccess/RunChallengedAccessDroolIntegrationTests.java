@@ -66,7 +66,7 @@ public class RunChallengedAccessDroolIntegrationTests extends BaseDroolIntegrati
 
     static class TestArgumentGenerator {
 
-        static List<ChallengedAccessTestArguments> getAllChallengedAccessTestArguments() {
+        private static List<ChallengedAccessTestArguments> getAllChallengedAccessTestArguments() {
             List<ChallengedAccessTestArguments> arguments = new ArrayList<>();
 
             arguments.addAll(FrChallengedAccessIT.getAllTestArguments());
@@ -527,7 +527,7 @@ public class RunChallengedAccessDroolIntegrationTests extends BaseDroolIntegrati
         // create standard case-role request
         var assignmentRequest = createCaseRoleAssignmentRequest(
             actorId,
-            actorId, // NB: challenged-access is self service, assigner == assignee
+            actorId, // NB: challenged-access is self-service, assigner == assignee
             roleCategory,
             roleName,
             jurisdiction,
