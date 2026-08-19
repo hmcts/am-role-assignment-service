@@ -58,7 +58,7 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
 
     static class TestArgumentGenerator {
 
-        static List<CaseAllocatorTestArguments> getAllCaseAllocatorTestArguments() {
+        private static List<CaseAllocatorTestArguments> getAllCaseAllocatorTestArguments() {
             List<CaseAllocatorTestArguments> arguments = new ArrayList<>();
 
             arguments.addAll(FrCaseAllocatorIT.getAllTestArguments());
@@ -128,7 +128,7 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
 
     private void registerError(Error error) {
         if (this.testScenario != null) {
-            this.testScenario.addError(error);
+            this.testScenario.setError(error);
         }
     }
 
