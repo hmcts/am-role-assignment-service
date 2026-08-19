@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignment.drool.helper;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+
 public class HtmlBuilder {
 
     public static final String TICK = "&#9989;"; // The unicode character for tick mark
@@ -12,30 +13,30 @@ public class HtmlBuilder {
     public static final String COLLAPSE_CONTENT_DIV_CLASS = "content";
     public static final String COLLAPSE_ACTIVE = " collapsibleActive";
     public static final String COLLAPSE_STYLE = """
-            .collapsible {
-              cursor: pointer;
-              padding: 18px;
-              width: 100%;
-              border: none;
-              text-align: left;
-              outline: none;
-            }
-            .collapsible:after {
-              content: '\\02795'; /* Unicode character for "plus" sign (+) */
-              font-size: 13px;
-              float: right;
-              margin-left: 5px;
-            }
-            .collapsibleActive, .collapsible:hover {}
-            .collapsibleActive:after {
-              content: "\\2796"; /* Unicode character for "minus" sign (-) */
-            }
-            .content {
-              padding: 0 18px;
-              display: none;
-              overflow: hidden;
-            }
-            """;
+        .collapsible {
+          cursor: pointer;
+          padding: 18px;
+          width: 100%;
+          border: none;
+          text-align: left;
+          outline: none;
+        }
+        .collapsible:after {
+          content: '\\02795'; /* Unicode character for "plus" sign (+) */
+          font-size: 13px;
+          float: right;
+          margin-left: 5px;
+        }
+        .collapsibleActive, .collapsible:hover {}
+        .collapsibleActive:after {
+          content: "\\2796"; /* Unicode character for "minus" sign (-) */
+        }
+        .content {
+          padding: 0 18px;
+          display: none;
+          overflow: hidden;
+        }
+        """;
     public static final String COLLAPSE_SCRIPT = """
             var coll = document.getElementsByClassName("collapsible");
             var i;
@@ -75,7 +76,14 @@ public class HtmlBuilder {
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <style>~STYLE~</style>
+                <style>~STYLE~
+                    .footer {
+                      padding-top: 2em;
+                      color: #a0a0a0;
+                      font-size: 80%;
+                      white-space: nowrap;
+                    }
+                </style>
                 <title>~TITLE~</title>
             </head>
             <body>
