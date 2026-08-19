@@ -4,11 +4,18 @@ import uk.gov.hmcts.reform.roleassignment.drool.BaseDroolIntegrationTest;
 import uk.gov.hmcts.reform.roleassignment.drool.model.TestScenario;
 
 import java.nio.file.Paths;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
 public class ReportWriter {
+
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL);
 
     public static void writeTestReport(String reportName,
                                        String reportDescription,
@@ -22,22 +29,28 @@ public class ReportWriter {
         Map<String, List<TestScenario>> testRunByService = testRun.stream()
             .collect(Collectors.groupingBy(TestScenario::getService));
 
-        testRunByService.forEach((service, testScenarios) -> {
-            String serviceReportLocation = writeServiceReport(service,
-                                                              reportName,
-                                                              outputLocation,
-                                                              testScenarios);
+        testRunByService.keySet().stream()
+            .sorted()
+            .forEach(service -> {
+                List<TestScenario> scenarios = testRunByService.get(service);
 
-            // Build the index for all service files.
-            body.append(
-                HtmlBuilder.buildParagraph(
-                    buildTickOrCross(testScenarios)
-                        + " "
-                        + HtmlBuilder.buildRelativeHyperLink(outputLocation, serviceReportLocation, service),
-                    getErrorColour(testScenarios)
-                )
-            );
-        });
+                String serviceReportLocation = writeServiceReport(service,
+                                                                  reportName,
+                                                                  outputLocation,
+                                                                  scenarios);
+
+                // Build the index for all service files.
+                body.append(
+                    HtmlBuilder.buildParagraph(
+                        buildTickOrCross(scenarios)
+                            + " "
+                            + HtmlBuilder.buildRelativeHyperLink(outputLocation, serviceReportLocation, service),
+                        getErrorColour(scenarios)
+                    )
+                );
+            });
+
+        appendFooter(body);
 
         BaseDroolIntegrationTest.createFile(outputLocation + "/index.html",
                                             HtmlBuilder.buildHtmlPage(reportName, body.toString()));
@@ -58,12 +71,18 @@ public class ReportWriter {
         Map<String, List<TestScenario>> testScenarioByGroup = testScenarios.stream()
             .collect(Collectors.groupingBy(testScenario -> testScenario.getTestArguments().getGroup()));
 
-        testScenarioByGroup.forEach((testGroup, scenarios) -> {
-            body.append(generateTestGroupSummary(testGroup, scenarios, outputFolder));
-        });
+        testScenarioByGroup.keySet().stream()
+            .sorted()
+            .forEach(testGroup -> {
+                List<TestScenario> scenarios = testScenarioByGroup.get(testGroup);
+
+                body.append(generateTestGroupSummary(testGroup, scenarios, outputFolder));
+            });
+
+        appendFooter(body);
 
         String outputFile = outputFolder + "/index.html";
-        BaseDroolIntegrationTest.createFile(outputFile,
+        BaseDroolIntegrationTest.createFile(outputFolder + "/index.html",
                                             HtmlBuilder.buildHtmlPageWithCollapse(reportName + " - " + service,
                                                                                   body.toString()));
         return outputFile;
@@ -83,13 +102,19 @@ public class ReportWriter {
 
         StringBuilder groupSummary = new StringBuilder();
 
-        testScenarioByArguments.forEach((testArgumentDescription, scenarios) -> {
-            groupSummary.append(HtmlBuilder.buildHeading3(testArgumentDescription, getErrorColour(scenarios)));
+        testScenarioByArguments.keySet().stream()
+            .sorted()
+            .forEach(testArgumentDescription -> {
+                List<TestScenario> scenarios = testScenarioByArguments.get(testArgumentDescription);
 
-            scenarios.forEach(testScenario ->
-                                  groupSummary.append(generateTestScenarioSummary(testScenario, outputLocation))
-            );
-        });
+                groupSummary.append(HtmlBuilder.buildHeading3(testArgumentDescription, getErrorColour(scenarios)));
+
+                scenarios.stream()
+                    .sorted((s1, s2) -> s1.getTestDescription().compareTo(s2.getTestDescription()))
+                    .forEach(testScenario ->
+                                      groupSummary.append(generateTestScenarioSummary(testScenario, outputLocation))
+                    );
+            });
 
         body.append(HtmlBuilder.buildCollapseDiv(
             String.format("%s %d scenarios", buildTickOrCross(testScenarios), testScenarioByArguments.size()),
@@ -136,6 +161,16 @@ public class ReportWriter {
             HtmlBuilder.buildTickOrCross(!testScenario.hasError()) + " " + testScenario.getTestDescription(),
             body.toString(),
             testScenario.hasError()
+        );
+    }
+
+    private static void appendFooter(StringBuilder body) {
+        body.append(
+            HtmlBuilder.buildDiv(
+                null,
+                "footer",
+                String.format("Generated %s", dtf.format(ZonedDateTime.now(ZoneOffset.UTC)))
+            )
         );
     }
 

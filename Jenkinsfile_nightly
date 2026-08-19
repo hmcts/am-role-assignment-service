@@ -143,8 +143,8 @@ withNightlyPipeline(type, product, component) {
       alwaysLinkToLastBuild: true,
       keepAll              : true,
       reportDir            : "build/test-results/DroolTests",
-      reportFiles          : "CaseAllocation/index.html",
-      reportTitles         : "Case-Allocation",
+      reportFiles          : "CaseAllocation/index.html,PrmConfig/index.html",
+      reportTitles         : "Case-Allocation,PRM Config",
       reportName           : "Drool Integration Test Report"
     ]
 

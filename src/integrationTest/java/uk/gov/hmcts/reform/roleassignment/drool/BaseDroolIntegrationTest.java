@@ -73,7 +73,7 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
 
     public static final String AUTHORISED_SERVICE = "ccd_gw";
     public static final String AUTHORISED_SERVICE_ORM = "am_org_role_mapping_service";
-    public static final String AUTHORISED_SERVICE_XUI = "xuiwebapp";
+    public static final String AUTHORISED_SERVICE_XUI = "xui_webapp";
 
     public static final String CASE_ID = "1234567890123456";
     public static final String CASE_REGION_ID = "4";

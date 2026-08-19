@@ -39,10 +39,6 @@ public class TestScenario {
     @Setter
     private Error error;
 
-    public void addError(Error error) {
-        this.error = error;
-    }
-
     public boolean hasError() {
         return error != null;
     }
