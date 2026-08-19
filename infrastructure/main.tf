@@ -87,7 +87,7 @@ module "role-assignment-database-v15" {
   pgsql_version        = "15"
   pgsql_sku            = var.pgsql_sku
   pgsql_storage_mb     = var.pgsql_storage_mb
-
+  high_availability = var.env == "perftest" || var.env == "test" ? false : null
   # Setup Access Reader db user
   force_user_permissions_trigger = "5"
 
