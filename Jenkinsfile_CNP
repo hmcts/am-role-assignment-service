@@ -157,6 +157,16 @@ withPipeline(type, product, component) {
             reportName           : "Integration Test Report"
     ]
 
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/test-results/DroolTests",
+            reportFiles          : "PrmConfig/index.html",
+            reportTitles         : "PRM Config",
+            reportName           : "Drool Integration Test Report"
+    ]
+
   }
 
   before('functionalTest:aat') {
