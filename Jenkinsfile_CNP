@@ -9,7 +9,7 @@ properties(
   ]
 )
 
-@Library("Infrastructure")
+@Library("Infrastructure@2.5.1")
 import uk.gov.hmcts.contino.AppPipelineDsl
 
 def type = "java"
@@ -155,6 +155,16 @@ withPipeline(type, product, component) {
             reportFiles          : "index.html",
             reportTitles         : "Index",
             reportName           : "Integration Test Report"
+    ]
+
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/test-results/DroolTests",
+            reportFiles          : "PrmConfig/index.html",
+            reportTitles         : "PRM Config",
+            reportName           : "Drool Integration Test Report"
     ]
 
   }
