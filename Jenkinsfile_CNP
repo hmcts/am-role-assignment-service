@@ -9,7 +9,7 @@ properties(
   ]
 )
 
-@Library("Infrastructure")
+@Library("Infrastructure@2.5.1")
 import uk.gov.hmcts.contino.AppPipelineDsl
 
 def type = "java"
@@ -51,7 +51,7 @@ def secrets = [
 ]
 
 // Configure branches to sync with master branch
-def branchesToSync = ['demo', 'perftest', 'ithc']
+def branchesToSync = ['demo', 'ithc']
 
 // Vars needed for functional and smoke tests to run against AKS
 env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
@@ -155,6 +155,16 @@ withPipeline(type, product, component) {
             reportFiles          : "index.html",
             reportTitles         : "Index",
             reportName           : "Integration Test Report"
+    ]
+
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/test-results/DroolTests",
+            reportFiles          : "PrmConfig/index.html",
+            reportTitles         : "PRM Config",
+            reportName           : "Drool Integration Test Report"
     ]
 
   }

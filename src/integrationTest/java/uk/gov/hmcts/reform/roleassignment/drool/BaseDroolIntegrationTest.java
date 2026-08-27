@@ -3,7 +3,9 @@ package uk.gov.hmcts.reform.roleassignment.drool;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.inject.Inject;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.springframework.http.HttpHeaders;
@@ -37,17 +39,20 @@ import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataServ
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -62,8 +67,11 @@ import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJ
 })
 public abstract class BaseDroolIntegrationTest extends BaseTest {
 
+    public static final String DROOL_TEST_OUTPUT_PATH = "build/test-results/DroolTests/";
+
     public static final String AUTHORISED_SERVICE = "ccd_gw";
-    public static final String AUTHORISED_SERVICE_XUI = "xuiwebapp";
+    public static final String AUTHORISED_SERVICE_ORM = "am_org_role_mapping_service";
+    public static final String AUTHORISED_SERVICE_XUI = "xui_webapp";
 
     public static final String CASE_ID = "1234567890123456";
 
@@ -296,6 +304,36 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
 
     protected static String writeValueAsPrettyJson(Object input) throws JsonProcessingException {
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(input);
+    }
+
+    @SneakyThrows
+    public static String writeObjectToDroolOutput(Object object, String outputLocation, String outputFileName) {
+        String data = (object instanceof String) ? (String) object : writeValueAsPrettyJson(object);
+        return writeJsonToDroolOutput(data, outputLocation, outputFileName);
+    }
+
+    @SuppressWarnings({"ResultOfMethodCallIgnored"})
+    public static String writeJsonToDroolOutput(String json, String outputLocation, String outputFileName) {
+        String outputFilePath = null;
+
+        if (!StringUtils.isEmpty(outputLocation)) {
+            File outputDirectory = new File(outputLocation);
+            if (!outputDirectory.exists()) {
+                outputDirectory.mkdirs();
+            }
+
+            outputFilePath = outputLocation + outputFileName + ".json";
+            createFile(outputFilePath, json);
+        }
+
+        return outputFilePath;
+    }
+
+    @SneakyThrows
+    public static void createFile(String outputFilePath, String contents) {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath));
+        writer.write(contents);
+        writer.close();
     }
 
 }
