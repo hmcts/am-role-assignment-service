@@ -22,14 +22,15 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.getReque
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 @ExtendWith(MockitoExtension.class)
-public class PrmOrgRoleTest extends DroolBase {
+class PrmOrgRoleTest extends DroolBase {
 
     @ParameterizedTest
     @CsvSource({
         // NB: GA only role combinations from: `./src/main/resources/roleconfig/role_prm.json`
         //     i.e. those with mandatory caseAccessGroupId
-        "PRM_Test_GA_Role,TEST_JURISDICTION,TestCaseType,TEST_JURISDICTION:all-cases:123:12345",
-        "CaseProfessionalGroupAccess_GA_Role,BEFTA_MASTER,TestCaseType,BEFTA_MASTER:all-cases:999:99999"
+        "claimant,PCS,TestCaseType,PCS:all-cases:111:11111",
+        "claimant-solicitor,PCS,TestCaseType,PCS:all-cases:111:11111",
+        "defendant-solicitor,PCS,TestCaseType,PCS:all-cases:222:22222"
     })
     void shouldApproveOrRejectProfessionalOrgGroupAccessRoleRequest(String roleName,
                                                                     String jurisdiction,
@@ -80,10 +81,7 @@ public class PrmOrgRoleTest extends DroolBase {
     @CsvSource({
         // NB: ORG role combinations from: `./src/main/resources/roleconfig/role_prm.json`
         //     i.e. those without mandatory caseAccessGroupId
-        "PRM_Test_Org_Role,TEST_JURISDICTION,TestCaseType",
-        "CaseProfessionalGroupAccess_Org_Role,BEFTA_MASTER,TestCaseType",
-        "Role1,BEFTA_JURISDICTION_1,TestCaseType",
-        "Role1,BEFTA_MASTER,TestCaseType"
+        "duty-advisor-request,PCS,TestCaseType"
     })
     void shouldApproveOrRejectProfessionalOrgRoleRequest(String roleName,
                                                          String jurisdiction,
@@ -198,12 +196,10 @@ public class PrmOrgRoleTest extends DroolBase {
     @ParameterizedTest
     @CsvSource({
         // NB: All role combinations from: `./src/main/resources/roleconfig/role_prm.json`
-        "PRM_Test_Org_Role,TEST_JURISDICTION",
-        "PRM_Test_GA_Role,TEST_JURISDICTION",
-        "CaseProfessionalGroupAccess_GA_Role,BEFTA_MASTER",
-        "CaseProfessionalGroupAccess_Org_Role,BEFTA_MASTER",
-        "Role1,BEFTA_JURISDICTION_1,TestCaseType",
-        "Role1,BEFTA_MASTER,TestCaseType"
+        "claimant,PCS",
+        "claimant-solicitor,PCS",
+        "defendant-solicitor,PCS",
+        "duty-advisor-request,PCS"
     })
     void shouldDeleteProfessionalOrgRole(String roleName, String jurisdiction) {
 
