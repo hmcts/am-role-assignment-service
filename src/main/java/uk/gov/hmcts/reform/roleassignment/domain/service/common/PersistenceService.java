@@ -43,7 +43,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.springframework.data.jpa.domain.Specification.unrestricted;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByActorIds;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByAttributes;
 import static uk.gov.hmcts.reform.roleassignment.data.RoleAssignmentEntitySpecifications.searchByAuthorisations;
@@ -187,7 +186,7 @@ public class PersistenceService {
                             Objects.requireNonNull(
                                 Objects.requireNonNull(
                                     Objects.requireNonNull(
-                                            searchByActorIds(searchRequest.getActorId())).or(unrestricted())
+                                            searchByActorIds(searchRequest.getActorId()))
                                         .and(searchByGrantType(searchRequest.getGrantType())))
                                     .and(searchByValidDate(searchRequest.getValidAt())))
                                 .and(searchByAttributes(searchRequest.getAttributes())))
@@ -216,7 +215,7 @@ public class PersistenceService {
             List<String> roleTypes = addCaseTypeIfCaseIdExists(multipleQueryRequest.getQueryRequests().get(0));
 
             Specification<RoleAssignmentEntity> initialQuery =
-                searchByActorIds(multipleQueryRequest.getQueryRequests().get(0).getActorId()).or(unrestricted())
+                searchByActorIds(multipleQueryRequest.getQueryRequests().get(0).getActorId())
                 .and(searchByGrantType(multipleQueryRequest.getQueryRequests().get(0).getGrantType()))
                 .and(searchByValidDate(multipleQueryRequest.getQueryRequests().get(0).getValidAt()))
                 .and(searchByAttributes(multipleQueryRequest.getQueryRequests().get(0).getAttributes()))
