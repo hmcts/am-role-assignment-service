@@ -577,6 +577,9 @@ dependencyManagement {
       entry 'tomcat-embed-el'
       entry 'tomcat-embed-websocket'
     }
+    dependencySet(group: 'org.apache.httpcomponents.client5', version: '5.6.4') {
+      entry 'httpclient5'
+    }
   }
 }
 
