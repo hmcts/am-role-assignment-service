@@ -386,7 +386,7 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
 
         static final String REJECT_BAD_ROLE_NAME = "Reject case-role - bad existing role name";
         static final String REJECT_BAD_ROLE_JURISDICTION = "Reject case-role - bad existing role jurisdiction";
-        static final String REJECT_BAD_ROLE_CASE_TYPE = "Reject delete case-role - bad existing role case-type";
+        static final String REJECT_BAD_ROLE_CASE_TYPE = "Reject case-role - bad existing role case-type";
 
         static final String REJECT_BAD_CA_JURISDICTION = "Reject case-role - bad CA jurisdiction";
         static final String REJECT_BAD_CA_REGION = "Reject case-role - bad CA region";
