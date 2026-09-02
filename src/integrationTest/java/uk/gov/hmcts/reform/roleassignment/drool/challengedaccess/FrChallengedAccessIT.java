@@ -33,11 +33,11 @@ public class FrChallengedAccessIT {
             RoleCategory.CTSC,
             caseTypes,
             List.of(
+                "case-allocator",
                 "ctsc",
                 "ctsc-team-leader"
             ),
             List.of(
-                "case-allocator",
                 "task-supervisor",
                 "specific-access-approver-ctsc"
             )
