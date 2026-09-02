@@ -331,7 +331,7 @@ public class RunChallengedAccessDroolIntegrationTests extends BaseDroolIntegrati
                                                                      ChallengedAccessTestArguments testArguments
         ) throws Exception {
 
-            createTestScenario("testRejectChallengedAccessRole_badExistingRoleRegion",
+            createTestScenario("testRejectChallengedAccessRole_existingRoleNotPermitted",
                                REJECT_NOT_PERMITTED,
                                testArguments);
 
