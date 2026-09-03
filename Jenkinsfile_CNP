@@ -162,8 +162,8 @@ withPipeline(type, product, component) {
             alwaysLinkToLastBuild: true,
             keepAll              : true,
             reportDir            : "build/test-results/DroolTests",
-            reportFiles          : "CaseAllocation/index.html,PrmConfig/index.html",
-            reportTitles         : "Case-Allocation,PRM Config",
+            reportFiles          : "CaseAllocation/index.html,ChallengedAccess/index.html,PrmConfig/index.html",
+            reportTitles         : "Case-Allocation,Challenged-Access,PRM Config",
             reportName           : "Drool Integration Test Report"
     ]
 
