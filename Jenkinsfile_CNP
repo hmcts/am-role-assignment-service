@@ -69,7 +69,6 @@ env.BEFTA_S2S_CLIENT_ID_OF_AM_ORG_ROLE_MAPPING_SERVICE = "am_org_role_mapping_se
 env.BEFTA_S2S_CLIENT_ID_OF_CCD_CASE_DISPOSER = "ccd_case_disposer"
 env.BEFTA_S2S_CLIENT_ID_OF_CCD_DATA = "ccd_data"
 env.BEFTA_S2S_CLIENT_ID_OF_XUI_WEBAPP = "xui_webapp"
-env.JWT_ISSUER_VALIDATION_ENABLED = "true"
 env.OAUTH2_CLIENT_ID = "am_role_assignment"
 env.OAUTH2_REDIRECT_URI = "http://am-role-assignment-service-aat.service.core-compute-aat.internal/oauth2redirect"
 env.OAUTH2_ACCESS_TOKEN_TYPE = "OIDC"
