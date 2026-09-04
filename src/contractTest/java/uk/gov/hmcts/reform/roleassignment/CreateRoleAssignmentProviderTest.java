@@ -129,6 +129,7 @@ public class CreateRoleAssignmentProviderTest {
         when(dataStoreApi.getCaseDataV2(anyString())).thenReturn(Case.builder().id("1212121212121213").jurisdiction(
             "IA").caseTypeId("Asylum").securityClassification(Classification.PUBLIC).build());
         when(securityUtils.getUserId()).thenReturn("3168da13-00b3-41e3-81fa-cbc71ac28a0f");
+        when(securityUtils.getServiceName()).thenReturn("civil_service");
         when(correlationInterceptorUtil.preHandle(any())).thenReturn("14a21569-eb80-4681-b62c-6ae2ed069e2d");
     }
 
