@@ -22,6 +22,8 @@ management:
       group:
         readiness:
           include: "db"
+    loggers:
+      enabled: false
     # METRICS ENDPOINT CONFIG
     # Enable the metrics endpoint
     metrics:
@@ -43,7 +45,6 @@ security:
   anonymousPaths:
     - "/"
     - "/health/**"
-    - "/loggers/**"
     - "/am/role-assignments/fetchFlagStatus"
     - "/swagger"
     - "/swagger-ui.html"
