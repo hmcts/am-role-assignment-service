@@ -115,7 +115,6 @@ spring:
     cache-names: token, caseId, userToken
     caffeine:
       spec: maximumSize=500,expireAfterWrite=120s
-oidc.issuer: ${OIDC_ISSUER_URL:https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts}
 
 idam:
   s2s-auth:
@@ -136,6 +135,10 @@ idam:
       scope: ${ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE:openid profile roles authorities}
   apachehttpclient:
     enable: false
+  security:
+    issuerValidation: ${JWT_ISSUER_VALIDATION_ENABLED:false}
+    allowed-issuers:
+      - http://localhost:5062/o
 
 feign:
   client:
