@@ -14,6 +14,39 @@
     <cve>CVE-2026-66299</cve>
   </suppress>
   <suppress>
+    <notes>https://tools.hmcts.net/jira/browse/DTSAM-1319 Azure Agent</notes>
+    <cve>CVE-2025-21199</cve>
+  </suppress>
+  <suppress>
+    <notes>https://tools.hmcts.net/jira/browse/DTSAM-1321 Azure Java SDK</notes>
+    <cve>CVE-2026-33117</cve>
+  </suppress>
+  <suppress>
+    <notes>https://tools.hmcts.net/jira/browse/DTSAM-1323 Apache Commons Untrusted Configurations</notes>
+    <cve>CVE-2025-46392</cve>
+  </suppress>
+  <suppress>
+    <notes>https://tools.hmcts.net/jira/browse/DTSAM-1324 Plex Utils</notes>
+    <cve>CVE-2025-67030</cve>
+  </suppress>
+  <suppress>
+    <notes>https://tools.hmcts.net/jira/browse/DTSAM-1339 jackson-databind</notes>
+    <cve>CVE-2026-54515</cve>
+  </suppress>
+  <suppress>
+    <notes>https://tools.hmcts.net/jira/browse/DTSAM-1340 JetBrains Kotlin</notes>
+    <cve>CVE-2026-53914</cve>
+  </suppress>
+  <suppress>
+    <notes>https://tools.hmcts.net/jira/browse/DTSAM-1344 HttpComponents Core</notes>
+    <cve>CVE-2026-54399</cve>
+    <cve>CVE-2026-54428</cve>
+  </suppress>
+  <suppress>
+    <notes>https://tools.hmcts.net/jira/browse/DTSAM-1322 Jakarta Mail</notes>
+    <cve>CVE-2025-7962</cve>
+  </suppress>
+  <suppress>
       <notes>https://tools.hmcts.net/jira/browse/DTSAM-1385 spring framework</notes>
       <cve>CVE-2026-59313</cve>
       <cve>CVE-2026-59314</cve>
@@ -31,6 +64,11 @@
       <cve>CVE-2026-59270</cve>
       <cve>CVE-2026-59276</cve>
       <cve>CVE-2026-59277</cve>
-      <cve>CVE-2026-47877</cve> 
+      <cve>CVE-2026-47877</cve>
+  </suppress>
+  <suppress>
+    <notes>https://tools.hmcts.net/jira/browse/DTSAM-1388 Microsoft Azure Servicebus Reactor Netty</notes>
+    <cve>CVE-2026-47874</cve>
+    <cve>CVE-2026-59284</cve>
   </suppress>
 </suppressions>
