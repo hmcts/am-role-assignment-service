@@ -485,7 +485,7 @@ dependencies {
   testImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testImplementation 'com.github.hmcts:befta-fw:9.2.10'
   testImplementation 'com.github.hmcts:fortify-client:1.4.10:all'
-  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.8.6'
+  testImplementation group: 'io.projectreactor', name: 'reactor-core', version: '3.8.7'
 
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   smokeTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
@@ -572,7 +572,7 @@ dependencyManagement {
     dependencySet(group: 'com.fasterxml.jackson.core', version: '2.22') {
       entry 'jackson-annotations'
     }
-    dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.57') {
+    dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.59') {
       entry 'tomcat-embed-core'
       entry 'tomcat-embed-el'
       entry 'tomcat-embed-websocket'
