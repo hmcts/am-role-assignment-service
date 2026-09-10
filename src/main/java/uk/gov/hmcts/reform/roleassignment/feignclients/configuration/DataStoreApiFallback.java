@@ -30,6 +30,8 @@ public class DataStoreApiFallback implements DataStoreApi {
     public static final String EMPLOYMENT_SCTL_MLT_CASE_ID = "1234567890123465";
     public static final String PROBATE_CASE_ID = "1234567890123466";
     public static final String PCS_CASE_ID = "1234567890123467";
+    public static final String FR_CONSENTED_CASE_ID = "1234567890123468";
+    public static final String FR_CONTESTED_CASE_ID = "1234567890123469";
 
     @Override
     public String getServiceStatus() {
@@ -157,6 +159,24 @@ public class DataStoreApiFallback implements DataStoreApi {
                 return Case.builder().id(caseId)
                     .caseTypeId("any-case-type")
                     .jurisdiction("PCS")
+                    .securityClassification(Classification.PUBLIC)
+                    .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
+                    .build();
+            case FR_CONSENTED_CASE_ID:
+                return Case.builder().id(caseId)
+                    .caseTypeId("FinancialRemedyMVP2")
+                    .jurisdiction("DIVORCE")
+                    .securityClassification(Classification.PUBLIC)
+                    .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
+                        Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),
+                               Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode(CASE_LOCATION)))))
+                    .build();
+            case FR_CONTESTED_CASE_ID:
+                return Case.builder().id(caseId)
+                    .caseTypeId("FinancialRemedyContested")
+                    .jurisdiction("DIVORCE")
                     .securityClassification(Classification.PUBLIC)
                     .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
                         Map.of(Case.REGION,JacksonUtils.convertValueJsonNode(CASE_REGION),

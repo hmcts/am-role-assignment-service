@@ -25,6 +25,8 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_GA_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.FR_CONSENTED_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.FR_CONTESTED_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_EW_MLT_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_SCTL_CASE_ID;
@@ -155,6 +157,20 @@ public abstract class DroolBase {
                                            .id(PCS_CASE_ID)
                                            .jurisdiction("PCS")
                                            .caseTypeId("any-case-type")
+                                           .data(buildDataWithRegion())
+                                           .build()),
+
+                                Map.entry("DIVORCE", Case.builder()
+                                           .id(FR_CONSENTED_CASE_ID)
+                                           .jurisdiction("DIVORCE")
+                                           .caseTypeId("FinancialRemedyMVP2")
+                                           .data(buildDataWithRegion())
+                                           .build()),
+
+                                Map.entry("DIVORCE|FinancialRemedyContested", Case.builder()
+                                           .id(FR_CONTESTED_CASE_ID)
+                                           .jurisdiction("DIVORCE")
+                                           .caseTypeId("FinancialRemedyContested")
                                            .data(buildDataWithRegion())
                                            .build())
     );
