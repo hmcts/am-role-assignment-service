@@ -8,12 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -92,7 +92,7 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
     @Inject
     private WebApplicationContext wac;
 
-    @MockBean
+    @MockitoBean
     private IdamApi idamApi;
 
     @Mock
@@ -104,7 +104,7 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
     @Inject
     protected PersistenceService persistenceService;
 
-    @MockBean
+    @MockitoBean
     private RetrieveDataService retrieveDataService;
 
     @BeforeEach
