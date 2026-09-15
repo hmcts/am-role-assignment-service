@@ -6,6 +6,12 @@ spring:
           oidc:
             issuer-uri: http://localhost:${wiremock.server.port:5000}/o
 
+feign:
+  client:
+    config:
+      datastoreclient:
+        url: http://localhost:${wiremock.server.port:5000}
+
 idam:
   s2s-auth:
     url: http://localhost:${wiremock.server.port:4502}
