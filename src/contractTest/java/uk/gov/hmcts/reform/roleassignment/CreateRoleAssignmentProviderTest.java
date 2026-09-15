@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.roleassignment;
 
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
-import au.com.dius.pact.provider.junitsupport.IgnoreNoPactsToVerify;
+//import au.com.dius.pact.provider.junitsupport.IgnoreNoPactsToVerify;
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
@@ -54,7 +54,7 @@ import static uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder.buildAtt
 @TestPropertySource(properties = {"org.request.byPassOrgDroolRule=true", "roleassignment.query.size=20",
     "spring.cache.type=none", "ras.environment=pr", "roleassignment.query.sizeinternal=100"})
 @Import(RoleAssignmentProviderTestConfiguration.class)
-@IgnoreNoPactsToVerify
+//@IgnoreNoPactsToVerify
 public class CreateRoleAssignmentProviderTest {
 
     @Autowired
