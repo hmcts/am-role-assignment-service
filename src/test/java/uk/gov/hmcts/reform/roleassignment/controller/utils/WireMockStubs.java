@@ -8,6 +8,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.springframework.http.HttpStatus;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
+import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
+import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Classification;
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -78,19 +81,19 @@ public class WireMockStubs {
                 .build();
     }
 
-    public void stubCases() {
+    public void stubCases() throws JsonProcessingException {
         wireMockServer.stubFor(get(urlPathEqualTo("/cases/1234567890123456"))
-                   .withHeader("experimental", equalTo("true"))
                    .willReturn(aResponse()
                            .withStatus(HttpStatus.OK.value())
                            .withHeader("Content-Type", "application/json")
-                           .withBody("{\"id\":\"1234567890123456\","
-                                     + "\"jurisdiction\":\"PUBLICLAW\","
-                                     + "\"case_type\":\"CARE_SUPERVISION_EPO\","
-                                     + "\"security_classification\":\"PUBLIC\","
-                                     + "\"data\":{\"caseManagementLocation\":{"
-                                     + "\"region\":\"1\",\"baseLocation\":\"20262\"}}}" )
-                   ));
+                           .withBody(OBJECT_MAPPER.writeValueAsString(Case.builder().id("123456")
+                                         .caseTypeId("CIVIL")
+                                         .jurisdiction("CIVIL")
+                                         .securityClassification(Classification.PUBLIC)
+                                         .data(Map.of(Case.CASE_MANAGEMENT_LOCATION, JacksonUtils.convertValueJsonNode(
+                                             Map.of(Case.REGION,JacksonUtils.convertValueJsonNode("1"),
+                                                    Case.BASE_LOCATION, JacksonUtils.convertValueJsonNode("20262")))))
+                                         .build()))));
     }
 
     private Map<String, Object> getOpenIdResponse() {
