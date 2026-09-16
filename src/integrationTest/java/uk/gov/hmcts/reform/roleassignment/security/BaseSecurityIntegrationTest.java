@@ -26,7 +26,7 @@ public class BaseSecurityIntegrationTest extends BaseAuthorisedTestIntegration {
                          .status(Status.CREATED)
                          .replaceExisting(true)
                          .build())
-            .requestedRoles(Collections.emptyList())//TestDataBuilder.buildRequestedRoles(true))
+            .requestedRoles(Collections.emptyList())
             .build();
 
     protected RequestSpecification jwtRequest(
