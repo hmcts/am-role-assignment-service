@@ -71,6 +71,8 @@ public class RunPrmConfigDroolIntegrationTests extends BaseDroolIntegrationTest 
 
             arguments.addAll(PossessionsPrmConfigIT.getAllTestArguments());
 
+            arguments.addAll(PublicLawPrmConfigIT.getAllTestArguments());
+
             return arguments;
         }
 
