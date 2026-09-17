@@ -1,0 +1,9 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.restclient.autoconfigure.RestClientAutoConfiguration
+  cloud:
+    compatibility-verifier:
+      enabled: false
+    discovery:
+      enabled: false
