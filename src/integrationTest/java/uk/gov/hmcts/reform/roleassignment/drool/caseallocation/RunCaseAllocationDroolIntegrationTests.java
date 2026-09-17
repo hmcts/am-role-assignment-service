@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleAssignment;
-import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.drool.BaseDroolIntegrationTest;
@@ -140,7 +139,7 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
 
         static final String SUMMARY =
             """
-                <h2>HappyPaths</h2>
+                <h2>Happy Paths</h2>
                 <ul>
                 <li>%s (with CA case-type filter if required)</li>
                 <li>%s</li>
@@ -387,7 +386,7 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
 
         static final String REJECT_BAD_ROLE_NAME = "Reject case-role - bad existing role name";
         static final String REJECT_BAD_ROLE_JURISDICTION = "Reject case-role - bad existing role jurisdiction";
-        static final String REJECT_BAD_ROLE_CASE_TYPE = "Reject delete case-role - bad existing role case-type";
+        static final String REJECT_BAD_ROLE_CASE_TYPE = "Reject case-role - bad existing role case-type";
 
         static final String REJECT_BAD_CA_JURISDICTION = "Reject case-role - bad CA jurisdiction";
         static final String REJECT_BAD_CA_REGION = "Reject case-role - bad CA region";
@@ -785,66 +784,6 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
         // reset output to match DB
         assigneeRolesBefore = assertRoleAssignmentsInDb(actorId, 1);
         testScenario.addFileToStep(STEP_BEFORE_GRANT, "assigneeRoles_before", assigneeRolesBefore);
-    }
-
-    private void overrideRoleAssignmentValuesInDb(RoleAssignment roleAssignment,
-                                                  boolean overrideRoleName,
-                                                  boolean overrideJurisdiction,
-                                                  boolean overrideCaseType,
-                                                  boolean overrideRegion) {
-
-        // delete current role assignment
-        persistenceService.deleteRoleAssignment(roleAssignment);
-
-        // reset roleAssignment ID ready for save as new
-        roleAssignment.setId(UUID.randomUUID());
-
-        if (overrideRoleName) {
-            roleAssignment.setRoleName("bad-role-name");
-        }
-        if (overrideJurisdiction) {
-            roleAssignment.setAttribute("jurisdiction", "bad-jurisdiction");
-        }
-        if (overrideCaseType) {
-            roleAssignment.setAttribute("caseType", "bad-case-type");
-        }
-        if (overrideRegion) {
-            roleAssignment.setAttribute("region", "bad-region");
-        }
-
-        persistenceService.persistRoleAssignments(List.of(roleAssignment));
-    }
-
-    private List<RoleAssignment> registerAndVerifyOrgRoleAssignment(String actorId,
-                                                                    RoleCategory roleCategory,
-                                                                    String roleName,
-                                                                    String jurisdiction,
-                                                                    String caseType,
-                                                                    String region) throws Exception {
-
-        // GIVEN
-        AssignmentRequest assignmentRequest = createOrgRoleAssignmentRequest(
-            actorId,
-            roleCategory,
-            roleName,
-            jurisdiction,
-            caseType,
-            region
-        );
-
-        // WHEN
-        log.info("Create RoleAssignment Request: {}", writeValueAsPrettyJson(assignmentRequest));
-        MvcResult result = mockMvc.perform(post(URL_CREATE_ROLES)
-                                               .contentType(JSON_CONTENT_TYPE)
-                                               .headers(getHttpHeaders(AUTHORISED_SERVICE_ORM))
-                                               .content(mapper.writeValueAsBytes(assignmentRequest))
-        ).andExpect(status().is(201)).andReturn();
-
-        // THEN
-        assertCreateRoleAssignmentResponseStatus(Status.APPROVED, result, 1);
-
-        // check role assignments
-        return assertRoleAssignmentsInDb(actorId, 1);
     }
 
 }
