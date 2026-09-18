@@ -1,16 +1,29 @@
 package uk.gov.hmcts.reform.roleassignment.auditlog;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import uk.gov.hmcts.reform.roleassignment.util.JacksonUtils;
+
+import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 
 class AuditLogFormatterTest {
 
     private AuditLogFormatter logFormatter = new AuditLogFormatter();
 
     @Test
-    void shouldHaveCorrectLabels() {
+    void shouldHaveCorrectLabels() throws Exception {
         AuditEntry auditEntry = new AuditEntry();
         auditEntry.setDateTime("2020-12-05 10:30:45");
         auditEntry.setOperationType("CREAT_CASE");
@@ -18,51 +31,97 @@ class AuditLogFormatterTest {
         auditEntry.setHttpMethod("GET");
         auditEntry.setPath("test_path");
         auditEntry.setHttpStatus(200);
-        auditEntry.setRequestPayload("payload");
+        auditEntry.setRequestPayloadHash("239f59ed55e737c77147cf55ad0c1b030b6d7ee748a7426952f9b852d5a935e5");
         auditEntry.setAssignmentSize(1);
         auditEntry.setResponseTime(500L);
         String result = logFormatter.format(auditEntry);
-        assertEquals("LA-AM-RAS dateTime:2020-12-05 10:30:45,"
-                         + "operationType:CREAT_CASE,assignmentSize:1,"
-                         + "invokingService:test_invokingService,"
-                         + "endpointCalled:test_path,"
-                         + "operationalOutcome:200,"
-                         + "requestPayload:payload,"
-                         + "responseTime:500",
-                             result);
+        JsonNode json = JacksonUtils.MAPPER.readTree(result);
+        assertEquals("LA-AM-RAS", json.get("tag").asText());
+        assertEquals("2020-12-05 10:30:45", json.get("dateTime").asText());
+        assertEquals("CREAT_CASE", json.get("operationType").asText());
+        assertEquals(1, json.get("assignmentSize").asInt());
+        assertEquals("test_invokingService", json.get("invokingService").asText());
+        assertEquals("test_path", json.get("endpointCalled").asText());
+        assertEquals(200, json.get("operationalOutcome").asInt());
+        assertEquals("239f59ed55e737c77147cf55ad0c1b030b6d7ee748a7426952f9b852d5a935e5",
+            json.get("requestPayloadHash").asText());
+        assertEquals(500L, json.get("responseTime").asLong());
     }
 
     @Test
-    void shouldNotLogPairIfEmpty() {
+    void shouldNotLogFieldIfEmpty() throws Exception {
         AuditEntry auditEntry = new AuditEntry();
         auditEntry.setOperationType("CREAT_CASE");
 
         String result = logFormatter.format(auditEntry);
+        JsonNode json = JacksonUtils.MAPPER.readTree(result);
 
-        assertThat(result).containsOnlyOnce("operationType:CREAT_CASE").doesNotContainPattern("caseId:");
+        assertThat(json.get("operationType").asText()).isEqualTo("CREAT_CASE");
+        assertThat(json.has("caseId")).isFalse();
+        assertThat(json.has("requestPayloadHash")).isFalse();
 
     }
 
     @Test
-    void shouldHandleListWithComma() {
+    void shouldNotLogBlankStringField() throws Exception {
         AuditEntry auditEntry = new AuditEntry();
+        auditEntry.setOperationType("   ");
 
         String result = logFormatter.format(auditEntry);
+        JsonNode json = JacksonUtils.MAPPER.readTree(result);
 
-        assertThat(result).containsOnlyOnce("LA-AM-RAS ,");
+        assertThat(json.get("tag").asText()).isEqualTo("LA-AM-RAS");
+        assertFalse(json.has("operationType"));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldNotAddEmptyCollection() throws Exception {
+        Method addMethod = AuditLogFormatter.class.getDeclaredMethod("add", Map.class, String.class, Object.class);
+        addMethod.setAccessible(true);
+
+        Map<String, Object> logEntry = new LinkedHashMap<>();
+        logEntry.put("tag", AuditLogFormatter.TAG);
+
+        addMethod.invoke(logFormatter, logEntry, "emptyCollection", List.of());
+
+        assertFalse(logEntry.containsKey("emptyCollection"));
+    }
+
+    @Test
+    void shouldEscapePotentiallyMaliciousPayload() throws Exception {
+        AuditEntry auditEntry = new AuditEntry();
+        auditEntry.setRequestPayloadHash("881d91b5c9c7bc6edbce9f98e71fc18611d0c344e3bd1d2224c10a13580e1073");
+
+        String result = logFormatter.format(auditEntry);
+        JsonNode json = JacksonUtils.MAPPER.readTree(result);
+
+        assertThat(json.get("requestPayloadHash").asText())
+            .isEqualTo("881d91b5c9c7bc6edbce9f98e71fc18611d0c344e3bd1d2224c10a13580e1073");
     }
 
 
     @Test
-    void shouldHandleNullTargetCaseRoles() {
+    void shouldHandleNullTargetCaseRoles() throws Exception {
         AuditEntry auditEntry = new AuditEntry();
 
         String result = logFormatter.format(auditEntry);
+        JsonNode json = JacksonUtils.MAPPER.readTree(result);
 
-        assertThat(result).doesNotContain("targetCaseRoles:role1,role2");
+        assertThat(json.get("tag").asText()).isEqualTo("LA-AM-RAS");
+        assertThat(json.has("targetCaseRoles")).isFalse();
+    }
+
+    @Test
+    void shouldWrapJsonProcessingException() throws Exception {
+        ObjectMapper objectMapper = mock(ObjectMapper.class);
+        AuditLogFormatter formatter = new AuditLogFormatter(objectMapper);
+        AuditEntry auditEntry = new AuditEntry();
+        JsonProcessingException cause = new JsonProcessingException("boom") { };
+        doThrow(cause).when(objectMapper).writeValueAsString(org.mockito.ArgumentMatchers.any());
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> formatter.format(auditEntry));
+
+        assertThat(exception).hasMessage("Failed to format audit log entry").hasCause(cause);
     }
 }
-
-
-
-
