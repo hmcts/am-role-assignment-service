@@ -11,7 +11,7 @@ properties([
   ])
 ])
 
-@Library("Infrastructure@2.5.1")
+@Library("Infrastructure@2.5.4")
 
 def type = "java"
 def product = "am"
@@ -143,8 +143,8 @@ withNightlyPipeline(type, product, component) {
       alwaysLinkToLastBuild: true,
       keepAll              : true,
       reportDir            : "build/test-results/DroolTests",
-      reportFiles          : "PrmConfig/index.html",
-      reportTitles         : "PRM Config",
+      reportFiles          : "CaseAllocation/index.html,PrmConfig/index.html",
+      reportTitles         : "Case-Allocation,PRM Config",
       reportName           : "Drool Integration Test Report"
     ]
 
