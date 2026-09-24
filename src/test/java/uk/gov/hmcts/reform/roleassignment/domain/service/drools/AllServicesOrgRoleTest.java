@@ -568,6 +568,8 @@ class AllServicesOrgRoleTest extends DroolBase {
         "task-supervisor,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,N,Null,PUBLIC",
         "ctsc-team-leader,CTSC,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
         "bailiff-admin,ADMIN,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "bailiff,ENFORCEMENT,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC",
+        "bailiff-manager,ENFORCEMENT,STANDARD,north-east,PCS,UK,ORGANISATION,Y,Null,PUBLIC"
     },
         nullValues = "Null"
     )
@@ -963,7 +965,8 @@ class AllServicesOrgRoleTest extends DroolBase {
     @CsvSource({
         "hmcts-judiciary,JUDICIAL,BASIC,ORGANISATION,N,PRIVATE",
         "hmcts-legal-operations,LEGAL_OPERATIONS,BASIC,ORGANISATION,N,PRIVATE",
-        "hmcts-admin,ADMIN,BASIC,ORGANISATION,N,PRIVATE"
+        "hmcts-admin,ADMIN,BASIC,ORGANISATION,N,PRIVATE",
+        "hmcts-enforcement,ENFORCEMENT,BASIC,ORGANISATION,N,PRIVATE"
     })
     void shouldApproveRequestedRoleForOrgHavingNoAttributes(String roleName, String roleCategory, String grantType,
                                           String roleType, String expectedSubstantive, String classification) {
