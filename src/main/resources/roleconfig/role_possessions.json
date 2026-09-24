@@ -179,5 +179,31 @@
         }
       }
     ]
+  },
+  {
+    "name": "hmcts-enforcement",
+    "label": "HMCTS Enforcement",
+    "description": "General role for enforcement",
+    "category": "ENFORCEMENT",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PRIVATE"]
+        },
+        "attributes": {
+        }
+      }
+    ]
   }
 ]
