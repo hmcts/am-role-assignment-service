@@ -34,7 +34,6 @@ java:
     CCD_DATA_STORE_URL: http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     OPEN_ID_API_BASE_URI: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o
-    JWT_ISSUER_VALIDATION_ENABLED: false
     RAS_ENV: "{{ .Values.global.environment }}"
     ROLE_ASSIGNMENT_IDAM_CLIENT_ID: am_role_assignment
     MICROSERVICE_NAME: am_role_assignment_service
@@ -48,5 +47,8 @@ java:
     BYPASS_ORG_DROOL_RULE: false
     RUN_DB_MIGRATION_ON_STARTUP: false
     TESTING_SUPPORT_ENABLED: false
-    IDAM_SECURITY_ALLOWED_ISSUERS_0: https://forgerock-am.service.core-compute-idam-{{ .Values.global.environment }}.internal:8443/openam/oauth2/realms/root/realms/hmcts
-    IDAM_SECURITY_ALLOWED_ISSUERS_1: https://forgerock-am.service.core-compute-idam-{{ .Values.global.environment }}.internal:8443/openam/oauth2/hmcts
+    JWT_ISSUER_VALIDATION_ENABLED: false
+    IDAM_SECURITY_ALLOWED_ISSUERS_0: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o
+    IDAM_SECURITY_ALLOWED_ISSUERS_1: https://hmcts-access.{{ .Values.global.environment }}.platform.hmcts.net/o
+    IDAM_SECURITY_ALLOWED_ISSUERS_2: https://forgerock-am.service.core-compute-idam-{{ .Values.global.environment }}.internal:8443/openam/oauth2/realms/root/realms/hmcts
+    IDAM_SECURITY_ALLOWED_ISSUERS_3: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o
