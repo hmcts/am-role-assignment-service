@@ -406,7 +406,7 @@ dependencies {
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: versions.poi
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: versions.poi
 
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.9.0'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.9.1'
 
   // drools engine dependency
   implementation group: 'org.drools', name: 'drools-core', version: versions.drools
@@ -449,7 +449,7 @@ dependencies {
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
-  implementation 'net.bytebuddy:byte-buddy:1.18.13'
+  implementation 'net.bytebuddy:byte-buddy:1.18.14'
 
   testImplementation('com.opentable.components:otj-pg-embedded:1.1.1')
   testImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
@@ -567,7 +567,7 @@ dependencyManagement {
       entry 'jackson-core'
       entry 'jackson-annotations'
     }
-    dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.59') {
+    dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.60') {
       entry 'tomcat-embed-core'
       entry 'tomcat-embed-el'
       entry 'tomcat-embed-websocket'
