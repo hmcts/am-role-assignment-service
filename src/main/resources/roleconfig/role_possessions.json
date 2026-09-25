@@ -109,5 +109,101 @@
         }
       }
     ]
+  },
+  {
+    "name": "bailiff",
+    "label": "Baliff",
+    "description": "Baliff role for bailiff users",
+    "category": "ENFORCEMENT",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "primaryLocation": {
+            "mandatory": true
+          },
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "PCS"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "bailiff-manager",
+    "label": "Baliff Manager",
+    "description": "Baliff manager role for users who manage bailiffs",
+    "category": "ENFORCEMENT",
+    "substantive": true,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "primaryLocation": {
+            "mandatory": true
+          },
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "PCS"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "hmcts-enforcement",
+    "label": "HMCTS Enforcement",
+    "description": "General role for enforcement",
+    "category": "ENFORCEMENT",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["BASIC"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PRIVATE"]
+        },
+        "attributes": {
+        }
+      }
+    ]
   }
 ]
