@@ -257,7 +257,7 @@ class RoleAssignmentIntegrationTest extends BaseTest {
         assertThat(roleConfigRoles, containsInAnyOrder(
             roleMatcher("allocated-admin-caseworker", RoleCategory.ADMIN, RoleType.CASE, true),
             roleMatcher("allocated-administrator", RoleCategory.ADMIN, RoleType.CASE, true),
-            roleMatcher("allocated-bailiff", RoleCategory.ADMIN, RoleType.CASE, true),
+            roleMatcher("allocated-bailiff", RoleCategory.ENFORCEMENT, RoleType.CASE, true),
             roleMatcher("allocated-ctsc-caseworker", RoleCategory.CTSC, RoleType.CASE, true),
             roleMatcher("allocated-judge", RoleCategory.JUDICIAL, RoleType.CASE, true),
             roleMatcher("allocated-legal-adviser", RoleCategory.LEGAL_OPERATIONS, RoleType.CASE, true),
