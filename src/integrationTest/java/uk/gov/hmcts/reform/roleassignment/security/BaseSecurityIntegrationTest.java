@@ -43,14 +43,12 @@ public class BaseSecurityIntegrationTest extends BaseAuthorisedTestIntegration {
     protected RequestSpecification unexpiredJwt(
             String issuer)
             throws Exception {
-
         return jwtRequest(issuer, false);
     }
 
     protected RequestSpecification expiredJwt(
             String issuer)
             throws Exception {
-
         return jwtRequest(issuer, true);
     }
 }

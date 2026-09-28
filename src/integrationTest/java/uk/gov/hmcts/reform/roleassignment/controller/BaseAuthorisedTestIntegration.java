@@ -9,8 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.reform.roleassignment.controller.utils.WireMockStubs;
 
-import static uk.gov.hmcts.reform.roleassignment.BaseTest.WIRE_MOCK_SERVER;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = {"testing.support.enabled=true"})
 public abstract class BaseAuthorisedTestIntegration extends BaseTestIntegration {
