@@ -257,6 +257,8 @@ class CaseRolesDroolsTest extends DroolBase {
         "PCS,any-case-type,case-allocator,JUDICIAL,RESTRICTED,case-allocator,N",
         "PCS,any-case-type,case-allocator,ADMIN,RESTRICTED,case-allocator,N",
         "PCS,any-case-type,case-allocator,CTSC,RESTRICTED,case-allocator,N",
+        "PCS,any-case-type,allocated-bailiff,ENFORCEMENT,RESTRICTED,bailiff,Y",
+        "PCS,any-case-type,allocated-bailiff,ENFORCEMENT,RESTRICTED,bailiff-manager,Y",
         // FR: Consented
         "DIVORCE,FinancialRemedyMVP2,allocated-judge,JUDICIAL,RESTRICTED,judge,Y",
         "DIVORCE,FinancialRemedyMVP2,allocated-judge,JUDICIAL,RESTRICTED,fee-paid-judge,Y",
@@ -716,7 +718,7 @@ class CaseRolesDroolsTest extends DroolBase {
         "PCS,any-case-type,allocated-ctsc-caseworker,CTSC,RESTRICTED",
         "PCS,any-case-type,allocated-admin-caseworker,ADMIN,RESTRICTED",
         "PCS,any-case-type,allocated-wlu-caseworker,ADMIN,RESTRICTED",
-        "PCS,any-case-type,allocated-bailiff,ADMIN,RESTRICTED",
+        "PCS,any-case-type,allocated-bailiff,ENFORCEMENT,RESTRICTED",
         "PCS,any-case-type,case-allocator,JUDICIAL,RESTRICTED",
         "PCS,any-case-type,case-allocator,ADMIN,RESTRICTED",
         "PCS,any-case-type,case-allocator,CTSC,RESTRICTED",
