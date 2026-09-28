@@ -304,7 +304,7 @@ class RoleAssignmentIntegrationTest extends BaseTest {
             roleMatcher("la-secondary", RoleCategory.PROFESSIONAL, RoleType.ORGANISATION, true),
             roleMatcher("la-mla", RoleCategory.PROFESSIONAL, RoleType.ORGANISATION, true),
             roleMatcher("bailiff-admin", RoleCategory.ADMIN, RoleType.ORGANISATION, true),
-            roleMatcher("allocated-bailiff", RoleCategory.ADMIN, RoleType.CASE, true),
+            roleMatcher("allocated-bailiff", RoleCategory.ENFORCEMENT, RoleType.CASE, true),
             roleMatcher("allocated-wlu-caseworker", RoleCategory.ADMIN, RoleType.CASE, true),
             roleMatcher("bailiff", RoleCategory.ENFORCEMENT, RoleType.ORGANISATION, true),
             roleMatcher("bailiff-manager", RoleCategory.ENFORCEMENT, RoleType.ORGANISATION, true),
