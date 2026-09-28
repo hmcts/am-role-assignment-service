@@ -67,7 +67,8 @@ then
         !RoleCategory.JUDICIAL.equals($ra.getRoleCategory()) &&
         !RoleCategory.ADMIN.equals($ra.getRoleCategory()) &&
         !RoleCategory.OTHER_GOV_DEPT.equals($ra.getRoleCategory()) &&
-        !RoleCategory.CTSC.equals($ra.getRoleCategory())) {
+        !RoleCategory.CTSC.equals($ra.getRoleCategory()) &&
+        !RoleCategory.ENFORCEMENT.equals($ra.getRoleCategory())) {
       logInfoMsg("Rule : case_allocator_approve_create_case_role" +
        " request id: " + ($rq.getId() != null ? $rq.getId() : "null") +
        " clientId: " + ($rq.getClientId() != null ? $rq.getClientId() : "null") +
@@ -136,7 +137,8 @@ then
         !RoleCategory.JUDICIAL.equals($ra.getRoleCategory()) &&
         !RoleCategory.ADMIN.equals($ra.getRoleCategory()) &&
         !RoleCategory.OTHER_GOV_DEPT.equals($ra.getRoleCategory()) &&
-        !RoleCategory.CTSC.equals($ra.getRoleCategory())) {
+        !RoleCategory.CTSC.equals($ra.getRoleCategory()) &&
+        !RoleCategory.ENFORCEMENT.equals($ra.getRoleCategory())) {
       logInfoMsg("Rule : case_allocator_approve_delete_case_role_all_wa_services" +
        " request id: " + ($rq.getId() != null ? $rq.getId() : "null") +
        " clientId: " + ($rq.getClientId() != null ? $rq.getClientId() : "null") +
