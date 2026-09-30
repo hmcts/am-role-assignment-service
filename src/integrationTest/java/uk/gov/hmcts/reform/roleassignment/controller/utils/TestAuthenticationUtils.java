@@ -41,8 +41,8 @@ public class TestAuthenticationUtils {
         }
     }
 
-    public static HttpHeaders getHttpHeaders(String serviceName) throws JOSEException {
-        @NotNull HttpHeaders headers = new HttpHeaders();
+    public static @NotNull HttpHeaders getHttpHeaders(String serviceName) throws JOSEException {
+        HttpHeaders headers = new HttpHeaders();
         var userAuthToken = generateAuthToken();
         headers.setBearerAuth(userAuthToken);
         headers.add(SERVICE_AUTHORIZATION, "Bearer " + generateDummyS2SToken(serviceName));
