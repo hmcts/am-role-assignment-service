@@ -37,7 +37,6 @@ public class WireMockStubs {
     }
 
     public void stubIdamConfig() throws JsonProcessingException {
-
         wireMockServer.stubFor(get(urlPathEqualTo("/o/.well-known/openid-configuration"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.OK.value())

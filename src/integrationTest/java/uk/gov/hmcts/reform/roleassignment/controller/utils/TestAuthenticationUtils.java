@@ -41,9 +41,8 @@ public class TestAuthenticationUtils {
         }
     }
 
-    @NotNull
     public static HttpHeaders getHttpHeaders(String serviceName) throws JOSEException {
-        HttpHeaders headers = new HttpHeaders();
+        @NotNull HttpHeaders headers = new HttpHeaders();
         var userAuthToken = generateAuthToken();
         headers.setBearerAuth(userAuthToken);
         headers.add(SERVICE_AUTHORIZATION, "Bearer " + generateDummyS2SToken(serviceName));
@@ -53,7 +52,6 @@ public class TestAuthenticationUtils {
     }
 
     public static HttpHeaders getJwtHeaders(String issuer, boolean isExpired) throws Exception {
-
         HttpHeaders headers = new HttpHeaders();
 
         headers.setBearerAuth(generateAuthToken(issuer, isExpired));
@@ -94,7 +92,6 @@ public class TestAuthenticationUtils {
     }
 
     public static String generateAuthToken(String issuer, boolean isExpired) throws Exception {
-
         Instant now = Instant.now();
 
         Instant issuedAt = isExpired

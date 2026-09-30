@@ -33,7 +33,6 @@ public class BaseSecurityIntegrationTest extends BaseAuthorisedTestIntegration {
             String issuer,
             boolean expired)
             throws Exception {
-
         return getRequestSpecification(
             SERVICE_NAME,
                 ACTOR_ID1,

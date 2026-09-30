@@ -17,7 +17,7 @@ public abstract class BaseAuthorisedTestIntegration extends BaseTestIntegration 
     protected static final String CREATE_ASSIGNMENT_URL = "/am/role-assignments";
 
     protected static final String ACTOR_ID1 = "631d322c-eea7-4d53-bd92-e6ec51bcb390";
-    private static final long WAIT_TIME_MS = 1000;
+    protected static final long WAIT_TIME_MS = 1000;
 
     @LocalServerPort
     private int serverPort;
@@ -35,7 +35,6 @@ public abstract class BaseAuthorisedTestIntegration extends BaseTestIntegration 
 
     public static void resetWiremockServer(String serviceName, String actorId)
             throws JsonProcessingException, InterruptedException {
-
         // Clear the stubs and requests
         WIRE_MOCK_SERVER.resetAll();
 

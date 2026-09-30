@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.roleassignment.controller;
 
-
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import jakarta.annotation.PreDestroy;
 import net.serenitybdd.annotations.WithTag;
@@ -48,7 +47,6 @@ public abstract class BaseTestIntegration extends BaseTest {
             connection = DriverManager.getConnection(pg.getJdbcUrl("postgres"), props);
             return new SingleConnectionDataSource(connection, true);
         }
-
 
         @PreDestroy
         public void contextDestroyed() throws SQLException {
