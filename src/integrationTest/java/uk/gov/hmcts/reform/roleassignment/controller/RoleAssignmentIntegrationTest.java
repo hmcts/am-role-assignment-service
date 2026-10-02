@@ -253,7 +253,7 @@ class RoleAssignmentIntegrationTest extends BaseTest {
         List<RoleConfigRole> roleConfigRoles = mapper.readValue(response, new TypeReference<>() {
         });
 
-        assertEquals(283, roleConfigRoles.size());
+        assertEquals(284, roleConfigRoles.size());
         assertThat(roleConfigRoles, containsInAnyOrder(
             roleMatcher("allocated-admin-caseworker", RoleCategory.ADMIN, RoleType.CASE, true),
             roleMatcher("allocated-administrator", RoleCategory.ADMIN, RoleType.CASE, true),
@@ -319,6 +319,7 @@ class RoleAssignmentIntegrationTest extends BaseTest {
             roleMatcher("[C100CHILDSOLICITOR5]", RoleCategory.PROFESSIONAL, RoleType.CASE, true),
             roleMatcher("challenged-access-admin", RoleCategory.ADMIN, RoleType.CASE, false),
             roleMatcher("challenged-access-ctsc", RoleCategory.CTSC, RoleType.CASE, false),
+            roleMatcher("challenged-access-enforcement", RoleCategory.ENFORCEMENT, RoleType.CASE, false),
             roleMatcher("challenged-access-judiciary", RoleCategory.JUDICIAL, RoleType.CASE, false),
             roleMatcher("challenged-access-legal-ops", RoleCategory.LEGAL_OPERATIONS, RoleType.CASE, false),
             roleMatcher("[CHILDSOLICITORA]", RoleCategory.PROFESSIONAL, RoleType.CASE, true),
