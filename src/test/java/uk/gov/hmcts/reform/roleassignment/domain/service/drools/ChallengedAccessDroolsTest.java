@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.roleassignment.domain.service.drools;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
@@ -685,5 +686,115 @@ class ChallengedAccessDroolsTest extends DroolBase {
 
         assignmentRequest.getRequestedRoles().forEach(
             roleAssignment -> Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus()));
+    }
+
+    @Test
+    void shouldGrantAccessFor_ChallengedAccess_enforcement() {
+        String requestedRoleName = "challenged-access-enforcement";
+
+        Case caseDetails = caseMap.get("PCS");
+        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(requestedRoleName));
+
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
+                "challenged-access",
+                requestedRoleName,
+                RoleCategory.ENFORCEMENT,
+                RoleType.CASE,
+                roleAssignmentAttributes,
+                Classification.PUBLIC,
+                GrantType.CHALLENGED,
+                Status.CREATE_REQUESTED,
+                "anyClient",
+                false,
+                "Access required for reasons",
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
+            )
+            .build();
+
+        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
+        existingAttributes.put("substantive", convertValueJsonNode("N"));
+        executeDroolRules(List.of(TestDataBuilder
+                                      .buildExistingRoleForDrools(
+                                          ACTORID,
+                                          "hmcts-enforcement",
+                                          RoleCategory.ENFORCEMENT,
+                                          existingAttributes,
+                                          Classification.PRIVATE,
+                                          GrantType.BASIC,
+                                          RoleType.ORGANISATION
+                                      )));
+
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            Assertions.assertEquals(Status.APPROVED, roleAssignment.getStatus());
+            Assertions.assertEquals(caseDetails.getCaseTypeId(),
+                                    roleAssignment.getAttributes().get("caseType").asText());
+            Assertions.assertEquals(Classification.PUBLIC, roleAssignment.getClassification());
+            Assertions.assertEquals(
+                List.of("CCD", "ExUI", "SSIC", "RefData"),
+                roleAssignment.getAuthorisations()
+            );
+        });
+    }
+
+    @Test
+    void shouldRejectAccessFor_ChallengedAccess_enforcement_wrong_existingRole() {
+        String requestedRoleName = "challenged-access-enforcement";
+
+        Case caseDetails = caseMap.get("PCS");
+        HashMap<String, JsonNode> roleAssignmentAttributes = new HashMap<>();
+        roleAssignmentAttributes.put("caseId", convertValueJsonNode(caseDetails.getId()));
+        roleAssignmentAttributes.put("requestedRole", convertValueJsonNode(requestedRoleName));
+
+        assignmentRequest = TestDataBuilder.buildAssignmentRequestSpecialAccess(
+                "challenged-access",
+                requestedRoleName,
+                RoleCategory.ENFORCEMENT,
+                RoleType.CASE,
+                roleAssignmentAttributes,
+                Classification.PUBLIC,
+                GrantType.CHALLENGED,
+                Status.CREATE_REQUESTED,
+                "anyClient",
+                false,
+                "Access required for reasons",
+                ACTORID,
+                roleAssignmentAttributes.get("caseId").asText() + "/"
+                    + roleAssignmentAttributes.get("requestedRole").asText() + "/" + ACTORID
+            )
+            .build();
+
+        FeatureFlag featureFlag = FeatureFlag.builder().flagName(FeatureFlagEnum.IAC_CHALLENGED_1_0.getValue())
+            .status(true).build();
+        featureFlags.add(featureFlag);
+
+        HashMap<String, JsonNode> existingAttributes = new HashMap<>();
+        existingAttributes.put("substantive", convertValueJsonNode("N"));
+        executeDroolRules(List.of(TestDataBuilder
+                                      .buildExistingRoleForDrools(
+                                          ACTORID,
+                                          "bailiff",
+                                          RoleCategory.ENFORCEMENT,
+                                          existingAttributes,
+                                          Classification.PRIVATE,
+                                          GrantType.BASIC,
+                                          RoleType.ORGANISATION
+                                      )));
+
+        assignmentRequest.getRequestedRoles().forEach(roleAssignment -> {
+            Assertions.assertEquals(Status.REJECTED, roleAssignment.getStatus());
+            Assertions.assertEquals(2, roleAssignment.getAttributes().size());
+            Assertions.assertEquals(caseDetails.getId(), roleAssignment.getAttributes().get("caseId").asText());
+            Assertions.assertEquals(requestedRoleName, roleAssignment.getAttributes().get("requestedRole").asText());
+            Assertions.assertEquals(Classification.PUBLIC, roleAssignment.getClassification());
+            Assertions.assertNull(roleAssignment.getAuthorisations());
+        });
     }
 }
