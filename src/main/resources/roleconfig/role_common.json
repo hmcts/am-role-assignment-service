@@ -2057,6 +2057,44 @@
     ]
   },
   {
+    "name": "challenged-access-enforcement",
+    "label": "Challenged Access (enforcement)",
+    "description": "Challenged access for enforcement users.",
+    "category": "ENFORCEMENT",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["CHALLENGED"]
+        },
+        "endTime": {
+          "mandatory": true
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "hearing-centre-admin",
     "label": "Hearing Centre Administrator",
     "description": "Hearing Centre Administrator role for admin users",
