@@ -409,7 +409,7 @@ dependencies {
   implementation group: 'org.apache.poi', name: 'poi-ooxml', version: versions.poi
   implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: versions.poi
 
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.9.0'
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.9.1'
 
   // drools engine dependency
   implementation group: 'org.drools', name: 'drools-core', version: versions.drools
@@ -435,7 +435,7 @@ dependencies {
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.13'
   implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '10.9.1'
-  implementation group: 'com.auth0', name: 'java-jwt', version: '4.6.0'
+  implementation group: 'com.auth0', name: 'java-jwt', version: '4.6.1'
   implementation group: 'commons-io', name:'commons-io', version: '2.22.0'
   implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.28.0'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
@@ -452,9 +452,9 @@ dependencies {
 
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
 
-  implementation 'net.bytebuddy:byte-buddy:1.18.11'
+  implementation 'net.bytebuddy:byte-buddy:1.18.14'
 
-  testImplementation('com.opentable.components:otj-pg-embedded:1.1.1')
+  testImplementation('com.opentable.components:otj-pg-embedded:1.1.3')
   testImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
   testImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
   testImplementation group: 'org.wiremock', name: 'wiremock', version: '3.13.2'
@@ -572,7 +572,7 @@ dependencyManagement {
     dependencySet(group: 'com.fasterxml.jackson.core', version: '2.22') {
       entry 'jackson-annotations'
     }
-    dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.59') {
+    dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.60') {
       entry 'tomcat-embed-core'
       entry 'tomcat-embed-el'
       entry 'tomcat-embed-websocket'
