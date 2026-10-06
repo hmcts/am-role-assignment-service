@@ -9,12 +9,12 @@ import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -63,7 +63,7 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     @Inject
     private WebApplicationContext wac;
 
-    @MockBean
+    @MockitoBean
     private IdamRepository idamRepository;
 
     @Autowired
@@ -75,10 +75,10 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     @Mock
     private SecurityContext securityContext;
 
-    @MockBean
+    @MockitoBean
     private RetrieveDataService retrieveDataService;
 
-    @MockBean
+    @MockitoBean
     private IdamRoleService idamRoleService;
 
     @BeforeEach
