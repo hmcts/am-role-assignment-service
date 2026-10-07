@@ -257,7 +257,7 @@ class RoleAssignmentIntegrationTest extends BaseTest {
         List<RoleConfigRole> roleConfigRoles = mapper.readValue(response, new TypeReference<>() {
         });
 
-        assertEquals(282, roleConfigRoles.size());
+        assertEquals(283, roleConfigRoles.size());
         assertThat(roleConfigRoles, containsInAnyOrder(
             roleMatcher("hrs-team-leader", RoleCategory.ADMIN, RoleType.ORGANISATION, true),
             roleMatcher("hrs-listener", RoleCategory.ADMIN, RoleType.ORGANISATION, true),
@@ -356,6 +356,7 @@ class RoleAssignmentIntegrationTest extends BaseTest {
             roleMatcher("challenged-access-legal-ops", RoleCategory.LEGAL_OPERATIONS, RoleType.CASE, false),
             roleMatcher("challenged-access-admin", RoleCategory.ADMIN, RoleType.CASE, false),
             roleMatcher("challenged-access-ctsc", RoleCategory.CTSC, RoleType.CASE, false),
+            roleMatcher("challenged-access-enforcement", RoleCategory.ENFORCEMENT, RoleType.CASE, false),
             roleMatcher("hearing-centre-admin", RoleCategory.ADMIN, RoleType.ORGANISATION, true),
             roleMatcher("national-business-centre", RoleCategory.ADMIN, RoleType.ORGANISATION, true),
             roleMatcher("nbc-team-leader", RoleCategory.ADMIN, RoleType.ORGANISATION, true),
