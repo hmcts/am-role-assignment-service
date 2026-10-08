@@ -69,3 +69,20 @@ then
     update($ca.getRoleAssignment());
     logMsg("Rule : probate_allocated_tribunal_caseworker_create_case_roles_v1");
 end;
+
+
+/*
+ * The case roles can be deleted if CaseAllocatorApproval entity is available for requested role assignment.
+ */
+rule "probate_case_allocator_approved_delete_case_role"
+when
+    $f : FeatureFlag(status && flagName == FeatureFlagEnum.PROBATE_WA_1_0.getValue())
+    $ca: CaseAllocatorApproval(
+                roleAssignment.status == Status.DELETE_REQUESTED,
+                roleAssignment.attributes["jurisdiction"].asText() == "PROBATE")
+then
+    $ca.getRoleAssignment().setStatus(Status.DELETE_APPROVED);
+    $ca.getRoleAssignment().log("Stage 1 approved : probate_case_allocator_approved_delete_case_role");
+    update($ca.getRoleAssignment());
+    logMsg("Rule : probate_case_allocator_approved_delete_case_role");
+end;
