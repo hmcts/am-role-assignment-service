@@ -376,6 +376,8 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
             List<RoleAssignment> assigneeRolesAfterReject = assertFailedCaseRoleDeletion(caseRole, 2);
             testScenario.addFileToStep(STEP_AFTER_REJECT, "assigneeRoles_afterReject", assigneeRolesAfterReject);
 
+            // tidy up the case-roles that failed to delete to prevent bad roles blocking other tests
+            cleanUpRoleAssignmentsInDb(assigneeRolesAfterReject);
         }
 
     }
