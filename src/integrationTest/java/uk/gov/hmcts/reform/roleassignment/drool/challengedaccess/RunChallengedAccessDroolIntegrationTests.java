@@ -70,6 +70,7 @@ public class RunChallengedAccessDroolIntegrationTests extends BaseDroolIntegrati
             List<ChallengedAccessTestArguments> arguments = new ArrayList<>();
 
             arguments.addAll(FrChallengedAccessIT.getAllTestArguments());
+            arguments.addAll(PossessionsChallengedAccessIT.getAllTestArguments());
 
             return arguments;
         }
