@@ -31,7 +31,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
@@ -217,8 +216,8 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
                                                    .contentType(JSON_CONTENT_TYPE)
                                                    .headers(getHttpHeaders(AUTHORISED_SERVICE_XUI))
                                                    .content(mapper.writeValueAsBytes(assignmentRequestCaseRole))
-            ).andExpect(status().is(201)).andReturn();
-            testScenario.addRasFilesToStep(STEP_GRANT, result);
+            ).andReturn();
+            testScenario.addRasFilesToStepAndAssertStatus(STEP_GRANT, result, 201);
 
             // THEN (Grant)
             assertCreateRoleAssignmentResponseStatus(Status.APPROVED, result, 1);
@@ -344,8 +343,8 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
                                                    .contentType(JSON_CONTENT_TYPE)
                                                    .headers(getHttpHeaders(AUTHORISED_SERVICE_XUI))
                                                    .content(mapper.writeValueAsBytes(assignmentRequestCaseRole))
-            ).andExpect(status().is(201)).andReturn();
-            testScenario.addRasFilesToStep(STEP_GRANT, result);
+            ).andReturn();
+            testScenario.addRasFilesToStepAndAssertStatus(STEP_GRANT, result, 201);
 
             // THEN (Grant)
             assertCreateRoleAssignmentResponseStatus(Status.APPROVED, result, 1);
@@ -503,8 +502,8 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
                                                    .contentType(JSON_CONTENT_TYPE)
                                                    .headers(getHttpHeaders(AUTHORISED_SERVICE_XUI))
                                                    .content(mapper.writeValueAsBytes(assignmentRequestCaseRole))
-            ).andExpect(status().is(422)).andReturn();
-            testScenario.addRasFilesToStep(STEP_REJECT_GRANT, result);
+            ).andReturn();
+            testScenario.addRasFilesToStepAndAssertStatus(STEP_REJECT_GRANT, result, 422); // 422 - rejected
 
             // THEN (Grant)
             assertCreateRoleAssignmentResponseStatus(Status.REJECTED, result, 1);
@@ -602,8 +601,8 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
                                                    .contentType(JSON_CONTENT_TYPE)
                                                    .headers(getHttpHeaders(AUTHORISED_SERVICE_XUI))
                                                    .content(mapper.writeValueAsBytes(assignmentRequestCaseRole))
-            ).andExpect(status().is(422)).andReturn();
-            testScenario.addRasFilesToStep(STEP_REJECT_GRANT, result);
+            ).andReturn();
+            testScenario.addRasFilesToStepAndAssertStatus(STEP_REJECT_GRANT, result, 422); // 422 - rejected
 
             // THEN (Grant)
             assertCreateRoleAssignmentResponseStatus(Status.REJECTED, result, 1);
@@ -628,8 +627,8 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
         MvcResult result = mockMvc.perform(delete(URL_DELETE_ROLES + "/" + assignmentId)
                                                .contentType(JSON_CONTENT_TYPE)
                                                .headers(getHttpHeaders(AUTHORISED_SERVICE_XUI))
-        ).andExpect(status().is(204)).andReturn();
-        testScenario.addRasFilesToStep(STEP_DELETE, result);
+        ).andReturn();
+        testScenario.addRasFilesToStepAndAssertStatus(STEP_DELETE, result, 204);
 
         // THEN
         // verify role assignment removed
@@ -655,8 +654,8 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
         MvcResult result = mockMvc.perform(delete(URL_DELETE_ROLES + "/" + assignmentId)
                                                .contentType(JSON_CONTENT_TYPE)
                                                .headers(getHttpHeaders(AUTHORISED_SERVICE_XUI))
-        ).andExpect(status().is(422)).andReturn(); // 422 - rejected
-        testScenario.addRasFilesToStep(STEP_REJECT_DELETE, result);
+        ).andReturn();
+        testScenario.addRasFilesToStepAndAssertStatus(STEP_REJECT_DELETE, result, 422); // 422 - rejected
 
         // THEN
         // verify role assignment still present
