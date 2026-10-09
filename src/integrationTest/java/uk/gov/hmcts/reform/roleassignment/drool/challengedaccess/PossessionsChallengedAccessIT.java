@@ -6,7 +6,7 @@ import uk.gov.hmcts.reform.roleassignment.drool.model.ChallengedAccessTestArgume
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings({"java:S125", "java:S1135"}) // TODO: ENFORCEMENT config coming in PCS WA 1.1
+
 public class PossessionsChallengedAccessIT {
 
     public static List<ChallengedAccessTestArguments> getAllTestArguments() {
@@ -63,20 +63,6 @@ public class PossessionsChallengedAccessIT {
                 "specific-access-approver-admin"
             )
         ));
-        /* TODO: ENFORCEMENT config coming in PCS WA 1.1
-        arguments.addAll(getTestArguments(
-            RoleCategory.ENFORCEMENT,
-            caseTypes,
-            List.of(
-                "bailiff",
-                "bailiff-manager"
-            ),
-            List.of(
-                "case-allocator",
-                "task-supervisor"
-            )
-        ));
-        */
 
         return arguments;
     }
