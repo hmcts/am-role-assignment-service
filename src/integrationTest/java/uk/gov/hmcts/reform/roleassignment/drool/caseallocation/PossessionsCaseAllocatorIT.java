@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@SuppressWarnings({"java:S125", "java:S1135"}) // TODO: ENFORCEMENT config coming in PCS WA 1.1
 public class PossessionsCaseAllocatorIT {
 
     public static List<CaseAllocatorTestArguments> getAllTestArguments() {
@@ -124,36 +123,6 @@ public class PossessionsCaseAllocatorIT {
             )
         );
 
-
-        /* TODO: ENFORCEMENT config coming in PCS WA 1.1
-
-        // ENFORCEMENT:allocated-wlu-caseworker
-        arguments.addAll(
-            getTestArgumentsForCaseRole(
-                "allocated-bailiff",
-                List.of(
-                    "bailiff-manager",
-                    "bailiff"
-                ),
-                RoleCategory.ENFORCEMENT,
-                caRoleCategory,
-                "Y"
-            )
-        );
-
-        // ENFORCEMENT:case-allocator
-        arguments.addAll(
-            getTestArgumentsForCaseRole(
-                "case-allocator",
-                List.of("case-allocator"),
-                RoleCategory.ENFORCEMENT,
-                caRoleCategory,
-                "N"
-            )
-        );
-
-         */
-
         return arguments;
     }
 
@@ -162,7 +131,6 @@ public class PossessionsCaseAllocatorIT {
                                                                                 RoleCategory roleCategory,
                                                                                 RoleCategory caRoleCategory,
                                                                                 String expectingSubstantive) {
-
         return existingRoleNames.stream()
             .map(existingRoleName -> CaseAllocatorTestArguments.builder()
                 // default test properties
