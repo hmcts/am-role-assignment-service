@@ -61,6 +61,7 @@ class RunCaseAllocationDroolIntegrationTests extends BaseDroolIntegrationTest {
 
             arguments.addAll(FrCaseAllocatorIT.getAllTestArguments());
             arguments.addAll(PossessionsCaseAllocatorIT.getAllTestArguments());
+            arguments.addAll(ProbateCaseAllocatorIT.getAllTestArguments());
 
             return arguments;
         }
