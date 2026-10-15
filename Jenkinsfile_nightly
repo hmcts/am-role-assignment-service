@@ -88,7 +88,7 @@ withNightlyPipeline(type, product, component) {
   env.OPENID_SCOPE_VARIABLES = "openid+profile+roles+authorities"
   env.MICROSERVICE_NAME = "am_role_assignment_service"
   env.EXTERNAL_FLAG_QUERY_PATH = "am/role-assignments/fetchFlagStatus?flagName="
-  env.IDAM_API_URL_BASE = "https://idam-web-public.aat.platform.hmcts.net"
+  env.IDAM_API_URL_BASE = "https://idam-api.aat.platform.hmcts.net"
   env.Rules = params.SecurityRules
 
   // Var to turn FTAs that rely on the RAS-CCD case validation on/off, i.e. when CCD is not available.
