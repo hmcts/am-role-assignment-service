@@ -29,7 +29,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.RetrieveDataService;
-import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
@@ -78,21 +77,12 @@ public class DroolPassAssignmentCreateAndDeleteIntegrationTest extends BaseTest 
     @MockBean
     private RetrieveDataService retrieveDataService;
 
-    @MockBean
-    private IdamRoleService idamRoleService;
-
     @BeforeEach
     public void setUp() throws Exception {
 
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
         MockitoAnnotations.openMocks(this);
-        var uid = "6b36bfc6-bb21-11ea-b3de-0242ac130006";
-        UserRoles roles = UserRoles.builder()
-            .uid(uid)
-            .roles(List.of("caseworker", "am-import"))
-            .build();
 
-        doReturn(roles).when(idamRoleService).getUserRoles(anyString());
         doReturn(authentication).when(securityContext).getAuthentication();
         SecurityContextHolder.setContext(securityContext);
         MockUtils.setSecurityAuthorities(authentication, MockUtils.ROLE_CASEWORKER);
