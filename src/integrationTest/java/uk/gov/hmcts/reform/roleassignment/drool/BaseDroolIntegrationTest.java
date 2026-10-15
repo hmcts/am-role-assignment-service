@@ -444,6 +444,12 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
         return assertRoleAssignmentsInDb(actorId, 1);
     }
 
+    protected void cleanUpRoleAssignmentsInDb(List<RoleAssignment> roleAssignments) {
+        if (!CollectionUtils.isEmpty(roleAssignments)) {
+            roleAssignments.forEach(roleAssignment -> persistenceService.deleteRoleAssignment(roleAssignment));
+        }
+    }
+
     protected void overrideRoleAssignmentValuesInDb(RoleAssignment roleAssignment,
                                                     boolean overrideRoleName,
                                                     boolean overrideJurisdiction,
