@@ -42,7 +42,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 
@@ -374,8 +373,8 @@ public class RunPrmConfigDroolIntegrationTests extends BaseDroolIntegrationTest 
                                                .contentType(JSON_CONTENT_TYPE)
                                                .headers(getHttpHeaders(AUTHORISED_SERVICE_ORM))
                                                .content(mapper.writeValueAsBytes(assignmentRequestPrmRole))
-        ).andExpect(status().is(201)).andReturn();
-        testScenario.addRasFilesToStep(STEP_GRANT, result);
+        ).andReturn();
+        testScenario.addRasFilesToStepAndAssertStatus(STEP_GRANT, result, 201);
 
         // THEN (Grant)
         assertCreateRoleAssignmentResponseStatus(Status.APPROVED, result, 1);
@@ -421,8 +420,8 @@ public class RunPrmConfigDroolIntegrationTests extends BaseDroolIntegrationTest 
                                                .contentType(JSON_CONTENT_TYPE)
                                                .headers(getHttpHeaders(AUTHORISED_SERVICE_ORM))
                                                .content(mapper.writeValueAsBytes(assignmentRequestPrmRole))
-        ).andExpect(status().is(422)).andReturn();
-        testScenario.addRasFilesToStep(STEP_REJECT_GRANT, result);
+        ).andReturn();
+        testScenario.addRasFilesToStepAndAssertStatus(STEP_REJECT_GRANT, result, 422); // 422 - rejected
 
         // THEN (Grant)
         assertCreateRoleAssignmentResponseStatus(Status.REJECTED, result, 1);
@@ -475,8 +474,8 @@ public class RunPrmConfigDroolIntegrationTests extends BaseDroolIntegrationTest 
         MvcResult result = mockMvc.perform(delete(URL_DELETE_ROLES + "/" + assignmentId)
                                                .contentType(JSON_CONTENT_TYPE)
                                                .headers(getHttpHeaders(AUTHORISED_SERVICE_ORM))
-        ).andExpect(status().is(204)).andReturn();
-        testScenario.addRasFilesToStep(STEP_DELETE, result);
+        ).andReturn();
+        testScenario.addRasFilesToStepAndAssertStatus(STEP_DELETE, result, 204);
 
         // THEN
         // verify role assignment removed
