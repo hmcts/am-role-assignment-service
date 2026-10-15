@@ -12,14 +12,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import uk.gov.hmcts.reform.roleassignment.controller.endpoints.GetAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.controller.endpoints.QueryAssignmentController;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Assignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.Status;
 import uk.gov.hmcts.reform.roleassignment.domain.service.common.PersistenceService;
+import uk.gov.hmcts.reform.roleassignment.domain.service.getroles.RetrieveRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.domain.service.queryroles.QueryRoleAssignmentOrchestrator;
 import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 
@@ -29,13 +32,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
 
+@ActiveProfiles("ctest")
 @ExtendWith(SpringExtension.class)
 @Provider("am_roleAssignment_queryAssignment")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
     host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:9292}", consumerVersionSelectors = {
         @VersionSelector(tag = "master")})
-@TestPropertySource(properties = {"roleassignment.query.size=20", "roleassignment.query.sizeinternal=100"})
-@Import(RoleAssignmentProviderTestConfiguration.class)
+@TestPropertySource(properties = {"roleassignment.query.size=20", "roleassignment.query.sizeinternal=100",
+    "spring.cache.type=none", "ras.environment=pr"})
+@SpringJUnitConfig(classes = RoleAssignmentProviderTestConfiguration.class)
 @IgnoreNoPactsToVerify
 public class SearchQueryRoleAssignmentProviderTest {
 
@@ -47,6 +52,9 @@ public class SearchQueryRoleAssignmentProviderTest {
 
     @Autowired
     private QueryRoleAssignmentOrchestrator queryRoleAssignmentOrchestrator;
+
+    @Autowired
+    private RetrieveRoleAssignmentOrchestrator retrieveRoleAssignmentOrchestrator;
 
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider.class)
@@ -62,7 +70,7 @@ public class SearchQueryRoleAssignmentProviderTest {
         //System.getProperties().setProperty("pact.verifier.publishResults", "true");
         testTarget.setControllers(new QueryAssignmentController(
             queryRoleAssignmentOrchestrator
-        ));
+        ), new GetAssignmentController(retrieveRoleAssignmentOrchestrator));
         if (context != null) {
             context.setTarget(testTarget);
         }

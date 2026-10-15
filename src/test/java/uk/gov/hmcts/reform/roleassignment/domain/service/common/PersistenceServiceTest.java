@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -124,7 +123,7 @@ class PersistenceServiceTest {
 
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -241,7 +240,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getAssignmentsByActor() throws IOException, SQLException {
+    void getAssignmentsByActor() throws SQLException {
         String id = UUID.randomUUID().toString();
         Set<RoleAssignmentEntity> roleAssignmentEntitySet = new HashSet<>();
         roleAssignmentEntitySet.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder
@@ -285,7 +284,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getAssignmentById() throws IOException {
+    void getAssignmentById() {
         UUID id = UUID.randomUUID();
         Optional<RoleAssignmentEntity> roleAssignmentOptional =
             Optional.of(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -306,7 +305,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void getAssignmentById_nullRole() throws IOException {
+    void getAssignmentById_nullRole() {
         UUID id = UUID.randomUUID();
         Optional<RoleAssignmentEntity> roleAssignmentOptional =
             Optional.of(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -329,7 +328,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void postRoleAssignmentsByQueryRequest_withCaseId() throws IOException {
+    void postRoleAssignmentsByQueryRequest_withCaseId() {
         setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
@@ -353,14 +352,8 @@ class PersistenceServiceTest {
             .attributes(attr)
             .build();
 
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
-            Pageable.class);
-
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
-        ))
+        when(roleAssignmentRepository.findAll(org.mockito.ArgumentMatchers.<Specification<RoleAssignmentEntity>>any(),
+                                              any(Pageable.class)))
             .thenReturn(page);
 
 
@@ -383,7 +376,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void postRoleAssignmentsByQueryRequest_withoutCaseId() throws IOException {
+    void postRoleAssignmentsByQueryRequest_withoutCaseId() {
         setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
@@ -403,13 +396,8 @@ class PersistenceServiceTest {
             .roleType(roleType)
             .build();
 
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
-            Pageable.class);
-
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(org.mockito.ArgumentMatchers.<Specification<RoleAssignmentEntity>>any(),
+                                              any(Pageable.class)
         ))
             .thenReturn(page);
 
@@ -433,7 +421,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void postRoleAssignmentsByQueryRequestWithAllParameters() throws IOException {
+    void postRoleAssignmentsByQueryRequestWithAllParameters() {
         setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
@@ -468,13 +456,8 @@ class PersistenceServiceTest {
             .grantType(grantTypes)
             .build();
 
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
-            Pageable.class);
-
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(org.mockito.ArgumentMatchers.<Specification<RoleAssignmentEntity>>any(),
+                                              any(Pageable.class)
         ))
             .thenReturn(page);
 
@@ -512,13 +495,8 @@ class PersistenceServiceTest {
             .roleType(roleType)
             .build();
 
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
-
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
-            Pageable.class);
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(spec, pageableCapture))
+        when(roleAssignmentRepository.findAll(org.mockito.ArgumentMatchers.<Specification<RoleAssignmentEntity>>any(),
+                                              any(Pageable.class)))
             .thenThrow(ResourceNotFoundException.class);
 
 
@@ -540,13 +518,8 @@ class PersistenceServiceTest {
             .authorisations(authorisations)
             .build();
 
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
-
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
-            Pageable.class);
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(org.mockito.ArgumentMatchers.<Specification<RoleAssignmentEntity>>any(),
+                                              any(Pageable.class)
         ))
             .thenThrow(ResourceNotFoundException.class);
 
@@ -558,7 +531,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void postRoleAssignmentsByAuthorisation() throws IOException {
+    void postRoleAssignmentsByAuthorisation() {
         setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
@@ -576,13 +549,8 @@ class PersistenceServiceTest {
             .authorisations(authorisations)
             .build();
 
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
-            Pageable.class);
-
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(org.mockito.ArgumentMatchers.<Specification<RoleAssignmentEntity>>any(),
+                                              any(Pageable.class)
         ))
             .thenReturn(page);
 
@@ -679,7 +647,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void postRoleAssignmentsByQueryRequestWithTrueFlag() throws IOException {
+    void postRoleAssignmentsByQueryRequestWithTrueFlag() {
         setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
@@ -687,14 +655,8 @@ class PersistenceServiceTest {
 
         Page<RoleAssignmentEntity> page = new PageImpl<>(tasks);
 
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
-            Pageable.class);
-
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
-        ))
+        when(roleAssignmentRepository.findAll(org.mockito.ArgumentMatchers.<Specification<RoleAssignmentEntity>>any(),
+                                              any(Pageable.class)))
             .thenReturn(page);
 
 
@@ -746,7 +708,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void postRoleAssignmentsByQueryRequestWithTrueFlag_throwException() throws IOException {
+    void postRoleAssignmentsByQueryRequestWithTrueFlag_throwException() {
         setPagedQueryFields();
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -780,13 +742,8 @@ class PersistenceServiceTest {
             .grantType(grantTypes)
             .build();
 
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
-            Pageable.class);
-
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(org.mockito.ArgumentMatchers.<Specification<RoleAssignmentEntity>>any(),
+                                              any(Pageable.class)
         ))
             .thenReturn(page);
 
@@ -812,7 +769,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void postRoleAssignmentsByQueryRequestWithTrueFlagAndPageSizeZero_throwException() throws IOException {
+    void postRoleAssignmentsByQueryRequestWithTrueFlagAndPageSizeZero_throwException() {
         setPagedQueryFields();
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
         tasks.add(TestDataBuilder.buildRoleAssignmentEntity(TestDataBuilder.buildRoleAssignment(LIVE)));
@@ -846,13 +803,8 @@ class PersistenceServiceTest {
             .grantType(grantTypes)
             .build();
 
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
-            Pageable.class);
-
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(org.mockito.ArgumentMatchers.<Specification<RoleAssignmentEntity>>any(),
+                                              any(Pageable.class)
         ))
             .thenReturn(page);
 
@@ -969,7 +921,7 @@ class PersistenceServiceTest {
 
 
     @Test
-    void postRoleAssignmentsByOneQueryRequest() throws IOException {
+    void postRoleAssignmentsByOneQueryRequest() {
         setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
@@ -993,13 +945,8 @@ class PersistenceServiceTest {
             .queryRequests(Collections.singletonList(queryRequest))
             .build();
 
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
-            Pageable.class);
-
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(org.mockito.ArgumentMatchers.<Specification<RoleAssignmentEntity>>any(),
+                                              any(Pageable.class)
         ))
             .thenReturn(page);
 
@@ -1026,7 +973,7 @@ class PersistenceServiceTest {
     }
 
     @Test
-    void postRoleAssignmentsByMultipleQueryRequest() throws IOException {
+    void postRoleAssignmentsByMultipleQueryRequest() {
         setPagedQueryFields();
 
         List<RoleAssignmentEntity> tasks = new ArrayList<>();
@@ -1073,13 +1020,8 @@ class PersistenceServiceTest {
             .queryRequests(List.of(queryRequest1,queryRequest2,queryRequest3,queryRequest4))
             .build();
 
-        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(
-            Pageable.class);
-
-        Specification<RoleAssignmentEntity> spec = Specification.where(any());
-        Pageable pageableCapture = pageableCaptor.capture();
-
-        when(roleAssignmentRepository.findAll(spec, pageableCapture
+        when(roleAssignmentRepository.findAll(org.mockito.ArgumentMatchers.<Specification<RoleAssignmentEntity>>any(),
+                                              any(Pageable.class)
         ))
             .thenReturn(page);
 

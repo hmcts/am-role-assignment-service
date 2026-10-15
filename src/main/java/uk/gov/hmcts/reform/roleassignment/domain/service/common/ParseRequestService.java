@@ -32,14 +32,21 @@ import java.util.UUID;
 @Service
 public class ParseRequestService {
 
-    @Autowired
     private SecurityUtils securityUtils;
 
-    @Autowired
     private CorrelationInterceptorUtil correlationInterceptorUtil;
 
-    @Value("#{new Boolean('${org.request.byPassOrgDroolRule}')}")
     private boolean byPassOrgDroolRule;
+
+    @Autowired
+    public ParseRequestService(SecurityUtils securityUtils,
+                               CorrelationInterceptorUtil correlationInterceptorUtil,
+                               @Value("#{new Boolean('${org.request.byPassOrgDroolRule}')}")
+                               boolean byPassOrgDroolRule) {
+        this.securityUtils = securityUtils;
+        this.correlationInterceptorUtil = correlationInterceptorUtil;
+        this.byPassOrgDroolRule = byPassOrgDroolRule;
+    }
 
     public AssignmentRequest parseRequest(AssignmentRequest assignmentRequest, RequestType requestType)
         throws ParseException {
