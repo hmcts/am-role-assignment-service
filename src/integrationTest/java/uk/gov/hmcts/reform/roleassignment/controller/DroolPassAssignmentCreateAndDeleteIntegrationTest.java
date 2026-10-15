@@ -24,7 +24,6 @@ import uk.gov.hmcts.reform.roleassignment.BaseTest;
 import uk.gov.hmcts.reform.roleassignment.MockUtils;
 import uk.gov.hmcts.reform.roleassignment.domain.model.AssignmentRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.Case;
-import uk.gov.hmcts.reform.roleassignment.domain.model.UserRoles;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RequestType;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleCategory;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
@@ -33,7 +32,6 @@ import uk.gov.hmcts.reform.roleassignment.helper.TestDataBuilder;
 import uk.gov.hmcts.reform.roleassignment.oidc.IdamRepository;
 import uk.gov.hmcts.reform.roleassignment.util.Constants;
 
-import java.util.List;
 import javax.sql.DataSource;
 
 import static org.mockito.ArgumentMatchers.anyString;
