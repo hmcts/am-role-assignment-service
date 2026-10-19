@@ -33,7 +33,6 @@ import uk.gov.hmcts.reform.roleassignment.domain.model.ExistingRoleAssignment;
 import uk.gov.hmcts.reform.roleassignment.domain.model.QueryRequest;
 import uk.gov.hmcts.reform.roleassignment.domain.model.RoleConfigRole;
 import uk.gov.hmcts.reform.roleassignment.domain.model.enums.RoleType;
-import uk.gov.hmcts.reform.roleassignment.domain.service.security.IdamRoleService;
 
 import javax.sql.DataSource;
 import java.io.UnsupportedEncodingException;
@@ -86,9 +85,6 @@ class RoleAssignmentIntegrationTest extends BaseTest {
 
     @Mock
     private SecurityContext securityContext;
-
-    @MockBean
-    private IdamRoleService idamRoleService;
 
     @BeforeEach
     void setUp() throws Exception {
