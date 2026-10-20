@@ -22,6 +22,8 @@ management:
       group:
         readiness:
           include: "db"
+    loggers:
+      enabled: false
     # METRICS ENDPOINT CONFIG
     # Enable the metrics endpoint
     metrics:
