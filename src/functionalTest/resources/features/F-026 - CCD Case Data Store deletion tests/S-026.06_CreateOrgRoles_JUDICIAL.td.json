@@ -1,0 +1,12 @@
+{
+  "_guid_": "S-026.06_CreateOrgRoles_JUDICIAL",
+  "_extends_": "S-025.06_CreateOrgRoles_JUDICIAL",
+
+  "request": {
+    "body": {
+      "roleRequest": {
+        "reference": "F-026_CreateOrgRole"
+      }
+    }
+  }
+}

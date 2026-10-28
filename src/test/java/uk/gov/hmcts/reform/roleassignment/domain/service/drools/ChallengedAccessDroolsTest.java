@@ -50,6 +50,12 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "SSCS,challenged-access-legal-ops,LEGAL_OPERATIONS",
         "SSCS,challenged-access-admin,ADMIN",
         "SSCS,challenged-access-ctsc,CTSC",
+        "PCS,challenged-access-judiciary,JUDICIAL",
+        "PCS,challenged-access-admin,ADMIN",
+        "PCS,challenged-access-ctsc,CTSC",
+        "DIVORCE,challenged-access-judiciary,JUDICIAL",
+        "DIVORCE,challenged-access-admin,ADMIN",
+        "DIVORCE,challenged-access-ctsc,CTSC",
     })
     void shouldGrantAccessFor_ChallengedAccess(String jurisdiction, String roleName, String roleCategory) {
         Case caseDetails = caseMap.get(jurisdiction);
@@ -86,7 +92,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
                                           ACTORID,
-                                          "judge",
+                                          "any-org-role",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
                                           Classification.PRIVATE,
@@ -132,6 +138,12 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "SSCS,challenged-access-legal-ops,LEGAL_OPERATIONS",
         "SSCS,challenged-access-admin,ADMIN",
         "SSCS,challenged-access-ctsc,CTSC",
+        "PCS,challenged-access-judiciary,JUDICIAL",
+        "PCS,challenged-access-admin,ADMIN",
+        "PCS,challenged-access-ctsc,CTSC",
+        "DIVORCE,challenged-access-judiciary,JUDICIAL",
+        "DIVORCE,challenged-access-admin,ADMIN",
+        "DIVORCE,challenged-access-ctsc,CTSC",
     })
     void shouldGrantAccessFor_ChallengedAccess_MaxAttributes(String jurisdiction, String roleName,
                                                              String roleCategory) {
@@ -171,7 +183,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
                                           "4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                          "judge",
+                                          "any-org-role",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
                                           Classification.PRIVATE,
@@ -212,6 +224,12 @@ class ChallengedAccessDroolsTest extends DroolBase {
         "SSCS,challenged-access-legal-ops,LEGAL_OPERATIONS",
         "SSCS,challenged-access-admin,ADMIN",
         "SSCS,challenged-access-ctsc,CTSC",
+        "PCS,challenged-access-judiciary,JUDICIAL",
+        "PCS,challenged-access-admin,ADMIN",
+        "PCS,challenged-access-ctsc,CTSC",
+        "DIVORCE,challenged-access-judiciary,JUDICIAL",
+        "DIVORCE,challenged-access-admin,ADMIN",
+        "DIVORCE,challenged-access-ctsc,CTSC",
     })
     void shouldRejectAccessFor_ChallengedAccess_MaxAttributes_sameRegion(String jurisdiction, String roleName,
                                                              String roleCategory) {
@@ -251,7 +269,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
                                           "4772dc44-268f-4d0c-8f83-f0fb662aac84",
-                                          "judge",
+                                          "any-org-role",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
                                           Classification.PRIVATE,
@@ -308,7 +326,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
                                           ACTORID,
-                                          "judge",
+                                          "any-org-role",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
                                           Classification.PRIVATE,
@@ -365,7 +383,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
                                           ACTORID,
-                                          "judge",
+                                          "any-org-role",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
                                           Classification.PRIVATE,
@@ -420,7 +438,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
                                           ACTORID,
-                                          "judge",
+                                          "any-org-role",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
                                           Classification.PRIVATE,
@@ -479,7 +497,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         executeDroolRules(List.of(TestDataBuilder
                                       .buildExistingRoleForDrools(
                                           ACTORID,
-                                          "judge",
+                                          "any-org-role",
                                           RoleCategory.valueOf(roleCategory),
                                           existingAttributes,
                                           Classification.PRIVATE,
@@ -535,7 +553,7 @@ class ChallengedAccessDroolsTest extends DroolBase {
         ExistingRoleAssignment existingRoleAssignment = TestDataBuilder
             .buildExistingRoleForDrools(
                 ACTORID,
-                "judge",
+                "any-org-role",
                 RoleCategory.valueOf(roleCategory),
                 existingAttributes,
                 Classification.PRIVATE,

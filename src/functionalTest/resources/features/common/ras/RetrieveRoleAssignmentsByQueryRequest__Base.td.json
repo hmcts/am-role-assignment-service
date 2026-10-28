@@ -1,0 +1,18 @@
+{
+  "_guid_": "RetrieveRoleAssignmentsByQueryRequest__Base",
+
+  "productName": "Role Assignment Service",
+  "operationName": "Post Role Assignments Query Request",
+
+  "method": "POST",
+  "uri": "/am/role-assignments/query",
+
+  "request": {
+    "headers": {
+      "_extends_": "Common_Request_Headers"
+    },
+    "body": {
+      "refreshRequest": { }
+    }
+  }
+}

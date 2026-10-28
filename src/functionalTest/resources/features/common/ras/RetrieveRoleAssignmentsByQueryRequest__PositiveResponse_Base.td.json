@@ -1,0 +1,11 @@
+{
+  "_guid_": "RetrieveRoleAssignmentsByQueryRequest__PositiveResponse_Base",
+  "_extends_": "RetrieveRoleAssignmentsByQueryRequest__Base",
+
+  "expectedResponse": {
+    "_extends_": "Common_200_Response",
+    "body": {
+      "roleAssignmentResponse" : []
+    }
+  }
+}

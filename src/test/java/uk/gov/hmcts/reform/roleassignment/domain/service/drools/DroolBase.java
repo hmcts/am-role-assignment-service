@@ -25,12 +25,16 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.CIVIL_GA_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.FR_CONSENTED_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.FR_CONTESTED_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_EW_MLT_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_SCTL_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.EMPLOYMENT_SCTL_MLT_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PCS_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PRIVATE_LAW_EXC_RECORD_CASE_ID;
+import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PROBATE_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.PUBLIC_LAW_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.SSCS_CASE_ID;
 import static uk.gov.hmcts.reform.roleassignment.feignclients.configuration.DataStoreApiFallback.ST_CIC_CASE_ID;
@@ -132,6 +136,41 @@ public abstract class DroolBase {
                                            .id(ST_CIC_CASE_ID)
                                            .jurisdiction("ST_CIC")
                                            .caseTypeId("CriminalInjuriesCompensation")
+                                           .data(buildDataWithRegion())
+                                           .build()),
+
+                                 Map.entry("PROBATE|GrantOfRepresentation", Case.builder()
+                                           .id(PROBATE_CASE_ID)
+                                           .jurisdiction("PROBATE")
+                                           .caseTypeId("GrantOfRepresentation")
+                                           .data(buildDataWithRegion())
+                                           .build()),
+
+                                 Map.entry("PROBATE", Case.builder()
+                                           .id(PROBATE_CASE_ID)
+                                           .jurisdiction("PROBATE")
+                                           .caseTypeId("GrantOfRepresentation")
+                                           .data(buildDataWithRegion())
+                                           .build()),
+
+                                 Map.entry("PCS", Case.builder()
+                                           .id(PCS_CASE_ID)
+                                           .jurisdiction("PCS")
+                                           .caseTypeId("any-case-type")
+                                           .data(buildDataWithRegion())
+                                           .build()),
+
+                                Map.entry("DIVORCE", Case.builder()
+                                           .id(FR_CONSENTED_CASE_ID)
+                                           .jurisdiction("DIVORCE")
+                                           .caseTypeId("FinancialRemedyMVP2")
+                                           .data(buildDataWithRegion())
+                                           .build()),
+
+                                Map.entry("DIVORCE|FinancialRemedyContested", Case.builder()
+                                           .id(FR_CONTESTED_CASE_ID)
+                                           .jurisdiction("DIVORCE")
+                                           .caseTypeId("FinancialRemedyContested")
                                            .data(buildDataWithRegion())
                                            .build())
     );

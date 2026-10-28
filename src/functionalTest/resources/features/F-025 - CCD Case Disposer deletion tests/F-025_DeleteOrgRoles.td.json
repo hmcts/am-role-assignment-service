@@ -1,0 +1,25 @@
+{
+  "_guid_": "F-025_DeleteOrgRoles",
+  "_extends_": "DeleteDataForRoleAssignments",
+
+  "specs": [
+    "to delete org role assignments just created above"
+  ],
+
+  "users": {
+    "invokingUser": {
+      "_extends_": "AmBeftaUser4"
+    }
+  },
+
+  "request": {
+    "headers": {
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForOrm]}"
+    },
+    "pathVariables": {
+      "process": "${[scenarioContext][parentContext][testData][request][pathVariables][process]}",
+      "reference": "F-025_CreateOrgRole"
+    }
+  }
+
+}

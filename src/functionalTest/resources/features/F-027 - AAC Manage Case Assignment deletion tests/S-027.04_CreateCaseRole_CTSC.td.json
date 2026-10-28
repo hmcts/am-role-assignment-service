@@ -1,0 +1,12 @@
+{
+  "_guid_": "S-027.04_CreateCaseRole_CTSC",
+  "_extends_": "S-025.04_CreateCaseRole_CTSC",
+
+  "request": {
+    "body": {
+      "roleRequest": {
+        "reference": "F-027_CreateCaseRole"
+      }
+    }
+  }
+}

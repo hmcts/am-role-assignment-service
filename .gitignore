@@ -24,4 +24,7 @@ target/
 
 lib/applicationinsights-agent-*.jar
 lib/applicationinsights.log
+
+### VSCODE ###
 .vscode/settings.json
+bin/

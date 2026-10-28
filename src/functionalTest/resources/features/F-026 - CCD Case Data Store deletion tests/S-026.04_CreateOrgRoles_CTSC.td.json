@@ -1,0 +1,12 @@
+{
+  "_guid_": "S-026.04_CreateOrgRoles_CTSC",
+  "_extends_": "S-025.04_CreateOrgRoles_CTSC",
+
+  "request": {
+    "body": {
+      "roleRequest": {
+        "reference": "F-026_CreateOrgRole"
+      }
+    }
+  }
+}
