@@ -9,7 +9,7 @@
   <!-- JUnit Test settings -->
   <logger name="uk.gov.hmcts.reform.roleassignment.auditlog.AuditInterceptor" level="debug"/>
 
-  <root level="debug">
+  <root level="info">
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>
