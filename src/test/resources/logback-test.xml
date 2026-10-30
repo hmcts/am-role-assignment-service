@@ -9,6 +9,9 @@
   <!-- JUnit Test settings -->
   <logger name="uk.gov.hmcts.reform.roleassignment.auditlog.AuditInterceptor" level="debug"/>
 
+  <!-- additional drool logging for integraton test reviews -->
+  <logger name="uk.gov.hmcts.reform.roleassignment.domain.service.common.ValidationModelService" level="debug"/>
+
   <root level="info">
     <appender-ref ref="STDOUT" />
   </root>
