@@ -83,6 +83,7 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
     public static final String ROLE_CASE_ALLOCATOR = "case-allocator";
     public static final String ROLE_HEARING_MANAGER = "hearing-manager";
     public static final String ROLE_HEARING_VIEWER = "hearing-viewer";
+    public static final String ROLE_TASK_SUPERVISOR = "task-supervisor";
 
     public static final String URL_CREATE_ROLES = "/am/role-assignments";
     public static final String URL_DELETE_ROLES = "/am/role-assignments";
