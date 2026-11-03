@@ -83,6 +83,7 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
     public static final String ROLE_CASE_ALLOCATOR = "case-allocator";
     public static final String ROLE_HEARING_MANAGER = "hearing-manager";
     public static final String ROLE_HEARING_VIEWER = "hearing-viewer";
+    public static final String ROLE_TASK_SUPERVISOR = "task-supervisor";
 
     public static final String URL_CREATE_ROLES = "/am/role-assignments";
     public static final String URL_DELETE_ROLES = "/am/role-assignments";
@@ -246,7 +247,12 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
                                                      String jurisdiction,
                                                      String caseType) {
         assertSystemRoleAssignmentDefaultValues(actorId, roleAssignment, roleName, jurisdiction);
-        assertEquals(caseType, roleAssignment.getAttributes().get("caseType").asText());
+
+        if (StringUtils.isEmpty(caseType)) {
+            assertFalse(roleAssignment.getAttributes().containsKey("caseType"));
+        } else {
+            assertEquals(caseType, roleAssignment.getAttributes().get("caseType").asText());
+        }
     }
 
     protected void assertHearingSystemRoleAssignments(String actorId,
@@ -388,8 +394,12 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
                                                                String jurisdiction,
                                                                String caseType) {
         RoleAssignment roleAssignment = createSystemRoleAssignment(actorId, roleName, jurisdiction);
-        // add extra attribute
-        roleAssignment.getAttributes().put("caseType", convertValueJsonNode(caseType));
+
+        if (StringUtils.isNotEmpty(caseType)) {
+            // add extra attribute
+            roleAssignment.getAttributes().put("caseType", convertValueJsonNode(caseType));
+        }
+
         return roleAssignment;
     }
 
