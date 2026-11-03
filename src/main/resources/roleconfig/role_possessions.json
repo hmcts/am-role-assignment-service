@@ -38,7 +38,7 @@
     "name": "allocated-bailiff",
     "label": "Allocated Bailiff",
     "description": "Allocated Bailiff for Staff users",
-    "category": "ADMIN",
+    "category": "ENFORCEMENT",
     "substantive": true,
     "type": "CASE",
     "patterns": [
