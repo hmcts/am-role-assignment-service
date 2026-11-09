@@ -7,24 +7,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.caffeine.CaffeineCache;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.idam.client.IdamApi;
 import uk.gov.hmcts.reform.idam.client.OAuth2Configuration;
 import uk.gov.hmcts.reform.idam.client.models.TokenRequest;
-import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.roleassignment.controller.advice.exception.UnauthorizedException;
 
-import java.util.List;
-
 import static java.util.Objects.requireNonNull;
-import static org.springframework.http.HttpMethod.GET;
 import static uk.gov.hmcts.reform.roleassignment.util.Constants.BEARER;
 
 @Component
@@ -34,9 +24,6 @@ public class IdamRepository {
     private IdamApi idamApi;
     private OIdcAdminConfiguration oidcAdminConfiguration;
     private OAuth2Configuration oauth2Configuration;
-    private RestTemplate restTemplate;
-    @Value("${idam.api.url}")
-    protected String idamUrl;
 
     @Value("${spring.cache.type}")
     protected String cacheType;
@@ -48,12 +35,10 @@ public class IdamRepository {
     public IdamRepository(IdamApi idamApi,
                           OIdcAdminConfiguration oidcAdminConfiguration,
                           OAuth2Configuration oauth2Configuration,
-                          RestTemplate restTemplate, CacheManager cacheManager) {
+                          CacheManager cacheManager) {
         this.idamApi = idamApi;
         this.oidcAdminConfiguration = oidcAdminConfiguration;
         this.oauth2Configuration = oauth2Configuration;
-        this.restTemplate = restTemplate;
-
         this.cacheManager = cacheManager;
     }
 
@@ -71,41 +56,6 @@ public class IdamRepository {
             log.error("FeignException Unauthorized: retrieve user info ", feignException);
             throw new UnauthorizedException("User is not authorized", feignException);
         }
-    }
-
-    public UserDetails getUserByUserId(String jwtToken, String userId) {
-        try {
-            return idamApi.getUserByUserId(BEARER + jwtToken, userId);
-        } catch (FeignException feignUnauthorized) {
-            log.error("FeignException Unauthorized: retrieve user info ", feignUnauthorized);
-            throw new UnauthorizedException("User is not authorized", feignUnauthorized);
-        }
-    }
-
-    public ResponseEntity<List<Object>> searchUserByUserId(String jwtToken, String userId) {
-        try {
-            var url = String.format("%s/api/v1/users?query=%s", idamUrl, userId);
-            ResponseEntity<List<Object>> response = restTemplate.exchange(
-                url,
-                GET,
-                new HttpEntity<>(getHttpHeaders(jwtToken)),
-                new ParameterizedTypeReference<>() {
-                }
-            );
-            if (HttpStatus.OK.equals(response.getStatusCode())) {
-                return response;
-            }
-        } catch (Exception exception) {
-            log.info(exception.getMessage());
-            throw exception;
-        }
-        return null;
-    }
-
-    private static HttpHeaders getHttpHeaders(String jwtToken) {
-        var headers = new HttpHeaders();
-        headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
-        return headers;
     }
 
     @Cacheable(value = "userToken")

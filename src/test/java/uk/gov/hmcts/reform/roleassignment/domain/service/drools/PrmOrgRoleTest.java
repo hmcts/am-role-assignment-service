@@ -28,9 +28,40 @@ class PrmOrgRoleTest extends DroolBase {
     @CsvSource({
         // NB: GA only role combinations from: `./src/main/resources/roleconfig/role_prm.json`
         //     i.e. those with mandatory caseAccessGroupId
+        // :: PCS
         "claimant,PCS,TestCaseType,PCS:all-cases:111:11111",
         "claimant-solicitor,PCS,TestCaseType,PCS:all-cases:111:11111",
-        "defendant-solicitor,PCS,TestCaseType,PCS:all-cases:222:22222"
+        "defendant-solicitor,PCS,TestCaseType,PCS:all-cases:222:22222",
+        // :: PUBLICLAW : CARE_SUPERVISION_EPO
+        "solicitor-respa,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-respa:101",
+        "solicitor-respb,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-respb:102",
+        "solicitor-respc,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-respc:103",
+        "solicitor-respd,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-respd:104",
+        "solicitor-respe,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-respe:105",
+        "solicitor-respf,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-respf:106",
+        "solicitor-respg,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-respg:107",
+        "solicitor-resph,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-resph:108",
+        "solicitor-respi,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-respi:109",
+        "solicitor-respj,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-respj:110",
+        "solicitor-childa,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childa:201",
+        "solicitor-childb,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childb:202",
+        "solicitor-childc,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childc:203",
+        "solicitor-childd,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childd:204",
+        "solicitor-childe,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childe:205",
+        "solicitor-childf,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childf:206",
+        "solicitor-childg,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childg:207",
+        "solicitor-childh,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childh:208",
+        "solicitor-childi,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childi:209",
+        "solicitor-childj,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childj:210",
+        "solicitor-childk,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childk:211",
+        "solicitor-childl,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childl:212",
+        "solicitor-childm,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childm:213",
+        "solicitor-childn,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childn:214",
+        "solicitor-childo,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-childo:215",
+        "solicitor-epsm,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:solicitor-epsm:111",
+        "la-primary,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:la-primary:222",
+        "la-primary,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:la-secondary:333",
+        "la-mla,PUBLICLAW,CARE_SUPERVISION_EPO,care_supervision_epo:all-case:la-mla:444",
     })
     void shouldApproveOrRejectProfessionalOrgGroupAccessRoleRequest(String roleName,
                                                                     String jurisdiction,
@@ -81,7 +112,11 @@ class PrmOrgRoleTest extends DroolBase {
     @CsvSource({
         // NB: ORG role combinations from: `./src/main/resources/roleconfig/role_prm.json`
         //     i.e. those without mandatory caseAccessGroupId
-        "duty-advisor-request,PCS,TestCaseType"
+        // :: PCS
+        "duty-advisor-request,PCS,TestCaseType",
+        // :: PUBLICLAW : CARE_SUPERVISION_EPO
+        "solicitor-create,PUBLICLAW,CARE_SUPERVISION_EPO",
+        "la-create,PUBLICLAW,CARE_SUPERVISION_EPO",
     })
     void shouldApproveOrRejectProfessionalOrgRoleRequest(String roleName,
                                                          String jurisdiction,
@@ -196,10 +231,45 @@ class PrmOrgRoleTest extends DroolBase {
     @ParameterizedTest
     @CsvSource({
         // NB: All role combinations from: `./src/main/resources/roleconfig/role_prm.json`
+        // :: PCS : GA roles
         "claimant,PCS",
         "claimant-solicitor,PCS",
         "defendant-solicitor,PCS",
-        "duty-advisor-request,PCS"
+        // :: PCS : ORG roles
+        "duty-advisor-request,PCS",
+        // :: PUBLICLAW : GA roles
+        "solicitor-respa,PUBLICLAW",
+        "solicitor-respb,PUBLICLAW",
+        "solicitor-respc,PUBLICLAW",
+        "solicitor-respd,PUBLICLAW",
+        "solicitor-respe,PUBLICLAW",
+        "solicitor-respf,PUBLICLAW",
+        "solicitor-respg,PUBLICLAW",
+        "solicitor-resph,PUBLICLAW",
+        "solicitor-respi,PUBLICLAW",
+        "solicitor-respj,PUBLICLAW",
+        "solicitor-childa,PUBLICLAW",
+        "solicitor-childb,PUBLICLAW",
+        "solicitor-childc,PUBLICLAW",
+        "solicitor-childd,PUBLICLAW",
+        "solicitor-childe,PUBLICLAW",
+        "solicitor-childf,PUBLICLAW",
+        "solicitor-childg,PUBLICLAW",
+        "solicitor-childh,PUBLICLAW",
+        "solicitor-childi,PUBLICLAW",
+        "solicitor-childj,PUBLICLAW",
+        "solicitor-childk,PUBLICLAW",
+        "solicitor-childl,PUBLICLAW",
+        "solicitor-childm,PUBLICLAW",
+        "solicitor-childn,PUBLICLAW",
+        "solicitor-childo,PUBLICLAW",
+        "solicitor-epsm,PUBLICLAW",
+        "la-primary,PUBLICLAW",
+        "la-secondary,PUBLICLAW",
+        "la-mla,PUBLICLAW",
+        // :: PUBLICLAW : ORG roles
+        "solicitor-create,PUBLICLAW",
+        "la-create,PUBLICLAW",
     })
     void shouldDeleteProfessionalOrgRole(String roleName, String jurisdiction) {
 
