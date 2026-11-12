@@ -45,7 +45,7 @@ class AuditServiceTest {
     public static final String ASSIGNMENT_ID = "DF_59895";
     public static final String ROLE_NAME = "ADMIN";
     public static final String CORRELATION_ID = "CORRELATION-1";
-    public static final String REQUEST_PAYLOAD = "PAYLOAD-1";
+    public static final String REQUEST_PAYLOAD_HASH = "PAYLOAD-HASH-1";
     public static final Long RESPONSE_TIME = 500L;
 
 
@@ -92,7 +92,7 @@ class AuditServiceTest {
             .assignmentId(ASSIGNMENT_ID)
             .roleName(ROLE_NAME)
             .correlationId(CORRELATION_ID)
-            .requestPayload(REQUEST_PAYLOAD)
+            .requestPayloadHash(REQUEST_PAYLOAD_HASH)
             .assignmentSize(1)
             .responseTime(RESPONSE_TIME)
             .build();
@@ -101,7 +101,7 @@ class AuditServiceTest {
 
         verify(auditRepository).save(captor.capture());
         verify(securityUtils).getUserId();
-        verify(auditContextSpy, times(1)).getRequestPayload();
+        verify(auditContextSpy, times(1)).getRequestPayloadHash();
         AuditEntry entry = captor.getValue();
 
         assertThat(entry.getDateTime(), is(equalTo("2018-08-19T16:02:42.01")));
@@ -119,7 +119,7 @@ class AuditServiceTest {
         assertThat(entry.getResponseTime(), is(equalTo(auditContextSpy.getResponseTime())));
         assertThat(entry.getInvokingService(), is(equalTo((SERVICE_NAME))));
         assertThat(entry.getOperationType(), is(equalTo(AuditOperationType.CREATE_ASSIGNMENTS.getLabel())));
-        assertThat(entry.getRequestPayload(), is(equalTo(auditContextSpy.getRequestPayload())));
+        assertThat(entry.getRequestPayloadHash(), is(equalTo(auditContextSpy.getRequestPayloadHash())));
         assertThat(entry.getAssignmentSize(), is(equalTo(1)));
     }
 
