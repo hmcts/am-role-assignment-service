@@ -51,7 +51,7 @@ def secrets = [
 ]
 
 // Configure branches to sync with master branch
-def branchesToSync = ['demo', 'ithc']
+def branchesToSync = ['demo', 'perftest', 'ithc']
 
 // Vars needed for functional and smoke tests to run against AKS
 env.IDAM_API_URL_BASE = "https://idam-web-public.aat.platform.hmcts.net"
