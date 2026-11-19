@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.reform.roleassignment.drool.BaseDroolIntegrationTest.writeObjectToDroolOutput;
 
 @Getter
@@ -55,6 +56,23 @@ public class TestScenario {
         if (StringUtils.isNotBlank(outputFilePath)) {
             step.getFiles().add(outputFilePath);
         }
+    }
+
+    public void addRasFilesToStepAndAssertStatus(String stepName, MvcResult result, int expectedStatusCode) {
+        // always log the RAS files before verifying status
+        addRasFilesToStep(stepName, result);
+
+        int actualStatusCode = result.getResponse().getStatus();
+        assertEquals(
+            expectedStatusCode,
+            actualStatusCode,
+            String.format(
+                "Error: Response status expected:<%d> but was:<%d> for step:<%s>.",
+                expectedStatusCode,
+                actualStatusCode,
+                stepName
+            )
+        );
     }
 
     @SneakyThrows

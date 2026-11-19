@@ -56,6 +56,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.Case.CASE_MANAGEMENT_LOCATION;
+import static uk.gov.hmcts.reform.roleassignment.domain.model.Case.REGION;
 import static uk.gov.hmcts.reform.roleassignment.util.JacksonUtils.convertValueJsonNode;
 
 
@@ -74,10 +78,12 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
     public static final String AUTHORISED_SERVICE_XUI = "xui_webapp";
 
     public static final String CASE_ID = "1234567890123456";
+    public static final String CASE_REGION_ID = "4";
 
     public static final String ROLE_CASE_ALLOCATOR = "case-allocator";
     public static final String ROLE_HEARING_MANAGER = "hearing-manager";
     public static final String ROLE_HEARING_VIEWER = "hearing-viewer";
+    public static final String ROLE_TASK_SUPERVISOR = "task-supervisor";
 
     public static final String URL_CREATE_ROLES = "/am/role-assignments";
     public static final String URL_DELETE_ROLES = "/am/role-assignments";
@@ -134,17 +140,36 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
         return headers;
     }
 
-    protected void mockRetrieveDataServiceGetCaseById(String caseId,
+    protected Case mockRetrieveDataServiceGetCaseById(String caseId,
                                                       String jurisdiction,
-                                                      String caseTypeId)  {
-        Case retrievedCase = Case.builder()
+                                                      String caseTypeId) {
+        return mockRetrieveDataServiceGetCaseById(caseId, jurisdiction, caseTypeId, null);
+    }
+
+    protected Case mockRetrieveDataServiceGetCaseById(String caseId,
+                                                      String jurisdiction,
+                                                      String caseTypeId,
+                                                      String region)  {
+        Case.CaseBuilder retrievedCaseBuilder = Case.builder()
             .id(caseId)
             .jurisdiction(jurisdiction)
             .caseTypeId(caseTypeId)
-            .securityClassification(Classification.PUBLIC)
-            .build();
+            .securityClassification(Classification.PUBLIC);
+
+        if (StringUtils.isNotBlank(region)) {
+            HashMap<String, JsonNode> regionMap = new HashMap<>();
+            regionMap.put(REGION, convertValueJsonNode(region));
+            HashMap<String, JsonNode> caseDataMap = new HashMap<>();
+            caseDataMap.put(CASE_MANAGEMENT_LOCATION, convertValueJsonNode(regionMap));
+            retrievedCaseBuilder.data(caseDataMap);
+        }
+
+        Case retrievedCase = retrievedCaseBuilder.build();
 
         doReturn(retrievedCase).when(retrieveDataService).getCaseById(anyString());
+
+        return retrievedCase;
+
     }
 
     protected void assertCreateRoleAssignmentResponseStatus(Status status,
@@ -172,6 +197,25 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
         assertNotNull(roleAssignments);
         assertEquals(expectedCount, roleAssignments.size());
         return roleAssignments;
+    }
+
+    protected void assertCaseRoleAssignmentDefaultValues(String actorId,
+                                                         RoleAssignment roleAssignment,
+                                                         String roleName,
+                                                         RoleCategory roleCategory,
+                                                         Case ccdCase) {
+        assertNotNull(roleAssignment, "Case Role not found");
+        assertEquals(actorId, roleAssignment.getActorId());
+        assertEquals(ActorIdType.IDAM, roleAssignment.getActorIdType());
+        assertEquals(RoleType.CASE, roleAssignment.getRoleType());
+        assertEquals(roleName, roleAssignment.getRoleName());
+        assertEquals(Classification.RESTRICTED, roleAssignment.getClassification());
+        assertEquals(GrantType.SPECIFIC, roleAssignment.getGrantType());
+        assertEquals(roleCategory, roleAssignment.getRoleCategory());
+        assertFalse(CollectionUtils.isEmpty(roleAssignment.getAttributes()));
+        assertEquals(ccdCase.getJurisdiction(), roleAssignment.getAttributes().get("jurisdiction").asText());
+        assertEquals(ccdCase.getCaseTypeId(), roleAssignment.getAttributes().get("caseType").asText());
+        assertEquals(ccdCase.getId(), roleAssignment.getAttributes().get("caseId").asText());
     }
 
     protected void assertSystemRoleAssignmentDefaultValues(String actorId,
@@ -203,7 +247,12 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
                                                      String jurisdiction,
                                                      String caseType) {
         assertSystemRoleAssignmentDefaultValues(actorId, roleAssignment, roleName, jurisdiction);
-        assertEquals(caseType, roleAssignment.getAttributes().get("caseType").asText());
+
+        if (StringUtils.isEmpty(caseType)) {
+            assertFalse(roleAssignment.getAttributes().containsKey("caseType"));
+        } else {
+            assertEquals(caseType, roleAssignment.getAttributes().get("caseType").asText());
+        }
     }
 
     protected void assertHearingSystemRoleAssignments(String actorId,
@@ -276,6 +325,54 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
             .build();
     }
 
+    protected AssignmentRequest createOrgRoleAssignmentRequest(String actorId,
+                                                               RoleCategory roleCategory,
+                                                               String roleName,
+                                                               String jurisdiction,
+                                                               String caseType,
+                                                               String region,
+                                                               List<String> authorisations) {
+
+        Map<String, JsonNode> attributes = new HashMap<>();
+        attributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
+        if (caseType != null) {
+            attributes.put("caseType", convertValueJsonNode(caseType));
+        }
+        if (region != null) {
+            attributes.put("region", convertValueJsonNode(region));
+        }
+        // NB: primaryLocation is sometimes a mandatory attribute for ORG role assignments,
+        //     but it is not used in the tests, so we can just set it to a dummy value
+        attributes.put("primaryLocation", convertValueJsonNode("123456"));
+
+        var request = Request.builder()
+            .assignerId(UUID.randomUUID().toString()) // NB: shouldn't matter for ORM requests
+            .process("Integration_Test")
+            .reference(actorId)
+            .replaceExisting(true)
+            .build();
+
+        var roleAssignment = RoleAssignment.builder()
+            .actorId(actorId)
+            .actorIdType(ActorIdType.IDAM)
+            .roleType(RoleType.ORGANISATION)
+            .roleCategory(roleCategory)
+            .roleName(roleName)
+            .classification(Classification.PUBLIC)
+            .grantType(GrantType.STANDARD)
+            .attributes(JacksonUtils.convertValue(attributes))
+            .build();
+
+        if (!CollectionUtils.isEmpty(authorisations)) {
+            roleAssignment.setAuthorisations(authorisations);
+        }
+
+        return AssignmentRequest.builder()
+            .request(request)
+            .requestedRoles(List.of(roleAssignment))
+            .build();
+    }
+
     protected RoleAssignment createSystemRoleAssignment(String actorId, String roleName, String jurisdiction) {
         Map<String, JsonNode> attributes = new HashMap<>();
         attributes.put("jurisdiction", convertValueJsonNode(jurisdiction));
@@ -297,9 +394,98 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
                                                                String jurisdiction,
                                                                String caseType) {
         RoleAssignment roleAssignment = createSystemRoleAssignment(actorId, roleName, jurisdiction);
-        // add extra attribute
-        roleAssignment.getAttributes().put("caseType", convertValueJsonNode(caseType));
+
+        if (StringUtils.isNotEmpty(caseType)) {
+            // add extra attribute
+            roleAssignment.getAttributes().put("caseType", convertValueJsonNode(caseType));
+        }
+
         return roleAssignment;
+    }
+
+    protected List<RoleAssignment> registerAndVerifyOrgRoleAssignment(String actorId,
+                                                                      RoleCategory roleCategory,
+                                                                      String roleName,
+                                                                      String jurisdiction,
+                                                                      String caseType,
+                                                                      String region) throws Exception {
+        return registerAndVerifyOrgRoleAssignment(
+            actorId,
+            roleCategory,
+            roleName,
+            jurisdiction,
+            caseType,
+            region,
+            null
+        );
+    }
+
+    protected List<RoleAssignment> registerAndVerifyOrgRoleAssignment(String actorId,
+                                                                      RoleCategory roleCategory,
+                                                                      String roleName,
+                                                                      String jurisdiction,
+                                                                      String caseType,
+                                                                      String region,
+                                                                      List<String> authorisations) throws Exception {
+
+        // GIVEN
+        AssignmentRequest assignmentRequest = createOrgRoleAssignmentRequest(
+            actorId,
+            roleCategory,
+            roleName,
+            jurisdiction,
+            caseType,
+            region,
+            authorisations
+        );
+
+        // WHEN
+        log.info("Create RoleAssignment Request: {}", writeValueAsPrettyJson(assignmentRequest));
+        MvcResult result = mockMvc.perform(post(URL_CREATE_ROLES)
+                                               .contentType(JSON_CONTENT_TYPE)
+                                               .headers(getHttpHeaders(AUTHORISED_SERVICE_ORM))
+                                               .content(mapper.writeValueAsBytes(assignmentRequest))
+        ).andExpect(status().is(201)).andReturn();
+
+        // THEN
+        assertCreateRoleAssignmentResponseStatus(Status.APPROVED, result, 1);
+
+        // check role assignments
+        return assertRoleAssignmentsInDb(actorId, 1);
+    }
+
+    protected void cleanUpRoleAssignmentsInDb(List<RoleAssignment> roleAssignments) {
+        if (!CollectionUtils.isEmpty(roleAssignments)) {
+            roleAssignments.forEach(roleAssignment -> persistenceService.deleteRoleAssignment(roleAssignment));
+        }
+    }
+
+    protected void overrideRoleAssignmentValuesInDb(RoleAssignment roleAssignment,
+                                                    boolean overrideRoleName,
+                                                    boolean overrideJurisdiction,
+                                                    boolean overrideCaseType,
+                                                    boolean overrideRegion) {
+
+        // delete current role assignment
+        persistenceService.deleteRoleAssignment(roleAssignment);
+
+        // reset roleAssignment ID ready for save as new
+        roleAssignment.setId(UUID.randomUUID());
+
+        if (overrideRoleName) {
+            roleAssignment.setRoleName("bad-role-name");
+        }
+        if (overrideJurisdiction) {
+            roleAssignment.setAttribute("jurisdiction", "bad-jurisdiction");
+        }
+        if (overrideCaseType) {
+            roleAssignment.setAttribute("caseType", "bad-case-type");
+        }
+        if (overrideRegion) {
+            roleAssignment.setAttribute("region", "bad-region");
+        }
+
+        persistenceService.persistRoleAssignments(List.of(roleAssignment));
     }
 
     protected static String writeValueAsPrettyJson(Object input) throws JsonProcessingException {

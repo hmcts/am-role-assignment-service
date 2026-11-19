@@ -23,7 +23,7 @@ public class UserTokenProviderConfig {
 
     public UserTokenProviderConfig() {
 
-        idamURL = EnvironmentVariableUtils.getRequiredVariable("IDAM_URL");
+        idamURL = EnvironmentVariableUtils.getRequiredVariable("IDAM_API_URL_BASE");
         roleAssignmentUrl = EnvironmentVariableUtils.getRequiredVariable("TEST_URL");
         secret = EnvironmentVariableUtils.getRequiredVariable("AM_ROLE_ASSIGNMENT_SERVICE_SECRET");
         microService = MICRO_SERVICE_NAME;
