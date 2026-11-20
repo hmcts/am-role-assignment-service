@@ -32,7 +32,5 @@ public @interface LogAudit {
 
     String correlationId() default "";
 
-    String requestPayload() default "";
-
     String size() default "";
 }
