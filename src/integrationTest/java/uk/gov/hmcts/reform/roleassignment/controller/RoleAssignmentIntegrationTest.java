@@ -253,7 +253,7 @@ class RoleAssignmentIntegrationTest extends BaseTest {
         List<RoleConfigRole> roleConfigRoles = mapper.readValue(response, new TypeReference<>() {
         });
 
-        assertEquals(283, roleConfigRoles.size());
+        assertEquals(285, roleConfigRoles.size());
         assertThat(roleConfigRoles, containsInAnyOrder(
             roleMatcher("allocated-admin-caseworker", RoleCategory.ADMIN, RoleType.CASE, true),
             roleMatcher("allocated-administrator", RoleCategory.ADMIN, RoleType.CASE, true),
@@ -302,6 +302,7 @@ class RoleAssignmentIntegrationTest extends BaseTest {
             roleMatcher("case-allocator", RoleCategory.SYSTEM, RoleType.ORGANISATION, false),
             roleMatcher("case-allocator", RoleCategory.CTSC, RoleType.ORGANISATION, false),
             roleMatcher("case-allocator", RoleCategory.CTSC, RoleType.CASE, false),
+            roleMatcher("case-allocator", RoleCategory.ENFORCEMENT, RoleType.ORGANISATION, false),
             roleMatcher("case-manager", RoleCategory.LEGAL_OPERATIONS, RoleType.CASE, true),
             roleMatcher("CaseProfessionalGroupAccess_GA_Role", RoleCategory.PROFESSIONAL, RoleType.ORGANISATION, true),
             roleMatcher("CaseProfessionalGroupAccess_Org_Role", RoleCategory.PROFESSIONAL, RoleType.ORGANISATION, true),
@@ -539,6 +540,7 @@ class RoleAssignmentIntegrationTest extends BaseTest {
             roleMatcher("task-supervisor", RoleCategory.LEGAL_OPERATIONS, RoleType.ORGANISATION, false),
             roleMatcher("task-supervisor", RoleCategory.ADMIN, RoleType.ORGANISATION, false),
             roleMatcher("task-supervisor", RoleCategory.CTSC, RoleType.ORGANISATION, false),
+            roleMatcher("task-supervisor", RoleCategory.ENFORCEMENT, RoleType.ORGANISATION, false),
             roleMatcher("task-supervisor", RoleCategory.SYSTEM, RoleType.ORGANISATION, false),
             roleMatcher("tribunal-caseworker", RoleCategory.LEGAL_OPERATIONS, RoleType.ORGANISATION, true),
             roleMatcher("tribunal-caseworker", RoleCategory.LEGAL_OPERATIONS, RoleType.CASE, false),

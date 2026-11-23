@@ -297,6 +297,39 @@
     ]
   },
   {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for system users",
+    "category": "ENFORCEMENT",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PCS"]
+          },
+          "primaryLocation": {
+            "mandatory": false
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "task-supervisor",
     "label": "Task Supervisor",
     "description": "Task Supervisor role for judicial users",
@@ -519,6 +552,39 @@
           "jurisdiction": {
             "mandatory": true,
             "values": ["ST_CIC"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "task-supervisor",
+    "label": "Task Supervisor",
+    "description": "Task Supervisor role for staff users",
+    "category": "ENFORCEMENT",
+    "substantive": false,
+    "type": "ORGANISATION",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["ORGANISATION"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["STANDARD"]
+        },
+        "classification": {
+          "mandatory": true,
+          "values": ["PUBLIC", "PRIVATE"]
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": ["PCS"]
+          },
+          "primaryLocation": {
+            "mandatory": true
           }
         }
       }
