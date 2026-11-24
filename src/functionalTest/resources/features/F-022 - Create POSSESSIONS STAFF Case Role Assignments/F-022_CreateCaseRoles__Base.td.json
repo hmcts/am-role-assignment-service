@@ -1,0 +1,42 @@
+{
+  "_guid_": "F-022_CreateCaseRoles__Base",
+  "_extends_": "CreationDataBaseForRoleAssignment",
+
+  "specs": [ ],
+
+  "users": {
+    "invokingUser": {
+      "_extends_": "AmBeftaUser4"
+    },
+    "befta3": {
+      "_extends_": "AmBeftaUser3"
+    }
+  },
+
+  "request": {
+    "headers": {
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForXui]}"
+    },
+    "body": {
+      "roleRequest": {
+        "process" : "${[scenarioContext][customValues][generateProcessId]}",
+        "reference": "OVERRIDE_ME",
+        "replaceExisting": true
+      },
+
+      "requestedRoles": [ ]
+    }
+  },
+
+  "expectedResponse": {
+    "_extends_": "Common_201_Response",
+    "headers": {
+      "Content-Type" : "application/vnd.uk.gov.hmcts.role-assignment-service.create-assignments+json;version=1.0;charset=UTF-8"
+    },
+    "body": {
+      "roleAssignmentResponse": {
+        "requestedRoles": [ ]
+      }
+    }
+  }
+}

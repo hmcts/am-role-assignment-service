@@ -736,6 +736,61 @@ class CCDCaseRolesTest extends DroolBase {
             verifyNoInteractions(retrieveDataService);
         }
 
+        @ParameterizedTest
+        @ValueSource(strings = {
+            "[RESPONDENTNONLEGALREPRESENTATIVE0]",
+            "[RESPONDENTNONLEGALREPRESENTATIVE1]",
+            "[RESPONDENTNONLEGALREPRESENTATIVE2]",
+            "[RESPONDENTNONLEGALREPRESENTATIVE3]",
+            "[RESPONDENTNONLEGALREPRESENTATIVE4]",
+            "[RESPONDENTNONLEGALREPRESENTATIVE5]",
+            "[RESPONDENTNONLEGALREPRESENTATIVE6]",
+            "[RESPONDENTNONLEGALREPRESENTATIVE7]",
+            "[RESPONDENTNONLEGALREPRESENTATIVE8]",
+            "[RESPONDENTNONLEGALREPRESENTATIVE9]",
+            "[CLAIMANTNONLEGALREPRESENTATIVE]"
+        })
+        void shouldApproveOrRejectETCaseRoles(String roleName) {
+            RoleCategory roleCategory = RoleCategory.CITIZEN;
+            String jurisdiction = "EMPLOYMENT";
+            String caseType = "N/A";
+
+            // wrong category
+            verifyCcdCaseRequestedRole(RoleCategory.PROFESSIONAL, // WRONG (this is another
+                                       // valid CCD Case Role Category)
+                                       roleName,
+                                       jurisdiction,
+                                       caseType,
+                                       true,
+                                       Status.REJECTED,
+                                       null);
+            // wrong jurisdiction
+            verifyCcdCaseRequestedRole(roleCategory,
+                                       roleName,
+                                       "wrong-jurisdiction", // WRONG
+                                       caseType,
+                                       true,
+                                       Status.REJECTED,
+                                       null);
+            // without caseId
+            verifyCcdCaseRequestedRole(roleCategory,
+                                       roleName,
+                                       jurisdiction,
+                                       caseType,
+                                       false, // WRONG
+                                       Status.REJECTED,
+                                       null);
+
+            // correct values should be approved
+            verifyCcdCaseRequestedRole(roleCategory,
+                                       roleName,
+                                       jurisdiction,
+                                       caseType,
+                                       true,
+                                       Status.APPROVED,
+                                       "Y");
+        }
+
         private void setDisposerFeatureFlag(boolean status) {
             FeatureFlag featureFlag  =  FeatureFlag.builder()
                                             .flagName(FeatureFlagEnum.DISPOSER_1_1.getValue())

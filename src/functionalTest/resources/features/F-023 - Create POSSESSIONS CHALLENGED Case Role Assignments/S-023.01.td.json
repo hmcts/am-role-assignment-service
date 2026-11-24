@@ -1,0 +1,85 @@
+{
+  "title": "must successfully create challenged-access-judiciary POSSESSIONS case role with existing judicial org role",
+  "_guid_": "S-023.01",
+  "_extends_": "F-023_CreateCaseRoles__Base",
+
+  "specs": [
+    "an active IDAM profile with full permissions",
+    "contains ReplaceExisting is false and reference set to caseId",
+    "contains challenged-access-judiciary case role assignment"
+  ],
+
+  "request": {
+    "body": {
+      "roleRequest": {
+        "assignerId": "${[scenarioContext][testData][users][invokingUser][id]}",
+        "reference": "1776251462396879/challenged-access-judiciary/${[scenarioContext][testData][users][invokingUser][id]}",
+        "process" : "challenged-access",
+        "replaceExisting" : false
+      },
+      "requestedRoles": [
+        {
+          "actorIdType": "IDAM",
+          "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+          "roleName": "challenged-access-judiciary",
+          "roleCategory": "JUDICIAL",
+          "roleType": "CASE",
+          "grantType": "CHALLENGED",
+          "classification": "PUBLIC",
+          "readOnly": false,
+          "beginTime": "${[scenarioContext][customValues][today]}T00:00:00Z",
+          "endTime": "${[scenarioContext][customValues][tomorrow]}T00:00:00Z",
+          "attributes":
+          {
+            "caseId" : "1776251462396879",
+            "jurisdiction": "PCS"
+          },
+          "notes" : [ {
+            "userId" : "${[scenarioContext][testData][users][invokingUser][id]}",
+            "time" : "2020-01-01T00:00Z",
+            "comment" : "Need Access to case number ${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]} for a month"
+          } ]
+        }
+      ]
+    }
+  },
+
+  "expectedResponse": {
+    "body": {
+      "roleAssignmentResponse": {
+        "requestedRoles": [
+          {
+            "id": "[[ANYTHING_PRESENT]]",
+            "process": "${[scenarioContext][testData][request][body][roleRequest][process]}",
+            "reference": "${[scenarioContext][testData][request][body][roleRequest][reference]}",
+            "actorIdType": "IDAM",
+            "actorId": "${[scenarioContext][testData][users][invokingUser][id]}",
+            "roleName": "${[scenarioContext][testData][request][body][requestedRoles][0][roleName]}",
+            "roleCategory": "${[scenarioContext][testData][request][body][requestedRoles][0][roleCategory]}",
+            "roleType": "${[scenarioContext][testData][request][body][requestedRoles][0][roleType]}",
+            "grantType": "${[scenarioContext][testData][request][body][requestedRoles][0][grantType]}",
+            "classification": "${[scenarioContext][testData][request][body][requestedRoles][0][classification]}",
+            "readOnly": "${[scenarioContext][testData][request][body][requestedRoles][0][readOnly]}",
+            "beginTime": "[[ANYTHING_PRESENT]]",
+            "endTime": "[[ANYTHING_PRESENT]]",
+            "attributes":
+            {
+              "caseId" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][caseId]}",
+              "jurisdiction" : "${[scenarioContext][testData][request][body][requestedRoles][0][attributes][jurisdiction]}",
+              "caseType" : "PCS",
+              "substantive": "N"
+            },
+            "notes" : [ {
+              "userId" : "[[ANYTHING_PRESENT]]",
+              "time" : "[[ANYTHING_PRESENT]]",
+              "comment" : "[[ANYTHING_PRESENT]]"
+            } ],
+            "status": "LIVE",
+            "created": "[[ANYTHING_PRESENT]]",
+            "log": "[[ANYTHING_PRESENT]]"
+          }
+        ]
+      }
+    }
+  }
+}

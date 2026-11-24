@@ -11,7 +11,7 @@ properties([
   ])
 ])
 
-@Library("Infrastructure")
+@Library("Infrastructure@2.5.4")
 
 def type = "java"
 def product = "am"
@@ -62,7 +62,7 @@ withNightlyPipeline(type, product, component) {
     env.RAS_ENV = env.BRANCH_NAME
   }
 
-  env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
+  env.IDAM_API_URL_BASE = "https://idam-web-public.aat.platform.hmcts.net"
   env.TEST_URL = "http://am-role-assignment-service-aat.service.core-compute-aat.internal"
   env.IDAM_S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   env.S2S_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
@@ -82,21 +82,21 @@ withNightlyPipeline(type, product, component) {
   env.OAUTH2_CLIENT_ID = "am_role_assignment"
   env.OAUTH2_REDIRECT_URI = "http://am-role-assignment-service-aat.service.core-compute-aat.internal/oauth2redirect"
   env.OAUTH2_ACCESS_TOKEN_TYPE = "OIDC"
+  env.OAUTH2_SCOPE_VARIABLES = "openid profile roles authorities"
   env.BEFTA_RESPONSE_HEADER_CHECK_POLICY = "JUST_WARN"
-  env.OAUTH2_SCOPE_VARIABLES = "openid%20profile%20roles%20authorities"
   env.IDAM_CLIENT_ID = "am_role_assignment"
   env.OPENID_SCOPE_VARIABLES = "openid+profile+roles+authorities"
   env.MICROSERVICE_NAME = "am_role_assignment_service"
   env.EXTERNAL_FLAG_QUERY_PATH = "am/role-assignments/fetchFlagStatus?flagName="
-  env.IDAM_API_URL_BASE = "https://idam-api.aat.platform.hmcts.net"
   env.Rules = params.SecurityRules
 
   // Var to turn FTAs that rely on the RAS-CCD case validation on/off, i.e. when CCD is not available.
   env.AZURE_CASE_VALIDATION_FTA_ENABLED = "true"
+  env.PCS_CASE_VALIDATION_FTA_ENABLED = "false" // temporarily disabled until we have a stable PCS environment to run these tests against
 
   // Vars for Azure Container Registries DTSAM-370
   env.TESTCONTAINERS_HOST_OVERRIDE="localhost"
-  env.TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX="hmctspublic.azurecr.io/imported/"
+  env.TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX="hmctsprod.azurecr.io/imported/"
 
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
@@ -105,17 +105,6 @@ withNightlyPipeline(type, product, component) {
   enableSecurityScan()
   enableFullFunctionalTest()
   enableFortifyScan()
-
-  before('fullFunctionalTest') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
-  }
-
-  afterSuccess('build') {
-    stage("integration tests") {
-      sh "./gradlew integration"
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/integration/**/*'
-    }
-  }
 
   afterAlways('fullFunctionalTest') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/cucumber/**/*'
@@ -129,6 +118,7 @@ withNightlyPipeline(type, product, component) {
       reportTitles         : "Features,Failures",
       reportName           : "Functional Test Report"
     ]
+
   }
 
   afterAlways('fortify-scan') {

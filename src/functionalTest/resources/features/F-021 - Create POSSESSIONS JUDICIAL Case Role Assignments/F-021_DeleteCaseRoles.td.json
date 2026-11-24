@@ -1,0 +1,25 @@
+{
+  "_guid_": "F-021_DeleteCaseRoles",
+  "_extends_": "DeleteDataForRoleAssignments",
+
+  "specs": [
+    "to delete case role assignments just created above"
+  ],
+
+  "users": {
+    "invokingUser": {
+      "_extends_": "AmBeftaUser4"
+    }
+  },
+
+  "request": {
+    "headers": {
+      "ServiceAuthorization": "${[scenarioContext][customValues][generateS2STokenForXui]}"
+    },
+    "pathVariables": {
+      "process": "${[scenarioContext][parentContext][testData][request][body][roleRequest][process]}",
+      "reference": "${[scenarioContext][parentContext][testData][request][body][roleRequest][reference]}"
+    }
+  }
+
+}
