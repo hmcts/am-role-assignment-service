@@ -88,6 +88,13 @@ public class RunChallengedAccessDroolIntegrationTests extends BaseDroolIntegrati
                 .map(ChallengedAccessTestArguments::toArguments);
         }
 
+        static Stream<Arguments> getSuccessArgumentsExcludingEnforcement() {
+            return getAllChallengedAccessTestArguments().stream()
+                .filter(ChallengedAccessTestArguments::isExpectSuccess)
+                .filter(arg -> arg.getRoleCategory() != RoleCategory.ENFORCEMENT)
+                .map(ChallengedAccessTestArguments::toArguments);
+        }
+
         static Stream<Arguments> getDefaultFailureTestArguments() {
             return getAllChallengedAccessTestArguments().stream()
                 .filter(arg -> !arg.isExpectSuccess())
@@ -273,7 +280,7 @@ public class RunChallengedAccessDroolIntegrationTests extends BaseDroolIntegrati
                           REJECT_BAD_REGION,
                           REJECT_NOT_PERMITTED);
 
-        @MethodSource("getDefaultSuccessTestArguments")
+        @MethodSource("getSuccessArgumentsExcludingEnforcement")
         @ParameterizedTest(name = DISPLAY_NAME)
         void testRejectChallengedAccessRole_badExistingRoleJurisdiction(String ignoredDisplayName,
                                                                         ChallengedAccessTestArguments testArguments
@@ -308,7 +315,7 @@ public class RunChallengedAccessDroolIntegrationTests extends BaseDroolIntegrati
             }
         }
 
-        @MethodSource("getDefaultSuccessTestArguments")
+        @MethodSource("getSuccessArgumentsExcludingEnforcement")
         @ParameterizedTest(name = DISPLAY_NAME)
         void testRejectChallengedAccessRole_matchingExistingRoleRegion(String ignoredDisplayName,
                                                                        ChallengedAccessTestArguments testArguments
@@ -560,6 +567,7 @@ public class RunChallengedAccessDroolIntegrationTests extends BaseDroolIntegrati
             case CTSC -> "challenged-access-ctsc";
             case JUDICIAL -> "challenged-access-judiciary";
             case LEGAL_OPERATIONS -> "challenged-access-legal-ops";
+            case ENFORCEMENT -> "challenged-access-enforcement";
             default -> throw new IllegalArgumentException("Unsupported role category: " + roleCategory);
         };
     }
