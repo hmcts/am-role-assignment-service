@@ -18,9 +18,7 @@ public class PossessionsCaseAllocatorIT {
         arguments.addAll(getTestArguments(RoleCategory.JUDICIAL));
         arguments.addAll(getTestArguments(RoleCategory.CTSC));
         arguments.addAll(getTestArguments(RoleCategory.ADMIN));
-        /* TODO: ENFORCEMENT config coming in PCS WA 1.1
         arguments.addAll(getTestArguments(RoleCategory.ENFORCEMENT));
-         */
 
         return arguments;
     }
@@ -118,6 +116,31 @@ public class PossessionsCaseAllocatorIT {
                 "case-allocator",
                 List.of("case-allocator"),
                 RoleCategory.ADMIN,
+                caRoleCategory,
+                "N"
+            )
+        );
+
+        // ENFORCEMENT:allocated-bailiff
+        arguments.addAll(
+            getTestArgumentsForCaseRole(
+                "allocated-bailiff",
+                List.of(
+                    "bailiff-manager",
+                    "bailiff"
+                ),
+                RoleCategory.ENFORCEMENT,
+                caRoleCategory,
+                "Y"
+            )
+        );
+
+        // ENFORCEMENT:case-allocator
+        arguments.addAll(
+            getTestArgumentsForCaseRole(
+                "case-allocator",
+                List.of("case-allocator"),
+                RoleCategory.ENFORCEMENT,
                 caRoleCategory,
                 "N"
             )
