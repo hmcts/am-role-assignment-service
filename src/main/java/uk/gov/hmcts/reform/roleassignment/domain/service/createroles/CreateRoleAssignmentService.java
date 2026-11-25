@@ -188,6 +188,7 @@ public class CreateRoleAssignmentService {
 
         insertRequestedRole(parsedAssignmentRequest, Status.CREATE_REQUESTED, emptyUUIds);
 
+        // executes DROOLS rules: updates the input roleAssignments embedded within the AssignmentRequest
         validationModelService.validateRequest(parsedAssignmentRequest);
 
         //Save requested role in history table with APPROVED/REJECTED Status

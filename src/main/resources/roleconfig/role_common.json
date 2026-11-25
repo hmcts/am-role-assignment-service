@@ -330,6 +330,43 @@
     ]
   },
   {
+    "name": "case-allocator",
+    "label": "Case Allocator",
+    "description": "Case Allocator role for enforcement users",
+    "category": "ENFORCEMENT",
+    "substantive": false,
+    "type": "CASE",
+    "patterns": [
+      {
+        "roleType": {
+          "mandatory": true,
+          "values": ["CASE"]
+        },
+        "grantType": {
+          "mandatory": true,
+          "values": ["SPECIFIC"]
+        },
+        "classification": {
+          "mandatory": true
+        },
+        "attributes": {
+          "jurisdiction": {
+            "mandatory": true,
+            "values": [
+              "PCS"
+            ]
+          },
+          "caseType": {
+            "mandatory": true
+          },
+          "caseId": {
+            "mandatory": true
+          }
+        }
+      }
+    ]
+  },
+  {
     "name": "task-supervisor",
     "label": "Task Supervisor",
     "description": "Task Supervisor role for judicial users",

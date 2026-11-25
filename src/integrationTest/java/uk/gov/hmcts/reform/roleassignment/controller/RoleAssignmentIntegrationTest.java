@@ -253,11 +253,11 @@ class RoleAssignmentIntegrationTest extends BaseTest {
         List<RoleConfigRole> roleConfigRoles = mapper.readValue(response, new TypeReference<>() {
         });
 
-        assertEquals(285, roleConfigRoles.size());
+        assertEquals(286, roleConfigRoles.size());
         assertThat(roleConfigRoles, containsInAnyOrder(
             roleMatcher("allocated-admin-caseworker", RoleCategory.ADMIN, RoleType.CASE, true),
             roleMatcher("allocated-administrator", RoleCategory.ADMIN, RoleType.CASE, true),
-            roleMatcher("allocated-bailiff", RoleCategory.ADMIN, RoleType.CASE, true),
+            roleMatcher("allocated-bailiff", RoleCategory.ENFORCEMENT, RoleType.CASE, true),
             roleMatcher("allocated-ctsc-caseworker", RoleCategory.CTSC, RoleType.CASE, true),
             roleMatcher("allocated-judge", RoleCategory.JUDICIAL, RoleType.CASE, true),
             roleMatcher("allocated-legal-adviser", RoleCategory.LEGAL_OPERATIONS, RoleType.CASE, true),
@@ -303,6 +303,7 @@ class RoleAssignmentIntegrationTest extends BaseTest {
             roleMatcher("case-allocator", RoleCategory.CTSC, RoleType.ORGANISATION, false),
             roleMatcher("case-allocator", RoleCategory.CTSC, RoleType.CASE, false),
             roleMatcher("case-allocator", RoleCategory.ENFORCEMENT, RoleType.ORGANISATION, false),
+            roleMatcher("case-allocator", RoleCategory.ENFORCEMENT, RoleType.CASE, false),
             roleMatcher("case-manager", RoleCategory.LEGAL_OPERATIONS, RoleType.CASE, true),
             roleMatcher("CaseProfessionalGroupAccess_GA_Role", RoleCategory.PROFESSIONAL, RoleType.ORGANISATION, true),
             roleMatcher("CaseProfessionalGroupAccess_Org_Role", RoleCategory.PROFESSIONAL, RoleType.ORGANISATION, true),
