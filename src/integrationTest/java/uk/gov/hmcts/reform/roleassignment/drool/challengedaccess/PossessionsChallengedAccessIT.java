@@ -64,6 +64,21 @@ public class PossessionsChallengedAccessIT {
             )
         ));
 
+        // ENFORCEMENT
+        arguments.addAll(getTestArguments(
+            RoleCategory.ENFORCEMENT,
+            caseTypes,
+            List.of(
+                "hmcts-enforcement"
+            ),
+            List.of(
+                "bailiff",
+                "bailiff-manager",
+                "case-allocator",
+                "task-supervisor"
+            )
+        ));
+
         return arguments;
     }
 

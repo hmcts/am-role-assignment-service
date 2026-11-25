@@ -358,8 +358,8 @@ public abstract class BaseDroolIntegrationTest extends BaseTest {
             .roleType(RoleType.ORGANISATION)
             .roleCategory(roleCategory)
             .roleName(roleName)
-            .classification(Classification.PUBLIC)
-            .grantType(GrantType.STANDARD)
+            .classification("hmcts-enforcement".equals(roleName) ? Classification.PRIVATE : Classification.PUBLIC)
+            .grantType("hmcts-enforcement".equals(roleName) ? GrantType.BASIC : GrantType.STANDARD)
             .attributes(JacksonUtils.convertValue(attributes))
             .build();
 
